@@ -30,6 +30,11 @@ public class ConfigController {
     @Value("${valintalaskenta-ui.valintalaskenta-service-url.rest}")
     private String valintalaskentaServiceUrl;
 
+
+    @Value("${valintalaskenta-ui.sijoittelu-service-url.rest}")
+    private String sijoitteluServiceUrl;
+
+
     @RequestMapping(value="/configuration.js", method = RequestMethod.GET, produces="text/javascript")
     @ResponseBody
     public String index(HttpServletResponse response) {
@@ -40,6 +45,7 @@ public class ConfigController {
         append(b, "VALINTAPERUSTEET_URL_BASE ", valintaperusteetServiceUrl);
         append(b, "VALINTALASKENTAKOOSTE_URL_BASE", valintalaskentakoostepalveluServiceUrl);
         append(b, "HAKEMUS_URL_BASE", hakemusServiceUrl);
+        append(b, "SIJOITTELU_URL_BASE", sijoitteluServiceUrl);
         append(b, "SERVICE_URL_BASE", valintalaskentaServiceUrl);
         append(b, "TEMPLATE_URL_BASE", "");
         /*
