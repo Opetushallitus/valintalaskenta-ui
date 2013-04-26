@@ -4,47 +4,35 @@
 <head>
     <title>Valintalaskenta</title>
 
-    <script th:src="@{/jslib/jquery-1.8.3/jquery-1.8.3.js}" src="../jslib/jquery-1.8.3/jquery-1.8.3.js"></script>
-    <script th:src="@{/jslib/jquery-1.8.3/jquery.nestable.js}" src="../jslib/jquery-1.8.3/jquery.nestable.js"></script>
-    <script type="text/javascript" th:src="@{/jslib/jquery-ui-1.9.2/jquery-ui.min.js}"  src="../jslib/jquery-ui-1.9.2/jquery-ui.min.js"></script>
+    <!-- libs -->
+    <script type="text/javascript" src="../jslib/jquery-1.8.3/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="../jslib/jquery-1.8.3/jquery.nestable.js"></script>
+    <script type="text/javascript" src="../jslib/jquery-ui-1.9.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../jslib/angular-1.1.4/angular.js"></script>
+    <script type="text/javascript" src="../jslib/angular-1.1.4/angular-resource.js"></script>
 
+    <!--conf -->
+    <script type="text/javascript"  src="../configuration/configuration.js"></script>
 
-    <script th:src="@{/jslib/angular-1.1.4/angular.js}" src="../jslib/angular-1.1.4/angular.js"></script>
-    <script th:src="@{/jslib/angular-1.1.4/angular-resource.js}" src="../jslib/angular-1.1.4/angular-resource.js"></script>
-    
-    <script th:inline="javascript">
-        var tarjontaService = "http://luokka.hard.ware.fi\\:8181/tarjonta-service/rest/";
-        var valintaperusteetService = "/valintaperusteet-service/";
-        var valintalaskentaKoosteService = "/valintalaskentakoostepalvelu/";
-        var hakemusService = "http://luokka.hard.ware.fi\\:8282/";
+    <!-- app js-->
+    <script type="text/javascript" src="../js/valintalaskenta.js"></script>
+	<script type="text/javascript" src="../js/valintaesitys.js"></script>
+	<script type="text/javascript" src="../js/harkinnassa.js"></script>
+	<script type="text/javascript" src="../js/pistelaskenta.js"></script>
+	<script type="text/javascript" src="../js/pistesyotto.js"></script>
+	<script type="text/javascript" src="../js/valinnanhallinta.js"></script>
+	<script type="text/javascript" src="../js/yhteisvalinnanhallinta.js"></script>
+    <script type="text/javascript" src="../js/hakukohdeyleistiedot.js"></script>
+	<script type="text/javascript" src="../js/hakukohteet.js"></script>
+	<script type="text/javascript" src="../js/haku.js"></script>
+    <script type="text/javascript" src="../js/navigation.js"></script>
+    <script type="text/javascript" src="../js/loading.js"></script>
+    <script type="text/javascript" src="../js/directives.js"></script>
 
-        /*<![CDATA[*/;
-        TARJONTA_URL_BASE = tarjontaService;
-        VALINTAPERUSTEET_URL_BASE = valintaperusteetService;
-        VALINTALASKENTAKOOSTE_URL_BASE = valintalaskentaKoosteService;
-        HAKEMUS_URL_BASE = hakemusService;
-        SERVICE_URL_BASE = /*[[${serviceUrl}]]*/ "/valintalaskenta-laskenta-service/";
-        TEMPLATE_URL_BASE = /*[[@{/html/}]]*/ "";
-        /*]]>*/
-    </script>
-    <script th:src="@{/js/valintalaskenta.js}" src="../js/valintalaskenta.js"></script>
-	<script th:src="@{/js/valintaesitys.js}" src="../js/valintaesitys.js"></script>
-	<script th:src="@{/js/harkinnassa.js}" src="../js/harkinnassa.js"></script>
-	<script th:src="@{/js/pistelaskenta.js}" src="../js/pistelaskenta.js"></script>
-	<script th:src="@{/js/pistesyotto.js}" src="../js/pistesyotto.js"></script>
-	<script th:src="@{/js/valinnanhallinta.js}" src="../js/valinnanhallinta.js"></script>
-	<script th:src="@{/js/yhteisvalinnanhallinta.js}" src="../js/yhteisvalinnanhallinta.js"></script>
-    <script th:src="@{/js/hakukohdeyleistiedot.js}" src="../js/hakukohdeyleistiedot.js"></script>
+    <!-- css -->
+    <link href="../css/virkailija.css" rel="stylesheet" type="text/css" />
+    <link href="../css/proto.css" rel="stylesheet" type="text/css" />
 
-	<script th:src="@{/js/hakukohteet.js}" src="../js/hakukohteet.js"></script>
-	<script th:src="@{/js/haku.js}" src="../js/haku.js"></script>
-
-    <script th:src="@{/js/navigation.js}" src="../js/navigation.js"></script>
-    <script th:src="@{/js/loading.js}" src="../js/loading.js"></script>
-    <script th:src="@{/js/directives.js}" src="../js/directives.js"></script>
-
-    <link th:remove="all" href="../css/virkailija.css" rel="stylesheet" type="text/css" />
-    <link th:remove="all" href="../css/proto.css" rel="stylesheet" type="text/css" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
