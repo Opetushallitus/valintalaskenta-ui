@@ -17,13 +17,17 @@ mod.factory('onStartInterceptor', function(loadingService) {
     };
 });
 
-mod.factory('onCompleteInterceptor', function(loadingService) {
+mod.factory('onCompleteInterceptor', function(loadingService, $q) {
   return function(promise) {
-    var decrementRequestCount = function(response) {
+    var decrementRequestCountSuccess = function(response) {
         loadingService.requestCount--;
         return response;
     };
-    return promise.then(decrementRequestCount, decrementRequestCount);
+    var decrementRequestCountError = function(response) {
+        loadingService.requestCount--;
+        return $q.reject(response);
+    };
+    return promise.then(decrementRequestCountSuccess, decrementRequestCountError);
   };
 });
 
