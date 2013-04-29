@@ -30,7 +30,10 @@ public class ConfigController {
     @Value("${valintalaskenta-ui.sijoittelu-service-url.rest}")
     private String sijoitteluServiceUrl;
 
-
+    /**
+     * Generoi javascriptia propertiesseista
+     * @return
+     */
     @RequestMapping(value="/configuration.js", method = RequestMethod.GET, produces="text/javascript")
     @ResponseBody
     public String index() {
