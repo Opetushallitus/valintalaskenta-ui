@@ -18,8 +18,8 @@ app.config(function($routeProvider) {
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto', {controller:PistesyottoController, templateUrl:TEMPLATE_URL_BASE + 'pistesyotto.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset/pistelaskennassa', {controller:PistelaskentaController, templateUrl:TEMPLATE_URL_BASE + 'pistelaskennassa.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset/harkinnassa', {controller:HarkinnassaController, templateUrl:TEMPLATE_URL_BASE + 'harkinnassa.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintaesitys', {controller:ValintaesitysController, templateUrl:TEMPLATE_URL_BASE + 'valintaesitys.html'}).
-
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintalaskentatulos', {controller:ValintalaskentatulosController, templateUrl:TEMPLATE_URL_BASE + 'valintalaskentatulos.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/sijoitteluntulos', {controller:SijoitteluntulosController, templateUrl:TEMPLATE_URL_BASE + 'sijoitteluntulos.html'}).
 
     //when('/haku/:hakuOid/henkiloittain', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkiloittain.html'}).
     //when('/haku/:hakuOid/henkiloittain/mitätuleekin', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkiloittain.html'}).
@@ -103,5 +103,37 @@ app.factory('HakemusKey', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "applications/:oid/:key", {oid: "@oid", key: "@key"}, {
         get: {method: "GET"},
         put: {method: "PUT"}
+    });
+});
+
+
+//Sijoittelu
+app.factory('Sijoittelu', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/", {hakuOid: "@hakuOid"}, {
+        get: {method: "GET"}
+    });
+});
+
+app.factory('SijoitteluajoLatest', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo?latest=true", {hakuOid: "@hakuOid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
+
+app.factory('SijoitteluajoAtTimestamp', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/:timestamp", {hakuOid: "@hakuoid", timestamp: "@timestamp"}, {
+        get: {method: "GET"}
+    });
+});
+
+app.factory('Sijoitteluajo', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoitteluajo/:sijoitteluajoOid", {sijoitteluajoOid: "@sijoitteluajoOid"}, {
+        get: {method: "GET"}
+    });
+});
+
+app.factory('SijoitteluajoHakukohde', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoitteluajo/:sijoitteluajoOid/:hakukohdeOid", {sijoitteluajoOid: "@sijoitteluajoOid", hakukohdeOid: "@hakukohdeOid"}, {
+        get: {method: "GET"}
     });
 });

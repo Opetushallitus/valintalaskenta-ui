@@ -37,4 +37,6 @@ function ValinnanhallintaController($scope, $location, $routeParams, Valinnanhal
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 	$scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+
+
 }
