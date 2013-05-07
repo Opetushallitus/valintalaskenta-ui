@@ -14,6 +14,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 				model.sijoittelu = result;
 			});
 
+			//HAKUOID KOVAKOODATTU SYKSYNHAUKSI
 			SijoitteluajoLatest.get({hakuOid: "syksynhaku"}, function(result) {
 				model.latestSijoitteluajo = result[0];
 
@@ -26,7 +27,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 						hakukohdeOid: currentHakukohdeOid
 					}, function(result) {
 						model.sijoitteluTulokset = result;
-						console.log(model.sijoitteluTulokset.valintatapajonot);
+						console.log(result);
 					});
 				}
 			
@@ -36,9 +37,14 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
 		this.refresIfNeeded = function(hakuOid) {
 			if(model.sijoittelu.hakuOid !== hakuOid) {
-				model.refresh();
+				model.refresh(hakuOid);
 			}
-		} 
+		};
+
+		this.formatMillis = function(millis) {
+			date = new Date(millis);
+			return date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+		};
 	};
 
 	return model;

@@ -18,8 +18,8 @@
 			</div>
 			<div class="margin-vertical-2">
 				Viimeisin Ajo ID: {{model.latestSijoitteluajo.sijoitteluajoId}} <br />
-				Alkaa: {{model.latestSijoitteluajo.startMils}} <br />
-				Loppuu: {{model.latestSijoitteluajo.endMils}} <br />
+				Alkaa: {{model.formatMillis(model.latestSijoitteluajo.startMils)}} <br />
+				Loppuu: {{model.formatMillis(model.latestSijoitteluajo.endMils)}} <br />
 			</div>
 			<!--
 			<div class="margin-vertical-2">
@@ -44,22 +44,20 @@
 					<h1>{{jono.aloituspaikat}}</h1>
 					<thead>
 						<tr>
-							<th colspan="5">valintatapajono OID: {{jono.oid}}</th>
+							<th colspan="4">valintatapajono OID: {{jono.oid}}</th>
 						</tr>
 						<tr>
+							<td class="bold align-center">jonosija</td>
 							<td class="bold align-center">Hakija OID</td>
 							<td class="bold align-center">prioriteetti</td>
-							<td class="bold align-center">jonosija</td>
-							<td class="bold align-center">tasasijaJonosija</td>
 							<td class="bold align-center">tila</td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="hakemus in jono.hakemukset">
+							<td>{{hakemus.jonosija}}</td>
 							<td>{{hakemus.hakijaOid}}</td>
 							<td>{{hakemus.prioriteetti}}</td>
-							<td>{{hakemus.jonosija}}</td>
-							<td>{{hakemus.tasasijaJonosija}}</td>
 							<td>{{hakemus.tila}}</td>
 						</tr>
 					</tbody>
