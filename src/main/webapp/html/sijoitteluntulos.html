@@ -1,0 +1,71 @@
+
+<h1>Valinnat</h1>
+
+<div ng-include="'partials/topNavigation.html'" />
+
+<div class="tabsheets">
+
+    <div class="grid16-4" ng-include="'partials/hakukohdelista.html'"></div>
+
+    <div class="grid16-12">
+        <div ng-include="'partials/hakukohdeNavigation.html'" />
+
+		<div class="tabsheets">
+            <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
+			<h2>Sijoittelun tulos</h2>
+			<div class="margin-vertical-2">
+				
+			</div>
+			<div class="margin-vertical-2">
+				Viimeisin Ajo ID: {{model.latestSijoitteluajo.sijoitteluajoId}} <br />
+				Alkaa: {{model.latestSijoitteluajo.startMils}} <br />
+				Loppuu: {{model.latestSijoitteluajo.endMils}} <br />
+			</div>
+			<!--
+			<div class="margin-vertical-2">
+				<button ng-click="showSijoitteluajot()">Näytä kaikki sijoitteluajot</button>
+				<table class="virkailija-table-1">
+					<thead>
+						<tr>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		-->
+			<div class="margin-vertical-2">
+				<h2>Viimeisimmän sijoittelun tulokset</h2>
+				<table class="virkailija-table-1" ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot">
+					<h1>{{jono.aloituspaikat}}</h1>
+					<thead>
+						<tr>
+							<th colspan="5">valintatapajono OID: {{jono.oid}}</th>
+						</tr>
+						<tr>
+							<td class="bold align-center">Hakija OID</td>
+							<td class="bold align-center">prioriteetti</td>
+							<td class="bold align-center">jonosija</td>
+							<td class="bold align-center">tasasijaJonosija</td>
+							<td class="bold align-center">tila</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="hakemus in jono.hakemukset">
+							<td>{{hakemus.hakijaOid}}</td>
+							<td>{{hakemus.prioriteetti}}</td>
+							<td>{{hakemus.jonosija}}</td>
+							<td>{{hakemus.tasasijaJonosija}}</td>
+							<td>{{hakemus.tila}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
