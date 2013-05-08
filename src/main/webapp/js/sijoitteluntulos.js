@@ -7,15 +7,15 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 		this.sijoitteluTulokset = {};
 		
 
-		this.refresh = function() {
+		this.refresh = function(hakuOid) {
 
 			//HAKUOID KOVAKOODATTU SYKSYNHAUKSI
-			Sijoittelu.get({hakuOid: "syksynhaku"},function(result) {
-				model.sijoittelu = result;
-			});
+			//Sijoittelu.get({hakuOid: "syksynhaku"},function(result) {
+			//	model.sijoittelu = result;
+			//});
 
 			//HAKUOID KOVAKOODATTU SYKSYNHAUKSI
-			SijoitteluajoLatest.get({hakuOid: "syksynhaku"}, function(result) {
+			SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
 				model.latestSijoitteluajo = result[0];
 
 				var currentSijoitteluajoOid = model.latestSijoitteluajo.sijoitteluajoId;
@@ -42,8 +42,10 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 		};
 
 		this.formatMillis = function(millis) {
-			date = new Date(millis);
-			return date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+            if(millis === null) {
+                date = new Date(millis);
+                return date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+            }
 		};
 	};
 
