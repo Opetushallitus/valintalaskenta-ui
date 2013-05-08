@@ -13,15 +13,6 @@
 			
 		}
 
-// Kai tämä on hyvä joka kerta refreshata, niin ei tarvi painaa alt+f5/cmd+r
-//		this.refreshIfNeeded = function(hakukohdeOid) {
-//
-//			if( model.hakukohdeOid != hakukohdeOid ) {
-//				model.refresh(hakukohdeOid);
-//			}
-//		}
-		
-
 	};
 
 	return model;

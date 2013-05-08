@@ -1,15 +1,20 @@
-﻿app.factory('ValinnanhallintaModel', function(ValinnanvaiheListFromValintaperusteet, ValintalaskentaAktivointi) {
+﻿app.factory('ValinnanhallintaModel', function(ValinnanvaiheListFromValintaperusteet, ValintalaskentaAktivointi, HakukohdeValinnanvaihe) {
 
 	var model;
 	model = new function() {
 
 		this.hakukohde = {};
         this.hakukohdeOid = '';
+        this.valinnanvaiheet = [];
 
 		this.refresh = function(hakukohdeOid) {
 			if( hakukohdeOid !== undefined) {
                 ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: hakukohdeOid}, function(result) {
 					model.valinnanvaiheList = result;
+				});
+
+				HakukohdeValinnanvaihe.get({parentOid: model.hakukohdeOid}, function(result) {
+					model.valinnanvaiheet = result;
 				});
 			}
 		}
@@ -37,6 +42,5 @@ function ValinnanhallintaController($scope, $location, $routeParams, Valinnanhal
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 	$scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
-
 
 }
