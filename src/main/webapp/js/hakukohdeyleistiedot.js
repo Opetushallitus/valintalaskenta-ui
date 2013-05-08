@@ -21,8 +21,17 @@ app.factory('HakukohdeModel', function(tarjontaHakukohde) {
         }
 
         this.refreshIfNeeded = function(hakukohdeOid) {
-            if(model.hakukohde.oid !== hakukohdeOid) {
+            if(model.isHakukohdeChanged(hakukohdeOid)) {
                 model.refresh(hakukohdeOid);
+            }
+        }
+
+        //helper method needed in other controllers
+        this.isHakukohdeChanged = function(hakukohdeOid) {
+            if(model.hakukohde.oid !== hakukohdeOid) {
+                return true;
+            } else {
+                return false;
             }
         }
 

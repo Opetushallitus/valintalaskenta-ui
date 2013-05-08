@@ -24,7 +24,11 @@
 				</div>
 				<div class="clear"></div>
 			</div>
-		<!--
+
+			<div ng-hide="model.valinnanvaiheet.length" class="offset-left-16-4 grid16-8">
+				<p class="notification warning">Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa</p>
+			</div>
+			<!--
 			<div>
 				<div class="width-12-6">
 					<h3 class="margin-top-0">Esivalinta</h3>

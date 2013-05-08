@@ -51,6 +51,14 @@ return $resource(TARJONTA_URL_BASE + "hakukohde/:hakukohdeoid", {hakukohdeoid: "
   });
 });
 
+app.factory('HakukohdeValinnanvaihe', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/hakukohde/:parentOid/valinnanvaihe", {parentOid: "@parentOid"}, {
+     get: {method: "GET", isArray: true },
+     post:{method: "POST"},
+     insert: {method: "PUT"}
+   });
+});
+
 //One does not simply call 'ValinnanVaiheList' 'Hakukohde'
 app.factory('ValinnanvaiheListByHakukohde', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {
@@ -137,3 +145,7 @@ app.factory('SijoitteluajoHakukohde', function($resource) {
         get: {method: "GET"}
     });
 });
+
+
+
+

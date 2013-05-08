@@ -27,7 +27,6 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 						hakukohdeOid: currentHakukohdeOid
 					}, function(result) {
 						model.sijoitteluTulokset = result;
-						console.log(result);
 					});
 				}
 			
@@ -35,8 +34,9 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
 		};
 
-		this.refresIfNeeded = function(hakuOid) {
-			if(model.sijoittelu.hakuOid !== hakuOid) {
+		//refresh if haku or hakukohde has changed
+		this.refresIfNeeded = function(hakuOid, isHakukohdeChanged) {
+			if(model.sijoittelu.hakuOid !== hakuOid || isHakukohdeChanged) {
 				model.refresh(hakuOid);
 			}
 		};
@@ -47,6 +47,13 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
                 return date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
             }
 		};
+		/*
+		function sortHakemuksetByTasasijaAndTasasijaJonosija(hakemukset) {
+			for(var i = 0 ; i < hakemukset ; ++i) {
+				console.log(hakemukset[i]);
+			}
+		}
+		*/
 	};
 
 	return model;
@@ -56,10 +63,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
 function SijoitteluntulosController($scope, $routeParams, HakukohdeModel, SijoitteluntulosModel) {
     $scope.hakukohdeModel = HakukohdeModel;
-
+    HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
-    $scope.model.refresIfNeeded($routeParams.hakuOid);
-   	
-   	
-
+    $scope.model.refresIfNeeded($routeParams.hakuOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
 }
