@@ -5,17 +5,20 @@
 
 		this.hakukohde = {};
         this.hakukohdeOid = '';
-        this.valinnanvaiheet = [];
+        //this.valintaperusteValinnanvaiheet = [];
+        this.tulosValinnanvaiheet = [];
 
 		this.refresh = function(hakukohdeOid) {
 			if( hakukohdeOid !== undefined) {
                 ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: hakukohdeOid}, function(result) {
-					model.valinnanvaiheList = result;
+					model.tulosValinnanvaiheet = result;
 				});
 
+                /*
 				HakukohdeValinnanvaihe.get({parentOid: model.hakukohdeOid}, function(result) {
 					model.valinnanvaiheet = result;
 				});
+*/
 			}
 		}
 

@@ -12,7 +12,7 @@
 		<div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
 
-			<div class="margin-bottom-2" ng-repeat="valinnanvaihe in model.valinnanvaiheList">
+			<div class="margin-bottom-2" ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
 				<div class="width-12-6">
 					<h3 class="margin-top-0">{{valinnanvaihe.nimi}}</h3>
 				</div>
@@ -25,7 +25,7 @@
 				<div class="clear"></div>
 			</div>
 
-			<div ng-hide="model.valinnanvaiheet.length" class="offset-left-16-4 grid16-8">
+			<div ng-hide="model.tulosValinnanvaiheet" class="offset-left-16-4 grid16-8">
 				<p class="notification warning">Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa</p>
 			</div>
 			<!--
