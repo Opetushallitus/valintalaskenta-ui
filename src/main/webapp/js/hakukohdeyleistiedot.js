@@ -13,7 +13,7 @@ app.factory('HakukohdeModel', function(tarjontaHakukohde) {
         this.hakukohde = {};
 
         this.refresh = function(hakukohdeOid) {
-            if( hakukohdeOid !== "undefined") {
+            if( hakukohdeOid !== undefined) {
                 tarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.hakukohde = result;
                 });

@@ -1,0 +1,42 @@
+
+<h1>Valinnat</h1>
+
+<div ng-include="'partials/topNavigation.html'" />
+
+<div class="tabsheets">
+
+    <div class="grid16-4" ng-include="'partials/hakukohdelista.html'"></div>
+
+    <div class="grid16-12">
+        <div ng-include="'partials/hakukohdeNavigation.html'" />
+
+		<div class="tabsheets">
+            <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
+
+			<div class="margin-vertical-2">
+                <!--{{model.flatKoetulokset | json}}-->
+                <h2>Valintakoetulokset</h2>
+                <table class="virkailija-table-1">
+                    <thead>
+                    <tr>
+                        <td class="bold align-center"><a href="" ng-click="predicate = 'hakijaOid'; reverse=!reverse">Hakija OID</a></td>
+                        <td class="bold align-center"><a href="" ng-click="predicate = 'valintakoeOid'; reverse=!reverse">Valintakoe OID</a></td>
+                        <td class="bold align-center"><a href="" ng-click="predicate = 'valintakoeTunniste'; reverse=!reverse">Valintakoetunniste</a></td>
+                        <td class="bold align-center"><a href="" ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="koe in model.flatKoetulokset | orderBy:predicate:reverse">
+                        <td>{{koe.hakijaOid}}</td>
+                        <td>{{koe.valintakoeOid}}</td>
+                        <td>{{koe.valintakoeTunniste}}</td>
+                        <td>{{koe.osallistuminen}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
