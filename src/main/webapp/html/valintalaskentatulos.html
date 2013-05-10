@@ -18,7 +18,9 @@
                 <p class="notification warning">Kohteelle ei ole vielä suoritettu valintalaskentaa</p>
             </div>
             <div class="clear"></div>
-            <a href="#" class="button small disabled">Hyväksy valintaesitys</a> 
+            <!--
+            <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
+             -->
             <div ng-repeat="valinnanvaihe in model.valinnanvaiheet">
                 <h3>Valinnanvaihe OID: <span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span></h3>
                 <h3>Päivämäärä: <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></h3>
