@@ -1,7 +1,9 @@
-﻿function YhteisvalinnanHallintaController($scope, $location, $routeParams) {
-	$scope.hakuOid = $routeParams.hakuOid;
+﻿function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi  ) {
 
-	$scope.sijoittelulinkki = '/valintalaskentakoostepalvelu/resources/sijoittelu/aktivoi?hakuOid=' + $scope.hakuOid;
-
+    $scope.kaynnistaValintalaskenta = function() {
+        var hakuoid = $routeParams.hakuOid;
+            Sijoitteluktivointi.aktivoi({hakuOid: hakuoid}, function() {
+        });
+    }
 }
 

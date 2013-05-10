@@ -7,39 +7,23 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 		this.sijoitteluTulokset = {};
 		
 
-		this.refresh = function(hakuOid) {
+        this.refresh = function(hakuOid) {
+            SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
+                model.latestSijoitteluajo = result[0];
+                var currentSijoitteluajoOid = model.latestSijoitteluajo.sijoitteluajoId;
+                for(var i = 0 ; i < model.latestSijoitteluajo.hakukohteet.length ; i++) {
+                    var currentHakukohdeOid = model.latestSijoitteluajo.hakukohteet[i].oid;
 
-			//HAKUOID KOVAKOODATTU SYKSYNHAUKSI
-			//Sijoittelu.get({hakuOid: "syksynhaku"},function(result) {
-			//	model.sijoittelu = result;
-			//});
+                    SijoitteluajoHakukohde.get({
+                        sijoitteluajoOid: currentSijoitteluajoOid,
+                        hakukohdeOid: currentHakukohdeOid
+                    }, function(result) {
+                        model.sijoitteluTulokset = result;
+                    });
 
-			//HAKUOID KOVAKOODATTU SYKSYNHAUKSI
-
-			console.debug('here wea re');
-			SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
-				console.debug('here wea re1');
-				model.latestSijoitteluajo = result[0];
-               	console.debug('here wea re2');
-				var currentSijoitteluajoOid = model.latestSijoitteluajo.sijoitteluajoId;
-					console.debug('here wea re3');
-
-
-				for(var i = 0 ; i < model.latestSijoitteluajo.hakukohteet.length ; i++) {
-						console.debug('here wea re4');
-					var currentHakukohdeOid = model.latestSijoitteluajo.hakukohteet[i].oid;
-
-					SijoitteluajoHakukohde.get({
-						sijoitteluajoOid: currentSijoitteluajoOid,
-						hakukohdeOid: currentHakukohdeOid
-					}, function(result) {
-						model.sijoitteluTulokset = result;
-					});
-				}
-			
-			});
-
-		};
+                }
+            });
+        };
 
 		//refresh if haku or hakukohde has changed
 		this.refresIfNeeded = function(hakuOid, isHakukohdeChanged) {

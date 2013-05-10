@@ -96,6 +96,13 @@ app.factory('ValintalaskentaAktivointi', function($resource) {
     })
 });
 
+
+app.factory('Sijoitteluktivointi', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/sijoittelu/aktivoi", {}, {
+        aktivoi: {method: "GET"}
+    })
+});
+
 app.factory('KaikkiHakemukset', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "applications/", {}, {
         get: {method: "GET", isArray: true}
