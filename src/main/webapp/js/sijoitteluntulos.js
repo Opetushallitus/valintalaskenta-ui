@@ -15,11 +15,18 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 			//});
 
 			//HAKUOID KOVAKOODATTU SYKSYNHAUKSI
-			SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
-				model.latestSijoitteluajo = result[0];
 
+			console.debug('here wea re');
+			SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
+				console.debug('here wea re1');
+				model.latestSijoitteluajo = result[0];
+               	console.debug('here wea re2');
 				var currentSijoitteluajoOid = model.latestSijoitteluajo.sijoitteluajoId;
+					console.debug('here wea re3');
+
+
 				for(var i = 0 ; i < model.latestSijoitteluajo.hakukohteet.length ; i++) {
+						console.debug('here wea re4');
 					var currentHakukohdeOid = model.latestSijoitteluajo.hakukohteet[i].oid;
 
 					SijoitteluajoHakukohde.get({
