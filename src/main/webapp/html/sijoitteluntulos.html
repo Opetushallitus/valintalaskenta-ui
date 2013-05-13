@@ -44,13 +44,13 @@
 					<h1>{{jono.aloituspaikat}}</h1>
 					<thead>
 						<tr>
-							<th colspan="5">valintatapajono OID: {{jono.oid}}</th>
+							<th colspan="6">valintatapajono OID: {{jono.oid}}</th>
 						</tr>
 						<tr>
 							<td class="bold align-center">jonosija</td>
 							<td class="bold align-center">Hakija OID</td>
+                            <td class="bold align-center">Hakemus OID</td>
 							<td class="bold align-center">prioriteetti</td>
-							
 							<td class="bold align-center">tasasijaJonosija</td>
 							<td class="bold align-center">tila</td>
 						</tr>
@@ -59,8 +59,8 @@
 						<tr ng-repeat="hakemus in jono.hakemukset">
 							<td>{{hakemus.jonosija}}</td>
 							<td>{{hakemus.hakijaOid}}</td>
+                            <td>{{hakemus.hakemusOid}}</td>
 							<td>{{hakemus.prioriteetti}}</td>
-							
 							<td>{{hakemus.tasasijaJonosija}}</td>
 							<td>{{hakemus.tila}}</td>
 						</tr>
