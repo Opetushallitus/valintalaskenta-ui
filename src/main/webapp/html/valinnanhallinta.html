@@ -14,8 +14,7 @@
 
 			<div class="margin-bottom-2" ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
 				<div class="width-12-6">
-					<h3 class="margin-top-0">{{valinnanvaihe.nimi}}</h3>
-                    {{valinnanvaihe.valinnanVaiheTyyppi}}
+					<h3 class="margin-top-0 margin-right-1 inline">{{valinnanvaihe.nimi}}:</h3><span>{{valinnanvaihe.valinnanVaiheTyyppi}}</span>
 				</div>
 
 				<div class="width-12-6">
@@ -26,7 +25,7 @@
 				<div class="clear"></div>
 			</div>
 
-			<div ng-hide="model.tulosValinnanvaiheet" class="offset-left-16-4 grid16-8">
+			<div ng-show="!model.tulosValinnanvaiheet" class="offset-left-16-4 grid16-8">
 				<p class="notification warning">Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa</p>
 			</div>
 			<!--
