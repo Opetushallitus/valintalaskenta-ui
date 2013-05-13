@@ -27,6 +27,7 @@
                                 entry.hakuOid = koetulos.hakueOid;
                                 entry.hakemusOid = koetulos.hakemusOid;
                                 entry.hakijaOid = koetulos.hakijaOid;
+                                entry.createdAt = koetulos.createdAt;
 
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
