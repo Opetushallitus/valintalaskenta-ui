@@ -3,39 +3,15 @@
 <div ng-include="'partials/topNavigation.html'" />
 
 <div class="tabsheets">
-    <p>
-        Haun hallinta. Haku LISAA HAUN TUNNISTE TAHAN
+    <h1>Haun hallinta</h1>
+	
+	<span>
+		Haun oid: {{hakumodel.hakuOid.oid}} <br />
+		Haun tunniste: {{hakumodel.hakuOid.haunTunniste}} <br />
+		Hakuvuosi: {{hakumodel.hakuOid.hakuVuosi}} <br />
+		Haun tila: {{hakumodel.hakuOid.haunTila}} <br />
+	</span>
 
-    </p>
-	<p>
-        <!--
-		<a href="" class="button primary small">Käynnistä laskenta (ei tee mitään)</a>
-        -->
-        <a ng-click="kaynnistaSijoittelu()" class="button primary small" >Suorita sijoittelu</a>
+	<p><a ng-click="kaynnistaSijoittelu()" class="button primary small" >Suorita sijoittelu</a></p>
 
-
-        <!--
-        <a class="button primary small" href="{{sijoittelulinkki}}">Käynnistä sijoittelu</a>
-        <a href=""  class="button small">Laske uudelleen</a>
-        -->
-	</p>
-	<!--
-    <p>
-		Debug toiminnallisuus 
-	</p>
-	-->
-    <!--
-	<p>
-		<a href="#" class="button primary small">Käynnistä sijoittelu</a>
-	</p>
-	-->
-
-    <!--<p>
-		Aenean non lectus lorem, non convallis ligula. Praesent ac venenatis ipsum. Maecenas eget turpis eu elit suscipit vestibulum. 
-		Suspendisse iaculis nunc eget enim pretium tincidunt. Mauris vel neque et felis aliquet auctor a gravida sem. 
-		In feugiat ullamcorper sapien ac ultricies. Quisque rhoncus scelerisque rhoncus. Fusce nec lacus lorem, et pretium justo. 
-		Donec magna neque, laoreet convallis lacinia ac, cursus in urna. Integer eu nulla a mi faucibus fermentum. 
-		Donec ultricies suscipit leo, eu vulputate justo accumsan rutrum.
-	</p>
-	-->
 </div>
