@@ -18,8 +18,8 @@
 			</div>
 			<div class="margin-vertical-2">
 				Viimeisin Ajo ID: {{model.latestSijoitteluajo.sijoitteluajoId}} <br />
-				Alkaa: {{model.formatMillis(model.latestSijoitteluajo.startMils)}} <br />
-				Loppuu: {{model.formatMillis(model.latestSijoitteluajo.endMils)}} <br />
+				Alkaa: {{model.latestSijoitteluajo.startMils | date:'dd.MM.yyyy HH:mm'}} <br />
+				Loppuu: {{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}} <br />
 			</div>
 			<!--
 			<div class="margin-vertical-2">

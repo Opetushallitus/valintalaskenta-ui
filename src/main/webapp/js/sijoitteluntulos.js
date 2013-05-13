@@ -32,12 +32,6 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 			}
 		};
 
-		this.formatMillis = function(millis) {
-            if(millis === null) {
-                date = new Date(millis);
-                return date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
-            }
-		};
 		/*
 		function sortHakemuksetByTasasijaAndTasasijaJonosija(hakemukset) {
 			for(var i = 0 ; i < hakemukset ; ++i) {
