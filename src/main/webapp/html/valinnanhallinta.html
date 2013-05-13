@@ -12,23 +12,30 @@
 		<div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
 
-			<div class="margin-bottom-2" ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
-				<div class="width-12-6">
-					<h3 class="margin-top-0 margin-right-1 inline">{{valinnanvaihe.nimi}}:</h3>
-					<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'VALINTAKOE'">Valintakoevalinnanvaihe</span>
-					<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'TAVALLINEN'">Valinnanvaihe</span>
-				</div>
-
-				<div class="width-12-6">
-                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN'" ng-click="kaynnistaValintalaskenta($index)" class="button small">
-                        Käynnistä laskenta
-                    </a>
-                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE'" ng-click="kaynnistaValintakoelaskenta($index)" class="button small">
-                        Käynnistä valintakoelaskenta
-                    </a>
-				</div>
-				<div class="clear"></div>
-			</div>
+			
+			<table class="virkailija-table-1">
+				<thead>
+					<tr>
+						<th>Valinnanvaiheen nimi</th>
+						<th>Tyyppi</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
+						<td>{{valinnanvaihe.nimi}}</td>
+						<td>
+							<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'VALINTAKOE'">Valintakoevalinnanvaihe</span>
+							<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'TAVALLINEN'">Valinnanvaihe</span>
+						</td>
+						<td>
+		                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN'" ng-click="kaynnistaValintalaskenta($index)" class="button small">Käynnistä laskenta</a>
+		                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE'" ng-click="kaynnistaValintakoelaskenta($index)" class="button small">Käynnistä valintakoelaskenta</a>
+		                </td>
+	                </tr>
+                </tbody>
+			</table>
+			
 
 			<div ng-show="!model.tulosValinnanvaiheet" class="offset-left-16-4 grid16-8">
 				<p class="notification warning">Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa</p>
