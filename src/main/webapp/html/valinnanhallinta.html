@@ -15,12 +15,13 @@
 			<div class="margin-bottom-2" ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
 				<div class="width-12-6">
 					<h3 class="margin-top-0">{{valinnanvaihe.nimi}}</h3>
+                    {{valinnanvaihe.valinnanVaiheTyyppi}}
 				</div>
 
 				<div class="width-12-6">
-                    <a ng-click="model.kaynnistaValintalaskenta($index)" class="button small">Käynnistä laskenta</a>
-
-					<!-- <button class="small btn">Käynnistä vaihe</button>  -->
+                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi != 'VALINTAKOE'" ng-click="model.kaynnistaValintalaskenta($index)" class="button small">
+                        Käynnistä laskenta
+                    </a>
 				</div>
 				<div class="clear"></div>
 			</div>
