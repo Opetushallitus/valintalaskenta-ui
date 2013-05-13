@@ -40,9 +40,8 @@ function ValinnanhallintaController($scope, $location, $routeParams, Valinnanhal
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 	$scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
 
-    $scope.kaynnistaValintalaskenta = function() {
+    $scope.kaynnistaValintalaskenta = function(valinnanvaihe) {
         var hakukohdeOid = $routeParams.hakukohdeOid;
-        var valinnanVaihe = $routeParams.valinnanvaihe;
         ValintalaskentaAktivointi.aktivoi({hakukohdeOid: hakukohdeOid, valinnanvaihe: valinnanvaihe}, function() {
         });
     }
