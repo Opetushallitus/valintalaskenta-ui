@@ -22,12 +22,6 @@
 			}
 		}
 
-        this.kaynnistaValintalaskenta = function(valinnanvaihe) {
-            ValintalaskentaAktivointi.aktivoi({hakukohdeOid: this.hakukohdeOid, valinnanvaihe: valinnanvaihe}, function() {
-
-            });
-        }
-
 		this.refreshIfNeeded = function(hakukohdeOid) {
             this.hakukohdeOid = hakukohdeOid;
 			if(model.hakukohde.oid !== hakukohdeOid) {
@@ -40,10 +34,22 @@
 	return model;
 });
 
-function ValinnanhallintaController($scope, $location, $routeParams, ValinnanhallintaModel, HakukohdeModel) {
+function ValinnanhallintaController($scope, $location, $routeParams, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaAktivointi, ValintakoelaskentaAktivointi) {
 	$scope.model = ValinnanhallintaModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 	$scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
 
+    $scope.kaynnistaValintalaskenta = function() {
+        var hakukohdeOid = $routeParams.hakukohdeOid;
+        var valinnanVaihe = $routeParams.valinnanvaihe;
+        ValintalaskentaAktivointi.aktivoi({hakukohdeOid: hakukohdeOid, valinnanvaihe: valinnanvaihe}, function() {
+        });
+    }
+
+    $scope.kaynnistaValintakoelaskenta = function() {
+        var hakukohdeOid = $routeParams.hakukohdeOid;
+        ValintakoelaskentaAktivointi.aktivoi({hakukohdeOid: hakukohdeOid}, function() {
+        });
+    }
 }

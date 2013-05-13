@@ -19,7 +19,7 @@
                 <table class="virkailija-table-1">
                     <thead>
                     <tr>
-                        <th class="bold align-center"><a href="" ng-click="predicate = 'hakijaOid'; reverse=!reverse">Hakija OID</a></th>
+                        <th class="bold align-center"><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Hakemus OID</a></th>
                         <th class="bold align-center"><a href="" ng-click="predicate = 'valintakoeOid'; reverse=!reverse">Valintakoe OID</a></th>
                         <th class="bold align-center"><a href="" ng-click="predicate = 'valintakoeTunniste'; reverse=!reverse">Valintakoetunniste</a></th>
                         <th class="bold align-center"><a href="" ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a></th>
@@ -27,7 +27,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="koe in model.flatKoetulokset | orderBy:predicate:reverse">
-                        <td>{{koe.hakijaOid}}</td>
+                        <td>{{koe.hakemusOid}}</td>
                         <td>{{koe.valintakoeOid}}</td>
                         <td>{{koe.valintakoeTunniste}}</td>
                         <td>{{koe.osallistuminen}}</td>

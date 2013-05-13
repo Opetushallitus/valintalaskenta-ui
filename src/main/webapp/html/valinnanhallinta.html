@@ -20,8 +20,11 @@
 				</div>
 
 				<div class="width-12-6">
-                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi != 'VALINTAKOE'" ng-click="model.kaynnistaValintalaskenta($index)" class="button small">
+                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN'" ng-click="kaynnistaValintalaskenta($index)" class="button small">
                         Käynnistä laskenta
+                    </a>
+                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE'" ng-click="kaynnistaValintakoelaskenta($index)" class="button small">
+                        Käynnistä valintakoelaskenta
                     </a>
 				</div>
 				<div class="clear"></div>
