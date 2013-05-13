@@ -18,7 +18,7 @@
 				HakukohdeValinnanvaihe.get({parentOid: model.hakukohdeOid}, function(result) {
 					model.valinnanvaiheet = result;
 				});
-*/
+				*/
 			}
 		}
 

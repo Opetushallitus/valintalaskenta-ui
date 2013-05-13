@@ -14,7 +14,9 @@
 
 			<div class="margin-bottom-2" ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
 				<div class="width-12-6">
-					<h3 class="margin-top-0 margin-right-1 inline">{{valinnanvaihe.nimi}}:</h3><span>{{valinnanvaihe.valinnanVaiheTyyppi}}</span>
+					<h3 class="margin-top-0 margin-right-1 inline">{{valinnanvaihe.nimi}}:</h3>
+					<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'VALINTAKOE'">Valintakoevalinnanvaihe</span>
+					<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'TAVALLINEN'">Valinnanvaihe</span>
 				</div>
 
 				<div class="width-12-6">
