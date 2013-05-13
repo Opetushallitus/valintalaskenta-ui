@@ -11,7 +11,33 @@
         <div ng-include="'partials/hakukohdeNavigation.html'"></div>
         <div class="tabsheets">
             <h1>{{model.hakukohde.hakukohdeNimi}}</h1>
+            <span>
+                Oid: {{model.hakukohde.oid}} <br />
+                Koodistonimi: {{model.hakukohde.hakukohdeKoodistoNimi}} <br />
+                HakuOid: {{model.hakukohde.hakukohteenHakuOid}} <br />
+                Tila: {{model.hakukohde.hakukohteenTila}} <br />
+                <br />
+                Aloituspaikat: {{model.hakukohde.aloituspaikat}} <br />
+                Valinnan aloituspaikat: {{model.hakukohde.valinnanAloituspaikat}} <br />
+                <dl>
+                <dt><strong>Liitteiden toimitusosoite</strong></dt>
+                    <dd>
+                        Osoite: {{model.hakukohde.liitteidenToimitusOsoite.osoiteRivi}} <br />
+                        <span ng-show="model.hakukohde.liitteidenToimitusOsoite.lisaOsoiteRivi">{{model.hakukohde.liitteidenToimitusOsoite.lisaOsoiteRivi}} <br /></span>
+                        Postinumero: {{model.hakukohde.liitteidenToimitusOsoite.postinumero}} <br />
+                        Postitoimipaikka: {{model.hakukohde.liitteidenToimitusOsoite.postitoimipaikka}} <br />
+                    </dd>
+                </dl>
+                <br />
+                Sähköoinen toimitusosoite: {{model.hakukohde.sahkoinenToimitusOsoite}} <br />
+                Liitteiden toimitus pvm: {{model.hakukohde.liitteidenToimitusPvm | date:'dd.MM.yyyy'}} <br />
+                Alin hyväksyttävä keskiarvo: {{model.hakukohde.alinHyvaksyttavaKeskiarvo}} <br />
+                <br />
+                Viimeisin päivittäjä oid: {{model.hakukohde.viimeisinPaivittajaOid}} <br />
+                Viimeisin päivitys pvm: {{model.hakukohde.viimeisinPaivitysPvm | date:'dd.MM.yyyy HH:mm:ss'}} <br />
 
+                <!--Oid: {{model.hakukohde.}} <br />-->
+            </span>
             <div class="clear"></div>
         </div>
     </div>
