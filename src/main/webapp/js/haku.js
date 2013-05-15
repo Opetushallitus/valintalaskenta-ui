@@ -5,7 +5,17 @@ app.factory('HakuModel', function(Haku) {
         this.haut = [];
 
         this.init = function(oid) {
+            
+            if(model.haut.length <= 0) { 
+                Haku.get(function(result) {
+                    model.haut = result;
+                    model.hakuOid = model.haut[0];
+                });
+            }
+
+
             // Ladataan haut vain kerran. Haut tuskin muuttuvat kovinkaan usein.
+            /*
             if(model.haut.length <= 0) {
                 Haku.get({}, function(result) {
                     model.haut = result;
@@ -17,6 +27,7 @@ app.factory('HakuModel', function(Haku) {
                     });
                 });
             }
+            */
         }
     };
 
@@ -28,10 +39,10 @@ function HakuController($scope, $location, $routeParams, HakuModel) {
     HakuModel.init($routeParams.hakuOid);
 
     $scope.$watch('model.hakuOid', function() {
-        if(HakuModel.hakuOid.oid &&
-            HakuModel.hakuOid.oid != "undefined" &&
-            HakuModel.hakuOid.oid != $routeParams.hakuOid) {
+        
+        if(HakuModel.hakuOid.oid && HakuModel.hakuOid.oid != "undefined" && HakuModel.hakuOid.oid != $routeParams.hakuOid) {
             $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
         }
     });
+    
 }
