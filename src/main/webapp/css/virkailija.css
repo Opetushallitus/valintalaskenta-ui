@@ -1856,9 +1856,8 @@ label, .label {
     padding: 0 1.5em;
     vertical-align: middle;
     text-align: center; }
-    .virkailija-table-1 tr td a,
-    .virkailija-table-1 tr th a {
-      color: #000; }
+  .virkailija-table-1 tr th a {
+    color: #000; }
   .virkailija-table-1 thead {
     background-color: #eee;
     background-image: url(../img/table-header-bg.png);
