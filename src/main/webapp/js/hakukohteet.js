@@ -1,17 +1,18 @@
-app.factory('HakukohteetModel', function(Haku, HakuHakukohdeChildren) {
+app.factory('HakukohteetModel', function(Haku, HakuHakukohdeChildren, $http) {
     var model;
     model = new function(){
 
         this.hakuOid = {};
-        this.hakukohteet = [
-                            "1.2.246.562.14.299022856910", "1.2.246.562.14.11033627743", "1.2.246.562.14.14450225579", "1.2.246.562.14.11950062056", "1.2.246.562.14.93911772304"
-                          ];
+        this.hakukohteet = [];
 
         this.refresh = function(hakuOid) {
             model.hakuOid = hakuOid;
-            HakuHakukohdeChildren.get({"hakuOid": hakuOid}, function(result) {
+            $http.get(TARJONTA_URL_BASE + "haku/"+hakuOid+"/hakukohde").success(function(result) {
                 model.hakukohteet = result;
             });
+//            HakuHakukohdeChildren.get({"hakuOid": hakuOid}, function(result) {
+//                model.hakukohteet = result;
+//            });
         };
 
         this.refreshIfNeeded = function(hakuOid) {

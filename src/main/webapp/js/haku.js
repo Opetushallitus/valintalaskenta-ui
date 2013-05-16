@@ -1,26 +1,19 @@
-app.factory('HakuModel', function(Haku) {
+app.factory('HakuModel', function(Haku, $http) {
     var model;
     model = new function() {
         this.hakuOid = {};
-        this.haut = [
-                        "1.2.246.562.5.741585101110",
-                        "1.2.246.562.5.97108552544",
-                        "1.2.246.562.5.49149251883"
-                    ];
+        this.haut = [];
 
         this.init = function(oid) {
-            model.hakuOid = model.haut[0];
-            /*
-            if(model.haut.length <= 0) { 
-                
-                Haku.get(function(result) {
-                    console.log(result);
+            
+            if(model.haut.length <= 0) {
+                $http.get(TARJONTA_URL_BASE + "haku").success(function(result) {
                     model.haut = result;
+                    console.log(model.haut);
                     model.hakuOid = model.haut[0];
+                    console.log(model.hakuOid);
                 });
-
             }
-            */
 
 
             // Ladataan haut vain kerran. Haut tuskin muuttuvat kovinkaan usein.
@@ -50,7 +43,6 @@ function HakuController($scope, $location, $routeParams, HakuModel) {
     $scope.$watch('model.hakuOid', function() {
         
         if(HakuModel.hakuOid && HakuModel.hakuOid != "undefined" && HakuModel.hakuOid != $routeParams.hakuOid) {
-            console.log()
             $location.path('/haku/' + HakuModel.hakuOid + '/hakukohde/');
         }
     });
