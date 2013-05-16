@@ -9,18 +9,20 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
         this.refresh = function(hakuOid) {
             SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
-                model.latestSijoitteluajo = result[0];
-                var currentSijoitteluajoOid = model.latestSijoitteluajo.sijoitteluajoId;
-                for(var i = 0 ; i < model.latestSijoitteluajo.hakukohteet.length ; i++) {
-                    var currentHakukohdeOid = model.latestSijoitteluajo.hakukohteet[i].oid;
+                if(result && result.length > 0) {
+                    model.latestSijoitteluajo = result[0];
+                    var currentSijoitteluajoOid = model.latestSijoitteluajo.sijoitteluajoId;
+                    for(var i = 0 ; i < model.latestSijoitteluajo.hakukohteet.length ; i++) {
+                        var currentHakukohdeOid = model.latestSijoitteluajo.hakukohteet[i].oid;
 
-                    SijoitteluajoHakukohde.get({
-                        sijoitteluajoOid: currentSijoitteluajoOid,
-                        hakukohdeOid: currentHakukohdeOid
-                    }, function(result) {
-                        model.sijoitteluTulokset = result;
-                    });
+                        SijoitteluajoHakukohde.get({
+                            sijoitteluajoOid: currentSijoitteluajoOid,
+                            hakukohdeOid: currentHakukohdeOid
+                        }, function(result) {
+                            model.sijoitteluTulokset = result;
+                        });
 
+                    }
                 }
             });
         };

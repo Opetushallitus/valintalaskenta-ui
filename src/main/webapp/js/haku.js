@@ -1,7 +1,7 @@
 app.factory('HakuModel', function(Haku, $http) {
     var model;
     model = new function() {
-        this.hakuOid = {};
+        this.hakuOid;
         this.haut = [];
 
         this.init = function(oid) {
@@ -41,7 +41,6 @@ function HakuController($scope, $location, $routeParams, HakuModel) {
     HakuModel.init($routeParams.hakuOid);
 
     $scope.$watch('model.hakuOid', function() {
-        
         if(HakuModel.hakuOid && HakuModel.hakuOid != "undefined" && HakuModel.hakuOid != $routeParams.hakuOid) {
             $location.path('/haku/' + HakuModel.hakuOid + '/hakukohde/');
         }
