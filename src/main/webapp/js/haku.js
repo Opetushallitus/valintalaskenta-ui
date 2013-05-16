@@ -9,9 +9,7 @@ app.factory('HakuModel', function(Haku, $http) {
             if(model.haut.length <= 0) {
                 $http.get(TARJONTA_URL_BASE + "haku").success(function(result) {
                     model.haut = result;
-                    console.log(model.haut);
                     model.hakuOid = model.haut[0];
-                    console.log(model.hakuOid);
                 });
             }
 
@@ -41,7 +39,7 @@ function HakuController($scope, $location, $routeParams, HakuModel) {
     HakuModel.init($routeParams.hakuOid);
 
     $scope.$watch('model.hakuOid', function() {
-        if(HakuModel.hakuOid && HakuModel.hakuOid != "undefined" && HakuModel.hakuOid != $routeParams.hakuOid) {
+        if(HakuModel.hakuOid && HakuModel.hakuOid != $routeParams.hakuOid) {
             $location.path('/haku/' + HakuModel.hakuOid + '/hakukohde/');
         }
     });
