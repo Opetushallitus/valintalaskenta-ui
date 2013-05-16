@@ -3,7 +3,9 @@ app.factory('HakukohteetModel', function(Haku, HakuHakukohdeChildren) {
     model = new function(){
 
         this.hakuOid = {};
-        this.hakukohteet = [];
+        this.hakukohteet = [
+                            "1.2.246.562.14.299022856910", "1.2.246.562.14.11033627743", "1.2.246.562.14.14450225579", "1.2.246.562.14.11950062056", "1.2.246.562.14.93911772304"
+                          ];
 
         this.refresh = function(hakuOid) {
             model.hakuOid = hakuOid;
