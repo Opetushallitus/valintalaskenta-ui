@@ -168,3 +168,14 @@ app.factory('Valintakoetulokset', function($resource) {
     });
 });
 
+
+
+// Excel export
+/*
+http://localhost:8180/valintalaskenta-laskenta-service/export/valintatuloslista.xls?hakukohdeOid=sdfg 
+app.factory('ExcelExport', function($resource) {
+return $resource(SERVICE_URL_BASE + "resources/valintatulos.xls?hakukohdeOid", {}, {
+    get: {method: "GET"}
+  });
+});
+*/

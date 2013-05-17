@@ -35,12 +35,12 @@
                                 <th>Pistemäärä</th>
                             </tr>
                         </thead>
-                        <tbody ng-repeat="tulos in valintatapajono.jarjestyskriteeritulokset">
+                        <tbody ng-repeat="tulos in valintatapajono.jonosijat">
                             <tr>
                                 <td>{{tulos.sukunimi}}, {{tulos.etunimi}}</td>
-                                <td>{{tulos.tila}}</td>
-                                <td>{{tulos.kuvaus}}</td>
-                                <td>{{tulos.arvo}}</td>
+                                <td>{{tulos.jarjestyskriteerit[0].tila}}</td>
+                                <td>{{tulos.jarjestyskriteerit[0].kuvaus}}</td>
+                                <td>{{tulos.jarjestyskriteerit[0].arvo}}</td>
                             </tr>
                         </tbody>
                     </table>
