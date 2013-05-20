@@ -160,22 +160,9 @@ app.factory('SijoitteluajoHakukohde', function($resource) {
     });
 });
 
-
 // Valintakoetulokset
 app.factory('Valintakoetulokset', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintakoe/hakutoive/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
         get: {method: "GET", isArray: true}
     });
 });
-
-
-
-// Excel export
-/*
-http://localhost:8180/valintalaskenta-laskenta-service/export/valintatuloslista.xls?hakukohdeOid=sdfg 
-app.factory('ExcelExport', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/valintatulos.xls?hakukohdeOid", {}, {
-    get: {method: "GET"}
-  });
-});
-*/

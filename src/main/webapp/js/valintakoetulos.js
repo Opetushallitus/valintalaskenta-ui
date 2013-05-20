@@ -59,4 +59,5 @@ function ValintakoetulosController($scope, $location, $routeParams, Valintakoetu
 
     $scope.predicate = 'hakijaOid';
 
-}
+    $scope.valintakoetulosExcelExport = "http://localhost:8180/valintalaskenta-laskenta-service/" + "export/valintakoetulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
+}   
