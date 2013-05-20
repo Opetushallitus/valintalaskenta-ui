@@ -54,5 +54,5 @@ function SijoitteluntulosController($scope, $routeParams, HakukohdeModel, Sijoit
     $scope.model = SijoitteluntulosModel;
     $scope.model.refresIfNeeded($routeParams.hakuOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
 
-    $scope.sijoitteluntulosExcelExport = "http://localhost:8180/valintalaskenta-laskenta-service/" + "export/sijoitteluntulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
+    $scope.sijoitteluntulosExcelExport = "http://localhost:8180/sijoittelu-service/resources/" + "export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid;
 }
