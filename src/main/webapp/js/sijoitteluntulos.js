@@ -34,13 +34,6 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 			}
 		};
 
-		/*
-		function sortHakemuksetByTasasijaAndTasasijaJonosija(hakemukset) {
-			for(var i = 0 ; i < hakemukset ; ++i) {
-				console.log(hakemukset[i]);
-			}
-		}
-		*/
 	};
 
 	return model;

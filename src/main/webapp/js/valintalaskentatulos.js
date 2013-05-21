@@ -9,16 +9,6 @@
             model.hakukohdeOid = hakukohdeOid;
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			     model.valinnanvaiheet = result;
-
-                /* for(var i = 0 ; i < model.valinnanvaiheet.length ; i++) {
-                    var valinanvaihe =   model.valinnanvaiheet[i];
-                        console.debug('valinnaanvaihe');
-                     console.debug(valinanvaihe);
-                       for(var j = 0 ; j < valinanvaihe.valintatapajono.length ; j++) {
-                          console.debug("valintatapajono");
-                          console.debug(valinnanvaihe);
-                       }
-                 } */
 			});
 		}
 	};
