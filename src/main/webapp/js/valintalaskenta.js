@@ -128,6 +128,19 @@ app.factory('HakemusKey', function($resource) {
     });
 });
 
+app.factory('HakemuksenTila', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakukohdeOid/:valintatapajonoOid/:hakemusOid", 
+        {
+            hakukohdeOid: "@hakukohdeoid", 
+            valintatapajonoOid: "@valintatapajonoOid", 
+            hakemusOid: "@hakemusOid"
+        }, {
+        get: {method: "GET"},
+        post: {method: "POST"}
+    });
+});
+
+
 
 //Sijoittelu
 app.factory('Sijoittelu', function($resource) {
@@ -166,3 +179,4 @@ app.factory('Valintakoetulokset', function($resource) {
         get: {method: "GET", isArray: true}
     });
 });
+

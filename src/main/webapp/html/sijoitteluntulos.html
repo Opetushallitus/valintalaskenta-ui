@@ -45,15 +45,16 @@
 					<h1>{{jono.aloituspaikat}}</h1>
 					<thead>
 						<tr>
-							<th colspan="6">valintatapajono OID: {{jono.oid}}</th>
+							<th colspan="7">valintatapajono OID: {{jono.oid}}</th>
 						</tr>
 						<tr>
 							<td class="bold align-center">jonosija</td>
 							<td class="bold align-center">Hakija OID</td>
                             <td class="bold align-center">Hakemus OID</td>
-							<td class="bold align-center">prioriteetti</td>
-							<td class="bold align-center">tasasijaJonosija</td>
-							<td class="bold align-center">tila</td>
+							<td class="bold align-center">Prioriteetti</td>
+							<td class="bold align-center">TasasijaJonosija</td>
+							<td class="bold align-center">Status</td>
+							<td class="bold align-center">Tila</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -64,6 +65,7 @@
 							<td>{{hakemus.prioriteetti}}</td>
 							<td>{{hakemus.tasasijaJonosija}}</td>
 							<td>{{hakemus.tila}}</td>
+							<td><select ng-model="hakemus.hakemuksentila" ng-options="value for value in model.hakemuksenTilat" ng-value="{{value}}" ng-change="updateHakemuksenTila(hakemus.hakemuksentila, jono.oid, hakemus.hakemusOid)"></select></td>
 						</tr>
 					</tbody>
 				</table>

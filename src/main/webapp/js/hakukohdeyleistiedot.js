@@ -35,6 +35,10 @@ app.factory('HakukohdeModel', function(tarjontaHakukohde) {
             }
         }
 
+        this.getHakukohdeOid = function() {
+            return model.hakukohde.oid;
+        }
+
     };
 
     return model;
