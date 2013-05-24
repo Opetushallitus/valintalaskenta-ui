@@ -7,12 +7,10 @@ app.factory('HakukohteetModel', function(Haku, HakuHakukohdeChildren, $http) {
 
         this.refresh = function(hakuOid) {
             model.hakuOid = hakuOid;
-            $http.get(TARJONTA_URL_BASE + "haku/"+hakuOid+"/hakukohde").success(function(result) {
-                model.hakukohteet = result;
+            
+           HakuHakukohdeChildren.get({"hakuOid": hakuOid}, function(result) {
+               model.hakukohteet = result;
             });
-//            HakuHakukohdeChildren.get({"hakuOid": hakuOid}, function(result) {
-//                model.hakukohteet = result;
-//            });
         };
 
         this.refreshIfNeeded = function(hakuOid) {

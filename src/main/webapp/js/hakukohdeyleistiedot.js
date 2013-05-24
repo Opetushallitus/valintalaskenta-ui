@@ -14,7 +14,10 @@ app.factory('HakukohdeModel', function(tarjontaHakukohde) {
 
         this.refresh = function(hakukohdeOid) {
             if( hakukohdeOid !== undefined) {
-                tarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
+                console.log(hakukohdeOid); //tulostaa objektin
+                console.log(hakukohdeOid.oid); //tulostaa undefined
+
+                tarjontaHakukohde.get({hakukohdeoid: hakukohdeOid.oid}, function(result) {
                     model.hakukohde = result;
                 });
             }
@@ -46,5 +49,9 @@ app.factory('HakukohdeModel', function(tarjontaHakukohde) {
 
 function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
     $scope.model = HakukohdeModel;
-    $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+
+    if($routeParams.hakukohdeOid) {
+        $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+    }
+    
 }
