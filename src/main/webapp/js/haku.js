@@ -1,4 +1,4 @@
-app.factory('HakuModel', function(Haku, $http) {
+app.factory('HakuModel', function(Haku) {
     var model;
     model = new function() {
         this.hakuOid;
@@ -11,32 +11,15 @@ app.factory('HakuModel', function(Haku, $http) {
                     model.haut = result;
                     model.hakuOid = model.haut[0].oid;
                     
-                });
-
-                /*
-                $http.get(TARJONTA_URL_BASE + "haku").success(function(result) {
-                    model.haut = result;
-                    model.hakuOid = model.haut[0];
-                });
-
-*/
-            }
-
-
-            // Ladataan haut vain kerran. Haut tuskin muuttuvat kovinkaan usein.
-            /*
-            if(model.haut.length <= 0) {
-                Haku.get({}, function(result) {
-                    model.haut = result;
-                    model.hakuOid = model.haut[0];
+                    //set haku (in view) to hakuselect to what is was or to first option
                     model.haut.forEach(function(haku){
                         if(haku.oid == oid) {
                             model.hakuOid = haku;
                         }
                     });
                 });
+
             }
-            */
         }
     };
 
@@ -46,10 +29,8 @@ app.factory('HakuModel', function(Haku, $http) {
 function HakuController($scope, $location, $routeParams, HakuModel) {
     $scope.model = HakuModel;
     HakuModel.init($routeParams.hakuOid);
-    $scope.$watch('model.hakuOid.oid', function() {
-        
-        
-        if($scope.model.hakuOid && $scope.model.hakuOid != $routeParams.hakuOid) {
+    $scope.$watch('model.hakuOid', function() {
+        if($scope.model.hakuOid && $scope.model.hakuOid.oid != $routeParams.hakuOid) {
             $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
         }
     });

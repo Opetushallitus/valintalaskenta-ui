@@ -13,18 +13,15 @@ app.factory('HakukohdeModel', function(tarjontaHakukohde) {
         this.hakukohde = {};
 
         this.refresh = function(hakukohdeOid) {
-            if( hakukohdeOid !== undefined) {
-                console.log(hakukohdeOid); //tulostaa objektin
-                console.log(hakukohdeOid.oid); //tulostaa undefined
-
-                tarjontaHakukohde.get({hakukohdeoid: hakukohdeOid.oid}, function(result) {
-                    model.hakukohde = result;
-                });
-            }
+            tarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
+                model.hakukohde = result;
+            });
         }
 
         this.refreshIfNeeded = function(hakukohdeOid) {
-            if(model.isHakukohdeChanged(hakukohdeOid)) {
+            
+            if(model.isHakukohdeChanged(hakukohdeOid) && (hakukohdeOid !== undefined)) {
+
                 model.refresh(hakukohdeOid);
             }
         }
@@ -50,8 +47,8 @@ app.factory('HakukohdeModel', function(tarjontaHakukohde) {
 function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
     $scope.model = HakukohdeModel;
 
-    if($routeParams.hakukohdeOid) {
-        $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
-    }
+    
+    $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+    
     
 }

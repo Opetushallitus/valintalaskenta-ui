@@ -1,4 +1,4 @@
-app.factory('HakukohteetModel', function(Haku, HakuHakukohdeChildren, $http) {
+app.factory('HakukohteetModel', function(Haku, HakuHakukohdeChildren) {
     var model;
     model = new function(){
 
@@ -7,14 +7,15 @@ app.factory('HakukohteetModel', function(Haku, HakuHakukohdeChildren, $http) {
 
         this.refresh = function(hakuOid) {
             model.hakuOid = hakuOid;
-            
+
            HakuHakukohdeChildren.get({"hakuOid": hakuOid}, function(result) {
                model.hakukohteet = result;
             });
         };
 
         this.refreshIfNeeded = function(hakuOid) {
-            if(hakuOid && hakuOid != "undefined" && hakuOid != model.hakuOid) {
+            if( (hakuOid) && (hakuOid !== "undefined") && (hakuOid != model.hakuOid) ) {
+
                 model.refresh(hakuOid);
             }
         };
@@ -29,8 +30,9 @@ function HakukohteetController($scope, $location, $routeParams, HakukohteetModel
    $scope.hakukohdeOid = $routeParams.hakukohdeOid;
 
    // Muistetaan millä alasivulla ollaan, kun vaihdetaan hakukohdetta.
+   
    $scope.subpage = $location.path().split('/')[5] || 'perustiedot';
-
    $scope.model = HakukohteetModel;
    $scope.model.refreshIfNeeded($routeParams.hakuOid);
+   
 }

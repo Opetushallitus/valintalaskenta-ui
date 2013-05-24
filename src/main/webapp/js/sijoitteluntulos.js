@@ -8,6 +8,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 		this.hakemuksenTilat = ["ILMOITETTU", "VASTAANOTTANUT_LASNA", "VASTAANOTTANUT_POISSAOLEVA", "PERUNUT"];
 
         this.refresh = function(hakuOid) {
+            
             SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
                 if(result && result.length > 0) {
                     model.latestSijoitteluajo = result[0];
