@@ -1,4 +1,4 @@
-﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde) {
+﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriArvo) {
 	var model;
 	model = new function() {
 
@@ -9,6 +9,18 @@
             model.hakukohdeOid = hakukohdeOid;
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			     model.valinnanvaiheet = result;
+			});
+		}
+
+		this.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
+			var updateParams = {
+				valintatapajonoOid: valintatapajonoOid,
+        		hakemusOid: hakemusOid,
+        		jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
+			}
+
+			JarjestyskriteeriArvo.post(updateParams, kriteerinArvo, function(result) {
+				
 			});
 		}
 	};
@@ -26,4 +38,9 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
     $scope.valintalaskentatulosExcelExport = "http://localhost:8180/valintalaskenta-laskenta-service/" + "export/valintalaskentatulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
     
+
+    $scope.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
+    	
+    	$scope.model.updateJarjestyskriteerinArvo(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo);
+    }
 }

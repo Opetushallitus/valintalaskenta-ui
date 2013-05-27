@@ -39,7 +39,7 @@
                                 <td>{{tulos.sukunimi}}, {{tulos.etunimi}}</td>
                                 <td>{{tulos.jarjestyskriteerit[0].tila}}</td>
                                 <td>{{tulos.jarjestyskriteerit[0].kuvaus}}</td>
-                                <td>{{tulos.jarjestyskriteerit[0].arvo}}</td>
+                                <td><div ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"><span>{{jarjestyskriteeri.arvo}}</span><br /><input ng-model="kriteerinArvo" type="text" /><button class="btn small" ng-click="updateJarjestyskriteerinArvo(valintatapajono.oid, tulos.hakemusoid, $index, kriteerinArvo)">update</button></div></td>
                             </tr>
                         </tbody>
                     </table>

@@ -189,3 +189,16 @@ app.factory('Valintakoetulokset', function($resource) {
     });
 });
 
+
+
+//Järjestyskriteerin arvon muuttaminen
+app.factory('JarjestyskriteeriArvo', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/arvo", {
+        valintatapajonoOid: "@valintatapajonoOid",
+        hakemusOid: "@hakemusOid",
+        jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti"
+    },
+    {
+        post: {method: "POST"}
+    });
+});
