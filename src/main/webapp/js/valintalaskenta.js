@@ -33,11 +33,20 @@ app.config(function($routeProvider) {
 
  
 //rest resources
+
 app.factory('Haku', function($resource) {
   return $resource(TARJONTA_URL_BASE + "haku", {}, {
     get: {method: "GET", isArray: true}
   });
 });
+
+app.factory('HaunTiedot', function($resource) {
+  return $resource(TARJONTA_URL_BASE + "haku/:hakuOid", {hakuOid: "@hakuOid"}, {
+    get: {method: "GET"}
+  });
+});
+
+
 
 
 app.factory('HakuHakukohdeChildren', function($resource) {

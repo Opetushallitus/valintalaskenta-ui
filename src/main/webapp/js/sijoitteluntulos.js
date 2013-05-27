@@ -1,4 +1,4 @@
-app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, SijoitteluajoHakukohde, HakemuksenTila) {
+app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, SijoitteluajoHakukohde, HakemuksenTila, $timeout) {
 
 	var model = new function() {
 
@@ -27,31 +27,18 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
                             for(var j = 0 ; j < valintatapajonot.length ; ++j) {
                                 var valintatapajonoOid = valintatapajonot[j].oid;
                                 var hakemukset = valintatapajonot[j].hakemukset;
-                                console.log("hakemukset valintatapajonossa");
-                                console.log(hakemukset);
+                                
                                 for(var k = 0 ; k < hakemukset.length ; ++k ){
                                     var hakemus = hakemukset[k];
-                                    console.log("hakemus ennen hakemuksen tilaa: ");
-                                    console.log(hakemus);
-                                    /*
-                                    //if hakemus doesn't have hakemuksenstatus-property then make one
-                                    if(!(hakemus.hasOwnProperty("hakemuksentila"))) {
-                                        hakemus.hakemuksentila = "";
+                                    
+                                    var tilaParams = {
+                                        hakukohdeOid: currentHakukohdeOid, 
+                                        valintatapajonoOid: valintatapajonoOid, 
+                                        hakemusOid: hakemus.hakemusOid
                                     }
-                                    */
 
-                                    
-                                    
-                                    HakemuksenTila.get({hakukohdeOid: currentHakukohdeOid, valintatapajonoOid: valintatapajonoOid, hakemusOid: hakemus.hakemusOid}, function(result) {
-                                        console.log("hakemusoid: " + hakemus.hakemusOid + " ja tila: " + result.tila);
-                                        if(!result.tila) {
-                                            hakemus.hakemuksentila = "";
-                                        } else {
-                                            hakemus.hakemuksentila = result.tila;
-                                        }
-                                        console.log(hakemus);
-                                        
-                                    });
+                                    //make rest calls in separate scope to prevent hakemusOid to be overridden 
+                                    model.setHakemuksenTila(hakemus, tilaParams);
 
                                 }
                             }
@@ -62,6 +49,18 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
                 }
             });
         };
+
+        this.setHakemuksenTila = function(hakemus, tilaParams) {
+            HakemuksenTila.get(tilaParams, function(result) {
+                if(!result.tila) {
+                    hakemus.hakemuksentila = "";
+                } else {
+                    hakemus.hakemuksentila = result.tila;
+                }
+
+                console.log(hakemus.hakemusOid + " : " + hakemus.hakemuksentila);
+            });
+        }
 
 		//refresh if haku or hakukohde has changed
 		this.refresIfNeeded = function(hakuOid, isHakukohdeChanged) {
