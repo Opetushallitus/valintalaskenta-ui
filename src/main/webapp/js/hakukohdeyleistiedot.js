@@ -6,14 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 
-app.factory('HakukohdeModel', function(tarjontaHakukohde) {
+app.factory('HakukohdeModel', function(TarjontaHakukohde) {
     var model;
     model = new function() {
 
         this.hakukohde = {};
 
         this.refresh = function(hakukohdeOid) {
-            tarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
+            TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.hakukohde = result;
             });
         }

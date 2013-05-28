@@ -19,9 +19,7 @@
         		jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
 			}
 
-			JarjestyskriteeriArvo.post(updateParams, kriteerinArvo, function(result) {
-				
-			});
+			JarjestyskriteeriArvo.post(updateParams, kriteerinArvo, function(result) {});
 		}
 	};
 

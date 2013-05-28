@@ -55,7 +55,7 @@ return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde", {hakuOid: "@haku
   });
 });
 
-app.factory('tarjontaHakukohde', function($resource) {
+app.factory('TarjontaHakukohde', function($resource) {
 return $resource(TARJONTA_URL_BASE + "hakukohde/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
     get: {method: "GET"}
   });
