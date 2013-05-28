@@ -43,14 +43,6 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
             }
         };
 
-        this.getHakuObject = function(hakuOid, deferred, promises) {
-            HaunTiedot.get({hakuOid: hakuOid}, function(result) {
-                console.log(result);
-                model.haut.push(result);
-                deferred.resolve();
-                promises.push(deferred.promise);
-            });
-        };
     };
 
 
