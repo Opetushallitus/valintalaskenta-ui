@@ -1,0 +1,42 @@
+
+<h1>Valinnat</h1>
+
+<div ng-include="'partials/topNavigation.html'" />
+
+<div class="tabsheets">
+
+    <div class="grid16-4" ng-include="'partials/hakukohdelista.html'"></div>
+
+    <div class="grid16-12">
+        <div ng-include="'partials/hakukohdeNavigation.html'" />
+
+		<div class="tabsheets">
+            <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
+
+			<div class="margin-vertical-2">
+                <h2>Hakeneet</h2>
+                <table class="virkailija-table-1">
+                    <thead>
+                    <tr>
+                        <th><a href="" ng-click="predicate = 'sukunimi'; reverse=!reverse">Sukunimi</a></th>
+                        <th><a href="" ng-click="predicate = 'etunimi'; reverse=!reverse">Etunimi</a></th>
+                        <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Hakemus OID</a></th>
+                        <th><a href="" ng-click="predicate = 'hakijaOid'; reverse=!reverse">Hakija OID</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse">
+                        <td>{{hakija.sukunimi}}</td>
+                        <td>{{hakija.etunimi}}</td>
+                        <td>{{hakija.hakemusOid}}</td>
+                        <td><a href="#">{{hakija.hakijaOid}}</a></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
