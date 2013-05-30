@@ -30,9 +30,10 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
 
                     //wait until all hakuobjects have been fetched
                     $q.all(promises).then(function() {
-                        model.hakuOid = model.haut[0].oid;
                         
+
                         //set the previously selected haku or first in list
+                        model.hakuOid = model.haut[0].oid;
                         model.haut.forEach(function(haku){
                             if(haku.oid == oid) {
                                 model.hakuOid = haku;
@@ -51,6 +52,7 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
 
 function HakuController($scope, $location, $routeParams, HakuModel) {
     $scope.model = HakuModel;
+
     HakuModel.init($routeParams.hakuOid);
     $scope.$watch('model.hakuOid', function() {
         if($scope.model.hakuOid && $scope.model.hakuOid.oid != $routeParams.hakuOid) {

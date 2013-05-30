@@ -11,7 +11,7 @@ var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 app.config(function($routeProvider) {
     $routeProvider.
 
-    
+    when('/haku/', {controller:HakuController, templateUrl:TEMPLATE_URL_BASE + 'haut.html'}).
     when('/haku/:hakuOid/hakukohde/', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohde.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdeperustiedot.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valinnanhallinta', {controller:ValinnanhallintaController, templateUrl:TEMPLATE_URL_BASE + 'valinnanhallinta.html'}).
@@ -29,7 +29,7 @@ app.config(function($routeProvider) {
 
     when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:YhteisvalinnanHallintaController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta.html'}).
 
-    otherwise({redirectTo:'/haku//hakukohde/'});
+    otherwise({redirectTo:'/haku/'});
 });
 
  
