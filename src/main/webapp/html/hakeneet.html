@@ -12,31 +12,55 @@
 
 		<div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
+            <!--<span>{{model.hakeneet | json}}</span>-->
 
 			<div class="margin-vertical-2">
                 <h2>Hakeneet</h2>
+                <div class="field-search-containerbox">
+                    <input type="text" class="search" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+
+                </div>
+                <form name="form" ng-submit="submit()">
+                <button ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
                 <table class="virkailija-table-1">
                     <thead>
                     <tr>
-                        <th><a href="" ng-click="predicate = 'sukunimi'; reverse=!reverse">Sukunimi</a></th>
-                        <th><a href="" ng-click="predicate = 'etunimi'; reverse=!reverse">Etunimi</a></th>
-                        <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Hakemus OID</a></th>
-                        <th><a href="" ng-click="predicate = 'hakijaOid'; reverse=!reverse">Hakija OID</a></th>
+                        <th><a href="" ng-click="predicate = 'sukunimi'; reverse=!reverse">Tiedot</a></th>
+                        <th ng-repeat="avain in model.avaimet">{{avain.tunniste}}
+                                <span ng-show="avain.min || avain.min == 0" ng-show="avain.max || avain.max == 0">({{avain.min}} - {{avain.max}})</span>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse">
-                        <td>{{hakija.sukunimi}}</td>
-                        <td>{{hakija.etunimi}}</td>
-                        <td>{{hakija.hakemusOid}}</td>
-                        <td><a href="#">{{hakija.hakijaOid}}</a></td>
+                    <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter">
+                        <td title="HakemusOid: {{hakija.hakemusOid}} - HakijaOid: {{hakija.hakijaOid}}">
+                                {{hakija.sukunimi}}, {{hakija.etunimi}}
+                        </td>
+                        <td ng-repeat="avain in model.avaimet">
+                            <div ng-switch on="avain.tyyppi()" title="{{avain.min}} - {{avain.max}}">
+                                <div ng-switch-when="combo">
+                                    <select ng-model="hakija[avain.tunniste]" ng-options="item for item in avain.arvot" ngRequired="avain.onPakollinen">
+                                        <option value="">-</option>
+                                    </select>
+                                </div>
+                                <div ng-switch-when="checkbox">
+                                    <input type="checkbox" ng-model="hakija[avain.tunniste]" ngRequired="avain.onPakollinen"/>
+                                </div>
+                                <div ng-switch-default>
+                                    <input type="number" min="{{avain.min}}" max="{{avain.max}}" ng-model="hakija[avain.tunniste]" ngRequired="avain.onPakollinen"/>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
 
                     </tbody>
                 </table>
+                <button ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
+                </form>
 			</div>
 		</div>
 	</div>
+
 	<div class="clear"></div>
 </div>
