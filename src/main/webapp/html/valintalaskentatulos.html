@@ -10,12 +10,12 @@
         <div ng-include="'partials/hakukohdeNavigation.html'" />
 
 		<div class="tabsheets">
-            <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
-			<a href="{{valintalaskentatulosExcelExport}}" class="button small excel">Vie exceliin</a>
+            <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
-            <div ng-show="!model.valinnanvaiheet" class="offset-left-16-4 grid16-8">
-                <p class="notification warning">Kohteelle ei ole vielä suoritettu valintalaskentaa</p>
-            </div>
+            <p ng-show="'!'+model.valinnanvaiheet" class="notification info">Kohteelle ei ole vielä suoritettu valintalaskentaa</p>
+			<a ng-show="model.valinnanvaiheet" href="{{valintalaskentatulosExcelExport}}" class="button small excel">Vie exceliin</a>
+            
+            
             <div class="clear"></div>
             <!--
             <a href="#" class="button small disabled">Hyväksy valintaesitys</a>

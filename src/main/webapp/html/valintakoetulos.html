@@ -11,11 +11,13 @@
         <div ng-include="'partials/hakukohdeNavigation.html'" />
 
 		<div class="tabsheets">
-            <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
+            <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
             
-            <a href="{{valintakoetulosExcelExport}}" class="button small excel">Vie exceliin</a>
+            <p ng-show="'!'+model.flagKoetulokset" class="notification info">Valintakoetuloksia ei ole saatavilla</p>
 
-			<div class="margin-vertical-2">
+            <a ng-show="model.flagKoetulokset" href="{{valintakoetulosExcelExport}}" class="button small excel">Vie exceliin</a>
+
+			<div ng-show="model.flagKoetulokset" class="margin-vertical-2">
                 <!--{{model.flatKoetulokset | json}}-->
                 <h2>Valintakoetulokset</h2>
                 <table class="virkailija-table-1">

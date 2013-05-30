@@ -1,4 +1,4 @@
-﻿app.factory('ValinnanhallintaModel', function(ValinnanvaiheListFromValintaperusteet, ValintalaskentaAktivointi, HakukohdeValinnanvaihe) {
+﻿app.factory('ValinnanhallintaModel', function(ValinnanvaiheListFromValintaperusteet, ValintalaskentaAktivointi, HakukohdeValinnanvaihe, HakukohdeModel) {
 
 	var model;
 	model = new function() {
@@ -10,15 +10,15 @@
 
 		this.refresh = function(hakukohdeOid) {
 			if( hakukohdeOid !== undefined) {
+
                 ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: hakukohdeOid}, function(result) {
 					model.tulosValinnanvaiheet = result;
 				});
-
-                /*
+                
 				HakukohdeValinnanvaihe.get({parentOid: model.hakukohdeOid}, function(result) {
 					model.valinnanvaiheet = result;
 				});
-				*/
+				
 			}
 		}
 

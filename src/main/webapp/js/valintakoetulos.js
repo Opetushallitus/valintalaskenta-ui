@@ -8,6 +8,7 @@
 		
 		this.refresh = function(hakukohdeOid) {
             model.hakukohdeOid = hakukohdeOid;
+            
 			Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			    model.koetulokset = result;
                 flatKoetulokset();

@@ -10,10 +10,11 @@
 	<div class="grid16-12">
 		<div ng-include="'partials/hakukohdeNavigation.html'"></div>
 		<div class="tabsheets">
-            <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
+            <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
-			
-			<table class="virkailija-table-1">
+			<p ng-show="'!'+model.tulosValinnanvaiheet" class="notification info">Tälle hakukohteelle ei löydy valinnanvaiheita</p>
+
+			<table ng-show="model.tulosValinnanvaiheet" class="virkailija-table-1">
 				<thead>
 					<tr>
 						<th>Valinnanvaiheen nimi</th>
