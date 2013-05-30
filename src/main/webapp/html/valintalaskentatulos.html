@@ -12,7 +12,7 @@
 		<div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
-            <p ng-show="'!'+model.valinnanvaiheet" class="notification info">Kohteelle ei ole vielä suoritettu valintalaskentaa</p>
+            <p ng-hide="model.valinnanvaiheet" class="notification info">Kohteelle ei ole vielä suoritettu valintalaskentaa</p>
 			<a ng-show="model.valinnanvaiheet" href="{{valintalaskentatulosExcelExport}}" class="button small excel">Vie exceliin</a>
             
             

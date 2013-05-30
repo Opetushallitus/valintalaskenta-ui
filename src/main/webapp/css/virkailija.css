@@ -1395,6 +1395,25 @@ textarea.disabled {
   color: #C2C2C2;
   opacity: 1; }
 
+textarea {
+  background-color: #fff;
+  background-image: none;
+  border: none;
+  box-shadow: 0 1px 1px #919191 inset, 0 -1px 4px rgba(222, 222, 222, 0.56) inset, 0 0 4px 1px white;
+  color: #3e3e3e;
+  padding: 0.769em 0.769em 0.769em 0.769em;
+  border-radius: 2px 2px 2px 2px;
+  font-size: 1em;
+  line-height: 1.3em;
+  vertical-align: middle; }
+  textarea:focus {
+    background-color: #fff5da; }
+  textarea:disabled {
+    background-color: #eaeaea;
+    background-image: url("../img/texture-45dg-lines-gray.gif");
+    background-repeat: repeat;
+    background-position: top left; }
+
 /*** Select
 *************************************/
 select {
@@ -1403,12 +1422,13 @@ select {
   border: none;
   box-shadow: 0 1px 1px #919191 inset, 0 -1px 4px rgba(222, 222, 222, 0.56) inset, 0 0 4px 1px white;
   color: #3e3e3e;
-  padding: 0.385em 0.385em 0.385em 0.385em;
+  padding: 0 0 0 0.385em;
   border-radius: 2px 2px 2px 2px;
   font-size: 1em;
   height: 2em;
   vertical-align: middle;
-  line-height: 2em; }
+  line-height: 2em;
+  border: 1px solid #bdbdbd; }
   select option {
     padding: 0 0 0 0.769em;
     vertical-align: middle; }
@@ -1453,27 +1473,6 @@ input.search[type="text"] {
   background-repeat: no-repeat;
   background-position: 0.4em center; }
 
-/*** Textarea
-*************************************/
-textarea {
-  background-color: #fff;
-  background-image: none;
-  border: none;
-  box-shadow: 0 1px 1px #919191 inset, 0 -1px 4px rgba(222, 222, 222, 0.56) inset, 0 0 4px 1px white;
-  color: #3e3e3e;
-  padding: 0.769em 0.769em 0.769em 0.769em;
-  border-radius: 2px 2px 2px 2px;
-  font-size: 1em;
-  line-height: 1.3em;
-  vertical-align: middle; }
-  textarea:focus {
-    background-color: #fff5da; }
-  textarea:disabled {
-    background-color: #eaeaea;
-    background-image: url("../img/texture-45dg-lines-gray.gif");
-    background-repeat: repeat;
-    background-position: top left; }
-
 /*** hr
 *************************************/
 hr {
@@ -1506,116 +1505,13 @@ dl {
     dl dd .virkailija-table-1 {
       width: auto; }
 
-/*** Oppijan ja Virkailijan yhteisesti
-**** käyttämien html koodin tyyli
-**** poikkeukset
-*************************************/
-#wrapper.virkailija legend.h3 {
-  font-size: 1.15385em; }
-
 /*** Wrapper
 **************************************************************/
-#viewport {
-  position: relative; }
-
-#wrapper {
-  min-width: 960px;
-  max-width: 1280px;
-  background: none repeat scroll 0 0 whitesmoke;
-  border: 1px solid gainsboro;
-  border-top-width: 0;
-  margin: 0 auto;
-  padding: 0 0 10px; }
-
 #application-wrapper {
   min-width: 960px;
   max-width: 1280px;
   margin: 0 auto;
   background-color: none; }
-
-/*** Overlay
-************************************************/
-#overlay {
-  display: none;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 100; }
-  #overlay > a.close {
-    display: block;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%; }
-
-/*** Siteheader
-************************************************/
-#siteheader {
-  background-image: url(../img/navigation-divider.jpg);
-  background-repeat: repeat-x;
-  background-attachment: scroll;
-  background-position: left bottom;
-  background-color: #149ecb;
-  padding: 10px 0;
-  height: 38px;
-  position: relative;
-  color: #fff; }
-  #siteheader .primarylinks {
-    font-size: 1.15385em;
-    position: absolute;
-    bottom: 18px;
-    left: 18px; }
-    #siteheader .primarylinks a {
-      color: #000000;
-      text-decoration: none; }
-      #siteheader .primarylinks a:hover {
-        text-decoration: underline; }
-  #siteheader .secondarylinks {
-    font-size: 1em;
-    position: absolute;
-    bottom: 18px;
-    right: 18px; }
-    #siteheader .secondarylinks a {
-      text-decoration: none; }
-      #siteheader .secondarylinks a:hover {
-        text-decoration: underline; }
-  #siteheader .language-selection {
-    height: 37px; }
-    #siteheader .language-selection div {
-      vertical-align: middle;
-      display: table-cell; }
-      #siteheader .language-selection div a, #siteheader .language-selection div span {
-        color: #fff;
-        height: 32px;
-        display: table-cell;
-        vertical-align: middle; }
-
-/*** Footer
-************************************************/
-#footer {
-  background-color: #fff;
-  border: 1px solid gainsboro;
-  border-radius: 3px 3px 3px 3px;
-  clear: both; }
-  #footer .footer-container {
-    background: none repeat scroll 0 0 gainsboro;
-    border-radius: 3px 3px 3px 3px;
-    margin: 0.625%;
-    padding: 10px 0; }
-
-#logobox {
-  background-color: #fff;
-  border: 1px solid #dddddd; }
-  #logobox address {
-    font-style: normal; }
-  #logobox address {
-    height: 100px;
-    vertical-align: middle;
-    display: table-cell; }
 
 /*** Form elements
 ************************************************/
@@ -1772,88 +1668,6 @@ label, .label {
 .required-field {
   font-size: 0.813em;
   color: red; }
-
-#tools {
-  height: 40px;
-  background-image: url("../images/navigation-divider.jpg");
-  background-repeat: repeat-x;
-  background-position: bottom left; }
-  #tools .tool-row {
-    height: 34px;
-    line-height: 34px;
-    vertical-align: middle; }
-
-/* Old navigation may be removed after it has fully been removed from environments*/
-#navigation {
-  margin-top: 0.5em;
-  margin-bottom: 1em; }
-  #navigation .level1 {
-    margin: 0;
-    padding: 0; }
-    #navigation .level1 li {
-      float: left;
-      list-style: none;
-      position: relative; }
-      #navigation .level1 li a {
-        display: block;
-        border: 4px solid white;
-        border-radius: 3px;
-        box-shadow: 1px 1px 1px 0 #a2a2a2;
-        margin-right: 5px;
-        position: relative;
-        font-weight: bold;
-        text-decoration: none; }
-        #navigation .level1 li a span {
-          -webkit-transition: 0.2s;
-          -moz-transition: 0.2s;
-          -o-transition: 0.2s;
-          -ms-transition: 0.2s;
-          transition: 0.2s;
-          display: block;
-          padding: 3px 10px;
-          border-radius: 3px 3px 3px 3px;
-          background-color: #149ecb;
-          color: #ffffff; }
-        #navigation .level1 li a:hover span {
-          background-color: #0f7a9d; }
-    #navigation .level1 a.current span {
-      background-color: #2b4561; }
-    #navigation .level1 a.current:hover span {
-      background-color: #2b4561; }
-  #navigation .level2 {
-    display: none;
-    position: absolute;
-    top: 30px;
-    margin: 0px;
-    background: #DFF5FC;
-    background: -moz-linear-gradient(center top, #dff5fc, #ebfaff) repeat scroll 0 0 transparent;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 1px 1px 2px 1px #a2a2a2;
-    overflow: hidden;
-    padding: 20px 0;
-    width: 250px;
-    z-index: 10; }
-    #navigation .level2 li {
-      float: none;
-      padding: 0px 0px 5px 0px; }
-      #navigation .level2 li a {
-        line-height: 16px;
-        border: none;
-        padding: 0px 20px;
-        margin: 0px;
-        color: #0C566E;
-        text-decoration: none;
-        box-shadow: none; }
-        #navigation .level2 li a:hover {
-          background-color: #feedbd; }
-        #navigation .level2 li a span, #navigation .level2 li a:hover span {
-          padding: 0px;
-          margin: 0px;
-          color: #0C566E;
-          background-color: transparent;
-          border-radius: 0px; }
-      #navigation .level2 li a.current {
-        background-color: #feedbd; }
 
 /*** form-layout-table
 ************************************************/
@@ -3173,51 +2987,6 @@ ul.orgmenu {
   .preference-sort legend {
     display: inline; }
 
-.portlet {
-  background: none repeat scroll 0 0 white;
-  border: 1px solid gainsboro; }
-
-.portlet-topper {
-  background: -moz-linear-gradient(center top, whitesmoke, #e5e5e5) repeat scroll 0 0 transparent;
-  border-bottom: 1px solid gainsboro;
-  height: 40px;
-  width: 100%;
-  padding-top: 1px;
-  padding-bottom: 1px; }
-  .portlet-topper h1 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-  .portlet-topper h2 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-  .portlet-topper h3 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-  .portlet-topper h4 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-  .portlet-topper h5 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-
-.portlet-content-container {
-  padding: 1em; }
-
 /*** Itemtree
 ************************************************/
 .selectlist,
@@ -3427,52 +3196,6 @@ ul.dropmenu-list {
     left: 0px;
     top: 25px;
     display: none; }
-
-#wrapper {
-  position: relative; }
-
-.popover-wrapper {
-  display: block;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  z-index: 10;
-  background-color: rgba(0, 0, 0, 0.1); }
-  .popover-wrapper > .popover-close {
-    display: block;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    min-height: 100%; }
-  .popover-wrapper .popover {
-    display: block;
-    margin: 2em auto;
-    background: #ffffff;
-    position: relative;
-    padding: 10px;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 2px 2px 2px 0 #5f5f5f;
-    width: auto;
-    max-width: 960px !important;
-    min-width: 460px !important;
-    height: auto; }
-    .popover-wrapper .popover > .popover-close {
-      display: block;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 16px;
-      height: 17px;
-      background-image: url(../img/popup-close-icon.png);
-      background-repeat: no-repeat;
-      background-position: center center;
-      cursor: pointer; }
-    .popover-wrapper .popover > .popover-content {
-      display: inline-block; }
 
 .logictree {
   padding: 0px; }

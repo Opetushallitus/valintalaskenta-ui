@@ -1,17 +1,8 @@
-<div class="width-16-8 margin-vertical-2" ng-controller="HakuController">
-        <!--<select ng-model="model.hakuOid" ng-options="haku.haunKielistetytNimet[1].nimi for haku in model.haut">-->
-        	
-        	<select ng-model="model.hakuOid" ng-options="haku.nimi.fi for haku in model.haut"></select>
-        
-        	<!--
-        	<select ng-model="model.hakuOid">
-				<option ng-repeat="oid in model.haut">{{oid}}</option>
-        	</select>
-        -->
-</div>
+
+
+<div ng-controller="HakuController" class="width-16-8 margin-vertical-2" ng-include="'partials/hakulista.html'"></div>
 
 <div class="clear"></div>
-
 
 <div class="tabs" ng-controller="navigationController">
     <a ng-class="navClass('hakukohde', 3)" href="#/haku/{{hakuOid}}/hakukohde" class="tab"><span>Hakukohteittain</span></a>
