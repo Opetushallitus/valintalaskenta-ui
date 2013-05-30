@@ -43,11 +43,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <div id="wrapper">
-        <div>
-            <div id="angularbox" ng-view=""></div>
-        </div>
-        <div style="clear:both;"></div>
+    <div id="application-wrapper">
+        <div id="angularbox" ng-view=""></div>
     </div>
 
     <div ng-controller="LoadingCtrl"><div ng-show="loading" style="position: fixed; left: 0px; top: 0px; display: none; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...</div></div>
