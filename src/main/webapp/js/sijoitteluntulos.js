@@ -7,18 +7,16 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 		this.sijoitteluTulokset = {};
 		this.hakemuksenTilat = ["ILMOITETTU", "VASTAANOTTANUT_LASNA", "VASTAANOTTANUT_POISSAOLEVA", "PERUNUT"];
 
-        this.refresh = function(hakuOid) {
+        this.refresh = function(hakuOid, hakukohdeOid) {
             
             SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
                 if(result && result.length > 0) {
                     model.latestSijoitteluajo = result[0];
                     var currentSijoitteluajoOid = model.latestSijoitteluajo.sijoitteluajoId;
-                    for(var i = 0 ; i < model.latestSijoitteluajo.hakukohteet.length ; i++) {
-                        var currentHakukohdeOid = model.latestSijoitteluajo.hakukohteet[i].oid;
 
                         SijoitteluajoHakukohde.get({
                             sijoitteluajoOid: currentSijoitteluajoOid,
-                            hakukohdeOid: currentHakukohdeOid
+                            hakukohdeOid: hakukohdeOid
                         }, function(result) {
                             model.sijoitteluTulokset = result;
 
@@ -45,7 +43,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
                         });
 
-                    }
+
                 }
             });
         };
@@ -63,9 +61,9 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
         }
 
 		//refresh if haku or hakukohde has changed
-		this.refresIfNeeded = function(hakuOid, isHakukohdeChanged) {
+		this.refresIfNeeded = function(hakuOid, hakukohdeOid, isHakukohdeChanged) {
 			if(model.sijoittelu.hakuOid !== hakuOid || isHakukohdeChanged) {
-				model.refresh(hakuOid);
+				model.refresh(hakuOid, hakukohdeOid);
 			}
 		};
 
@@ -91,10 +89,13 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
 
 function SijoitteluntulosController($scope, $routeParams, HakukohdeModel, SijoitteluntulosModel) {
+
+
+
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
-    $scope.model.refresIfNeeded($routeParams.hakuOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
+    $scope.model.refresIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
 
     
     $scope.updateHakemuksenTila = function(tila, valintatapajonoOid, hakemusOid) {
