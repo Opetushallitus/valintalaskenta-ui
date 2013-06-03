@@ -1,89 +1,20 @@
-﻿app.factory('HakeneetModel', function(HakukohdeAvaimet) {
+﻿app.factory('HakeneetModel', function(HakukohdeAvaimet, HakukohdeHenkilot) {
 	var model;
 	model = new function() {
 
 		this.hakeneet = [];
 		this.avaimet = [];
 
-		this.refresh = function(hakukohdeOid) {
+		this.refresh = function(hakukohdeOid, hakuOid) {
             model.hakukohdeOid = hakukohdeOid;
-            model.hakeneet = [
-                    {
-                        "etunimi":"testi1",
-                        "sukunimi":"data4",
-                        "hakemusOid":"123.123.123.121",
-                        "hakijaOid":"123.123.123.121"
-                    },{
-                        "etunimi":"testi2",
-                        "sukunimi":"data3",
-                        "hakemusOid":"123.123.123.122",
-                        "hakijaOid":"123.123.123.122"
-                    },{
-                        "etunimi":"testi3",
-                        "sukunimi":"data2",
-                        "hakemusOid":"123.123.123.123",
-                        "hakijaOid":"123.123.123.123"
-                    },{
-                        "etunimi":"testi4",
-                        "sukunimi":"data1",
-                        "hakemusOid":"123.123.123.124",
-                        "hakijaOid":"123.123.123.124"
-                    },
-                    ];
+            model.hakeneet = HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
+                                                              model.hakeneet = result;
+                                                          });
 
             var params = [hakukohdeOid];
             HakukohdeAvaimet.post(params, function(result) {
-                //model.avaimet = result;
-                model.avaimet = [
-                                {
-                                "tunniste": "tunniste3",
-                                "kuvaus": "123",
-                                "funktiotyyppi": "LUKUARVOFUNKTIO",
-                                "lahde": "SYOTETTAVA_ARVO",
-                                "onPakollinen": true,
-                                "min": 123,
-                                "max": 789,
-                                "arvot": null
-                             },
-                                {
-                                "tunniste": "tunniste2",
-                                "kuvaus": "1",
-                                "funktiotyyppi": "LUKUARVOFUNKTIO",
-                                "lahde": "SYOTETTAVA_ARVO",
-                                "onPakollinen": true,
-                                "min": null,
-                                "max": null,
-                                "arvot":       [
-                                   "8",
-                                   "10",
-                                   "9"
-                                ]
-                             },
-                                {
-                                "tunniste": "tunniste1",
-                                "kuvaus": "123",
-                                "funktiotyyppi": "LUKUARVOFUNKTIO",
-                                "lahde": "SYOTETTAVA_ARVO",
-                                "onPakollinen": true,
-                                "min": null,
-                                "max": null,
-                                "arvot":       [
-                                   "3",
-                                   "2",
-                                   "1"
-                                ]
-                             },
-                                {
-                                "tunniste": "tunniste4",
-                                "kuvaus": "123",
-                                "funktiotyyppi": "TOTUUSARVOFUNKTIO",
-                                "lahde": "SYOTETTAVA_ARVO",
-                                "onPakollinen": true,
-                                "min": 0,
-                                "max": 400,
-                                "arvot": null
-                             }
-                          ];
+                model.avaimet = result;
+
                 model.avaimet.forEach(function(avain){
                     avain.tyyppi = function(){
                         if(avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
@@ -102,10 +33,10 @@
             });
 		}
 
-		this.refreshIfNeeded = function(hakukohdeOid) {
+		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
 
             if(hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
-                model.refresh(hakukohdeOid);
+                model.refresh(hakukohdeOid, hakuOid);
             }
         }
 
@@ -122,7 +53,7 @@ function HakeneetController($scope, $location, $routeParams, HakeneetModel, Haku
     
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 
-    HakeneetModel.refreshIfNeeded($scope.hakukohdeOid);
+    HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $routeParams.hakuOid);
 
     $scope.predicate = 'sukunimi';
 }

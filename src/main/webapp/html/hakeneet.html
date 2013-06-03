@@ -32,8 +32,10 @@
                         <tbody>
 
                         <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter">
-                            <td title="HakemusOid: {{hakija.hakemusOid}} - HakijaOid: {{hakija.hakijaOid}}">
-                                    {{hakija.sukunimi}}, {{hakija.etunimi}}
+                            <td>
+                                <span title="Sukunimi">{{hakija.lastName}}</span>, <span title="Etunimi">{{hakija.firstName}}</span>
+                                <br /><span title="HakemusOid">{{hakija.applicationOid}}</span>
+                                <br /><span title="Hetu">{{hakija.ssn}}</span>
                             </td>
                             <td ng-repeat="avain in model.avaimet">
                                 <div ng-switch on="avain.tyyppi()" title="{{avain.min}} - {{avain.max}}">

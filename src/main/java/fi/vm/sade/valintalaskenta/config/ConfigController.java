@@ -36,6 +36,9 @@ public class ConfigController {
     @Value("${valintalaskenta-ui.sijoittelu-service-url.excel}")
     private String sijoitteluUrl;
 
+    @Value("${valintalaskenta-ui.haku-service-url.rest}")
+    private String hakuUrl;
+
     /**
      * Generoi javascriptia propertiesseista
      * @return
@@ -52,6 +55,7 @@ public class ConfigController {
         append(b, "SERVICE_URL_BASE", valintalaskentaServiceUrl);
         append(b, "SIJOITTELU_EXCEL_URL_BASE", sijoitteluUrl);
         append(b, "SERVICE_EXCEL_URL_BASE", valintalaskentaUrl);
+        append(b, "HAKU_URL_BASE", hakuUrl);
         append(b, "TEMPLATE_URL_BASE", "");
         return b.toString();
     }
