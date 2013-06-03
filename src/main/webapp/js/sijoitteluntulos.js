@@ -76,9 +76,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
             var tilaObj = {tila: newtila};
             
-            HakemuksenTila.post(tilaParams, tilaObj, function(result) {
-               console.log(result);
-            });
+            HakemuksenTila.post(tilaParams, tilaObj, function(result) {});
         }
 
 	};
@@ -96,11 +94,10 @@ function SijoitteluntulosController($scope, $routeParams, HakukohdeModel, Sijoit
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
     $scope.model.refresIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
-
     
     $scope.updateHakemuksenTila = function(tila, valintatapajonoOid, hakemusOid) {
         $scope.model.udpateHakemuksenTila(tila, HakukohdeModel.getHakukohdeOid(), valintatapajonoOid, hakemusOid);
     }
 
-    $scope.sijoitteluntulosExcelExport = "http://localhost:8180/sijoittelu-service/resources/" + "export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid;
+    $scope.sijoitteluntulosExcelExport = SIJOITTELU_EXCEL_URL_BASE + "resources/export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid;
 }

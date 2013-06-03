@@ -33,8 +33,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model.refresh($scope.hakukohdeOid);
-
-    $scope.valintalaskentatulosExcelExport = "http://localhost:8180/valintalaskenta-laskenta-service/" + "export/valintalaskentatulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
+    $scope.valintalaskentatulosExcelExport = SERVICE_EXCEL_URL_BASE + "export/valintalaskentatulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
     
 
     $scope.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {

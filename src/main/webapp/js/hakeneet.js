@@ -119,7 +119,7 @@ function HakeneetController($scope, $location, $routeParams, HakeneetModel, Haku
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakeneetModel;
     $scope.hakukohdeModel = HakukohdeModel;
-
+    
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 
     HakeneetModel.refreshIfNeeded($scope.hakukohdeOid);
