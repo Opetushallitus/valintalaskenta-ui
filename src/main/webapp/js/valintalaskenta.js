@@ -7,7 +7,7 @@ var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
 var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 var SERVICE_EXCEL_URL_BASE = SERVICE_EXCEL_URL_BASE || "";
 var SIJOITTELU_EXCEL_URL_BASE = SIJOITTELU_EXCEL_URL_BASE || "";
-var HAKU_URL_BASE = HAKU_URL_BASE || "";
+var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
 
 
 //Route configuration
@@ -200,7 +200,7 @@ app.factory('HakukohdeAvaimet', function($resource) {
 });
 
 app.factory('HakukohdeHenkilot', function($resource) {
-    return $resource(HAKU_URL_BASE + "applications/applicant/:hakuOid/:hakukohdeOid",{hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/applicant/:hakuOid/:hakukohdeOid",{hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
         get: {method: "GET", isArray: true}
     });
 });
