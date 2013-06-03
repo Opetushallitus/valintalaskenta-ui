@@ -10,34 +10,60 @@
     <div class="grid16-12">
         <div ng-include="'partials/hakukohdeNavigation.html'"></div>
         <div class="tabsheets">
-            <h1>{{model.hakukohde.hakukohdeNimi}}</h1>
-            <span>
-                Oid: {{model.hakukohde.oid}} <br />
-                Koodistonimi: {{model.hakukohde.hakukohdeKoodistoNimi}} <br />
-                HakuOid: {{model.hakukohde.hakukohteenHakuOid}} <br />
-                Tila: {{model.hakukohde.hakukohteenTila}} <br />
-                <br />
-                Aloituspaikat: {{model.hakukohde.aloituspaikatLkm}} <br />
-                Valinnan aloituspaikat: {{model.hakukohde.valinnanAloituspaikat}} <br />
-                <dl>
-                <dt><strong>Liitteiden toimitusosoite</strong></dt>
-                    <dd>
-                        Osoite: {{model.hakukohde.liitteidenToimitusOsoite.osoiteRivi}} <br />
-                        <span ng-show="model.hakukohde.liitteidenToimitusOsoite.lisaOsoiteRivi">{{model.hakukohde.liitteidenToimitusOsoite.lisaOsoiteRivi}} <br /></span>
-                        Postinumero: {{model.hakukohde.liitteidenToimitusOsoite.postinumero}} <br />
-                        Postitoimipaikka: {{model.hakukohde.liitteidenToimitusOsoite.postitoimipaikka}} <br />
-                    </dd>
-                </dl>
-                Sähköoinen toimitusosoite: {{model.hakukohde.sahkoinenToimitusOsoite}} <br />
-                Liitteiden toimitus pvm: {{model.hakukohde.liitteidenToimitusPvm | date:'dd.MM.yyyy'}} <br />
-                <br />
-                Alin hyväksyttävä keskiarvo: {{model.hakukohde.alinHyvaksyttavaKeskiarvo}} <br />
-                <br />
-                Viimeisin päivittäjä oid: {{model.hakukohde.viimeisinPaivittajaOid}} <br />
-                Viimeisin päivitys pvm: {{model.hakukohde.viimeisinPaivitysPvm | date:'dd.MM.yyyy HH:mm:ss'}} <br />
+            <h1 class="margin-horizontal-1 margin-bottom-3">{{model.hakukohde.hakukohdeKoodistoNimi}}</h1>
+          
+            <div class="grid16-8">
+                <dl class="dl-horizontal">
+                    <dt>HakukohdeOid</dt>
+                    <dd>{{model.hakukohde.oid}}</dd>
+                    
+                    <dt>HakuOid</dt>
+                    <dd>{{hakumodel.hakuOid.oid}}</dd>
+                    
+                    <dt>Tila</dt>
+                    <dd>{{model.hakukohde.tila}}</dd>
+                    
+                    <dt>Aloituspaikat</dt>
+                    <dd>{{model.hakukohde.aloituspaikatLkm}}</dd>
+                    
+                    <dt>Valinnan aloituspaikat</dt>
+                    <dd>{{model.hakukohde.valintojenAloituspaikatLkm}}</dd>
+                    
+                    <dt>Sähköinen toimitusosoite</dt>
+                    <dd>{{model.hakukohde.sahkoinenToimitusOsoite}}</dd>
+                    
+                    <dt>Liitteiden toimitus pvm</dt>
+                    <dd>{{model.hakukohde.erapaiva | date:'dd.MM.yyyy'}}</dd>
+                    
+                    <dt>Alin hyväksyttävä keskiarvo</dt>
+                    <dd>{{model.hakukohde.alinHyvaksyttavaKeskiarvo}}</dd>
 
-                <!--Oid: {{model.hakukohde.}} <br />-->
-            </span>
+                    <dt>Viimeisin päivittäjä oid</dt>
+                    <dd>{{model.hakukohde.modifiedBy}}</dd>
+                    
+                    <dt>Viimeisin päivitys pvm</dt>
+                    <dd ng-show="model.hakukohde.modified">{{model.hakukohde.modified | date:'dd.MM.yyyy HH:mm:ss'}}</dd>
+                    <dd ng-hide="model.hakukohde.modified"></dd>
+                    
+                </dl>
+                
+                <h2 class="margin-top-4 margin-bottom-1">Liitteiden toimitusosoite</h2>
+                <dl class="dl-horizontal">    
+                    <dt>Osoite</dt>
+                    <dd>{{model.hakukohde.liitteet[0].toimitusosoite.osoiterivi1}}</dd>
+                    
+                    <dt>Postinumero</dt>
+                    <dd>{{model.hakukohde.liitteet[0].toimitusosoite.postinumero}}</dd>
+                    
+                    <dt>Postitoimipaikka</dt>
+                    <dd>{{model.hakukohde.liitteet[0].toimitusosoite.postitoimipaikka}}</dd>
+                </dl>
+
+            </div>
+            <div class="grid16-8">
+                
+            </div>
+            
             <div class="clear"></div>
         </div>
     </div>

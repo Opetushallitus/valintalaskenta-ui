@@ -1372,6 +1372,7 @@ h1, h2, h3, h4,
 
 h1,
 .h1 {
+  line-height: 1.5em;
   font-size: 1.30769em; }
 
 h2,
@@ -1492,20 +1493,37 @@ dl {
   dl dt {
     font-weight: bold;
     line-height: 1.5em;
-    height: 1.5em;
     width: 173px;
     margin: 0 15px 0 0;
     padding: 0;
     text-align: right; }
   dl dd {
-    margin: -19px 0 0 195px;
-    padding: 0 0 1em;
+    margin: -19px 0 6px 195px;
+    padding: 0;
     line-height: 1.5em;
-    height: 1.5em; }
+    height: 1.5em;
+    vertical-align: middle; }
     dl dd:after {
       clear: both; }
     dl dd .virkailija-table-1 {
       width: auto; }
+
+.dl-horizontal:before, .dl-horizontal:after {
+  display: table;
+  content: "";
+  line-height: 0; }
+  .dl-horizontal:before dt, .dl-horizontal:before dd, .dl-horizontal:after dt, .dl-horizontal:after dd {
+    line-height: 20px; }
+  .dl-horizontal:before dt, .dl-horizontal:after dt {
+    float: left;
+    width: 160px;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .dl-horizontal:before dd, .dl-horizontal:after dd {
+    margin-left: 180px; }
 
 /*** Wrapper
 **************************************************************/
