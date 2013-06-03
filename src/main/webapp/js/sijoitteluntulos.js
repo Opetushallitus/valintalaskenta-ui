@@ -2,13 +2,16 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
 	var model = new function() {
 
+        this.hakuOid=null;
+        this.hakukohdeOid=null;
 		this.sijoittelu = {};
 		this.latestSijoitteluajo = {};
 		this.sijoitteluTulokset = {};
 		this.hakemuksenTilat = ["ILMOITETTU", "VASTAANOTTANUT_LASNA", "VASTAANOTTANUT_POISSAOLEVA", "PERUNUT"];
 
         this.refresh = function(hakuOid, hakukohdeOid) {
-            
+            model.hakuOid=hakuOid;
+            model.hakukohdeOid=hakukohdeOid;
             SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
                 if(result && result.length > 0) {
                     model.latestSijoitteluajo = result[0];
@@ -30,7 +33,8 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
                                     var hakemus = hakemukset[k];
                                     
                                     var tilaParams = {
-                                        hakukohdeOid: currentHakukohdeOid, 
+                                        hakuoid: hakuOid,
+                                        hakukohdeOid: hakukohdeOid,
                                         valintatapajonoOid: valintatapajonoOid, 
                                         hakemusOid: hakemus.hakemusOid
                                     }
@@ -67,9 +71,10 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 			}
 		};
 
-        this.udpateHakemuksenTila = function(newtila, hakukohdeOid, valintatapajonoOid, hakemusOid) {
+        this.udpateHakemuksenTila = function(newtila, valintatapajonoOid, hakemusOid) {
             var tilaParams = {
-                hakukohdeOid: hakukohdeOid,
+                hakuoid: model.hakuOid,
+                hakukohdeOid: model.hakukohdeOid,
                 valintatapajonoOid: valintatapajonoOid,
                 hakemusOid: hakemusOid
             }
@@ -88,15 +93,13 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
 function SijoitteluntulosController($scope, $routeParams, HakukohdeModel, SijoitteluntulosModel) {
 
-
-
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
     $scope.model.refresIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
     
-    $scope.updateHakemuksenTila = function(tila, valintatapajonoOid, hakemusOid) {
-        $scope.model.udpateHakemuksenTila(tila, HakukohdeModel.getHakukohdeOid(), valintatapajonoOid, hakemusOid);
+    $scope.updateHakemuksenTila = function(tila,valintatapajonoOid, hakemusOid) {
+        $scope.model.udpateHakemuksenTila(tila,valintatapajonoOid, hakemusOid);
     }
 
     $scope.sijoitteluntulosExcelExport = SIJOITTELU_EXCEL_URL_BASE + "resources/export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid;

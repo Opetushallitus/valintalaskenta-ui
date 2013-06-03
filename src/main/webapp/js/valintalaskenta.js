@@ -142,8 +142,9 @@ app.factory('HakemusKey', function($resource) {
 });
 
 app.factory('HakemuksenTila', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakukohdeOid/:valintatapajonoOid/:hakemusOid", 
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakuoid/:hakukohdeOid/:valintatapajonoOid/:hakemusOid",
         {
+            hakuoid: "@hakuoid",
             hakukohdeOid: "@hakukohdeoid", 
             valintatapajonoOid: "@valintatapajonoOid", 
             hakemusOid: "@hakemusOid"
