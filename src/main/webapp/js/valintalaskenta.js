@@ -200,7 +200,7 @@ app.factory('HakukohdeAvaimet', function($resource) {
 });
 
 app.factory('HakukohdeHenkilot', function($resource) {
-    return $resource(HAKU_URL_BASE + "/applications/applicant/:hakuOid/:hakukohdeOid",{hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
+    return $resource(HAKU_URL_BASE + "applications/applicant/:hakuOid/:hakukohdeOid",{hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
         get: {method: "GET", isArray: true}
     });
 });
