@@ -18,9 +18,16 @@
 				
 			</div>
 			<div class="margin-vertical-2">
-				Viimeisin Ajo ID: {{model.latestSijoitteluajo.sijoitteluajoId}} <br />
-				Alkaa: {{model.latestSijoitteluajo.startMils | date:'dd.MM.yyyy HH:mm'}} <br />
-				Loppuu: {{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}} <br />
+				<dl class="dl-horizontal">
+					<dt>Viimeisin Ajo ID</dt>
+					<dd>{{model.latestSijoitteluajo.sijoitteluajoId}}</dd>
+					
+					<dt>Alkaa</dt>
+					<dd>{{model.latestSijoitteluajo.startMils | date:'dd.MM.yyyy HH:mm'}}</dd>
+					
+					<dt>Loppuu</dt>
+					<dd>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</dd>
+				</dl>
 			</div>
 			<!--
 			<div class="margin-vertical-2">
@@ -39,7 +46,7 @@
 				</table>
 			</div>
 		-->
-			<div class="margin-vertical-2">
+			<div class="margin-vertical-2 overflow-x-scroll">
 				<h2>Viimeisimmän sijoittelun tulokset</h2>
 				<table class="virkailija-table-1" ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot">
 					<h1>{{jono.aloituspaikat}}</h1>
