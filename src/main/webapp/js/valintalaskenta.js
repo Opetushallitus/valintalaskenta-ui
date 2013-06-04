@@ -123,19 +123,19 @@ app.factory('Sijoitteluktivointi', function($resource) {
 });
 
 app.factory('KaikkiHakemukset', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "applications/", {}, {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/", {}, {
         get: {method: "GET", isArray: true}
     });
 });
 
 app.factory('Hakemus', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "applications/:oid", {oid: "@oid"}, {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid", {oid: "@oid"}, {
         get: {method: "GET"}
     });
 });
 
 app.factory('HakemusKey', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "applications/:oid/:key", {oid: "@oid", key: "@key"}, {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid/:key?value=:value", {oid: "@oid", key: "@key", value:"@value"}, {
         get: {method: "GET"},
         put: {method: "PUT"}
     });

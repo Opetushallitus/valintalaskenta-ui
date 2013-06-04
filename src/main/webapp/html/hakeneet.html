@@ -12,19 +12,23 @@
 
 		<div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
-            <!--<span>{{model.hakeneet | json}}</span>-->
 
 			<div class="margin-vertical-2">
                 <h2>Hakeneet</h2>
                 
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
-                
+                <select ng-model="arvoFilter">
+                    <option value="SYOTETTAVA_ARVO">Syötettävät arvot</option>
+                    <option value="HAETTAVA_ARVO">Haettavat arvot</option>
+                    <option value="">Kaikki</option>
+                </select>
+
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
                         <thead>
                         <tr>
                             <th><a href="" ng-click="predicate = 'sukunimi'; reverse=!reverse">Tiedot</a></th>
-                            <th ng-repeat="avain in model.avaimet">{{avain.tunniste}}
+                            <th ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">{{avain.tunniste}} {{avain.kuvaus}}
                                     <span ng-show="avain.min || avain.min == 0" ng-show="avain.max || avain.max == 0">({{avain.min}} - {{avain.max}})</span>
                             </th>
                         </tr>
@@ -37,18 +41,26 @@
                                 <br /><span title="HakemusOid">{{hakija.applicationOid}}</span>
                                 <br /><span title="Hetu">{{hakija.ssn}}</span>
                             </td>
-                            <td ng-repeat="avain in model.avaimet">
-                                <div ng-switch on="avain.tyyppi()" title="{{avain.min}} - {{avain.max}}">
-                                    <div ng-switch-when="combo">
-                                        <select ng-model="hakija[avain.tunniste]" ng-options="item for item in avain.arvot" ngRequired="avain.onPakollinen">
-                                            <option value="">-</option>
-                                        </select>
-                                    </div>
-                                    <div ng-switch-when="checkbox">
-                                        <input type="checkbox" ng-model="hakija[avain.tunniste]" ngRequired="avain.onPakollinen"/>
+                            <td ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">
+                                <!--<div ng-switch on="avain.tyyppi()" title="{{avain.min}} - {{avain.max}}">-->
+                                    <!--<div ng-switch-when="combo">-->
+                                        <!--<select ng-model="hakija[avain.tunniste]" ng-options="item for item in avain.arvot" ngRequired="avain.onPakollinen">-->
+                                            <!--<option value="">-</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                    <!--<div ng-switch-when="checkbox">-->
+                                        <!--<input type="checkbox" ng-model="hakija[avain.tunniste]" ngRequired="avain.onPakollinen"/>-->
+                                    <!--</div>-->
+                                    <!--<div ng-switch-default>-->
+                                        <!--<input type="number" min="{{avain.min}}" max="{{avain.max}}" ng-model="hakija[avain.tunniste]" ngRequired="avain.onPakollinen"/>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <div ng-switch on="avain.lahde">
+                                    <div ng-switch-when="SYOTETTAVA_ARVO">
+                                        <input size="2" ng-model="hakija.additionalData[avain.tunniste]"/>
                                     </div>
                                     <div ng-switch-default>
-                                        <input type="number" min="{{avain.min}}" max="{{avain.max}}" ng-model="hakija[avain.tunniste]" ngRequired="avain.onPakollinen"/>
+                                        {{hakija.additionalData[avain.tunniste]}}
                                     </div>
                                 </div>
                             </td>
