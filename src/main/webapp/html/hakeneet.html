@@ -13,7 +13,9 @@
 		<div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
-			<div class="margin-vertical-2">
+			<p ng-show="model.hakeneet.length < 1" class="notification info margin-vertical-2">Tähän hakukohteeseen ei ole yhtään hakijaa</p>
+
+            <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <h2>Hakeneet</h2>
                 
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
