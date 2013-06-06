@@ -36,6 +36,9 @@ public class ConfigController {
     @Value("${valintalaskenta-ui.sijoittelu-service-url.excel}")
     private String sijoitteluUrl;
 
+    @Value("${auth.mode}")
+    private String authMode;
+
     /**
      * Generoi javascriptia propertiesseista
      * @return
@@ -53,6 +56,12 @@ public class ConfigController {
         append(b, "SIJOITTELU_EXCEL_URL_BASE", sijoitteluUrl);
         append(b, "SERVICE_EXCEL_URL_BASE", valintalaskentaUrl);
         append(b, "TEMPLATE_URL_BASE", "");
+        if(!authMode.isEmpty()) {
+            append(b, "AUTH_MODE", authMode);
+            if(authMode.trim().equalsIgnoreCase("dev")) {
+                b.append("$('head').append('<script type=\"text/javascript\" src=\"/servers/cas/myroles\"></script>')");
+            }
+        }
         return b.toString();
     }
 
