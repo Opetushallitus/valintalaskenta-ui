@@ -17,11 +17,12 @@
 			<a ng-show="model.valinnanvaiheet" href="{{valintalaskentatulosExcelExport}}" class="button small excel">Vie exceliin</a>
             
             
-            <div class="clear"></div>
+            
             <!--
             <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
              -->
             <div ng-repeat="valinnanvaihe in model.valinnanvaiheet">
+                    
                 <h3>Valinnanvaihe OID: <span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span></h3>
                 <h3>Päivämäärä: <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></h3>
                 <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajono">
@@ -29,6 +30,7 @@
                     <table class="virkailija-table-1">
                         <thead>
                             <tr>
+                                <th>Jonosija</th>
                                 <th>Hakija</th>
                                 <th>Valintatieto</th>
                                 <th>Selite</th>
@@ -37,10 +39,12 @@
                         </thead>
                         <tbody ng-repeat="tulos in valintatapajono.jonosijat">
                             <tr>
+                                <td>{{tulos.jonosija}}</td>
                                 <td>{{tulos.sukunimi}}, {{tulos.etunimi}}</td>
-                                <td>{{tulos.jarjestyskriteerit[0].tila}}</td>
-                                <td>{{tulos.jarjestyskriteerit[0].kuvaus}}</td>
-                                <td><div ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"><span>{{jarjestyskriteeri.arvo}}</span><br /><input ng-model="kriteerinArvo" type="text" /><button class="btn small" ng-click="updateJarjestyskriteerinArvo(valintatapajono.oid, tulos.hakemusoid, $index, kriteerinArvo)">update</button></div></td>
+                                <td>{{tulos.tuloksenTila}}</td>
+                                <td>{{tulos.kuvaus}}</td>
+                                <td><span ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"> {{jarjestyskriteeri.arvo}} <span ng-show="(tulos.jarjestyskriteerit.length - 1) === $index"> / </span></span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

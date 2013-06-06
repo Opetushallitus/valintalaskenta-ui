@@ -9,6 +9,7 @@
             model.hakukohdeOid = hakukohdeOid;
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			     model.valinnanvaiheet = result;
+			     console.log(model.valinnanvaiheet);
 			});
 		}
 
@@ -35,9 +36,9 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     $scope.model.refresh($scope.hakukohdeOid);
     $scope.valintalaskentatulosExcelExport = SERVICE_EXCEL_URL_BASE + "export/valintalaskentatulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
     
-
+    /*
     $scope.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
-    	
     	$scope.model.updateJarjestyskriteerinArvo(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo);
     }
+    */
 }
