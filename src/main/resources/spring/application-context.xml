@@ -17,7 +17,7 @@
                 <prop key="cas_mode">front</prop>
                 <prop key="cas_key">valintalaskenta-ui</prop>
                 <prop key="cas_service">${cas.service.valintalaskenta-ui}</prop>
-                <prop key="spring_security_default_access">hasAnyRole('ROLE_APP_VALINTALASKENTA')</prop>
+                <prop key="spring_security_default_access">hasAnyRole('ROLE_APP_VALINTOJENTOTEUTTAMINEN')</prop>
             </util:properties>
         </property>
     </bean>
