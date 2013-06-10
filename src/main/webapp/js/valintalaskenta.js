@@ -53,7 +53,7 @@ app.factory('HaunTiedot', function($resource) {
 
 
 app.factory('HakuHakukohdeChildren', function($resource) {
-return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde", {hakuOid: "@hakuOid"}, {
+return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde?count=99999", {hakuOid: "@hakuOid"}, {
     get: {method: "GET", isArray: true}
   });
 });

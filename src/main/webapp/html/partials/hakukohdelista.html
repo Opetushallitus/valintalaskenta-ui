@@ -4,7 +4,7 @@
 	</div>
 
 	<ul class="selectlist">
-	    <li ng-repeat="hakukohde in model.hakukohteet | filter:{hakukohdeKoodistoNimi:model.searchWord}">
+	    <li ng-repeat="hakukohde in model.hakukohteet | filter:model.searchWord">          <!--filter:{hakukohdeKoodistoNimi:model.searchWord} -->
 	        <a href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.oid}}/{{subpage}}">
 	            <span class="icon file"></span>
 	            <span class="label">
