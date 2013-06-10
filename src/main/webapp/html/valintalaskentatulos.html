@@ -35,6 +35,7 @@
                                 <th>Valintatieto</th>
                                 <th>Selite</th>
                                 <th>Pistemäärä</th>
+                                <th>Harkinnanvarainen</th>
                             </tr>
                         </thead>
                         <tbody ng-repeat="tulos in valintatapajono.jonosijat">
@@ -48,6 +49,7 @@
                                 </td>
                                 <td><span ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"> {{jarjestyskriteeri.arvo}} <span ng-show="(tulos.jarjestyskriteerit.length - 1) === $index"> / </span></span>
                                 </td>
+                                <td><input type="checkbox" ng-model="tulos.harkinnanvarainen" disabled /></td>
                             </tr>
                         </tbody>
                     </table>
