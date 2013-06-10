@@ -102,5 +102,5 @@ function SijoitteluntulosController($scope, $routeParams, HakukohdeModel, Sijoit
         $scope.model.udpateHakemuksenTila(tila,valintatapajonoOid, hakemusOid);
     }
 
-    $scope.sijoitteluntulosExcelExport = SIJOITTELU_EXCEL_URL_BASE + "resources/export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid;
+    $scope.sijoitteluntulosExcelExport = SIJOITTELU_EXCEL_URL_BASE + "resources/export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid + "hakukohdeOid" +$routeParams.hakukohdeOid;
 }
