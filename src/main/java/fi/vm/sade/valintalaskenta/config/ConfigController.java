@@ -36,7 +36,7 @@ public class ConfigController {
     @Value("${valintalaskenta-ui.sijoittelu-service-url.excel}")
     private String sijoitteluUrl;
 
-    @Value("${auth.mode}")
+    @Value("${auth.mode:}")
     private String authMode;
 
     /**
