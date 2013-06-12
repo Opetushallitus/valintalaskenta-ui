@@ -52,7 +52,7 @@
 					<h1>{{jono.aloituspaikat}}</h1>
 					<thead>
 						<tr>
-							<th colspan="7">valintatapajono OID: {{jono.oid}}</th>
+							<th colspan="8">valintatapajono OID: {{jono.oid}}</th>
 						</tr>
 						<tr>
 							<td class="bold align-center">jonosija</td>
@@ -62,6 +62,7 @@
 							<td class="bold align-center">TasasijaJonosija</td>
 							<td class="bold align-center">Sijoittelun tila</td>
 							<td class="bold align-center">Vastaanottotila</td>
+							<td class="bold align-center">Harkinnanvarainen</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -73,6 +74,7 @@
 							<td>{{hakemus.tasasijaJonosija}}</td>
 							<td>{{hakemus.tila}}</td>
 							<td><select ng-model="hakemus.hakemuksentila" ng-options="value for value in model.hakemuksenTilat" ng-value="{{value}}" ng-change="updateHakemuksenTila(hakemus.hakemuksentila, jono.oid, hakemus.hakemusOid)"></select></td>
+							<td><input type="checkbox" ng-model="hakemus.harkinnanvarainen" disabled /></td>
 						</tr>
 					</tbody>
 				</table>
