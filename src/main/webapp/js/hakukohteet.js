@@ -1,4 +1,4 @@
-app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, TarjontaHakukohde) {
+app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, HakukohdeNimi) {
     var model;
     model = new function(){
 
@@ -15,7 +15,7 @@ app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, Tarjon
               
               hakukohdeOids.forEach(function(element, index) {
                 
-                  TarjontaHakukohde.get({hakukohdeoid: element.oid}, function(hakukohdeObject) {
+                  HakukohdeNimi.get({hakukohdeoid: element.oid}, function(hakukohdeObject) {
                     model.hakukohteet.push(hakukohdeObject);
                       
                   });
