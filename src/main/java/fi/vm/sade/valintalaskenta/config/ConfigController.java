@@ -36,6 +36,9 @@ public class ConfigController {
     @Value("${valintalaskenta-ui.sijoittelu-service-url.excel}")
     private String sijoitteluUrl;
 
+    @Value("${organisaatio.api.rest.url}")
+    private String organisaatioUrl;
+
     @Value("${auth.mode:}")
     private String authMode;
 
@@ -55,6 +58,7 @@ public class ConfigController {
         append(b, "SERVICE_URL_BASE", valintalaskentaServiceUrl);
         append(b, "SIJOITTELU_EXCEL_URL_BASE", sijoitteluUrl);
         append(b, "SERVICE_EXCEL_URL_BASE", valintalaskentaUrl);
+        append(b, "ORGANISAATIO_URL_BASE", organisaatioUrl);
         append(b, "TEMPLATE_URL_BASE", "");
         if(!authMode.isEmpty()) {
             append(b, "AUTH_MODE", authMode);
