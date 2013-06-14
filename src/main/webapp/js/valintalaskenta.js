@@ -8,6 +8,7 @@ var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 var SERVICE_EXCEL_URL_BASE = SERVICE_EXCEL_URL_BASE || "";
 var SIJOITTELU_EXCEL_URL_BASE = SIJOITTELU_EXCEL_URL_BASE || "";
 var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
+var ORGANISAATIO_URL_BASE = ORGANISAATIO_URL_BASE || "";
 
 
 //Route configuration
@@ -223,3 +224,4 @@ app.factory('JarjestyskriteeriArvo', function($resource) {
         post: {method: "POST"}
     });
 });
+

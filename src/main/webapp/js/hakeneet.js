@@ -85,10 +85,6 @@ function HakeneetController($scope, $location, $routeParams, HakeneetModel, Haku
 
     $scope.predicate = 'sukunimi';
 
-    $scope.$watch("model.hakeneet.additionalData",function(value){
-        console.log(value);
-    }, true);
-
     $scope.submit = function() {
         HakeneetModel.submit();
     }

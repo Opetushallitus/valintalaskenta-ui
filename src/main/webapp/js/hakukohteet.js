@@ -1,4 +1,4 @@
-app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, HakukohdeNimi) {
+app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, HakukohdeNimi, AuthService) {
     var model;
     model = new function(){
 
@@ -16,10 +16,10 @@ app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, Hakuko
               hakukohdeOids.forEach(function(element, index) {
                 
                   HakukohdeNimi.get({hakukohdeoid: element.oid}, function(hakukohdeObject) {
-                    model.hakukohteet.push(hakukohdeObject);
-                      
+                    AuthService.readOrg(hakukohdeObject.tarjoajaOid).then(function() {
+                        model.hakukohteet.push(hakukohdeObject);
+                    });
                   });
-
               });
 
             });
