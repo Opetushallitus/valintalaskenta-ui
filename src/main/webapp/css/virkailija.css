@@ -316,11 +316,6 @@ table {
 /* font-size */
 /***  Functions
 ************************************************/
-/*** Overflow
-************************************************/
-.overflow-x-auto {
-  overflow-x: auto; }
-
 /*** Display
 ************************************************/
 .inline-block {
@@ -1377,7 +1372,6 @@ h1, h2, h3, h4,
 
 h1,
 .h1 {
-  line-height: 1.5em;
   font-size: 1.30769em; }
 
 h2,
@@ -1498,44 +1492,26 @@ dl {
   dl dt {
     font-weight: bold;
     line-height: 1.5em;
+    height: 1.5em;
     width: 173px;
     margin: 0 15px 0 0;
     padding: 0;
     text-align: right; }
   dl dd {
-    margin: -19px 0 6px 195px;
-    padding: 0;
+    margin: -19px 0 0 195px;
+    padding: 0 0 1em;
     line-height: 1.5em;
-    height: 1.5em;
-    vertical-align: middle; }
+    height: 1.5em; }
     dl dd:after {
       clear: both; }
     dl dd .virkailija-table-1 {
       width: auto; }
 
-.dl-horizontal:before, .dl-horizontal:after {
-  display: table;
-  content: "";
-  line-height: 0; }
-  .dl-horizontal:before dt, .dl-horizontal:before dd, .dl-horizontal:after dt, .dl-horizontal:after dd {
-    line-height: 20px; }
-  .dl-horizontal:before dt, .dl-horizontal:after dt {
-    float: left;
-    width: 160px;
-    clear: left;
-    text-align: right;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; }
-  .dl-horizontal:before dd, .dl-horizontal:after dd {
-    margin-left: 180px; }
-
 /*** Wrapper
 **************************************************************/
 #application-wrapper {
   min-width: 960px;
-  max-width: 1280px;
-  margin: 0 auto;
+  margin: 0 0.625%;
   background-color: none; }
 
 /*** Form elements
@@ -3012,6 +2988,45 @@ ul.orgmenu {
   .preference-sort legend {
     display: inline; }
 
+/*** horizontal toolbar
+************************************************/
+.togglable-toolbar {
+  background-color: #f1f6f7;
+  overflow: hidden;
+  height: 700px; }
+  .togglable-toolbar .toolbar-content {
+    width: 90%;
+    float: left; }
+  .togglable-toolbar .toolbar-toggle {
+    position: relative;
+    width: 10%;
+    float: left; }
+    .togglable-toolbar .toolbar-toggle div {
+      right: 50%;
+      left: 50%;
+      position: absolute;
+      position: relative;
+      top: -4px;
+      right: -10px; }
+      .togglable-toolbar .toolbar-toggle div span {
+        display: block;
+        position: absolute;
+        text-align: center;
+        transform-origin: 50% 50%;
+        -webkit-transform-origin: 50% 50%;
+        -moz-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+        -o-transform-origin: 50% 50%;
+        transform: rotate(-90deg);
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg); }
+    .togglable-toolbar .toolbar-toggle:hover {
+      background-color: #c5e5ef; }
+    .togglable-toolbar .toolbar-toggle:after {
+      clear: both; }
+
 /*** Itemtree
 ************************************************/
 .selectlist,
@@ -3145,7 +3160,8 @@ ul.orgmenu {
   border-radius: 2px;
   padding-left: 30px;
   max-height: 700px;
-  overflow: auto; }
+  overflow: auto;
+  background-color: white; }
   .selectlist li a {
     color: #3e3e3e;
     display: block;
@@ -3394,55 +3410,59 @@ ul.dropmenu-list {
 .tabsheet {
   display: none; }
 
-.tabs .tab {
-  color: #3E3E3E;
-  background-color: #ffffff;
-  display: inline-block;
-  border: solid 1px #bdbdbd;
-  padding: 1px;
-  text-decoration: none;
-  text-shadow: 0 1px 0 white;
-  position: relative;
-  top: 1px; }
-  .tabs .tab span {
-    display: block;
-    padding: 0px 10px;
-    height: 36px;
-    line-height: 36px;
-    background: #f6f6f6;
-    background: #c6c6c6;
-    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
-    background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
-  .tabs .tab:hover span {
-    background: #c6c6c6;
-    background: whitesmoke;
-    background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
-    background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
-  .tabs .tab.current {
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 0px;
-    padding-bottom: 2px;
+.tabs {
+  font-size: 0; }
+  .tabs .tab {
+    color: #3E3E3E;
+    background-color: #ffffff;
+    display: inline-block;
+    border: solid 1px #bdbdbd;
+    padding: 1px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 white;
     position: relative;
-    top: 1px; }
-    .tabs .tab.current span {
-      background: white;
-      background: white;
-      background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
-      background: -webkit-linear-gradient(top, whitesmoke, white);
-      background: -moz-linear-gradient(top, whitesmoke, white);
-      background: -ms-linear-gradient(top, whitesmoke, white);
-      background: -o-linear-gradient(top, whitesmoke, white); }
-  .tabs .tab.disabled span, .tabs .tab.disabled:hover span {
-    background: #f6f6f6;
-    background-image: url("../img/texture-45dg-lines-96ccdb.gif"); }
+    top: 1px;
+    margin-right: 4px; }
+    .tabs .tab span {
+      display: block;
+      padding: 0px 10px;
+      height: 36px;
+      line-height: 36px;
+      background: #f6f6f6;
+      font-size: 13px;
+      background: #c6c6c6;
+      background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
+      background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
+      background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
+      background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
+      background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
+    .tabs .tab:hover span {
+      background: #c6c6c6;
+      background: whitesmoke;
+      background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
+      background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
+    .tabs .tab.current {
+      border-top-width: 1px;
+      border-right-width: 1px;
+      border-left-width: 1px;
+      border-bottom-width: 0px;
+      padding-bottom: 2px;
+      position: relative;
+      top: 1px; }
+      .tabs .tab.current span {
+        background: white;
+        background: white;
+        background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
+        background: -webkit-linear-gradient(top, whitesmoke, white);
+        background: -moz-linear-gradient(top, whitesmoke, white);
+        background: -ms-linear-gradient(top, whitesmoke, white);
+        background: -o-linear-gradient(top, whitesmoke, white); }
+    .tabs .tab.disabled span, .tabs .tab.disabled:hover span {
+      background: #f6f6f6;
+      background-image: url("../img/texture-45dg-lines-96ccdb.gif"); }
 
 /*** Popups
 ************************************************/
