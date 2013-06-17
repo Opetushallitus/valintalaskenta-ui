@@ -150,6 +150,7 @@ app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
         animator.hide(element);
 
         switch(attrs.auth) {
+
             case "crudOph":
                 AuthService.crudOph().then(function(){
                     animator.show(element);
@@ -170,26 +171,30 @@ app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
         }
 
         attrs.$observe('authOrg', function() {
-
             if(attrs.authOrg) {
-
                 switch(attrs.auth) {
                     case "crud":
                         AuthService.crudOrg(attrs.authOrg).then(function(){
                             animator.show(element);
+                        }, function(){
+                            animator.hide(element);
                         });
                         break;
 
                     case "update":
                         AuthService.updateOrg(attrs.authOrg).then(function(){
                             animator.show(element);
-                        })
+                        }, function(){
+                            animator.hide(element);
+                        });
                         break;
 
                     case "read":
                         AuthService.readOrg(attrs.authOrg).then(function(){
                             animator.show(element);
-                        })
+                        }, function(){
+                            animator.hide(element);
+                        });
                         break;
                 }
             }
