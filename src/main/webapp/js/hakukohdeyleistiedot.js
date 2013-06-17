@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-app.factory('HakukohdeModel', function(TarjontaHakukohde) {
+app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
     var model;
     model = new function() {
 
@@ -15,6 +15,9 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde) {
         this.refresh = function(hakukohdeOid) {
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.hakukohde = result;
+                HakukohdeNimi.get({hakukohdeoid: hakukohdeOid}, function(hakukohdeObject) {
+                    model.hakukohde.tarjoajaOid = hakukohdeObject.tarjoajaOid;
+                });
             });
         }
 

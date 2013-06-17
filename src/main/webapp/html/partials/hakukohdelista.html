@@ -1,10 +1,11 @@
 ﻿<div ng-controller="HakukohteetController">
 	<div class="field-search-containerbox">
 	    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" />
+	    <label>Omat hakukohteet</label><input type="checkbox" class="search" ng-model="model.filterToggle" />
 	</div>
 
 	<ul class="selectlist">
-	    <li ng-repeat="hakukohde in model.hakukohteet | filter:model.searchWord">          <!--filter:{hakukohdeKoodistoNimi:model.searchWord} -->
+	    <li ng-repeat="hakukohde in model.blender(model.filterToggle) | filter:model.searchWord">          <!--filter:{hakukohdeKoodistoNimi:model.searchWord} -->
 	        <a href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}">
 	            <span class="icon file"></span>
 	            <span class="label">

@@ -2,22 +2,22 @@
     <a ng-class="navClass('perustiedot', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/perustiedot" class="tab">
     	<span>Hakukohteen perustiedot</span>
     </a>
-    <a ng-class="navClass('hakeneet', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet" class="tab">
+    <a auth="update" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hakeneet', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet" class="tab">
     	<span>Hakeneet</span>
     </a>
-    <a ng-class="navClass('valinnanhallinta', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
+    <a auth="crudOph" ng-class="navClass('valinnanhallinta', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
     	<span>Valinnan hallinta</span>
     </a>
-    <a ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
+    <a auth="read" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
     	<span>Valintakoekutsut</span>
     </a>
     <!--
     <a ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset/pistelaskennassa" class="tab"><span>Harkinnanvaraiset hakijat</span></a>
 -->
-    <a ng-class="navClass('valintalaskentatulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintalaskentatulos" class="tab">
+    <a auth="read" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintalaskentatulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintalaskentatulos" class="tab">
     	<span>Valintalaskennan tulos</span>
     </a>
-    <a ng-class="navClass('sijoitteluntulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/sijoitteluntulos" class="tab">
+    <a auth="read" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('sijoitteluntulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/sijoitteluntulos" class="tab">
     	<span>Sijoittelun tulokset</span>
     </a>
 </div>

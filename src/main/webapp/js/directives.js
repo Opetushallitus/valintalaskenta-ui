@@ -140,3 +140,61 @@ app.directive('pane', function() {
       replace: true
     };
 });
+
+app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
+    return {
+      link : function($scope, element, attrs) {
+        //the attrs object is where the ngAnimate attribute is defined
+        var animator = $animator($scope, attrs);
+        var show = $q.deferred;
+        animator.hide(element);
+
+        switch(attrs.auth) {
+            case "crudOph":
+                AuthService.crudOph().then(function(){
+                    animator.show(element);
+                });
+                break;
+
+            case "updateOph":
+                AuthService.updateOph().then(function(){
+                    animator.show(element);
+                })
+                break;
+
+            case "readOph":
+                AuthService.readOph().then(function(){
+                    animator.show(element);
+                })
+                break;
+        }
+
+        attrs.$observe('authOrg', function() {
+
+            if(attrs.authOrg) {
+
+                switch(attrs.auth) {
+                    case "crud":
+                        AuthService.crudOrg(attrs.authOrg).then(function(){
+                            animator.show(element);
+                        });
+                        break;
+
+                    case "update":
+                        AuthService.updateOrg(attrs.authOrg).then(function(){
+                            animator.show(element);
+                        })
+                        break;
+
+                    case "read":
+                        AuthService.readOrg(attrs.authOrg).then(function(){
+                            animator.show(element);
+                        })
+                        break;
+                }
+            }
+        });
+      }
+    };
+});
+
