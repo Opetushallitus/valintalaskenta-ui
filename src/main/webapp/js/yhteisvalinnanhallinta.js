@@ -1,6 +1,6 @@
 ﻿
 
-function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi, HakuModel  ) {
+function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi, HakuModel, AktivoiHaunValintalaskenta  ) {
 	$scope.hakumodel = HakuModel;
 
     $scope.kaynnistaSijoittelu = function() {
@@ -8,4 +8,10 @@ function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoi
             Sijoitteluktivointi.aktivoi({hakuOid: hakuoid}, function() {
         });
     }
+      $scope.aktivoiHaunValintalaskenta = function() {
+          var hakuoid = $routeParams.hakuOid;
+              AktivoiHaunValintalaskenta.aktivoi({hakuOid: hakuoid}, function() {
+          });
+      }
+
 }

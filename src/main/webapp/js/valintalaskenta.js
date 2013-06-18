@@ -126,6 +126,13 @@ app.factory('Sijoitteluktivointi', function($resource) {
         aktivoi: {method: "GET"}
     })
 });
+app.factory('AktivoiHaunValintalaskenta', function($resource) {
+  return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoiHaunValintalaskenta", {}, {
+      aktivoi: {method: "GET"}
+  })
+});
+
+
 
 app.factory('KaikkiHakemukset', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/", {}, {
