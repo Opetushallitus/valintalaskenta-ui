@@ -1,20 +1,33 @@
 ﻿<div ng-controller="HakukohteetController">
-	<div class="field-search-containerbox">
-	    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" />
-	    <label>Omat hakukohteet</label><input type="checkbox" class="search" ng-model="model.filterToggle" />
+	
+	<div toolbarcontent id="toolbarcontent" class="width-90">
+		<div class="toolbar-decoration">
+			<div class="field-search-containerbox">
+			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" />
+			    <label>Omat hakukohteet</label><input type="checkbox" class="search" ng-model="model.filterToggle" />
+			</div>
+
+			<ul class="selectlist">
+			    <li ng-repeat="hakukohde in model.blender(model.filterToggle) | orderBy:'tarjoajaNimi.kieli_fi'| filter:model.searchWord">          <!--filter:{hakukohdeKoodistoNimi:model.searchWord} -->
+			        <a href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}">
+			            <span class="icon file"></span>
+			            <span class="label">
+			                {{hakukohde.tarjoajaNimi.kieli_fi}}
+			            </span>
+		                <span class="label">
+			                {{hakukohde.hakukohdeNimi.kieli_fi}}
+			            </span>
+			        </a>
+			    </li>
+			</ul>
+		</div>
 	</div>
 
-	<ul class="selectlist">
-	    <li ng-repeat="hakukohde in model.blender(model.filterToggle) | orderBy:'tarjoajaNimi.kieli_fi'| filter:model.searchWord">          <!--filter:{hakukohdeKoodistoNimi:model.searchWord} -->
-	        <a href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}">
-	            <span class="icon file"></span>
-	            <span class="label">
-	                {{hakukohde.tarjoajaNimi.kieli_fi}}
-	            </span>
-                <span class="label">
-	                {{hakukohde.hakukohdeNimi.kieli_fi}}
-	            </span>
-	        </a>
-	    </li>
-	</ul>
+	<div toolbarbtncontainer id="toolbartoggle-btn-container" class="width-10">
+		<div id="toolbartoggle-btn">
+			<div class="toolbartext-position">
+				<span class="toggle-btn-text">Hakukohdelista</span>
+			</div>
+		</div>
+	</div>
 </div>

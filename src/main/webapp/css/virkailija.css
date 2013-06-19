@@ -457,6 +457,11 @@ table {
   list-style-type: none;
   padding-left: 0; }
 
+/*** Border
+************************************************/
+.default-border {
+  border: 1px solid #eeeeee; }
+
 /*** Grids
 ************************************************/
 /* grid16 classes with gutter*/
@@ -2990,42 +2995,48 @@ ul.orgmenu {
 
 /*** horizontal toolbar
 ************************************************/
-.togglable-toolbar {
-  background-color: #f1f6f7;
+div[toolbarcontainer] {
   overflow: hidden;
   height: 700px; }
-  .togglable-toolbar .toolbar-content {
-    width: 90%;
+  div[toolbarcontainer] #toolbarcontent {
+    background-color: #f1f6f7;
+    float: left;
+    height: 700px; }
+    div[toolbarcontainer] #toolbarcontent .toolbar-decoration {
+      padding: 10px;
+      border-left: 1px solid #e4e4e4;
+      border-bottom: 1px solid #e4e4e4;
+      border-top: 1px solid #e4e4e4; }
+      div[toolbarcontainer] #toolbarcontent .toolbar-decoration .selectlist {
+        height: 615px;
+        overflow: scroll; }
+  div[toolbarcontainer] #toolbartoggle-btn-container {
     float: left; }
-  .togglable-toolbar .toolbar-toggle {
-    position: relative;
-    width: 10%;
-    float: left; }
-    .togglable-toolbar .toolbar-toggle div {
-      right: 50%;
-      left: 50%;
-      position: absolute;
+    div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn {
+      background-color: #f1f6f7;
+      width: 32px;
+      height: 700px;
+      border: 1px solid #e4e4e4;
       position: relative;
-      top: -4px;
-      right: -10px; }
-      .togglable-toolbar .toolbar-toggle div span {
-        display: block;
+      cursor: pointer; }
+      div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn:hover {
+        background-color: #c5e5ef; }
+      div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position {
         position: absolute;
-        text-align: center;
-        transform-origin: 50% 50%;
-        -webkit-transform-origin: 50% 50%;
-        -moz-transform-origin: 50% 50%;
-        -ms-transform-origin: 50% 50%;
-        -o-transform-origin: 50% 50%;
-        transform: rotate(-90deg);
-        -webkit-transform: rotate(-90deg);
-        -moz-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
-        -o-transform: rotate(-90deg); }
-    .togglable-toolbar .toolbar-toggle:hover {
-      background-color: #c5e5ef; }
-    .togglable-toolbar .toolbar-toggle:after {
-      clear: both; }
+        left: 50%;
+        top: 50%;
+        height: 0;
+        width: 0; }
+        div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text {
+          display: block;
+          color: #149ecb;
+          transform: rotate(-90deg);
+          -webkit-transform: rotate(-90deg);
+          transform-origin: 0;
+          -webkit-transform-origin: 0; }
+
+.togglecontent {
+  height: 700px; }
 
 /*** Itemtree
 ************************************************/
@@ -3159,7 +3170,6 @@ ul.orgmenu {
   border-bottom-color: #eeeeee;
   border-radius: 2px;
   padding-left: 30px;
-  max-height: 700px;
   overflow: auto;
   background-color: white; }
   .selectlist li a {
