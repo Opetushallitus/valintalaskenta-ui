@@ -254,23 +254,23 @@ app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
         var animator = $animator($scope, attrs);
         var show = $q.deferred;
         animator.hide(element);
-
+        if(!attrs.authService) return;
         switch(attrs.auth) {
 
             case "crudOph":
-                AuthService.crudOph().then(function(){
+                AuthService.crudOph(attrs.authService).then(function(){
                     animator.show(element);
                 });
                 break;
 
             case "updateOph":
-                AuthService.updateOph().then(function(){
+                AuthService.updateOph(attrs.authService).then(function(){
                     animator.show(element);
                 })
                 break;
 
             case "readOph":
-                AuthService.readOph().then(function(){
+                AuthService.readOph(attrs.authService).then(function(){
                     animator.show(element);
                 })
                 break;
@@ -280,7 +280,7 @@ app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
             if(attrs.authOrg) {
                 switch(attrs.auth) {
                     case "crud":
-                        AuthService.crudOrg(attrs.authOrg).then(function(){
+                        AuthService.crudOrg(attrs.authService, attrs.authOrg).then(function(){
                             animator.show(element);
                         }, function(){
                             animator.hide(element);
@@ -288,7 +288,7 @@ app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
                         break;
 
                     case "update":
-                        AuthService.updateOrg(attrs.authOrg).then(function(){
+                        AuthService.updateOrg(attrs.authService, attrs.authOrg).then(function(){
                             animator.show(element);
                         }, function(){
                             animator.hide(element);
@@ -296,7 +296,7 @@ app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
                         break;
 
                     case "read":
-                        AuthService.readOrg(attrs.authOrg).then(function(){
+                        AuthService.readOrg(attrs.authService, attrs.authOrg).then(function(){
                             animator.show(element);
                         }, function(){
                             animator.hide(element);

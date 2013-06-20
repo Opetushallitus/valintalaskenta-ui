@@ -16,10 +16,11 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
                     HakuOidObjects.forEach(function(element, index){
                         promises[index] = (function() {
                             var deferred = $q.defer();
-
                             HaunTiedot.get({hakuOid: element.oid}, function(result) {
                                 model.haut.push(result);
                                 deferred.resolve();    
+                            },function() {
+                                deferred.resolve();
                             });
 
                             return deferred.promise;
@@ -30,7 +31,7 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
 
                     //wait until all hakuobjects have been fetched
                     $q.all(promises).then(function() {
-                        
+
 
                         //set the previously selected haku or first in list
                         model.hakuOid = model.haut[0].oid;

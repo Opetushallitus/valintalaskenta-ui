@@ -6,6 +6,7 @@ app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, Hakuko
         this.hakukohteet = [];
         this.filtered = [];
         this.searchWord = "";
+        this.filterToggle = false;
 
         this.refresh = function(hakuOid) {
             model.hakuOid = hakuOid;
@@ -18,8 +19,7 @@ app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, Hakuko
                 
                   HakukohdeNimi.get({hakukohdeoid: element.oid}, function(hakukohdeObject) {
                     model.hakukohteet.push(hakukohdeObject);
-
-                    AuthService.readOrg(hakukohdeObject.tarjoajaOid).then(function() {
+                    AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINEN", hakukohdeObject.tarjoajaOid).then(function() {
                         model.filtered.push(hakukohdeObject);
                     });
 

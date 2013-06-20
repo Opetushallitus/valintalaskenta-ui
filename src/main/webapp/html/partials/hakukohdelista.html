@@ -5,6 +5,7 @@
 			<div class="field-search-containerbox">
 			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" />
 			    <label>Omat hakukohteet</label><input type="checkbox" class="search" ng-model="model.filterToggle" />
+                <span>{{model.blender(true).length}}/{{model.blender(false).length}}</span>
 			</div>
 
 			<ul class="selectlist">
