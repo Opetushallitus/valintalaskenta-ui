@@ -252,7 +252,7 @@ app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
       link : function($scope, element, attrs) {
         //the attrs object is where the ngAnimate attribute is defined
         var animator = $animator($scope, attrs);
-        var show = $q.deferred;
+
         animator.hide(element);
         if(!attrs.authService) return;
         switch(attrs.auth) {
