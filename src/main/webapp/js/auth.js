@@ -14,9 +14,9 @@ app.factory('AuthService', function($q, $http) {
         $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
             var found = false;
             result.split("/").forEach(function(org){
-                if( myrolesResource.indexOf(service + READ + "_" + org) > -1 ||
-                    myrolesResource.indexOf(service + UPDATE + "_" + org) > -1 ||
-                    myrolesResource.indexOf(service + CRUD + "_" + org) > -1) {
+                if( myroles.indexOf(service + READ + "_" + org) > -1 ||
+                    myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
+                    myroles.indexOf(service + CRUD + "_" + org) > -1) {
                     found = true;
                 }
             });
@@ -36,8 +36,8 @@ app.factory('AuthService', function($q, $http) {
             var found = false;
 
             result.split("/").forEach(function(org){
-                if( myrolesResource.indexOf(service + UPDATE + "_" + org) > -1 ||
-                    myrolesResource.indexOf(service + CRUD + "_" + org) > -1) {
+                if( myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
+                    myroles.indexOf(service + CRUD + "_" + org) > -1) {
                     found = true;
                 }
             });
@@ -55,7 +55,7 @@ app.factory('AuthService', function($q, $http) {
         $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
             var found = false;
             result.split("/").forEach(function(org){
-                if(myrolesResource.indexOf(service + CRUD + "_" + org) > -1) {
+                if(myroles.indexOf(service + CRUD + "_" + org) > -1) {
                     found = true;
                 }
             });
@@ -71,7 +71,7 @@ app.factory('AuthService', function($q, $http) {
       readOph : function(service) {
         var deferred = $q.defer();
 
-        if(myrolesResource.indexOf(service + READ + "_" + OPH_ORG) > -1 || myrolesResource.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myrolesResource.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
+        if(myroles.indexOf(service + READ + "_" + OPH_ORG) > -1 || myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
             deferred.resolve();
         } else {
             deferred.reject();
@@ -83,7 +83,7 @@ app.factory('AuthService', function($q, $http) {
       updateOph : function(service) {
         var deferred = $q.defer();
 
-        if(myrolesResource.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myrolesResource.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
+        if(myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
             deferred.resolve();
         } else {
             deferred.reject();
@@ -94,7 +94,7 @@ app.factory('AuthService', function($q, $http) {
 
       crudOph : function(service) {
         var deferred = $q.defer();
-        if(myrolesResource.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
+        if(myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
             deferred.resolve();
         } else {
             deferred.reject();
