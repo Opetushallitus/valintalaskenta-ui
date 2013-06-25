@@ -34,6 +34,8 @@ app.factory('AuthService', function($q, $http, $timeout) {
             }
         }
 
+        $timeout(check, 10);
+
         return deferred.promise;
       },
 
@@ -93,7 +95,6 @@ app.factory('AuthService', function($q, $http, $timeout) {
 
         $timeout(check, 10);
 
-
         return deferred.promise;
       },
 
@@ -111,6 +112,8 @@ app.factory('AuthService', function($q, $http, $timeout) {
                 }
             }
         }
+
+        $timeout(check, 10);
 
         return deferred.promise;
       },
