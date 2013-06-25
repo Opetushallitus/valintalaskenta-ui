@@ -13,7 +13,7 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var deferred = $q.defer();
 
         var check = function() {
-            if (myroles === undefined) {
+            if (typeof myroles === 'undefined') {
                 $timeout(check, 100);
             } else {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
@@ -44,7 +44,7 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var deferred = $q.defer();
 
         var check = function() {
-            if (myroles === undefined) {
+            if (typeof myroles === 'undefined') {
                 $timeout(check, 100);
             } else {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
@@ -74,7 +74,7 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var deferred = $q.defer();
 
         var check = function() {
-            if (myroles === undefined) {
+            if (typeof myroles === 'undefined') {
                 $timeout(check, 100);
             } else {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
@@ -102,7 +102,7 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var deferred = $q.defer();
 
         var check = function() {
-            if (myroles === undefined) {
+            if (typeof myroles === 'undefined') {
                 $timeout(check, 100);
             } else  {
                 if(myroles.indexOf(service + READ + "_" + OPH_ORG) > -1 || myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
@@ -122,7 +122,7 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var deferred = $q.defer();
 
         var check = function() {
-            if (myroles === undefined) {
+            if (typeof myroles === 'undefined') {
                 $timeout(check, 100);
             } else  {
                 if(myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
@@ -142,7 +142,7 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var deferred = $q.defer();
 
         var check = function() {
-            if (myroles === undefined) {
+            if (typeof myroles === 'undefined') {
                 $timeout(check, 100);
             } else  {
                 if(myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
