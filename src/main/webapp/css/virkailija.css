@@ -3033,11 +3033,35 @@ div[toolbarcontainer] {
           color: #149ecb;
           transform: rotate(-90deg);
           -webkit-transform: rotate(-90deg);
+          -o-transform: rotate(-90deg);
           transform-origin: 0;
-          -webkit-transform-origin: 0; }
+          -webkit-transform-origin: 0;
+          -o-transform-origin: 0; }
 
 .togglecontent {
   height: 700px; }
+
+/*** autocomplete directive
+************************************************/
+.autocomplete {
+  position: relative; }
+  .autocomplete .ac-options {
+    display: block;
+    list-style-type: none;
+    border: 1px solid #eeeeee;
+    padding-left: 0;
+    max-height: 150px;
+    overflow-y: scroll; }
+    .autocomplete .ac-options .ac-option {
+      padding-left: 10px;
+      line-height: 2em;
+      vertical-align: middle; }
+      .autocomplete .ac-options .ac-option:hover {
+        background-color: #ececec; }
+      .autocomplete .ac-options .ac-option:active {
+        background-color: #e4e4e4; }
+      .autocomplete .ac-options .ac-option.selected {
+        background-color: #c5e5ef; }
 
 /*** Itemtree
 ************************************************/
