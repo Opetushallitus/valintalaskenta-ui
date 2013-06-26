@@ -75,6 +75,8 @@
 function HakeneetController($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakeneetModel;
+    $scope.hakuOid =  $routeParams.hakuOid;;
+    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
     $scope.muutettu = false;

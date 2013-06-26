@@ -92,6 +92,8 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
 
 function SijoitteluntulosController($scope, $routeParams, HakukohdeModel, SijoitteluntulosModel) {
+   $scope.hakuOid =  $routeParams.hakuOid;;
+   $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);

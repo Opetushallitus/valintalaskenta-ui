@@ -51,6 +51,8 @@
 
 function ValintakoetulosController($scope, $location, $routeParams, ValintakoetulosModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
+    $scope.hakuOid =  $routeParams.hakuOid;;
+    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.model = ValintakoetulosModel;
     $scope.hakukohdeModel = HakukohdeModel;
 

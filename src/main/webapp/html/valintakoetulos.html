@@ -32,7 +32,11 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="koe in model.flatKoetulokset | orderBy:predicate:reverse">
-                        <td>{{koe.hakemusOid}}</td>
+                        <td>
+                            <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{koe.hakemusOid}}" target="_blank" >
+                                {{koe.hakemusOid}}
+                            </a>
+                            </td>
                         <td>{{koe.valintakoeOid}}</td>
                         <td>{{koe.valintakoeTunniste}}</td>
                         <td>{{koe.osallistuminen}}</td>

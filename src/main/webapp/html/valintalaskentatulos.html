@@ -32,6 +32,7 @@
                             <tr>
                                 <th>Jonosija</th>
                                 <th>Hakija</th>
+                                <th>Hakemus</th>
                                 <th>Valintatieto</th>
                                 <th>Selite</th>
                                 <th>Pistemäärä</th>
@@ -42,6 +43,11 @@
                             <tr>
                                 <td>{{tulos.jonosija}}</td>
                                 <td>{{tulos.sukunimi}}, {{tulos.etunimi}}</td>
+                                <td>
+                                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{tulos.hakemusOid}}" target="_blank" >
+                                        {{tulos.hakemusoid}}
+                                    </a>
+                                </td>
                                 <td>{{tulos.tuloksenTila}}</td>
                                 <td>
                                     <div ng-show="tulos.kuvaus"><span class="bold">Jonosija:</span> {{tulos.kuvaus}}</div>

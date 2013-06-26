@@ -24,6 +24,9 @@ public class ConfigController {
     @Value("${valintalaskenta-ui.hakemus-service-url.rest}")
     private String hakemusServiceUrl;
 
+    @Value("${valintalaskenta-ui.hakemus-ui-url}")
+    private String hakemusUiUrl;
+
     @Value("${valintalaskenta-ui.valintalaskenta-service-url.rest}")
     private String valintalaskentaServiceUrl;
 
@@ -59,6 +62,7 @@ public class ConfigController {
         append(b, "SIJOITTELU_EXCEL_URL_BASE", sijoitteluUrl);
         append(b, "SERVICE_EXCEL_URL_BASE", valintalaskentaUrl);
         append(b, "ORGANISAATIO_URL_BASE", organisaatioUrl);
+        append(b, "HAKEMUS_UI_URL_BASE", hakemusUiUrl);
         append(b, "TEMPLATE_URL_BASE", "");
         if(!authMode.isEmpty()) {
             append(b, "AUTH_MODE", authMode);
