@@ -29,6 +29,8 @@
 
 function ValintalaskentatulosController($scope, $location, $routeParams, ValintalaskentatulosModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
+    $scope.hakuOid =  $routeParams.hakuOid;;
+    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.model = ValintalaskentatulosModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
