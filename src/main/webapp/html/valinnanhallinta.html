@@ -30,8 +30,13 @@
 							<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'TAVALLINEN'">Valinnanvaihe</span>
 						</td>
 						<td>
-		                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN'" ng-click="kaynnistaValintalaskenta($index)" class="button small">Käynnistä laskenta</a>
-		                    <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE'" ng-click="kaynnistaValintakoelaskenta($index)" class="button small">Käynnistä valintakoelaskenta</a>
+                            <div ng-show="valinnanvaihe.aktiivinen">
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN'" ng-click="kaynnistaValintalaskenta($index)" class="button small">Käynnistä laskenta</a>
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE'" ng-click="kaynnistaValintakoelaskenta($index)" class="button small">Käynnistä valintakoelaskenta</a>
+                            </div>
+                            <div ng-show="!valinnanvaihe.aktiivinen">
+                                Valinnanvaihe ei ole aktiivinen
+                            </div>
 		                </td>
 	                </tr>
                 </tbody>
