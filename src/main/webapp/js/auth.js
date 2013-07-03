@@ -11,10 +11,12 @@ app.factory('AuthService', function($q, $http, $timeout) {
   return {
       readOrg : function(service, orgOid) {
         var deferred = $q.defer();
+        var waitTime = 10;
 
         var check = function() {
+            waitTime = waitTime + 500;
             if (typeof myroles === 'undefined') {
-                $timeout(check, 100);
+                $timeout(check, waitTime);
             } else {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
                     var found = false;
@@ -34,7 +36,7 @@ app.factory('AuthService', function($q, $http, $timeout) {
             }
         }
 
-        $timeout(check, 10);
+        $timeout(check, waitTime);
 
         return deferred.promise;
       },
@@ -42,10 +44,12 @@ app.factory('AuthService', function($q, $http, $timeout) {
       updateOrg : function(service, orgOid) {
 
         var deferred = $q.defer();
+        var waitTime = 10;
 
         var check = function() {
+            waitTime = waitTime + 500;
             if (typeof myroles === 'undefined') {
-                $timeout(check, 100);
+                $timeout(check, waitTime);
             } else {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
                     var found = false;
@@ -65,17 +69,19 @@ app.factory('AuthService', function($q, $http, $timeout) {
             }
         }
 
-        $timeout(check, 10);
+        $timeout(check, waitTime);
 
         return deferred.promise;
       },
 
       crudOrg : function(service, orgOid) {
         var deferred = $q.defer();
+        var waitTime = 10;
 
         var check = function() {
+            waitTime = waitTime + 500;
             if (typeof myroles === 'undefined') {
-                $timeout(check, 100);
+                $timeout(check, waitTime);
             } else {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
                     var found = false;
@@ -93,17 +99,19 @@ app.factory('AuthService', function($q, $http, $timeout) {
             }
         }
 
-        $timeout(check, 10);
+        $timeout(check, waitTime);
 
         return deferred.promise;
       },
 
       readOph : function(service) {
         var deferred = $q.defer();
+        var waitTime = 10;
 
         var check = function() {
+            waitTime = waitTime + 500;
             if (typeof myroles === 'undefined') {
-                $timeout(check, 100);
+                $timeout(check, waitTime);
             } else  {
                 if(myroles.indexOf(service + READ + "_" + OPH_ORG) > -1 || myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
                     deferred.resolve();
@@ -113,17 +121,19 @@ app.factory('AuthService', function($q, $http, $timeout) {
             }
         }
 
-        $timeout(check, 10);
+        $timeout(check, waitTime);
 
         return deferred.promise;
       },
 
       updateOph : function(service) {
         var deferred = $q.defer();
+        var waitTime = 10;
 
         var check = function() {
+            waitTime = waitTime + 500;
             if (typeof myroles === 'undefined') {
-                $timeout(check, 100);
+                $timeout(check, waitTime);
             } else  {
                 if(myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
                     deferred.resolve();
@@ -133,17 +143,19 @@ app.factory('AuthService', function($q, $http, $timeout) {
             }
         }
 
-        $timeout(check, 10);
+        $timeout(check, waitTime);
 
         return deferred.promise;
       },
 
       crudOph : function(service) {
         var deferred = $q.defer();
+        var waitTime = 100;
 
         var check = function() {
+            waitTime = waitTime + 500;
             if (typeof myroles === 'undefined') {
-                $timeout(check, 100);
+                $timeout(check, waitTime);
             } else  {
                 if(myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
                     deferred.resolve();
@@ -153,7 +165,7 @@ app.factory('AuthService', function($q, $http, $timeout) {
             }
         }
 
-        $timeout(check, 10);
+        $timeout(check, waitTime);
 
         return deferred.promise;
       },
