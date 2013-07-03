@@ -232,4 +232,43 @@ app.factory('JarjestyskriteeriArvo', function($resource) {
         post: {method: "POST"}
     });
 });
-
+var INTEGER_REGEXP = /^\-?\d*$/;
+app.directive('arvovalidaattori', function(){
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ctrl) {
+        	
+        	ctrl.$parsers.unshift(function(viewValue) {
+			  if (INTEGER_REGEXP.test(viewValue)) {
+				  var min = parseInt($(elm).attr("min"));
+				  var max = parseInt($(elm).attr("max"));
+				  var intVal = parseInt(viewValue);
+				  if(!isNaN(min) && !isNaN(max) && intVal) {
+					  if(min <= intVal && max >= intVal) {
+						// it is valid
+						$(elm).siblings("span").empty();
+						ctrl.$setValidity('arvovalidaattori', true);						  
+					  } else {
+						  // not in range
+						  $(elm).siblings("span").text("Arvo ei ole välillä " + min + " - " + max);
+						  ctrl.$setValidity('arvovalidaattori', false); 
+					  }
+				  } else {
+					// it is valid
+						$(elm).siblings("span").empty();
+						ctrl.$setValidity('arvovalidaattori', true);
+				  }
+				  
+				  return viewValue;
+			  } else {
+				  // it is invalid, return undefined (no model update)
+				  
+				  
+				  $(elm).siblings("span").text("Arvo ei ole laillinen!");
+				  ctrl.$setValidity('arvovalidaattori', false);
+			        return undefined;
+			      }
+			    });
+        }
+    };
+});

@@ -13,14 +13,14 @@
                 HakukohdeAvaimet.post(params, function(result) {
                     model.avaimet = result;
 
-//                    model.avaimet.forEach(function(avain){
-//                       avain.tyyppi = function(){
-//                           if(avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
-//                               return "checkbox";
-//                           }
-//                           return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
-//                       };
-//                    });
+                    model.avaimet.forEach(function(avain){
+                       avain.tyyppi = function(){
+                           if(avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
+                               return "checkbox";
+                           }
+                           return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
+                       };
+                    });
 
                     model.hakeneet.forEach(function(hakija){
                        hakija.originalData = [];
@@ -47,21 +47,64 @@
             }
 
         }
+		
+		
 
         this.submit = function() {
+        	function tallenna(hakija, avain, value) {
+        		
+        	};
+        	
             model.hakeneet.forEach( function(hakija) {
                 model.avaimet.forEach( function(avain) {
-                    if(hakija.originalData[avain.tunniste] !== hakija.additionalData[avain.tunniste]) {
-                        console.log(hakija.additionalData[avain.tunniste]);
-                        HakemusKey.put({
+                	var min = parseInt(avain.min);
+                	var max = parseInt(avain.max);
+                	var value = hakija.additionalData[avain.tunniste];
+                	var valueInt = parseInt(value);
+                	var tallenna = false;
+                	if(!isNaN(min) && !isNaN(max)) {
+                		// arvovali on kaytossa
+                		if(isNaN(valueInt)) {
+                			// tallenna jos null?
+                			if(!value) {
+                				value = "";
+                				tallenna = true;
+                				//hakija.errorField[avain.tunniste] = "";
+                			} else {
+                				// virhe roskaa
+                				//hakija.errorField[avain.tunniste] = "Arvo on virheellinen!";
+                			}
+                		} else if(min <= valueInt && max >= valueInt) {
+                			tallenna = true;
+                			//hakija.errorField[avain.tunniste] = "";
+                		} else { 
+                			// virhe ei alueella
+                			//hakija.errorField[avain.tunniste] = "Arvo ei ole arvoalueella!";
+                		}
+                		
+                	} else {
+                		// ei arvovalia. tallennetaan mita vaan?
+                		tallenna = true;
+                		//hakija.errorField[avain.tunniste] = "";
+                	}
+                	
+                	if(tallenna && hakija.originalData[avain.tunniste] !== value) {
+                		HakemusKey.put({
                             "oid": hakija.applicationOid,
                             "key": avain.tunniste,
-                            "value": hakija.additionalData[avain.tunniste]
+                            "value": value
                             }
-                        , function(result){
-
+                        , function(){
+                        	hakija.originalData[avain.tunniste] = value;
                         });
+        			}
+                	
+                    /*
+                	if(hakija.originalData[avain.tunniste] !== hakija.additionalData[avain.tunniste]) {
+                        console.log(hakija.additionalData[avain.tunniste]);
+                        
                     }
+                    */
                 });
             });
         };
