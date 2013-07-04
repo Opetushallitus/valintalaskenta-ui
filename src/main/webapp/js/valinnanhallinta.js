@@ -44,7 +44,7 @@ function ValinnanhallintaController($scope, $location, $routeParams, Valinnanhal
         var hakukohdeOid = $routeParams.hakukohdeOid;
         ValintalaskentaAktivointi.aktivoi({hakukohdeOid: hakukohdeOid, valinnanvaihe: valinnanvaihe}, function(success) {
         }, function(error) {
-        	alert("Valintalaskennan suoritus keskeytyi palvelin virheeseen: " + aktivoierror.data);
+        	alert("Valintalaskennan suoritus keskeytyi palvelin virheeseen: " + error.data);
         });
     }
 
@@ -52,7 +52,7 @@ function ValinnanhallintaController($scope, $location, $routeParams, Valinnanhal
         var hakukohdeOid = $routeParams.hakukohdeOid;
         ValintakoelaskentaAktivointi.aktivoi({hakukohdeOid: hakukohdeOid}, function(success) {
         }, function(error) {
-        	alert("Valintalaskennan suoritus keskeytyi palvelin virheeseen: " + aktivoierror.data);
+        	alert("Valintalaskennan suoritus keskeytyi palvelin virheeseen: " + error.data);
         });
     }
 }
