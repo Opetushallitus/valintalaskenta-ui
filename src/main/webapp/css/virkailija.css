@@ -3489,55 +3489,59 @@ ul.dropmenu-list {
 .tabsheet {
   display: none; }
 
-.tabs .tab {
-  color: #3E3E3E;
-  background-color: #ffffff;
-  display: inline-block;
-  border: solid 1px #bdbdbd;
-  padding: 1px;
-  text-decoration: none;
-  text-shadow: 0 1px 0 #FFFFFF;
-  position: relative;
-  top: 1px; }
-  .tabs .tab span {
-    display: block;
-    padding: 0px 10px;
-    height: 36px;
-    line-height: 36px;
-    background: #f6f6f6;
-    background: #c6c6c6;
-    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
-    background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
-  .tabs .tab:hover span {
-    background: #c6c6c6;
-    background: whitesmoke;
-    background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
-    background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
-  .tabs .tab.current {
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 0px;
-    padding-bottom: 2px;
+.tabs {
+  font-size: 0; }
+  .tabs .tab {
+    color: #3E3E3E;
+    background-color: #ffffff;
+    display: inline-block;
+    border: solid 1px #bdbdbd;
+    padding: 1px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #FFFFFF;
     position: relative;
-    top: 1px; }
-    .tabs .tab.current span {
-      background: white;
-      background: white;
-      background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
-      background: -webkit-linear-gradient(top, whitesmoke, white);
-      background: -moz-linear-gradient(top, whitesmoke, white);
-      background: -ms-linear-gradient(top, whitesmoke, white);
-      background: -o-linear-gradient(top, whitesmoke, white); }
-  .tabs .tab.disabled span, .tabs .tab.disabled:hover span {
-    background: #f6f6f6;
-    background-image: url("../img/texture-45dg-lines-96ccdb.gif"); }
+    top: 1px;
+    margin-right: 4px; }
+    .tabs .tab span {
+      display: block;
+      padding: 0px 10px;
+      height: 36px;
+      line-height: 36px;
+      background: #f6f6f6;
+      background: #c6c6c6;
+      background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
+      background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
+      background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
+      background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
+      background: -o-linear-gradient(top, whitesmoke, #c6c6c6);
+      font-size: 13px; }
+    .tabs .tab:hover span {
+      background: #c6c6c6;
+      background: whitesmoke;
+      background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
+      background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
+    .tabs .tab.current {
+      border-top-width: 1px;
+      border-right-width: 1px;
+      border-left-width: 1px;
+      border-bottom-width: 0px;
+      padding-bottom: 2px;
+      position: relative;
+      top: 1px; }
+      .tabs .tab.current span {
+        background: white;
+        background: white;
+        background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
+        background: -webkit-linear-gradient(top, whitesmoke, white);
+        background: -moz-linear-gradient(top, whitesmoke, white);
+        background: -ms-linear-gradient(top, whitesmoke, white);
+        background: -o-linear-gradient(top, whitesmoke, white); }
+    .tabs .tab.disabled span, .tabs .tab.disabled:hover span {
+      background: #f6f6f6;
+      background-image: url("../img/texture-45dg-lines-96ccdb.gif"); }
 
 /*** Popups
 ************************************************/
