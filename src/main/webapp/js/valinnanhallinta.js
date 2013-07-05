@@ -42,13 +42,17 @@ function ValinnanhallintaController($scope, $location, $routeParams, Valinnanhal
 
     $scope.kaynnistaValintalaskenta = function(valinnanvaihe) {
         var hakukohdeOid = $routeParams.hakukohdeOid;
-        ValintalaskentaAktivointi.aktivoi({hakukohdeOid: hakukohdeOid, valinnanvaihe: valinnanvaihe}, function() {
+        ValintalaskentaAktivointi.aktivoi({hakukohdeOid: hakukohdeOid, valinnanvaihe: valinnanvaihe}, function(success) {
+        }, function(error) {
+        	alert("Valintalaskennan suoritus keskeytyi palvelin virheeseen: " + error.data);
         });
     }
 
     $scope.kaynnistaValintakoelaskenta = function() {
         var hakukohdeOid = $routeParams.hakukohdeOid;
-        ValintakoelaskentaAktivointi.aktivoi({hakukohdeOid: hakukohdeOid}, function() {
+        ValintakoelaskentaAktivointi.aktivoi({hakukohdeOid: hakukohdeOid}, function(success) {
+        }, function(error) {
+        	alert("Valintalaskennan suoritus keskeytyi palvelin virheeseen: " + error.data);
         });
     }
 }
