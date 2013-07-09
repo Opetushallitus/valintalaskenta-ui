@@ -12,6 +12,9 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
         this.refresh = function(hakuOid, hakukohdeOid) {
             model.hakuOid=hakuOid;
             model.hakukohdeOid=hakukohdeOid;
+            model.sijoittelu = {};
+            model.latestSijoitteluajo = {};
+            model.sijoitteluTulokset = {};
             SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
                 if(result && result.length > 0) {
                     model.latestSijoitteluajo = result[0];

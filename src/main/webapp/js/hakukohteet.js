@@ -11,10 +11,10 @@ app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, Hakuko
         this.refresh = function(hakuOid) {
             model.hakuOid = hakuOid;
             model.hakukohteet = [];
+            model.filtered = [];
             HakuHakukohdeChildren.get({"hakuOid": hakuOid}, function(result) {
               var hakukohdeOids = result;
 
-              
               hakukohdeOids.forEach(function(element, index) {
                 
                   HakukohdeNimi.get({hakukohdeoid: element.oid}, function(hakukohdeObject) {
