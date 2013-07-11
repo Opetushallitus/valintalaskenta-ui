@@ -94,7 +94,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 });
 
 
-function SijoitteluntulosController($scope, $routeParams, HakukohdeModel, SijoitteluntulosModel) {
+function SijoitteluntulosController($scope, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel, Hyvaksymiskirjeet, Jalkiohjauskirjeet, Osoitetarrat) {
    $scope.hakuOid =  $routeParams.hakuOid;;
    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
@@ -106,6 +106,23 @@ function SijoitteluntulosController($scope, $routeParams, HakukohdeModel, Sijoit
     $scope.updateHakemuksenTila = function(tila,valintatapajonoOid, hakemusOid) {
         $scope.model.udpateHakemuksenTila(tila,valintatapajonoOid, hakemusOid);
     }
-
+    
+    $scope.addressLabelPDF = function() {
+    	var json = {"addressLabels":[{"firstName":"Etunimi","lastName":"Sukunimi","addressline":"Osoiterivi1","addressline2":"Osoiterivi2","addressline3":"Osoiterivi3","postalCode":"00500","city":"Helsinki","region":"Kallio","country":"Suomi","countryCode":"FI"}]};
+    	
+    	Osoitetarrat.lataaPDF(json);
+    }
+    
+    $scope.hyvaksymiskirjePDF = function() {
+    	var json = {"letters":[{"addressLabel":{"firstName":"Simo","lastName":"Vaatehuone","addressline":"kuustosenkuja 6","addressline2":"","addressline3":"","postalCode":"66000","city":"Seinäjoki","region":"Etelä-Pohjanmaa","country":"Suomi","countryCode":"FI_fi"},"languageCode":"FI_fi","koulu":"Musiikkilukio","koulutus":"Yo","tulokset":[]}]};
+    	
+    	Hyvaksymiskirjeet.lataaPDF(json);
+    	
+    }
+    $scope.jalkiohjauskirjePDF = function() {
+    	var json = {"letters":[{"addressLabel":{},"languageCode":"FI_fi","tulokset":[]}]};
+    	
+    	Jalkiohjauskirjeet.lataaPDF(json);
+    }
     $scope.sijoitteluntulosExcelExport = SIJOITTELU_EXCEL_URL_BASE + "resources/export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid + "&hakukohdeOid=" +$routeParams.hakukohdeOid;
 }

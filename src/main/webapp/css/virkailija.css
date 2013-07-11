@@ -1945,7 +1945,7 @@ table.dropmenu-table {
   display: block; }
 
 /*
-	Taulukko tyyli perustietojen näyttämiselle, esim. hakijan henkilötietot
+	Taulukko tyyli perustietojen nï¿½yttï¿½miselle, esim. hakijan henkilï¿½tietot
 */
 .perustieto-table {
   width: 100%; }
@@ -2202,6 +2202,11 @@ a.button {
   .button.small.excel, button.small.excel {
     padding-left: 30px;
     background-image: url("../img/excel-icon.png");
+    background-repeat: no-repeat;
+    background-position: 5px center; }
+  .button.small.pdf, button.small.pdf {
+    padding-left: 30px;
+    background-image: url("../img/pdf-icon.png");
     background-repeat: no-repeat;
     background-position: 5px center; }
   .button.disabled, .button:disabled, .button[disabled], button.disabled, button:disabled, button[disabled] {

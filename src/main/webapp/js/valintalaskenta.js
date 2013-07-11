@@ -4,6 +4,7 @@ var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
 var VALINTAPERUSTEET_URL_BASE = VALINTAPERUSTEET_URL_BASE || "";
 var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
+var VALINTALASKENTAKOOSTE_URL_BASE_HTTP = VALINTALASKENTAKOOSTE_URL_BASE.replace(/:\d{4}/, '');
 var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 var SERVICE_EXCEL_URL_BASE = SERVICE_EXCEL_URL_BASE || "";
 var SIJOITTELU_EXCEL_URL_BASE = SIJOITTELU_EXCEL_URL_BASE || "";
@@ -126,13 +127,51 @@ app.factory('Sijoitteluktivointi', function($resource) {
         aktivoi: {method: "GET"}
     })
 });
+
 app.factory('AktivoiHaunValintalaskenta', function($resource) {
   return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoiHaunValintalaskenta", {}, {
       aktivoi: {method: "GET"}
   })
 });
 
+app.factory('Hyvaksymiskirjeet', function($http,$window) {
+  return { lataaPDF: function(batch) {
+	  return $http({
+		    method: 'POST',
+		    url: VALINTALASKENTAKOOSTE_URL_BASE_HTTP + "resources/hyvaksymiskirjeBatch/aktivoi/",
+		    data: batch
+		}).success(function(data) {
+			$window.location.href = data;
+		})
+	}
+  }
+});
 
+app.factory('Jalkiohjauskirjeet', function($http,$window) {
+  return { lataaPDF: function(batch) {
+	  return $http({
+		    method: 'POST',
+		    url: VALINTALASKENTAKOOSTE_URL_BASE_HTTP + "resources/jalkiohjauskirjeBatch/aktivoi/",
+		    data: batch
+		}).success(function(data) {
+			$window.location.href = data;
+		})
+	}
+  }
+});
+
+app.factory('Osoitetarrat', function($http,$window) {
+  return { lataaPDF: function(batch) {
+	  return $http({
+		    method: 'POST',
+		    url: VALINTALASKENTAKOOSTE_URL_BASE_HTTP + "resources/addressLabelBatch/aktivoi/",
+		    data: batch
+		}).success(function(data) {
+			$window.location.href = data;
+		})
+	}
+  }
+});
 
 app.factory('KaikkiHakemukset', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/", {}, {
