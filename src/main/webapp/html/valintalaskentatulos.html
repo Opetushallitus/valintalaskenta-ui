@@ -4,9 +4,8 @@
 
 <div toggletoolbar class="tabsheets">
 
-    <div toolbarcontainer class="grid16-5" ng-include="'partials/hakukohdelista.html'"></div>
-
-    <div contentcontainer class="grid16-11">
+    <div toolbarcontainer toggle-off="grid16-1" toggle-on="grid16-5" ng-include="'partials/hakukohdelista.html'"></div>
+    <div contentcontainer toggle-on="grid16-11" toggle-off="grid16-15">
         <div ng-include="'partials/hakukohdeNavigation.html'" />
 
 		<div class="tabsheets">
@@ -37,6 +36,7 @@
                                 <th>Selite</th>
                                 <th>Pistemäärä</th>
                                 <th>Harkinnanvarainen</th>
+                                <th>Historia</th>
                             </tr>
                         </thead>
                         <tbody ng-repeat="tulos in valintatapajono.jonosijat">
@@ -56,6 +56,7 @@
                                 <td><span ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"> {{jarjestyskriteeri.arvo}} <span ng-show="(tulos.jarjestyskriteerit.length - 1) === $index"> / </span></span>
                                 </td>
                                 <td><input type="checkbox" ng-model="tulos.harkinnanvarainen" disabled /></td>
+                                <td><a ng-click="showHistory(tulos.historiat)" class="button small">Avaa</a></td>
                             </tr>
                         </tbody>
                     </table>
