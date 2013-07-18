@@ -53,8 +53,6 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
     	        var text = document.createTextNode(historia.funktio+ " ");
     	        
-    	        var tulos = document.createElement("strong");
-    	        tulos.appendChild(document.createTextNode(" "+historia.tulos));
     	        
     	        li.appendChild(text );
     	        
@@ -66,8 +64,17 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     	    	});
     	        
     	        
-    	        
+    	        var tulos = document.createElement("strong");
+    	        tulos.appendChild(document.createTextNode(" "+historia.tulos));
     	        li.appendChild(tulos );
+    	        
+    	        angular.forEach(historia.tilat, function(arvo){
+    	        	var span = document.createElement("span");
+    	        	$(span).attr("style", "color:blue;");
+        	        span.appendChild(document.createTextNode(" " + arvo.tilatyyppi + " "));
+        	        li.appendChild(span);    
+    	    	});
+    	        
     	        if (historia.historiat) {
     	             li.appendChild(to_ul(historia.historiat));
     	        }
