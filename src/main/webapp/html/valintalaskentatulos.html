@@ -3,9 +3,11 @@
 <div ng-include="'partials/topNavigation.html'" />
 
 <div toggletoolbar class="tabsheets">
-
-    <div toolbarcontainer toggle-off="grid16-1" toggle-on="grid16-5" ng-include="'partials/hakukohdelista.html'"></div>
-    <div contentcontainer toggle-on="grid16-11" toggle-off="grid16-15">
+	<!--
+		  toolbarcontainer toggle-off="grid16-1" toggle-on="grid16-5" 
+ 	-->
+    <div  toolbarcontainer class="grid16-5" ng-include="'partials/hakukohdelista.html'"></div>
+    <div contentcontainer class="grid16-11">
         <div ng-include="'partials/hakukohdeNavigation.html'" />
 
 		<div class="tabsheets">

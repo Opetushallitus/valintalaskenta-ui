@@ -16,6 +16,7 @@
             <p ng-hide="model.flatKoetulokset" class="notification info">Valintakoetuloksia ei ole saatavilla</p>
 
             <a ng-show="model.flatKoetulokset" href="{{valintakoetulosExcelExport}}" class="button small excel">Vie exceliin</a>
+            <a ng-show="model.flatKoetulokset" href="#" ng-click="addressLabelPDF()" class="button small pdf">Lataa osoitetarrat</a>
 
 			<div ng-show="model.flatKoetulokset" class="margin-vertical-2">
                 <!--{{model.flatKoetulokset | json}}-->
