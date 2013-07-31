@@ -65,8 +65,8 @@ function ValintakoetulosController($scope, $location, $routeParams, Valintakoetu
     $scope.valintakoetulosExcelExport = SERVICE_EXCEL_URL_BASE + "export/valintakoetulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
 
     $scope.addressLabelPDF = function() {
-    	var json = {"addressLabels":[{"firstName":"Etunimi","lastName":"Sukunimi","addressline":"Osoiterivi1","addressline2":"Osoiterivi2","addressline3":"Osoiterivi3","postalCode":"00500","city":"Helsinki","region":"Kallio","country":"Suomi","countryCode":"FI"}]};
     	
-    	Osoitetarrat.lataaPDF(json);
+    	Osoitetarrat.lataaPDF($routeParams.hakukohdeOid);
+    	
     }
 }   

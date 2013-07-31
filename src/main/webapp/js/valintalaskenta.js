@@ -162,11 +162,11 @@ app.factory('Jalkiohjauskirjeet', function($http,$window) {
 });
 
 app.factory('Osoitetarrat', function($http,$window) {
-  return { lataaPDF: function(batch) {
+  return { lataaPDF: function(hakukohdeOid) {
 	  return $http({
 		    method: 'POST',
 		    url: VALINTALASKENTAKOOSTE_URL_BASE_HTTP + "resources/addressLabelBatch/aktivoi/",
-		    data: batch
+		    params: {hakukohdeOid: hakukohdeOid}
 		}).success(function(data) {
 			$window.location.href = data;
 		})
