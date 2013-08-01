@@ -168,7 +168,11 @@ app.factory('Osoitetarrat', function($http,$window) {
 		    url: VALINTALASKENTAKOOSTE_URL_BASE_HTTP + "resources/addressLabelBatch/aktivoi/",
 		    params: {hakukohdeOid: hakukohdeOid}
 		}).success(function(data) {
+			console.log(data);
 			$window.location.href = data;
+		}).error(function(cause) {
+			console.log("error happened!");
+			console.log(cause);
 		})
 	}
   }
