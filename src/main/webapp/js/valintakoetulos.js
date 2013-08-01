@@ -49,7 +49,7 @@
 });
 
 
-function ValintakoetulosController($scope, $location, $routeParams, ValintakoetulosModel, HakukohdeModel, Osoitetarrat) {
+function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Osoitetarrat) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -66,7 +66,9 @@ function ValintakoetulosController($scope, $location, $routeParams, Valintakoetu
 
     $scope.addressLabelPDF = function() {
     	
-    	Osoitetarrat.lataaPDF($routeParams.hakukohdeOid);
-    	
+    	Osoitetarrat.lataaPDF($routeParams.hakukohdeOid).aktivoi(function(resurssi) {
+    		console.log(resurssi.latausUrl);
+    		$window.location.href = resurssi.latausUrl;
+    	});
     }
 }   
