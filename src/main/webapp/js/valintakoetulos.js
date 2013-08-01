@@ -67,7 +67,6 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     $scope.addressLabelPDF = function() {
     	
     	Osoitetarrat.lataaPDF($routeParams.hakukohdeOid).aktivoi(function(resurssi) {
-    		console.log(resurssi.latausUrl);
     		$window.location.href = resurssi.latausUrl;
     	});
     }
