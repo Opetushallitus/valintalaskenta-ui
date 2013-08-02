@@ -136,9 +136,9 @@ app.factory('AktivoiHaunValintalaskenta', function($resource) {
 });
 
 app.factory('Osoitetarrat', function($resource,$window) {
-	return { lataaPDF: function(hakukohdeOid) {
+	return { lataaPDF: function(hakukohdeOid, valintakoeOid) {
 		return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/addressLabelBatch/aktivoi", {}, {
-			aktivoi: {method: "POST", params:{hakukohdeOid: hakukohdeOid}}
+			aktivoi: {method: "POST", params:{hakukohdeOid: hakukohdeOid, valintakoeOid:valintakoeOid}}
 		});
 		
 		}
