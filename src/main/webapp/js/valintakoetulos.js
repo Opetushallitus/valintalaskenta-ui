@@ -49,7 +49,7 @@
 });
 
 
-function ValintakoetulosController($scope, $location, $routeParams, ValintakoetulosModel, HakukohdeModel, Osoitetarrat) {
+function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Osoitetarrat) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -65,8 +65,9 @@ function ValintakoetulosController($scope, $location, $routeParams, Valintakoetu
     $scope.valintakoetulosExcelExport = SERVICE_EXCEL_URL_BASE + "export/valintakoetulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
 
     $scope.addressLabelPDF = function() {
-    	var json = {"addressLabels":[{"firstName":"Etunimi","lastName":"Sukunimi","addressline":"Osoiterivi1","addressline2":"Osoiterivi2","addressline3":"Osoiterivi3","postalCode":"00500","city":"Helsinki","region":"Kallio","country":"Suomi","countryCode":"FI"}]};
     	
-    	Osoitetarrat.lataaPDF(json);
+    	Osoitetarrat.lataaPDF($routeParams.hakukohdeOid).aktivoi(function(resurssi) {
+    		$window.location.href = resurssi.latausUrl;
+    	});
     }
 }   

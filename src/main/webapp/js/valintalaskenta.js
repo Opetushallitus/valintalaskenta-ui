@@ -135,6 +135,16 @@ app.factory('AktivoiHaunValintalaskenta', function($resource) {
   })
 });
 
+app.factory('Osoitetarrat', function($resource,$window) {
+	return { lataaPDF: function(hakukohdeOid) {
+		return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/addressLabelBatch/aktivoi", {}, {
+			aktivoi: {method: "POST", params:{hakukohdeOid: hakukohdeOid}}
+		});
+		
+		}
+	}
+});
+
 app.factory('Hyvaksymiskirjeet', function($http,$window) {
   return { lataaPDF: function(batch) {
 	  return $http({
@@ -161,18 +171,7 @@ app.factory('Jalkiohjauskirjeet', function($http,$window) {
   }
 });
 
-app.factory('Osoitetarrat', function($http,$window) {
-  return { lataaPDF: function(batch) {
-	  return $http({
-		    method: 'POST',
-		    url: VALINTALASKENTAKOOSTE_URL_BASE_HTTP + "resources/addressLabelBatch/aktivoi/",
-		    data: batch
-		}).success(function(data) {
-			$window.location.href = data;
-		})
-	}
-  }
-});
+
 
 app.factory('KaikkiHakemukset', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/", {}, {
