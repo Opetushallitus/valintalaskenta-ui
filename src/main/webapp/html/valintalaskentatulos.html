@@ -55,7 +55,7 @@
                                     <div ng-show="tulos.kuvaus"><span class="bold">Jonosija:</span> {{tulos.kuvaus}}</div>
                                     <div ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"><span ng-show="jarjestyskriteeri.kuvaus" class="bold">Järjestyskriteeri {{$index}}:</span> {{jarjestyskriteeri.kuvaus}}</div>
                                 </td>
-                                <td><span ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"> {{jarjestyskriteeri.arvo}} <span ng-show="(tulos.jarjestyskriteerit.length - 1) === $index"> / </span></span>
+                                <td><span ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit" > {{jarjestyskriteeri.arvo}}<span ng-show="jarjestyskriteeri.arvo==undefined">-</span> <span ng-show="(tulos.jarjestyskriteerit.length - 1) === $index"> / </span></span>
                                 </td>
                                 <td>
                                     <input type="checkbox" ng-model="tulos.harkinnanvarainen" disabled />
