@@ -38,6 +38,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     $scope.valintalaskentatulosExcelExport = SERVICE_EXCEL_URL_BASE + "export/valintalaskentatulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
     
     $scope.showHistory = function(msg) {
+    	console.log(msg);
     	// historia on taulukko merkkijonoja. konvertoidaan jsoniksi
     	var historiat = [];
     	angular.forEach(msg, function(historiaString){

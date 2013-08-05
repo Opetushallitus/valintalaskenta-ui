@@ -13,33 +13,29 @@
 		<div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
             
-            <p ng-hide="model.flatKoetulokset" class="notification info">Valintakoetuloksia ei ole saatavilla</p>
+            <p ng-hide="model.valintakokeet" class="notification info">Valintakoetuloksia ei ole saatavilla</p>
 
-            <a ng-show="model.flatKoetulokset" href="{{valintakoetulosExcelExport}}" class="button small excel">Vie exceliin</a>
-            <a ng-show="model.flatKoetulokset" ng-click="addressLabelPDF(); $event.stopPropagation()" class="button small pdf">Lataa osoitetarrat</a>
-
-			<div ng-show="model.flatKoetulokset" class="margin-vertical-2">
-                <!--{{model.flatKoetulokset | json}}-->
-                <h2>Valintakoetulokset</h2>
-                <table class="virkailija-table-1">
+            
+			
+			<div ng-repeat="valintakoe in model.valintakokeet" class="margin-vertical-2">
+				<h2>{{valintakoe.valintakoeTunniste}}</h2>
+				<a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
+            	<a ng-click="addressLabelPDF(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small pdf">Lataa osoitetarrat</a>
+				<table class="virkailija-table-1">
                     <thead>
                     <tr>
                         <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Hakemus OID</a></th>
-                        <th><a href="" ng-click="predicate = 'valintakoeOid'; reverse=!reverse">Valintakoe OID</a></th>
-                        <th><a href="" ng-click="predicate = 'valintakoeTunniste'; reverse=!reverse">Valintakoetunniste</a></th>
                         <th><a href="" ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a></th>
                         <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">Laskettu pvm</a></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="koe in model.flatKoetulokset | orderBy:predicate:reverse">
+                    <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse">
                         <td>
                             <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{koe.hakemusOid}}" target="_blank" >
                                 {{koe.hakemusOid}}
                             </a>
                             </td>
-                        <td>{{koe.valintakoeOid}}</td>
-                        <td>{{koe.valintakoeTunniste}}</td>
                         <td>{{koe.osallistuminen}}</td>
                         <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
                     </tr>
@@ -47,6 +43,7 @@
                     </tbody>
                 </table>
 			</div>
+			
             <div ng-controller="HakeneetController" auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}">
 
 
