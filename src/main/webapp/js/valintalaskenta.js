@@ -259,7 +259,7 @@ app.factory('HakukohdeHenkilot', function($resource) {
 
 
 
-//Järjestyskriteerin arvon muuttaminen
+
 app.factory('JarjestyskriteeriArvo', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/arvo", {
         valintatapajonoOid: "@valintatapajonoOid",
@@ -270,6 +270,17 @@ app.factory('JarjestyskriteeriArvo', function($resource) {
         post: {method: "POST"}
     });
 });
+app.factory('JarjestyskriteeriTila', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/tila", {
+        valintatapajonoOid: "@valintatapajonoOid",
+        hakemusOid: "@hakemusOid",
+        jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti"
+    },
+    {
+        post: {method: "POST"}
+    });
+});
+
 var INTEGER_REGEXP = /^\-?\d*$/;
 app.directive('arvovalidaattori', function(){
     return {

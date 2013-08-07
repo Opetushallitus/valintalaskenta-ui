@@ -1,4 +1,4 @@
-﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriArvo) {
+﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriArvo,JarjestyskriteeriTila) {
 	var model;
 	model = new function() {
 
@@ -21,6 +21,16 @@
 
 			JarjestyskriteeriArvo.post(updateParams, kriteerinArvo, function(result) {});
 		}
+        this.updateJarjestyskriteerinTila = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, tila) {
+                var updateParams = {
+                    valintatapajonoOid: valintatapajonoOid,
+                    hakemusOid: hakemusOid,
+                    jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
+                }
+
+                JarjestyskriteeriTila.post(updateParams, tila, function(result) {});
+            }
+
 	};
 
 	return model;
@@ -36,7 +46,9 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model.refresh($scope.hakukohdeOid);
     $scope.valintalaskentatulosExcelExport = SERVICE_EXCEL_URL_BASE + "export/valintalaskentatulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
-    
+
+
+
     $scope.showHistory = function(msg) {
     	console.log(msg);
     	
@@ -92,9 +104,16 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
         my_window.document.write($(to_ul(historiat)).html());
         //alert(msg);
    };
-    /*
+
+
+    $scope.hyvaksyHarkinnanvaisesti = function(valintatapajonoOid, hakemusOid) {
+        var tila ="HYVAKSYTTY_HARKINNANVARAISESTI";
+        var prioriteetti =0;
+        $scope.model.updateJarjestyskriteerinTila(valintatapajonoOid, hakemusOid, prioriteetti, tila)
+    };
+
     $scope.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
     	$scope.model.updateJarjestyskriteerinArvo(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo);
     }
-    */
+
 }
