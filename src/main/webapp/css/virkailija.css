@@ -443,6 +443,11 @@ table {
 .clear {
   clear: both; }
 
+/*** Overflow
+************************************************/
+.overflow-x-scroll {
+  overflow-x: scroll; }
+
 /*** Table
 ************************************************/
 .white-space-nowrap {
@@ -1945,7 +1950,7 @@ table.dropmenu-table {
   display: block; }
 
 /*
-	Taulukko tyyli perustietojen nï¿½yttï¿½miselle, esim. hakijan henkilï¿½tietot
+	Taulukko tyyli perustietojen näyttämiselle, esim. hakijan henkilötietot
 */
 .perustieto-table {
   width: 100%; }
@@ -3015,25 +3020,31 @@ ul.orgmenu {
 
 /*** horizontal toolbar
 ************************************************/
+.toolbarcontainerwithouthakukohde,
 div[toolbarcontainer] {
   overflow: hidden;
   height: 700px; }
+  .toolbarcontainerwithouthakukohde #toolbarcontent,
   div[toolbarcontainer] #toolbarcontent {
     background-color: #f1f6f7;
     float: left;
     height: 700px; }
+    .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration,
     div[toolbarcontainer] #toolbarcontent .toolbar-decoration {
       padding: 10px;
       border-left: 1px solid #e4e4e4;
       border-bottom: 1px solid #e4e4e4;
       border-top: 1px solid #e4e4e4; }
+      .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration .selectlist,
       div[toolbarcontainer] #toolbarcontent .toolbar-decoration .selectlist {
         height: 624px;
         overflow: scroll;
         margin: 0 !important;
         background-color: #fff; }
+  .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container,
   div[toolbarcontainer] #toolbartoggle-btn-container {
     float: left; }
+    .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn,
     div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn {
       background-color: #f1f6f7;
       width: 32px;
@@ -3041,14 +3052,17 @@ div[toolbarcontainer] {
       position: relative;
       cursor: pointer;
       border: 1px solid #e4e4e4; }
+      .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn:hover,
       div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn:hover {
         background-color: #c5e5ef; }
+      .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position,
       div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position {
         position: absolute;
         left: 50%;
         top: 50%;
         height: 0;
         width: 0; }
+        .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text,
         div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text {
           display: block;
           color: #149ecb;
@@ -3082,10 +3096,17 @@ div[toolbarcontainer] {
               content: '<<'; 
           }
           */ }
+          .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before,
           div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before {
             margin-right: 10px; }
+          .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after,
           div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after {
             margin-left: 10px; }
+
+.toolbarcontainerwithouthakukohde .toolbar-decoration {
+  border-right: 1px solid #e4e4e4; }
+.toolbarcontainerwithouthakukohde #toolbartoggle-btn-container {
+  display: none; }
 
 .togglecontent {
   height: 700px; }
