@@ -1520,7 +1520,7 @@ dl {
 /*** Wrapper
 **************************************************************/
 #application-wrapper {
-  min-width: 960px;
+  min-width: 1200px;
   margin: 0 auto;
   background-color: none; }
 
@@ -1706,7 +1706,7 @@ label, .label {
   .virkailija-table-1 tr td,
   .virkailija-table-1 tr th {
     line-height: 2.3em;
-    padding: 0 1.5em;
+    padding: 0 0.5em;
     vertical-align: middle;
     text-align: center; }
   .virkailija-table-1 tr th a {
@@ -3530,7 +3530,7 @@ ul.dropmenu-list {
     margin-right: 4px; }
     .tabs .tab span {
       display: block;
-      padding: 0px 10px;
+      padding: 0px 7px;
       height: 36px;
       line-height: 36px;
       background: #f6f6f6;

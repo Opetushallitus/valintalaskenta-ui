@@ -39,7 +39,8 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     
     $scope.showHistory = function(msg) {
     	console.log(msg);
-    	// historia on taulukko merkkijonoja. konvertoidaan jsoniksi
+    	
+        // historia on taulukko merkkijonoja. konvertoidaan jsoniksi
     	var historiat = [];
     	angular.forEach(msg, function(historiaString){
     		historiat.push(angular.fromJson(historiaString));          
@@ -48,7 +49,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     	function to_ul(historiat) {
     	    var ul = document.createElement("ul");
 
-    	  for (var i=0, n=historiat.length; i<n; i++) {
+	        for (var i=0, n=historiat.length; i<n; i++) {
     	      var historia = historiat[i];
     	      var li = document.createElement("li");
 
@@ -87,7 +88,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     	}
     	//
     	
-    	var my_window = window.open("", "Historia", "status=1,width=1600,height=900");
+    	var my_window = window.open("", "Historia");
         my_window.document.write($(to_ul(historiat)).html());
         //alert(msg);
    };
