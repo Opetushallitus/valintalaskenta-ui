@@ -6,7 +6,7 @@
 	<!--
 		  toolbarcontainer toggle-off="grid16-1" toggle-on="grid16-5" 
  	-->
-    <div  toolbarcontainer class="grid16-5" ng-include="'partials/hakukohdelista.html'"></div>
+    <div toolbarcontainer class="grid16-5" ng-include="'partials/hakukohdelista.html'"></div>
     <div contentcontainer class="grid16-11">
         <div ng-include="'partials/hakukohdeNavigation.html'" />
 
@@ -58,8 +58,8 @@
                                 <td><span ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"> {{jarjestyskriteeri.arvo}} <span ng-show="(tulos.jarjestyskriteerit.length - 1) === $index"> / </span></span>
                                 </td>
                                 <td>
-                                    <input type="checkbox" ng-model="tulos.harkinnanvarainen" disabled />
-                                    <a ng-show="tulos.harkinnanvarainen" ng-click="showHistory(tulos.historiat)" class="button small">Hyväksy harkinnanvaraisesti</a>
+                                    <input type="checkbox" ng-model="tulos.harkinnanvarainen"  />
+                                    <a ng-show="tulos.harkinnanvarainen" ng-click="hyvaksyHarkinnanvaisesti(valintatapajono.oid, tulos.hakemusOid )" class="button small">Hyväksy harkinnanvaraisesti</a>
                                 </td>
                                 <td><a ng-click="showHistory(tulos.historiat)" class="button small">Avaa</a></td>
                             </tr>
