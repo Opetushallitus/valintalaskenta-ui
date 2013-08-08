@@ -91,8 +91,18 @@ app.directive('toggletoolbar', function() {
             element.bind('click', function() {
                 toggleClasses();
                 toggleVisibility();
+                changeArrowDirection($scope.expandedToolbar);
                 $scope.expandedToolbar = !$scope.expandedToolbar;
             });
+        }
+
+        function changeArrowDirection(expanded) {
+            var element = $scope.toolbarBtnContainer.find("div div span");
+            if(expanded) {
+                element.addClass('minimized');
+            } else {
+                element.removeClass('minimized');
+            }
         }
 
         function toggleVisibility() {
