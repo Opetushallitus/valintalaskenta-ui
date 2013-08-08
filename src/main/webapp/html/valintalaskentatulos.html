@@ -3,11 +3,9 @@
 <div ng-include="'partials/topNavigation.html'" />
 
 <div toggletoolbar class="tabsheets">
-	<!--
-		  toolbarcontainer toggle-off="grid16-1" toggle-on="grid16-5" 
- 	-->
-    <div toolbarcontainer class="grid16-5" ng-include="'partials/hakukohdelista.html'"></div>
-    <div contentcontainer class="grid16-11">
+	
+    <div toolbarcontainer firsttoolbarclass="grid16-5" secondtoolbarclass="grid16-1" ng-include="'partials/hakukohdelista.html'"></div>
+    <div contentcontainer firstcontentclass="grid16-11" secondcontentclass="grid16-15">
         <div ng-include="'partials/hakukohdeNavigation.html'" />
 
 		<div class="tabsheets">
@@ -41,8 +39,8 @@
                                 <th>Historia</th>
                             </tr>
                         </thead>
-                        <tbody ng-repeat="tulos in valintatapajono.jonosijat">
-                            <tr>
+                        <tbody>
+                            <tr ng-repeat="tulos in valintatapajono.jonosijat">
                                 <td>{{tulos.jonosija}}</td>
                                 <td>{{tulos.sukunimi}}, {{tulos.etunimi}}</td>
                                 <td>

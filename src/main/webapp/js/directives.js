@@ -59,26 +59,34 @@ app.directive('toggletoolbar', function() {
         $scope.expandedToolbar = true;
 
          //toolbar size
-        $scope.largeToolbarSize = "grid16-5";
-        $scope.smallToolbarSize = "grid16-1";
+        $scope.firstToolbarClass = "";
+        $scope.secondToolbarClass = "";
 
         //content size
-        $scope.largeContentSize = "grid16-15";
-        $scope.smallContentSize = "grid16-11";
+        $scope.firstContentClass = "";
+        $scope.secondContentClass = "";
 
-        this.setToolbarContainer = function(element) {
+        //init toolbarelement and sizes it changes
+        this.initToolbarContainer = function(element, firstToolbarClass, secondToolbarClass) {
             $scope.toolbarContainer = element;
+            $scope.firstToolbarClass = firstToolbarClass;
+            $scope.secondToolbarClass = secondToolbarClass;
+            $scope.toolbarContainer.addClass($scope.firstToolbarClass);
         }
 
-        this.setContentContainer = function(element) {
+        //init contentelement and sizes it changes
+        this.initContentContainer = function(element, firstContentClass, secondContentClass) {
             $scope.contentContainer = element;
+            $scope.firstContentClass = firstContentClass;
+            $scope.secondContentClass = secondContentClass;
+            $scope.contentContainer.addClass($scope.firstContentClass);
         }
 
-        this.setToolbarContent = function(element) {
+        this.initToolbarContent = function(element) {
             $scope.toolbarContent = element;
         }
 
-        this.setToolbarBtnContainer = function(element) {
+        this.initToolbarBtnContainer = function(element) {
             $scope.toolbarBtnContainer = element;
             element.bind('click', function() {
                 toggleClasses();
@@ -99,11 +107,11 @@ app.directive('toggletoolbar', function() {
 
         function toggleClasses() {
             if($scope.expandedToolbar) {
-              $scope.toolbarContainer.removeClass($scope.largeToolbarSize).addClass($scope.smallToolbarSize);
-              $scope.contentContainer.removeClass($scope.smallContentSize).addClass($scope.largeContentSize); 
+              $scope.toolbarContainer.removeClass($scope.firstToolbarClass).addClass($scope.secondToolbarClass);
+              $scope.contentContainer.removeClass($scope.firstContentClass).addClass($scope.secondContentClass); 
             } else {
-              $scope.toolbarContainer.removeClass($scope.smallToolbarSize).addClass($scope.largeToolbarSize);
-              $scope.contentContainer.removeClass($scope.largeContentSize).addClass($scope.smallContentSize);
+              $scope.toolbarContainer.removeClass($scope.secondToolbarClass).addClass($scope.firstToolbarClass);
+              $scope.contentContainer.removeClass($scope.secondContentClass).addClass($scope.firstContentClass);
             }    
         }
 
@@ -111,14 +119,12 @@ app.directive('toggletoolbar', function() {
     }
 });
 
-
-
 app.directive('toolbarcontainer', function() {
     return {
         restrict: 'A',
         require: '^toggletoolbar',
         link: function(scope, element, attrs, ctrl) {
-            ctrl.setToolbarContainer(element);
+            ctrl.initToolbarContainer(element, attrs.firsttoolbarclass, attrs.secondtoolbarclass);
         }
     }
 });
@@ -128,7 +134,7 @@ app.directive('contentcontainer', function() {
         restrict: 'A',
         require: '^toggletoolbar',
         link: function(scope, element, attrs, ctrl) {
-            ctrl.setContentContainer(element);
+            ctrl.initContentContainer(element, attrs.firstcontentclass, attrs.secondcontentclass);
         }
     }
 });
@@ -138,7 +144,7 @@ app.directive('toolbarcontent', function() {
         restrict: 'A',
         require: '^toggletoolbar',
         link: function(scope, element, attrs, ctrl) {
-            ctrl.setToolbarContent(element);
+            ctrl.initToolbarContent(element);
         }
     }
 });
@@ -148,7 +154,7 @@ app.directive('toolbarbtncontainer', function() {
         restrict: 'A',
         require: '^toggletoolbar',
         link: function(scope, element, attrs, ctrl) {
-            ctrl.setToolbarBtnContainer(element);
+            ctrl.initToolbarBtnContainer(element);
         }
     }
 });

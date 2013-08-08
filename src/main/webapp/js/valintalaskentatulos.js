@@ -51,9 +51,11 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
     $scope.showHistory = function(msg) {
     	console.log(msg);
+        $location.path('/haku/' + $scope.hakuOid + '/hakukohde/' + $scope.hakukohdeOid + '/hakija/' + "01293012.2112" + "/valintalaskentahistoria");
     	
         // historia on taulukko merkkijonoja. konvertoidaan jsoniksi
-    	var historiat = [];
+    	/*
+        var historiat = [];
     	angular.forEach(msg, function(historiaString){
     		historiat.push(angular.fromJson(historiaString));          
     	});
@@ -103,6 +105,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     	var my_window = window.open("", "Historia");
         my_window.document.write($(to_ul(historiat)).html());
         //alert(msg);
+        */
    };
 
 
