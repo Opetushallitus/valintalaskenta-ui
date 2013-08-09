@@ -56,7 +56,7 @@
                                 <td><span ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit" > {{jarjestyskriteeri.arvo}}<span ng-show="jarjestyskriteeri.arvo==undefined">-</span> <span ng-show="(tulos.jarjestyskriteerit.length - 1) === $index"> / </span></span>
                                 </td>
                                 <td>
-                                    <input type="checkbox" ng-model="tulos.harkinnanvarainen"  />
+                                    <input type="checkbox" ng-model="tulos.harkinnanvarainen" disabled />
                                     <a ng-show="tulos.harkinnanvarainen" ng-click="hyvaksyHarkinnanvaisesti(valintatapajono.oid, tulos.hakemusOid )" class="button small">Hyväksy harkinnanvaraisesti</a>
                                 </td>
                                 <td><a ng-click="showHistory(tulos.historiat)" class="button small">Avaa</a></td>
