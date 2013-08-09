@@ -48,7 +48,7 @@ app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, Hakuko
     return model;
 });
 
-function HakukohteetController($scope, $location, $routeParams, HakukohteetModel) {
+function HakukohteetController($rootScope, $scope, $location, $timeout, $routeParams, HakukohteetModel) {
 
    $scope.hakuOid = $routeParams.hakuOid;
    $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -59,4 +59,8 @@ function HakukohteetController($scope, $location, $routeParams, HakukohteetModel
    $scope.model = HakukohteetModel;
    $scope.model.refreshIfNeeded($scope.hakuOid, $scope.hakukohdeOid);
 
+   $scope.showHakukohde = function(hakukohdeOid) {
+      $location.path('/haku/' + $scope.hakuOid + '/hakukohde/' + hakukohdeOid + '/' + $scope.subpage);
+      //$scope.$broadcast('hideHakukohdeLista');
+   }
 }

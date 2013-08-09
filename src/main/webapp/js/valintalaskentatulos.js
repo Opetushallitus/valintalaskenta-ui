@@ -22,14 +22,14 @@
 			JarjestyskriteeriArvo.post(updateParams, kriteerinArvo, function(result) {});
 		}
         this.updateJarjestyskriteerinTila = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, tila) {
-                var updateParams = {
-                    valintatapajonoOid: valintatapajonoOid,
-                    hakemusOid: hakemusOid,
-                    jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
-                }
-
-                JarjestyskriteeriTila.post(updateParams, tila, function(result) {});
+            var updateParams = {
+                valintatapajonoOid: valintatapajonoOid,
+                hakemusOid: hakemusOid,
+                jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
             }
+
+            JarjestyskriteeriTila.post(updateParams, tila, function(result) {});
+        }
 
 	};
 
@@ -50,7 +50,6 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
 
     $scope.showHistory = function(msg) {
-    	console.log(msg);
         $location.path('/haku/' + $scope.hakuOid + '/hakukohde/' + $scope.hakukohdeOid + '/hakija/' + "01293012.2112" + "/valintalaskentahistoria");
     	
         // historia on taulukko merkkijonoja. konvertoidaan jsoniksi

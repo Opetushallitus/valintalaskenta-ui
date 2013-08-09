@@ -10,7 +10,10 @@
 
 			<ul class="selectlist">
 			    <li ng-repeat="hakukohde in model.blender(model.filterToggle) | orderBy:'tarjoajaNimi.kieli_fi'| filter:model.searchWord">          <!--filter:{hakukohdeKoodistoNimi:model.searchWord} -->
-			        <a href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}">
+			        <a ng-click="showHakukohde(hakukohde.hakukohdeOid)">
+			        	<!--
+			        		href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}"
+			        	-->
 			            <span class="icon file"></span>
 			            <span class="label">
 			                {{hakukohde.tarjoajaNimi.kieli_fi}}
