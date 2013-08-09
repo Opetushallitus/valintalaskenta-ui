@@ -8,6 +8,10 @@
     <a auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
     	<span>Valinnan hallinta</span>
     </a>
+    <a auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintakoetulos', 5)" href="#" class="tab">
+        <span>Harkinanvaraiset</span>
+    </a>
+
     <a auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
     	<span>Valintakoekutsut</span>
     </a>
