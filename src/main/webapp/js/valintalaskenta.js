@@ -21,8 +21,7 @@ app.config(function($routeProvider) {
     when('/haku/:hakuOid/hakukohde/', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohde.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdeperustiedot.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valinnanhallinta', {controller:ValinnanhallintaController, templateUrl:TEMPLATE_URL_BASE + 'valinnanhallinta.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset/pistelaskennassa', {controller:PistelaskentaController, templateUrl:TEMPLATE_URL_BASE + 'pistelaskennassa.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset/harkinnassa', {controller:HarkinnassaController, templateUrl:TEMPLATE_URL_BASE + 'harkinnassa.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset', {controller:HarkinnanvaraisetController, templateUrl:TEMPLATE_URL_BASE + 'harkinnanvaraiset.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintalaskentatulos', {controller:ValintalaskentatulosController, templateUrl:TEMPLATE_URL_BASE + 'valintalaskentatulos.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintakoetulos', {controller:ValintakoetulosController, templateUrl:TEMPLATE_URL_BASE + 'valintakoetulos.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller:HakeneetController, templateUrl:TEMPLATE_URL_BASE + 'hakeneet.html'}).
@@ -35,6 +34,10 @@ app.config(function($routeProvider) {
     when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:YhteisvalinnanHallintaController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta.html'}).
 
     otherwise({redirectTo:'/haku/'});
+
+
+
+
 });
 
  
@@ -172,13 +175,13 @@ app.factory('Jalkiohjauskirjeet', function($http,$window) {
 });
 
 
-
+     /*
 app.factory('KaikkiHakemukset', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/", {}, {
         get: {method: "GET", isArray: true}
     });
 });
-
+       */
 app.factory('Hakemus', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid", {oid: "@oid"}, {
         get: {method: "GET"}
@@ -192,22 +195,30 @@ app.factory('HakemusKey', function($resource) {
     });
 });
 
-app.factory('HakemuksenTila', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakuoid/:hakukohdeOid/:valintatapajonoOid/:hakemusOid",
-        {
-            hakuoid: "@hakuoid",
-            hakukohdeOid: "@hakukohdeoid", 
-            valintatapajonoOid: "@valintatapajonoOid", 
-            hakemusOid: "@hakemusOid"
-        }, {
-        get: {method: "GET"},
-        post: {method: "POST"}
+
+app.factory('HakukohdeHenkilot', function($resource) {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/applicant/:hakuOid/:hakukohdeOid",{hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
+        get: {method: "GET", isArray: true}
     });
 });
 
 
 
-//Sijoittelu
+
+  //Sijoittelu
+ app.factory('HakemuksenTila', function($resource) {
+     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakuoid/:hakukohdeOid/:valintatapajonoOid/:hakemusOid",
+         {
+             hakuoid: "@hakuoid",
+             hakukohdeOid: "@hakukohdeoid",
+             valintatapajonoOid: "@valintatapajonoOid",
+             hakemusOid: "@hakemusOid"
+         }, {
+         get: {method: "GET"},
+         post: {method: "POST"}
+     });
+ });
+
 app.factory('Sijoittelu', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/", {hakuOid: "@hakuOid"}, {
         get: {method: "GET"}
@@ -251,11 +262,7 @@ app.factory('HakukohdeAvaimet', function($resource) {
     });
 });
 
-app.factory('HakukohdeHenkilot', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/applicant/:hakuOid/:hakukohdeOid",{hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
-        get: {method: "GET", isArray: true}
-    });
-});
+
 app.factory('ValintalaskentaHistoriaModel', function($resource) {
     return {
     	get: function() {
