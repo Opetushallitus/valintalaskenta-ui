@@ -19,7 +19,6 @@ app.directive('jqNestable', function($timeout) {
                 itemClass: 'item',
                 maxDepth: 25,
                 canDrop: function(pointEl) {
-                    console.log(pointEl)
                     return true
                 }
             })
@@ -89,22 +88,29 @@ app.directive('toggletoolbar', function() {
         this.initToolbarBtnContainer = function(element) {
             $scope.toolbarBtnContainer = element;
             element.bind('click', function() {
-                toggleClasses();
-                toggleVisibility();
-                changeArrowDirection($scope.expandedToolbar);
-                $scope.expandedToolbar = !$scope.expandedToolbar;
+                toggleToolbarDo();
+                
             });
         }
 
-        function changeArrowDirection(expanded) {
-            var element = $scope.toolbarBtnContainer.find("div div span");
-            if(expanded) {
-                element.addClass('minimized');
-            } else {
-                element.removeClass('minimized');
-            }
+        this.toggleToolbar = function() {
+            toggleToolbarDo();
         }
 
+        function toggleToolbarDo() {
+            toggleClasses();
+            toggleVisibility();
+            changeArrowDirection($scope.expandedToolbar);
+            $scope.expandedToolbar = !$scope.expandedToolbar;
+        }
+
+        //add or remove minized css-class from element to change arrow direction
+        function changeArrowDirection(expanded) {
+            var element = $scope.toolbarBtnContainer.find("div div span");
+            element.toggleClass('minimized', expanded);
+        }
+
+        //show or hide toolbar content & change width of toolbar button
         function toggleVisibility() {
             if($scope.expandedToolbar) {
               $scope.toolbarContent.hide();
@@ -115,6 +121,7 @@ app.directive('toggletoolbar', function() {
             }
         }
 
+        //change css-classes 
         function toggleClasses() {
             if($scope.expandedToolbar) {
               $scope.toolbarContainer.removeClass($scope.firstToolbarClass).addClass($scope.secondToolbarClass);
@@ -155,6 +162,9 @@ app.directive('toolbarcontent', function() {
         require: '^toggletoolbar',
         link: function(scope, element, attrs, ctrl) {
             ctrl.initToolbarContent(element);
+            scope.$on('hideHakukohdeLista', function() {
+                ctrl.toggleToolbar();
+            });
         }
     }
 });
