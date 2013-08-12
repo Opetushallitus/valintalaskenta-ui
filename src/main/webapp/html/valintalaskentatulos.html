@@ -61,16 +61,26 @@
                                     </span>
                                     -->
                                 </td>
-                                <td>{{tulos.tuloksenTila}}</td>
                                 <td>
+                                    <a ng-click="showTilaPartial(tulos)" >
+                                        {{tulos.tuloksenTila}}
+                                    </a>
+                                    <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>                     <!--  -->
+                                </td>
+                                <td>
+                                    <!--
                                     <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{tulos.hakemusOid}}" target="_blank" >
                                         <span class="sukunimi">{{tulos.sukunimi}}</span>
                                         <span class="etunimi">{{tulos.etunimi}}</span>
                                     </a>
-                                    <ng-include src="valintalaskentatulos-partials/henkiloPartial.html" ng-show="tulos.showHenkiloPartial">
+                                        -->
+                                    <a ng-click="showHenkiloPartial(tulos)" >
+                                        <span class="sukunimi">{{tulos.sukunimi}}</span>
+                                        <span class="etunimi">{{tulos.etunimi}}</span>
+                                    </a>
+                                    <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>                     <!--  -->
 
 
-                                    </ng-include>
                                     <!--
                                     <span class="hakemusoid">
                                         <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{tulos.hakemusOid}}" target="_blank" >
