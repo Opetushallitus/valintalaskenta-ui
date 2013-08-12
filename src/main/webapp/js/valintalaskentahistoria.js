@@ -1,8 +1,8 @@
-app.factory('ValintalaskentaHistoriaModel', function() {
+/*app.factory('ValintalaskentaHistoriaModel', function() {
 	var model = new function() {
 		this.valintalaskentahistoriat = [];
 
-		/*
+		
 		var dummyHistories = [
 			
 		];
@@ -14,7 +14,7 @@ app.factory('ValintalaskentaHistoriaModel', function() {
 
 	    	console.log(model.valintalaskentahistoriat);
 		})();
-				*/	
+					
 
 		this.refresh = function(oid) {
 			//TODO tarvitaan resurssi josta hakijakohtainen valintalaskentahistoria saadaan
@@ -23,10 +23,11 @@ app.factory('ValintalaskentaHistoriaModel', function() {
 	}
 
 	return model;
-});
+});*/
 
 function ValintalaskentaHistoriaController($scope, $routeParams, ValintalaskentaHistoriaModel) {
 	$scope.hakijaOid = $routeParams.hakijaOid;
-	$scope.model = ValintalaskentaHistoriaModel;
+	$scope.model = ValintalaskentaHistoriaModel.get();
+	
 	//TODO päivitä valintalaskentahistoriamodel
 }
