@@ -30,77 +30,25 @@
                         <thead>
                             <tr>
                                 <th>Jonosija</th>
-                                <th>Pistemäärä</th>
-                                <th>Valintatieto</th>
                                 <th>Hakija</th>
-                                <th>Muokkaa</th>
-                               <!--
                                 <th>Hakemus</th>
+                                <th>Valintatieto</th>
                                 <th>Selite</th>
+                                <th>Pistemäärä</th>
                                 <th>Harkinnanvarainen hakemus</th>
                                 <th>Historia</th>
-                                --->
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="tulos in valintatapajono.jonosijat">
                                 <td>{{tulos.jonosija}}</td>
-                                <td>
-                                    <a ng-click="showHistory(tulos.historiat)" class="button small">
-                                    {{tulos.jarjestyskriteerit[0].arvo}}
-                                    </a>
-                                    <!--
-                                    <span ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit" >
-                                        {{jarjestyskriteeri.arvo}}
-                                        <span ng-show="jarjestyskriteeri.arvo==undefined">
-                                            -
-                                         </span>
-                                        <span ng-show="(tulos.jarjestyskriteerit.length - 1) === $index">
-                                            /
-                                        </span>
-                                    </span>
-                                    -->
-                                </td>
-                                <td>
-                                    <a ng-click="showTilaPartial(tulos)" >
-                                        {{tulos.tuloksenTila}}
-                                    </a>
-                                    <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>                     <!--  -->
-                                </td>
-                                <td>
-                                    <!--
-                                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{tulos.hakemusOid}}" target="_blank" >
-                                        <span class="sukunimi">{{tulos.sukunimi}}</span>
-                                        <span class="etunimi">{{tulos.etunimi}}</span>
-                                    </a>
-                                        -->
-                                    <a ng-click="showHenkiloPartial(tulos)" >
-                                        <span class="sukunimi">{{tulos.sukunimi}}</span>
-                                        <span class="etunimi">{{tulos.etunimi}}</span>
-                                    </a>
-                                    <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>                     <!--  -->
-
-
-                                    <!--
-                                    <span class="hakemusoid">
-                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{tulos.hakemusOid}}" target="_blank" >
-                                            {{tulos.hakemusOid}}
-                                        </a>
-                                    </span>
-                                    -->
-                                </td>
-                                <td>
-                                    <a ng-click="showHistory(tulos.historiat)" class="button small">Nappi joka ei tee mitään</a>
-                                </td>
-                                <!--
+                                <td>{{tulos.sukunimi}}, {{tulos.etunimi}}</td>
                                 <td>
                                     <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{tulos.hakemusOid}}" target="_blank" >
                                         {{tulos.hakemusOid}}
                                     </a>
                                 </td>
-                                -->
-
-                                <!--
+                                <td>{{tulos.tuloksenTila}}</td>
                                 <td>
                                     <div ng-show="tulos.kuvaus"><span class="bold">Jonosija:</span> {{tulos.kuvaus}}</div>
                                     <div ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"><span ng-show="jarjestyskriteeri.kuvaus" class="bold">Järjestyskriteeri {{$index}}:</span> {{jarjestyskriteeri.kuvaus}}</div>
@@ -111,8 +59,7 @@
                                     <input type="checkbox" ng-model="tulos.harkinnanvarainen" />
                                     <a ng-show="tulos.harkinnanvarainen" ng-click="hyvaksyHarkinnanvaisesti(valintatapajono.oid, tulos.hakemusOid )" class="button small">Hyväksy harkinnanvaraisesti</a>
                                 </td>
-                                <td><a ng-click="showHistory(tulos.historiat)" class="button small">Avaa</a></td>
-                                -->
+                                <td><a ng-click="showHistory(tulos)" class="button small">Avaa</a></td>
                             </tr>
                         </tbody>
                     </table>

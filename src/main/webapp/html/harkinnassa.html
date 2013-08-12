@@ -1,0 +1,62 @@
+﻿<h1>Valinnat</h1>
+
+<div class="clear"></div>
+
+<div ng-include="'partials/topNavigation.html'" />
+
+<div class="tabsheets">
+
+    <div toolbarcontainer firsttoolbarclass="grid16-5" secondtoolbarclass="grid16-1" ng-include="'partials/hakukohdelista.html'"></div>
+
+    <div contentcontainer firstcontentclass="grid16-11" secondcontentclass="grid16-15">
+        <div ng-include="'partials/hakukohdeNavigation.html'" />
+
+		<div class="tabsheets">
+
+            <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel lorem lacus. Ut eu nisi ullamcorper libero varius accumsan. 
+				Aenean luctus cursus eleifend. Phasellus ipsum arcu, sodales eu accumsan eget, lobortis eu urna. In interdum rutrum dui quis tempor. 
+			</p>
+
+            <div ng-include="'partials/harkintaNavigation.html'" />
+
+			<div class="tabsheets">
+
+				<table class="virkailija-table-4">
+					<thead>
+
+						<tr>
+							<th>Hakijat</th>
+							
+							<th>Harkintaan perustuvan haun peruste</th>
+							<th>Valintatieto</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								Aalto, Vilma
+							</td>
+							<td>
+								Lorem ipsum dolor sit amet
+							</td>
+							<td>
+								<select>
+									<option>kesken</option>
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+
+			<div class="clear"></div>
+
+			
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

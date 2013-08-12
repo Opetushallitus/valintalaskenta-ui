@@ -116,22 +116,6 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
     $scope.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
     	$scope.model.updateJarjestyskriteerinArvo(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo);
-    };
-
-
-   $scope.showTilaPartial = function(valintatulos) {
-         if(valintatulos.showTilaPartial == null || valintatulos.showTilaPartial == false) {
-             valintatulos.showTilaPartial = true;
-         } else {
-             valintatulos.showTilaPartial = false;
-         }
-     };
-    $scope.showHenkiloPartial = function(valintatulos) {
-        if(valintatulos.showHenkiloPartial == null || valintatulos.showHenkiloPartial == false) {
-            valintatulos.showHenkiloPartial = true;
-        } else {
-            valintatulos.showHenkiloPartial = false;
-        }
-    };
+    }
 
 }
