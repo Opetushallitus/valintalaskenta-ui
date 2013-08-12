@@ -1,7 +1,15 @@
 
+<script type="text/ng-template" id="historia_node.html">
+<span class="icon hakukohde file ng-scope">​{{historia.funktio}}</span>
+<ul>
+	<li ng-repeat="historia in historia.historiat" ng-include="'historia_node.html'"></li>
+</ul>
+</script>
+
 <h1>Hakija: </h1>
 <h1>Valintalaskentahistoria</h1>
 
-<ul>
-	<li>funktio: </li>
+
+
+<ul ng-repeat="historia in model" ng-include="'historia_node.html'">
 </ul>
