@@ -13,7 +13,12 @@ div.tilaParial, div.henkiloPartial  {
       /* text-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px; */
       box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px;
 }
+div.tilaParial .close, div.henkiloPartial .close {
+    float: right;
+    padding-bottom: 5px;
+    cursor: pointer;
 
+}
 /*
 div.tilaParial:after, div.henkiloPartial:after {
       content: "";
