@@ -1,7 +1,14 @@
 
+    
 <h1>Hakija: </h1>
 <h1>Valintalaskentahistoria</h1>
+<ul class="historiat" ng-repeat="historiat in model.valintalaskentahistoriat" ng-include="'history_tree_item_renderer.html'"></ul>
+	
 
-<ul>
-	<li>funktio: </li>
-</ul>
+<script type="text/ng-template" id="history_tree_item_renderer.html">
+	<li>Funktio: {{historiat.funktio}}</li>
+	<li ng-repeat="tilat in historiat.tilat">{{tilat}}</li>
+	<li>{{historiat.tulos}}</li>
+	<li>{{historiat.avaimet}}</li>
+	<ul ng-repeat="historiat in historiat.historiat" ng-include="'history_tree_item_renderer.html'"></ul>
+</script>

@@ -48,6 +48,8 @@ app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, Hakuko
     return model;
 });
 
+
+
 function HakukohteetController($rootScope, $scope, $location, $timeout, $routeParams, HakukohteetModel) {
 
    $scope.hakuOid = $routeParams.hakuOid;
@@ -61,6 +63,29 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
 
    $scope.showHakukohde = function(hakukohdeOid) {
       $location.path('/haku/' + $scope.hakuOid + '/hakukohde/' + hakukohdeOid + '/' + $scope.subpage);
+      
+      //uuden sivun lataaminen aiheuttaa työkalupalkin palauttamisen oletuskokoonsa, joten broadcast ei tässä suoraan toimi
       //$scope.$broadcast('hideHakukohdeLista');
    }
 }
+
+
+
+app.factory('GlobalStates', function() {
+  var model = new function() {
+      this.toolbarOpenState = true;
+
+
+      this.getState = function() {
+        return model.toolbarOpenState;
+      }
+
+      //change state and return new value
+      this.changeState = function() {
+        model.toolbarOpenState = !model.toolbarOpenState;
+        return model.toolbarOpenState;
+      }
+  }
+
+  return model;
+});
