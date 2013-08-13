@@ -3846,3 +3846,109 @@ ul.dropmenu-list {
   border: 1px dashed #bbbbbb;
   background-color: transparent;
   background-color: rgba(255, 255, 255, 0.75); }
+
+/*** Valintaperusteiden valintaryhmien ja hakukohteiden drag & drop
+************************************************/
+.placeholder {
+  outline: 1px dashed #4183C4;
+  /*-webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin: -1px;*/ }
+
+.mjs-nestedSortable-error {
+  background: #fbe3e4;
+  border-color: transparent; }
+
+ol {
+  margin: 0;
+  padding: 0;
+  padding-left: 30px; }
+
+ol.sortable, ol.sortable ol {
+  margin: 0 0 0 25px;
+  padding: 0;
+  list-style-type: none; }
+
+ol.sortable {
+  margin: 0 0 4em 0; }
+
+.sortable li {
+  margin: 5px 0 0 0;
+  padding: 0; }
+
+.sortable li div {
+  border: 1px solid #d4d4d4;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border-color: #D4D4D4 #D4D4D4 #BCBCBC;
+  padding: 6px;
+  margin: 0;
+  cursor: move;
+  background: #f6f6f6;
+  background: -moz-linear-gradient(top, white 0%, #f6f6f6 47%, #ededed 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(47%, #f6f6f6), color-stop(100%, #ededed));
+  background: -webkit-linear-gradient(top, white 0%, #f6f6f6 47%, #ededed 100%);
+  background: -o-linear-gradient(top, white 0%, #f6f6f6 47%, #ededed 100%);
+  background: -ms-linear-gradient(top, white 0%, #f6f6f6 47%, #ededed 100%);
+  background: linear-gradient(to bottom, white 0%, #f6f6f6 47%, #ededed 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); }
+
+.sortable li div {
+  background: -moz-linear-gradient(top, white 0%, #f6f6f6 47%, #f0ece9 100%);
+  background: -webkit-linear-gradient(top, white 0%, #f6f6f6 47%, #f0ece9 100%); }
+
+li.uiCollapsed.mjs-nestedSortable-hovering div {
+  border-color: #999;
+  background: #fafafa; }
+
+.sortable li div.state-disabled {
+  cursor: default; }
+
+.disclose {
+  cursor: pointer;
+  width: 10px;
+  display: none; }
+
+.sortable li.uiCollapsed > ol {
+  display: none; }
+
+.sortable li > div > .disclose {
+  display: inline-block; }
+
+/*** tilatiedot & henkilötiedot
+************************************************/
+div.tilaParial, div.henkiloPartial {
+  position: absolute;
+  /* width: 400px; */
+  /* height: 200px; */
+  line-height: 20px;
+  padding: 5px;
+  /* font-size: 14px; */
+  /* text-align: center; */
+  /* color: rgb(113, 157, 171); */
+  background: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  /* text-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px; */
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px; }
+
+div.tilaParial .close, div.henkiloPartial .close {
+  float: right;
+  padding-bottom: 5px;
+  cursor: pointer; }
+
+/*
+div.tilaParial:after, div.henkiloPartial:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent #FFFFFF transparent;
+      top: -24px;
+      left: 10%;
+}
+*/
