@@ -270,7 +270,7 @@ app.factory('HakukohdeHenkilot', function($resource) {
     });
 });
 app.factory('ValintalaskentaHistoria', function($resource) {
-	return $resource(SERVICE_URL_BASE + "resources/jonosijahistoria/:valintatapajonoOid/:versio/:hakemusOid", {valintatapajonoOid: "@valintatapajonoOid", versio:"@versio", hakemusOid:"@hakemusOid"}, {
+	return $resource(SERVICE_URL_BASE + "resources/jonosijahistoria/:valintatapajonoOid/:hakemusOid", {valintatapajonoOid: "@valintatapajonoOid", hakemusOid:"@hakemusOid"}, {
         get: {method: "GET", isArray: true}
     });
 	/*
