@@ -38,8 +38,7 @@
 
 
 function ValintalaskentatulosController($scope, $location, $routeParams, ValintalaskentatulosModel, HakukohdeModel, $http) {
-    $http.defaults.headers.common['withCredentials'] = true;
-    $http.defaults.withCredentials = true;
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
