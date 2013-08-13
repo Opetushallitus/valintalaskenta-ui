@@ -45,14 +45,13 @@
                                     <span class="sukunimi">{{tulos.sukunimi}}</span>,
                                     <span class="etunimi">{{tulos.etunimi}}</span>
                                 </a>
-                                <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>                     <!--  -->
+                                <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>
                             </td>
                             <td>
                                 {{tulos.jarjestyskriteerit[0].arvo}}
-                                <a ng-click="showHistory(tulos.historiat)" class="historylink">
+                                <a ng-click="showHistory(valintatapajono.oid, tulos.hakemusOid)" class="historylink">
                                     Lisätietoja
                                 </a>
-                                <a ng-click="showHistory(valintatapajono.oid, tulos.hakemusOid)" class="button small">Nappi joka ei tee mitään</a>
                             </td>
                             <td>
                                 {{tulos.prioriteetti}}
@@ -61,10 +60,10 @@
                                 <a ng-click="showTilaPartial(tulos)" >
                                     {{tulos.tuloksenTila}}
                                 </a>
-                                <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>                     <!--  -->
+                                <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>
                             </td>
                             <td>
-                                <a ng-click="showHistory(tulos.historiat)" class="button small">Nappi joka ei tee mitään</a>
+                                <a  class="button small">Nappi joka ei tee mitään</a>
                             </td>
                         </tr>
                         </tbody>
