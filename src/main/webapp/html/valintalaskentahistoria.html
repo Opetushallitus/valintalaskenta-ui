@@ -1,14 +1,16 @@
 
-    
+<script type="text/ng-template" id="historia_node.html">
+<span class="icon hakukohde file ng-scope">​{{historia.funktio}} <strong>{{historia.tulos}}</strong></span>
+<ul>
+	<li ng-repeat="historia in historia.historiat" ng-include="'historia_node.html'"></li>
+</ul>
+</script>
+
 <h1>Hakija: </h1>
 <h1>Valintalaskentahistoria</h1>
-<ul class="historiat" ng-repeat="historiat in model.valintalaskentahistoriat" ng-include="'history_tree_item_renderer.html'"></ul>
-	
 
-<script type="text/ng-template" id="history_tree_item_renderer.html">
-	<li>Funktio: {{historiat.funktio}}</li>
-	<li ng-repeat="tilat in historiat.tilat">{{tilat}}</li>
-	<li>{{historiat.tulos}}</li>
-	<li>{{historiat.avaimet}}</li>
-	<ul ng-repeat="historiat in historiat.historiat" ng-include="'history_tree_item_renderer.html'"></ul>
-</script>
+
+
+<ul>
+	<li ng-repeat="historia in model.get()" ng-include="'historia_node.html'"></li>
+</ul>

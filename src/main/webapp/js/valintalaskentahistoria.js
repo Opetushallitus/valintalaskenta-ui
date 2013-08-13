@@ -1,22 +1,37 @@
-app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria) {
-	var model = new function() {
-		this.valintalaskentahistoriat = [];
-					
-
-		this.refresh = function(oid) {
-			model.valintalaskentahistoriat = ValintalaskentaHistoria.get();
-			console.log(model.valintalaskentahistoriat);
+app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$routeParams) {
+	
+	
+	var modelInterface = {
+		model: [],
+		get: function() {
+			return this.model;
+		},
+		refresh: function() {
+			var self = this;
+			// "valintatapajonoOid") String valintatapajonoOid, @PathParam("versio")Integer versio, @PathParam("hakemusOid"
+			///haku/:hakuOid/hakukohde/:hakukohdeOid/hakija/:hakijaOid/valintalaskentahistoria
+			//valintatapajono/:valintatapajonoOid/versio/:versio/hakemus/:hakemusOid/valintalaskentahistoria
+			
+			ValintalaskentaHistoria.get({valintatapajonoOid: $routeParams.valintatapajonoOid, versio: $routeParams.versio, hakemusOid: $routeParams.hakemusOid}, function(data) {
+				var result = [];
+				angular.forEach(data, function(h) {
+					result.push(angular.fromJson(h.historia));
+				});
+				self.model = result;
+			});
+			
 		}
 
-	}
-
-	return model;
+	};
+    modelInterface.refresh();
+    return modelInterface;
 });
 
 function ValintalaskentaHistoriaController($scope, $routeParams, ValintalaskentaHistoriaModel) {
 	$scope.hakijaOid = $routeParams.hakijaOid;
 	$scope.model = ValintalaskentaHistoriaModel;
 	
-	$scope.model.refresh();
 	
+	
+	//TODO päivitä valintalaskentahistoriamodel
 }
