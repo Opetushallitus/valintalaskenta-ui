@@ -1,8 +1,14 @@
-
-
 <h1>Hakija: </h1>
 <h1>Valintalaskentahistoria</h1>
-<ul ng-repeat="historia in model.get()" ng-include="'historia_node.html'"></ul>
+
+<div class="tabs">
+	<a class="tab" ng-class="$index === historyTabIndex ? 'current' : ''" ng-click="changeTab($index)" ng-repeat="historia in model.get()"><span>{{historia.funktio}}</span></a>
+</div>
+<div class="clear"></div>
+
+<div class="tabsheets">
+	<ul ng-show="$index === historyTabIndex" ng-repeat="historia in model.get()" ng-include="'historia_node.html'"></ul>
+</div>
 
 <script type="text/ng-template" id="historia_node.html">
 	<li>{{historia.funktio}}</li>
@@ -33,7 +39,6 @@
 			<strong>{{key}}</strong> - <span>{{value}}</span>
 		</li> 
 	</ul>
-	
 	<ul>
 		<h3>Alihistoria</h3>
 		<li ng-repeat="historia in historia.historiat" ng-include="'historia_node.html'"></li>

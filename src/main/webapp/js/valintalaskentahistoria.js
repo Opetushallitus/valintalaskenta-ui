@@ -30,8 +30,12 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 function ValintalaskentaHistoriaController($scope, $routeParams, ValintalaskentaHistoriaModel) {
 	$scope.hakijaOid = $routeParams.hakijaOid;
 	$scope.model = ValintalaskentaHistoriaModel;
+
+
+	$scope.historyTabIndex = 0;	
 	
+	$scope.changeTab = function(index) {
+		$scope.historyTabIndex = index;
+	}
 	
-	
-	//TODO päivitä valintalaskentahistoriamodel
 }
