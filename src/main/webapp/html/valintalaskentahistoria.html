@@ -1,16 +1,42 @@
 
-<script type="text/ng-template" id="historia_node.html">
-<span class="icon hakukohde file ng-scope">​{{historia.funktio}} <strong>{{historia.tulos}}</strong></span>
-<ul>
-	<li ng-repeat="historia in historia.historiat" ng-include="'historia_node.html'"></li>
-</ul>
-</script>
 
 <h1>Hakija: </h1>
 <h1>Valintalaskentahistoria</h1>
+<ul ng-repeat="historia in model.get()" ng-include="'historia_node.html'"></ul>
 
+<script type="text/ng-template" id="historia_node.html">
+	<li>{{historia.funktio}}</li>
+	<li>Tulos: {{historia.tulos}}</li>
+	<li>
+		<h3>Tilat</h3>
+		<table class="virkailija-table-1">
+			<thead>
+				<tr>
+					<th>Funktiokutsuoid</th>
+					<th>Kuvaus</th>
+					<th>Tilatyyppi</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="tila in historia.tilat">
+					<td>{{tila.funktiokutsuoid}}</td>
+					<td>{{tila.kuvaus}}</td>
+					<td>{{tila.tilatyyppi}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</li>
+	<li><h3>Avaimet</h3></li>
+	<ul>
 
+		<li ng-repeat="(key, value) in historia.avaimet track by $index">
+			<strong>{{key}}</strong> - <span>{{value}}</span>
+		</li> 
+	</ul>
+	
+	<ul>
+		<h3>Alihistoria</h3>
+		<li ng-repeat="historia in historia.historiat" ng-include="'historia_node.html'"></li>
+	</ul>
+</script>
 
-<ul>
-	<li ng-repeat="historia in model.get()" ng-include="'historia_node.html'"></li>
-</ul>
