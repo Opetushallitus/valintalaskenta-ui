@@ -9,6 +9,7 @@
             model.hakukohdeOid = hakukohdeOid;
             HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
                 model.hakeneet = result;
+                /*
                 var params = [hakukohdeOid];
                 HakukohdeAvaimet.post(params, function(result) {
                     model.avaimet = result;
@@ -37,6 +38,7 @@
 
                     });
                 });
+                */
             });
 		}
 
@@ -49,7 +51,7 @@
         }
 
 
-
+           /*
         this.submit = function() {
         	function tallenna(hakija, avain, value) {
 
@@ -99,16 +101,10 @@
                         });
         			}
 
-                    /*
-                	if(hakija.originalData[avain.tunniste] !== hakija.additionalData[avain.tunniste]) {
-                        console.log(hakija.additionalData[avain.tunniste]);
-
-                    }
-                    */
                 });
             });
         };
-
+         */
 	};
 
 	return model;

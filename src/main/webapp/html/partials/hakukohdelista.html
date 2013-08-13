@@ -1,6 +1,6 @@
 ﻿<div ng-controller="HakukohteetController">
 	
-	<div toolbarcontent id="toolbarcontent" class="width-90">
+	<div toolbarcontent id="toolbarcontent" class="width-90" ng-show="hakukohteetVisible">
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
 			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" />
@@ -30,7 +30,7 @@
 	<div toolbarbtncontainer id="toolbartoggle-btn-container" class="width-10">
 		<div id="toolbartoggle-btn">
 			<div class="toolbartext-position">
-				<span class="toggle-btn-text">Hakukohdelista</span>
+				<span class="toggle-btn-text" ng-click="toggleHakukohteetVisible()">Hakukohdelista</span>
 			</div>
 		</div>
 	</div>

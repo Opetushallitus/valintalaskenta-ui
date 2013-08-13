@@ -45,7 +45,7 @@ app.directive('jqNestable', function($timeout) {
         }
     }
 });
-
+/*
 app.directive('toggletoolbar', function() {
     return {
       restrict: 'A',
@@ -178,7 +178,7 @@ app.directive('toolbarbtncontainer', function() {
         }
     }
 });
-
+*/
 
 app.directive('uiSortable', function() {
     var options;

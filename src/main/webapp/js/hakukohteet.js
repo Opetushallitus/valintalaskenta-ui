@@ -50,10 +50,11 @@ app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, Hakuko
 
 
 
-function HakukohteetController($rootScope, $scope, $location, $timeout, $routeParams, HakukohteetModel) {
+function HakukohteetController($rootScope, $scope, $location, $timeout, $routeParams, HakukohteetModel, GlobalStates) {
 
    $scope.hakuOid = $routeParams.hakuOid;
    $scope.hakukohdeOid = $routeParams.hakukohdeOid;
+   $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
 
    // Muistetaan millä alasivulla ollaan, kun vaihdetaan hakukohdetta.
    
@@ -61,31 +62,21 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
    $scope.model = HakukohteetModel;
    $scope.model.refreshIfNeeded($scope.hakuOid, $scope.hakukohdeOid);
 
+   $scope.toggleHakukohteetVisible = function() {
+       $scope.hakukohteetVisible = !$scope.hakukohteetVisible
+       GlobalStates.hakukohteetVisible = scope.hakukohteetVisible;
+   }
+
    $scope.showHakukohde = function(hakukohdeOid) {
+      $scope.hakukohteetVisible = false;
+      GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
       $location.path('/haku/' + $scope.hakuOid + '/hakukohde/' + hakukohdeOid + '/' + $scope.subpage);
-      
-      //uuden sivun lataaminen aiheuttaa työkalupalkin palauttamisen oletuskokoonsa, joten broadcast ei tässä suoraan toimi
-      //$scope.$broadcast('hideHakukohdeLista');
    }
 }
 
-
-
 app.factory('GlobalStates', function() {
-  var model = new function() {
-      this.toolbarOpenState = true;
-
-
-      this.getState = function() {
-        return model.toolbarOpenState;
-      }
-
-      //change state and return new value
-      this.changeState = function() {
-        model.toolbarOpenState = !model.toolbarOpenState;
-        return model.toolbarOpenState;
-      }
-  }
-
-  return model;
-});
+   var model = new function() {
+       this.hakukohteetVisible = true;
+   }
+   return model;
+ });
