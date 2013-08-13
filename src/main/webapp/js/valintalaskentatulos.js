@@ -50,63 +50,9 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
 
 
-    $scope.showHistory = function(msg) {
-        $location.path('/haku/' + $scope.hakuOid + '/hakukohde/' + $scope.hakukohdeOid + '/hakija/' + "01293012.2112" + "/valintalaskentahistoria");
-    	
-        // historia on taulukko merkkijonoja. konvertoidaan jsoniksi
-    	/*
-        var historiat = [];
-    	angular.forEach(msg, function(historiaString){
-    		historiat.push(angular.fromJson(historiaString));          
-    	});
-    	
-    	function to_ul(historiat) {
-    	    var ul = document.createElement("ul");
-
-	        for (var i=0, n=historiat.length; i<n; i++) {
-    	      var historia = historiat[i];
-    	      var li = document.createElement("li");
-
-    	        var text = document.createTextNode(historia.funktio+ " ");
-    	        
-    	        
-    	        li.appendChild(text );
-    	        
-    	        angular.forEach(historia.avaimet, function(arvo,avain){
-    	        	var span = document.createElement("span");
-    	        	$(span).attr("style", "color:red;");
-        	        span.appendChild(document.createTextNode(" " + avain + "=" + arvo + " "));
-        	        li.appendChild(span);    
-    	    	});
-    	        
-    	        
-    	        var tulos = document.createElement("strong");
-    	        tulos.appendChild(document.createTextNode(" "+historia.tulos));
-    	        li.appendChild(tulos );
-    	        
-    	        angular.forEach(historia.tilat, function(arvo){
-    	        	var span = document.createElement("span");
-    	        	$(span).attr("style", "color:blue;");
-        	        span.appendChild(document.createTextNode(" " + arvo.tilatyyppi + " "));
-        	        li.appendChild(span);    
-    	    	});
-    	        
-    	        if (historia.historiat) {
-    	             li.appendChild(to_ul(historia.historiat));
-    	        }
-
-    	        ul.appendChild(li);
-    	    }
-
-    	    return ul;
-    	}
-    	//
-    	
-    	var my_window = window.open("", "Historia");
-        my_window.document.write($(to_ul(historiat)).html());
-        //alert(msg);
-        */
-   };
+    $scope.showHistory = function(valintatapajonoOid, hakemusOid) {
+        $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
+    };
 
 
     $scope.hyvaksyHarkinnanvaisesti = function(valintatapajonoOid, hakemusOid) {

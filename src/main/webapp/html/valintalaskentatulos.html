@@ -15,6 +15,11 @@
             <p ng-hide="model.valinnanvaiheet" class="notification info">Kohteelle ei ole vielä suoritettu valintalaskentaa</p>
             <a ng-show="model.valinnanvaiheet" href="{{valintalaskentatulosExcelExport}}" class="button small excel">Vie exceliin</a>
 
+
+
+            <!--
+            <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
+             -->
             <div ng-repeat="valinnanvaihe in model.valinnanvaiheet">
 
                 <h3>Valinnanvaihe OID: <span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span></h3>
@@ -47,6 +52,7 @@
                                 <a ng-click="showHistory(tulos.historiat)" class="historylink">
                                     Lisätietoja
                                 </a>
+                                <a ng-click="showHistory(valintatapajono.oid, tulos.hakemusOid)" class="button small">Nappi joka ei tee mitään</a>
                             </td>
                             <td>
                                 {{tulos.prioriteetti}}
