@@ -1,4 +1,6 @@
-var app = angular.module('valintalaskenta', ['ngResource', 'loading']);
+var app = angular.module('valintalaskenta', ['ngResource', 'loading'], function($rootScopeProvider) {
+	$rootScopeProvider.digestTtl(25);
+});
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
@@ -268,7 +270,7 @@ app.factory('HakukohdeHenkilot', function($resource) {
     });
 });
 app.factory('ValintalaskentaHistoria', function($resource) {
-	return $resource(SERVICE_URL_BASE + "resources/jonosijahistoria/:valintatapajonoOid/:versio/:hakemusOid", {valintatapajonoOid: "@valintatapajonoOid", versio:"@versio", hakemusOid:"@hakemusOid"}, {
+	return $resource(SERVICE_URL_BASE + "resources/jonosijahistoria/:valintatapajonoOid/:hakemusOid", {valintatapajonoOid: "@valintatapajonoOid", hakemusOid:"@hakemusOid"}, {
         get: {method: "GET", isArray: true}
     });
 	/*
