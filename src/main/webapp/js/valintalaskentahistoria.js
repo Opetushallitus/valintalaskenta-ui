@@ -12,7 +12,7 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			///haku/:hakuOid/hakukohde/:hakukohdeOid/hakija/:hakijaOid/valintalaskentahistoria
 			//valintatapajono/:valintatapajonoOid/versio/:versio/hakemus/:hakemusOid/valintalaskentahistoria
 			
-			ValintalaskentaHistoria.get({valintatapajonoOid: $routeParams.valintatapajonoOid, versio: $routeParams.versio, hakemusOid: $routeParams.hakemusOid}, function(data) {
+			ValintalaskentaHistoria.get({valintatapajonoOid: $routeParams.valintatapajonoOid, hakemusOid: $routeParams.hakemusOid}, function(data) {
 				var result = [];
 				angular.forEach(data, function(h) {
 					result.push(angular.fromJson(h.historia));
