@@ -224,6 +224,7 @@ app.directive('uiSortable', function() {
 );
 
 // tabs
+/*
 app.directive('tabs', function() {
     return {
       restrict: 'E',
@@ -256,7 +257,8 @@ app.directive('tabs', function() {
       replace: true
     };
 });
-
+  */
+  /*
 app.directive('pane', function() {
     return {
       require: '^tabs',
@@ -272,7 +274,7 @@ app.directive('pane', function() {
       replace: true
     };
 });
-
+        */
 app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
     return {
       link : function($scope, element, attrs) {
