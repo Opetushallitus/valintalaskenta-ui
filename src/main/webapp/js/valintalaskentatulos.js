@@ -50,8 +50,8 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
 
 
-    $scope.showHistory = function(msg) {
-        $location.path('/haku/' + $scope.hakuOid + '/hakukohde/' + $scope.hakukohdeOid + '/hakija/' + "01293012.2112" + "/valintalaskentahistoria");
+    $scope.showHistory = function(valintatapajonoOid, hakemusOid) {
+        $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
     	
         // historia on taulukko merkkijonoja. konvertoidaan jsoniksi
     	/*
