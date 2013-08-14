@@ -35,7 +35,8 @@
                             <th>Yhteispisteet</th>
                             <th>Hakutoive</th>
                             <th>Valintatieto</th>
-                            <th>Muokkaa</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -64,7 +65,12 @@
                                 <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>
                             </td>
                             <td>
-                                <a  class="button small">Nappi joka ei tee mitään</a>
+                                <a ng-click="showMuutaJarjestyskriteerinArvo()" class="button small">Arvo</a>
+                                <div ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteerinArvo.html'" ng-show="tulos.showMuutaJarjestyskriteerinArvo"/>
+                            </td>
+                            <td>
+                                <a ng-click="showMuutaJarjestyskriteerinTila()" class="button small">Tila</a>
+                                <div ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteerinTila.html'" ng-show="tulos.showMuutaJarjestyskriteerinArvo"/>
                             </td>
                         </tr>
                         </tbody>
