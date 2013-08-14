@@ -103,8 +103,8 @@ function SijoitteluntulosController($scope, $routeParams, $window, $http, Hakuko
     $scope.model = SijoitteluntulosModel;
     $scope.model.refresIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
     
-    $scope.updateHakemuksenTila = function(tila,valintatapajonoOid, hakemusOid) {
-        $scope.model.udpateHakemuksenTila(tila,valintatapajonoOid, hakemusOid);
+    $scope.updateHakemuksenTila = function(tila, valintatapajonoOid, hakemusOid) {
+        $scope.model.udpateHakemuksenTila(tila, valintatapajonoOid, hakemusOid);
     }
     
     $scope.addressLabelPDF = function() {
@@ -124,5 +124,6 @@ function SijoitteluntulosController($scope, $routeParams, $window, $http, Hakuko
     	
     	Jalkiohjauskirjeet.lataaPDF(json);
     }
+
     $scope.sijoitteluntulosExcelExport = SIJOITTELU_EXCEL_URL_BASE + "resources/export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid + "&hakukohdeOid=" +$routeParams.hakukohdeOid;
 }
