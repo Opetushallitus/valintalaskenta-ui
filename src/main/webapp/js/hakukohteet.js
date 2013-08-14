@@ -64,7 +64,7 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
 
    $scope.toggleHakukohteetVisible = function() {
        $scope.hakukohteetVisible = !$scope.hakukohteetVisible
-       GlobalStates.hakukohteetVisible = scope.hakukohteetVisible;
+       GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
    }
 
    $scope.showHakukohde = function(hakukohdeOid) {

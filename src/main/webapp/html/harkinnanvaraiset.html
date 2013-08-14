@@ -25,6 +25,7 @@
                                 <th>Nimi</th>
                                 <th>Hakemus Oid</th>
                                 <th>Harkinnanvarainen tila</th>
+                                <th>Hyväksy harkinnanvaraisesti</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,7 +42,14 @@
                                     </span>
                                 </td>
                                 <td>
-
+                                    <ul>
+                                        <li ng-repeat="a in hakija.hakemus.hakutoiveet">
+                                            {{a}}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <a ng-click="hyvaksyHarkinnanvaisesti()" class="button small">hyväksy harkinnanvaraisesti</a>
                                 </td>
                             </tr>
                         </tbody>

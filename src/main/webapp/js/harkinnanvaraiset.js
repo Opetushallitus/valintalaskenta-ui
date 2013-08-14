@@ -16,6 +16,7 @@
                          });
                   });
 
+
                 /*
                 var params = [hakukohdeOid];
                 HakukohdeAvaimet.post(params, function(result) {
@@ -48,6 +49,17 @@
                 */
             });
 		}
+
+       this.updateJarjestyskriteerinTila = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, tila) {
+                var updateParams = {
+                    valintatapajonoOid: valintatapajonoOid,
+                    hakemusOid: hakemusOid,
+                    jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
+                }
+
+                JarjestyskriteeriTila.post(updateParams, tila, function(result) {});
+            };
+
 
 		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
 
@@ -135,4 +147,11 @@ function HarkinnanvaraisetController($scope, $location, $routeParams, Harkinnanv
     $scope.submit = function() {
         HakeneetModel.submit();
     }
+
+    $scope.hyvaksyHarkinnanvaisesti = function(valintatapajonoOid, hakemusOid) {
+        var tila ="HYVAKSYTTY_HARKINNANVARAISESTI";
+        var prioriteetti =0;
+        $scope.model.updateJarjestyskriteerinTila(valintatapajonoOid, hakemusOid, prioriteetti, tila)
+    };
+
 }

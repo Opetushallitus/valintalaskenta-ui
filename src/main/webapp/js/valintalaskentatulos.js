@@ -37,7 +37,7 @@
 });
 
 
-function ValintalaskentatulosController($scope, $location, $routeParams, ValintalaskentatulosModel, HakukohdeModel, $http) {
+function ValintalaskentatulosController($scope, $location, $routeParams, ValintalaskentatulosModel, HakukohdeModel) {
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
@@ -52,13 +52,6 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
     $scope.showHistory = function(valintatapajonoOid, hakemusOid) {
         $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
-    };
-
-
-    $scope.hyvaksyHarkinnanvaisesti = function(valintatapajonoOid, hakemusOid) {
-        var tila ="HYVAKSYTTY_HARKINNANVARAISESTI";
-        var prioriteetti =0;
-        $scope.model.updateJarjestyskriteerinTila(valintatapajonoOid, hakemusOid, prioriteetti, tila)
     };
 
     $scope.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
