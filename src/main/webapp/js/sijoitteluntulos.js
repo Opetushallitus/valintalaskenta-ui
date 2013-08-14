@@ -72,17 +72,20 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 			}
 		};
 
-        this.udpateHakemuksenTila = function(newtila, valintatapajonoOid, hakemusOid) {
+        this.updateHakemuksenTila = function(newtila, valintatapajonoOid, hakemusOid, selite) {
             var tilaParams = {
                 hakuoid: model.hakuOid,
                 hakukohdeOid: model.hakukohdeOid,
                 valintatapajonoOid: valintatapajonoOid,
-                hakemusOid: hakemusOid
+                hakemusOid: hakemusOid,
+                selite: selite
             }
 
             var tilaObj = {tila: newtila};
             
-            HakemuksenTila.post(tilaParams, tilaObj, function(result) {});
+            HakemuksenTila.post(tilaParams, tilaObj, function(result) {
+                model.refresh(model.hakuOid, model.hakukohdeOid);
+            });
         }
 
 	};
@@ -101,8 +104,9 @@ function SijoitteluntulosController($scope, $routeParams, $window, $http, Hakuko
     $scope.model = SijoitteluntulosModel;
     $scope.model.refresIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
     
-    $scope.updateHakemuksenTila = function(tila, valintatapajonoOid, hakemusOid) {
-        $scope.model.udpateHakemuksenTila(tila, valintatapajonoOid, hakemusOid);
+    $scope.updateHakemuksenTila = function(hakemus, valintatapajonoOid) {
+        $scope.model.updateHakemuksenTila(hakemus.muokattuTila, valintatapajonoOid, hakemus.hakemusOid, hakemus.selite);
+        hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
     }
     
     $scope.addressLabelPDF = function() {
@@ -124,4 +128,9 @@ function SijoitteluntulosController($scope, $routeParams, $window, $http, Hakuko
     }
 
     $scope.sijoitteluntulosExcelExport = SIJOITTELU_EXCEL_URL_BASE + "resources/export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid + "&hakukohdeOid=" +$routeParams.hakukohdeOid;
+
+    $scope.showMuutaHakemus = function(hakemus) {
+        hakemus.muokattuTila = "ILMOITETTU";
+        hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
+    }
 }

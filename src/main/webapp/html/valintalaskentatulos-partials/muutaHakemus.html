@@ -2,24 +2,27 @@
 <div class="modal">
     <br>
     <dl class="dl-horizontal">
-        <dt>Nimi</dt>
-        <dd><span class="sukunimi">{{tulos.sukunimi}}</span>,<span class="etunimi">{{tulos.etunimi}}</span></dd>
+        <dt>Hakijaoid</dt>
+        <dd>{{hakemus.hakijaOid}}</dd>
 
         <dt>Tila</dt>
         <dd>
-            <select ng-model="tulos.jarjestyskriteeriTila">
-                <option value="HYVAKSYTTY_HARKINNANVARAISESTI">HYVAKSYTTY_HARKINNANVARAISESTI</option>
-                <option value="HYVAKSYTTAVISSA">HYVAKSYTTAVISSA</option>
-                <option value="HYLATTY">HYLATTY</option>
-                <option value="MAARITTELEMATON">MAARITTELEMATON</option>
+            <select ng-model="hakemus.muokattuTila">
+                <option value="ILMOITETTU">ILMOITETTU</option>
+                <option value="VASTAANOTTANUT_LASNA">VASTAANOTTANUT_LASNA</option>
+                <option value="VASTAANOTTANUT_POISSAOLEVA">VASTAANOTTANUT_POISSAOLEVA</option>
+                <option value="PERUNUT">PERUNUT</option>
             </select>
         </dd>
 
-        <dt>Selite</dt><dd><input ng-model="tulos.selite" /></dd>
+        <dt>Muokkaajan kommentti</dt><dd><textarea ng-model="hakemus.selite" /></dd>
+    </dl>
+    <br/>
+    <dl class="dl-horizontal">
         <dt></dt>
         <dd>
-        <a ng-click="showMuutaHakemus(tulos)" class="button small">Peruuta</a>
-        <a ng-click="muutaHakemus(tulos, valintatapajono.valintatapajonooid)" class="button small primary">Tallenna</a>
+        <a ng-click="showMuutaHakemus(hakemus)" class="button small">Peruuta</a>
+        <a ng-click="updateHakemuksenTila(hakemus, jono.oid)" class="button small primary">Tallenna</a>
         </dd>
     </dl>
 </div>
