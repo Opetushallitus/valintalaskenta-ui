@@ -1700,7 +1700,6 @@ label, .label {
 /*** Virkailija-table-1 
 ************************************************/
 .virkailija-table-1 {
-  width: 100%;
   border-spacing: 1px;
   border-collapse: separate; }
   .virkailija-table-1 tr td,
@@ -3123,6 +3122,14 @@ ul.orgmenu {
         background-color: #e4e4e4; }
       .autocomplete .ac-options .ac-option.selected {
         background-color: #c5e5ef; }
+
+/*** Valintalaskenta historia
+************************************************/
+#valintalaskentaHistoria {
+  list-style-type: none;
+  padding-left: 20px; }
+  #valintalaskentaHistoria ul {
+    list-style-type: none; }
 
 /*** Itemtree
 ************************************************/
