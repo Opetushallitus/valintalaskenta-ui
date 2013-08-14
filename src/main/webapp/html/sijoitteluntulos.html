@@ -83,7 +83,7 @@
                                 {{hakemus.hakemuksentila}}
                             </td>
                             <td>
-                                <a ng-click="showMuutaHakemus(hakemus)" class="button small">Tila</a>
+                                <a ng-disabled="!((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))" ng-click="showMuutaHakemus(hakemus)" class="button small">Tila</a>
                                 <div ng-include="'valintalaskentatulos-partials/muutaHakemus.html'" ng-show="hakemus.showMuutaHakemus"/>
                             </td>
 						</tr>
