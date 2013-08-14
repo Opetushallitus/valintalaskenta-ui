@@ -209,12 +209,13 @@ app.factory('HakukohdeHenkilot', function($resource) {
 
   //Sijoittelu
  app.factory('HakemuksenTila', function($resource) {
-     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakuoid/:hakukohdeOid/:valintatapajonoOid/:hakemusOid",
+     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakuoid/:hakukohdeOid/:valintatapajonoOid/:hakemusOid?selite=:selite",
          {
              hakuoid: "@hakuoid",
              hakukohdeOid: "@hakukohdeoid",
              valintatapajonoOid: "@valintatapajonoOid",
-             hakemusOid: "@hakemusOid"
+             hakemusOid: "@hakemusOid",
+             selite: "@selite"
          }, {
          get: {method: "GET"},
          post: {method: "POST"}
@@ -287,20 +288,22 @@ app.factory('ValintalaskentaHistoria', function($resource) {
 
 
 app.factory('JarjestyskriteeriArvo', function($resource) {
-    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/arvo", {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/arvo?selite=:selite", {
         valintatapajonoOid: "@valintatapajonoOid",
         hakemusOid: "@hakemusOid",
-        jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti"
+        jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti",
+        selite:"@selite"
     },
     {
         post: {method: "POST"}
     });
 });
 app.factory('JarjestyskriteeriTila', function($resource) {
-    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/tila", {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/tila?selite=:selite", {
         valintatapajonoOid: "@valintatapajonoOid",
         hakemusOid: "@hakemusOid",
-        jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti"
+        jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti",
+        selite:"@selite"
     },
     {
         post: {method: "POST"}
