@@ -36,7 +36,6 @@
                             <th>Hakutoive</th>
                             <th>Valintatieto</th>
                             <th></th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -65,12 +64,8 @@
                                 <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>
                             </td>
                             <td>
-                                <a ng-click="showMuutaJarjestyskriteerinArvo()" class="button small">Arvo</a>
-                                <div ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteerinArvo.html'" ng-show="tulos.showMuutaJarjestyskriteerinArvo"/>
-                            </td>
-                            <td>
-                                <a ng-click="showMuutaJarjestyskriteerinTila()" class="button small">Tila</a>
-                                <div ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteerinTila.html'" ng-show="tulos.showMuutaJarjestyskriteerinArvo"/>
+                                <a ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="button small">Arvo</a>
+                                <div ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteeri.html'" ng-show="tulos.showMuutaJarjestyskriteerinArvo"/>
                             </td>
                         </tr>
                         </tbody>

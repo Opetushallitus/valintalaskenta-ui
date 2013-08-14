@@ -1,0 +1,25 @@
+<div class="modal-backdrop" ng-click="showMuutaHakemus(tulos)"></div>
+<div class="modal">
+    <br>
+    <dl class="dl-horizontal">
+        <dt>Nimi</dt>
+        <dd><span class="sukunimi">{{tulos.sukunimi}}</span>,<span class="etunimi">{{tulos.etunimi}}</span></dd>
+
+        <dt>Tila</dt>
+        <dd>
+            <select ng-model="tulos.jarjestyskriteeriTila">
+                <option value="HYVAKSYTTY_HARKINNANVARAISESTI">HYVAKSYTTY_HARKINNANVARAISESTI</option>
+                <option value="HYVAKSYTTAVISSA">HYVAKSYTTAVISSA</option>
+                <option value="HYLATTY">HYLATTY</option>
+                <option value="MAARITTELEMATON">MAARITTELEMATON</option>
+            </select>
+        </dd>
+
+        <dt>Selite</dt><dd><input ng-model="tulos.selite" /></dd>
+        <dt></dt>
+        <dd>
+        <a ng-click="showMuutaHakemus(tulos)" class="button small">Peruuta</a>
+        <a ng-click="muutaHakemus(tulos, valintatapajono.valintatapajonooid)" class="button small primary">Tallenna</a>
+        </dd>
+    </dl>
+</div>
