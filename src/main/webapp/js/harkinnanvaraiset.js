@@ -11,7 +11,7 @@
                 model.hakeneet = result;
 
                   model.hakeneet.forEach(function(hakija){
-                         HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
+                         Hakemus.get({oid: hakija.applicationOid}, function(result) {
                             hakija.hakemus=result;
                          });
                   });
