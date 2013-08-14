@@ -62,8 +62,6 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
                 } else {
                     hakemus.hakemuksentila = result.tila;
                 }
-
-                console.log(hakemus.hakemusOid + " : " + hakemus.hakemuksentila);
             });
         }
 
