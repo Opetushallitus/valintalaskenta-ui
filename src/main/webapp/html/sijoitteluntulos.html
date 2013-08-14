@@ -52,7 +52,7 @@
 					<h1>{{jono.aloituspaikat}}</h1>
 					<thead>
 						<tr>
-							<th colspan="8">valintatapajono OID: {{jono.oid}}</th>
+							<th colspan="9">valintatapajono OID: {{jono.oid}}</th>
 						</tr>
 						<tr>
 							<td class="bold align-center">jonosija</td>
@@ -60,9 +60,10 @@
                             <td class="bold align-center">Hakemus OID</td>
 							<td class="bold align-center">Prioriteetti</td>
 							<td class="bold align-center">TasasijaJonosija</td>
+							<td class="bold align-center">Harkinnanvarainen</td>
 							<td class="bold align-center">Sijoittelun tila</td>
 							<td class="bold align-center">Vastaanottotila</td>
-							<td class="bold align-center">Harkinnanvarainen</td>
+                            <td></td>
 						</tr>
 					</thead>
 					<tbody>
@@ -76,11 +77,15 @@
                             </td>
 							<td>{{hakemus.prioriteetti}}</td>
 							<td>{{hakemus.tasasijaJonosija}}</td>
+							<td><input type="checkbox" ng-model="hakemus.harkinnanvarainen" disabled /></td>
 							<td>{{hakemus.tila}}</td>
 							<td>
-                                <select ng-disabled="hakemus.tila != 'HYVAKSYTTY'" ng-model="hakemus.hakemuksentila" ng-options="value for value in model.hakemuksenTilat" ng-value="{{value}}" ng-change="updateHakemuksenTila(hakemus.hakemuksentila, jono.oid, hakemus.hakemusOid)"></select>
+                                {{hakemus.hakemuksentila}}
                             </td>
-							<td><input type="checkbox" ng-model="hakemus.harkinnanvarainen" disabled /></td>
+                            <td>
+                                <a ng-disabled="!((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))" ng-click="showMuutaHakemus(hakemus)" class="button small">Tila</a>
+                                <div ng-include="'valintalaskentatulos-partials/muutaHakemus.html'" ng-show="hakemus.showMuutaHakemus"/>
+                            </td>
 						</tr>
 					</tbody>
 				</table>
