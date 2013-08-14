@@ -1,4 +1,4 @@
-﻿app.factory('HarkinnanvaraisetModel', function($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey) {
+﻿app.factory('HarkinnanvaraisetModel', function($http, HakukohdeHenkilot, Hakemus, HakemusKey) {
 	var model;
 	model = new function() {
 
@@ -9,6 +9,13 @@
             model.hakukohdeOid = hakukohdeOid;
             HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
                 model.hakeneet = result;
+
+                  model.hakeneet.forEach(function(hakija){
+                         HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
+                            hakija.hakemus=result;
+                         });
+                  });
+
                 /*
                 var params = [hakukohdeOid];
                 HakukohdeAvaimet.post(params, function(result) {
