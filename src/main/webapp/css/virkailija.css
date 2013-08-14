@@ -3021,88 +3021,78 @@ ul.orgmenu {
 /*** horizontal toolbar
 ************************************************/
 .toolbarcontainerwithouthakukohde,
-div[toolbarcontainer] {
+.toolbarcontainer {
   overflow: hidden;
   height: 700px; }
   .toolbarcontainerwithouthakukohde #toolbarcontent,
-  div[toolbarcontainer] #toolbarcontent {
+  .toolbarcontainer #toolbarcontent {
     background-color: #f1f6f7;
     float: left;
     height: 700px; }
     .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration,
-    div[toolbarcontainer] #toolbarcontent .toolbar-decoration {
+    .toolbarcontainer #toolbarcontent .toolbar-decoration {
       padding: 10px;
       border-left: 1px solid #e4e4e4;
       border-bottom: 1px solid #e4e4e4;
       border-top: 1px solid #e4e4e4; }
       .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration .selectlist,
-      div[toolbarcontainer] #toolbarcontent .toolbar-decoration .selectlist {
+      .toolbarcontainer #toolbarcontent .toolbar-decoration .selectlist {
         height: 624px;
         overflow: scroll;
         margin: 0 !important;
         background-color: #fff; }
-  .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container,
-  div[toolbarcontainer] #toolbartoggle-btn-container {
-    float: left; }
-    .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn,
-    div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn {
-      background-color: #f1f6f7;
-      width: 32px;
-      height: 698px;
-      position: relative;
-      cursor: pointer;
-      border: 1px solid #e4e4e4; }
-      .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn:hover,
-      div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn:hover {
-        background-color: #c5e5ef; }
-      .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position,
-      div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        height: 0;
-        width: 0; }
-        .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text,
-        div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text {
-          display: block;
-          color: #149ecb;
+
+#toolbartoggle-btn-container {
+  float: left; }
+  #toolbartoggle-btn-container #toolbartoggle-btn {
+    background-color: #f1f6f7;
+    width: 32px;
+    height: 698px;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid #e4e4e4; }
+    #toolbartoggle-btn-container #toolbartoggle-btn:hover {
+      background-color: #c5e5ef; }
+    #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 0;
+      width: 0; }
+      #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text {
+        display: block;
+        color: #149ecb;
+        transform: rotate(-90deg);
+        -webkit-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        transform-origin: 0;
+        -webkit-transform-origin: 0;
+        -o-transform-origin: 0;
+        width: 150px; }
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after {
+          position: absolute;
+          font-size: 9px;
+          transform-origin: 50% 50%;
+          -webkit-transform-origin: 50% 50%;
+          -moz-transform-origin: 50% 50%;
+          -ms-transform-origin: 50% 50%;
+          -o-transform-origin: 50% 50%;
+          transform: rotate(90deg);
+          -webkit-transform: rotate(90deg);
+          -moz-transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+          -o-transform: rotate(90deg);
+          content: '<<'; }
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before {
+          left: -30px; }
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after {
+          left: 105px; }
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text.minimized:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text.minimized:after {
           transform: rotate(-90deg);
           -webkit-transform: rotate(-90deg);
-          -o-transform: rotate(-90deg);
-          transform-origin: 0;
-          -webkit-transform-origin: 0;
-          -o-transform-origin: 0;
-          width: 150px; }
-          .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before, .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after,
-          div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before,
-          div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after {
-            position: absolute;
-            font-size: 9px;
-            transform-origin: 50% 50%;
-            -webkit-transform-origin: 50% 50%;
-            -moz-transform-origin: 50% 50%;
-            -ms-transform-origin: 50% 50%;
-            -o-transform-origin: 50% 50%;
-            transform: rotate(90deg);
-            -webkit-transform: rotate(90deg);
-            -moz-transform: rotate(90deg);
-            -ms-transform: rotate(90deg);
-            -o-transform: rotate(90deg);
-            content: '<<'; }
-          .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before,
-          div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before {
-            left: -30px; }
-          .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after,
-          div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after {
-            left: 105px; }
-          .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text.minimized:before, .toolbarcontainerwithouthakukohde #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text.minimized:after,
-          div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text.minimized:before,
-          div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text.minimized:after {
-            transform: rotate(-90deg);
-            -webkit-transform: rotate(-90deg);
-            -moz-transform: rotate(-90deg);
-            -ms-transform: rotate(-90deg);
-            -o-transform: rotate(-90deg); }
+          -moz-transform: rotate(-90deg);
+          -ms-transform: rotate(-90deg);
+          -o-transform: rotate(-90deg); }
 
 .toolbarcontainerwithouthakukohde .toolbar-decoration {
   border-right: 1px solid #e4e4e4; }
