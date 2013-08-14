@@ -1,4 +1,4 @@
-﻿app.factory('HarkinnanvaraisetModel', function($http, HakukohdeHenkilot, Hakemus, HakemusKey) {
+﻿app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
 	var model;
 	model = new function() {
 
@@ -8,45 +8,25 @@
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.hakukohdeOid = hakukohdeOid;
             HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
-                model.hakeneet = result;
+            model.hakeneet = result;
 
-                  model.hakeneet.forEach(function(hakija){
-                         Hakemus.get({oid: hakija.applicationOid}, function(result) {
-                            hakija.hakemus=result;
-                         });
-                  });
+            model.hakeneet.forEach(function(hakija){
+                Hakemus.get({oid: hakija.applicationOid}, function(result) {
+                 hakija.hakemus=result;
 
+                console.log("========= Hakukohdeoid:" +model.hakukohdeOid );
+                for(var i =0; i<10; i++) {
+                    var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                    console.log("Hakutoive[" + i +"] " + oid);
+                    if(oid === model.hakukohdeOid) {
+                        var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
 
-                /*
-                var params = [hakukohdeOid];
-                HakukohdeAvaimet.post(params, function(result) {
-                    model.avaimet = result;
-
-                    model.avaimet.forEach(function(avain){
-                       avain.tyyppi = function(){
-                           if(avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
-                               return "checkbox";
-                           }
-                           return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
-                       };
-                    });
-
-                    model.hakeneet.forEach(function(hakija){
-                       hakija.originalData = [];
-                       if(!hakija.additionalData) {
-                           hakija.additionalData = [];
-                       }
-
-                       model.avaimet.forEach(function(avain){
-                           if(!hakija.additionalData[avain.tunniste]) {
-                               hakija.additionalData[avain.tunniste] = "";
-                           }
-                           hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
-                       });
-
-                    });
+                           hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
+                        }
+                }
+                console.log("=========");
                 });
-                */
+            });
             });
 		}
 

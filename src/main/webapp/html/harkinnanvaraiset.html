@@ -29,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter">
+                            <tr ng-repeat="hakija in model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true}">
                                 <td>
                                     <span title="Sukunimi">{{hakija.lastName}}</span>,
                                     <span title="Etunimi">{{hakija.firstName}}</span>
@@ -42,11 +42,14 @@
                                     </span>
                                 </td>
                                 <td>
+                                         {{hakija.hakenutHarkinnanvaraisesti}}
+                                    <!--
                                     <ul>
-                                        <li ng-repeat="a in hakija.hakemus.hakutoiveet">
-                                            {{a}}
+                                        <li ng-repeat="(key, value) in hakija.hakemus.answers.hakutoiveet track by $index">
+                                            {{key}} {{value}}
                                         </li>
                                     </ul>
+                                    -->
                                 </td>
                                 <td>
                                     <a ng-click="hyvaksyHarkinnanvaisesti()" class="button small">hyväksy harkinnanvaraisesti</a>
