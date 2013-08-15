@@ -22,55 +22,71 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			});
 		},
 		prepareHistoryForUi: function() {
+			var self = this;
 			var historiat = this.get();
+			
 			historiat.forEach(function(element, index, array){
-				
+				self.operateTree(element);
 			});
-			this.nodeHasNLChild(this.get()[0]);
 		},
-		//returns true if nodes child has nimetty lukuarvo
-		nodeHasNLChild: function(node) {
-			var foundKaava = false;
-			if(this.getChildKaavas(node) && this.childHasNL(node)) {
-				foundKaava = this.iterateChildrenForNL(this.getChildKaavas(node));
+		operateTree: function(node) {
+
+			var self = this;
+			var subKaavas = this.hasKaavas(node);
+			var hasChildNL = false; 
+			if(subKaavas) {
+
+				//search through subtree and determine whether each node has at least one child 
+				subKaavas.forEach(function(subnode, index, array) {
+					hasChildNL = self.nodesChildrenHasNimettyLukuarvo(subnode);
+				});
+
+				subKaavas.forEach(function(subnode, index, array){
+					self.operateTree(subnode);
+				});
 			}
-			return foundKaava;
 		},
 
-		iterateChildrenForNL: function(node) {
+		//TODO palauttaa tällä hetkellä vain tiedon onko kukin noden 
+		// ensimmäisen tason lapset nimettyjä lukuarvoja
+		 
+		nodesChildrenHasNimettyLukuarvo: function(node) {
 			var self = this;
-			var foundKaava = false;
-			console.log(node);
-			node.forEach(function(element, index, array) {
-				if(self.nodeHasNLChild(element)) {
-					foundKaava = true;
-				} else {
-					foundKaava = self.iterateChildrenForNL(self.getChildKaavas(element));
-				}
-			});
-			return foundKaava;
-			
-		},
-		//returns true if this node has nimetty lukuarvo
-		childHasNL: function(node) {
-			var self = this;
-			var foundKaava = false;
-			self.getChildKaavas(node).forEach(function(element, index, array) {
-				if(self.hasNimettyLukuarvo(element)) {
-					foundKaava = true;
-				}
-			});
-			return foundKaava;
+			var hasNL = false;
+			var subnodeArray = self.hasKaavas(node);
+			if(subnodeArray) {
+				subnodeArray.forEach( function(subnode, index, array){
+					if (self.hasNimettyLukuarvo(subnode)) {
+						hasNL = true;
+					} else {
+						hasNL = self.nodesChildrenHasNimettyLukuarvo(subnodeArray);	
+					}
+
+					//extend current object to help UI show or hide it
+					if(hasNL) {
+						angular.extend(node, {"NL":"true"});
+					} else {
+						angular.extend(node, {"NL":"false"});
+					}
+
+				});
+			}
+			return hasNL;
 		},
 		hasNimettyLukuarvo: function(node) {
 			if(node.funktio === "Nimetty lukuarvo") {
 				return true;
-			} else {
-				return false;
-			}
+			} 
+			return false;
+			
 		},
-		getChildKaavas: function(kaava) {
-			return kaava.historiat;
+		//returns historiat if object has it otherwise return false
+		hasKaavas: function(node) {
+			
+			if(node && node.historiat) {
+				return node.historiat;
+			} 
+			return false;
 		}
 	};
     modelInterface.refresh();
@@ -93,6 +109,8 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 	$scope.logmodel = function() {
 		console.log($scope.model.get());
 	}
+
+
 
 
 }

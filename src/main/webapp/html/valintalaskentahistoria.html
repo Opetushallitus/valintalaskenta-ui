@@ -19,8 +19,6 @@
 		<span ng-show="historia.tilat[0].tilatyyppi === 'HYLATTY'" class="red">{{historia.tilat[0].kuvaus}}</span>
 	</li>
 	
-	
-	<h3>Avaimet</h3>
 	<button class="small" ng-init="keys = false" ng-click="keys = !keys">Näytä/Piilota avaimet</button>
 	
 	<ul ng-show="keys" class="avaimet">
@@ -29,21 +27,20 @@
 		</li> 
 	</ul>
 	
-
-	<ul class="alikaavat" ng-init="show = 'true'" ng-show="show">	
-		
+	<ul class="alikaavat margin-top-4" ng-init="show = 'true'" ng-show="show">	
 		<li ng-repeat="kaava in historia.historiat" ng-include="'alikaava_node.html'"></li>
 	</ul>
 
 </script>
 
 <script type="text/ng-template" id="alikaava_node.html">
-	<li><h3>{{kaava.funktio}}</h3></li>
-	<li>objhashkey:{{kaava.$$hashKey}}</li>
-	<li ng-show="kaava.tulos">Tulos: {{kaava.tulos}}</li>
-	<li ng-show="kaava.avaimet.nimi">{{kaava.avaimet.nimi}}</li>
-	<ul class="alikaavat" ng-init="show = 'true'" ng-show="show">	
-		
+	<li ng-show="kaava.funktio === 'Nimetty lukuarvo'"><h3>{{kaava.avaimet.nimi}} <span ng-show="kaava.tulos">(tulos: {{kaava.tulos}})</span></h3></li>
+	<li ng-show="kaava.funktio !== 'Nimetty lukuarvo'"><h3>{{kaava.funktio}}</h3></li>
+	<!--
+	<li>Alipuusta löytyy nimetty lukuarvo -funktio: {{kaava.NL}}</li>
+	-->
+	<li ng-show="kaava.funktio !== 'Nimetty lukuarvo'">{{kaava.avaimet.nimi}}</li>
+	<ul class="alikaavat margin-top-4" ng-init="show = 'true'" ng-show="show">	
 		<li ng-repeat="kaava in kaava.historiat" ng-include="'alikaava_node.html'"></li>
 	</ul>
 </script>
