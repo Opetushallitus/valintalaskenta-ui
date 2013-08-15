@@ -17,16 +17,16 @@
   z-index: 1050;
   width: 450px;
   height: 300px;
-  margin-left: -150px;
+  margin-left: -225px;
   border: 1px solid black;
   background: white;
   text-align: left;
 }
 
 .modal dt {
-    width: 100px;
+    width: 125px;
 }
 
 .modal dd {
-    margin-left: 110px;
+    margin-left: 135px;
 }
