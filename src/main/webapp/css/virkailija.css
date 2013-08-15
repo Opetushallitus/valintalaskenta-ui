@@ -3125,11 +3125,24 @@ ul.orgmenu {
 
 /*** Valintalaskenta historia
 ************************************************/
-#valintalaskentaHistoria {
+.valintalaskentaHistoria {
   list-style-type: none;
-  padding-left: 20px; }
-  #valintalaskentaHistoria ul {
+  padding-left: 10px; }
+  .valintalaskentaHistoria .avaimet {
+    width: 60%;
+    overflow: scroll;
+    max-height: 300px;
+    border: 1px solid #eee;
+    padding-left: 10px; }
+    .valintalaskentaHistoria .avaimet li:nth-child(even) {
+      background-color: #f8f8f8; }
+  .valintalaskentaHistoria ul {
     list-style-type: none; }
+  .valintalaskentaHistoria > li {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em; }
+  .valintalaskentaHistoria .alikaavat {
+    position: relative; }
 
 /*** Itemtree
 ************************************************/
