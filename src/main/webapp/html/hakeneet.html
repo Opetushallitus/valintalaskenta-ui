@@ -54,6 +54,13 @@
                                     <div ng-switch-when="SYOTETTAVA_ARVO">
                                         <input min="{{avain.min}}" max="{{avain.max}}" size="2" ng-model="hakija.additionalData[avain.tunniste]" arvovalidaattori/>
                                         <span style="color: red;"></span>
+
+                                        <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]" ng-show="avain.osallistuminenTunniste">
+                                            <option value="MERKITSEMATTA">Merkitsemättä</option>
+                                            <option value="OSALLISTUI">Osallistui</option>
+                                            <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                                        </select>
+
                                     </div>
                                     <div ng-switch-default>
                                         {{hakija.additionalData[avain.tunniste]}}
