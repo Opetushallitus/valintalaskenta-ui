@@ -1,4 +1,4 @@
-﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriArvo,JarjestyskriteeriTila) {
+﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija) {
 	var model;
 	model = new function() {
 
@@ -12,24 +12,24 @@
 			});
 		}
 
-		this.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
+		this.updateJarjestyskriteeri = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo, tila, selite) {
 			var updateParams = {
 				valintatapajonoOid: valintatapajonoOid,
         		hakemusOid: hakemusOid,
-        		jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
+        		jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti,
+        		selite: selite
 			}
 
-			JarjestyskriteeriArvo.post(updateParams, kriteerinArvo, function(result) {});
-		}
-        this.updateJarjestyskriteerinTila = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, tila) {
-            var updateParams = {
-                valintatapajonoOid: valintatapajonoOid,
-                hakemusOid: hakemusOid,
-                jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
-            }
+			var postParams = {
+                tila: tila,
+                arvo: kriteerinArvo
+			};
 
-            JarjestyskriteeriTila.post(updateParams, tila, function(result) {});
-        }
+			JarjestyskriteeriMuokattuJonosija.post(updateParams, postParams, function(result) {
+			    model.refresh(model.hakukohdeOid);
+			});
+
+		}
 
 	};
 
@@ -54,25 +54,22 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
         $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
     };
 
+    $scope.muutaJarjestyskriteerinArvo = function(tulos, valintatapajonoOid) {
+    	$scope.model.updateJarjestyskriteeri(valintatapajonoOid, tulos.hakemusOid, tulos.jarjestyskriteeriPrioriteetti.value, tulos.jarjestyskriteeriArvo, tulos.jarjestyskriteeriTila, tulos.selite);
 
-    $scope.hyvaksyHarkinnanvaisesti = function(valintatapajonoOid, hakemusOid) {
-        var tila ="HYVAKSYTTY_HARKINNANVARAISESTI";
-        var prioriteetti =0;
-        $scope.model.updateJarjestyskriteerinTila(valintatapajonoOid, hakemusOid, prioriteetti, tila)
-    };
+    	tulos.showMuutaJarjestyskriteerinArvo = !tulos.showMuutaJarjestyskriteerinArvo;
 
-    $scope.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
-    	$scope.model.updateJarjestyskriteerinArvo(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo);
     };
 
 
-   $scope.showTilaPartial = function(valintatulos) {
+    $scope.showTilaPartial = function(valintatulos) {
          if(valintatulos.showTilaPartial == null || valintatulos.showTilaPartial == false) {
              valintatulos.showTilaPartial = true;
          } else {
              valintatulos.showTilaPartial = false;
          }
-     };
+    };
+
     $scope.showHenkiloPartial = function(valintatulos) {
         if(valintatulos.showHenkiloPartial == null || valintatulos.showHenkiloPartial == false) {
             valintatulos.showHenkiloPartial = true;
@@ -80,5 +77,24 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
             valintatulos.showHenkiloPartial = false;
         }
     };
+
+    $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos) {
+        valintatulos.prioriteetit = [];
+        for(i in valintatulos.jarjestyskriteerit) {
+            if(i == 0) {
+                var obj = {name: "Yhteispisteet", value: i};
+                valintatulos.jarjestyskriteeriPrioriteetti = obj;
+                valintatulos.prioriteetit.push(obj);
+            }
+            else {
+                var obj = {name: i, value: i};
+                valintatulos.prioriteetit.push(obj);
+            }
+        }
+
+
+        valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
+        valintatulos.showMuutaJarjestyskriteerinArvo = !valintatulos.showMuutaJarjestyskriteerinArvo;
+    }
 
 }

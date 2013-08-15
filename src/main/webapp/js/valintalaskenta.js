@@ -291,19 +291,8 @@ app.factory('ValintalaskentaHistoria', function($resource) {
 
 
 
-app.factory('JarjestyskriteeriArvo', function($resource) {
-    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/arvo?selite=:selite", {
-        valintatapajonoOid: "@valintatapajonoOid",
-        hakemusOid: "@hakemusOid",
-        jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti",
-        selite:"@selite"
-    },
-    {
-        post: {method: "POST"}
-    });
-});
-app.factory('JarjestyskriteeriTila', function($resource) {
-    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/tila?selite=:selite", {
+app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/jonosija?selite=:selite", {
         valintatapajonoOid: "@valintatapajonoOid",
         hakemusOid: "@hakemusOid",
         jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti",

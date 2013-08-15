@@ -1,0 +1,32 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1040;
+  background-color: #333;
+  opacity: 0.8;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  z-index: 1050;
+  width: 450px;
+  height: 300px;
+  margin-left: -225px;
+  border: 1px solid black;
+  background: white;
+  text-align: left;
+}
+
+.modal dt {
+    width: 125px;
+}
+
+.modal dd {
+    margin-left: 135px;
+}

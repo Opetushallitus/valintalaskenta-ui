@@ -1,0 +1,28 @@
+<div class="modal-backdrop" ng-click="showMuutaHakemus(tulos)"></div>
+<div class="modal">
+    <br>
+    <dl class="dl-horizontal">
+        <dt>Hakijaoid</dt>
+        <dd>{{hakemus.hakijaOid}}</dd>
+
+        <dt>Tila</dt>
+        <dd>
+            <select ng-model="hakemus.muokattuTila">
+                <option value="ILMOITETTU">ILMOITETTU</option>
+                <option value="VASTAANOTTANUT_LASNA">VASTAANOTTANUT_LASNA</option>
+                <option value="VASTAANOTTANUT_POISSAOLEVA">VASTAANOTTANUT_POISSAOLEVA</option>
+                <option value="PERUNUT">PERUNUT</option>
+            </select>
+        </dd>
+
+        <dt>Muokkaajan kommentti</dt><dd><textarea ng-model="hakemus.selite" /></dd>
+    </dl>
+    <br/>
+    <dl class="dl-horizontal">
+        <dt></dt>
+        <dd>
+        <a ng-click="showMuutaHakemus(hakemus)" class="button small">Peruuta</a>
+        <a ng-click="updateHakemuksenTila(hakemus, jono.oid)" class="button small primary">Tallenna</a>
+        </dd>
+    </dl>
+</div>
