@@ -4,7 +4,7 @@
 
 		this.hakukohdeOid = {};
 		this.koetulokset = [];
-		this.valintakokeet = [];
+		this.valintakokeet = {};
 		
 		this.refresh = function(hakukohdeOid) {
             model.hakukohdeOid = hakukohdeOid;
@@ -18,7 +18,7 @@
 		// helpommin käsiteltävään muotoon tulokset. samoin privaattina
 		// funktiona, niin ei turhaan pysty kutsumaan tätä suoraan ulkopuolelta.
 		function flatKoetulokset() {
-		    model.valintakokeet = [];
+		    model.valintakokeet = {};
             model.koetulokset.forEach(function(koetulos){
                 koetulos.hakutoiveet.forEach(function(hakutoive) {
                     if(hakutoive.hakukohdeOid === model.hakukohdeOid) {
