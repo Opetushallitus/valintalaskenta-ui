@@ -14,39 +14,35 @@
                 Hakemus.get({oid: hakija.applicationOid}, function(result) {
                  hakija.hakemus=result;
 
-                console.log("========= Hakukohdeoid:" +model.hakukohdeOid );
+               // console.log("========= Hakukohdeoid:" +model.hakukohdeOid );
                 for(var i =0; i<10; i++) {
                     var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
-                    console.log("Hakutoive[" + i +"] " + oid);
+                  //  console.log("Hakutoive[" + i +"] " + oid);
                     if(oid === model.hakukohdeOid) {
                         var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
-
-                           hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
-                        }
+                        hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
+                    }
                 }
-                console.log("=========");
+                //console.log("=========");
                 });
             });
             });
 		}
 
-       this.updateJarjestyskriteerinTila = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, tila) {
+       this.updateJarjestyskriteerinTila = function(hakemusOid,  tila) {
                 var updateParams = {
-                    valintatapajonoOid: valintatapajonoOid,
+                    hakuOid : model.hakuOid,
+                    hakukohdeOid:  model.hakukohdeOid,
                     hakemusOid: hakemusOid,
-                    jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
                 }
-
                 JarjestyskriteeriTila.post(updateParams, tila, function(result) {});
             };
 
 
 		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
-
             if(hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
                 model.refresh(hakukohdeOid, hakuOid);
             }
-
         }
 
 
@@ -128,10 +124,9 @@ function HarkinnanvaraisetController($scope, $location, $routeParams, Harkinnanv
         HakeneetModel.submit();
     }
 
-    $scope.hyvaksyHarkinnanvaisesti = function(valintatapajonoOid, hakemusOid) {
+    $scope.hyvaksyHarkinnanvaisesti = function(hakemusOid) {
         var tila ="HYVAKSYTTY_HARKINNANVARAISESTI";
-        var prioriteetti =0;
-        $scope.model.updateJarjestyskriteerinTila(valintatapajonoOid, hakemusOid, prioriteetti, tila)
+        $scope.model.updateJarjestyskriteerinTila(hakemusOid, tila)
     };
 
 }
