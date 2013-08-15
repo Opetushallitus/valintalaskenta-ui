@@ -3139,10 +3139,11 @@ ul.orgmenu {
   .valintalaskentaHistoria ul {
     list-style-type: none; }
   .valintalaskentaHistoria > li {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em; }
+    padding-top: 0;
+    padding-bottom: 0; }
   .valintalaskentaHistoria .alikaavat {
-    position: relative; }
+    position: relative;
+    padding-left: 25px; }
   .valintalaskentaHistoria .folder-closed {
     height: 18px;
     width: 18px;

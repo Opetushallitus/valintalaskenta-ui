@@ -47,18 +47,18 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			}
 		},
 
-		//TODO palauttaa tällä hetkellä vain tiedon onko kunkin noden 
-		//ensimmäisen tason lapset nimettyjä lukuarvoja
-		//pitäisi etsiä koko alipuu 
+		//extend each node with key 'NL' and value true if 
+		//this node has a child with funktio value Nimetty lukuarvo
 		nodesChildrenHasNimettyLukuarvo: function(node) {
 			var self = this;
 			var hasNL = false;
 			var subnodeArray = self.hasKaavas(node);
-			angular.extend(node, {"NL":"false"});
+			
 			if(subnodeArray) {
 				subnodeArray.forEach( function(subnode, index, array){
 					if (self.hasNimettyLukuarvo(subnode)) {
 						hasNL = true;
+						self.nodesChildrenHasNimettyLukuarvo(subnode);
 					} else {
 						hasNL = self.nodesChildrenHasNimettyLukuarvo(subnode);	
 					}
@@ -67,7 +67,7 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 					if(hasNL) {
 						angular.extend(node, {"NL":"true"});
 					} else {
-						
+						angular.extend(node, {"NL":"false"});
 					}
 
 				});
@@ -111,6 +111,13 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 			folderClass = "folder-closed";
 		} else {
 			folderClass = "folder-open";
+		}
+	}
+
+	$scope.openTree = function(folder) {
+		folder.NL = !folder.NL;
+		if(folder.historiat) {
+			
 		}
 	}
 
