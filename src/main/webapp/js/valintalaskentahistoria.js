@@ -47,9 +47,9 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			}
 		},
 
-		//TODO palauttaa tällä hetkellä vain tiedon onko kukin noden 
-		// ensimmäisen tason lapset nimettyjä lukuarvoja
-		 
+		//TODO palauttaa tällä hetkellä vain tiedon onko kunkin noden 
+		//ensimmäisen tason lapset nimettyjä lukuarvoja
+		//pitäisi etsiä koko alipuu 
 		nodesChildrenHasNimettyLukuarvo: function(node) {
 			var self = this;
 			var hasNL = false;
