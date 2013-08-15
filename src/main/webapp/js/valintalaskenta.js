@@ -18,7 +18,6 @@ var HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE || "";
 //Route configuration
 app.config(function($routeProvider) {
     $routeProvider.
-
     when('/haku/', {controller:HakuController, templateUrl:TEMPLATE_URL_BASE + 'haut.html'}).
     when('/haku/:hakuOid/hakukohde/', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohde.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdeperustiedot.html'}).
@@ -29,6 +28,7 @@ app.config(function($routeProvider) {
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller:HakeneetController, templateUrl:TEMPLATE_URL_BASE + 'hakeneet.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/sijoitteluntulos', {controller:SijoitteluntulosController, templateUrl:TEMPLATE_URL_BASE + 'sijoitteluntulos.html'}).
     when('/valintatapajono/:valintatapajonoOid/hakemus/:hakemusOid/valintalaskentahistoria', {controller:ValintalaskentaHistoriaController, templateUrl:TEMPLATE_URL_BASE + 'valintalaskentahistoria.html'}).
+    when('/haku/:hakuOid/henkiloittain/', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkilo.html'}).
     //when('/haku/:hakuOid/henkiloittain', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkiloittain.html'}).
     //when('/haku/:hakuOid/henkiloittain/mitätuleekin', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkiloittain.html'}).
 
@@ -203,7 +203,11 @@ app.factory('HakukohdeHenkilot', function($resource) {
         get: {method: "GET", isArray: true}
     });
 });
-
+app.factory('Henkilot', function($resource) {
+	return $resource(HAKEMUS_URL_BASE + "haku-app/applications/applicant/:hakuOid",{hakuOid: "@hakuOid"}, {
+		get: {method: "GET", isArray: true}
+    });
+});
 
 
 

@@ -1,39 +1,49 @@
-<h1>Hakija: </h1>
 <h1>Valintalaskentahistoria</h1>
 
+<h1>{{model.get()[0].funktio}}</h1>
+<button ng-click="logmodel()">log model object</button>
 <div class="tabs">
 	<a class="tab" ng-class="$index === historyTabIndex ? 'current' : ''" ng-click="changeTab($index)" ng-repeat="historia in model.get()"><span>{{$index + 1}}. Järjestyskriteeri</span></a>
 </div>
 <div class="clear"></div>
 
 <div class="tabsheets">
-	<ul id="valintalaskentaHistoria" ng-show="$index === historyTabIndex" ng-repeat="historia in model.get()" ng-include="'historia_node.html'"></ul>
+	<ul class="valintalaskentaHistoria" ng-show="$index === historyTabIndex" ng-repeat="historia in model.get()" ng-include="'historia_node.html'"></ul>
 </div>
 
 <script type="text/ng-template" id="historia_node.html">
-	<li><h1>{{historia.funktio}}</h1></li>
-	<li>Tulos: {{historia.tulos}}</li>
+	<li><strong>Tulos:</strong> {{historia.tulos}}</li>
+
+	<li>
+		<span><strong>Tila:</strong> {{historia.tilat[0].tilatyyppi}}</span>
+		<span ng-show="historia.tilat[0].tilatyyppi === 'HYLATTY'" class="red">{{historia.tilat[0].kuvaus}}</span>
+	</li>
 	
-		<h3>Tilat</h3>	
-		<ul>
-			<li>Funktiokutsuoid: {{tila.funktiokutsuoid}}</li>
-			<li>Kuvaus: {{tila.kuvaus}}</li>
-			<li>Tilatyyppi: {{tila.tilatyyppi}}</li>
-		</ul>
-
-
-
-	<ul >
-		<li class="padding-bottom-1" ng-repeat="(key, value) in historia.avaimet track by $index">
+	
+	<h3>Avaimet</h3>
+	<button class="small" ng-init="keys = false" ng-click="keys = !keys">Näytä/Piilota avaimet</button>
+	
+	<ul ng-show="keys" class="avaimet">
+		<li class="padding-vertical-1" ng-repeat="(key, value) in historia.avaimet track by $index">
 			<strong>{{key}}</strong> - <span>{{value}}</span>
 		</li> 
 	</ul>
+	
 
-
-	<ul ng-init="show = 'true'" ng-show="show" ng-click="show = !show">
-		<h3>Alihistoria</h3>
-		<li ng-repeat="historia in historia.historiat" ng-include="'historia_node.html'"></li>
+	<ul class="alikaavat" ng-init="show = 'true'" ng-show="show">	
+		
+		<li ng-repeat="kaava in historia.historiat" ng-include="'alikaava_node.html'"></li>
 	</ul>
 
 </script>
 
+<script type="text/ng-template" id="alikaava_node.html">
+	<li><h3>{{kaava.funktio}}</h3></li>
+	<li>objhashkey:{{kaava.$$hashKey}}</li>
+	<li ng-show="kaava.tulos">Tulos: {{kaava.tulos}}</li>
+	<li ng-show="kaava.avaimet.nimi">{{kaava.avaimet.nimi}}</li>
+	<ul class="alikaavat" ng-init="show = 'true'" ng-show="show">	
+		
+		<li ng-repeat="kaava in kaava.historiat" ng-include="'alikaava_node.html'"></li>
+	</ul>
+</script>

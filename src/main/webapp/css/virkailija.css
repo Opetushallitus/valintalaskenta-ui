@@ -1700,7 +1700,6 @@ label, .label {
 /*** Virkailija-table-1 
 ************************************************/
 .virkailija-table-1 {
-  width: 100%;
   border-spacing: 1px;
   border-collapse: separate; }
   .virkailija-table-1 tr td,
@@ -3059,7 +3058,7 @@ ul.orgmenu {
       top: 50%;
       height: 0;
       width: 0; }
-      #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text {
+      #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span {
         display: block;
         color: #149ecb;
         transform: rotate(-90deg);
@@ -3069,7 +3068,7 @@ ul.orgmenu {
         -webkit-transform-origin: 0;
         -o-transform-origin: 0;
         width: 150px; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after {
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:after {
           position: absolute;
           font-size: 9px;
           transform-origin: 50% 50%;
@@ -3083,11 +3082,11 @@ ul.orgmenu {
           -ms-transform: rotate(90deg);
           -o-transform: rotate(90deg);
           content: '<<'; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before {
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:before {
           left: -30px; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after {
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:after {
           left: 105px; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text.minimized:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text.minimized:after {
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span.minimized:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span.minimized:after {
           transform: rotate(-90deg);
           -webkit-transform: rotate(-90deg);
           -moz-transform: rotate(-90deg);
@@ -3123,6 +3122,27 @@ ul.orgmenu {
         background-color: #e4e4e4; }
       .autocomplete .ac-options .ac-option.selected {
         background-color: #c5e5ef; }
+
+/*** Valintalaskenta historia
+************************************************/
+.valintalaskentaHistoria {
+  list-style-type: none;
+  padding-left: 10px; }
+  .valintalaskentaHistoria .avaimet {
+    width: 60%;
+    overflow: scroll;
+    max-height: 300px;
+    border: 1px solid #eee;
+    padding-left: 10px; }
+    .valintalaskentaHistoria .avaimet li:nth-child(even) {
+      background-color: #f8f8f8; }
+  .valintalaskentaHistoria ul {
+    list-style-type: none; }
+  .valintalaskentaHistoria > li {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em; }
+  .valintalaskentaHistoria .alikaavat {
+    position: relative; }
 
 /*** Itemtree
 ************************************************/
