@@ -1,6 +1,7 @@
 <h1>Valintalaskentahistoria</h1>
 
 <h1>{{model.get()[0].funktio}}</h1>
+
 <div class="tabs">
 	<a class="tab" ng-class="$index === historyTabIndex ? 'current' : ''" ng-click="changeTab($index)" ng-repeat="historia in model.get()"><span>{{$index + 1}}. Järjestyskriteeri</span></a>
 </div>
@@ -35,18 +36,26 @@
 <script type="text/ng-template" id="alikaava_node.html">
 	
 	<li ng-show="kaava.funktio === 'Nimetty lukuarvo'">
-		<span ng-click="openTree(kaava)" ng-class="kaava.NL ? 'folder-open' : 'folder-closed'"></span>
+		<span ng-click="openTree(kaava)" ng-class="kaava.show ? 'folder-open' : 'folder-closed'"></span>
+		<span ng-show="kaava.show" ng-click="keys = !keys" class="keys-closed"></span>
 		<h3 class="inline-block padding-left-2">{{kaava.avaimet.nimi}} <span style="font-weight: normal" ng-show="kaava.tulos">(tulos: {{kaava.tulos}})</span></h3>
 	</li>
 
 	<li ng-show="kaava.funktio !== 'Nimetty lukuarvo'">
 		<span class="funktio"></span>
+		<span ng-show="kaava.show" ng-click="keys = !keys" class="keys-closed"></span>
 		<h3 class="inline-block padding-left-2">{{kaava.funktio}}</h3>
 	</li>
 
+	<ul ng-show="keys" ng-init="keys = false" class="avaimet">
+		<li class="padding-vertical-1" ng-repeat="(key, value) in historia.avaimet track by $index">
+			<strong>{{key}}</strong> - <span>{{value}}</span>
+		</li> 
+	</ul>
+
 	<li ng-show="kaava.funktio !== 'Nimetty lukuarvo'">{{kaava.avaimet.nimi}}</li>
-	
-	<ul class="alikaavat">	
+
+	<ul ng-show="kaava.show" class="alikaavat">	
 		<li ng-repeat="kaava in kaava.historiat" ng-include="'alikaava_node.html'"></li>
 	</ul>
 
