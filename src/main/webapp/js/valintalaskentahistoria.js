@@ -54,19 +54,20 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			var self = this;
 			var hasNL = false;
 			var subnodeArray = self.hasKaavas(node);
+			angular.extend(node, {"NL":"false"});
 			if(subnodeArray) {
 				subnodeArray.forEach( function(subnode, index, array){
 					if (self.hasNimettyLukuarvo(subnode)) {
 						hasNL = true;
 					} else {
-						hasNL = self.nodesChildrenHasNimettyLukuarvo(subnodeArray);	
+						hasNL = self.nodesChildrenHasNimettyLukuarvo(subnode);	
 					}
 
 					//extend current object to help UI show or hide it
 					if(hasNL) {
 						angular.extend(node, {"NL":"true"});
 					} else {
-						angular.extend(node, {"NL":"false"});
+						
 					}
 
 				});
@@ -99,18 +100,19 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 	$scope.hakijaOid = $routeParams.hakijaOid;
 	$scope.model = ValintalaskentaHistoriaModel;
 
-
 	$scope.historyTabIndex = 0;	
 	
 	$scope.changeTab = function(index) {
 		$scope.historyTabIndex = index;
 	}
 
-	$scope.logmodel = function() {
-		console.log($scope.model.get());
+	$scope.toggleFolder = function(folderClass) {
+		if(folderClass === "folder-open") {
+			folderClass = "folder-closed";
+		} else {
+			folderClass = "folder-open";
+		}
 	}
-
-
 
 
 }
