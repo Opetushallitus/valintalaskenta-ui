@@ -1,4 +1,4 @@
-﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriArvo,JarjestyskriteeriTila) {
+﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija) {
 	var model;
 	model = new function() {
 
@@ -12,7 +12,7 @@
 			});
 		}
 
-		this.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo, selite) {
+		this.updateJarjestyskriteeri = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo, tila, selite) {
 			var updateParams = {
 				valintatapajonoOid: valintatapajonoOid,
         		hakemusOid: hakemusOid,
@@ -20,24 +20,16 @@
         		selite: selite
 			}
 
-			JarjestyskriteeriArvo.post(updateParams, kriteerinArvo, function(result) {
+			var postParams = {
+                tila: tila,
+                arvo: kriteerinArvo
+			};
+
+			JarjestyskriteeriMuokattuJonosija.post(updateParams, postParams, function(result) {
 			    model.refresh(model.hakukohdeOid);
 			});
 
 		}
-        this.updateJarjestyskriteerinTila = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, tila, selite) {
-            var updateParams = {
-                valintatapajonoOid: valintatapajonoOid,
-                hakemusOid: hakemusOid,
-                jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti,
-                selite: selite
-            }
-
-            JarjestyskriteeriTila.post(updateParams, tila, function(result) {
-                model.refresh(model.hakukohdeOid);
-            });
-
-        }
 
 	};
 
@@ -63,8 +55,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     };
 
     $scope.muutaJarjestyskriteerinArvo = function(tulos, valintatapajonoOid) {
-    	$scope.model.updateJarjestyskriteerinArvo(valintatapajonoOid, tulos.hakemusOid, tulos.jarjestyskriteeriPrioriteetti.value, tulos.jarjestyskriteeriArvo);
-    	$scope.model.updateJarjestyskriteerinTila(valintatapajonoOid, tulos.hakemusOid, tulos.jarjestyskriteeriPrioriteetti.value, tulos.jarjestyskriteeriTila);
+    	$scope.model.updateJarjestyskriteeri(valintatapajonoOid, tulos.hakemusOid, tulos.jarjestyskriteeriPrioriteetti.value, tulos.jarjestyskriteeriArvo, tulos.jarjestyskriteeriTila, tulos.selite);
 
     	tulos.showMuutaJarjestyskriteerinArvo = !tulos.showMuutaJarjestyskriteerinArvo;
 
