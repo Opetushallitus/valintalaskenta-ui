@@ -3139,10 +3139,41 @@ ul.orgmenu {
   .valintalaskentaHistoria ul {
     list-style-type: none; }
   .valintalaskentaHistoria > li {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em; }
+    padding-top: 0;
+    padding-bottom: 0; }
   .valintalaskentaHistoria .alikaavat {
-    position: relative; }
+    position: relative;
+    padding-left: 25px; }
+  .valintalaskentaHistoria .folder-closed {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: 0 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px; }
+  .valintalaskentaHistoria .folder-open {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -18px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px; }
+  .valintalaskentaHistoria .funktio {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -90px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px; }
+  .valintalaskentaHistoria .decorate {
+    background: #f8f8f8;
+    border: 1px solid #ccc; }
 
 /*** Itemtree
 ************************************************/
