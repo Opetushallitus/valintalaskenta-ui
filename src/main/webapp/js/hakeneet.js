@@ -35,7 +35,7 @@
                            hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
 
                            if(!hakija.additionalData[avain.osallistuminenTunniste]) {
-                               hakija.additionalData[avain.osallistuminenTunniste] = "";
+                               hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
                            }
                            hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
                        });
