@@ -33,12 +33,12 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 
 			var self = this;
 			var subKaavas = this.hasKaavas(node);
-			var hasChildNL = false; 
+			
 			if(subKaavas) {
 
 				//search through subtree and determine whether each node has at least one child 
 				subKaavas.forEach(function(subnode, index, array) {
-					hasChildNL = self.nodesChildrenHasNimettyLukuarvo(subnode);
+					self.nodesChildrenHasNimettyLukuarvo(subnode);
 				});
 
 				subKaavas.forEach(function(subnode, index, array){
@@ -47,38 +47,49 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			}
 		},
 
-		//TODO palauttaa tällä hetkellä vain tiedon onko kunkin noden 
-		//ensimmäisen tason lapset nimettyjä lukuarvoja
-		//pitäisi etsiä koko alipuu 
+		//extend each node with key 'NL' and value true if 
+		//this node has a child with funktio value Nimetty lukuarvo
 		nodesChildrenHasNimettyLukuarvo: function(node) {
 			var self = this;
 			var hasNL = false;
 			var subnodeArray = self.hasKaavas(node);
+			
 			if(subnodeArray) {
 				subnodeArray.forEach( function(subnode, index, array){
-					if (self.hasNimettyLukuarvo(subnode)) {
+					if (self.hasNimettyLukuarvo(node)) {
 						hasNL = true;
 					} else {
-						hasNL = self.nodesChildrenHasNimettyLukuarvo(subnodeArray);	
+						hasNL = self.nodesChildrenHasNimettyLukuarvo(subnode);	
 					}
 
 					//extend current object to help UI show or hide it
 					if(hasNL) {
-						angular.extend(node, {"NL":"true"});
+						angular.extend(node, {"show":"true"});
 					} else {
-						angular.extend(node, {"NL":"false"});
+						angular.extend(node, {"show": "false"});
+						self.setChildrenVisible(node);
 					}
 
 				});
 			}
-			return hasNL;
+
 		},
 		hasNimettyLukuarvo: function(node) {
 			if(node.funktio === "Nimetty lukuarvo") {
 				return true;
 			} 
 			return false;
-			
+		},
+		setChildrenVisible: function(node) {
+			var self = this;
+			var subnodeArray = self.hasKaavas(node);
+
+			if(subnodeArray) {
+				subnodeArray.forEach(function(subnode, index, array) {
+					angular.extend(node, {"show": "true"});
+					self.setChildrenVisible(subnode);
+				});
+			}
 		},
 		//returns historiat if object has it otherwise return false
 		hasKaavas: function(node) {
@@ -99,18 +110,23 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 	$scope.hakijaOid = $routeParams.hakijaOid;
 	$scope.model = ValintalaskentaHistoriaModel;
 
-
 	$scope.historyTabIndex = 0;	
 	
 	$scope.changeTab = function(index) {
 		$scope.historyTabIndex = index;
 	}
 
-	$scope.logmodel = function() {
-		console.log($scope.model.get());
+	$scope.toggleFolder = function(folderClass) {
+		if(folderClass === "folder-open") {
+			folderClass = "folder-closed";
+		} else {
+			folderClass = "folder-open";
+		}
 	}
 
-
+	$scope.openTree = function(tree) {
+		tree.show = !tree.show;
+	}
 
 
 }

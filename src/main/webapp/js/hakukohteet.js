@@ -7,8 +7,9 @@ app.factory('HakukohteetModel', function($q, Haku, HakuHakukohdeChildren, Hakuko
         this.filtered = [];
         this.searchWord = "";
         this.filterToggle = false;
-
+        
         this.refresh = function(hakuOid) {
+        	
             model.hakuOid = hakuOid;
             model.hakukohteet = [];
             model.filtered = [];

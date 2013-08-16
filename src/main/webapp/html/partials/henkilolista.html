@@ -1,0 +1,30 @@
+<div class="toolbarcontainer" ng-class="hakukohteetVisible ? 'grid16-5' : 'grid16-1'" ng-controller="HenkiloController">
+	
+	<div id="toolbarcontent" class="width-90">
+		<div class="toolbar-decoration">
+			<div class="field-search-containerbox">
+			    <input type="text" class="search" placeholder="Suodata nimen perusteella" ng-model="model.searchWord" />
+                <span></span>
+			</div>
+
+			<ul class="selectlist">
+			    <li ng-repeat="(oid, henkilo) in model.getHenkilot() | filter:model.searchWord">
+			        <a>
+			            <span class="icon file"></span>
+			            <span class="label">
+			                {{model.getName(henkilo)}}
+			            </span>
+			        </a>
+			    </li>
+			</ul>
+		</div>
+	</div>
+	
+	<div id="toolbartoggle-btn-container" class="width-10" ng-click="toggleHenkiloittainVisible()">
+		<div id="toolbartoggle-btn" >
+			<div class="toolbartext-position">
+				<span ng-class="henkiloittainVisible ? '' : 'minimized'">Henkilölista</span>
+			</div>
+		</div>
+	</div>
+</div>
