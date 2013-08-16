@@ -47,26 +47,28 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			}
 		},
 
-		//extend each node with key 'NL' and value true if 
+		//extend each node with key 'visibleByDefault' and value true if 
 		//this node has a child with funktio value Nimetty lukuarvo
 		nodesChildrenHasNimettyLukuarvo: function(node) {
 			var self = this;
-			var hasNL = false;
+			var visibleByDefault = false;
 			var subnodeArray = self.hasKaavas(node);
 			
 			if(subnodeArray) {
 				subnodeArray.forEach( function(subnode, index, array){
 					if (self.hasNimettyLukuarvo(node)) {
-						hasNL = true;
+						visibleByDefault = true;
 					} else {
-						hasNL = self.nodesChildrenHasNimettyLukuarvo(subnode);	
+						visibleByDefault = self.nodesChildrenHasNimettyLukuarvo(subnode);	
 					}
 
 					//extend current object to help UI show or hide it
-					if(hasNL) {
+					if(visibleByDefault) {
 						angular.extend(node, {"show":"true"});
 					} else {
 						angular.extend(node, {"show": "false"});
+
+						//extends all subnodes with show:true field to enable visibility
 						self.setChildrenVisible(node);
 					}
 
