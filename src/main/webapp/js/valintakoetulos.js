@@ -4,7 +4,7 @@
 
 		this.hakukohdeOid = {};
 		this.koetulokset = [];
-		this.flatKoetulokset = [];
+		this.valintakokeet = {};
 		
 		this.refresh = function(hakukohdeOid) {
             model.hakukohdeOid = hakukohdeOid;
@@ -18,7 +18,7 @@
 		// helpommin käsiteltävään muotoon tulokset. samoin privaattina
 		// funktiona, niin ei turhaan pysty kutsumaan tätä suoraan ulkopuolelta.
 		function flatKoetulokset() {
-		    model.flatKoetulokset = [];
+		    model.valintakokeet = {};
             model.koetulokset.forEach(function(koetulos){
                 koetulos.hakutoiveet.forEach(function(hakutoive) {
                     if(hakutoive.hakukohdeOid === model.hakukohdeOid) {
@@ -29,18 +29,23 @@
                                 entry.hakemusOid = koetulos.hakemusOid;
                                 entry.hakijaOid = koetulos.hakijaOid;
                                 entry.createdAt = koetulos.createdAt;
-
+                                
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
                                 entry.osallistuminen = valintakoe.osallistuminen;
-
-                                model.flatKoetulokset.push(entry);
+                                
+                                if (model.valintakokeet[entry.valintakoeOid] === undefined )
+                                {
+                                	model.valintakokeet[entry.valintakoeOid] = {valintakoeOid: entry.valintakoeOid, valintakoeTunniste: entry.valintakoeTunniste, hakijat: [entry]};    
+                                } else {
+                                	model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
+                                	
+                                }
                             });
                         });
                     }
                 });
             });
-
 		}
 
 	};
@@ -49,7 +54,7 @@
 });
 
 
-function ValintakoetulosController($scope, $location, $routeParams, ValintakoetulosModel, HakukohdeModel) {
+function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Osoitetarrat) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -62,5 +67,12 @@ function ValintakoetulosController($scope, $location, $routeParams, Valintakoetu
 
     $scope.predicate = 'hakijaOid';
 
-    $scope.valintakoetulosExcelExport = SERVICE_EXCEL_URL_BASE + "export/valintakoetulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
+    $scope.valintakoeTulosXLS = function(valintakoeOid) {
+    	$window.location.href = SERVICE_EXCEL_URL_BASE + "export/valintakoetulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid + "&valintakoeOid=" + valintakoeOid;
+    }
+    $scope.addressLabelPDF = function(valintakoeOid) {
+    	Osoitetarrat.lataaPDF($routeParams.hakukohdeOid, valintakoeOid).aktivoi(function(resurssi) {
+    		$window.location.href = resurssi.latausUrl;
+    	});
+    }
 }   

@@ -33,6 +33,11 @@
                                hakija.additionalData[avain.tunniste] = "";
                            }
                            hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
+
+                           if(!hakija.additionalData[avain.osallistuminenTunniste]) {
+                               hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+                           }
+                           hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
                        });
 
                     });
@@ -51,9 +56,6 @@
 		
 
         this.submit = function() {
-        	function tallenna(hakija, avain, value) {
-        		
-        	};
         	
             model.hakeneet.forEach( function(hakija) {
                 model.avaimet.forEach( function(avain) {
@@ -98,6 +100,18 @@
                         	hakija.originalData[avain.tunniste] = value;
                         });
         			}
+
+        			if(hakija.originalData[avain.osallistuminenTunniste] !== hakija.additionalData[avain.osallistuminenTunniste]) {
+        			    console.log("hakija.additionalData[avain.osallistuminenTunniste]");
+                        HakemusKey.put({
+                            "oid": hakija.applicationOid,
+                            "key": avain.osallistuminenTunniste,
+                            "value": hakija.additionalData[avain.osallistuminenTunniste]
+                            }
+                        , function(){
+                            hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+                        });
+                    }
                 	
                     /*
                 	if(hakija.originalData[avain.tunniste] !== hakija.additionalData[avain.tunniste]) {

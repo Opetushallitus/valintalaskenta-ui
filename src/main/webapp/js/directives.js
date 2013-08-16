@@ -19,7 +19,6 @@ app.directive('jqNestable', function($timeout) {
                 itemClass: 'item',
                 maxDepth: 25,
                 canDrop: function(pointEl) {
-                    console.log(pointEl)
                     return true
                 }
             })
@@ -46,113 +45,6 @@ app.directive('jqNestable', function($timeout) {
         }
     }
 });
-
-app.directive('toggletoolbar', function() {
-    return {
-      restrict: 'A',
-      controller: function($scope) {    
-        $scope.toolbarContainer = {};
-        $scope.contentContainer = {};
-        $scope.toolbarContent = {};
-        $scope.toolbarBtnContainer = {};
-
-        $scope.expandedToolbar = true;
-
-         //toolbar size
-        $scope.largeToolbarSize = "grid16-5";
-        $scope.smallToolbarSize = "grid16-1";
-
-        //content size
-        $scope.largeContentSize = "grid16-15";
-        $scope.smallContentSize = "grid16-11";
-
-        this.setToolbarContainer = function(element) {
-            $scope.toolbarContainer = element;
-        }
-
-        this.setContentContainer = function(element) {
-            $scope.contentContainer = element;
-        }
-
-        this.setToolbarContent = function(element) {
-            $scope.toolbarContent = element;
-        }
-
-        this.setToolbarBtnContainer = function(element) {
-            $scope.toolbarBtnContainer = element;
-            element.bind('click', function() {
-                toggleClasses();
-                toggleVisibility();
-                $scope.expandedToolbar = !$scope.expandedToolbar;
-            });
-        }
-
-        function toggleVisibility() {
-            if($scope.expandedToolbar) {
-              $scope.toolbarContent.hide();
-              $scope.toolbarBtnContainer.removeClass("width-10").addClass("width-100");
-            } else {
-              $scope.toolbarContent.show();
-              $scope.toolbarBtnContainer.removeClass("width-100").addClass("width-10");
-            }
-        }
-
-        function toggleClasses() {
-            if($scope.expandedToolbar) {
-              $scope.toolbarContainer.removeClass($scope.largeToolbarSize).addClass($scope.smallToolbarSize);
-              $scope.contentContainer.removeClass($scope.smallContentSize).addClass($scope.largeContentSize); 
-            } else {
-              $scope.toolbarContainer.removeClass($scope.smallToolbarSize).addClass($scope.largeToolbarSize);
-              $scope.contentContainer.removeClass($scope.largeContentSize).addClass($scope.smallContentSize);
-            }    
-        }
-
-      }
-    }
-});
-
-
-
-app.directive('toolbarcontainer', function() {
-    return {
-        restrict: 'A',
-        require: '^toggletoolbar',
-        link: function(scope, element, attrs, ctrl) {
-            ctrl.setToolbarContainer(element);
-        }
-    }
-});
-
-app.directive('contentcontainer', function() {
-    return {
-        restrict: 'A',
-        require: '^toggletoolbar',
-        link: function(scope, element, attrs, ctrl) {
-            ctrl.setContentContainer(element);
-        }
-    }
-});
-
-app.directive('toolbarcontent', function() {
-    return {
-        restrict: 'A',
-        require: '^toggletoolbar',
-        link: function(scope, element, attrs, ctrl) {
-            ctrl.setToolbarContent(element);
-        }
-    }
-});
-
-app.directive('toolbarbtncontainer', function() {
-    return {
-        restrict: 'A',
-        require: '^toggletoolbar',
-        link: function(scope, element, attrs, ctrl) {
-            ctrl.setToolbarBtnContainer(element);
-        }
-    }
-});
-
 
 app.directive('uiSortable', function() {
     var options;
@@ -198,6 +90,7 @@ app.directive('uiSortable', function() {
 );
 
 // tabs
+/*
 app.directive('tabs', function() {
     return {
       restrict: 'E',
@@ -230,7 +123,8 @@ app.directive('tabs', function() {
       replace: true
     };
 });
-
+  */
+  /*
 app.directive('pane', function() {
     return {
       require: '^tabs',
@@ -246,7 +140,7 @@ app.directive('pane', function() {
       replace: true
     };
 });
-
+        */
 app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
     return {
       link : function($scope, element, attrs) {

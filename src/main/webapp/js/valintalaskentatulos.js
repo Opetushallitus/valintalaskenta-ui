@@ -1,4 +1,4 @@
-﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriArvo) {
+﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija) {
 	var model;
 	model = new function() {
 
@@ -12,22 +12,33 @@
 			});
 		}
 
-		this.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
+		this.updateJarjestyskriteeri = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo, tila, selite) {
 			var updateParams = {
 				valintatapajonoOid: valintatapajonoOid,
         		hakemusOid: hakemusOid,
-        		jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti
+        		jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti,
+        		selite: selite
 			}
 
-			JarjestyskriteeriArvo.post(updateParams, kriteerinArvo, function(result) {});
+			var postParams = {
+                tila: tila,
+                arvo: kriteerinArvo
+			};
+
+			JarjestyskriteeriMuokattuJonosija.post(updateParams, postParams, function(result) {
+			    model.refresh(model.hakukohdeOid);
+			});
+
 		}
+
 	};
 
 	return model;
 });
 
 
-function ValintalaskentatulosController($scope, $location, $routeParams, ValintalaskentatulosModel, HakukohdeModel) {
+function ValintalaskentatulosController($scope, $location, $routeParams, ValintalaskentatulosModel, HakukohdeModel, $http) {
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -36,63 +47,54 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model.refresh($scope.hakukohdeOid);
     $scope.valintalaskentatulosExcelExport = SERVICE_EXCEL_URL_BASE + "export/valintalaskentatulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
-    
-    $scope.showHistory = function(msg) {
-    	// historia on taulukko merkkijonoja. konvertoidaan jsoniksi
-    	var historiat = [];
-    	angular.forEach(msg, function(historiaString){
-    		historiat.push(angular.fromJson(historiaString));          
-    	});
-    	
-    	function to_ul(historiat) {
-    	    var ul = document.createElement("ul");
 
-    	  for (var i=0, n=historiat.length; i<n; i++) {
-    	      var historia = historiat[i];
-    	      var li = document.createElement("li");
 
-    	        var text = document.createTextNode(historia.funktio+ " ");
-    	        
-    	        
-    	        li.appendChild(text );
-    	        
-    	        angular.forEach(historia.avaimet, function(arvo,avain){
-    	        	var span = document.createElement("span");
-    	        	$(span).attr("style", "color:red;");
-        	        span.appendChild(document.createTextNode(" " + avain + "=" + arvo + " "));
-        	        li.appendChild(span);    
-    	    	});
-    	        
-    	        
-    	        var tulos = document.createElement("strong");
-    	        tulos.appendChild(document.createTextNode(" "+historia.tulos));
-    	        li.appendChild(tulos );
-    	        
-    	        angular.forEach(historia.tilat, function(arvo){
-    	        	var span = document.createElement("span");
-    	        	$(span).attr("style", "color:blue;");
-        	        span.appendChild(document.createTextNode(" " + arvo.tilatyyppi + " "));
-        	        li.appendChild(span);    
-    	    	});
-    	        
-    	        if (historia.historiat) {
-    	             li.appendChild(to_ul(historia.historiat));
-    	        }
 
-    	        ul.appendChild(li);
-    	    }
+    $scope.showHistory = function(valintatapajonoOid, hakemusOid) {
+        $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
+    };
 
-    	    return ul;
-    	}
-    	//
-    	
-    	var my_window = window.open("", "Historia", "status=1,width=1600,height=900");
-        my_window.document.write($(to_ul(historiat)).html());
-        //alert(msg);
-   };
-    /*
-    $scope.updateJarjestyskriteerinArvo = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo) {
-    	$scope.model.updateJarjestyskriteerinArvo(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo);
+    $scope.muutaJarjestyskriteerinArvo = function(tulos, valintatapajonoOid) {
+    	$scope.model.updateJarjestyskriteeri(valintatapajonoOid, tulos.hakemusOid, tulos.jarjestyskriteeriPrioriteetti.value, tulos.jarjestyskriteeriArvo, tulos.jarjestyskriteeriTila, tulos.selite);
+
+    	tulos.showMuutaJarjestyskriteerinArvo = !tulos.showMuutaJarjestyskriteerinArvo;
+
+    };
+
+
+    $scope.showTilaPartial = function(valintatulos) {
+         if(valintatulos.showTilaPartial == null || valintatulos.showTilaPartial == false) {
+             valintatulos.showTilaPartial = true;
+         } else {
+             valintatulos.showTilaPartial = false;
+         }
+    };
+
+    $scope.showHenkiloPartial = function(valintatulos) {
+        if(valintatulos.showHenkiloPartial == null || valintatulos.showHenkiloPartial == false) {
+            valintatulos.showHenkiloPartial = true;
+        } else {
+            valintatulos.showHenkiloPartial = false;
+        }
+    };
+
+    $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos) {
+        valintatulos.prioriteetit = [];
+        for(i in valintatulos.jarjestyskriteerit) {
+            if(i == 0) {
+                var obj = {name: "Yhteispisteet", value: i};
+                valintatulos.jarjestyskriteeriPrioriteetti = obj;
+                valintatulos.prioriteetit.push(obj);
+            }
+            else {
+                var obj = {name: i, value: i};
+                valintatulos.prioriteetit.push(obj);
+            }
+        }
+
+
+        valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
+        valintatulos.showMuutaJarjestyskriteerinArvo = !valintatulos.showMuutaJarjestyskriteerinArvo;
     }
-    */
+
 }

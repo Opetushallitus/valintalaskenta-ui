@@ -1,6 +1,6 @@
-﻿<div ng-controller="HakukohteetController">
+﻿<div class="toolbarcontainer" ng-class="hakukohteetVisible ? 'grid16-5' : 'grid16-1'" ng-controller="HakukohteetController">
 	
-	<div toolbarcontent id="toolbarcontent" class="width-90">
+	<div id="toolbarcontent" class="width-90" ng-show="hakukohteetVisible">
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
 			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" />
@@ -10,7 +10,10 @@
 
 			<ul class="selectlist">
 			    <li ng-repeat="hakukohde in model.blender(model.filterToggle) | orderBy:'tarjoajaNimi.kieli_fi'| filter:model.searchWord">          <!--filter:{hakukohdeKoodistoNimi:model.searchWord} -->
-			        <a href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}">
+			        <a ng-click="showHakukohde(hakukohde.hakukohdeOid)">
+			        	<!--
+			        		href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}"
+			        	-->
 			            <span class="icon file"></span>
 			            <span class="label">
 			                {{hakukohde.tarjoajaNimi.kieli_fi}}
@@ -21,13 +24,14 @@
 			        </a>
 			    </li>
 			</ul>
+
 		</div>
 	</div>
-
-	<div toolbarbtncontainer id="toolbartoggle-btn-container" class="width-10">
-		<div id="toolbartoggle-btn">
+	
+	<div id="toolbartoggle-btn-container" class="width-10" ng-click="toggleHakukohteetVisible()">
+		<div id="toolbartoggle-btn" >
 			<div class="toolbartext-position">
-				<span class="toggle-btn-text">Hakukohdelista</span>
+				<span ng-class="hakukohteetVisible ? '' : 'minimized'">Hakukohdelista</span>
 			</div>
 		</div>
 	</div>

@@ -1,68 +1,78 @@
-﻿<h1>Valinnat</h1>
+﻿﻿<h1>Valinnat</h1>
 
 <div ng-include="'partials/topNavigation.html'" />
 
-<div toggletoolbar class="tabsheets">
+<div class="tabsheets">
 
-    <div toolbarcontainer toggle-off="grid16-1" toggle-on="grid16-5" ng-include="'partials/hakukohdelista.html'"></div>
-    <div contentcontainer toggle-on="grid16-11" toggle-off="grid16-15">
+    <div ng-include="'partials/hakukohdelista.html'"></div>
+
+    <div class="toggle-content-container overflow-x-scroll">
         <div ng-include="'partials/hakukohdeNavigation.html'" />
 
-		<div class="tabsheets">
-            
+        <div class="tabsheets">
+
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
             <p ng-hide="model.valinnanvaiheet" class="notification info">Kohteelle ei ole vielä suoritettu valintalaskentaa</p>
-			<a ng-show="model.valinnanvaiheet" href="{{valintalaskentatulosExcelExport}}" class="button small excel">Vie exceliin</a>
-            
-            
-            
+            <a ng-show="model.valinnanvaiheet" href="{{valintalaskentatulosExcelExport}}" class="button small excel">Vie exceliin</a>
+
+
+
             <!--
             <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
              -->
             <div ng-repeat="valinnanvaihe in model.valinnanvaiheet">
-                    
+
                 <h3>Valinnanvaihe OID: <span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span></h3>
                 <h3>Päivämäärä: <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></h3>
                 <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajono">
                     <h3>Valintatapajono: {{valintatapajono.nimi}} (v.{{valintatapajono.versio}})</h3>
                     <table class="virkailija-table-1">
                         <thead>
-                            <tr>
-                                <th>Jonosija</th>
-                                <th>Hakija</th>
-                                <th>Hakemus</th>
-                                <th>Valintatieto</th>
-                                <th>Selite</th>
-                                <th>Pistemäärä</th>
-                                <th>Harkinnanvarainen</th>
-                                <th>Historia</th>
-                            </tr>
+                        <tr>
+                            <th> </th>
+                            <th>Hakija</th>
+                            <th>Yhteispisteet</th>
+                            <th>Hakutoive</th>
+                            <th>Valintatieto</th>
+                            <th></th>
+                        </tr>
                         </thead>
-                        <tbody ng-repeat="tulos in valintatapajono.jonosijat">
-                            <tr>
-                                <td>{{tulos.jonosija}}</td>
-                                <td>{{tulos.sukunimi}}, {{tulos.etunimi}}</td>
-                                <td>
-                                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{tulos.hakemusoid}}" target="_blank" >
-                                        {{tulos.hakemusoid}}
-                                    </a>
-                                </td>
-                                <td>{{tulos.tuloksenTila}}</td>
-                                <td>
-                                    <div ng-show="tulos.kuvaus"><span class="bold">Jonosija:</span> {{tulos.kuvaus}}</div>
-                                    <div ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"><span ng-show="jarjestyskriteeri.kuvaus" class="bold">Järjestyskriteeri {{$index}}:</span> {{jarjestyskriteeri.kuvaus}}</div>
-                                </td>
-                                <td><span ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit"> {{jarjestyskriteeri.arvo}} <span ng-show="(tulos.jarjestyskriteerit.length - 1) === $index"> / </span></span>
-                                </td>
-                                <td><input type="checkbox" ng-model="tulos.harkinnanvarainen" disabled /></td>
-                                <td><a ng-click="showHistory(tulos.historiat)" class="button small">Avaa</a></td>
-                            </tr>
+                        <tbody>
+                        <tr ng-repeat="tulos in valintatapajono.jonosijat">
+                            <td>{{tulos.jonosija}}</td>
+                            <td>
+                                <a ng-click="showHenkiloPartial(tulos)" >
+                                    <span class="sukunimi">{{tulos.sukunimi}}</span>,
+                                    <span class="etunimi">{{tulos.etunimi}}</span>
+                                </a>
+                                <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>
+                            </td>
+                            <td>
+                                {{tulos.jarjestyskriteerit[0].arvo}}
+                                <a ng-click="showHistory(valintatapajono.oid, tulos.hakemusOid)" class="historylink">
+                                    Lisätietoja
+                                </a>
+                            </td>
+                            <td>
+                                {{tulos.prioriteetti}}
+                            </td>
+                            <td>
+                                <a ng-click="showTilaPartial(tulos)" >
+                                    {{tulos.tuloksenTila}}
+                                </a>
+                                <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>
+                            </td>
+                            <td>
+                                <a ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="button small">Muokkaa</a>
+                                <div ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteeri.html'" ng-show="tulos.showMuutaJarjestyskriteerinArvo"/>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-		</div>
-	</div>
-	<div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
 </div>

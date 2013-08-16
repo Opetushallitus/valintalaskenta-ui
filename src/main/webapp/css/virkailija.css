@@ -443,6 +443,11 @@ table {
 .clear {
   clear: both; }
 
+/*** Overflow
+************************************************/
+.overflow-x-scroll {
+  overflow-x: scroll; }
+
 /*** Table
 ************************************************/
 .white-space-nowrap {
@@ -1515,7 +1520,7 @@ dl {
 /*** Wrapper
 **************************************************************/
 #application-wrapper {
-  min-width: 960px;
+  min-width: 1200px;
   margin: 0 auto;
   background-color: none; }
 
@@ -1695,13 +1700,12 @@ label, .label {
 /*** Virkailija-table-1 
 ************************************************/
 .virkailija-table-1 {
-  width: 100%;
   border-spacing: 1px;
   border-collapse: separate; }
   .virkailija-table-1 tr td,
   .virkailija-table-1 tr th {
     line-height: 2.3em;
-    padding: 0 1.5em;
+    padding: 0 0.5em;
     vertical-align: middle;
     text-align: center; }
   .virkailija-table-1 tr th a {
@@ -1945,7 +1949,7 @@ table.dropmenu-table {
   display: block; }
 
 /*
-	Taulukko tyyli perustietojen nï¿½yttï¿½miselle, esim. hakijan henkilï¿½tietot
+	Taulukko tyyli perustietojen näyttämiselle, esim. hakijan henkilötietot
 */
 .perustieto-table {
   width: 100%; }
@@ -3015,77 +3019,84 @@ ul.orgmenu {
 
 /*** horizontal toolbar
 ************************************************/
-div[toolbarcontainer] {
+.toolbarcontainerwithouthakukohde,
+.toolbarcontainer {
   overflow: hidden;
   height: 700px; }
-  div[toolbarcontainer] #toolbarcontent {
+  .toolbarcontainerwithouthakukohde #toolbarcontent,
+  .toolbarcontainer #toolbarcontent {
     background-color: #f1f6f7;
     float: left;
     height: 700px; }
-    div[toolbarcontainer] #toolbarcontent .toolbar-decoration {
+    .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration,
+    .toolbarcontainer #toolbarcontent .toolbar-decoration {
       padding: 10px;
       border-left: 1px solid #e4e4e4;
       border-bottom: 1px solid #e4e4e4;
       border-top: 1px solid #e4e4e4; }
-      div[toolbarcontainer] #toolbarcontent .toolbar-decoration .selectlist {
+      .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration .selectlist,
+      .toolbarcontainer #toolbarcontent .toolbar-decoration .selectlist {
         height: 624px;
         overflow: scroll;
         margin: 0 !important;
         background-color: #fff; }
-  div[toolbarcontainer] #toolbartoggle-btn-container {
-    float: left; }
-    div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn {
-      background-color: #f1f6f7;
-      width: 32px;
-      height: 698px;
-      position: relative;
-      cursor: pointer;
-      border: 1px solid #e4e4e4; }
-      div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn:hover {
-        background-color: #c5e5ef; }
-      div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        height: 0;
-        width: 0; }
-        div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text {
-          display: block;
-          color: #149ecb;
+
+#toolbartoggle-btn-container {
+  float: left; }
+  #toolbartoggle-btn-container #toolbartoggle-btn {
+    background-color: #f1f6f7;
+    width: 32px;
+    height: 698px;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid #e4e4e4; }
+    #toolbartoggle-btn-container #toolbartoggle-btn:hover {
+      background-color: #c5e5ef; }
+    #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 0;
+      width: 0; }
+      #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span {
+        display: block;
+        color: #149ecb;
+        transform: rotate(-90deg);
+        -webkit-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        transform-origin: 0;
+        -webkit-transform-origin: 0;
+        -o-transform-origin: 0;
+        width: 150px; }
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:after {
+          position: absolute;
+          font-size: 9px;
+          transform-origin: 50% 50%;
+          -webkit-transform-origin: 50% 50%;
+          -moz-transform-origin: 50% 50%;
+          -ms-transform-origin: 50% 50%;
+          -o-transform-origin: 50% 50%;
+          transform: rotate(90deg);
+          -webkit-transform: rotate(90deg);
+          -moz-transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+          -o-transform: rotate(90deg);
+          content: '<<'; }
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:before {
+          left: -30px; }
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:after {
+          left: 105px; }
+        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span.minimized:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span.minimized:after {
           transform: rotate(-90deg);
           -webkit-transform: rotate(-90deg);
-          -o-transform: rotate(-90deg);
-          transform-origin: 0;
-          -webkit-transform-origin: 0;
-          -o-transform-origin: 0;
-          width: 150px;
-          /*
-          &:before, &:after {
-              display: block;
-                
-                bottom: 0px;
-                width: 22px;
-                height: 22px;
-                font-size: 9px;
-                line-height: 22px;
-                text-align: center;
-              transform-origin: 50% 50%;
-              -webkit-transform-origin: 50% 50%;
-              -moz-transform-origin: 50% 50%;
-              -ms-transform-origin: 50% 50%;
-              -o-transform-origin: 50% 50%;
-              transform: rotate(90deg);
-              -webkit-transform: rotate(90deg);
-              -moz-transform: rotate(90deg);
-              -ms-transform: rotate(90deg);
-              -o-transform: rotate(90deg);
-              content: '<<'; 
-          }
-          */ }
-          div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:before {
-            margin-right: 10px; }
-          div[toolbarcontainer] #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position .toggle-btn-text:after {
-            margin-left: 10px; }
+          -moz-transform: rotate(-90deg);
+          -ms-transform: rotate(-90deg);
+          -o-transform: rotate(-90deg); }
+
+.toolbarcontainerwithouthakukohde .toolbar-decoration {
+  border-right: 1px solid #e4e4e4; }
+.toolbarcontainerwithouthakukohde #toolbartoggle-btn-container {
+  display: none; }
 
 .togglecontent {
   height: 700px; }
@@ -3111,6 +3122,76 @@ div[toolbarcontainer] {
         background-color: #e4e4e4; }
       .autocomplete .ac-options .ac-option.selected {
         background-color: #c5e5ef; }
+
+/*** Valintalaskenta historia
+************************************************/
+.valintalaskentaHistoria {
+  list-style-type: none;
+  padding-left: 10px; }
+  .valintalaskentaHistoria .avaimet {
+    width: 60%;
+    overflow: scroll;
+    max-height: 300px;
+    border: 1px solid #eee;
+    padding-left: 10px; }
+    .valintalaskentaHistoria .avaimet li:nth-child(even) {
+      background-color: #f8f8f8; }
+  .valintalaskentaHistoria ul {
+    list-style-type: none; }
+  .valintalaskentaHistoria > li {
+    padding-top: 0;
+    padding-bottom: 0; }
+  .valintalaskentaHistoria .alikaavat {
+    position: relative;
+    padding-left: 25px; }
+  .valintalaskentaHistoria .folder-closed {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: 0 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px; }
+  .valintalaskentaHistoria .folder-open {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -18px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px; }
+  .valintalaskentaHistoria .keys-open {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -108px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px; }
+  .valintalaskentaHistoria .keys-closed {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -126px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px; }
+  .valintalaskentaHistoria .funktio {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -90px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px; }
+  .valintalaskentaHistoria .decorate {
+    background: #f8f8f8;
+    border: 1px solid #ccc; }
 
 /*** Itemtree
 ************************************************/
@@ -3509,7 +3590,7 @@ ul.dropmenu-list {
     margin-right: 4px; }
     .tabs .tab span {
       display: block;
-      padding: 0px 10px;
+      padding: 0px 7px;
       height: 36px;
       line-height: 36px;
       background: #f6f6f6;
@@ -3824,3 +3905,90 @@ ul.dropmenu-list {
   border: 1px dashed #bbbbbb;
   background-color: transparent;
   background-color: rgba(255, 255, 255, 0.75); }
+
+/*** Valintaperusteiden valintaryhmien ja hakukohteiden drag & drop
+************************************************/
+.placeholder {
+  outline: 1px dashed #4183C4;
+  /*-webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin: -1px;*/ }
+
+.mjs-nestedSortable-error {
+  background: #fbe3e4;
+  border-color: transparent; }
+
+ol {
+  margin: 0;
+  padding: 0;
+  padding-left: 30px; }
+
+ol.sortable, ol.sortable ol {
+  margin: 0 0 0 25px;
+  padding: 0;
+  list-style-type: none; }
+
+ol.sortable {
+  margin: 0 0 4em 0; }
+
+.sortable li {
+  margin: 5px 0 0 0;
+  padding: 0; }
+
+ul.dropmenu-list {
+  width: 240px; }
+
+li.uiCollapsed.mjs-nestedSortable-hovering div {
+  border-color: #999;
+  background: #fafafa; }
+
+.sortable li div.state-disabled {
+  cursor: default; }
+
+.disclose {
+  cursor: pointer;
+  width: 10px;
+  display: none; }
+
+.sortable li.uiCollapsed > ol {
+  display: none; }
+
+.sortable li > div > .disclose {
+  display: inline-block; }
+
+/*** tilatiedot & henkilÃ¶tiedot
+************************************************/
+div.tilaParial, div.henkiloPartial {
+  position: absolute;
+  /* width: 400px; */
+  /* height: 200px; */
+  line-height: 20px;
+  padding: 5px;
+  /* font-size: 14px; */
+  /* text-align: center; */
+  /* color: rgb(113, 157, 171); */
+  background: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  /* text-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px; */
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px; }
+
+div.tilaParial .close, div.henkiloPartial .close {
+  float: right;
+  padding-bottom: 5px;
+  cursor: pointer; }
+
+/*
+div.tilaParial:after, div.henkiloPartial:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent #FFFFFF transparent;
+      top: -24px;
+      left: 10%;
+}
+*/

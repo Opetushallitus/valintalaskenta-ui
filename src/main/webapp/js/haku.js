@@ -17,7 +17,9 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
                         promises[index] = (function() {
                             var deferred = $q.defer();
                             HaunTiedot.get({hakuOid: element.oid}, function(result) {
-                                model.haut.push(result);
+                            	if(result.tila=="JULKAISTU") {
+                            		model.haut.push(result);
+                            	}
                                 deferred.resolve();    
                             },function() {
                                 deferred.resolve();

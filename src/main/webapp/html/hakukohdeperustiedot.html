@@ -3,11 +3,11 @@
 <div ng-include="'partials/topNavigation.html'"></div>
 <div class="clear"></div>
 
-<div toggletoolbar class="tabsheets">
+<div class="tabsheets">
     
-    <div toolbarcontainer class="grid16-5 toggle-toolbar-container" ng-include="'partials/hakukohdelista.html'"></div>
+    <div ng-include="'partials/hakukohdelista.html'"></div>
 
-    <div contentcontainer class="grid16-11 toggle-content-container">
+    <div class="toggle-content-container overflow-x-scroll">
         <div ng-include="'partials/hakukohdeNavigation.html'"></div>
         <div class="tabsheets">
             <h1 class="margin-horizontal-1 margin-bottom-3">{{model.hakukohde.hakukohdeKoodistoNimi}}</h1>
