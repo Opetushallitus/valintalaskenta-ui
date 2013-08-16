@@ -33,12 +33,12 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 
 			var self = this;
 			var subKaavas = this.hasKaavas(node);
-			var hasChildNL = false; 
+			
 			if(subKaavas) {
 
 				//search through subtree and determine whether each node has at least one child 
 				subKaavas.forEach(function(subnode, index, array) {
-					hasChildNL = self.nodesChildrenHasNimettyLukuarvo(subnode);
+					self.nodesChildrenHasNimettyLukuarvo(subnode);
 				});
 
 				subKaavas.forEach(function(subnode, index, array){
@@ -56,30 +56,40 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			
 			if(subnodeArray) {
 				subnodeArray.forEach( function(subnode, index, array){
-					if (self.hasNimettyLukuarvo(subnode)) {
+					if (self.hasNimettyLukuarvo(node)) {
 						hasNL = true;
-						self.nodesChildrenHasNimettyLukuarvo(subnode);
 					} else {
 						hasNL = self.nodesChildrenHasNimettyLukuarvo(subnode);	
 					}
 
 					//extend current object to help UI show or hide it
 					if(hasNL) {
-						angular.extend(node, {"NL":"true"});
+						angular.extend(node, {"show":"true"});
 					} else {
-						angular.extend(node, {"NL":"false"});
+						angular.extend(node, {"show": "false"});
+						self.setChildrenVisible(node);
 					}
 
 				});
 			}
-			return hasNL;
+
 		},
 		hasNimettyLukuarvo: function(node) {
 			if(node.funktio === "Nimetty lukuarvo") {
 				return true;
 			} 
 			return false;
-			
+		},
+		setChildrenVisible: function(node) {
+			var self = this;
+			var subnodeArray = self.hasKaavas(node);
+
+			if(subnodeArray) {
+				subnodeArray.forEach(function(subnode, index, array) {
+					angular.extend(node, {"show": "true"});
+					self.setChildrenVisible(subnode);
+				});
+			}
 		},
 		//returns historiat if object has it otherwise return false
 		hasKaavas: function(node) {
@@ -119,11 +129,8 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 		}
 	}
 
-	$scope.openTree = function(folder) {
-		folder.NL = !folder.NL;
-		if(folder.historiat) {
-			
-		}
+	$scope.openTree = function(tree) {
+		tree.show = !tree.show;
 	}
 
 

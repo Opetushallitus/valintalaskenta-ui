@@ -1,4 +1,4 @@
-﻿app.factory('HarkinnanvaraisetModel', function($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey) {
+﻿app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
 	var model;
 	model = new function() {
 
@@ -8,46 +8,41 @@
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.hakukohdeOid = hakukohdeOid;
             HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
-                model.hakeneet = result;
-                /*
-                var params = [hakukohdeOid];
-                HakukohdeAvaimet.post(params, function(result) {
-                    model.avaimet = result;
+            model.hakeneet = result;
 
-                    model.avaimet.forEach(function(avain){
-                       avain.tyyppi = function(){
-                           if(avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
-                               return "checkbox";
-                           }
-                           return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
-                       };
-                    });
+            model.hakeneet.forEach(function(hakija){
+                Hakemus.get({oid: hakija.applicationOid}, function(result) {
+                 hakija.hakemus=result;
 
-                    model.hakeneet.forEach(function(hakija){
-                       hakija.originalData = [];
-                       if(!hakija.additionalData) {
-                           hakija.additionalData = [];
-                       }
-
-                       model.avaimet.forEach(function(avain){
-                           if(!hakija.additionalData[avain.tunniste]) {
-                               hakija.additionalData[avain.tunniste] = "";
-                           }
-                           hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
-                       });
-
-                    });
+               // console.log("========= Hakukohdeoid:" +model.hakukohdeOid );
+                for(var i =0; i<10; i++) {
+                    var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                  //  console.log("Hakutoive[" + i +"] " + oid);
+                    if(oid === model.hakukohdeOid) {
+                        var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
+                        hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
+                    }
+                }
+                //console.log("=========");
                 });
-                */
+            });
             });
 		}
 
-		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
+       this.updateJarjestyskriteerinTila = function(hakemusOid,  tila) {
+                var updateParams = {
+                    hakuOid : model.hakuOid,
+                    hakukohdeOid:  model.hakukohdeOid,
+                    hakemusOid: hakemusOid,
+                }
+                JarjestyskriteeriTila.post(updateParams, tila, function(result) {});
+            };
 
+
+		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
             if(hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
                 model.refresh(hakukohdeOid, hakuOid);
             }
-
         }
 
 
@@ -128,4 +123,10 @@ function HarkinnanvaraisetController($scope, $location, $routeParams, Harkinnanv
     $scope.submit = function() {
         HakeneetModel.submit();
     }
+
+    $scope.hyvaksyHarkinnanvaisesti = function(hakemusOid) {
+        var tila ="HYVAKSYTTY_HARKINNANVARAISESTI";
+        $scope.model.updateJarjestyskriteerinTila(hakemusOid, tila)
+    };
+
 }
