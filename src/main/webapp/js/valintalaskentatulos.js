@@ -1,4 +1,4 @@
-﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriArvo,JarjestyskriteeriTila) {
+﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija) {
 	var model;
 	model = new function() {
 
