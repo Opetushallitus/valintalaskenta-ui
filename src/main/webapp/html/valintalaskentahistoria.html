@@ -34,17 +34,12 @@
 
 
 <script type="text/ng-template" id="alikaava_node.html">
-	
-	<li ng-show="kaava.funktio === 'Nimetty lukuarvo'">
-		<span ng-click="openTree(kaava)" ng-class="kaava.show ? 'folder-open' : 'folder-closed'"></span>
+		
+	<li>
+		<span class="funktio" ng-show="kaava.funktio !== 'Nimetty lukuarvo'"></span>		
+		<span ng-click="openTree(kaava)" ng-class="kaava.show ? 'folder-open' : 'folder-closed'" ng-show="kaava.funktio === 'Nimetty lukuarvo'"></span>
 		<span ng-show="kaava.show" ng-click="keys = !keys" class="keys-closed"></span>
 		<h3 class="inline-block padding-left-2">{{kaava.avaimet.nimi}} <span style="font-weight: normal" ng-show="!isUndefined(kaava.tulos)">(tulos: {{kaava.tulos}})</span></h3>
-	</li>
-
-	<li ng-show="kaava.funktio !== 'Nimetty lukuarvo'">
-		<span class="funktio"></span>
-		<span ng-show="kaava.show" ng-click="keys = !keys" class="keys-closed"></span>
-		<h3 class="inline-block padding-left-2">{{kaava.funktio}}</h3>
 	</li>
 
 	<ul ng-show="keys" ng-init="keys = false" class="avaimet">
