@@ -105,7 +105,12 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 	$scope.changeTab = function(index) {
 		$scope.historyTabIndex = index;
 	}
-
+	$scope.isUndefined = function(v) {
+		if(v === undefined) {
+			return true;
+		}
+		return false;
+	}
 	$scope.toggleFolder = function(folderClass) {
 		if(folderClass === "folder-open") {
 			folderClass = "folder-closed";

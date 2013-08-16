@@ -36,7 +36,7 @@
 	
 	<li ng-show="kaava.funktio === 'Nimetty lukuarvo'">
 		<span ng-click="openTree(kaava)" ng-class="kaava.NL ? 'folder-open' : 'folder-closed'"></span>
-		<h3 class="inline-block padding-left-2">{{kaava.avaimet.nimi}} <span style="font-weight: normal" ng-show="kaava.tulos">(tulos: {{kaava.tulos}})</span></h3>
+		<h3 class="inline-block padding-left-2">{{kaava.avaimet.nimi}} <span style="font-weight: normal" ng-show="!isUndefined(kaava.tulos)">(tulos: {{kaava.tulos}})</span></h3>
 	</li>
 
 	<li ng-show="kaava.funktio !== 'Nimetty lukuarvo'">
