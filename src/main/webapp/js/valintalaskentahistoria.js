@@ -1,5 +1,6 @@
-app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$routeParams) {
-	
+app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$routeParams, $q) {
+
+    var deferred = $q.defer();
 	
 	var modelInterface = {
 		model: [],
@@ -13,12 +14,16 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			//valintatapajono/:valintatapajonoOid/versio/:versio/hakemus/:hakemusOid/valintalaskentahistoria
 			
 			ValintalaskentaHistoria.get({valintatapajonoOid: $routeParams.valintatapajonoOid, hakemusOid: $routeParams.hakemusOid}, function(data) {
-				var result = [];
+			    console.log("Data perilla");
+					var result = [];
 				angular.forEach(data, function(h) {
 					result.push(angular.fromJson(h.historia));
 				});
 				self.model = result;
 				self.prepareHistoryForUi();
+                console.log("Data prosessoitu");
+				deferred.resolve(modelInterface);
+				console.log("modeli resolvattu");
 			});
 		},
 		prepareHistoryForUi: function() {
@@ -103,7 +108,8 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 		}
 	};
     modelInterface.refresh();
-    return modelInterface;
+
+    return deferred.promise;
 });
 
 
