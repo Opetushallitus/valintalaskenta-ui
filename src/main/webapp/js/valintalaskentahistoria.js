@@ -28,75 +28,65 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 		},
 		prepareHistoryForUi: function() {
 			var self = this;
-			var historiat = this.get();
+			var jarjestyskriteerit = this.get();
 			
-			historiat.forEach(function(element, index, array){
-				self.operateTree(element);
+			self.addVisibilityVariable(jarjestyskriteerit);
+			self.setHidingVariables(jarjestyskriteerit);
+		},
+		addVisibilityVariable: function(nodeArray) {
+			var self = this;
+			nodeArray.forEach(function(node) {	
+
+				//extend node with funktio: Nimetty lukuarvo -field
+				if(self.hasNimettyLukuarvo(node)) {
+					angular.extend(node, {"folder": "true"});
+				} 
+				
+				//extend node with visibility value
+				angular.extend(node, {"show": "true"});	
+				
+				//iterate through subtree recursively
+				if(self.hasKaavas(node)) {
+					self.addVisibilityVariable(self.hasKaavas(node));
+				}
 			});
 		},
-		operateTree: function(node) {
-
+		setHidingVariables: function(nodeArray) {
 			var self = this;
-			var subKaavas = this.hasKaavas(node);
-			
-			if(subKaavas) {
+			nodeArray.forEach(function(node) {
+				
+				var foundObj = {"found": false};
+				self.hasFolderChildren(self.hasKaavas(node), foundObj);
 
-				//search through subtree and determine whether each node has at least one child 
-				subKaavas.forEach(function(subnode, index, array) {
-					self.nodesChildrenHasNimettyLukuarvo(subnode);
-				});
+				if(self.hasNimettyLukuarvo(node) && !foundObj.found) {
+					angular.extend(node, {"show": "false"});
+				}
 
-				subKaavas.forEach(function(subnode, index, array){
-					self.operateTree(subnode);
-				});
-			}
+				if(self.hasKaavas(node)) {
+					self.setHidingVariables(self.hasKaavas(node));
+				}
+				
+			});
 		},
-
-		//extend each node with key 'visibleByDefault' and value true if 
-		//this node has a child with funktio value Nimetty lukuarvo
-		nodesChildrenHasNimettyLukuarvo: function(node) {
-			var self = this;
-			var visibleByDefault = false;
-			var subnodeArray = self.hasKaavas(node);
+		hasFolderChildren: function(nodeArray, foundObj) {
 			
-			if(subnodeArray) {
-				subnodeArray.forEach( function(subnode, index, array){
-					if (self.hasNimettyLukuarvo(node)) {
-						visibleByDefault = true;
-					} else {
-						visibleByDefault = self.nodesChildrenHasNimettyLukuarvo(subnode);	
+			var self = this;
+			if(nodeArray) {
+				nodeArray.forEach(function(node) {
+					if(self.hasNimettyLukuarvo(node)) {
+						foundObj.found = true;
 					}
 
-					//extend current object to help UI show or hide it
-					if(visibleByDefault) {
-						angular.extend(node, {"show":"true"});
-					} else {
-						angular.extend(node, {"show": "false"});
-
-						//extends all subnodes with show:true field to enable visibility
-						self.setChildrenVisible(node);
-					}
-
+					self.hasFolderChildren(self.hasKaavas(node), foundObj);
 				});
-			}
-
+			} 
+			
 		},
 		hasNimettyLukuarvo: function(node) {
 			if(node.funktio === "Nimetty lukuarvo") {
 				return true;
 			} 
 			return false;
-		},
-		setChildrenVisible: function(node) {
-			var self = this;
-			var subnodeArray = self.hasKaavas(node);
-
-			if(subnodeArray) {
-				subnodeArray.forEach(function(subnode, index, array) {
-					angular.extend(node, {"show": "true"});
-					self.setChildrenVisible(subnode);
-				});
-			}
 		},
 		//returns historiat if object has it otherwise return false
 		hasKaavas: function(node) {
@@ -139,6 +129,14 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 
 	$scope.openTree = function(tree) {
 		tree.show = !tree.show;
+	}
+
+	$scope.folderOpen = function(open) {
+		if(open) {
+			return 'folder-open';
+		} else {
+			return 'folder-closed';
+		}
 	}
 
 
