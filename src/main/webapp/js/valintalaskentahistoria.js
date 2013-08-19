@@ -14,16 +14,16 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			//valintatapajono/:valintatapajonoOid/versio/:versio/hakemus/:hakemusOid/valintalaskentahistoria
 			
 			ValintalaskentaHistoria.get({valintatapajonoOid: $routeParams.valintatapajonoOid, hakemusOid: $routeParams.hakemusOid}, function(data) {
-			    console.log("Data perilla");
+			   // console.log("Data perilla");
 					var result = [];
 				angular.forEach(data, function(h) {
 					result.push(angular.fromJson(h.historia));
 				});
 				self.model = result;
 				self.prepareHistoryForUi();
-                console.log("Data prosessoitu");
+              //  console.log("Data prosessoitu");
 				deferred.resolve(modelInterface);
-				console.log("modeli resolvattu");
+			//	console.log("modeli resolvattu");
 			});
 		},
 		prepareHistoryForUi: function() {
