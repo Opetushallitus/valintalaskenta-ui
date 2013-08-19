@@ -52,7 +52,8 @@
                             <td ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">
                                 <div ng-switch on="avain.lahde">
                                     <div ng-switch-when="SYOTETTAVA_ARVO">
-                                        <input min="{{avain.min}}" max="{{avain.max}}" size="2" ng-model="hakija.additionalData[avain.tunniste]" arvovalidaattori/>
+                                        <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] == 'OSALLISTUI'" min="{{avain.min}}" max="{{avain.max}}" size="2" ng-model="hakija.additionalData[avain.tunniste]" arvovalidaattori/>
+                                        <!--<span ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'OSALLISTUI'">{{hakija.additionalData[avain.tunniste]}}</span>-->
                                         <span style="color: red;"></span>
 
                                         <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]" ng-show="avain.osallistuminenTunniste">
