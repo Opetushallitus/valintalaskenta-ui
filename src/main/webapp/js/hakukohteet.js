@@ -69,7 +69,7 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
    }
 
    $scope.showHakukohde = function(hakukohdeOid) {
-      //$scope.hakukohteetVisible = false;
+      $scope.hakukohteetVisible = false;
       GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
       $location.path('/haku/' + $scope.hakuOid + '/hakukohde/' + hakukohdeOid + '/' + $scope.subpage);
    }

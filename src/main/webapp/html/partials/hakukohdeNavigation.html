@@ -8,16 +8,16 @@
     	<span>Hakeneet</span>
     </a>
 
-    <a auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
-        <span>Harkinnanvaraiset</span>
+    <a auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
+        <span>Valinnan hallinta</span>
     </a>
 
     <a auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
         <span>Valintakoekutsut</span>
     </a>
 
-    <a auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
-    	<span>Valinnan hallinta</span>
+    <a auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
+        <span>Harkinnanvaraiset</span>
     </a>
 
     <a auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintalaskentatulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintalaskentatulos" class="tab">
