@@ -145,5 +145,7 @@ function SijoitteluntulosController($scope, $routeParams, $window, $http, Hakuko
         $scope.updateOph = true;
     });
 
-
+    $scope.showSijoitteluPartial = function(hakemus) {
+        hakemus.showSijoitteluPartial = !hakemus.showSijoitteluPartial;
+    };
 }
