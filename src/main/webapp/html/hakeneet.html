@@ -17,13 +17,6 @@
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <h2>Hakeneet</h2>
-                
-                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
-                <select ng-model="arvoFilter">
-                    <option value="SYOTETTAVA_ARVO">Syötettävät arvot</option>
-                    <option value="HAETTAVA_ARVO">Haettavat arvot</option>
-                    <option value="">Kaikki</option>
-                </select>
 
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
