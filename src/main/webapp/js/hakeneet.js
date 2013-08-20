@@ -6,6 +6,8 @@
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.hakukohdeOid = hakukohdeOid;
+            model.hakuOid = hakuOid;
+
             HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
             model.hakeneet = result;
 
@@ -31,11 +33,14 @@
 	return model;
 });
 
-function HakeneetController($scope, $location, $routeParams, HarkinnanvaraisetModel, HakukohdeModel) {
+function HakeneetController($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
-    $scope.model = HarkinnanvaraisetModel;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
-    $scope.hakukohdeModel = HakukohdeModel;
+
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
+    $scope.hakukohdeModel = HakukohdeModel;
+
+    HakeneetModel.refreshIfNeeded($scope.hakukohdeOid,$scope.hakuOid);
+    $scope.model = HakeneetModel;
 }
