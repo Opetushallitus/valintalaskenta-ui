@@ -3,14 +3,14 @@
 
 <div ng-include="'partials/topNavigation.html'" />
 
-<div  class="tabsheets">
+<div class="tabsheets">
 
     <div ng-include="'partials/hakukohdelista.html'"></div>
 
     <div class="toggle-content-container overflow-x-scroll">
         <div ng-include="'partials/hakukohdeNavigation.html'" />
 
-		<div class="tabsheets">
+		<div auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
 			<p ng-show="model.hakeneet.length < 1" class="notification info margin-vertical-2">Tähän hakukohteeseen ei ole yhtään hakijaa</p>
@@ -46,11 +46,9 @@
                                         {{hakija.applicationOid}}
                                     </a>
                                 </span>
-                                <br />
-                                <span title="Hetu">{{hakija.ssn}}</span>
                             </td>
                             <td ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">
-                                <div ng-switch on="avain.lahde">
+                                <div ng-show="hakija.osallistuu[avain.tunniste]" ng-switch on="avain.lahde">
                                     <div ng-switch-when="SYOTETTAVA_ARVO">
                                         <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] == 'OSALLISTUI'" min="{{avain.min}}" max="{{avain.max}}" size="2" ng-model="hakija.additionalData[avain.tunniste]" arvovalidaattori/>
                                         <!--<span ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'OSALLISTUI'">{{hakija.additionalData[avain.tunniste]}}</span>-->

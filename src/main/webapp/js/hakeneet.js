@@ -1,4 +1,4 @@
-﻿app.factory('HakeneetModel', function($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey) {
+﻿app.factory('HakeneetModel', function($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey, Valintakoetulokset) {
 	var model;
 	model = new function() {
 
@@ -7,41 +7,78 @@
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.hakukohdeOid = hakukohdeOid;
-            HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
-                model.hakeneet = result;
-                var params = [hakukohdeOid];
-                HakukohdeAvaimet.post(params, function(result) {
-                    model.avaimet = result;
 
-                    model.avaimet.forEach(function(avain){
-                       avain.tyyppi = function(){
-                           if(avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
-                               return "checkbox";
-                           }
-                           return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
-                       };
+            Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(tulos) {
+                var tulokset = {};
+
+                // Haetaan onko hakija osallistunut kokeeseen
+                tulos.forEach(function(vkt) {
+                    var hakutoiveet = {};
+                    vkt.hakutoiveet.forEach(function(ht) {
+                        var valintakokeet = {};
+
+                        ht.valinnanVaiheet.forEach(function(vv) {
+
+                            vv.valintakokeet.forEach(function(vk) {
+                                valintakokeet[vk.valintakoeTunniste] = vk.osallistuminen;
+                            });
+                        });
+
+                        hakutoiveet[ht.hakukohdeOid] = valintakokeet;
                     });
 
-                    model.hakeneet.forEach(function(hakija){
-                       hakija.originalData = [];
-                       if(!hakija.additionalData) {
-                           hakija.additionalData = [];
-                       }
+                    tulokset[vkt.hakemusOid] = hakutoiveet;
+                });
 
-                       model.avaimet.forEach(function(avain){
-                           if(!hakija.additionalData[avain.tunniste]) {
-                               hakija.additionalData[avain.tunniste] = "";
-                           }
-                           hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
 
-                           if(!hakija.additionalData[avain.osallistuminenTunniste]) {
-                               hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-                           }
-                           hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
-                       });
+                HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
+                    model.hakeneet = result;
+                    var params = [hakukohdeOid];
+                    HakukohdeAvaimet.post(params, function(result) {
+                        model.avaimet = result;
 
+                        model.avaimet.forEach(function(avain){
+                           avain.tyyppi = function(){
+                               if(avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
+                                   return "checkbox";
+                               }
+                               return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
+                           };
+                        });
+
+                        model.hakeneet.forEach(function(hakija){
+
+                            hakija.originalData = [];
+                            hakija.osallistuu = [];
+                            if(!hakija.additionalData) {
+                               hakija.additionalData = [];
+                            }
+
+                            model.avaimet.forEach(function(avain){
+
+                                if(tulokset[hakija.applicationOid] &&
+                                    tulokset[hakija.applicationOid][hakukohdeOid] &&
+                                    tulokset[hakija.applicationOid][hakukohdeOid][avain.tunniste]
+
+                                ) {
+                                    hakija.osallistuu[avain.tunniste] = true;
+
+                                    if(!hakija.additionalData[avain.tunniste]) {
+                                       hakija.additionalData[avain.tunniste] = "";
+                                    }
+                                    hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
+
+                                    if(!hakija.additionalData[avain.osallistuminenTunniste]) {
+                                       hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+                                    }
+                                    hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+                                }
+                            });
+
+                        });
                     });
                 });
+
             });
 		}
 
@@ -102,7 +139,7 @@
         			}
 
         			if(hakija.originalData[avain.osallistuminenTunniste] !== hakija.additionalData[avain.osallistuminenTunniste]) {
-        			    console.log("hakija.additionalData[avain.osallistuminenTunniste]");
+
                         HakemusKey.put({
                             "oid": hakija.applicationOid,
                             "key": avain.osallistuminenTunniste,
