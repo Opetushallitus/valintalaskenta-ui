@@ -39,13 +39,11 @@
 
                         <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter">
                             <td>
-                                <span title="Sukunimi">{{hakija.lastName}}</span>, <span title="Etunimi">{{hakija.firstName}}</span>
-                                <br />
-                                <span title="HakemusOid">
-                                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{hakija.applicationOid}}" target="_blank" >
-                                        {{hakija.applicationOid}}
-                                    </a>
-                                </span>
+                                <a ng-click="showTiedotPartial(hakija)" >
+                                    <span class="sukunimi">{{hakija.lastName}}</span>,
+                                    <span class="etunimi">{{hakija.firstName}}</span>
+                                </a>
+                                <div ng-include="'partials/hakeneetTiedotPartial.html'" ng-show="hakija.showTiedotPartial"/>
                             </td>
                             <td ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">
                                 <div ng-show="hakija.osallistuu[avain.tunniste]" ng-switch on="avain.lahde">

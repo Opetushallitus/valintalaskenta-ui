@@ -179,9 +179,13 @@ function HakeneetController($scope, $location, $routeParams, HakeneetModel, Haku
 
     HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $routeParams.hakuOid);
 
-    $scope.predicate = 'sukunimi';
+    $scope.predicate = 'lastName';
 
     $scope.submit = function() {
         HakeneetModel.submit();
     }
+
+    $scope.showTiedotPartial = function(hakija) {
+        hakija.showTiedotPartial = !hakija.showTiedotPartial;
+    };
 }
