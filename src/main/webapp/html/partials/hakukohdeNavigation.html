@@ -16,6 +16,10 @@
         <span>Valintakoekutsut</span>
     </a>
 
+    <a auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('pistesyotto', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/pistesyotto" class="tab">
+        <span>Pistesyöttö</span>
+    </a>
+
     <a auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
         <span>Harkinnanvaraiset</span>
     </a>
