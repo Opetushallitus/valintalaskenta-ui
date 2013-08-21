@@ -1,79 +1,74 @@
-﻿<h1>Valinnat</h1>
+﻿
+<h1>Valinnat</h1>
 
-<div class="clear"></div>
-
-<div ng-include="'partials/topNavigation.html'"></div>
+<div ng-include="'partials/topNavigation.html'" />
 
 <div class="tabsheets">
-	
-	<div ng-include="'partials/hakukohdelista.html'"></div>
+
+    <div ng-include="'partials/hakukohdelista.html'"></div>
 
     <div class="toggle-content-container overflow-x-scroll">
-		
-		<div ng-include="'partials/hakukohdeNavigation.html'"></div>
-		
-			<div class="tabsheets">
-                <h1>{{hakukohdeModel.hakukohde.hakukohdeNimi}}</h1>
-			<div class="width-12-9 margin-vertical-2">
-				Aloituspaikat: {{hakukohdeModel.hakukohde.aloituspaikat}}<br/>
-				Ensisijaisesti hakeneet: 225<br/>
-				Kaikki hakeneet: 366<br/>
-				Kokeisiin kutsutut: 225<br/>
-				Kielikokeisiin kutsutut: 12<br/>
-			</div>
-			<div class="width-12-3 margin-vertical-2">
-				<select>
-					<option>kaikki pistetiedot</option>
-				</select>
-				<div class="field-container-radio">
-					<input id="vain_omat" type="checkbox">
-					<label for="vain_omat"> Vain omat kutsutut </label>
-				</div>
-				<div class="field-container-radio">
-					<input id="puuttuvat" type="checkbox">
-					<label for="puuttuvat"> Näytä vain puuttuvat tiedot </label>
-				</div>
-			</div>
-		
-			<table class="virkailija-table-1">
-				<thead>
-					<tr>
-						<th colspan="3">Hakijat</th>
-						<th colspan="2">Valintakoe</th>
-						<th colspan="2">Kielikoe</th>
-					</tr>
-					<tr>
-						<td>Nimi</td>
-						<td>Hetu</td>
-						<td>OID</td>
+        <div ng-include="'partials/hakukohdeNavigation.html'" />
 
-						<td>56 osallist.</td>
-						<td>Ei osallist.</td>
-						
-						<td>12 osallist.</td>
-						<td>Ei osallist.</td>
+        <div auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" class="tabsheets">
+            <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
-					</tr>
-				</thead>
-				<tbody ng-repeat="hakemus in model.hakemukset">
-					<tr>
-						<td>{{hakemus.answers.henkilotiedot.Sukunimi}}, {{hakemus.answers.henkilotiedot.Etunimet}}</td>
-						<td> {{hakemus.answers.henkilotiedot.Henkilotunnus}}</td>
-						<td></td>
-						<td><input type="text" size="7" /></td>
-						<td class="align-center"><input class="align-center" type="checkbox" /></td>
-						<td><input type="text" size="7" /></td>
-						<td class="align-center"><input type="checkbox" /></td>
-					</tr>
-					
-				</tbody>
-			</table>
+            <p ng-show="model.hakeneet.length < 1" class="notification info margin-vertical-2">Tähän hakukohteeseen ei ole yhtään hakijaa</p>
 
-			
-		</div>
-	</div>
+            <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
+                <h2>Hakeneet</h2>
 
-	<div class="clear"></div>
+                <form name="form" ng-submit="submit()">
+                    <table class="virkailija-table-1">
+                        <thead>
+                        <tr>
+                            <th><a href="" ng-click="predicate = 'lastName'; reverse=!reverse">Tiedot</a></th>
+                            <th ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">{{avain.tunniste}} {{avain.kuvaus}}
+                                <span ng-show="avain.min || avain.min == 0" ng-show="avain.max || avain.max == 0">({{avain.min}} - {{avain.max}})</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter">
+                            <td>
+                                <a ng-click="showTiedotPartial(hakija)" >
+                                    <span class="sukunimi">{{hakija.lastName}}</span>,
+                                    <span class="etunimi">{{hakija.firstName}}</span>
+                                </a>
+                                <div ng-include="'partials/hakeneetTiedotPartial.html'" ng-show="hakija.showTiedotPartial"/>
+                            </td>
+                            <td ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">
+                                <div ng-show="hakija.osallistuu[avain.tunniste]" ng-switch on="avain.lahde">
+                                    <div ng-switch-when="SYOTETTAVA_ARVO">
+                                        <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] == 'OSALLISTUI'" min="{{avain.min}}" max="{{avain.max}}" size="2" ng-model="hakija.additionalData[avain.tunniste]" arvovalidaattori/>
+                                        <!--<span ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'OSALLISTUI'">{{hakija.additionalData[avain.tunniste]}}</span>-->
+                                        <span style="color: red;"></span>
+
+                                        <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]" ng-show="avain.osallistuminenTunniste">
+                                            <option value="MERKITSEMATTA">Merkitsemättä</option>
+                                            <option value="OSALLISTUI">Osallistui</option>
+                                            <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                                        </select>
+
+                                    </div>
+                                    <div ng-switch-default>
+                                        {{hakija.additionalData[avain.tunniste]}}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <button ng-disabled="!form.$valid" class="button small primary margin-top-2" type="submit">Tallenna</button>
+                    <div>
+                        <div class="notification warning" ng-show="form.$error.arvovalidaattori">Tarkista virheet!</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
 </div>
-
-

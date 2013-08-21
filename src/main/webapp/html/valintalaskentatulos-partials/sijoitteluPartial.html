@@ -1,0 +1,58 @@
+<div class="henkiloPartial">
+    <a ng-click="showSijoitteluPartial(hakemus)" class="close">X</a>
+    <!--<div class="etunimi">-->
+        <!--<div class="form-row">-->
+            <!--<label class="form-row-label" for="">Nimi</label>-->
+
+            <!--<div class="form-row-content">-->
+                <!--<span class="nofield etunimi"> {{tulos.etunimi}}</span>-->
+                <!--<span class="nofield sukunimi"> {{tulos.sukunimi}}</span>-->
+            <!--</div>-->
+            <!--<div class="clear"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="hakijaOid">
+        <div class="form-row">
+            <label class="form-row-label" for="">Hakija (OID)</label>
+
+            <div class="form-row-content">
+                <span class="nofield etunimi">
+                   {{hakemus.hakijaOid}}
+                </span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="hakemusOid">
+        <div class="form-row">
+            <label class="form-row-label" for="">Hakemuksen tekninen tunniste (OID)</label>
+
+            <div class="form-row-content">
+                <span class="nofield etunimi">
+                   <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{hakemus.hakemusOid}}" target="_blank" >
+                       {{hakemus.hakemusOid}}
+                   </a>
+                </span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="oppijaOid">
+        <div class="form-row">
+            <label class="form-row-label" for="">Oppijan numero</label>
+
+            <div class="form-row-content">
+                <span class="nofield etunimi">
+                   <a href="#" target="_blank" >    <!--lisää linkki henkilonhallintaan jossain vaiheessa -->
+                       {{hakemus.henkiloOid}}
+                   </a>
+                </span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+</div>
