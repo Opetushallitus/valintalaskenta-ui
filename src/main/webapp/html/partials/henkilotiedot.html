@@ -1,0 +1,29 @@
+<h1>Valinnat</h1>
+
+
+<div ng-include="'partials/topNavigation.html'"></div>
+
+
+<div class="clear"></div>
+
+<div class="tabsheets">
+
+    <div ng-include="'partials/henkilolista.html'"></div>
+    
+    <div class="toggle-content-container overflow-x-scroll">
+
+        <div class="tabsheets">
+
+            <h1>{{hakemus.answers.henkilotiedot.Sukunimi}}, {{hakemus.answers.henkilotiedot.Etunimet}}</h1>
+            <address>
+            {{hakemus.answers.henkilotiedot.Henkilotunnus}}<br>
+            {{hakemus.personOid}}<br>
+            {{hakemus.answers.henkilotiedot.lahiosoite}}, {{hakemus.answers.henkilotiedot.Postinumero}} {{hakemus.answers.henkilotiedot.postitoimipaikka}}<br>
+            </address>
+            
+            
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+
