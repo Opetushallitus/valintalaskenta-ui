@@ -64,8 +64,8 @@
                                 <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>
                             </td>
                             <td>
-                                <a ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="button small">Muokkaa</a>
-                                <div ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteeri.html'" ng-show="tulos.showMuutaJarjestyskriteerinArvo"/>
+                                <a ng-click="showMuutaJarjestyskriteerinArvo(tulos, this)" class="button small">Muokkaa</a>
+                                <div class="modal" ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteeri.html'" />
                             </td>
                         </tr>
                         </tbody>

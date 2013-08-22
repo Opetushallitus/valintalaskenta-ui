@@ -89,58 +89,45 @@ app.directive('uiSortable', function() {
   }
 );
 
-// tabs
-/*
-app.directive('tabs', function() {
-    return {
-      restrict: 'E',
-      transclude: true,
-      scope: {},
-      controller: function($scope, $element) {
-        var panes = $scope.panes = [];
+app.directive('modal', function() {
+    return {
+        restrict: "C",
+        link: function($scope, element, attrs) {
+            $scope.elem = $(element);
 
-        $scope.select = function(pane) {
-          angular.forEach(panes, function(pane) {
-            pane.selected = false;
-          });
-          pane.selected = true;
-        }
+            //$(element).wrap('<div style="display: none" class="modal-backdrop"></div>');
+            
 
-        this.addPane = function(pane) {
-          if (panes.length == 0) $scope.select(pane);
-          panes.push(pane);
-        }
-      },
-      template:
-        '<div class="tabsheet-container">' +
-          '<ul class="nav nav-tabs">' +
-            '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">'+
-              '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
-            '</li>' +
-          '</ul>' +
-          '<div class="tab-content" ng-transclude></div>' +
-        '</div>',
-      replace: true
-    };
+            //hide element initially
+            $(element).addClass("hidden");
+            
+            $scope.$on($scope.$id, function() {
+                $(element).toggleClass("hidden");    
+                var top = ($(window).height() - $(element).outerHeight()) / 2;
+                var left = ($(window).width() - $(element).outerWidth()) / 2;
+                $(element).css({margin:0, top: (top > 0 ? top : 0)+'px', left: (left > 0 ? left : 0)+'px'});  
+            });
+        },
+        controller: function($scope) {
+            this.closeModal = function() {
+                $scope.elem.toggleClass("hidden");
+            }
+        }
+    }
+}); 
+
+app.directive('close', function() {
+    return {
+        restrict: "A",
+        require: "^modal",
+        link: function(scope, element, attrs, ctrl) {
+            $(element).on('click', function() {
+                ctrl.closeModal();
+            });
+        }
+    }
 });
-  */
-  /*
-app.directive('pane', function() {
-    return {
-      require: '^tabs',
-      restrict: 'E',
-      transclude: true,
-      scope: { title: '@' },
-      link: function(scope, element, attrs, tabsCtrl) {
-        tabsCtrl.addPane(scope);
-      },
-      template:
-        '<div class="tab-pane" ng-class="{active: selected}" ng-transclude>' +
-        '</div>',
-      replace: true
-    };
-});
-        */
+
 app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
     return {
       link : function($scope, element, attrs) {
