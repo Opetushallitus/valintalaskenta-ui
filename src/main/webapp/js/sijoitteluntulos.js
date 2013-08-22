@@ -85,6 +85,8 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
             
             HakemuksenTila.post(tilaParams, tilaObj, function(result) {
                 model.refresh(model.hakuOid, model.hakukohdeOid);
+            }, function(error) {
+                alert("Virhe: " + error.data.message);
             });
         }
 
