@@ -1392,6 +1392,47 @@ h3,
 .h3 {
   font-size: 1em; }
 
+/*** hr
+*************************************/
+hr {
+  border: none;
+  height: 1px;
+  width: 100%;
+  margin: 0.5em 0px;
+  background-color: #bbe7f5;
+  clear: both; }
+
+/*** Definition list
+*************************************/
+dl {
+  margin-bottom: 2em;
+  margin: 0 0 1em;
+  padding: 0; }
+  dl dt {
+    font-weight: bold;
+    line-height: 1.5em;
+    height: 1.5em;
+    width: 173px;
+    margin: 0 15px 0 0;
+    padding: 0;
+    text-align: right; }
+  dl dd {
+    margin: -19px 0 0 195px;
+    padding: 0 0 1em;
+    line-height: 1.5em;
+    height: 1.5em; }
+    dl dd:after {
+      clear: both; }
+    dl dd .virkailija-table-1 {
+      width: auto; }
+
+/*** Wrapper
+**************************************************************/
+#application-wrapper {
+  min-width: 1200px;
+  margin: 0 auto;
+  background-color: none; }
+
 /*** Textarea
 *************************************/
 textarea {
@@ -1483,49 +1524,6 @@ input.search[type="text"] {
   background-repeat: no-repeat;
   background-position: 0.4em center; }
 
-/*** hr
-*************************************/
-hr {
-  border: none;
-  height: 1px;
-  width: 100%;
-  margin: 0.5em 0px;
-  background-color: #bbe7f5;
-  clear: both; }
-
-/*** Definition list
-*************************************/
-dl {
-  margin-bottom: 2em;
-  margin: 0 0 1em;
-  padding: 0; }
-  dl dt {
-    font-weight: bold;
-    line-height: 1.5em;
-    height: 1.5em;
-    width: 173px;
-    margin: 0 15px 0 0;
-    padding: 0;
-    text-align: right; }
-  dl dd {
-    margin: -19px 0 0 195px;
-    padding: 0 0 1em;
-    line-height: 1.5em;
-    height: 1.5em; }
-    dl dd:after {
-      clear: both; }
-    dl dd .virkailija-table-1 {
-      width: auto; }
-
-/*** Wrapper
-**************************************************************/
-#application-wrapper {
-  min-width: 1200px;
-  margin: 0 auto;
-  background-color: none; }
-
-/*** Form elements
-************************************************/
 /*** Fieldset
 **********************************/
 fieldset {

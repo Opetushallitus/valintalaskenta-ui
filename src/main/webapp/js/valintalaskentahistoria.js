@@ -39,11 +39,11 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 
 				//extend node with funktio: Nimetty lukuarvo -field
 				if(self.hasNimettyLukuarvo(node)) {
-					angular.extend(node, {"folder": "true"});
+					angular.extend(node, {"folder": true});
 				} 
 				
 				//extend node with visibility value
-				angular.extend(node, {"show": "true"});	
+				angular.extend(node, {"show": true});
 				
 				//iterate through subtree recursively
 				if(self.hasKaavas(node)) {
@@ -59,7 +59,7 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 				self.hasFolderChildren(self.hasKaavas(node), foundObj);
 
 				if(self.hasNimettyLukuarvo(node) && !foundObj.found) {
-					angular.extend(node, {"show": "false"});
+					angular.extend(node, {"show": false});
 				}
 
 				if(self.hasKaavas(node)) {

@@ -1,5 +1,7 @@
+
+
 <div class="toolbarcontainer" ng-class="hakukohteetVisible ? 'grid16-5' : 'grid16-1'" ng-controller="HenkiloController">
-	
+
 	<div id="toolbarcontent" class="width-90">
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
@@ -8,11 +10,11 @@
 			</div>
 
 			<ul class="selectlist">
-			    <li ng-repeat="(oid, henkilo) in model.getHenkilot() | filter:model.searchWord">
-			        <a>
+			    <li ng-repeat="hakemus in model.getHakemukset() | filter:model.searchWord">
+			        <a ng-click="showHakemus(hakemus)">
 			            <span class="icon file"></span>
 			            <span class="label">
-			                {{model.getName(henkilo)}}
+			                {{model.getName(hakemus)}}
 			            </span>
 			        </a>
 			    </li>
@@ -28,3 +30,4 @@
 		</div>
 	</div>
 </div>
+

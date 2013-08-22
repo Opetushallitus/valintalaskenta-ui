@@ -1,17 +1,23 @@
-app.factory('HenkiloModel', function($q,$routeParams, Haku, HakuHakukohdeChildren, HakukohdeNimi, AuthService, Hakemus, HakukohdeHenkilot) {
-	var henkilot = {};
+app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
+	var hakemukset = [];
 	//console.log(hakuOid);
-	function getName(henkilo) {
-		return henkilo.lastName + " " + henkilo.firstName;
+	function getName(hakemus) {
+		return hakemus.lastName + ", " + hakemus.firstNames;
 	}
     
-	function getHenkilot(){
+	function getHakemukset(){
 		//console.log('haetaan henkilot');
-		return henkilot;
+		return hakemukset;
 	}
     function refresh() {
-    	var hakuOid = $routeParams.hakuOid;
+    	//var hakuOid = $routeParams.hakuOid;
+    	//https://itest-virkailija.oph.ware.fi/haku-app/applications?appState=ACTIVE&appState=INCOMPLETE&asId=1.2.246.562.5.2013062511414871880564&start=0&rows=50
+    	Henkilot.query({appState: ["ACTIVE","INCOMPLETE"], asId:$routeParams.hakuOid, start:0, rows:50 }, function(result) {
+    		console.log(result);
+    		hakemukset = result.results;
+    	});
     	
+    	/*
     	HakuHakukohdeChildren.get({"hakuOid": hakuOid}, function(result) {
     		result.forEach(function(hakukohde) {
     			HakukohdeHenkilot.get({"hakuOid": hakuOid, "hakukohdeOid": hakukohde.oid}, function(r) {
@@ -22,12 +28,12 @@ app.factory('HenkiloModel', function($q,$routeParams, Haku, HakuHakukohdeChildre
     		});
     		
         });
-        
+        */
     }
     
 	var modelInterface = {
 		searchWord: "",
-        getHenkilot: getHenkilot,
+        getHakemukset: getHakemukset,
         refresh: refresh,
         getName: getName
     }
@@ -35,54 +41,21 @@ app.factory('HenkiloModel', function($q,$routeParams, Haku, HakuHakukohdeChildre
 	return modelInterface;
 });
 
-function HenkiloController($scope,HenkiloModel) {
+function HenkiloController($scope,$location,$routeParams,HenkiloModel) {
 	
 	$scope.model = HenkiloModel;
 	$scope.hakukohteetVisible = true;
-	
-	//$scope.model.refreshIfNeeded($scope.hakuOid, $scope.hakukohdeOid);
 	
 	
 	$scope.toggleHakukohteetVisible = function() {
 		
 	}
 	
-	$scope.showHakukohde = function(hakukohdeOid) {
-	      
-	}
+	$scope.showHakemus = function(hakemus) {
+		// haku/1.2.246.562.5.2013060313080811526781/henkiloittain/
+      //$scope.hakukohteetVisible = false;
+      //GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
+      $location.path('/haku/' + $routeParams.hakuOid + '/henkiloittain/' + hakemus.oid + "/henkilotiedot");
+   }
+	
 }
-/*Hakemus.get({"oid": $routeParams.hakuOid}, function(result) {
-console.log(result);
-});*/
-/*
-HakuHakukohdeChildren.get({"hakuOid": hakuOid}, function(result) {
-var hakukohdeOids = result;
-
-hakukohdeOids.forEach(function(element, index) {
-
-  HakukohdeNimi.get({hakukohdeoid: element.oid}, function(hakukohdeObject) {
-    model.hakukohteet.push(hakukohdeObject);
-    AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINEN", hakukohdeObject.tarjoajaOid).then(function() {
-        model.filtered.push(hakukohdeObject);
-    });
-
-  });
-});
-
-});
-*/
-
-/*this.refreshIfNeeded = function(hakuOid) {
-if( (hakuOid) && (hakuOid !== "undefined") && (hakuOid != model.hakuOid) ) {
-    model.searchWord = "";
-    model.refresh(hakuOid);
-}
-};
-
-this.blender = function(filter){
-if(filter) {
-    return model.filtered;
-} else {
-    return model.hakukohteet;
-}
-}*/

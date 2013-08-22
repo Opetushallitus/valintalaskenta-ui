@@ -26,9 +26,11 @@ app.config(function($routeProvider) {
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintalaskentatulos', {controller:ValintalaskentatulosController, templateUrl:TEMPLATE_URL_BASE + 'valintalaskentatulos.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintakoetulos', {controller:ValintakoetulosController, templateUrl:TEMPLATE_URL_BASE + 'valintakoetulos.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller:HakeneetController, templateUrl:TEMPLATE_URL_BASE + 'hakeneet.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto', {controller:PistesyottoController, templateUrl:TEMPLATE_URL_BASE + 'pistesyotto.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/sijoitteluntulos', {controller:SijoitteluntulosController, templateUrl:TEMPLATE_URL_BASE + 'sijoitteluntulos.html'}).
     when('/valintatapajono/:valintatapajonoOid/hakemus/:hakemusOid/valintalaskentahistoria', {controller:ValintalaskentaHistoriaController, templateUrl:TEMPLATE_URL_BASE + 'valintalaskentahistoria.html'}).
     when('/haku/:hakuOid/henkiloittain/', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkilo.html'}).
+    when('/haku/:hakuOid/henkiloittain/:hakemusOid/henkilotiedot', {controller:HenkiloTiedotController, templateUrl:TEMPLATE_URL_BASE + 'partials/henkilotiedot.html'}).
     //when('/haku/:hakuOid/henkiloittain', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkiloittain.html'}).
     //when('/haku/:hakuOid/henkiloittain/mitätuleekin', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkiloittain.html'}).
 
@@ -181,14 +183,6 @@ app.factory('Jalkiohjauskirjeet', function($http,$window) {
   }
 });
 
-
-     /*
-app.factory('KaikkiHakemukset', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/", {}, {
-        get: {method: "GET", isArray: true}
-    });
-});
-       */
 app.factory('Hakemus', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid", {oid: "@oid"}, {
         get: {method: "GET"}
@@ -209,8 +203,8 @@ app.factory('HakukohdeHenkilot', function($resource) {
     });
 });
 app.factory('Henkilot', function($resource) {
-	return $resource(HAKEMUS_URL_BASE + "haku-app/applications/applicant/:hakuOid",{hakuOid: "@hakuOid"}, {
-		get: {method: "GET", isArray: true}
+	return $resource(HAKEMUS_URL_BASE + "haku-app/applications", {},{
+		query:  {method:'GET', isArray:false}
     });
 });
 
