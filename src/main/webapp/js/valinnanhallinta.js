@@ -34,7 +34,7 @@
 	return model;
 });
 
-function ValinnanhallintaController($scope, $location, $routeParams, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaAktivointi, ValintakoelaskentaAktivointi) {
+function ValinnanhallintaController($scope, $location, $routeParams, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaAktivointi, ValintakoelaskentaAktivointi, ParametriService) {
 	$scope.model = ValinnanhallintaModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
@@ -55,4 +55,6 @@ function ValinnanhallintaController($scope, $location, $routeParams, Valinnanhal
         	alert("Valintalaskennan suoritus keskeytyi palvelin virheeseen: " + error.data);
         });
     }
+
+    $scope.privileges = ParametriService;
 }

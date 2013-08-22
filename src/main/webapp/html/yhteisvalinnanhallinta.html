@@ -13,8 +13,8 @@
 	</span>
 
     <p>
-        <a ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
-        <a ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
+        <a ng-show="privileges.valintalaskenta" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
+        <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
     </p>
 
 </div>

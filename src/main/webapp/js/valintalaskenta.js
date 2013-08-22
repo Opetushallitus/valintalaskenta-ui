@@ -74,7 +74,12 @@ app.factory('HakukohdeNimi', function($resource) {
 
 
 
-
+// Hakuparametrit
+app.factory('Parametrit', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/parametrit/:hakuOid", {}, {
+        list: {method: "GET"}
+    });
+})
 
 
 app.factory('HakukohdeValinnanvaihe', function($resource) {
@@ -302,6 +307,16 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
         post: {method: "POST"}
     });
 });
+
+app.factory('ParametriService', function($routeParams, Parametrit) {
+    var loaded = false, privilegesMap = {};
+    if(!loaded) {
+        privilegesMap = Parametrit.list({hakuOid: $routeParams.hakuOid}, function(data) {
+            loaded = true;
+        });
+    }
+    return privilegesMap;
+})
 
 var INTEGER_REGEXP = /^\-?\d*$/;
 app.directive('arvovalidaattori', function(){
