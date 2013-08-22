@@ -13,18 +13,21 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 		return this.hakemukset;
 	}
 	function getNextPage() {
-		var isLastPage = this.totalCount < (this.pages + 1)*this.pageSize;
-		if(!isLastPage) {
-			var newPages = this.pages + 1;
-			var startIndex = newPages * this.pageSize;
+		var notLastPage = this.getCount() < this.getTotalCount(); //this.totalCount < (this.pages + 1)*this.pageSize;
+		if(notLastPage) {
+			var startIndex = this.getCount();
 			var self = this;
 			Henkilot.query({appState: ["ACTIVE","INCOMPLETE"], asId:$routeParams.hakuOid, start:startIndex, rows:this.pageSize, q:this.lastSearch }, function(result) {
-	    		//console.log(result);
-				self.hakemukset = self.hakemukset.concat(result.results);
-	    		self.totalCount = result.totalCount;
+				if(startIndex != self.hakemukset.length) {
+					//
+					// ei esta saman joukon hakemista useaan kertaan mutta estaa saman joukon lisayksen useaan kertaan!
+					//
+					console.log("ERROR! HAETAAN SAMAA JOUKKOA USEAAN KERTAAN!");
+				} else {
+					self.hakemukset = self.hakemukset.concat(result.results);
+	    			self.totalCount = result.totalCount;
+				}
 	    	});
-			this.pages = newPages;
-			
 		} else {
 			//console.log("this is last page! " + this.pages);
 		}
@@ -33,7 +36,6 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
     	// should also clear all paging information
     	var word = $.trim(this.searchWord);
     	if(this.lastSearch !== word) {
-    		this.pages = 0;
     		this.lastSearch = word;
     		var self = this;
     		Henkilot.query({appState: ["ACTIVE","INCOMPLETE"], asId:$routeParams.hakuOid, start:0, rows:this.pageSize, q:word }, function(result) {
@@ -47,7 +49,6 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 	var modelInterface = {
 		hakemukset: [],
 		totalCount: 0,
-		pages: 0,
 		pageSize: 20,
 		searchWord: "",
 		lastSearch: null,
