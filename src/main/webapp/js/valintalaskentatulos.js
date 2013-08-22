@@ -87,7 +87,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
                 valintatulos.prioriteetit.push(obj);
             }
         }
-        console.log(that);
+
         $scope.$broadcast(that.$id);
         valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
         //valintatulos.showMuutaJarjestyskriteerinArvo = !valintatulos.showMuutaJarjestyskriteerinArvo;

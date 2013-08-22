@@ -89,20 +89,32 @@ app.directive('uiSortable', function() {
   }
 );
 
-app.directive('modal', function() {
+app.directive('modal', function($rootScope) {
     return {
         restrict: "C",
         link: function($scope, element, attrs) {
             $scope.elem = $(element);
 
             //$(element).wrap('<div style="display: none" class="modal-backdrop"></div>');
-            
+        
 
             //hide element initially
             $(element).addClass("hidden");
             
+            //close all modal-dialogs
+            $rootScope.$on('closeModals', function() {
+                $(element).addClass("hidden");
+            });
+
+
             $scope.$on($scope.$id, function() {
-                $(element).toggleClass("hidden");    
+
+                //close all modal before open new
+                $rootScope.$broadcast('closeModals');
+                $(element).toggleClass("hidden");        
+                
+                
+                
                 var top = ($(window).height() - $(element).outerHeight()) / 2;
                 var left = ($(window).width() - $(element).outerWidth()) / 2;
                 $(element).css({margin:0, top: (top > 0 ? top : 0)+'px', left: (left > 0 ? left : 0)+'px'});  
@@ -123,6 +135,7 @@ app.directive('close', function() {
         link: function(scope, element, attrs, ctrl) {
             $(element).on('click', function() {
                 ctrl.closeModal();
+
             });
         }
     }
