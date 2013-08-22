@@ -66,14 +66,14 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 function HenkiloController($scope,$location,$routeParams,HenkiloModel) {
 	
 	$scope.model = HenkiloModel;
-	$scope.hakukohteetVisible = true;
+	$scope.henkiloittainVisible = true;
 	
 	$scope.lazyLoading = function() {
 		$scope.model.getNextPage();	
 	}
 	
-	$scope.toggleHakukohteetVisible = function() {
-		
+	$scope.toggleHenkiloittainVisible = function() {
+		$scope.henkiloittainVisible = !$scope.henkiloittainVisible;
 	}
 	
 	$scope.showHakemus = function(hakemus) {
