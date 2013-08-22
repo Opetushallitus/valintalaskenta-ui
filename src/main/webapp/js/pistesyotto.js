@@ -56,23 +56,25 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
                             model.avaimet.forEach(function(avain){
 
+                                hakija.osallistuu[avain.tunniste] = false;
+
                                 if(tulokset[hakija.applicationOid] &&
                                     tulokset[hakija.applicationOid][hakukohdeOid] &&
                                     tulokset[hakija.applicationOid][hakukohdeOid][avain.tunniste]
 
                                 ) {
-                                    hakija.osallistuu[avain.tunniste] = true;
-
-                                    if(!hakija.additionalData[avain.tunniste]) {
-                                       hakija.additionalData[avain.tunniste] = "";
-                                    }
-                                    hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
-
-                                    if(!hakija.additionalData[avain.osallistuminenTunniste]) {
-                                       hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-                                    }
-                                    hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+                                    hakija.osallistuu[avain.tunniste] = tulokset[hakija.applicationOid][hakukohdeOid][avain.tunniste];
                                 }
+
+                                if(!hakija.additionalData[avain.tunniste]) {
+                                   hakija.additionalData[avain.tunniste] = "";
+                                }
+                                hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
+
+                                if(!hakija.additionalData[avain.osallistuminenTunniste]) {
+                                   hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+                                }
+                                hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
                             });
 
                         });
@@ -188,4 +190,10 @@ function PistesyottoController($scope, $location, $routeParams, PistesyottoModel
     $scope.showTiedotPartial = function(hakija) {
         hakija.showTiedotPartial = !hakija.showTiedotPartial;
     };
+
+    $scope.changeArvo = function(hakija, tunniste, value) {
+        if(value == "OSALLISTUI") {
+            hakija.additionalData[tunniste] = "0";
+        }
+    }
 }

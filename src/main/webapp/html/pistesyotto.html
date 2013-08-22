@@ -39,18 +39,29 @@
                                 <div ng-include="'partials/hakeneetTiedotPartial.html'" ng-show="hakija.showTiedotPartial"/>
                             </td>
                             <td ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">
-                                <div ng-show="hakija.osallistuu[avain.tunniste]" ng-switch on="avain.lahde">
+                                <div ng-show="hakija.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch on="avain.lahde">
                                     <div ng-switch-when="SYOTETTAVA_ARVO">
-                                        <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] == 'OSALLISTUI'" min="{{avain.min}}" max="{{avain.max}}" size="2" ng-model="hakija.additionalData[avain.tunniste]" arvovalidaattori/>
-                                        <!--<span ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'OSALLISTUI'">{{hakija.additionalData[avain.tunniste]}}</span>-->
-                                        <span style="color: red;"></span>
 
-                                        <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]" ng-show="avain.osallistuminenTunniste">
+                                        <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                               min="{{avain.min}}"
+                                               max="{{avain.max}}"
+                                               size="2"
+                                               ng-model="hakija.additionalData[avain.tunniste]"
+                                               arvovalidaattori
+                                               ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])" />
+
+
+                                        <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
+                                                ng-show="avain.osallistuminenTunniste"
+                                                ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste])"
+                                                osallistui-validaattori
+                                                >
                                             <option value="MERKITSEMATTA">Merkitsemättä</option>
                                             <option value="OSALLISTUI">Osallistui</option>
                                             <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
                                         </select>
 
+                                        <span style="color: red;"></span>
                                     </div>
                                     <div ng-switch-default>
                                         {{hakija.additionalData[avain.tunniste]}}
@@ -61,6 +72,7 @@
 
                         </tbody>
                     </table>
+
                     <button ng-disabled="!form.$valid" class="button small primary margin-top-2" type="submit">Tallenna</button>
                     <div>
                         <div class="notification warning" ng-show="form.$error.arvovalidaattori">Tarkista virheet!</div>
