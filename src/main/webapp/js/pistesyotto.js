@@ -191,8 +191,15 @@ function PistesyottoController($scope, $location, $routeParams, PistesyottoModel
         hakija.showTiedotPartial = !hakija.showTiedotPartial;
     };
 
+    $scope.changeOsallistuminen = function(hakija, tunniste, value) {
+        if(value) {
+            hakija.additionalData[tunniste] = "OSALLISTUI";
+        } else {
+            hakija.additionalData[tunniste] = "MERKITSEMATTA";
+        }
+    }
     $scope.changeArvo = function(hakija, tunniste, value) {
-        if(value == "OSALLISTUI") {
+        if(value == "OSALLISTUI" && !hakija.additionalData[tunniste]) {
             hakija.additionalData[tunniste] = "0";
         }
     }

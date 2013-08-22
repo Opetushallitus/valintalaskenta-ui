@@ -206,25 +206,22 @@ app.directive('arvovalidaattori', function(){
 
         	ctrl.$parsers.unshift(function(viewValue) {
 			  if (INTEGER_REGEXP.test(viewValue)) {
-				  var min = parseInt($(elm).attr("min"));
-				  var max = parseInt($(elm).attr("max"));
-				  var intVal = parseInt(viewValue);
+				  var min = parseInt($(elm).attr("min"), 10);
+				  var max = parseInt($(elm).attr("max"), 10);
+				  var intVal = parseInt(viewValue, 10);
 				  if(!isNaN(min) && !isNaN(max) && intVal) {
 					  if(min <= intVal && max >= intVal) {
 						// it is valid
 						$(elm).siblings("span").empty();
-						$(elm).siblings("select")[0].value = "OSALLISTUI";
 						ctrl.$setValidity('arvovalidaattori', true);
 					  } else {
 						  // not in range
 						  $(elm).siblings("span").text("Arvo ei ole välillä " + min + " - " + max);
-						  $(elm).siblings("select")[0].value = "MERKITSEMATTA";
 						  ctrl.$setValidity('arvovalidaattori', false);
 					  }
 				  } else {
 					// it is valid
 						$(elm).siblings("span").empty();
-						$(elm).siblings("select")[0].value = "MERKITSEMATTA";
 						ctrl.$setValidity('arvovalidaattori', true);
 				  }
 
@@ -232,13 +229,11 @@ app.directive('arvovalidaattori', function(){
 			  } else {
 				  // it is invalid, return undefined (no model update)
 
-
 				  $(elm).siblings("span").text("Arvo ei ole laillinen!");
-				  $(elm).siblings("select")[0].value = "MERKITSEMATTA";
 				  ctrl.$setValidity('arvovalidaattori', false);
-			        return undefined;
-			      }
-			    });
+			      return undefined;
+			  }
+            });
         }
     };
 });
