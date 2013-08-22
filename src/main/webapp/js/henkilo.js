@@ -13,19 +13,28 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 		return this.hakemukset;
 	}
 	function getNextPage() {
-		var notLastPage = this.getCount() < this.getTotalCount(); //this.totalCount < (this.pages + 1)*this.pageSize;
+		var startIndex = this.getCount();
+		var lastTotalCount =this.getTotalCount();
+		var notLastPage = startIndex < lastTotalCount; //this.totalCount < (this.pages + 1)*this.pageSize;
 		if(notLastPage) {
-			var startIndex = this.getCount();
 			var self = this;
 			Henkilot.query({appState: ["ACTIVE","INCOMPLETE"], asId:$routeParams.hakuOid, start:startIndex, rows:this.pageSize, q:this.lastSearch }, function(result) {
-				if(startIndex != self.hakemukset.length) {
+				
+				if(startIndex != self.getCount()) {
 					//
 					// ei esta saman joukon hakemista useaan kertaan mutta estaa saman joukon lisayksen useaan kertaan!
 					//
-					console.log("ERROR! HAETAAN SAMAA JOUKKOA USEAAN KERTAAN!");
+					// koska virhe on niin harvinainen ja sita taytyy erikseen yrittaa saada aikaan ja sen esiintymisella 
+					// ei ole vaikutusta ohjelman oikeaan toimintaan niin ei tehda korjausta
+					//console.log("ERROR! HAETAAN SAMAA JOUKKOA USEAAN KERTAAN!"); <- ei edes varsinaisesti virhe mutta turha palvelin kutsu
 				} else {
 					self.hakemukset = self.hakemukset.concat(result.results);
-	    			self.totalCount = result.totalCount;
+					if(self.getTotalCount() !== result.totalCount) {
+						// palvelimen tietomalli on paivittynyt joten koko lista on ladattava uudestaan!
+						// ... tai vaihtoehtoisesti kayttajalle naytetaan epasynkassa olevaa listaa!!!!!
+						self.lastSearch = null;
+						self.refresh();
+					}
 				}
 	    	});
 		} else {
@@ -49,7 +58,7 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 	var modelInterface = {
 		hakemukset: [],
 		totalCount: 0,
-		pageSize: 20,
+		pageSize: 30,
 		searchWord: "",
 		lastSearch: null,
         
