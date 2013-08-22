@@ -88,7 +88,25 @@ app.directive('uiSortable', function() {
     };
   }
 );
-
+app.directive('lazyLoading', function () {
+    return {
+        scope: true,
+        link: function ( scope, element, attrs ) {
+        	$(element).scroll(function(e) {
+        		// approximation (max scroll is in reality less than the actual
+        		var maximumScroll = $(element)[0].scrollHeight - $(element).height();
+        		var currentScroll = $(element).scrollTop();
+        		var percentage = (currentScroll/maximumScroll);
+        		if(percentage >= 1) {
+        			scope.$apply(function() {
+        				scope.lazyLoading();	
+        			});
+        			
+        		}
+        	});
+        }
+    };
+});
 app.directive('modal', function($rootScope) {
     return {
         restrict: "C",

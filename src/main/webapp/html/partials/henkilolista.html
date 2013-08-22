@@ -5,12 +5,11 @@
 	<div id="toolbarcontent" class="width-90">
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
-			    <input type="text" class="search" placeholder="Suodata nimen perusteella" ng-model="model.searchWord" />
-                <span></span>
+			    <input type="text" class="search" placeholder="Suodata nimen perusteella" ng-model="model.searchWord" ng-change="model.refresh()"/>
+                <span>Henkilöitä löytyi {{model.getCount()}}/{{model.getTotalCount()}}</span>
 			</div>
-
-			<ul class="selectlist">
-			    <li ng-repeat="hakemus in model.getHakemukset() | filter:model.searchWord">
+			<ul class="selectlist" lazy-loading>
+			    <li ng-repeat="hakemus in model.getHakemukset()">
 			        <a ng-click="showHakemus(hakemus)">
 			            <span class="icon file"></span>
 			            <span class="label">
