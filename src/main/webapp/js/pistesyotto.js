@@ -40,7 +40,7 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
                         model.avaimet.forEach(function(avain){
                            avain.tyyppi = function(){
                                if(avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
-                                   return "checkbox";
+                                   return "boolean";
                                }
                                return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
                            };
@@ -198,9 +198,15 @@ function PistesyottoController($scope, $location, $routeParams, PistesyottoModel
             hakija.additionalData[tunniste] = "MERKITSEMATTA";
         }
     }
-    $scope.changeArvo = function(hakija, tunniste, value) {
+    $scope.changeArvo = function(hakija, tunniste, value, tyyppi) {
         if(value == "OSALLISTUI" && !hakija.additionalData[tunniste]) {
-            hakija.additionalData[tunniste] = "0";
+            if(tyyppi == "boolean") {
+                hakija.additionalData[tunniste] = "true";
+            } else {
+                hakija.additionalData[tunniste] = "0";
+            }
+        } else if(value == "MERKITSEMATTA") {
+            hakija.additionalData[tunniste] = "";
         }
     }
 }

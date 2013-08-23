@@ -18,6 +18,8 @@
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <h2>Hakeneet</h2>
 
+                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
                         <thead>
@@ -41,26 +43,56 @@
                             <td ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">
                                 <div ng-show="hakija.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch on="avain.lahde">
                                     <div ng-switch-when="SYOTETTAVA_ARVO">
+                                        <div ng-switch on="avain.tyyppi()">
+                                            <div ng-switch-when="input">
+                                                <!-- input -->
+                                                <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                       min="{{avain.min}}"
+                                                       max="{{avain.max}}"
+                                                       size="2"
+                                                       ng-model="hakija.additionalData[avain.tunniste]"
+                                                       arvovalidaattori
+                                                       ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])" />
 
-                                        <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
-                                               min="{{avain.min}}"
-                                               max="{{avain.max}}"
-                                               size="2"
-                                               ng-model="hakija.additionalData[avain.tunniste]"
-                                               arvovalidaattori
-                                               ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])" />
+
+                                                <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
+                                                        ng-show="avain.osallistuminenTunniste"
+                                                        ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
+                                                        >
+                                                    <option value="MERKITSEMATTA">Merkitsemättä</option>
+                                                    <option value="OSALLISTUI">Osallistui</option>
+                                                    <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                                                </select>
+                                                <span style="color: red;"></span>
+                                            </div>
+
+                                            <div ng-switch-when="boolean">
+                                                <!-- input -->
+                                                <select ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                       ng-model="hakija.additionalData[avain.tunniste]"
+                                                       ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])" >
+                                                    <option value="">Tyhjä</option>
+                                                    <option value="true">Kyllä</option>
+                                                    <option value="false">Ei</option>
+                                                </select>
 
 
-                                        <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
-                                                ng-show="avain.osallistuminenTunniste"
-                                                ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste])"
-                                                >
-                                            <option value="MERKITSEMATTA">Merkitsemättä</option>
-                                            <option value="OSALLISTUI">Osallistui</option>
-                                            <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
-                                        </select>
+                                                <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
+                                                        ng-show="avain.osallistuminenTunniste"
+                                                        ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
+                                                        >
+                                                    <option value="MERKITSEMATTA">Merkitsemättä</option>
+                                                    <option value="OSALLISTUI">Osallistui</option>
+                                                    <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                                                </select>
+                                                <span style="color: red;"></span>
+                                            </div>
 
-                                        <span style="color: red;"></span>
+
+                                        </div>
+                                        <div ng-switch-default>
+                                            Syötetty muualla: {{hakija.additionalData[avain.tunniste]}}
+                                        </div>
                                     </div>
                                     <div ng-switch-default>
                                         {{hakija.additionalData[avain.tunniste]}}
