@@ -34,12 +34,10 @@
                                 entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
                                 entry.osallistuminen = valintakoe.osallistuminen;
                                 
-                                if (model.valintakokeet[entry.valintakoeOid] === undefined )
-                                {
+                                if (model.valintakokeet[entry.valintakoeOid] === undefined ) {
                                 	model.valintakokeet[entry.valintakoeOid] = {valintakoeOid: entry.valintakoeOid, valintakoeTunniste: entry.valintakoeTunniste, hakijat: [entry]};    
                                 } else {
                                 	model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
-                                	
                                 }
                             });
                         });

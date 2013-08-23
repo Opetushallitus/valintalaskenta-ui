@@ -24,7 +24,8 @@
 				<table class="virkailija-table-1">
                     <thead>
                     <tr>
-                        <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Hakemus OID</a></th>
+                        <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Nimi</a></th>
+                        <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Hakemus</a></th>
                         <th><a href="" ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a></th>
                         <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">Laskettu pvm</a></th>
                     </tr>
@@ -32,10 +33,14 @@
                     <tbody>
                     <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse">
                         <td>
+                            <span title="Sukunimi">{{valintakoe.sukunimi}}</span>,
+                            <span title="Etunimi">{{valintakoe.etunimi}}</span>
+                        </td>
+                        <td>
                             <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{koe.hakemusOid}}" target="_blank" >
                                 {{koe.hakemusOid}}
                             </a>
-                            </td>
+                        </td>
                         <td>{{koe.osallistuminen}}</td>
                         <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
                     </tr>

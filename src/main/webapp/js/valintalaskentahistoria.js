@@ -9,21 +9,14 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 		},
 		refresh: function() {
 			var self = this;
-			// "valintatapajonoOid") String valintatapajonoOid, @PathParam("versio")Integer versio, @PathParam("hakemusOid"
-			///haku/:hakuOid/hakukohde/:hakukohdeOid/hakija/:hakijaOid/valintalaskentahistoria
-			//valintatapajono/:valintatapajonoOid/versio/:versio/hakemus/:hakemusOid/valintalaskentahistoria
-			
 			ValintalaskentaHistoria.get({valintatapajonoOid: $routeParams.valintatapajonoOid, hakemusOid: $routeParams.hakemusOid}, function(data) {
-			   // console.log("Data perilla");
 					var result = [];
 				angular.forEach(data, function(h) {
 					result.push(angular.fromJson(h.historia));
 				});
 				self.model = result;
 				self.prepareHistoryForUi();
-              //  console.log("Data prosessoitu");
 				deferred.resolve(modelInterface);
-			//	console.log("modeli resolvattu");
 			});
 		},
 		prepareHistoryForUi: function() {
