@@ -83,7 +83,7 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			
 		},
 		hasNimettyLukuarvo: function(node) {
-			if(node.funktio === "Nimetty lukuarvo") {
+			if(node.funktio === "Nimetty lukuarvo" || node.funktio === "Nimetty totuusarvo") {
 				return true;
 			} 
 			return false;
