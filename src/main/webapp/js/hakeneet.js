@@ -1,4 +1,4 @@
-﻿app.factory('HakeneetModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, GlobalErrors) {
+﻿app.factory('HakeneetModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
 	var model;
 	model = new function() {
 
@@ -19,9 +19,6 @@
                 });
             */
 
-            }, function (error) {
-                GlobalErrors.hakeneetErr.push(error);
-                console.log(GlobalErrors.hakeneetErr);
             });
 		}
 
@@ -36,11 +33,10 @@
 	return model;
 });
 
-function HakeneetController($scope, $location, $routeParams, HakeneetModel, HakukohdeModel, GlobalErrors) {
+function HakeneetController($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
-    $scope.errors = GlobalErrors;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
     $scope.hakukohdeModel = HakukohdeModel;
