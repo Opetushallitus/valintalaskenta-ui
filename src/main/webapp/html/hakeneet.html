@@ -10,10 +10,18 @@
     <div class="toggle-content-container overflow-x-scroll">
 
         <div ng-include="'partials/hakukohdeNavigation.html'" />
+        
+        
+        
 
         <div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
-        
+            
+            <div class="notification warning">
+                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <p ng-repeat="error in model.dbProblems">{{error}}</p>
+            </div>
+
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <h2>Hakeneet</h2>
                 <form name="form" ng-submit="submit()">

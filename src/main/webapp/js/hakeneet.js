@@ -3,6 +3,7 @@
 	model = new function() {
 
 		this.hakeneet = [];
+        this.dbProblems = [];
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.hakukohdeOid = hakukohdeOid;
@@ -19,6 +20,8 @@
                 });
             */
 
+            }, function(error) {
+                model.dbProblems.push(error);
             });
 		}
 
