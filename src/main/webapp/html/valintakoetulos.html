@@ -33,6 +33,7 @@
                     <tbody>
                     <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse">
                         <td>
+                            <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{koe.hakemusOid}}" target="_blank" >
                             <span title="Sukunimi">{{valintakoe.sukunimi}}</span>,
                             <span title="Etunimi">{{valintakoe.etunimi}}</span>
                         </td>

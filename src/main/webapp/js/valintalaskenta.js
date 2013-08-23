@@ -76,7 +76,12 @@ app.factory('HakukohdeNimi', function($resource) {
 
 
 
-
+// Hakuparametrit
+app.factory('Parametrit', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/parametrit/:hakuOid", {}, {
+        list: {method: "GET"}
+    });
+})
 
 
 app.factory('HakukohdeValinnanvaihe', function($resource) {
@@ -297,43 +302,12 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
     });
 });
 
-var INTEGER_REGEXP = /^\-?\d*$/;
-app.directive('arvovalidaattori', function(){
-    return {
-        require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
-        	
-        	ctrl.$parsers.unshift(function(viewValue) {
-			  if (INTEGER_REGEXP.test(viewValue)) {
-				  var min = parseInt($(elm).attr("min"));
-				  var max = parseInt($(elm).attr("max"));
-				  var intVal = parseInt(viewValue);
-				  if(!isNaN(min) && !isNaN(max) && intVal) {
-					  if(min <= intVal && max >= intVal) {
-						// it is valid
-						$(elm).siblings("span").empty();
-						ctrl.$setValidity('arvovalidaattori', true);						  
-					  } else {
-						  // not in range
-						  $(elm).siblings("span").text("Arvo ei ole välillä " + min + " - " + max);
-						  ctrl.$setValidity('arvovalidaattori', false); 
-					  }
-				  } else {
-					// it is valid
-						$(elm).siblings("span").empty();
-						ctrl.$setValidity('arvovalidaattori', true);
-				  }
-				  
-				  return viewValue;
-			  } else {
-				  // it is invalid, return undefined (no model update)
-				  
-				  
-				  $(elm).siblings("span").text("Arvo ei ole laillinen!");
-				  ctrl.$setValidity('arvovalidaattori', false);
-			        return undefined;
-			      }
-			    });
-        }
-    };
-});
+app.factory('ParametriService', function($routeParams, Parametrit) {
+    var loaded = false, privilegesMap = {};
+    if(!loaded) {
+        privilegesMap = Parametrit.list({hakuOid: $routeParams.hakuOid}, function(data) {
+            loaded = true;
+        });
+    }
+    return privilegesMap;
+})
