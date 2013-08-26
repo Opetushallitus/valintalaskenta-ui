@@ -5,6 +5,7 @@
 		this.hakukohdeOid = {};
 		this.koetulokset = [];
 		this.valintakokeet = {};
+        this.errors = [];
 		
 		this.refresh = function(hakukohdeOid) {
             model.hakukohdeOid = hakukohdeOid;
@@ -12,7 +13,10 @@
 			Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			    model.koetulokset = result;
                 flatKoetulokset();
-			});
+                model.errors.length = 0;
+			}, function(error) {
+                model.errors.push(error);
+            });
 		}
 
 		// helpommin käsiteltävään muotoon tulokset. samoin privaattina

@@ -3,7 +3,7 @@
 	model = new function() {
 
 		this.hakeneet = [];
-        this.dbProblems = [];
+        this.errors = [];
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.hakukohdeOid = hakukohdeOid;
@@ -11,7 +11,7 @@
 
             HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
             model.hakeneet = result;
-
+            model.dbProblemslength = 0;
             /*
                 model.hakeneet.forEach(function(hakija){
                     Hakemus.get({oid: hakija.applicationOid}, function(result) {
@@ -21,7 +21,7 @@
             */
 
             }, function(error) {
-                model.dbProblems.push(error);
+                model.errors.push(error);
             });
 		}
 

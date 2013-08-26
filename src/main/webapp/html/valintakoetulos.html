@@ -13,7 +13,10 @@
 		<div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
             
-            <p ng-hide="model.valintakokeet" class="notification info">Valintakoetuloksia ei ole saatavilla</p>
+            <div ng-show="model.errors" class="notification warning">
+                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <p ng-repeat="error in model.errors">{{error}}</p>
+            </div>
 
             
 			
