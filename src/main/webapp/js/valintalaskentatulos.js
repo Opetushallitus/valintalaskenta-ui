@@ -4,12 +4,16 @@
 
 		this.hakukohdeOid = {};
 		this.valinnanvaiheet = [];
+        this.errors = [];
 		
 		this.refresh = function(hakukohdeOid) {
+            model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			     model.valinnanvaiheet = result;
-			});
+			}, function(error) {
+                model.errors.push(error);
+            });
 		}
 
 		this.updateJarjestyskriteeri = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo, tila, selite) {
@@ -66,12 +70,14 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
          }
     };
 
-    $scope.showHenkiloPartial = function(valintatulos) {
+    $scope.showHenkiloPartial = function(valintatulos, that) {
         if(valintatulos.showHenkiloPartial == null || valintatulos.showHenkiloPartial == false) {
             valintatulos.showHenkiloPartial = true;
         } else {
             valintatulos.showHenkiloPartial = false;
         }
+        console.log(that);
+        $scope.$broadcast(that.$id);
     };
 
     $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos, that) {
@@ -86,11 +92,11 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
                 var obj = {name: i, value: i};
                 valintatulos.prioriteetit.push(obj);
             }
-        }
-
+        }   
+        console.log(that);
         $scope.$broadcast(that.$id);
         valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
-        //valintatulos.showMuutaJarjestyskriteerinArvo = !valintatulos.showMuutaJarjestyskriteerinArvo;
+
     }
 
 }

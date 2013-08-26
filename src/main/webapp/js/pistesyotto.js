@@ -4,8 +4,10 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
 		this.hakeneet = [];
 		this.avaimet = [];
+        this.errors = [];
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
+            model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
 
             Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(tulos) {
@@ -28,6 +30,8 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
                     });
 
                     tulokset[vkt.hakemusOid] = hakutoiveet;
+                }, function(error) {
+                    model.errors.push(error);
                 });
 
 
@@ -79,6 +83,8 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
                         });
                     });
+                }, function(error) {
+                    model.errors.push(error);
                 });
 
             });

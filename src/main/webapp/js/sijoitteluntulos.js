@@ -8,8 +8,10 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 		this.latestSijoitteluajo = {};
 		this.sijoitteluTulokset = {};
 		this.hakemuksenTilat = ["ILMOITETTU", "VASTAANOTTANUT_LASNA", "VASTAANOTTANUT_POISSAOLEVA", "PERUNUT"];
+        this.errors = [];
 
         this.refresh = function(hakuOid, hakukohdeOid) {
+            model.errors.length = 0;
             model.hakuOid=hakuOid;
             model.hakukohdeOid=hakukohdeOid;
             model.sijoittelu = {};
@@ -52,6 +54,8 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 
 
                 }
+            }, function(error) {
+                model.errors.push(error);
             });
         };
 
@@ -62,6 +66,8 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
                 } else {
                     hakemus.hakemuksentila = result.tila;
                 }
+            }, function(error) {
+                model.errors.push(error);
             });
         }
 

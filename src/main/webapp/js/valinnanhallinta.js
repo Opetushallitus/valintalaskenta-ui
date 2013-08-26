@@ -7,16 +7,22 @@
         this.hakukohdeOid = '';
         //this.valintaperusteValinnanvaiheet = [];
         this.tulosValinnanvaiheet = [];
+        this.errors = [];
 
 		this.refresh = function(hakukohdeOid) {
 			if( hakukohdeOid !== undefined) {
-
+				model.errors.length = 0;
+				
                 ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: hakukohdeOid}, function(result) {
 					model.tulosValinnanvaiheet = result;
+				}, function(error) {
+					model.errors.push(error);
 				});
                 
 				HakukohdeValinnanvaihe.get({parentOid: model.hakukohdeOid}, function(result) {
 					model.valinnanvaiheet = result;
+				}, function(error) {
+					model.errors.push(error);
 				});
 				
 			}
