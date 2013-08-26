@@ -45,11 +45,18 @@
                         <tr ng-repeat="tulos in valintatapajono.jonosijat">
                             <td>{{tulos.jonosija}}</td>
                             <td>
+                                <a ng-click="showHenkiloPartial(tulos)" >
+                                     <span class="sukunimi">{{tulos.sukunimi}}</span>,
+                                     <span class="etunimi">{{tulos.etunimi}}</span>
+                                 </a>
+-                                <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>
+                                <!--
                                 <a ng-click="showHenkiloPartial(tulos, this)" >
                                     <span class="sukunimi">{{tulos.sukunimi}}</span>,
                                     <span class="etunimi">{{tulos.etunimi}}</span>
                                 </a>
                                 <div class="modal" ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>
+                                -->
                             </td>
                             <td>
                                 {{tulos.jarjestyskriteerit[0].arvo}}

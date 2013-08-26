@@ -110,7 +110,6 @@ app.directive('lazyLoading', function () {
 app.directive('modal', function($rootScope) {
     return {
         restrict: "C",
-        scope: true,
         link: function($scope, element, attrs) {
             $scope.elem = $(element);
             //hide element initially
