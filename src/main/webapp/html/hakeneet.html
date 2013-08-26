@@ -10,9 +10,17 @@
     <div class="toggle-content-container overflow-x-scroll">
 
         <div ng-include="'partials/hakukohdeNavigation.html'" />
+        
+        
+        
 
         <div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
+            
+            <div class="notification warning">
+                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <p ng-repeat="error in model.dbProblems">{{error}}</p>
+            </div>
 
             <p ng-show="model.hakeneet.length < 1" class="notification info margin-vertical-2">Tähän hakukohteeseen ei ole yhtään hakijaa</p>
 
