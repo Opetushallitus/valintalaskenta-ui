@@ -17,14 +17,22 @@
                 <h3>Tietoja haettaessa tapahtui virhe</h3>
                 <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
-
-            <div>
-                <span>näytä</span>
-                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+             <div>
+                <div>
+                    <span>Näytä</span>
+                    <select ng-model="nakymanTila">
+                        <option value="Hakijoittain">Hakijoittain</option>
+                        <option value="Kokeittain">Kokeittain</option>
+                    </select>
+                </div>
+                 <!--
+                 <div>
+                    <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+                </div>
+                -->
             </div>
 
-            <div ng-show="hakijoittain == true">
-                <h1>Hakijoittain</h1>
+            <div ng-show="nakymanTila == 'Hakijoittain'">
                 <table class="virkailija-table-1">
                     <thead>
                         <tr>
@@ -53,8 +61,7 @@
                 </table>
              </div>
 
-            <div ng-show="hakijoittain == false">
-                <h1>Kokeittain</h1>
+            <div ng-show="nakymanTila == 'Kokeittain'">
                 <div ng-repeat="valintakoe in model.valintakokeet" class="margin-vertical-2">
                     <h2>{{valintakoe.valintakoeTunniste}}</h2>
                     <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
