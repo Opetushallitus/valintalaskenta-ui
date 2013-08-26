@@ -110,11 +110,12 @@ app.directive('lazyLoading', function () {
 app.directive('modal', function($rootScope) {
     return {
         restrict: "C",
+        scope: true,
         link: function($scope, element, attrs) {
             $scope.elem = $(element);
             //hide element initially
             $(element).addClass("hidden");
-            
+            $scope.ran = 0;
             //$(element).wrap('<div style="display: none" class="modal-backdrop"></div>');
 
             //close all modal-dialogs
@@ -123,19 +124,24 @@ app.directive('modal', function($rootScope) {
             });
 
             $scope.$on($scope.$id, function() {
-
+                //console.log($scope);
+                $scope.ran = $scope.ran + 1;
+                console.log(element);
+                console.log($scope.ran); 
                 //close all modal before open new
                 $rootScope.$broadcast('closeModals');
 
                 $(element).toggleClass("hidden");        
+                
+
                 var top = ($(window).height() - $(element).outerHeight()) / 2;
                 var left = ($(window).width() - $(element).outerWidth()) / 2;
                 $(element).css({margin:0, top: (top > 0 ? top : 0)+'px', left: (left > 0 ? left : 0)+'px'});  
             });
         },
-        controller: function($scope) {
+        controller: function($scope, $element) {
             this.closeModal = function() {
-                $scope.elem.toggleClass("hidden");
+                $element.toggleClass("hidden");
             }
         }
     }
