@@ -4,6 +4,9 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 		return hakemus.lastName + ", " + hakemus.firstNames;
 	}
 	function getCount() {
+		if(this.hakemukset === undefined) {
+			return 0;
+		}
 		return this.hakemukset.length;
 	}
 	function getTotalCount() {

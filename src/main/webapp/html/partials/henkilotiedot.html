@@ -21,7 +21,17 @@
             {{hakemus.answers.henkilotiedot.lahiosoite}}, {{hakemus.answers.henkilotiedot.Postinumero}} {{hakemus.answers.henkilotiedot.postitoimipaikka}}<br>
             </address>
             
+            <hr>
             
+            <div ng-repeat="hakukohde in haku.hakukohteet">
+            	<h1>{{hakukohde.hakukohdeoid}}</h1>
+            	<div ng-repeat="valinnanvaihe in hakukohde.valinnanvaihe">
+            		<p>Valinnanvaihe {{valinnanvaihe.valinnanvaiheoid}}</p>
+            		<div ng-repeat="valintatapajono in valinnanvaihe.valintatapajono">
+            			<p>Aloituspaikat {{valintatapajono.aloituspaikat}}</p>
+            		</div>
+            	</div>
+            </div>
         </div>
     </div>
     <div class="clear"></div>
