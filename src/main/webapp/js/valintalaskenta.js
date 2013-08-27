@@ -64,6 +64,11 @@ return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde?count=99999", {hak
     get: {method: "GET", isArray: true}
   });
 });
+app.factory('TarjontaHaku', function($resource) {
+	return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohdeTulos", {},{
+		query:  {method:'GET', isArray:false}
+	});
+});
 
 app.factory('TarjontaHakukohde', function($resource) {
 return $resource(TARJONTA_URL_BASE + "hakukohde/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
