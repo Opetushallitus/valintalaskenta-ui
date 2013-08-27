@@ -155,13 +155,9 @@ app.factory('AktivoiHaunValintalaskenta', function($resource) {
 });
 
 app.factory('Osoitetarrat', function($resource,$window) {
-	return { lataaPDF: function(hakukohdeOid, valintakoeOid) {
-		return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/addressLabelBatch/aktivoi", {}, {
-			aktivoi: {method: "POST", params:{hakukohdeOid: hakukohdeOid, valintakoeOid:valintakoeOid}}
-		});
-		
-		}
-	}
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/addressLabelBatch/aktivoi", {}, {
+		query:  {method:'GET', isArray:false}
+	});
 });
 
 app.factory('Hyvaksymiskirjeet', function($http,$window) {
