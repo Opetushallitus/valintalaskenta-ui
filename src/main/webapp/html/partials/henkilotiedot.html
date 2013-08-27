@@ -45,10 +45,8 @@
                     <dt>Aloituspaikat</dt>
                     <dd>{{model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].aloituspaikat}}</dd>
                     <div ng-repeat="jarjestyskriteeri in model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].jonosijat[0].jarjestyskriteerit">
-                        <dt>Arvo ({{$index}})</dt>
-                        <dd>{{jarjestyskriteeri.arvo}}</dd>
-                        <dt>Tila ({{$index}})</dt>
-                        <dd>{{jarjestyskriteeri.tila}}</dd>
+                        <dt>Järjestyskriteeri {{$index + 1}}.</dt>
+                        <dd>Arvo: {{jarjestyskriteeri.arvo}}, Tila: {{jarjestyskriteeri.tila}}</dd>
                         
                     </div>
                 </div>
