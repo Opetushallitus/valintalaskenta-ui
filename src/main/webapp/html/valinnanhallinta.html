@@ -12,8 +12,11 @@
 		<div ng-include="'partials/hakukohdeNavigation.html'"></div>
 		<div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
-
-			<p ng-hide="model.tulosValinnanvaiheet" class="notification info">Tälle hakukohteelle ei löydy valinnanvaiheita</p>
+			
+			<div ng-show="model.errors.length > 0" class="notification warning">
+                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <p ng-repeat="error in model.errors">{{error}}</p>
+            </div>
 
 			<table ng-show="model.tulosValinnanvaiheet" class="virkailija-table-1">
 				<thead>
@@ -32,8 +35,8 @@
 						</td>
 						<td>
                             <div ng-show="valinnanvaihe.aktiivinen">
-                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN'" ng-click="kaynnistaValintalaskenta($index)" class="button small">Käynnistä laskenta</a>
-                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE'" ng-click="kaynnistaValintakoelaskenta($index)" class="button small">Käynnistä valintakoelaskenta</a>
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN' && privileges.valinnanhallinta" ng-click="kaynnistaValintalaskenta($index)" class="button small">Käynnistä laskenta</a>
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE' && privileges.valintakoekutsut" ng-click="kaynnistaValintakoelaskenta($index)" class="button small">Käynnistä valintakoelaskenta</a>
                             </div>
                             <div ng-show="!valinnanvaihe.aktiivinen">
                                 Valinnanvaihe ei ole aktiivinen

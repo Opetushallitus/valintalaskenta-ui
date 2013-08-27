@@ -4,28 +4,32 @@
 
 		this.hakeneet = [];
 		this.avaimet = [];
+        this.errors = [];
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
+            model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
             model.hakeneet = result;
 
-            model.hakeneet.forEach(function(hakija){
-                Hakemus.get({oid: hakija.applicationOid}, function(result) {
-                 hakija.hakemus=result;
+                model.hakeneet.forEach(function(hakija){
+                    Hakemus.get({oid: hakija.applicationOid}, function(result) {
+                     hakija.hakemus=result;
 
-               // console.log("========= Hakukohdeoid:" +model.hakukohdeOid );
-                for(var i =0; i<10; i++) {
-                    var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
-                  //  console.log("Hakutoive[" + i +"] " + oid);
-                    if(oid === model.hakukohdeOid) {
-                        var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
-                        hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
+                   // console.log("========= Hakukohdeoid:" +model.hakukohdeOid );
+                    for(var i =0; i<10; i++) {
+                        var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                      //  console.log("Hakutoive[" + i +"] " + oid);
+                        if(oid === model.hakukohdeOid) {
+                            var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
+                            hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
+                        }
                     }
-                }
-                //console.log("=========");
+                    //console.log("=========");
+                    });
                 });
-            });
+            }, function(error) {
+                model.errors.push(error);
             });
 		}
 

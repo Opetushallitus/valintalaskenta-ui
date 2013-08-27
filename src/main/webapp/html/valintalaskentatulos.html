@@ -13,7 +13,10 @@
 
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
-            <p ng-hide="model.valinnanvaiheet" class="notification info">Kohteelle ei ole vielä suoritettu valintalaskentaa</p>
+            <div ng-show="model.errors.length > 0" class="notification warning">
+                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <p ng-repeat="error in model.errors">{{error}}</p>
+            </div>
             <a ng-show="model.valinnanvaiheet" href="{{valintalaskentatulosExcelExport}}" class="button small excel">Vie exceliin</a>
 
 
@@ -43,10 +46,17 @@
                             <td>{{tulos.jonosija}}</td>
                             <td>
                                 <a ng-click="showHenkiloPartial(tulos)" >
+                                     <span class="sukunimi">{{tulos.sukunimi}}</span>,
+                                     <span class="etunimi">{{tulos.etunimi}}</span>
+                                 </a>
+-                                <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>
+                                <!--
+                                <a ng-click="showHenkiloPartial(tulos, this)" >
                                     <span class="sukunimi">{{tulos.sukunimi}}</span>,
                                     <span class="etunimi">{{tulos.etunimi}}</span>
                                 </a>
-                                <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>
+                                <div class="modal" ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>
+                                -->
                             </td>
                             <td>
                                 {{tulos.jarjestyskriteerit[0].arvo}}
@@ -64,8 +74,10 @@
                                 <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>
                             </td>
                             <td>
-                                <a ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="button small">Muokkaa</a>
-                                <div ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteeri.html'" ng-show="tulos.showMuutaJarjestyskriteerinArvo"/>
+                                <a ng-click="showMuutaJarjestyskriteerinArvo(tulos, this)" class="button small">Muokkaa</a>
+                                
+                                <div class="modal" ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteeri.html'" />
+                            
                             </td>
                         </tr>
                         </tbody>

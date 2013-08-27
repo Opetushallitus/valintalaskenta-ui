@@ -3,22 +3,26 @@
 	model = new function() {
 
 		this.hakeneet = [];
+        this.errors = [];
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
+            model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             model.hakuOid = hakuOid;
 
             HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
-            model.hakeneet = result;
-
-            /*
-                model.hakeneet.forEach(function(hakija){
-                    Hakemus.get({oid: hakija.applicationOid}, function(result) {
-                     hakija.hakemus=result;
+                model.hakeneet = result;
+                
+                /*
+                    model.hakeneet.forEach(function(hakija){
+                        Hakemus.get({oid: hakija.applicationOid}, function(result) {
+                         hakija.hakemus=result;
+                        });
                     });
-                });
-            */
+                */
 
+            }, function(error) {
+                model.errors.push(error);
             });
 		}
 

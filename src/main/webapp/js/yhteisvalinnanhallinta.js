@@ -1,6 +1,6 @@
 ﻿
 
-function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi, HakuModel, AktivoiHaunValintalaskenta  ) {
+function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi, HakuModel, AktivoiHaunValintalaskenta, ParametriService) {
 	$scope.hakumodel = HakuModel;
 
     $scope.kaynnistaSijoittelu = function() {
@@ -14,4 +14,5 @@ function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoi
           });
       }
 
+    $scope.privileges = ParametriService;
 }

@@ -14,7 +14,11 @@
         <div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
-            <p ng-show="model.hakeneet.length < 1" class="notification info margin-vertical-2">Tähän hakukohteeseen ei ole yhtään hakijaa</p>
+            
+            <div ng-show="model.errors.length > 0" class="notification warning">
+                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <p ng-repeat="error in model.errors">{{error}}</p>
+            </div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <h2>Harkinnanvaraiset hakijat</h2>
@@ -23,7 +27,7 @@
                         <thead>
                             <tr>
                                 <th>Nimi</th>
-                                <th>Hakemus Oid</th>
+                                <th>Hakemus</th>
                                 <th>Harkinnanvarainen tila</th>
                                 <th>Hyväksy harkinnanvaraisesti</th>
                             </tr>
@@ -36,13 +40,13 @@
                                 </td>
                                 <td>
                                     <span title="HakemusOid">
-                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{hakija.applicationOid}}" target="_blank" >
+                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.applicationOid}}" target="_blank" >
                                             {{hakija.applicationOid}}
                                         </a>
                                     </span>
                                 </td>
                                 <td>
-                                         {{hakija.hakenutHarkinnanvaraisesti}}
+                                    {{hakija.hakenutHarkinnanvaraisesti}}
                                     <!--
                                     <ul>
                                         <li ng-repeat="(key, value) in hakija.hakemus.answers.hakutoiveet track by $index">

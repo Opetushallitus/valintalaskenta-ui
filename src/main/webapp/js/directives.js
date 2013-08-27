@@ -88,59 +88,77 @@ app.directive('uiSortable', function() {
     };
   }
 );
-
-// tabs
-/*
-app.directive('tabs', function() {
-    return {
-      restrict: 'E',
-      transclude: true,
-      scope: {},
-      controller: function($scope, $element) {
-        var panes = $scope.panes = [];
-
-        $scope.select = function(pane) {
-          angular.forEach(panes, function(pane) {
-            pane.selected = false;
-          });
-          pane.selected = true;
-        }
-
-        this.addPane = function(pane) {
-          if (panes.length == 0) $scope.select(pane);
-          panes.push(pane);
-        }
-      },
-      template:
-        '<div class="tabsheet-container">' +
-          '<ul class="nav nav-tabs">' +
-            '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">'+
-              '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
-            '</li>' +
-          '</ul>' +
-          '<div class="tab-content" ng-transclude></div>' +
-        '</div>',
-      replace: true
-    };
+app.directive('lazyLoading', function () {
+    return {
+        scope: true,
+        link: function ( scope, element, attrs ) {
+        	$(element).scroll(function(e) {
+        		// approximation (max scroll is in reality less than the actual
+        		var maximumScroll = $(element)[0].scrollHeight - $(element).height();
+        		var currentScroll = $(element).scrollTop();
+        		var percentage = (currentScroll/maximumScroll);
+        		if(percentage >= 1) {
+        			scope.$apply(function() {
+        				scope.lazyLoading();	
+        			});
+        			
+        		}
+        	});
+        }
+    };
 });
-  */
-  /*
-app.directive('pane', function() {
-    return {
-      require: '^tabs',
-      restrict: 'E',
-      transclude: true,
-      scope: { title: '@' },
-      link: function(scope, element, attrs, tabsCtrl) {
-        tabsCtrl.addPane(scope);
-      },
-      template:
-        '<div class="tab-pane" ng-class="{active: selected}" ng-transclude>' +
-        '</div>',
-      replace: true
-    };
+app.directive('modal', function($rootScope) {
+    return {
+        restrict: "C",
+        link: function($scope, element, attrs) {
+            $scope.elem = $(element);
+            //hide element initially
+            $(element).addClass("hidden");
+            $scope.ran = 0;
+            //$(element).wrap('<div style="display: none" class="modal-backdrop"></div>');
+
+            //close all modal-dialogs
+            $rootScope.$on('closeModals', function() {
+                $(element).addClass("hidden");
+            });
+
+            $scope.$on($scope.$id, function() {
+                //console.log($scope);
+                $scope.ran = $scope.ran + 1;
+                console.log(element);
+                console.log($scope.ran); 
+                //close all modal before open new
+                $rootScope.$broadcast('closeModals');
+
+                $(element).toggleClass("hidden");        
+                
+
+                var top = ($(window).height() - $(element).outerHeight()) / 2;
+                var left = ($(window).width() - $(element).outerWidth()) / 2;
+                $(element).css({margin:0, top: (top > 0 ? top : 0)+'px', left: (left > 0 ? left : 0)+'px'});  
+            });
+        },
+        controller: function($scope, $element) {
+            this.closeModal = function() {
+                $element.toggleClass("hidden");
+            }
+        }
+    }
+}); 
+
+app.directive('close', function() {
+    return {
+        restrict: "A",
+        require: "^modal",
+        link: function(scope, element, attrs, ctrl) {
+            $(element).on('click', function() {
+                ctrl.closeModal();
+
+            });
+        }
+    }
 });
-        */
+
 app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
     return {
       link : function($scope, element, attrs) {
@@ -203,3 +221,42 @@ app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
     };
 });
 
+var INTEGER_REGEXP = /^\-?\d*$/;
+app.directive('arvovalidaattori', function(){
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ctrl) {
+
+        	ctrl.$parsers.unshift(function(viewValue) {
+			  if (INTEGER_REGEXP.test(viewValue)) {
+				  var min = parseInt($(elm).attr("min"), 10);
+				  var max = parseInt($(elm).attr("max"), 10);
+				  var intVal = parseInt(viewValue, 10);
+				  if(!isNaN(min) && !isNaN(max) && intVal) {
+					  if(min <= intVal && max >= intVal) {
+						// it is valid
+						$(elm).siblings("span").empty();
+						ctrl.$setValidity('arvovalidaattori', true);
+					  } else {
+						  // not in range
+						  $(elm).siblings("span").text("Arvo ei ole välillä " + min + " - " + max);
+						  ctrl.$setValidity('arvovalidaattori', false);
+					  }
+				  } else {
+					// it is valid
+						$(elm).siblings("span").empty();
+						ctrl.$setValidity('arvovalidaattori', true);
+				  }
+
+				  return viewValue;
+			  } else {
+				  // it is invalid, return undefined (no model update)
+
+				  $(elm).siblings("span").text("Arvo ei ole laillinen!");
+				  ctrl.$setValidity('arvovalidaattori', false);
+			      return undefined;
+			  }
+            });
+        }
+    };
+});

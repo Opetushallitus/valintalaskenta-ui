@@ -7,16 +7,22 @@
         this.hakukohdeOid = '';
         //this.valintaperusteValinnanvaiheet = [];
         this.tulosValinnanvaiheet = [];
+        this.errors = [];
 
 		this.refresh = function(hakukohdeOid) {
 			if( hakukohdeOid !== undefined) {
-
+				model.errors.length = 0;
+				
                 ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: hakukohdeOid}, function(result) {
 					model.tulosValinnanvaiheet = result;
+				}, function(error) {
+					model.errors.push(error);
 				});
                 
 				HakukohdeValinnanvaihe.get({parentOid: model.hakukohdeOid}, function(result) {
 					model.valinnanvaiheet = result;
+				}, function(error) {
+					model.errors.push(error);
 				});
 				
 			}
@@ -34,7 +40,7 @@
 	return model;
 });
 
-function ValinnanhallintaController($scope, $location, $routeParams, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaAktivointi, ValintakoelaskentaAktivointi) {
+function ValinnanhallintaController($scope, $location, $routeParams, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaAktivointi, ValintakoelaskentaAktivointi, ParametriService) {
 	$scope.model = ValinnanhallintaModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
@@ -55,4 +61,6 @@ function ValinnanhallintaController($scope, $location, $routeParams, Valinnanhal
         	alert("Valintalaskennan suoritus keskeytyi palvelin virheeseen: " + error.data);
         });
     }
+
+    $scope.privileges = ParametriService;
 }

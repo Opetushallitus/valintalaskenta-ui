@@ -4,8 +4,10 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
 		this.hakeneet = [];
 		this.avaimet = [];
+        this.errors = [];
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
+            model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
 
             Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(tulos) {
@@ -28,6 +30,8 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
                     });
 
                     tulokset[vkt.hakemusOid] = hakutoiveet;
+                }, function(error) {
+                    model.errors.push(error);
                 });
 
 
@@ -40,7 +44,7 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
                         model.avaimet.forEach(function(avain){
                            avain.tyyppi = function(){
                                if(avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
-                                   return "checkbox";
+                                   return "boolean";
                                }
                                return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
                            };
@@ -56,27 +60,31 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
                             model.avaimet.forEach(function(avain){
 
+                                hakija.osallistuu[avain.tunniste] = false;
+
                                 if(tulokset[hakija.applicationOid] &&
                                     tulokset[hakija.applicationOid][hakukohdeOid] &&
                                     tulokset[hakija.applicationOid][hakukohdeOid][avain.tunniste]
 
                                 ) {
-                                    hakija.osallistuu[avain.tunniste] = true;
-
-                                    if(!hakija.additionalData[avain.tunniste]) {
-                                       hakija.additionalData[avain.tunniste] = "";
-                                    }
-                                    hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
-
-                                    if(!hakija.additionalData[avain.osallistuminenTunniste]) {
-                                       hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-                                    }
-                                    hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+                                    hakija.osallistuu[avain.tunniste] = tulokset[hakija.applicationOid][hakukohdeOid][avain.tunniste];
                                 }
+
+                                if(!hakija.additionalData[avain.tunniste]) {
+                                   hakija.additionalData[avain.tunniste] = "";
+                                }
+                                hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
+
+                                if(!hakija.additionalData[avain.osallistuminenTunniste]) {
+                                   hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+                                }
+                                hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
                             });
 
                         });
                     });
+                }, function(error) {
+                    model.errors.push(error);
                 });
 
             });
@@ -188,4 +196,23 @@ function PistesyottoController($scope, $location, $routeParams, PistesyottoModel
     $scope.showTiedotPartial = function(hakija) {
         hakija.showTiedotPartial = !hakija.showTiedotPartial;
     };
+
+    $scope.changeOsallistuminen = function(hakija, tunniste, value) {
+        if(value) {
+            hakija.additionalData[tunniste] = "OSALLISTUI";
+        } else {
+            hakija.additionalData[tunniste] = "MERKITSEMATTA";
+        }
+    }
+    $scope.changeArvo = function(hakija, tunniste, value, tyyppi) {
+        if(value == "OSALLISTUI" && !hakija.additionalData[tunniste]) {
+            if(tyyppi == "boolean") {
+                hakija.additionalData[tunniste] = "true";
+            } else {
+                hakija.additionalData[tunniste] = "0";
+            }
+        } else if(value == "MERKITSEMATTA") {
+            hakija.additionalData[tunniste] = "";
+        }
+    }
 }
