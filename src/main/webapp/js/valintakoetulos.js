@@ -99,9 +99,20 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     $scope.valintakoeTulosXLS = function(valintakoeOid) {
     	$window.location.href = SERVICE_EXCEL_URL_BASE + "export/valintakoetulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid + "&valintakoeOid=" + valintakoeOid;
     }
-    $scope.addressLabelPDF = function(valintakoeOid) {
-    	Osoitetarrat.lataaPDF($routeParams.hakukohdeOid, valintakoeOid).aktivoi(function(resurssi) {
+    $scope.allAddressLabelPDF = function() {
+    	var kokeet = [];
+    	for (var key in $scope.model.valintakokeet) {
+    	    kokeet.push(key);
+    	}
+    	Osoitetarrat.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet}, function(resurssi) {
     		$window.location.href = resurssi.latausUrl;
     	});
+    	//console.log(kokeet);
+    }
+    $scope.addressLabelPDF = function(valintakoeOid) {
+    	Osoitetarrat.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:[valintakoeOid]},function(resurssi) {
+    		$window.location.href = resurssi.latausUrl;
+    	});
+    	
     }
 }   
