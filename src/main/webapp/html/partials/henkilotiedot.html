@@ -14,24 +14,47 @@
 
         <div class="tabsheets">
 
-            <h1>Hakija: {{model.hakemus.answers.henkilotiedot.Sukunimi}}, {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
-            <address>
-            {{model.hakemus.answers.henkilotiedot.Henkilotunnus}}<br>
-            {{model.hakemus.personOid}}<br>
-            {{model.hakemus.answers.henkilotiedot.lahiosoite}}, {{model.hakemus.answers.henkilotiedot.Postinumero}} {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}<br>
-            </address>
-            
-            <hr>
-            
-            <div ng-repeat="hakukohde in model.haku.hakukohteet">
-            	<h1>{{hakukohde.hakukohdeoid}}</h1>
-            	<div ng-repeat="valinnanvaihe in hakukohde.valinnanvaihe">
-            		<p>Valinnanvaihe {{valinnanvaihe.valinnanvaiheoid}}</p>
-            		<div ng-repeat="valintatapajono in valinnanvaihe.valintatapajono">
-            			<p>Aloituspaikat {{valintatapajono.aloituspaikat}}</p>
-            		</div>
-            	</div>
+            <h1 ng-show="model.hakemus.answers.henkilotiedot">Hakija: {{model.hakemus.answers.henkilotiedot.Sukunimi}}, {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
+
+             <div ng-show="model.errors.length > 0" class="notification warning">
+                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
+            
+            <dl class="margin-top-6">
+                <dt class="margin-bottom-2"><h2>Hakijan tiedot</h2></dt>
+                
+                <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">Henkilötunnus</dt>
+                <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
+                
+                <dt ng-show="model.hakemus.personOid">Henkilön oid</dt>
+                <dd>{{model.hakemus.personOid}}</dd>
+                
+                <dt ng-show="model.hakemus.answers.henkilotiedot">Lähiosoite</dt>
+                <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}}, {{model.hakemus.answers.henkilotiedot.Postinumero}} {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}</dd>
+                
+                <dt class="margin-bottom-2"><h2>Hakukohteen tiedot</h2></dt>
+                
+                <div>
+                    <dt>Hakukohde</dt>
+                    <dd>{{model.selectedHakukohde.tarjoajaNimi.kieli_fi}}</dd>
+                    <dt>Valinnanvaihe</dt>
+                    <dd>{{model.selectedValinnanvaihe.nimi}}</dd>
+                    <dt>Valintatapajono</dt>
+                    <dd>{{model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].nimi}}</dd>
+                    <dt>Aloituspaikat</dt>
+                    <dd>{{model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].aloituspaikat}}</dd>
+                    <div ng-repeat="jarjestyskriteeri in model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].jonosijat[0].jarjestyskriteerit">
+                        <dt>Arvo ({{$index}})</dt>
+                        <dd>{{jarjestyskriteeri.arvo}}</dd>
+                        <dt>Tila ({{$index}})</dt>
+                        <dd>{{jarjestyskriteeri.tila}}</dd>
+                        
+                    </div>
+                </div>
+                
+            </dl>
+            
         </div>
     </div>
     <div class="clear"></div>
