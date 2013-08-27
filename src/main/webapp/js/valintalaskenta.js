@@ -99,6 +99,12 @@ app.factory('HakukohdeValinnanvaihe', function($resource) {
    });
 });
 
+app.factory('HakuVirheet', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/haku/:parentOid/virheet", {parentOid: "@parentOid"}, {
+     get: {method: "GET", isArray: true }
+   });
+});
+
 //One does not simply call 'ValinnanVaiheList' 'Hakukohde'
 app.factory('ValinnanvaiheListByHakukohde', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {

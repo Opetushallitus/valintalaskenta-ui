@@ -1,4 +1,4 @@
-﻿app.factory('ValinnanhallintaModel', function(ValinnanvaiheListFromValintaperusteet, ValintalaskentaAktivointi, HakukohdeValinnanvaihe, HakukohdeModel) {
+﻿app.factory('ValinnanhallintaModel', function(ValinnanvaiheListFromValintaperusteet, ValintalaskentaAktivointi, HakukohdeValinnanvaihe) {
 
 	var model;
 	model = new function() {
@@ -24,7 +24,6 @@
 				}, function(error) {
 					model.errors.push(error);
 				});
-				
 			}
 		}
 

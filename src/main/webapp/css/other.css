@@ -33,3 +33,13 @@
 }
 */
 
+
+
+
+.hakuVirheet .jarjestyskriteeri:nth-child(odd) {background: #f8f8f8; padding:5px 0;}
+.hakuVirheet .jarjestyskriteeri:nth-child(even) {background: #ECECEC; padding:5px 0;}
+.hakuVirheet, .jonosija {border-top: 2px solid #eee; padding-left: 20px;margin-top:5px;}
+.jarjestyskriteeri{margin-left: -20px; padding-left: 40px!important;}
+.jonosija { cursor:default;}
+.hakuVirheet {padding:10px!important; cursor:pointer;}
+
