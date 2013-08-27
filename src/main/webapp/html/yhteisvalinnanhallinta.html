@@ -17,40 +17,56 @@
         <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
     </p>
     <p>
-        <a ng-show="privileges.valintalaskenta" ng-click="showErros()" class="button small">Näytä virheet haulle</a>
+        <a ng-show="privileges.valintalaskenta" ng-click="showErros()" class="button small">Näytä virheet</a>
     </p>
 
+    <h2 ng-show="eiVirheita">Ei virheitä laskennassa</h2>
+    <h2 ng-show="virheet.length > 0">Virheet:</h2>
     <div ng-repeat="virhe in virheet" class="hakuVirheet" ng-click="showHakukohde(virhe)">
-        <h3><a href="" >{{virhe.showValinnanvaihe ? '-' : '+'}} </a>Hakukohde: {{ virhe.hakukohdeoid }} ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h3>
+        <h2>{{virhe.showValinnanvaihe ? '-' : '+'}} Hakukohde: {{ virhe.hakukohdeoid }} ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h2>
         <div ng-repeat="vaihe in virhe.valinnanvaihe" ng-show="virhe.showValinnanvaihe" class="valinnanvaihe">
-            <h3>Vaiheet: {{vaihe.valinnanvaiheoid}} / {{vaihe.jarjestysnumero}} ({{vaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h3>
+            <h3>Vaihe: {{vaihe.valinnanvaiheoid}} ({{vaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h3>
+            <h3>Järjestyskriteeri: {{vaihe.jarjestysnumero}}</h3>
 
             <div ng-repeat="valintatapajono in vaihe.valintatapajono"  class="valintatapajono">
                 <h3>{{valintatapajono.nimi}}: {{valintatapajono.valintatapajonooid}}</h3>
 
                 <div ng-repeat="jonosijat in valintatapajono.jonosijat"  class="jonosija" ng-click="stopPropagination($event)">
-                    <dl class="dl-horizontal">
-                        <dt>Hakemus</dt>
-                        <dd>{{jonosijat.hakemusOid}}</dd>
+                    <div ng-click="jonosijat.lisatiedot =! jonosijat.lisatiedot">
+                        <h3><a>{{jonosijat.sukunimi}}, {{jonosijat.etunimi}}</a></h3>
+                        <dl class="dl-horizontal" ng-show="jonosijat.lisatiedot">
+                            <dt>Hakemus oid</dt>
+                            <dd>{{jonosijat.hakemusOid}}</dd>
 
-                        <dt>hakijaOid</dt>
-                        <dd>{{jonosijat.hakijaOid}}</dd>
+                            <dt>Hakija oid</dt>
+                            <dd>{{jonosijat.hakijaOid}}</dd>
 
-                        <dt>prioriteetti</dt>
-                        <dd>{{jonosijat.prioriteetti}}</dd>
+                            <dt>Prioriteetti</dt>
+                            <dd>{{jonosijat.prioriteetti}}</dd>
 
-                        <dt>nimi</dt>
-                        <dd>{{jonosijat.sukunimi}}, {{jonosijat.etunimi}}</dd>
-
-                        <dt>harkinnanvarainen</dt>
-                        <dd>{{jonosijat.harkinnanvarainen}}</dd>
-                    </dl>
-
-                    <div ng-repeat="(key, value) in jonosijat.jarjestyskriteerit"  class="jarjestyskriteeri">
-                        <h3>Jarjestyskriteeri({{key}}) - {{value.kuvaus}}</h3>
-
+                            <dt>Harkinnanvarainen</dt>
+                            <dd>{{jonosijat.harkinnanvarainen ? 'Kyllä' : 'Ei'}}</dd>
+                        </dl>
                     </div>
+                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakumodel.hakuOid.oid}}/esikatselu/{{jonosijat.hakemusOid}}" target="_blank" >Hakemus</a>
+                    <a href="" ng-click="henkilonakyma(jonosijat.hakemusOid)">Henkilönäkymä</a>
 
+                    <table class="virkailija-table-1">
+                        <thead>
+                        <tr>
+                            <th>Prioriteetti</th>
+                            <th>Arvo</th>
+                            <th>Kuvaus</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="(key, value) in jonosijat.jarjestyskriteerit">
+                            <td>{{key}}</td>
+                            <td>{{value.arvo}}</td>
+                            <td>{{value.kuvaus}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

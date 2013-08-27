@@ -36,10 +36,11 @@
 
 
 
-.hakuVirheet .jarjestyskriteeri:nth-child(odd) {background: #f8f8f8; padding:5px 0;}
-.hakuVirheet .jarjestyskriteeri:nth-child(even) {background: #ECECEC; padding:5px 0;}
-.hakuVirheet, .jonosija {border-top: 2px solid #eee; padding-left: 20px;margin-top:5px;}
+.hakuVirheet .jonosija:nth-child(odd) {background: #F0fafF;}
+.hakuVirheet .jonosija:nth-child(even) {}
+.hakuVirheet, .jonosija {border-top: 5px solid #eee; padding-left: 20px;}
 .jarjestyskriteeri{margin-left: -20px; padding-left: 40px!important;}
-.jonosija { cursor:default;}
+.jonosija { cursor:default; padding:10px 0;}
 .hakuVirheet {padding:10px!important; cursor:pointer;}
-
+.hakuVirheet table {margin: 10px;}
+.jonosija div {cursor:pointer;}
