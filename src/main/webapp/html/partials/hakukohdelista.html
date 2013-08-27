@@ -3,13 +3,13 @@
 	<div id="toolbarcontent" class="width-90" ng-show="hakukohteetVisible">
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
-			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" />
+			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" ng-change="model.refresh()"/>
 			    <label>Omat hakukohteet</label><input type="checkbox" class="search" ng-model="model.filterToggle" />
-                <span>{{model.blender(true).length}}/{{model.blender(false).length}}</span>
+                <span>{{model.getCount()}}/{{model.getTotalCount()}}</span>
 			</div>
 
-			<ul class="selectlist">
-			    <li ng-repeat="hakukohde in model.blender(model.filterToggle) | orderBy:'tarjoajaNimi.kieli_fi'| filter:model.searchWord">          <!--filter:{hakukohdeKoodistoNimi:model.searchWord} -->
+			<ul class="selectlist" lazy-loading>
+			    <li ng-repeat="hakukohde in model.blender(model.filterToggle)">
 			        <a ng-click="showHakukohde(hakukohde.hakukohdeOid)">
 			        	<!--
 			        		href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}"
