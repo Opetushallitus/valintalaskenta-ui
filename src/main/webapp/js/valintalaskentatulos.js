@@ -70,17 +70,16 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
          }
     };
 
-    $scope.showHenkiloPartial = function(valintatulos, that) {
+    $scope.showHenkiloPartial = function(valintatulos, that, event) {
         if(valintatulos.showHenkiloPartial == null || valintatulos.showHenkiloPartial == false) {
             valintatulos.showHenkiloPartial = true;
         } else {
             valintatulos.showHenkiloPartial = false;
         }
-        console.log(that);
-        $scope.$broadcast(that.$id);
+        $scope.$broadcast(that.$id, event);
     };
 
-    $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos, that) {
+    $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos, that, event) {
         valintatulos.prioriteetit = [];
         for(i in valintatulos.jarjestyskriteerit) {
             if(i == 0) {
@@ -92,9 +91,9 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
                 var obj = {name: i, value: i};
                 valintatulos.prioriteetit.push(obj);
             }
-        }   
-        console.log(that);
-        $scope.$broadcast(that.$id);
+        }  
+
+        $scope.$broadcast(that.$id, event);
         valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
 
     }
