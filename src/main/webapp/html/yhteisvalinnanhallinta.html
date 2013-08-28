@@ -13,8 +13,9 @@
 	</dl>
 
     <p>
-        <a ng-show="privileges.valintalaskenta" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
+        <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintakoelaskenta()" class="button primary small">Suorita valintakoelaskenta haulle</a>
         <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
+        <a ng-show="privileges.valintalaskenta" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
     </p>
     <p>
         <a ng-show="privileges.valintalaskenta" ng-click="showErros()" class="button small">Näytä virheet</a>

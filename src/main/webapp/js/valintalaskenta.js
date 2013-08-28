@@ -159,6 +159,12 @@ app.factory('AktivoiHaunValintalaskenta', function($resource) {
       aktivoi: {method: "GET"}
   })
 });
+app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
+  return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHaunValintakoelaskenta", {}, {
+      aktivoi: {method: "GET"}
+  })
+});
+
 
 app.factory('Osoitetarrat', function($resource,$window) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/addressLabelBatch/aktivoi", {}, {

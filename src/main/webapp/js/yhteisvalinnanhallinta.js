@@ -1,6 +1,6 @@
 ﻿
 
-function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi, HakuModel, AktivoiHaunValintalaskenta, ParametriService, HakuVirheet) {
+function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi, HakuModel, AktivoiHaunValintalaskenta, ParametriService, HakuVirheet, AktivoiHaunValintakoelaskenta) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
 	$scope.hakumodel = HakuModel;
@@ -16,6 +16,13 @@ function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoi
           AktivoiHaunValintalaskenta.aktivoi({hakuOid: hakuoid}, function() {
       });
     }
+
+    $scope.aktivoiHaunValintakoelaskenta = function() {
+       var hakuoid = $routeParams.hakuOid;
+           AktivoiHaunValintakoelaskenta.aktivoi({hakuOid: hakuoid}, function() {
+       });
+    }
+
 
 
     $scope.showErros = function() {
