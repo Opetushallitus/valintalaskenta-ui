@@ -44,7 +44,7 @@
 
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
-                                entry.osallistuminen = valintakoe.osallistuminen;
+                                entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 
                                 if (model.valintakokeet[entry.valintakoeOid] === undefined ) {
                                 	model.valintakokeet[entry.valintakoeOid] = {valintakoeOid: entry.valintakoeOid, valintakoeTunniste: entry.valintakoeTunniste, hakijat: [entry]};    
@@ -57,15 +57,13 @@
                                     model.valintakokeetHakijoittain[entry.hakemusOid].kokeet = [];
                                     model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
                                 } else {
-                                    model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste]=entry;
+                                    model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
                                 }
 
                                 //add identifier to list
                                if(model.koetyypit.indexOf(valintakoe.valintakoeTunniste) == -1) {
-                                     model.koetyypit.push(valintakoe.valintakoeTunniste);
+                                    model.koetyypit.push(valintakoe.valintakoeTunniste);
                                }
-
-
 
                             });
                         });
