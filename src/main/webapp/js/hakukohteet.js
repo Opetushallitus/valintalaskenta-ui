@@ -33,7 +33,7 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 			if(notLastPage || restart) {
 				var self = this;
 	        	TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms:this.searchWord}, function(result) {
-	        		console.log(result);
+
 	        		if(restart) { // eka sivu
 	        			self.hakukohteet = result.tulokset;
 		    			self.totalCount = result.kokonaismaara;
