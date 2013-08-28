@@ -1,4 +1,4 @@
-var app = angular.module('valintalaskenta', ['ngResource', 'loading'], function($rootScopeProvider) {
+var app = angular.module('valintalaskenta', ['ngResource', 'ngRoute', 'ngAnimate'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 });
 
