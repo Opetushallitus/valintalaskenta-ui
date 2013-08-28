@@ -79,7 +79,7 @@
                                 <a ng-click="showSijoitteluPartial(hakemus)" >
                                     <span>{{hakemus.hakijaOid}}</span>
                                 </a>
-                                <div ng-include="'valintalaskentatulos-partials/sijoitteluPartial.html'" ng-show="hakemus.showSijoitteluPartial"/>
+                                <div ng-include="'valintalaskentatulos-partials/sijoitteluPartial.html'"/>
                             </td>
                             <!--<td>-->
                                 <!--<a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/yhteishaku/esikatselu/{{hakemus.hakemusOid}}" target="_blank" >-->
@@ -95,7 +95,7 @@
                             </td>
                             <td>
                                 <a ng-disabled="!((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))" ng-click="showMuutaHakemus(hakemus)" class="button small">Tila</a>
-                                <div ng-include="'valintalaskentatulos-partials/muutaHakemus.html'" ng-show="hakemus.showMuutaHakemus"/>
+                                <div ng-include="'valintalaskentatulos-partials/muutaHakemus.html'"/>
                             </td>
 						</tr>
 					</tbody>

@@ -41,7 +41,7 @@
                                     <span class="sukunimi">{{hakija.lastName}}</span>,
                                     <span class="etunimi">{{hakija.firstName}}</span>
                                 </a>
-                                <div ng-include="'partials/hakeneetTiedotPartial.html'" ng-show="hakija.showTiedotPartial"/>
+                                <div ng-include="'partials/hakeneetTiedotPartial.html'"/>
                             </td>
                             <td ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">
                                 <div ng-show="hakija.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch on="avain.lahde">
