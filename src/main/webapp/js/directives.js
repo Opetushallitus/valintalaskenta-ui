@@ -19,7 +19,7 @@ app.directive('jqNestable', function($timeout) {
                 itemClass: 'item',
                 maxDepth: 25,
                 canDrop: function(pointEl) {
-                    return true
+                    return true;
                 }
             })
 
@@ -159,31 +159,28 @@ app.directive('close', function() {
     }
 });
 
-app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
+app.directive('auth', function($animate, AuthService, HakukohdeModel) {
     return {
       link : function($scope, element, attrs) {
-        //the attrs object is where the ngAnimate attribute is defined
-        var animator = $animator($scope, attrs);
 
-        animator.hide(element);
-        if(!attrs.authService) return;
+          $animate.addClass(element, 'ng-hide');
         switch(attrs.auth) {
 
             case "crudOph":
                 AuthService.crudOph(attrs.authService).then(function(){
-                    animator.show(element);
+                    $animate.removeClass(element, 'ng-hide');
                 });
                 break;
 
             case "updateOph":
                 AuthService.updateOph(attrs.authService).then(function(){
-                    animator.show(element);
+                    $animate.removeClass(element, 'ng-hide');
                 })
                 break;
 
             case "readOph":
                 AuthService.readOph(attrs.authService).then(function(){
-                    animator.show(element);
+                    $animate.removeClass(element, 'ng-hide');
                 })
                 break;
         }
@@ -193,25 +190,25 @@ app.directive('auth', function($q, $animator, AuthService, HakukohdeModel) {
                 switch(attrs.auth) {
                     case "crud":
                         AuthService.crudOrg(attrs.authService, attrs.authOrg).then(function(){
-                            animator.show(element);
+                            $animate.removeClass(element, 'ng-hide');
                         }, function(){
-                            animator.hide(element);
+                            $animate.addClass(element, 'ng-hide');
                         });
                         break;
 
                     case "update":
                         AuthService.updateOrg(attrs.authService, attrs.authOrg).then(function(){
-                            animator.show(element);
+                            $animate.removeClass(element, 'ng-hide');
                         }, function(){
-                            animator.hide(element);
+                            $animate.addClass(element, 'ng-hide');
                         });
                         break;
 
                     case "read":
                         AuthService.readOrg(attrs.authService, attrs.authOrg).then(function(){
-                            animator.show(element);
+                            $animate.removeClass(element, 'ng-hide');
                         }, function(){
-                            animator.hide(element);
+                            $animate.addClass(element, 'ng-hide');
                         });
                         break;
                 }
