@@ -2314,36 +2314,40 @@ button.edit-link {
   .remove span {
     display: none; }
 
-.modal-backdrop {
-  position: absolute;
+.modalbackdrop {
+  position: fixed;
   background-color: #000;
-  opacity: 0.5; }
-  .modal-backdrop .modal {
-    border: 1px solid #bdbdbd;
-    padding: 10px;
-    background-color: #fff;
-    z-index: 1050;
-    position: absolute;
-    opacity: 1;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -o-border-radius: 3px;
-    -ms-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-    -o-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-    -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
-    .modal-backdrop .modal .modal-content {
-      position: fixed;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      z-index: 1040;
-      background-color: #333;
-      opacity: 0.8; }
+  opacity: 0.5;
+  z-index: 1049;
+  width: 100%;
+  height: 100%; }
+
+.modal {
+  border: 1px solid #bdbdbd;
+  padding: 10px;
+  background-color: #fff;
+  z-index: 1050;
+  position: absolute;
+  opacity: 1;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
+  .modal .modal-content {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1040;
+    background-color: #333;
+    opacity: 0.8; }
 
 /*** Pagination
 ************************************************/
@@ -3987,7 +3991,7 @@ li.uiCollapsed.mjs-nestedSortable-hovering div {
 
 /*** tilatiedot & henkilötiedot
 ************************************************/
-div.tilaParial, div.henkiloPartial {
+div.tilaParial {
   position: absolute;
   /* width: 400px; */
   /* height: 200px; */
@@ -4002,7 +4006,7 @@ div.tilaParial, div.henkiloPartial {
   /* text-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px; */
   box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px; }
 
-div.tilaParial .close, div.henkiloPartial .close {
+div.tilaParial .close {
   float: right;
   padding-bottom: 5px;
   cursor: pointer; }

@@ -33,22 +33,26 @@
                 <dt ng-show="model.hakemus.answers.henkilotiedot">Lähiosoite</dt>
                 <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}}, {{model.hakemus.answers.henkilotiedot.Postinumero}} {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}</dd>
                 
-                <dt class="margin-bottom-2"><h2>Hakukohteen tiedot</h2></dt>
+                <dt class="margin-bottom-2"><h2>Hakukohdetiedot</h2></dt>
                 
-                <div>
+                <div ng-repeat="hakukohde in model.valintalaskentaHakemus.hakukohteet">
                     <dt>Hakukohde</dt>
                     <dd>{{model.selectedHakukohde.tarjoajaNimi.kieli_fi}}</dd>
+                    
                     <dt>Valinnanvaihe</dt>
                     <dd>{{model.selectedValinnanvaihe.nimi}}</dd>
+                    
                     <dt>Valintatapajono</dt>
                     <dd>{{model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].nimi}}</dd>
+                    
                     <dt>Aloituspaikat</dt>
                     <dd>{{model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].aloituspaikat}}</dd>
+                    
                     <div ng-repeat="jarjestyskriteeri in model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].jonosijat[0].jarjestyskriteerit">
                         <dt>Järjestyskriteeri {{$index + 1}}.</dt>
-                        <dd>Arvo: {{jarjestyskriteeri.arvo}}, Tila: {{jarjestyskriteeri.tila}}</dd>
-                        
+                        <dd>Arvo: {{jarjestyskriteeri.arvo}}, Tila: {{jarjestyskriteeri.tila}}</dd> 
                     </div>
+                    
                 </div>
                 
             </dl>
