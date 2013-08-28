@@ -22,7 +22,7 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
                         ht.valinnanVaiheet.forEach(function(vv) {
 
                             vv.valintakokeet.forEach(function(vk) {
-                                valintakokeet[vk.valintakoeTunniste] = vk.osallistuminen;
+                                valintakokeet[vk.valintakoeTunniste] = vk.osallistuminenTulos.osallistuminen;
                             });
                         });
 
