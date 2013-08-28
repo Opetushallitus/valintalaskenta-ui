@@ -1,4 +1,4 @@
-var app = angular.module('valintalaskenta', ['ngResource', 'loading'], function($rootScopeProvider) {
+var app = angular.module('valintalaskenta', ['ngResource', 'ngRoute', 'ngAnimate'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 });
 
@@ -96,6 +96,12 @@ app.factory('HakukohdeValinnanvaihe', function($resource) {
      get: {method: "GET", isArray: true },
      post:{method: "POST"},
      insert: {method: "PUT"}
+   });
+});
+
+app.factory('HakuVirheet', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/haku/:parentOid/virheet", {parentOid: "@parentOid"}, {
+     get: {method: "GET", isArray: true }
    });
 });
 
