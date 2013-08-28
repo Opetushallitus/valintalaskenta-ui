@@ -1,34 +1,39 @@
+
+
     
+        <dl class="dl-horizontal">
+            <dt>Nimi</dt>
+            <dd><span class="sukunimi">{{tulos.sukunimi}}</span>,<span class="etunimi">{{tulos.etunimi}}</span></dd>
+            <dt>Järjestyskriteeri</dt>
+            <dd>
+                <select ng-model="tulos.jarjestyskriteeriPrioriteetti" ng-options="p.name for p in tulos.prioriteetit">
+                    <!--<option ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit" value="{{$index}}">{{$index > 0 ? $index : "Vakio"}}</option>-->
+                </select>
+            </dd>
+            <dt>Tila</dt>
+            <dd>
+                <select ng-model="tulos.jarjestyskriteeriTila">
+                    <option value="HYVAKSYTTY_HARKINNANVARAISESTI">HYVAKSYTTY_HARKINNANVARAISESTI</option>
+                    <option value="HYVAKSYTTAVISSA">HYVAKSYTTAVISSA</option>
+                    <option value="HYLATTY">HYLATTY</option>
+                    <option value="MAARITTELEMATON">MAARITTELEMATON</option>
+                </select>
+            </dd>
 
-    <dl class="dl-horizontal">
-        <dt>Nimi</dt>
-        <dd><span class="sukunimi">{{tulos.sukunimi}}</span>,<span class="etunimi">{{tulos.etunimi}}</span></dd>
-        <dt>Järjestyskriteeri</dt>
-        <dd>
-            <select ng-model="tulos.jarjestyskriteeriPrioriteetti" ng-options="p.name for p in tulos.prioriteetit">
-                <!--<option ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit" value="{{$index}}">{{$index > 0 ? $index : "Vakio"}}</option>-->
-            </select>
-        </dd>
-        <dt>Tila</dt>
-        <dd>
-            <select ng-model="tulos.jarjestyskriteeriTila">
-                <option value="HYVAKSYTTY_HARKINNANVARAISESTI">HYVAKSYTTY_HARKINNANVARAISESTI</option>
-                <option value="HYVAKSYTTAVISSA">HYVAKSYTTAVISSA</option>
-                <option value="HYLATTY">HYLATTY</option>
-                <option value="MAARITTELEMATON">MAARITTELEMATON</option>
-            </select>
-        </dd>
 
+            <dt>Arvo</dt><dd><input min="0" size="2" ng-model="tulos.jarjestyskriteeriArvo" /></dd>
 
-        <dt>Arvo</dt><dd><input min="0" size="2" ng-model="tulos.jarjestyskriteeriArvo" /></dd>
+            <dt>Muokkaajan kommentti</dt><dd><textarea ng-model="tulos.selite" ></textarea></dd>
+        </dl>
+        <br/>
+        <dl class="dl-horizontal">
+            <dt></dt>
+            <dd>
+            <a close ng-click="showMuutaJarjestyskriteerinArvo(tulos, this)" class="button small">Peruuta</a>
+            <a ng-click="muutaJarjestyskriteerinArvo(tulos, valintatapajono.valintatapajonooid)" class="button small primary">Tallenna</a>
+            </dd>
+        </dl>
 
-        <dt>Muokkaajan kommentti</dt><dd><textarea ng-model="tulos.selite" ></textarea></dd>
-    </dl>
-    <br/>
-    <dl class="dl-horizontal">
-        <dt></dt>
-        <dd>
-        <a close ng-click="showMuutaJarjestyskriteerinArvo(tulos, this)" class="button small">Peruuta</a>
-        <a ng-click="muutaJarjestyskriteerinArvo(tulos, valintatapajono.valintatapajonooid)" class="button small primary">Tallenna</a>
-        </dd>
-    </dl>
+    
+  
+    

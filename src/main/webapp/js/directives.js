@@ -111,27 +111,20 @@ app.directive('modal', function($rootScope) {
     return {
         restrict: "C",
         link: function($scope, element, attrs) {
-            $scope.elem = $(element);
-            //hide element initially
-            $(element).addClass("hidden");
-            $scope.ran = 0;
-            //$(element).wrap('<div style="display: none" class="modal-backdrop"></div>');
 
-            //close all modal-dialogs
+            //hide all modal-elements initially
+            $(element).addClass("hidden");
+
+            //hide all modal-dialogs when closeModals broadcasted
             $rootScope.$on('closeModals', function() {
                 $(element).addClass("hidden");
             });
 
-            $scope.$on($scope.$id, function() {
-                //console.log($scope);
-                $scope.ran = $scope.ran + 1;
-                console.log(element);
-                console.log($scope.ran); 
+            $scope.$on($scope.$id, function(event, param) {
+
                 //close all modal before open new
                 $rootScope.$broadcast('closeModals');
-
-                $(element).toggleClass("hidden");        
-                
+                $(angular.element(param.srcElement).next()).toggleClass("hidden");        
 
                 var top = ($(window).height() - $(element).outerHeight()) / 2;
                 var left = ($(window).width() - $(element).outerWidth()) / 2;
@@ -153,7 +146,6 @@ app.directive('close', function() {
         link: function(scope, element, attrs, ctrl) {
             $(element).on('click', function() {
                 ctrl.closeModal();
-
             });
         }
     }
