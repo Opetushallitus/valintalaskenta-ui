@@ -8,26 +8,29 @@
 <div class="clear"></div>
 
 <div class="tabsheets">
-	<ul class="valintalaskentaHistoria" ng-show="$index === historyTabIndex" ng-repeat="historia in model.get()" ng-include="'historia_node.html'"></ul>
+	<ul class="valintalaskentaHistoria" ng-repeat="historia in model.get()" ng-include="'historia_node.html'">
+	</ul>
 </div>
 
+
 <script type="text/ng-template" id="historia_node.html">
-	<li>
-		<h2>Tila: {{historia.tilat[0].tilatyyppi}} - <span ng-show="historia.tilat[0].tilatyyppi === 'HYLATTY'" class="red">{{historia.tilat[0].kuvaus}}</span></h2>
-	</li>
-	<li><h2 class="margin-top-0">Tulos: {{historia.tulos}}</h2></li>
+	<div ng-show="$index === historyTabIndex">
+		<li>
+			<h2>Tila: {{historia.tilat[0].tilatyyppi}} - <span ng-show="historia.tilat[0].tilatyyppi === 'HYLATTY'" class="red">{{historia.tilat[0].kuvaus}}</span></h2>
+		</li>
+		<li><h2 class="margin-top-0">Tulos: {{historia.tulos}}</h2></li>
 
-	<button class="small margin-top-2" ng-init="keys = false" ng-click="keys = !keys">Näytä/Piilota avaimet</button>
-	<ul ng-show="keys" class="avaimet">
-		<li class="padding-vertical-1" ng-repeat="(key, value) in historia.avaimet track by $index">
-			<strong>{{key}}</strong> - <span>{{value}}</span>
-		</li> 
-	</ul>
-	
-	<ul class="alikaavat margin-top-4" ng-init="show = 'true'" ng-show="show">	
-		<li ng-repeat="kaava in historia.historiat" ng-include="'alikaava_node.html'"></li>
-	</ul>
-
+		<button class="small margin-top-2" ng-	init="keys = false" ng-click="keys = !keys">Näytä/Piilota avaimet</button>
+		<ul ng-show="keys" class="avaimet">
+			<li class="padding-vertical-1" ng-repeat="(key, value) in historia.avaimet track by $index">
+				<strong>{{key}}</strong> - <span>{{value}}</span><strong> and index: {{$index}}</strong>
+			</li> 
+		</ul>
+		
+		<ul class="alikaavat margin-top-4" ng-init="show = 'true'" ng-show="show">	
+			<li ng-repeat="kaava in historia.historiat" ng-include="'alikaava_node.html'"></li>
+		</ul>
+	</div>
 </script>
 
 
