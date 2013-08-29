@@ -54,7 +54,7 @@
                                -->
                                 <a ng-click="showHenkiloPartial(tulos, this, $event)" >{{tulos.sukunimi}}, {{tulos.etunimi}}
                                 </a>
-                                <div class="modal" ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ></div>
+                                <modal class="ng-hide" ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ></modal>
 
                             </td>
                             <td>
@@ -73,8 +73,10 @@
                                 <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>
                             </td>
                             <td>
-                                <a ng-click="showMuutaJarjestyskriteerinArvo(tulos, this, $event)" class="button small">Muokkaa</a>
-                                <div class="modal" ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteeri.html'"></div>
+                                <a ng-click="showMuutaJarjestyskriteerinArvo(tulos, this, $event)" class="button small">Avaa/Sulje muokkaus</a>
+                               <modal class="ng-hide" ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteeri.html'">
+                               </modal>
+                               
 
                             </td>
                         </tr>

@@ -107,33 +107,50 @@ app.directive('lazyLoading', function () {
         }
     };
 });
-app.directive('modal', function($rootScope) {
+app.directive('modal', function($animate, $rootScope) {
     return {
-        restrict: "C",
+        restrict: "E",
+        scope: false,
         link: function($scope, element, attrs) {
-
+            //console.log(element);
+            var visible = false;
             //hide all modal-elements initially
-            $(element).addClass("hidden");
+            $animate.addClass(element, 'ng-hide');
 
             //hide all modal-dialogs when closeModals broadcasted
             $rootScope.$on('closeModals', function() {
-                $(element).addClass("hidden");
+                $animate.addClass(element.next(), 'ng-hide');
+                visible = !visible;
             });
 
             $scope.$on($scope.$id, function(event, param) {
-
+                //var elem = angular.element(param.srcElement).next();
                 //close all modal before open new
                 $rootScope.$broadcast('closeModals');
-                $(angular.element(param.srcElement).next()).toggleClass("hidden");        
 
-                var top = ($(window).height() - $(element).outerHeight()) / 2;
-                var left = ($(window).width() - $(element).outerWidth()) / 2;
-                $(element).css({margin:0, top: (top > 0 ? top : 0)+'px', left: (left > 0 ? left : 0)+'px'});  
+                //var hasClass = angular.element(param.srcElement).next().hasClass('ng-hide');  
+                if (!visible) {
+                    $animate.removeClass(angular.element(param.srcElement).next(), 'ng-hide');
+                    visible = true;
+                } else {
+                    $animate.addClass(angular.element(param.srcElement).next(), 'ng-hide');
+                    visible = false;
+                }
+
+                //console.log($window);
+                /*
+                var top = ($window.outerHeight - $(element).outerHeight()) / 2;
+                var left = ($window.outerWidth - $(element).outerWidth()) / 2;
+                
+                
+                $animate.css(element, {margin:0, top: (top > 0 ? top : 0)+'px', left: (left > 0 ? left : 0)+'px'});  
+                */
             });
         },
         controller: function($scope, $element) {
             this.closeModal = function() {
-                $element.toggleClass("hidden");
+                $animate.removeClass(element, 'ng-hide');
+
             }
         }
     }
@@ -142,7 +159,7 @@ app.directive('modal', function($rootScope) {
 app.directive('close', function() {
     return {
         restrict: "A",
-        require: "^modal",
+        require: "modal",
         link: function(scope, element, attrs, ctrl) {
             $(element).on('click', function() {
                 ctrl.closeModal();
