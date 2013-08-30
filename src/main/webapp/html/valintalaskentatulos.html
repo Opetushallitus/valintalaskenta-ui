@@ -45,17 +45,11 @@
                         <tr ng-repeat="tulos in valintatapajono.jonosijat">
                             <td>{{tulos.jonosija}}</td>
                             <td>
-                                <!--
                                 <a ng-click="showHenkiloPartial(tulos)" >
                                      <span class="sukunimi">{{tulos.sukunimi}}</span>,
                                      <span class="etunimi">{{tulos.etunimi}}</span>
-                                 </a>
-                               <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ng-show="tulos.showHenkiloPartial"/>
-                               -->
-                                <a ng-click="showHenkiloPartial(tulos, this, $event)" >{{tulos.sukunimi}}, {{tulos.etunimi}}
                                 </a>
-                                <modal class="ng-hide" ng-include="'valintalaskentatulos-partials/henkiloPartial.html'" ></modal>
-
+                                <div ng-include="'valintalaskentatulos-partials/henkiloPartial.html'">
                             </td>
                             <td>
                                 {{tulos.jarjestyskriteerit[0].arvo}}
@@ -70,7 +64,7 @@
                                 <a ng-click="showTilaPartial(tulos)" >
                                     {{tulos.tuloksenTila}}
                                 </a>
-                                <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'" ng-show="tulos.showTilaPartial"/>
+                                <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'"/>
                             </td>
                             <td>
                                 <a ng-click="showMuutaJarjestyskriteerinArvo(tulos, this, $event)" class="button small">Avaa/Sulje muokkaus</a>
