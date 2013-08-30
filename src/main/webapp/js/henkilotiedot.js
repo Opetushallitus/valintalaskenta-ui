@@ -4,53 +4,68 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 		this.hakemus = {};
 		this.valintalaskentaHakemus = {};
 		
-		this.selectedValinnanvaihe = {};
-		this.selectedHakukohde = {};
-		this.selectedValintatapajono = {};
-
+		this.hakutoiveet = [];
 		this.errors = [];
 
 		this.refresh = function(hakuOid, hakemusOid) {
 			model.errors.length = 0;
-			
+			model.hakutoiveet.length = 0;
+
 			Hakemus.get({oid: hakemusOid}, function(result) {
 				model.hakemus = result;
+				console.log("hakemus");
+				console.log(model.hakemus);
 				
-			}, function(error) {
-				model.errors.push(error);
-			});
-
-			ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function(result) {
-				model.valintalaskentaHakemus = result;
-				console.log(model.valintalaskentaHakemus);
-				//oletetaan, että valintalaskentahakemukseen liitty aina vain yksi hakukohde
-				if(result.hakukohteet.length > 0) {
+				for(var i = 1; i < 10; i++) {
+					var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+					if(oid === undefined) {
+						break;
+					}
 					
-					
-					HakukohdeNimi.get({hakukohdeoid: model.valintalaskentaHakemus.hakukohteet[0].hakukohdeoid}, function(result) {
-						model.selectedHakukohde = result;
-					}, function(error) {
-						model.errors.push(error);
-					});
+					var hakutoiveIndex = i;
+					var koulutus = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"];
+					var oppilaitos = model.hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"];
 
-					ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: model.valintalaskentaHakemus.hakukohteet[0].hakukohdeoid}, function(result) {
-						var matchingValinnanvaihe = findMatchingValinnanvaihe(result, model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valinnanvaiheoid);
-						model.selectedValinnanvaihe = matchingValinnanvaihe;
-					}, function(error) {
-						model.errors.push(error);
-					});
-				
-
-				} else {
-					model.selectedHakukohde = {};
-					model.selectedValinnanvaihe = {};
-					model.selectedValintatapajono = {};
+					//create hakutoiveObject that can easily be iterated in view
+					var hakutoive = {
+						hakukohdeOid: oid,
+						hakutoiveNumero: hakutoiveIndex,
+						koulutuksenNimi: koulutus,
+						oppilaitos: oppilaitos
+					}
+					model.hakutoiveet.push(hakutoive);
 				}
 
+				//Haetaan hakemuksen tulos tähän hakukohteeseen
+				ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function(result) {
+					model.valintalaskentaHakemus = result;
+
+					//iterate hakutoiveet
+					model.hakutoiveet.forEach(function(hakutoive, index, array) {
+						var hakukohdeOid = hakutoive.hakukohdeOid;
+
+						//iterate laskentatulos for each hakutoive
+						model.valintalaskentaHakemus.hakukohteet.forEach(function(hakukohdetulos, index, array) {
+							if(hakukohdetulos.hakukohdeoid === hakukohdeOid) {
+								var jk1 = hakukohdetulos.valinnanvaihe[0].valintatapajono[0].jonosijat[0].jarjestyskriteerit[0];
+								hakutoive.pisteet = jk1.arvo;
+								hakutoive.tila = jk1.tila;
+							}
+							
+						});
+
+					});
+					
+					
+				}, function(error) {
+					model.errors.push(error);
+				});
 				
 			}, function(error) {
 				model.errors.push(error);
 			});
+			
+			
 
 
 		}
@@ -76,6 +91,7 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 });
 
 function HenkiloTiedotController($scope,$routeParams,HenkiloTiedotModel) {
+
 	$scope.model = HenkiloTiedotModel;
 
 	$scope.model.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakemusOid);

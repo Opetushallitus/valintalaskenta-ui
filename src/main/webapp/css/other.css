@@ -36,11 +36,12 @@
 
 
 
-.hakuVirheet .jonosija:nth-child(odd) {background: #F0fafF;}
-.hakuVirheet .jonosija:nth-child(even) {}
-.hakuVirheet, .jonosija {border-top: 5px solid #eee; padding-left: 20px;}
+.hakuVirheet .valintakoe:nth-child(odd), .hakuVirheet .jonosija:nth-child(odd) {background: #F0fafF;}
+.hakuVirheet .valintakoe:nth-child(even), .hakuVirheet .jonosija:nth-child(even) {}
+.jonosija, .valintakoe {border-top: 5px solid #eee; padding-left: 20px;}
 .jarjestyskriteeri{margin-left: -20px; padding-left: 40px!important;}
 .jonosija { cursor:default; padding:10px 0;}
 .hakuVirheet {padding:10px!important; cursor:pointer;}
 .hakuVirheet table {margin: 10px;}
 .jonosija div {cursor:pointer;}
+
