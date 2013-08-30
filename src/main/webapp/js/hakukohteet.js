@@ -23,16 +23,20 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 		}
     	this.getNextPage = function(restart) {
     		var hakuOid = $routeParams.hakuOid;
-    		var startIndex = this.getCount();
-    		var lastTotalCount = this.getTotalCount();
-    		var notLastPage = startIndex < lastTotalCount;
     		if(restart) {
     			this.hakukohteet = [];
     			this.filtered = [];
     		}
-			if(notLastPage || restart) {
+    		var startIndex = this.getCount();
+    		var lastTotalCount = this.getTotalCount();
+    		var notLastPage = startIndex < lastTotalCount;
+    		if(notLastPage || restart) {
 				var self = this;
-	        	TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms:this.searchWord}, function(result) {
+				//
+				// final 'solrified'-seachword 
+				//
+				var solrSearch = this.searchWord + "*"
+	        	TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms: solrSearch}, function(result) {
 
 	        		if(restart) { // eka sivu
 	        			self.hakukohteet = result.tulokset;
