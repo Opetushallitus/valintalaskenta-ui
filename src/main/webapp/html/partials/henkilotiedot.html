@@ -27,36 +27,32 @@
                 <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">Henkilötunnus</dt>
                 <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
                 
-                <dt ng-show="model.hakemus.personOid">Henkilön oid</dt>
-                <dd>{{model.hakemus.personOid}}</dd>
-                
                 <dt ng-show="model.hakemus.answers.henkilotiedot">Lähiosoite</dt>
                 <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}}, {{model.hakemus.answers.henkilotiedot.Postinumero}} {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}</dd>
                 
-                <dt class="margin-bottom-2"><h2>Hakukohdetiedot</h2></dt>
+                <dt class="margin-bottom-2"><h2>Hakutoiveet</h2></dt>
                 
-                <div ng-repeat="hakukohde in model.valintalaskentaHakemus.hakukohteet">
-                    <dt>Hakukohde</dt>
-                    <dd>{{model.selectedHakukohde.tarjoajaNimi.kieli_fi}}</dd>
-                    
-                    <dt>Valinnanvaihe</dt>
-                    <dd>{{model.selectedValinnanvaihe.nimi}}</dd>
-                    
-                    <dt>Valintatapajono</dt>
-                    <dd>{{model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].nimi}}</dd>
-                    
-                    <dt>Aloituspaikat</dt>
-                    <dd>{{model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].aloituspaikat}}</dd>
-                    
-                    <div ng-repeat="jarjestyskriteeri in model.valintalaskentaHakemus.hakukohteet[0].valinnanvaihe[0].valintatapajono[0].jonosijat[0].jarjestyskriteerit">
-                        <dt>Järjestyskriteeri {{$index + 1}}.</dt>
-                        <dd>Arvo: {{jarjestyskriteeri.arvo}}, Tila: {{jarjestyskriteeri.tila}}</dd> 
-                    </div>
-                    
-                </div>
-                
+                    <table class="virkailija-table-1">
+                        <thead>
+                            <tr>
+                                <td>Hakutoive</td>
+                                <td>Hakukohde</td>
+                                <td>Pisteet</td>
+                                <td>Tila</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="hakutoive in model.hakutoiveet">
+                                <td>{{hakutoive.hakutoiveNumero}}</td>
+                                <td><div>{{hakutoive.koulutuksenNimi}}</div><div>{{hakutoive.oppilaitos}}</td>
+                                <td>{{hakutoive.pisteet}}</td>
+                                <td>{{hakutoive.tila}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
             </dl>
-            
+
         </div>
     </div>
     <div class="clear"></div>

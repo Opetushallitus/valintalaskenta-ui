@@ -4,12 +4,14 @@
 
 <div class="tabsheets">
     <h1>Haun hallinta</h1>
-
     <dl class="dl-horizontal">
-		<dt>Haun oid</dt><dd>{{hakumodel.hakuOid.oid}}</dd>
+		<dt>Haku</dt><dd>{{hakumodel.hakuOid.nimi.kieli_fi}} ({{hakumodel.hakuOid.oid}})</dd>
         <dt>Haun tunniste</dt><dd>{{hakumodel.hakuOid.haunTunniste}}</dd>
-        <dt>Hakuvuosi</dt><dd>{{hakumodel.hakuOid.hakuVuosi}}</dd>
-        <dt>Haun tila</dt><dd>{{hakumodel.hakuOid.haunTila}}</dd>
+        <dt>Hakuvuosi</dt><dd>{{hakumodel.hakuOid.hakukausiVuosi}}</dd>
+        <dt>Sijoittelu</dt><dd>{{hakumodel.hakuOid.sijoittelu ? 'Kyllä' : 'Ei'}}</dd>
+        <dt>Hakuajat</dt>
+        <dd ng-repeat-start="hakuaika in hakumodel.hakuOid.hakuaikas">{{hakuaika.nimi}}</dd>
+        <dd ng-repeat-end>{{hakuaika.alkuPvm | date:'dd.MM.yyyy HH:mm'}} - {{hakuaika.loppuPvm | date:'dd.MM.yyyy HH:mm'}}</dd>
 	</dl>
 
     <p>
