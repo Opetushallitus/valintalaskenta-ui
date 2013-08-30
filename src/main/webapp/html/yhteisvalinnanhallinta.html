@@ -18,21 +18,73 @@
         <a ng-show="privileges.valintalaskenta" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
     </p>
     <p>
-        <a ng-show="privileges.valintalaskenta" ng-click="showErros()" class="button small">Näytä virheet</a>
+        <a ng-show="privileges.valintalaskenta" ng-click="showErrors()" class="button small">Näytä virheet</a>
     </p>
 
-    <h2 ng-show="eiVirheita">Ei virheitä laskennassa</h2>
-    <h2 ng-show="virheet.length > 0">Virheet:</h2>
-    <div ng-repeat="virhe in virheet" class="hakuVirheet" ng-click="showHakukohde(virhe)">
-        <h2>{{virhe.showValinnanvaihe ? '-' : '+'}} Hakukohde: {{ virhe.hakukohdeoid }} ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h2>
-        <div ng-repeat="vaihe in virhe.valinnanvaihe" ng-show="virhe.showValinnanvaihe" class="valinnanvaihe">
-            <h3>Vaihe: {{vaihe.valinnanvaiheoid}} ({{vaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h3>
+    <h2 ng-show="virheet.eiLaskentaVirheita">Ei virheitä laskennassa</h2>
+    <h2 ng-show="virheet.eiKoeVirheita">Ei virheitä valintakokeissa</h2>
+
+    <h2 ng-show="virheet.valintakoe.length > 0">Valintakoevirheet ({{virheet.valintakoe.length}})</h2>
+    <h3 ng-show="virheet.valintakoe.length > 50">Vain ensimmäiset 50 virhettä näytetään.</h3>
+    <div ng-repeat="virhe in virheet.valintakoe | limitTo:50" class="hakuVirheet" ng-click="show(virhe)">
+
+        <div>
+            <h2><a>{{virhe.show ? '-' : '+'}} {{virhe.sukunimi}}, {{virhe.etunimi}}  ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</a></h2>
+            <dl class="dl-horizontal"  ng-show="virhe.show" >
+                <dt>Hakemus oid</dt>
+                <dd>{{virhe.hakemusOid}}</dd>
+
+                <dt>Hakija oid</dt>
+                <dd>{{virhe.hakijaOid}}</dd>
+
+            </dl>
+        </div>
+        <div ng-show="virhe.show" ng-click="stopPropagination($event)">
+        <div >
+        <div >
+        <table class="virkailija-table-1">
+            <thead >
+                <tr>
+                    <th>Hakukohde</th>
+                    <th>Valinnanvaihe</th>
+                    <th>Järjestysluku</th>
+                    <th>Valintakoe</th>
+                    <th>Tunniste</th>
+                    <th>Osallistuminen</th>
+                    <th>Kuvaus</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="hakutoive in virhe.hakutoiveet" >
+                    <td>{{hakutoive.hakukohdeOid}}</td>
+                    <td ng-repeat-start="valinnanVaihe in hakutoive.valinnanVaiheet">{{valinnanVaihe.valinnanVaiheOid}}</td>
+                    <td>{{valinnanVaihe.valinnanVaiheJarjestysluku}}</td>
+                    <td ng-repeat-start="valintakoe in valinnanVaihe.valintakokeet">{{valintakoe.valintakoeOid}}</td>
+                    <td>{{valintakoe.valintakoeTunniste}}</td>
+                    <td>{{valintakoe.osallistuminenTulos.osallistuminen}}</td>
+                    <td ng-repeat-end>{{valintakoe.osallistuminenTulos.kuvaus}}</td>
+                    <td ng-hide="true" ng-repeat-end></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        </div>
+        </div>
+
+    </div>
+
+    <h2 ng-show="virheet.valintalaskenta.length > 0">Laskentavirheet ({{virheet.valintalaskenta.length}})</h2>
+    <div ng-repeat="virhe in virheet.valintalaskenta" class="hakuVirheet" ng-click="show(virhe)">
+        <h2>{{virhe.show ? '-' : '+'}} Hakukohde: {{ virhe.hakukohdeoid }} ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h2>
+        <div ng-repeat="vaihe in virhe.valinnanvaihe" ng-show="virhe.show" class="valinnanvaihe">
+            <h3></h3>Vaihe: {{vaihe.valinnanvaiheoid}} ({{vaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h3>
             <h3>Järjestyskriteeri: {{vaihe.jarjestysnumero}}</h3>
 
             <div ng-repeat="valintatapajono in vaihe.valintatapajono"  class="valintatapajono">
-                <h3>{{valintatapajono.nimi}}: {{valintatapajono.valintatapajonooid}}</h3>
+                <h3>{{valintatapajono.nimi}}: {{valintatapajono.valintatapajonooid}} ({{valintatapajono.jonosijat.length}})</h3>
 
-                <div ng-repeat="jonosijat in valintatapajono.jonosijat"  class="jonosija" ng-click="stopPropagination($event)">
+                <div ng-repeat="jonosijat in valintatapajono.jonosijat" class="jonosija" ng-click="stopPropagination($event)">
                     <div ng-click="jonosijat.lisatiedot =! jonosijat.lisatiedot">
                         <h3><a>{{jonosijat.sukunimi}}, {{jonosijat.etunimi}}</a></h3>
                         <dl class="dl-horizontal" ng-show="jonosijat.lisatiedot">

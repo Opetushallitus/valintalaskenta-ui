@@ -100,7 +100,7 @@ app.factory('HakukohdeValinnanvaihe', function($resource) {
 });
 
 app.factory('HakuVirheet', function($resource) {
- return $resource(SERVICE_URL_BASE + "resources/haku/:parentOid/virheet", {parentOid: "@parentOid"}, {
+ return $resource(SERVICE_URL_BASE + "resources/haku/:parentOid/:virhetyyppi", {parentOid: "@parentOid", virhetyyppi: "@virhetyyppi"}, {
      get: {method: "GET", isArray: true }
    });
 });

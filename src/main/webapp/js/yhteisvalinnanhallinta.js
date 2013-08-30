@@ -1,9 +1,41 @@
-﻿
+﻿app.factory('VirheModel', function (HakuVirheet) {
 
-function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi, HakuModel, AktivoiHaunValintalaskenta, ParametriService, HakuVirheet, AktivoiHaunValintakoelaskenta) {
+    var factory = (function() {
+        var instance = {};
+        instance.valintalaskenta = [];
+        instance.valintakoe = [];
+
+        instance.refresh = function(oid) {
+
+            HakuVirheet.get({parentOid: oid, virhetyyppi: 'virheet'}, function(result) {
+                if(result.length > 0) {
+                    instance.valintalaskenta = result;
+                } else {
+                    instance.eiLaskentaVirheita = true;
+                }
+            });
+
+            HakuVirheet.get({parentOid: oid, virhetyyppi: 'valintakoevirheet'}, function(result) {
+                if(result.length > 0) {
+                    instance.valintakoe = result;
+                } else {
+                    instance.eiKoeVirheita = true;
+                }
+            });
+        }
+
+        return instance;
+    })();
+
+    return factory;
+
+});
+
+function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
 	$scope.hakumodel = HakuModel;
+	$scope.virheet = VirheModel;
 
     $scope.kaynnistaSijoittelu = function() {
         var hakuoid = $routeParams.hakuOid;
@@ -23,20 +55,12 @@ function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoi
        });
     }
 
-
-
-    $scope.showErros = function() {
-        HakuVirheet.get({parentOid: $routeParams.hakuOid}, function(result) {
-            if(result.length > 0) {
-                $scope.virheet = result;
-            } else {
-                $scope.eiVirheita = true;
-            }
-        });
+    $scope.showErrors = function() {
+        VirheModel.refresh($routeParams.hakuOid);
     }
 
-    $scope.showHakukohde = function(virhe) {
-        virhe.showValinnanvaihe =! virhe.showValinnanvaihe;
+    $scope.show = function(virhe) {
+        virhe.show =! virhe.show;
     }
 
     $scope.stopPropagination = function($event) {
