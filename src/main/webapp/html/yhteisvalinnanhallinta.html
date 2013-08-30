@@ -18,15 +18,15 @@
         <a ng-show="privileges.valintalaskenta" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
     </p>
     <p>
-        <a ng-show="privileges.valintalaskenta" ng-click="showErrors()" class="button small">Näytä virheet</a>
+        <a ng-show="privileges.valintalaskenta" ng-click="showErrors()" class="button small">Hae virheet</a>
     </p>
 
     <div>
     <div class="tabs">
-        <a class="tab" ng-show="virheet.valintakoe.length > 0" ng-class="!valintalaskentavirheet ? 'current' : ''" ng-click="valintalaskentavirheet = false">
+        <a class="tab" ng-class="!valintalaskentavirheet ? 'current' : ''" ng-click="valintalaskentavirheet = false">
             <span>Valintakoevirheet</span>
         </a>
-        <a class="tab" ng-show="virheet.valintalaskenta.length > 0" ng-class="valintalaskentavirheet ? 'current' : ''" ng-click="valintalaskentavirheet = true">
+        <a class="tab" ng-class="valintalaskentavirheet ? 'current' : ''" ng-click="valintalaskentavirheet = true">
             <span>Valintalaskentavirheet</span>
         </a>
     </div>
