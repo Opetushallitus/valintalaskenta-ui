@@ -69,14 +69,12 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
              valintatulos.showTilaPartial = false;
          }
     };
-
-    $scope.showHenkiloPartial = function(valintatulos, that, event) {
+    $scope.showHenkiloPartial = function(valintatulos) {
         if(valintatulos.showHenkiloPartial == null || valintatulos.showHenkiloPartial == false) {
             valintatulos.showHenkiloPartial = true;
         } else {
             valintatulos.showHenkiloPartial = false;
         }
-        $scope.$broadcast(that.$id, event);
     };
 
     $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos, that, event) {
