@@ -36,6 +36,7 @@ function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoi
 
 	$scope.hakumodel = HakuModel;
 	$scope.virheet = VirheModel;
+	$scope.naytaKokeita = 50;
 
     $scope.kaynnistaSijoittelu = function() {
         var hakuoid = $routeParams.hakuOid;
