@@ -32,11 +32,7 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
     		var notLastPage = startIndex < lastTotalCount;
     		if(notLastPage || restart) {
 				var self = this;
-				//
-				// final 'solrified'-seachword 
-				//
-				var solrSearch = this.searchWord + "*"
-	        	TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms: solrSearch}, function(result) {
+	        	TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms: this.searchWord}, function(result) {
 
 	        		if(restart) { // eka sivu
 	        			self.hakukohteet = result.tulokset;
