@@ -34,7 +34,7 @@
 */
 
 
-
+table.virkailija-table-1 td.leftorientedcolumn {text-align: left;}
 
 .hakuVirheet .valintakoe:nth-child(odd), .hakuVirheet .jonosija:nth-child(odd) {background: #F0fafF;}
 .hakuVirheet .valintakoe:nth-child(even), .hakuVirheet .jonosija:nth-child(even) {}

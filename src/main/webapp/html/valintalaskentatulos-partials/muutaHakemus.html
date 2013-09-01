@@ -2,16 +2,21 @@
 <div class="modal" ng-show="hakemus.showMuutaHakemus">
     <br>
     <dl class="dl-horizontal">
-        <dt>Hakijaoid</dt>
+        <dt>Oppijanumero</dt>
         <dd>{{hakemus.hakijaOid}}</dd>
 
-        <dt>Tila</dt>
+        <dt>Hakemuksen tunniste</dt>
+        <dd>{{hakemus.hakemusOid}}</dd>
+
+        <dt>Vastaanottotieto</dt>
         <dd>
             <select ng-model="hakemus.muokattuTila">
-                <option value="ILMOITETTU">ILMOITETTU</option>
-                <option value="VASTAANOTTANUT_LASNA">VASTAANOTTANUT_LASNA</option>
-                <option value="VASTAANOTTANUT_POISSAOLEVA">VASTAANOTTANUT_POISSAOLEVA</option>
-                <option value="PERUNUT">PERUNUT</option>
+                <option value="">Kesken</option>
+                <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
+                <option value="VASTAANOTTANUT_LASNA">Vastaanottanut läsnäolevana</option>
+                <option value="VASTAANOTTANUT_POISSAOLEVA">Vastaanottanut poissaolevana</option>
+                <option value="EI_VASTAANOTETTU_MAARA_AIKANA">Ei vastaanotettu määräaikana</option>
+                <option value="PERUNUT">Perunut</option>
             </select>
         </dd>
 
@@ -25,4 +30,9 @@
         <a ng-click="updateHakemuksenTila(hakemus, jono.oid)" class="button small primary">Tallenna</a>
         </dd>
     </dl>
+    <!--
+    <div>
+        {{hakemus}}
+    </div>
+   -->
 </div>

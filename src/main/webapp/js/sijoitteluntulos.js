@@ -7,8 +7,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 		this.sijoittelu = {};
 		this.latestSijoitteluajo = {};
 		this.sijoitteluTulokset = {};
-		this.hakemuksenTilat = ["ILMOITETTU", "VASTAANOTTANUT_LASNA", "VASTAANOTTANUT_POISSAOLEVA", "PERUNUT"];
-        this.errors = [];
+	    this.errors = [];
 
         this.refresh = function(hakuOid, hakukohdeOid) {
             model.errors.length = 0;
@@ -63,8 +62,10 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
             HakemuksenTila.get(tilaParams, function(result) {
                 if(!result.tila) {
                     hakemus.hakemuksentila = "";
+                    hakemus.muokattuTila ="";
                 } else {
                     hakemus.hakemuksentila = result.tila;
+                    hakemus.muokattuTila =   result.tila;
                 }
             }, function(error) {
                 model.errors.push(error);
@@ -77,6 +78,19 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 				model.refresh(hakuOid, hakukohdeOid);
 			}
 		};
+
+        this.updateHakemuksienTila = function(valintatapajonoOid){
+            for(var j = 0 ; j < model.sijoitteluTulokset.valintatapajonot.length ; ++j) {
+                if(model.sijoitteluTulokset.valintatapajonot[j].oid  === valintatapajonoOid) {
+                    for(var k = 0 ; k < model.sijoitteluTulokset.valintatapajonot[j].hakemukset.length ; ++k ){
+                        var hakemus = model.sijoitteluTulokset.valintatapajonot[j].hakemukset[k];
+                        if(hakemus.hakemuksentila != hakemus.muokattuTila) {
+                            model.updateHakemuksenTila(hakemus.muokattuTila, valintatapajonoOid, hakemus.hakemusOid, "Massamuokkaus");
+                        }
+                    }
+                }
+            }
+        };
 
         this.updateHakemuksenTila = function(newtila, valintatapajonoOid, hakemusOid, selite) {
             var tilaParams = {
@@ -116,6 +130,12 @@ function SijoitteluntulosController($scope, $routeParams, $window, $http, Hakuko
         $scope.model.updateHakemuksenTila(hakemus.muokattuTila, valintatapajonoOid, hakemus.hakemusOid, hakemus.selite);
         hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
     }
+
+    $scope.submit = function(valintatapajonoOid) {
+        console.log("submit");
+        $scope.model.updateHakemuksienTila(valintatapajonoOid);
+    }
+
     
     $scope.addressLabelPDF = function() {
     	var json = {"addressLabels":[{"firstName":"Etunimi","lastName":"Sukunimi","addressline":"Osoiterivi1","addressline2":"Osoiterivi2","addressline3":"Osoiterivi3","postalCode":"00500","city":"Helsinki","region":"Kallio","country":"Suomi","countryCode":"FI"}]};
