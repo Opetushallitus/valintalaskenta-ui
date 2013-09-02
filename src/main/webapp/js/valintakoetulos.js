@@ -78,7 +78,7 @@
 });
 
 
-function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Osoitetarrat) {
+function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Osoitetarrat,ValintakoeXls) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -89,13 +89,16 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 
     $scope.model.refresh($scope.hakukohdeOid);
 
-    $scope.nakymanTila = "Hakijoittain";
+    $scope.nakymanTila = "Hakijoittain"; // Hakijoittain
 
 
     $scope.predicate = 'hakijaOid';
 
-    $scope.valintakoeTulosXLS = function(valintakoeOid) {
+    /*$scope.valintakoeTulosXLS = function(valintakoeOid) {
     	$window.location.href = SERVICE_EXCEL_URL_BASE + "export/valintakoetulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid + "&valintakoeOid=" + valintakoeOid;
+    }*/
+    $scope.valintakoeTulosXLS = function(valintakoeOid) {
+    	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:valintakoeOid});
     }
     $scope.allAddressLabelPDF = function() {
     	var kokeet = [];

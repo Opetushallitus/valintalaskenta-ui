@@ -165,7 +165,16 @@ app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
   })
 });
 
-
+app.factory('ValintakoeXls', function($window) {
+	return {
+		query: function(data) {
+			// {hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet}
+			console.log('gettin ' + data.hakukohdeOid);
+			console.log('gettin ' + data.valintakoeOid);
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentatulos/excel/aktivoi?hakukohdeOid="+data.hakukohdeOid+"&valintakoeOid="+data.valintakoeOid;
+		}
+	};
+});
 app.factory('Osoitetarrat', function($resource,$window) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/addressLabelBatch/aktivoi", {}, {
 		query:  {method:'GET', isArray:false}

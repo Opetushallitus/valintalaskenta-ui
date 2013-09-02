@@ -75,11 +75,11 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
         };
 
         this.refreshIfNeeded = function() {
-        	var hakuOid = $routeParams.hakuOid;
+        	/*var hakuOid = $routeParams.hakuOid;
             if( (hakuOid) && (hakuOid !== "undefined") && (hakuOid != model.hakuOid) ) {
                 model.searchWord = "";
                 model.refresh(hakuOid);
-            }
+            }*/
         };
 
         this.blender = function(filter){
@@ -106,7 +106,7 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
 	   
 	   $scope.subpage = $location.path().split('/')[5] || 'perustiedot';
 	   $scope.model = HakukohteetModel;
-	   $scope.model.refreshIfNeeded();
+	   $scope.model.refresh();
 
 	   $scope.toggleHakukohteetVisible = function() {
 	      $scope.hakukohteetVisible = !$scope.hakukohteetVisible;
