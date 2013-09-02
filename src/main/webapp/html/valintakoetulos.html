@@ -33,6 +33,7 @@
             </div>
 
             <div ng-show="nakymanTila == 'Hakijoittain'">
+            	<a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
             	<a ng-click="allAddressLabelPDF(); $event.stopPropagation()" class="button small pdf">Lataa osoitetarrat</a>
                 <table class="virkailija-table-1">
                     <thead>

@@ -168,10 +168,13 @@ app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
 app.factory('ValintakoeXls', function($window) {
 	return {
 		query: function(data) {
-			// {hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet}
-			console.log('gettin ' + data.hakukohdeOid);
-			console.log('gettin ' + data.valintakoeOid);
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentatulos/excel/aktivoi?hakukohdeOid="+data.hakukohdeOid+"&valintakoeOid="+data.valintakoeOid;
+			// {hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:[kokeet]}
+			var postfix = "";
+			data.valintakoeOid.forEach(function(oid) {
+				postfix = postfix + "&valintakoeOid=" + oid;
+				
+			});
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentatulos/excel/aktivoi?hakukohdeOid="+ data.hakukohdeOid + postfix;
 		}
 	};
 });
