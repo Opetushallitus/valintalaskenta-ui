@@ -160,7 +160,7 @@ app.factory('AktivoiHaunValintalaskenta', function($resource) {
   })
 });
 app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
-  return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHaunValintakoelaskenta", {}, {
+  return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/haunvalintakoelaskenta/aktivoiHaunValintakoelaskenta", {}, {
       aktivoi: {method: "GET"}
   })
 });
