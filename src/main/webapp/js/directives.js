@@ -107,50 +107,58 @@ app.directive('lazyLoading', function () {
         }
     };
 });
-app.directive('modal', function($animate, $rootScope) {
+
+app.directive('centralize', function() {
     return {
-        restrict: "E",
-        scope: false,
+        restrict: 'A',
         link: function($scope, element, attrs) {
-            //console.log(element);
-            var visible = false;
+            var elemWidth = element.context.offsetHeight;
+            var elemHeight = element.context.offsetWidth;
+
+            $scope.$on('centralizeElement', function() {
+                var top = Math.max(0, (($(window).height() - elemHeight) / 2) + $(window).scrollTop());
+                var left = Math.max(0, (($(window).width() - elemWidth) / 2) + $(window).scrollLeft());
+                $(element).css({
+                    margin:0, 
+                    top: (top > 0 ? top : 0)+'px', 
+                    left: (left > 0 ? left : 0)+'px'
+                });
+            });
+            
+        }
+    }
+});
+
+/*
+app.directive('modal', function($rootScope) {
+    return {
+        restrict: "C",
+        link: function($scope, element, attrs) {
+            console.log(element);
+
             //hide all modal-elements initially
-            $animate.addClass(element, 'ng-hide');
+            element.addClass("hidden");
 
             //hide all modal-dialogs when closeModals broadcasted
             $rootScope.$on('closeModals', function() {
-                $animate.addClass(element.next(), 'ng-hide');
-                visible = !visible;
+                $(element).addClass("hidden");
             });
 
             $scope.$on($scope.$id, function(event, param) {
-                //var elem = angular.element(param.srcElement).next();
+
                 //close all modal before open new
                 $rootScope.$broadcast('closeModals');
-
-                //var hasClass = angular.element(param.srcElement).next().hasClass('ng-hide');  
-                if (!visible) {
-                    $animate.removeClass(angular.element(param.srcElement).next(), 'ng-hide');
-                    visible = true;
-                } else {
-                    $animate.addClass(angular.element(param.srcElement).next(), 'ng-hide');
-                    visible = false;
-                }
-
-                //console.log($window);
-                /*
-                var top = ($window.outerHeight - $(element).outerHeight()) / 2;
-                var left = ($window.outerWidth - $(element).outerWidth()) / 2;
+                $(angular.element(param.srcElement).next()).toggleClass("hidden");        
                 
+                var top = ($(window).height() - $(element).outerHeight()) / 2;
+                var left = ($(window).width() - $(element).outerWidth()) / 2;
+                $(element).css({margin:0, top: (top > 0 ? top : 0)+'px', left: (left > 0 ? left : 0)+'px'});  
                 
-                $animate.css(element, {margin:0, top: (top > 0 ? top : 0)+'px', left: (left > 0 ? left : 0)+'px'});  
-                */
             });
         },
         controller: function($scope, $element) {
             this.closeModal = function() {
-                $animate.removeClass(element, 'ng-hide');
-
+                $element.toggleClass("hidden");
             }
         }
     }
@@ -159,7 +167,7 @@ app.directive('modal', function($animate, $rootScope) {
 app.directive('close', function() {
     return {
         restrict: "A",
-        require: "modal",
+        require: "^modal",
         link: function(scope, element, attrs, ctrl) {
             $(element).on('click', function() {
                 ctrl.closeModal();
@@ -167,6 +175,7 @@ app.directive('close', function() {
         }
     }
 });
+*/
 
 app.directive('auth', function($animate, AuthService, HakukohdeModel) {
     return {
