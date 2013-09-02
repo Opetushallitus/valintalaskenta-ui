@@ -96,7 +96,12 @@
                                 <!--
                                     <td><input type="checkbox" ng-model="hakemus.harkinnanvarainen" disabled /></td>
                                 -->
-                                <td>{{hakemus.tila}}</td>
+                                <td>
+                                    <span>{{hakemus.tila}}</span>
+                                    <span ng-if="hakemus.hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>
+                                </td>
+
+
                                 <td class="leftorientedcolumn">
                                     <div ng-show="((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))">
                                         <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == ''">
@@ -114,7 +119,7 @@
                                                 <option value="PERUNUT">Perunut</option>
                                             </select>
                                         </span>
-                                        <span ng-if="!(hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == 'ILMOITETTU') || !(hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == '')">
+                                        <span ng-if="!(hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == 'ILMOITETTU') && !(hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == '')">
                                             <span ng-if="hakemus.hakemuksentila == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
                                             <span ng-if="hakemus.hakemuksentila == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
                                             <span ng-if="hakemus.hakemuksentila == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
@@ -132,7 +137,6 @@
                     </table>
                     <a ng-click="submit(jono.oid)" class="button small primary margin-top-2" >Tallenna</a>
                 </div>
-
             </div>
 		</div>
 	</div>

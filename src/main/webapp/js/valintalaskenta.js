@@ -227,7 +227,7 @@ app.factory('Henkilot', function($resource) {
 
   //Sijoittelu
  app.factory('HakemuksenTila', function($resource) {
-     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakuoid/:hakukohdeOid/:valintatapajonoOid/:hakemusOid?selite=:selite",
+     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid?selite=:selite",
          {
              hakuoid: "@hakuoid",
              hakukohdeOid: "@hakukohdeoid",
@@ -265,7 +265,7 @@ app.factory('Sijoitteluajo', function($resource) {
 });
 
 app.factory('SijoitteluajoHakukohde', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoitteluajo/:sijoitteluajoOid/:hakukohdeOid", {sijoitteluajoOid: "@sijoitteluajoOid", hakukohdeOid: "@hakukohdeOid"}, {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoitteluajo/:sijoitteluajoOid/hakukohde/:hakukohdeOid", {sijoitteluajoOid: "@sijoitteluajoOid", hakukohdeOid: "@hakukohdeOid"}, {
         get: {method: "GET"}
     });
 });
