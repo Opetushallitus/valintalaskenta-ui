@@ -98,13 +98,14 @@
                                 -->
                                 <td>{{hakemus.tila}}</td>
                                 <td class="leftorientedcolumn">
-                                    <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == ''">
+                                    <div ng-show="((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))">
+                                        <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == ''">
                                           <select ng-model="hakemus.muokattuTila">
                                               <option value="">Kesken</option>
                                               <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
                                           </select>
-                                       </span>
-                                       <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == 'ILMOITETTU'">
+                                        </span>
+                                        <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == 'ILMOITETTU'">
                                             <select ng-model="hakemus.muokattuTila">
                                                 <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
                                                 <option value="VASTAANOTTANUT_LASNA">Vastaanottanut läsnäolevana</option>
@@ -112,17 +113,18 @@
                                                 <option value="EI_VASTAANOTETTU_MAARA_AIKANA">Ei vastaanotettu määräaikana</option>
                                                 <option value="PERUNUT">Perunut</option>
                                             </select>
-                                       </span>
-                                       <span ng-if="!(hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == 'ILMOITETTU') || !(hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == '')">
+                                        </span>
+                                        <span ng-if="!(hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == 'ILMOITETTU') || !(hakemus.tila == 'HYVAKSYTTY' && hakemus.hakemuksentila == '')">
                                             <span ng-if="hakemus.hakemuksentila == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
                                             <span ng-if="hakemus.hakemuksentila == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
                                             <span ng-if="hakemus.hakemuksentila == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
                                             <span ng-if="hakemus.hakemuksentila == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
                                             <span ng-if="hakemus.hakemuksentila == 'PERUNUT'">Perunut</span>
-                                       </span>
+                                        </span>
+                                    </div>
                                 </td>
                                 <td>
-                                    <a ng-disabled="!((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))" ng-click="showMuutaHakemus(hakemus)" class="button small">Tila</a>
+                                    <a ng-disabled="!(updateOph)" ng-click="showMuutaHakemus(hakemus)" class="button small">Tila</a>
                                     <div ng-include="'valintalaskentatulos-partials/muutaHakemus.html'"/>
                                 </td>
                             </tr>

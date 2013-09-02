@@ -164,13 +164,15 @@ function SijoitteluntulosController($scope, $routeParams, $window, $http, Hakuko
         }
     }
 
+    $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function() {
+        console.log('joo: ' + HakukohdeModel.hakukohde.tarjoajaOid);
+        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function(){
+            $scope.updateOrg = true;
+        });
 
-    AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function(){
-        $scope.updateOrg = true;
-    });
-
-    AuthService.updateOph("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function(){
-        $scope.updateOph = true;
+        AuthService.updateOph("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function(){
+            $scope.updateOph = true;
+        });
     });
 
     $scope.showSijoitteluPartial = function(hakemus) {
