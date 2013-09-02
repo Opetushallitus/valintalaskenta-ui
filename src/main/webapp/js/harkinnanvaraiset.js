@@ -16,7 +16,6 @@
                     Hakemus.get({oid: hakija.applicationOid}, function(result) {
                      hakija.hakemus=result;
 
-                   // console.log("========= Hakukohdeoid:" +model.hakukohdeOid );
                     for(var i =0; i<10; i++) {
                         var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
                       //  console.log("Hakutoive[" + i +"] " + oid);
@@ -25,7 +24,6 @@
                             hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
                         }
                     }
-                    //console.log("=========");
                     });
                 });
             }, function(error) {
@@ -49,61 +47,6 @@
             }
         }
 
-
-           /*
-        this.submit = function() {
-        	function tallenna(hakija, avain, value) {
-
-        	};
-
-            model.hakeneet.forEach( function(hakija) {
-                model.avaimet.forEach( function(avain) {
-                	var min = parseInt(avain.min);
-                	var max = parseInt(avain.max);
-                	var value = hakija.additionalData[avain.tunniste];
-                	var valueInt = parseInt(value);
-                	var tallenna = false;
-                	if(!isNaN(min) && !isNaN(max)) {
-                		// arvovali on kaytossa
-                		if(isNaN(valueInt)) {
-                			// tallenna jos null?
-                			if(!value) {
-                				value = "";
-                				tallenna = true;
-                				//hakija.errorField[avain.tunniste] = "";
-                			} else {
-                				// virhe roskaa
-                				//hakija.errorField[avain.tunniste] = "Arvo on virheellinen!";
-                			}
-                		} else if(min <= valueInt && max >= valueInt) {
-                			tallenna = true;
-                			//hakija.errorField[avain.tunniste] = "";
-                		} else {
-                			// virhe ei alueella
-                			//hakija.errorField[avain.tunniste] = "Arvo ei ole arvoalueella!";
-                		}
-
-                	} else {
-                		// ei arvovalia. tallennetaan mita vaan?
-                		tallenna = true;
-                		//hakija.errorField[avain.tunniste] = "";
-                	}
-
-                	if(tallenna && hakija.originalData[avain.tunniste] !== value) {
-                		HakemusKey.put({
-                            "oid": hakija.applicationOid,
-                            "key": avain.tunniste,
-                            "value": value
-                            }
-                        , function(){
-                        	hakija.originalData[avain.tunniste] = value;
-                        });
-        			}
-
-                });
-            });
-        };
-         */
 	};
 
 	return model;
