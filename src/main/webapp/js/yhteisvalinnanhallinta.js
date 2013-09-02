@@ -72,5 +72,9 @@ function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoi
         $location.path('/haku/' + $routeParams.hakuOid + '/henkiloittain/' + hakemusOid + '/henkilotiedot');
     }
 
+    $scope.hakukohdenakyma = function(hakukohdeOid) {
+        $location.path('/haku/' + $routeParams.hakuOid + '/hakukohde/' + hakukohdeOid + '/pistesyotto');
+    }
+
     $scope.privileges = ParametriService;
 }

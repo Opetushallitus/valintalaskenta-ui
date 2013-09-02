@@ -1,6 +1,6 @@
 
-
     
+    <div class="tilaParial" ng-show="tulos.showJarjestyskriteerit">
         <dl class="dl-horizontal">
             <dt>Nimi</dt>
             <dd><span class="sukunimi">{{tulos.sukunimi}}</span>,<span class="etunimi">{{tulos.etunimi}}</span></dd>
@@ -30,12 +30,12 @@
             <dt></dt>
             <dd>
             
-            <!--
-            <a ng-click="showMuutaJarjestyskriteerinArvo(tulos, this)" class="button small">Peruuta</a>
-        -->
+            
+            <a ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="button small">Peruuta</a>
+        
             <a ng-click="muutaJarjestyskriteerinArvo(tulos, valintatapajono.valintatapajonooid)" class="button small primary">Tallenna</a>
             </dd>
         </dl>
-        
+    </div>
   
     
