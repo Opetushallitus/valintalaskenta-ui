@@ -77,7 +77,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
         }
     };
 
-    $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos, that, event) {
+    $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos) {
         valintatulos.prioriteetit = [];
         for(i in valintatulos.jarjestyskriteerit) {
             if(i == 0) {
@@ -91,7 +91,11 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
             }
         }  
 
-        $scope.$broadcast(that.$id, event);
+        if(valintatulos.showJarjestyskriteerit == null || valintatulos.showJarjestyskriteerit == false) {
+            valintatulos.showJarjestyskriteerit = true;
+        } else {
+            valintatulos.showJarjestyskriteerit = false;
+        }
         valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
 
     }
