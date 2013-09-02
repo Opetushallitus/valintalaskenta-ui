@@ -98,6 +98,8 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
         }
         valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
 
+        $scope.$broadcast('centralizeElement');
+
     }
 
 }

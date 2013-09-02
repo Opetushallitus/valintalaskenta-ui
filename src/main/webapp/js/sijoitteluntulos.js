@@ -117,7 +117,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 });
 
 
-function SijoitteluntulosController($scope, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel, Hyvaksymiskirjeet, Jalkiohjauskirjeet, Osoitetarrat, AuthService) {
+function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel, Hyvaksymiskirjeet, Jalkiohjauskirjeet, Osoitetarrat, AuthService) {
    $scope.hakuOid =  $routeParams.hakuOid;;
    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
@@ -162,6 +162,7 @@ function SijoitteluntulosController($scope, $routeParams, $window, $http, Hakuko
             hakemus.muokattuTila = "ILMOITETTU";
             hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
         }
+        $scope.$broadcast('centralizeElement');
     }
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function() {

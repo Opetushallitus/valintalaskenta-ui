@@ -112,14 +112,23 @@ app.directive('centralize', function() {
     return {
         restrict: 'A',
         link: function($scope, element, attrs) {
+            var elemWidth = element.context.offsetHeight;
+            var elemHeight = element.context.offsetWidth;
 
-            var top = Math.max(0, (($(window).height() - $(element).outerHeight()) / 2) + $(window).scrollTop());
-            var left = Math.max(0, (($(window).width() - $(element).outerWidth()) / 2) + $(window).scrollLeft());
-            $(element).css({margin:0, top: (top > 0 ? top : 0)+'px', left: (left > 0 ? left : 0)+'px'});
+            $scope.$on('centralizeElement', function() {
+                var top = Math.max(0, (($(window).height() - elemHeight) / 2) + $(window).scrollTop());
+                var left = Math.max(0, (($(window).width() - elemWidth) / 2) + $(window).scrollLeft());
+                $(element).css({
+                    margin:0, 
+                    top: (top > 0 ? top : 0)+'px', 
+                    left: (left > 0 ? left : 0)+'px'
+                });
+            });
             
         }
     }
 });
+
 /*
 app.directive('modal', function($rootScope) {
     return {
