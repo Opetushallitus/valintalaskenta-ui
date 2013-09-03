@@ -97,8 +97,15 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     /*$scope.valintakoeTulosXLS = function(valintakoeOid) {
     	$window.location.href = SERVICE_EXCEL_URL_BASE + "export/valintakoetulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid + "&valintakoeOid=" + valintakoeOid;
     }*/
+    $scope.allValintakoeTulosXLS = function() {
+    	var kokeet = [];
+    	for (var key in $scope.model.valintakokeet) {
+    	    kokeet.push(key);
+    	}
+    	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet});
+    } 
     $scope.valintakoeTulosXLS = function(valintakoeOid) {
-    	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:valintakoeOid});
+    	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:[valintakoeOid]});
     }
     $scope.allAddressLabelPDF = function() {
     	var kokeet = [];
