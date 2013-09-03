@@ -1,4 +1,7 @@
-<div class="tabs hakukohdeNav" ng-controller="navigationController">
+
+
+<!-- Tabivalikko normaalin haun hakukohteille -->
+<div ng-show="!hakuModel.lisahaku" class="tabs hakukohdeNav" ng-controller="navigationController">
 
     <a  ng-class="navClass('perustiedot', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/perustiedot" class="tab">
     	<span>Hakukohteen perustiedot</span>
@@ -30,6 +33,25 @@
 
     <a ng-show="displaytab.valinnanhallinta" auth="read" auth-service="APP_SIJOITTELU" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('sijoitteluntulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/sijoitteluntulos" class="tab">
     	<span>Sijoittelun tulokset</span>
+    </a>
+
+</div>
+
+
+
+<!-- Tabivalikko lisähaun hakukohteille -->
+<div ng-show="hakuModel.lisahaku" class="tabs hakukohdeNav" ng-controller="navigationController">
+    
+    <a  ng-class="navClass('perustiedot', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/perustiedot" class="tab">
+        <span>Hakukohteen perustiedot</span>
+    </a>
+
+    <a ng-show="displaytab.hakeneet" auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hakeneet', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet" class="tab">
+        <span>Hakeneet</span>
+    </a>
+
+    <a ng-show="displaytab.harkinnanvaraiset" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
+        <span>Harkinnanvaraiset</span>
     </a>
 
 </div>
