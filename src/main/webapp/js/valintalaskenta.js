@@ -179,7 +179,7 @@ app.factory('ValintakoeXls', function($window) {
 	};
 });
 app.factory('Osoitetarrat', function($resource,$window) {
-	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/addressLabelBatch/aktivoi", {}, {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/aktivoi", {}, {
 		query:  {method:'GET', isArray:false}
 	});
 });
