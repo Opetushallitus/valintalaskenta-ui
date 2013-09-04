@@ -25,6 +25,7 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
             
             if(model.isHakukohdeChanged(hakukohdeOid) && (hakukohdeOid !== undefined)) {
                 model.refresh(hakukohdeOid);
+                console.log(model);
             }
         }
 
@@ -50,5 +51,6 @@ function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, Ha
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
     
-    $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);    
+    $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+    
 }
