@@ -7,6 +7,7 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 		this.pageSize = 15;
 		this.searchWord = "";
 		this.lastSearch = null;
+		this.lastHakuOid = null;
 		this.filterToggle = false;
 		
 		this.getCount = function() {
@@ -68,8 +69,9 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
         
         this.refresh = function() {
         	var word = $.trim(this.searchWord);
-        	if(this.lastSearch !== word) {
+        	if(this.lastSearch !== word || this.lastHakuOid !== $routeParams.hakuOid) {
         		this.lastSearch = word;
+        		this.lastHakuOid = $routeParams.hakuOid;
         		this.getNextPage(true);
         	}
         };
