@@ -258,6 +258,18 @@ app.factory('Sijoittelu', function($resource) {
     });
 });
 
+app.factory('SijoittelunVastaanottotilat', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/", {hakemusOid: "@hakemusOid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
+
+app.factory('SijoittelunTilat', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoitteluajo/:sijoitteluajoOid/hakemus/:hakemusOid", {sijoitteluajoOid: "@sijoitteluajoOid", hakemusOid: "@hakemusOid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
+
 app.factory('SijoitteluajoLatest', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo?latest=true", {hakuOid: "@hakuOid"}, {
         get: {method: "GET", isArray: true}
