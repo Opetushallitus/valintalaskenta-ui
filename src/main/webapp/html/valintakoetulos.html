@@ -24,7 +24,11 @@
                         <option value="Hakijoittain">Hakijoittain</option>
                         <option value="Kokeittain">Kokeittain</option>
                     </select>
-                </div>
+
+                     <input id="osallistuu" type="checkbox" ng-model="model.filter" ng-true-value="OSALLISTUU" ng-false-value=""/>
+                     <label for="osallistuu">Vain kutsuttavat</label>
+                    <br/>
+                 </div>
                  <!--
                  <div>
                     <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
@@ -33,8 +37,10 @@
             </div>
 
             <div ng-show="nakymanTila == 'Hakijoittain'">
+                <h2>Hakijoittain</h2>
             	<a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
             	<a ng-click="allAddressLabelPDF(); $event.stopPropagation()" class="button small pdf">Lataa osoitetarrat</a>
+
                 <table class="virkailija-table-1">
                     <thead>
                         <tr>
@@ -46,8 +52,10 @@
                             <th ng-repeat="koetyyppi in model.koetyypit">{{koetyyppi}}</th>
                         </tr>
                     </thead>
-                    <tr ng-repeat="hakemus in model.valintakokeetHakijoittain">
+
+                    <tr ng-repeat="hakemus in (model.valintakokeetHakijoittainArray | filter:model.filter)">
                         <td>
+
                             <span title="Sukunimi">{{hakemus.sukunimi}}</span>,
                             <span title="Etunimi">{{hakemus.etunimi}}</span>
                         </td>
@@ -57,7 +65,10 @@
                             </a>
                         </td>
                         <td ng-repeat="koetyyppi in model.koetyypit">
-                            {{hakemus.kokeet[koetyyppi].osallistuminen}}
+                            <div ng-switch="hakemus.kokeet[koetyyppi].osallistuminen">
+                                <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
+                                <span ng-switch-default></span>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -65,7 +76,8 @@
 
             <div ng-show="nakymanTila == 'Kokeittain'">
                 <div ng-repeat="valintakoe in model.valintakokeet" class="margin-vertical-2">
-                    <h2>{{valintakoe.valintakoeTunniste}}</h2>
+                    <h2>{{valintakoe.valintakoeTunniste}} - {{valintakoe.valinnanVaihe}}</h2>
+
                     <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
                     <a ng-click="addressLabelPDF(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small pdf">Lataa osoitetarrat</a>
                     <table class="virkailija-table-1">
@@ -78,8 +90,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse">
+                        <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter">
                             <td>
+
                                 <span title="Sukunimi">{{koe.sukunimi}}</span>,
                                 <span title="Etunimi">{{koe.etunimi}}</span>
                             </td>
@@ -88,7 +101,12 @@
                                     {{koe.hakemusOid}}
                                 </a>
                             </td>
-                            <td>{{koe.osallistuminen}}</td>
+                            <td>
+                                <div ng-switch="koe.osallistuminen">
+                                    <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
+                                    <span ng-switch-default></span>
+                                </div>
+                            </td>
                             <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
                         </tr>
 
