@@ -45,7 +45,11 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHak
                         }
                     }
 
-                });
+                }, function(error) {
+                     model.errors.push(error);
+                 });
+
+
 
             /*
             SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {

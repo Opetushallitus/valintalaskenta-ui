@@ -37,7 +37,7 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 				}
 				
 				//fetch sijoittelun tilat and extend hakutoiveet
-                   LatestSijoittelunTilat.get({sijoitteluajoOid: latestSijoitteluAjoId, hakemusOid: model.hakemus.oid, hakuOid: hakuOid}, function(result) {
+                   LatestSijoittelunTilat.get({hakemusOid: model.hakemus.oid, hakuOid: hakuOid}, function(result) {
                    		extendHakutoiveetWithSijoitteluTila(result);
                     }, function(error) {
                         model.errors.push(error);
