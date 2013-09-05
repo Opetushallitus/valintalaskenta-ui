@@ -68,7 +68,7 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 					model.errors.push(error)
 				});
 
-				/*
+				
 				//Extend hakutoiveet with tulos 
 				ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function(result) {
 					model.valintalaskentaHakemus = result;
@@ -92,7 +92,7 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 				}, function(error) {
 					model.errors.push(error);
 				});
-	*/
+	
 				
 			}, function(error) {
 				model.errors.push(error);
