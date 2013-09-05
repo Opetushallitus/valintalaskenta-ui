@@ -54,14 +54,6 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 	    					}
 	    				}
 	        		}
-	        		result.tulokset.forEach(function(hakukohdeObject, index) {
-	                    /*HakukohdeNimi.get({hakukohdeoid: element.oid}, function(hakukohdeObject) {
-	                      //model.hakukohteet.push(hakukohdeObject);
-	                    });*/
-	                    AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINEN", hakukohdeObject.tarjoajaOid).then(function() {
-	                          model.filtered.push(hakukohdeObject);
-	                    });
-	                });
 	                
 	            });
 			}
@@ -83,14 +75,6 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
                 model.refresh(hakuOid);
             }*/
         };
-
-        this.blender = function(filter){
-            if(filter) {
-                return model.filtered;
-            } else {
-                return model.hakukohteet;
-            }
-        }
     };
 
     return model;

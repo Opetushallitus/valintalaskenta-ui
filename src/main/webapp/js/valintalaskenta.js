@@ -188,30 +188,16 @@ app.factory('Osoitetarrat', function($resource,$window) {
 	});
 });
 
-app.factory('Hyvaksymiskirjeet', function($http,$window) {
-  return { lataaPDF: function(batch) {
-	  return $http({
-		    method: 'POST',
-		    url: VALINTALASKENTAKOOSTE_URL_BASE_HTTP + "resources/hyvaksymiskirjeBatch/aktivoi/",
-		    data: batch
-		}).success(function(data) {
-			$window.location.href = data;
-		})
-	}
-  }
+app.factory('Hyvaksymiskirjeet', function($resource,$window) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksymiskirjeet/aktivoi", {}, {
+		query:  {method:'GET', isArray:false}
+	});
 });
 
-app.factory('Jalkiohjauskirjeet', function($http,$window) {
-  return { lataaPDF: function(batch) {
-	  return $http({
-		    method: 'POST',
-		    url: VALINTALASKENTAKOOSTE_URL_BASE_HTTP + "resources/jalkiohjauskirjeBatch/aktivoi/",
-		    data: batch
-		}).success(function(data) {
-			$window.location.href = data;
-		})
-	}
-  }
+app.factory('Jalkiohjauskirjeet', function($resource,$window) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/jalkiohjauskirjeet/aktivoi", {}, {
+		query:  {method:'GET', isArray:false}
+	});
 });
 
 app.factory('Hakemus', function($resource) {
@@ -259,6 +245,18 @@ app.factory('Henkilot', function($resource) {
 app.factory('Sijoittelu', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/", {hakuOid: "@hakuOid"}, {
         get: {method: "GET"}
+    });
+});
+
+app.factory('SijoittelunVastaanottotilat', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/", {hakemusOid: "@hakemusOid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
+
+app.factory('SijoittelunTilat', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoitteluajo/:sijoitteluajoOid/hakemus/:hakemusOid", {sijoitteluajoOid: "@sijoitteluajoOid", hakemusOid: "@hakemusOid"}, {
+        get: {method: "GET", isArray: true}
     });
 });
 

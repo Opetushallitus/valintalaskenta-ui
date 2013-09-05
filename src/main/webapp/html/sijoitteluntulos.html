@@ -19,6 +19,8 @@
             </div>
 
             <a href="{{sijoitteluntulosExcelExport}}" class="button small excel">Vie exceliin</a>
+            <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo hyväksymiskirjeet</a>
+            <a ng-show="false" ng-click="createJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo jälkiohjauskirjeet</a>
 			<h2>Sijoittelun tulos</h2>
 			<div class="margin-vertical-2">
 				
@@ -60,7 +62,7 @@
                         <thead>
                             <tr>
                                 <th colspan="8">
-                                    Järjestysluku:  {{jono.prioriteetti}} /
+                                    Valintatapajono:  {{jono.prioriteetti}} /
                                     <!---Valintatapajono OID: {{jono.oid}}-->
                                     Aloituspaikat:  {{jono.aloituspaikat}} /
                                     Tasasijasaanto: {{jono.tasasijasaanto}}
