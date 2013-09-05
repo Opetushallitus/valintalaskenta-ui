@@ -72,13 +72,14 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
         getCount: getCount,
         getName: getName
     }
-	modelInterface.refresh();
+	//modelInterface.refresh();
 	return modelInterface;
 });
 
 function HenkiloController($scope,$location,$routeParams,HenkiloModel) {
 	
 	$scope.model = HenkiloModel;
+	$scope.model.refresh()
 	$scope.henkiloittainVisible = true;
 	
 	$scope.lazyLoading = function() {
