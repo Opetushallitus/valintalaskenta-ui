@@ -1,4 +1,4 @@
-app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, SijoitteluajoHakukohde, HakemuksenTila, $timeout) {
+app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHakukohde, HakemuksenTila, $timeout) {
 
 	var model = new function() {
 
@@ -16,12 +16,44 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
             model.sijoittelu = {};
             model.latestSijoitteluajo = {};
             model.sijoitteluTulokset = {};
+
+             LatestSijoitteluajoHakukohde.get({
+                hakukohdeOid: hakukohdeOid,
+                hakuOid: hakuOid
+                }, function(result) {
+                    model.sijoitteluTulokset = result;
+
+                    var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
+
+                    for(var j = 0 ; j < valintatapajonot.length ; ++j) {
+                        var valintatapajonoOid = valintatapajonot[j].oid;
+                        var hakemukset = valintatapajonot[j].hakemukset;
+
+                        for(var k = 0 ; k < hakemukset.length ; ++k ){
+                            var hakemus = hakemukset[k];
+
+                            var tilaParams = {
+                                hakuoid: hakuOid,
+                                hakukohdeOid: hakukohdeOid,
+                                valintatapajonoOid: valintatapajonoOid,
+                                hakemusOid: hakemus.hakemusOid
+                            }
+
+                            //make rest calls in separate scope to prevent hakemusOid to be overridden
+                            model.setHakemuksenTila(hakemus, tilaParams);
+
+                        }
+                    }
+
+                });
+
+            /*
             SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
                 if(result && result.length > 0) {
                     model.latestSijoitteluajo = result[0];
                     var currentSijoitteluajoOid = model.latestSijoitteluajo.sijoitteluajoId;
 
-                        SijoitteluajoHakukohde.get({
+                        LatestSijoitteluajoHakukohde.get({
                             sijoitteluajoOid: currentSijoitteluajoOid,
                             hakukohdeOid: hakukohdeOid
                         }, function(result) {
@@ -56,6 +88,8 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
             }, function(error) {
                 model.errors.push(error);
             });
+
+            */
         };
 
         this.setHakemuksenTila = function(hakemus, tilaParams) {

@@ -223,7 +223,7 @@ app.factory('Henkilot', function($resource) {
 
 
 
-  //Sijoittelu
+  //Paikan vastaanoton tilat
  app.factory('HakemuksenTila', function($resource) {
      return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid?selite=:selite",
          {
@@ -237,48 +237,47 @@ app.factory('Henkilot', function($resource) {
          post: {method: "POST"}
      });
  });
-
-app.factory('Sijoittelu', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/", {hakuOid: "@hakuOid"}, {
-        get: {method: "GET"}
-    });
-});
-
 app.factory('SijoittelunVastaanottotilat', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/", {hakemusOid: "@hakemusOid"}, {
         get: {method: "GET", isArray: true}
     });
 });
 
-app.factory('SijoittelunTilat', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoitteluajo/:sijoitteluajoOid/hakemus/:hakemusOid", {sijoitteluajoOid: "@sijoitteluajoOid", hakemusOid: "@hakemusOid"}, {
+
+ //Sijoittelu
+app.factory('Sijoittelu', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/", {hakuOid: "@hakuOid"}, {
+        get: {method: "GET"}
+    });
+});
+
+app.factory('LatestSijoittelunTilat', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakemus/:hakemusOid", {hakemusOid: "@hakemusOid", hakuOid:"@hakuOid"}, {
         get: {method: "GET", isArray: true}
     });
 });
 
-app.factory('SijoitteluajoLatest', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo?latest=true", {hakuOid: "@hakuOid"}, {
-        get: {method: "GET", isArray: true}
-    });
-});
-
-app.factory('SijoitteluajoAtTimestamp', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/:timestamp", {hakuOid: "@hakuoid", timestamp: "@timestamp"}, {
+app.factory('LatestSijoitteluajoHakukohde', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid"}, {
         get: {method: "GET"}
     });
 });
 
-app.factory('Sijoitteluajo', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoitteluajo/:sijoitteluajoOid", {sijoitteluajoOid: "@sijoitteluajoOid"}, {
-        get: {method: "GET"}
-    });
-});
 
-app.factory('SijoitteluajoHakukohde', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoitteluajo/:sijoitteluajoOid/hakukohde/:hakukohdeOid", {sijoitteluajoOid: "@sijoitteluajoOid", hakukohdeOid: "@hakukohdeOid"}, {
-        get: {method: "GET"}
-    });
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Valintakoetulokset
 app.factory('Valintakoetulokset', function($resource) {
