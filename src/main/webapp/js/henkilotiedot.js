@@ -1,5 +1,5 @@
 
-app.factory('HenkiloTiedotModel', function(HakuModel, Hakemus, ValintalaskentaHakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, SijoitteluajoLatest, SijoittelunTilat) {
+app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, SijoitteluajoLatest, SijoittelunTilat) {
 	var model = new function() {
 		this.hakemus = {};
 		this.valintalaskentaHakemus = {};
@@ -10,6 +10,7 @@ app.factory('HenkiloTiedotModel', function(HakuModel, Hakemus, ValintalaskentaHa
 		this.refresh = function(hakuOid, hakemusOid) {
 			model.errors.length = 0;
 			model.hakutoiveet.length = 0;
+
 
 			Hakemus.get({oid: hakemusOid}, function(result) {
 				model.hakemus = result;
@@ -34,34 +35,40 @@ app.factory('HenkiloTiedotModel', function(HakuModel, Hakemus, ValintalaskentaHa
 					}
 					model.hakutoiveet.push(hakutoive);
 				}
-
+				
 				//fetch sijoittelun tilat and extend hakutoiveet
-				SijoitteluajoLatest.get({hakuOid: HakuModel.hakuOid.oid}, function(result) {
-					var latestSijoitteluAjoId = result[0].sijoitteluajoId;
-					SijoittelunTilat.get({sijoitteluajoOid: latestSijoitteluAjoId, hakemusOid: model.hakemus.oid}, function(result) {
-						extendHakutoiveetWithSijoitteluTila(result);
-					}, function(error) {
-						model.errors.push(error);	
-					});
+
+				SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
+					if(result.length > 0) {
+						var latestSijoitteluAjoId = result[0].sijoitteluajoId;
+						SijoittelunTilat.get({sijoitteluajoOid: latestSijoitteluAjoId, hakemusOid: model.hakemus.oid}, function(result) {
+							extendHakutoiveetWithSijoitteluTila(result);
+						}, function(error) {
+							model.errors.push(error);	
+						});	
+					}
 				}, function(error) {
 					model.errors.push(error);
 				});
+				
 
 				//fetch sijoittelun vastaanottotilat and extend hakutoiveet
 				SijoittelunVastaanottotilat.get({hakemusOid: model.hakemus.oid}, function(result) {
 					if(result.length > 0) {
-						model.hakutoiveet.some(function(hakutoive, index, array) {
-							if(hakutoive.hakukohdeOid === result[0].hakukohdeOid) {
-								hakutoive.vastaanottotila = result[0].tila;
-								return true;
-							}
+						result.forEach(function(vastaanottotila) {
+							model.hakutoiveet.some(function(hakutoive) {
+								if(hakutoive.hakukohdeOid === vastaanottotila.hakukohdeOid) {
+									hakutoive.vastaanottotila = vastaanottotila.tila;
+									return true;
+								}
+							});
 						});
 					}
 				}, function(error) {
 					model.errors.push(error)
 				});
 
-				
+				/*
 				//Extend hakutoiveet with tulos 
 				ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function(result) {
 					model.valintalaskentaHakemus = result;
@@ -85,7 +92,7 @@ app.factory('HenkiloTiedotModel', function(HakuModel, Hakemus, ValintalaskentaHa
 				}, function(error) {
 					model.errors.push(error);
 				});
-
+	*/
 				
 			}, function(error) {
 				model.errors.push(error);
