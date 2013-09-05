@@ -139,11 +139,15 @@ function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $
     $scope.createHyvaksymiskirjeetPDF = function() {
     	Hyvaksymiskirjeet.query({sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function(resurssi) {
     		$window.location.href = resurssi.latausUrl;
+    	}, function(response) {
+    		alert(response.data.viesti);
     	});
     }
     $scope.createJalkiohjauskirjeetPDF = function() {
     	Jalkiohjauskirjeet.query({sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function(resurssi) {
     		$window.location.href = resurssi.latausUrl;
+    	}, function(response) {
+    		alert(response.data.viesti);
     	});
     }
     

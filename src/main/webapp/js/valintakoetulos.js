@@ -125,6 +125,8 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     	}
     	Osoitetarrat.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet}, function(resurssi) {
     		$window.location.href = resurssi.latausUrl;
+    	}, function(response) {
+    		alert(response.data.viesti);
     	});
     	//console.log(kokeet);
     }
