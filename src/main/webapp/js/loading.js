@@ -39,10 +39,15 @@ mod.run(function($http, onStartInterceptor) {
     $http.defaults.transformRequest.push(onStartInterceptor);
 });
 
-mod.controller('LoadingCtrl', function($scope, loadingService) {
+mod.controller('LoadingCtrl', function($scope, $rootElement, loadingService) {
     $scope.$watch(function() {
         return loadingService.isLoading();
     }, function(value) {
         $scope.loading = value;
+        if(value) {
+          $rootElement.addClass('spinner');
+        } else {
+          $rootElement.removeClass('spinner');
+        }
     });
 });

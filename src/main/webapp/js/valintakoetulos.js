@@ -5,7 +5,10 @@
 		this.hakukohdeOid = {};
 		this.koetulokset = [];
 		this.valintakokeet = {};
+		this.valintakokeetHakijoittain = {};
+		this.valintakokeetHakijoittainArray = [];
         this.errors = [];
+        this.filter = "OSALLISTUU";
 		
 		this.refresh = function(hakukohdeOid) {
             model.errors.length = 0;
@@ -27,7 +30,8 @@
 		function flatKoetulokset() {
 		    model.valintakokeet = {};
             model.koetyypit = [];
-            model.valintakokeetHakijoittain={ };
+            model.valintakokeetHakijoittain = {};
+            model.valintakokeetHakijoittainArray = [];
 
             model.koetulokset.forEach(function(koetulos){
                 koetulos.hakutoiveet.forEach(function(hakutoive) {
@@ -70,6 +74,12 @@
                     }
                 });
             });
+
+            for (var key in model.valintakokeetHakijoittain) {
+              if (model.valintakokeetHakijoittain.hasOwnProperty(key)) {
+                model.valintakokeetHakijoittainArray.push(model.valintakokeetHakijoittain[key]);
+              }
+            }
 		}
 
 	};
@@ -82,6 +92,7 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+
     $scope.model = ValintakoetulosModel;
     $scope.hakukohdeModel = HakukohdeModel;
 
