@@ -2314,6 +2314,18 @@ button.edit-link {
   .remove span {
     display: none; }
 
+/*** Spinner
+************************************************/
+.spinner {
+  cursor: progress !important; }
+  .spinner input,
+  .spinner select,
+  .spinner a,
+  .spinner #toolbartoggle-btn-container #toolbartoggle-btn {
+    cursor: progress !important; }
+
+/*** Modal
+************************************************/
 .modal-backdrop {
   position: fixed;
   left: 0;

@@ -25,7 +25,6 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
             
             if(model.isHakukohdeChanged(hakukohdeOid) && (hakukohdeOid !== undefined)) {
                 model.refresh(hakukohdeOid);
-                console.log(model);
             }
         }
 
