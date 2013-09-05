@@ -117,7 +117,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, SijoitteluajoLatest, S
 });
 
 
-function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel, Hyvaksymiskirjeet, Jalkiohjauskirjeet, AuthService) {
+function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
    $scope.hakuOid =  $routeParams.hakuOid;
    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
@@ -151,8 +151,10 @@ function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $
     	});
     }
     
-    $scope.sijoitteluntulosExcelExport = SIJOITTELU_EXCEL_URL_BASE + "resources/export/sijoitteluntulos.xls?hakuOid=" + $routeParams.hakuOid + "&hakukohdeOid=" +$routeParams.hakukohdeOid;
-
+    $scope.sijoittelunTulosXLS = function() {
+    	SijoitteluXls.query({hakukohdeOid:$routeParams.hakukohdeOid, sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId});
+    }
+    
     $scope.showMuutaHakemus = function(hakemus) {
         if(($scope.updateOrg && hakemus.tila == 'HYVAKSYTTY') || $scope.updateOph) {
             hakemus.muokattuTila = "ILMOITETTU";

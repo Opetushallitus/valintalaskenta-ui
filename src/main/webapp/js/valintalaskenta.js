@@ -165,6 +165,21 @@ app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
   })
 });
 
+
+app.factory('SijoitteluXls', function($window) {
+	return {
+		query: function(data) {
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentatulos/sijoitteluntulos/aktivoi?sijoitteluajoId="+ data.sijoitteluajoId +"&hakukohdeOid" + data.hakukohdeOid;
+		}
+	};
+});
+app.factory('TulosXls', function($window) {
+	return {
+		query: function(data) {
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentatulos/valintalaskennantulos/aktivoi?sijoitteluajoId="+ data.sijoitteluajoId +"&hakukohdeOid" + data.hakukohdeOid;
+		}
+	};
+});
 app.factory('ValintakoeXls', function($window) {
 	return {
 		query: function(data) {
@@ -174,7 +189,7 @@ app.factory('ValintakoeXls', function($window) {
 				postfix = postfix + "&valintakoeOid=" + oid;
 				
 			});
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentatulos/excel/aktivoi?hakukohdeOid="+ data.hakukohdeOid + postfix;
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/valintakoekutsut/aktivoi?hakukohdeOid="+ data.hakukohdeOid + postfix;
 		}
 	};
 });
