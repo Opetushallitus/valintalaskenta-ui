@@ -38,6 +38,10 @@ app.config(function($routeProvider) {
 
 
     when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:YhteisvalinnanHallintaController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta.html'}).
+    when('/lisahaku/:hakuOid/hakukohde', {controller: LisahakuController, templateUrl: TEMPLATE_URL_BASE + 'lisahakuHakukohde.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: HakukohdeController, templateUrl: TEMPLATE_URL_BASE + 'lisahaku/hakukohdeperustiedot.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hyvaksytyt', {controller: LisahakuhyvaksytytController, templateUrl: TEMPLATE_URL_BASE + 'lisahaku/hyvaksytyt.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller: HakeneetController, templateUrl: TEMPLATE_URL_BASE + 'lisahaku/hakeneet.html'}).
 
     otherwise({redirectTo:'/haku/'});
 

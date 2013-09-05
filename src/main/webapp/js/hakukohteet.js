@@ -115,10 +115,10 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
 	      GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
 	   }
 
-	   $scope.showHakukohde = function(hakukohdeOid) {
+	   $scope.showHakukohde = function(hakukohdeOid, lisahaku) {
 	      $scope.hakukohteetVisible = false;
 	      GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
-	      $location.path('/haku/' + $routeParams.hakuOid + '/hakukohde/' + hakukohdeOid + '/' + $scope.subpage);
+	      $location.path( (lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohdeOid + '/' + $scope.subpage);
 	   }
 	   
 	   // uuden sivun lataus

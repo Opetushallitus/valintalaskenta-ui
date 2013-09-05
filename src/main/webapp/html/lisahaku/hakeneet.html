@@ -1,0 +1,59 @@
+
+<h1>Hakeneet</h1>
+
+<div ng-include="'partials/lisahakuTopNavigation.html'" />
+
+<div class="tabsheets">
+
+    <div ng-include="'partials/lisahakuHakukohdelista.html'"></div>
+
+    <div class="toggle-content-container overflow-x-scroll">
+
+        <div ng-include="'partials/lisahakuHakukohdeNavigation.html'" />
+        
+        
+        
+
+        <div class="tabsheets">
+            <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
+            
+            <div ng-show="model.errors.length > 0" class="notification warning">
+                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <p ng-repeat="error in model.errors">{{error}}</p>
+            </div>
+
+            <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
+                <h2>Hakeneet</h2>
+                <form name="form" ng-submit="submit()">
+                    <table class="virkailija-table-1">
+                        <thead>
+                        <tr>
+                            <th>Nimi</th>
+                            <th>Hakemus</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="hakija in model.hakeneet">
+                            <td>
+                                <span title="Sukunimi">{{hakija.lastName}}</span>,
+                                <span title="Etunimi">{{hakija.firstName}}</span>
+                            </td>
+                            <td>
+                                    <span title="HakemusOid">
+                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.applicationOid}}" target="_blank" >
+                                            {{hakija.applicationOid}}
+                                        </a>
+                                    </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+</div>
+
+
