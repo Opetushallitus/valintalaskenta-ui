@@ -62,7 +62,11 @@ function HakuController($scope, $location, $routeParams, HakuModel) {
         }
         
         if($scope.model.hakuOid && $scope.model.hakuOid.oid != $routeParams.hakuOid) {
-            $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
+            if($scope.model.lisahaku) {
+                $location.path('/lisahaku/' + HakuModel.hakuOid.oid + '/hakukohde/');
+            } else {
+                $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
+            }
         }
     });
 

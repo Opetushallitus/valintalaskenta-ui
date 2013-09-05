@@ -1,0 +1,19 @@
+
+
+
+<!-- Tabivalikko lisähaun hakukohteille -->
+<div class="tabs hakukohdeNav" ng-controller="navigationController">
+    
+    <a  ng-class="navClass('perustiedot', 5)" href="#/lisahaku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/perustiedot" class="tab">
+        <span>Hakukohteen perustiedot</span>
+    </a>
+
+    <a ng-show="displaytab.hakeneet" auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hakeneet', 5)" href="#/lisahaku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet" class="tab">
+        <span>Hakeneet</span>
+    </a>
+
+    <a ng-show="displaytab.harkinnanvaraiset" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hyvaksytyt', 5)" href="#/lisahaku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hyvaksytyt" class="tab">
+        <span>Valitut</span>
+    </a>
+
+</div>

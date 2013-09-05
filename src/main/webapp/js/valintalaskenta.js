@@ -38,6 +38,10 @@ app.config(function($routeProvider) {
 
 
     when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:YhteisvalinnanHallintaController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta.html'}).
+    when('/lisahaku/:hakuOid/hakukohde', {controller: LisahakuController, templateUrl: TEMPLATE_URL_BASE + 'lisahakuHakukohde.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: HakukohdeController, templateUrl: TEMPLATE_URL_BASE + 'lisahaku/hakukohdeperustiedot.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hyvaksytyt', {controller: LisahakuhyvaksytytController, templateUrl: TEMPLATE_URL_BASE + 'lisahaku/hyvaksytyt.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller: HakeneetController, templateUrl: TEMPLATE_URL_BASE + 'lisahaku/hakeneet.html'}).
 
     otherwise({redirectTo:'/haku/'});
 
@@ -165,6 +169,21 @@ app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
   })
 });
 
+
+app.factory('SijoitteluXls', function($window) {
+	return {
+		query: function(data) {
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/sijoitteluntulos/aktivoi?hakukohdeOid=" + data.hakukohdeOid + "&sijoitteluajoId="+ data.sijoitteluajoId;
+		}
+	};
+});
+app.factory('TulosXls', function($window) {
+	return {
+		query: function(data) {
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/valintalaskennantulos/aktivoi?sijoitteluajoId="+ data.sijoitteluajoId +"&hakukohdeOid=" + data.hakukohdeOid;
+		}
+	};
+});
 app.factory('ValintakoeXls', function($window) {
 	return {
 		query: function(data) {
@@ -174,7 +193,7 @@ app.factory('ValintakoeXls', function($window) {
 				postfix = postfix + "&valintakoeOid=" + oid;
 				
 			});
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentatulos/excel/aktivoi?hakukohdeOid="+ data.hakukohdeOid + postfix;
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/valintakoekutsut/aktivoi?hakukohdeOid="+ data.hakukohdeOid + postfix;
 		}
 	};
 });
