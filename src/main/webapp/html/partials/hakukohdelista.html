@@ -4,12 +4,11 @@
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
 			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" ng-change="model.refresh()"/>
-			    <label>Omat hakukohteet</label><input type="checkbox" class="search" ng-model="model.filterToggle" />
-                <span>{{model.getCount()}}/{{model.getTotalCount()}}</span>
+                <p class="margin-vertical-2">Hakukohteita haettu {{model.getCount()}} / {{model.getTotalCount()}}</p>
 			</div>
 
 			<ul class="selectlist" lazy-loading>
-			    <li ng-repeat="hakukohde in model.blender(model.filterToggle)">
+			    <li ng-repeat="hakukohde in model.hakukohteet">
 			        <a ng-click="showHakukohde(hakukohde.hakukohdeOid)">
 			        	<!--
 			        		href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}"
