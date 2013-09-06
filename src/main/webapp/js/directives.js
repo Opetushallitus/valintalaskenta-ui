@@ -112,8 +112,8 @@ app.directive('centralize', function() {
     return {
         restrict: 'A',
         link: function($scope, element, attrs) {
-            var elemWidth = element.context.offsetHeight;
-            var elemHeight = element.context.offsetWidth;
+            var elemWidth = element.context.offsetWidth;
+            var elemHeight = element.context.offsetHeight;
 
             $scope.$on('centralizeElement', function() {
                 var top = Math.max(0, (($(window).height() - elemHeight) / 2) + $(window).scrollTop());
