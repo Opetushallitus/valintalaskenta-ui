@@ -173,7 +173,7 @@ app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
 app.factory('SijoitteluXls', function($window) {
 	return {
 		query: function(data) {
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/sijoitteluntulos/aktivoi?hakukohdeOid=" + data.hakukohdeOid + "&sijoitteluajoId="+ data.sijoitteluajoId;
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/sijoitteluntulos/aktivoi?hakukohdeOid=" + data.hakukohdeOid + "&sijoitteluajoId="+ data.sijoitteluajoId + "&hakuOid=" + data.hakuOid;
 		}
 	};
 });
