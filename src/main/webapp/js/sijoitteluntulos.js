@@ -175,11 +175,12 @@ function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $
     }
 
     $scope.createHyvaksymiskirjeetPDF = function() {
-    	Hyvaksymiskirjeet.query({sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function(resurssi) {
+    	Hyvaksymiskirjeet.query({sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function(resurssi) {
     		$window.location.href = resurssi.latausUrl;
     	}, function(response) {
     		alert(response.data.viesti);
     	});
+    	
     }
     $scope.createJalkiohjauskirjeetPDF = function() {
     	Jalkiohjauskirjeet.query({sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function(resurssi) {
@@ -190,7 +191,7 @@ function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $
     }
     
     $scope.sijoittelunTulosXLS = function() {
-    	SijoitteluXls.query({hakukohdeOid:$routeParams.hakukohdeOid, sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId});
+    	SijoitteluXls.query({hakuOid: $routeParams.hakuOid, hakukohdeOid:$routeParams.hakukohdeOid, sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId});
     }
     
     $scope.showMuutaHakemus = function(hakemus) {
