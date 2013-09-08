@@ -1,4 +1,4 @@
-app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHakukohde, HakemuksenTila, $timeout) {
+app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHakukohde, HakemuksenTila, $timeout, SijoitteluAjo) {
 
 	var model = new function() {
 
@@ -44,56 +44,21 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHak
 
                         }
                     }
+                    SijoitteluAjo.get( {
+                            hakuOid: hakuOid,
+                            sijoitteluajoOid: result.sijoitteluajoId
+                        }, function(result) {
+                             model.latestSijoitteluajo.startMils = result.startMils;
+                             model.latestSijoitteluajo.endMils = result.endMils;
+                             model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
+                        },function(error) {
+                            model.errors.push(error);
+                        }
+                    );
 
                 }, function(error) {
                      model.errors.push(error);
                  });
-
-
-
-            /*
-            SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
-                if(result && result.length > 0) {
-                    model.latestSijoitteluajo = result[0];
-                    var currentSijoitteluajoOid = model.latestSijoitteluajo.sijoitteluajoId;
-
-                        LatestSijoitteluajoHakukohde.get({
-                            sijoitteluajoOid: currentSijoitteluajoOid,
-                            hakukohdeOid: hakukohdeOid
-                        }, function(result) {
-                            model.sijoitteluTulokset = result;
-
-                            var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
-
-                            for(var j = 0 ; j < valintatapajonot.length ; ++j) {
-                                var valintatapajonoOid = valintatapajonot[j].oid;
-                                var hakemukset = valintatapajonot[j].hakemukset;
-                                
-                                for(var k = 0 ; k < hakemukset.length ; ++k ){
-                                    var hakemus = hakemukset[k];
-                                    
-                                    var tilaParams = {
-                                        hakuoid: hakuOid,
-                                        hakukohdeOid: hakukohdeOid,
-                                        valintatapajonoOid: valintatapajonoOid, 
-                                        hakemusOid: hakemus.hakemusOid
-                                    }
-
-                                    //make rest calls in separate scope to prevent hakemusOid to be overridden 
-                                    model.setHakemuksenTila(hakemus, tilaParams);
-
-                                }
-                            }
-
-                        });
-
-
-                }
-            }, function(error) {
-                model.errors.push(error);
-            });
-
-            */
         };
 
         this.setHakemuksenTila = function(hakemus, tilaParams) {

@@ -18,45 +18,16 @@
                 <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
 
+            <div class="margin-vertical-2">
+                Viimeisimmät sijoittelun tulokset. Sijoitteluajo on alkanut  <strong>{{model.latestSijoitteluajo.startMils | date:'dd.MM.yyyy HH:mm'}}</strong>
+                ja loppunut <strong>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</strong>. Sijoitteluajon tunniste on <strong>{{model.latestSijoitteluajo.sijoitteluajoId}}</strong>.
+                Sijoittelu suoritetaan kerran vuorokaudessa.
+            </div>
+
             <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
             <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo hyväksymiskirjeet</a>
             <a ng-show="false" ng-click="createJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo jälkiohjauskirjeet</a>
-			<h2>Sijoittelun tulos</h2>
-			<div class="margin-vertical-2">
-				
-			</div>
-			<div class="margin-vertical-2">
-				<dl class="dl-horizontal">
-					<dt>Viimeisin Ajo ID</dt>
-					<dd>{{model.latestSijoitteluajo.sijoitteluajoId}}</dd>
-					
-					<dt>Alkaa</dt>
-					<dd>{{model.latestSijoitteluajo.startMils | date:'dd.MM.yyyy HH:mm'}}</dd>
-					
-					<dt>Loppuu</dt>
-					<dd>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</dd>
-				</dl>
-			</div>
-			<!--
-			<div class="margin-vertical-2">
-				<button ng-click="showSijoitteluajot()">Näytä kaikki sijoitteluajot</button>
-				<table class="virkailija-table-1">
-					<thead>
-						<tr>
-							
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		-->
-            <h1>{{jono.aloituspaikat}}</h1>
 			<div class="margin-vertical-2 overflow-x-scroll">
-				<h2>Viimeisimmän sijoittelun tulokset</h2>
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot">
                     <table class="virkailija-table-1">
                         <thead>
@@ -101,6 +72,7 @@
                                 <td>
                                     <span>{{hakemus.tila}}</span>
                                     <span ng-if="hakemus.hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>
+                                    <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
                                 </td>
 
 
