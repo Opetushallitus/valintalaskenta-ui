@@ -28,9 +28,33 @@ app.factory('MyRolesModel', function ($http) {
 
 });
 
-app.factory('AuthService', function($q, $http, $timeout, MyRolesModel) {
-  return {
-      readOrg : function(service, orgOid) {
+
+
+app.factory('AuthService', function($q, $http, $timeout, MyRolesModel, loadingService) {
+
+    // organisation check
+    var readAccess = function(service,org) {
+        if( MyRolesModel.myroles.indexOf(service + READ + "_" + org) > -1 ||
+            MyRolesModel.myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
+            MyRolesModel.myroles.indexOf(service + CRUD + "_" + org) > -1) {
+            return true;
+        }
+    };
+
+    var updateAccess = function(service,org) {
+        if( MyRolesModel.myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
+            MyRolesModel.myroles.indexOf(service + CRUD + "_" + org) > -1) {
+            return true;
+        }
+    };
+
+    var crudAccess = function(service,org) {
+        if( MyRolesModel.myroles.indexOf(service + CRUD + "_" + org) > -1) {
+            return true;
+        }
+    };
+
+    var accessCheck = function(service, orgOid, accessFunction) {
         var deferred = $q.defer();
         var waitTime = 10;
 
@@ -43,9 +67,7 @@ app.factory('AuthService', function($q, $http, $timeout, MyRolesModel) {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
                     var found = false;
                     result.split("/").forEach(function(org){
-                        if( MyRolesModel.myroles.indexOf(service + READ + "_" + org) > -1 ||
-                            MyRolesModel.myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
-                            MyRolesModel.myroles.indexOf(service + CRUD + "_" + org) > -1) {
+                        if(accessFunction(service,org)){
                             found = true;
                         }
                     });
@@ -61,141 +83,70 @@ app.factory('AuthService', function($q, $http, $timeout, MyRolesModel) {
         $timeout(check, waitTime);
 
         return deferred.promise;
+    }
+
+    // OPH check
+    var ophRead = function(service) {
+        return (MyRolesModel.myroles.indexOf(service + READ + "_" + OPH_ORG) > -1
+          || MyRolesModel.myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1
+          || MyRolesModel.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1);
+    }
+
+    var ophUpdate = function(service) {
+        return (MyRolesModel.myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1
+          || MyRolesModel.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1);
+    }
+
+    var ophCrud = function(service) {
+        return (MyRolesModel.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1);
+    }
+
+    var ophAccessCheck = function(service, accessFunction) {
+        var deferred = $q.defer();
+        var waitTime = 10;
+
+        var check = function() {
+            MyRolesModel.refresh();
+            waitTime = waitTime + 500;
+            if (MyRolesModel.myroles.length === 0) {
+                $timeout(check, waitTime);
+            } else {
+                if(accessFunction(service)) {
+                    deferred.resolve();
+                } else {
+                    deferred.reject();
+                }
+            }
+        }
+
+        $timeout(check, waitTime);
+
+        return deferred.promise;
+    }
+
+  return {
+      readOrg : function(service, orgOid) {
+        return accessCheck(service, orgOid, readAccess);
       },
 
       updateOrg : function(service, orgOid) {
-
-        var deferred = $q.defer();
-        var waitTime = 10;
-
-        var check = function() {
-            MyRolesModel.refresh();
-            waitTime = waitTime + 500;
-            if (MyRolesModel.myroles.length === 0) {
-                $timeout(check, waitTime);
-            } else {
-                $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
-                    var found = false;
-                    console.log(MyRolesModel.myroles);
-                    result.split("/").forEach(function(org){
-                        console.log(org);
-                        if( MyRolesModel.myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
-                            MyRolesModel.myroles.indexOf(service + CRUD + "_" + org) > -1) {
-                            found = true;
-                        }
-                    });
-                    if(found) {
-                        deferred.resolve();
-                    } else {
-                        deferred.reject();
-                    }
-                });
-            }
-        }
-
-        $timeout(check, waitTime);
-
-        return deferred.promise;
+        return accessCheck(service, orgOid, updateAccess);
       },
 
       crudOrg : function(service, orgOid) {
-        var deferred = $q.defer();
-        var waitTime = 10;
-
-        var check = function() {
-            MyRolesModel.refresh();
-            waitTime = waitTime + 500;
-            if (MyRolesModel.myroles.length === 0) {
-                $timeout(check, waitTime);
-            } else {
-                $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
-                    var found = false;
-                    result.split("/").forEach(function(org){
-                        if(MyRolesModel.myroles.indexOf(service + CRUD + "_" + org) > -1) {
-                            found = true;
-                        }
-                    });
-                    if(found) {
-                        deferred.resolve();
-                    } else {
-                        deferred.reject();
-                    }
-                });
-            }
-        }
-
-        $timeout(check, waitTime);
-
-        return deferred.promise;
+        return accessCheck(service, orgOid, crudAccess);
       },
 
       readOph : function(service) {
-        var deferred = $q.defer();
-        var waitTime = 10;
-
-        var check = function() {
-            MyRolesModel.refresh();
-            waitTime = waitTime + 500;
-            if (MyRolesModel.myroles.length === 0) {
-                $timeout(check, waitTime);
-            } else {
-                if(MyRolesModel.myroles.indexOf(service + READ + "_" + OPH_ORG) > -1 || MyRolesModel.myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || MyRolesModel.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
-                    deferred.resolve();
-                } else {
-                    deferred.reject();
-                }
-            }
-        }
-
-        $timeout(check, waitTime);
-
-        return deferred.promise;
+        return ophAccessCheck(service, ophRead);
       },
 
       updateOph : function(service) {
-        var deferred = $q.defer();
-        var waitTime = 10;
-
-        var check = function() {
-            MyRolesModel.refresh();
-            waitTime = waitTime + 500;
-            if (MyRolesModel.myroles.length === 0) {
-                $timeout(check, waitTime);
-            } else {
-                if(MyRolesModel.myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || MyRolesModel.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
-                    deferred.resolve();
-                } else {
-                    deferred.reject();
-                }
-            }
-        }
-
-        $timeout(check, waitTime);
-
-        return deferred.promise;
+        return ophAccessCheck(service, ophUpdate);
       },
 
       crudOph : function(service) {
-        var deferred = $q.defer();
-        var waitTime = 100;
-
-        var check = function() {
-            MyRolesModel.refresh();
-            waitTime = waitTime + 500;
-            if (MyRolesModel.myroles.length === 0) {
-                $timeout(check, waitTime);
-            } else {
-                if(MyRolesModel.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
-                    deferred.resolve();
-                } else {
-                    deferred.reject();
-                }
-            }
-        }
-
-        $timeout(check, waitTime);
-
-        return deferred.promise;
+        return ophAccessCheck(service, ophCrud);
       },
 
   };
