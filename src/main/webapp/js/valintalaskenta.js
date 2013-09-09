@@ -13,6 +13,7 @@ var SIJOITTELU_EXCEL_URL_BASE = SIJOITTELU_EXCEL_URL_BASE || "";
 var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
 var ORGANISAATIO_URL_BASE = ORGANISAATIO_URL_BASE || "";
 var HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE || "";
+var CAS_URL = CAS_URL || "/cas/myroles";
 
 
 //Route configuration
@@ -329,6 +330,11 @@ app.factory('ValintalaskentaHistoria', function($resource) {
 app.factory('ValintalaskentaHakemus', function($resource) {
 	return $resource(SERVICE_URL_BASE + "resources/hakemus/:hakuoid/:hakemusoid", {hakuoid: "@hakuoid", hakemusoid:"@hakemusoid"}, {
         get: {method: "GET", isArray: false}
+    });
+});
+app.factory('MyRoles', function($resource) {
+	return $resource(CAS_URL, {}, {
+        get: {method: "GET", isArray: true}
     });
 });
 

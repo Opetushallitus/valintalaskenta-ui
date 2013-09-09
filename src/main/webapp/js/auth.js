@@ -7,23 +7,45 @@ var UPDATE = "_READ_UPDATE";
 var CRUD = "_CRUD";
 var OPH_ORG = "1.2.246.562.10.00000000001";
 
-app.factory('AuthService', function($q, $http, $timeout) {
+app.factory('MyRolesModel', function ($http) {
+
+    var factory = (function() {
+        var instance = {};
+        instance.myroles = [];
+
+        instance.refresh = function() {
+            if(instance.myroles.length == 0) {
+                $http.get(CAS_URL).success(function(result) {
+                    instance.myroles = result;
+                });
+            }
+        }
+
+        return instance;
+    })();
+
+    return factory;
+
+});
+
+app.factory('AuthService', function($q, $http, $timeout, MyRolesModel) {
   return {
       readOrg : function(service, orgOid) {
         var deferred = $q.defer();
         var waitTime = 10;
 
         var check = function() {
+            MyRolesModel.refresh();
             waitTime = waitTime + 500;
-            if (typeof myroles === 'undefined') {
+            if (MyRolesModel.myroles.length === 0) {
                 $timeout(check, waitTime);
             } else {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
                     var found = false;
                     result.split("/").forEach(function(org){
-                        if( myroles.indexOf(service + READ + "_" + org) > -1 ||
-                            myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
-                            myroles.indexOf(service + CRUD + "_" + org) > -1) {
+                        if( MyRolesModel.myroles.indexOf(service + READ + "_" + org) > -1 ||
+                            MyRolesModel.myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
+                            MyRolesModel.myroles.indexOf(service + CRUD + "_" + org) > -1) {
                             found = true;
                         }
                     });
@@ -47,16 +69,18 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var waitTime = 10;
 
         var check = function() {
+            MyRolesModel.refresh();
             waitTime = waitTime + 500;
-            if (typeof myroles === 'undefined') {
+            if (MyRolesModel.myroles.length === 0) {
                 $timeout(check, waitTime);
             } else {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
                     var found = false;
-
+                    console.log(MyRolesModel.myroles);
                     result.split("/").forEach(function(org){
-                        if( myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
-                            myroles.indexOf(service + CRUD + "_" + org) > -1) {
+                        console.log(org);
+                        if( MyRolesModel.myroles.indexOf(service + UPDATE + "_" + org) > -1 ||
+                            MyRolesModel.myroles.indexOf(service + CRUD + "_" + org) > -1) {
                             found = true;
                         }
                     });
@@ -79,14 +103,15 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var waitTime = 10;
 
         var check = function() {
+            MyRolesModel.refresh();
             waitTime = waitTime + 500;
-            if (typeof myroles === 'undefined') {
+            if (MyRolesModel.myroles.length === 0) {
                 $timeout(check, waitTime);
             } else {
                 $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function(result) {
                     var found = false;
                     result.split("/").forEach(function(org){
-                        if(myroles.indexOf(service + CRUD + "_" + org) > -1) {
+                        if(MyRolesModel.myroles.indexOf(service + CRUD + "_" + org) > -1) {
                             found = true;
                         }
                     });
@@ -109,11 +134,12 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var waitTime = 10;
 
         var check = function() {
+            MyRolesModel.refresh();
             waitTime = waitTime + 500;
-            if (typeof myroles === 'undefined') {
+            if (MyRolesModel.myroles.length === 0) {
                 $timeout(check, waitTime);
-            } else  {
-                if(myroles.indexOf(service + READ + "_" + OPH_ORG) > -1 || myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
+            } else {
+                if(MyRolesModel.myroles.indexOf(service + READ + "_" + OPH_ORG) > -1 || MyRolesModel.myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || MyRolesModel.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
                     deferred.resolve();
                 } else {
                     deferred.reject();
@@ -131,11 +157,12 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var waitTime = 10;
 
         var check = function() {
+            MyRolesModel.refresh();
             waitTime = waitTime + 500;
-            if (typeof myroles === 'undefined') {
+            if (MyRolesModel.myroles.length === 0) {
                 $timeout(check, waitTime);
-            } else  {
-                if(myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
+            } else {
+                if(MyRolesModel.myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1 || MyRolesModel.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
                     deferred.resolve();
                 } else {
                     deferred.reject();
@@ -153,11 +180,12 @@ app.factory('AuthService', function($q, $http, $timeout) {
         var waitTime = 100;
 
         var check = function() {
+            MyRolesModel.refresh();
             waitTime = waitTime + 500;
-            if (typeof myroles === 'undefined') {
+            if (MyRolesModel.myroles.length === 0) {
                 $timeout(check, waitTime);
-            } else  {
-                if(myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
+            } else {
+                if(MyRolesModel.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1) {
                     deferred.resolve();
                 } else {
                     deferred.reject();
