@@ -1,4 +1,4 @@
-app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHakukohde, HakemuksenTila, $timeout, SijoitteluAjo) {
+app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, $timeout, SijoitteluAjo, VastaanottoTilat) {
 
 	var model = new function() {
 
@@ -17,7 +17,7 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHak
             model.latestSijoitteluajo = {};
             model.sijoitteluTulokset = {};
 
-             LatestSijoitteluajoHakukohde.get({
+            LatestSijoitteluajoHakukohde.get({
                 hakukohdeOid: hakukohdeOid,
                 hakuOid: hakuOid
                 }, function(result) {
@@ -29,21 +29,35 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHak
                         var valintatapajonoOid = valintatapajonot[j].oid;
                         var hakemukset = valintatapajonot[j].hakemukset;
 
-                        for(var k = 0 ; k < hakemukset.length ; ++k ){
-                            var hakemus = hakemukset[k];
+                        VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
+                                              valintatapajonoOid: valintatapajonoOid}, function(result) {
+                            //console.log(result);
+                            var startTime = +new Date();
+                            for(var k = 0 ; k < hakemukset.length ; ++k ){
+                                var hakemus = hakemukset[k];
 
-                            var tilaParams = {
-                                hakuoid: hakuOid,
-                                hakukohdeOid: hakukohdeOid,
-                                valintatapajonoOid: valintatapajonoOid,
-                                hakemusOid: hakemus.hakemusOid
+                                //make rest calls in separate scope to prevent hakemusOid to be overridden
+                                hakemus.vastaanottoTila = "";
+                                hakemus.muokattuVastaanottoTila ="";
+                                result.some(function(vastaanottotila){
+                                    if(vastaanottotila.hakemusOid === hakemus.hakemusOid) {
+                                        hakemus.vastaanottoTila = vastaanottotila.tila;
+                                        hakemus.muokattuVastaanottoTila = vastaanottotila.tila;
+                                        return true;
+                                    }
+                                });
                             }
+                            var endTime = +new Date();
+                            console.log("Time: " + (endTime-startTime));
 
-                            //make rest calls in separate scope to prevent hakemusOid to be overridden
-                            model.setHakemuksenTila(hakemus, tilaParams);
+                        }, function(error) {
+                            model.errors.push(error);
+                        });
 
-                        }
+
+
                     }
+
                     SijoitteluAjo.get( {
                             hakuOid: hakuOid,
                             sijoitteluajoOid: result.sijoitteluajoId
@@ -58,17 +72,19 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHak
 
                 }, function(error) {
                      model.errors.push(error);
-                 });
+                }).$promise.then(function(result){
+                    console.log(result);
+                });
         };
 
-        this.setHakemuksenTila = function(hakemus, tilaParams) {
-            HakemuksenTila.get(tilaParams, function(result) {
+        this.setVastaanottoTila = function(hakemus, tilaParams) {
+            VastaanottoTila.get(tilaParams, function(result) {
                 if(!result.tila) {
-                    hakemus.hakemuksentila = "";
-                    hakemus.muokattuTila ="";
+                    hakemus.vastaanottoTila = "";
+                    hakemus.muokattuVastaanottoTila ="";
                 } else {
-                    hakemus.hakemuksentila = result.tila;
-                    hakemus.muokattuTila =   result.tila;
+                    hakemus.vastaanottoTila = result.tila;
+                    hakemus.muokattuVastaanottoTila =   result.tila;
                 }
             }, function(error) {
                 model.errors.push(error);
@@ -87,27 +103,29 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHak
                 if(model.sijoitteluTulokset.valintatapajonot[j].oid  === valintatapajonoOid) {
                     for(var k = 0 ; k < model.sijoitteluTulokset.valintatapajonot[j].hakemukset.length ; ++k ){
                         var hakemus = model.sijoitteluTulokset.valintatapajonot[j].hakemukset[k];
-                        if(hakemus.hakemuksentila != hakemus.muokattuTila) {
-                            model.updateHakemuksenTila(hakemus.muokattuTila, valintatapajonoOid, hakemus.hakemusOid, "Massamuokkaus");
+                        if(hakemus.vastaanottoTila != hakemus.muokattuVastaanottoTila) {
+                            hakemus.selite = "Massamuokkaus";
+                            model.updateVastaanottoTila(hakemus, valintatapajonoOid);
                         }
                     }
                 }
             }
         };
 
-        this.updateHakemuksenTila = function(newtila, valintatapajonoOid, hakemusOid, selite) {
+        this.updateVastaanottoTila = function(hakemus, valintatapajonoOid) {
             var tilaParams = {
                 hakuoid: model.hakuOid,
                 hakukohdeOid: model.hakukohdeOid,
                 valintatapajonoOid: valintatapajonoOid,
-                hakemusOid: hakemusOid,
-                selite: selite
+                hakemusOid: hakemus.hakemusOid,
+                selite: hakemus.selite
             }
-
-            var tilaObj = {tila: newtila};
+            hakemus.selite = "";
+            var tilaObj = {tila: hakemus.muokattuVastaanottoTila};
             
-            HakemuksenTila.post(tilaParams, tilaObj, function(result) {
-                model.refresh(model.hakuOid, model.hakukohdeOid);
+            VastaanottoTila.post(tilaParams, tilaObj, function(result) {
+                //model.refresh(model.hakuOid, model.hakukohdeOid);
+                model.setVastaanottoTila(hakemus,tilaParams);
             }, function(error) {
                 alert("Virhe: " + error.data.message);
             });
@@ -120,22 +138,25 @@ app.factory('SijoitteluntulosModel', function(Sijoittelu, LatestSijoitteluajoHak
 });
 
 
-function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
+function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
    $scope.hakuOid =  $routeParams.hakuOid;
    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
-    $scope.model.refresIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
-    
-    $scope.updateHakemuksenTila = function(hakemus, valintatapajonoOid) {
-        $scope.model.updateHakemuksenTila(hakemus.muokattuTila, valintatapajonoOid, hakemus.hakemusOid, hakemus.selite);
+    //$scope.model.refresIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
+
+    $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
+
+
+
+    $scope.updateVastaanottoTila = function(hakemus, valintatapajonoOid) {
+        $scope.model.updateVastaanottoTila(hakemus, valintatapajonoOid);
         hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
     }
 
     $scope.submit = function(valintatapajonoOid) {
-        console.log("submit");
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     }
 
@@ -161,7 +182,7 @@ function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $
     
     $scope.showMuutaHakemus = function(hakemus) {
         if(($scope.updateOrg && hakemus.tila == 'HYVAKSYTTY') || $scope.updateOph) {
-            hakemus.muokattuTila = "ILMOITETTU";
+            hakemus.muokattuVastaanottoTila = "ILMOITETTU";
             hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
         }
         $scope.$broadcast('centralizeElement');
@@ -180,4 +201,5 @@ function SijoitteluntulosController($rootScope, $scope, $routeParams, $window, $
     $scope.showSijoitteluPartial = function(hakemus) {
         hakemus.showSijoitteluPartial = !hakemus.showSijoitteluPartial;
     };
+
 }
