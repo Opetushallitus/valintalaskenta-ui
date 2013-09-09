@@ -7,11 +7,11 @@
     <div ng-include="'partials/hakukohdelista.html'"></div>
 
     <div class="toggle-content-container overflow-x-scroll">
+
+        <h1 class="margin-horizontal-1 margin-bottom-3">{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
         <div ng-include="'partials/hakukohdeNavigation.html'" />
 
         <div class="tabsheets">
-
-            <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
 
             <div ng-show="model.errors.length > 0" class="notification warning">
                 <h3>Tietoja haettaessa tapahtui virhe</h3>
