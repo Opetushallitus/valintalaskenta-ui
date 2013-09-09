@@ -41,7 +41,7 @@
 });
 
 
-function ValintalaskentatulosController($scope, $location, $routeParams, ValintalaskentatulosModel, HakukohdeModel, $http) {
+function ValintalaskentatulosController($scope, $location, $routeParams, ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -49,9 +49,10 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model.refresh($scope.hakukohdeOid);
-    $scope.valintalaskentatulosExcelExport = SERVICE_EXCEL_URL_BASE + "export/valintalaskentatulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid;
-
-
+    
+    $scope.valintalaskentaTulosXLS = function() {
+    	TulosXls.query({hakukohdeOid:$routeParams.hakukohdeOid});
+    }
 
     $scope.showHistory = function(valintatapajonoOid, hakemusOid) {
         $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');

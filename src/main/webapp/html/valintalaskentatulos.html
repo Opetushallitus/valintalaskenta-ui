@@ -17,7 +17,7 @@
                 <h3>Tietoja haettaessa tapahtui virhe</h3>
                 <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
-            <a ng-show="model.valinnanvaiheet" href="{{valintalaskentatulosExcelExport}}" class="button small excel">Vie exceliin</a>
+            <a ng-show="model.valinnanvaiheet" ng-click="valintalaskentaTulosXLS(); $event.stopPropagation();" class="button small excel">Vie exceliin</a>
 
 
 

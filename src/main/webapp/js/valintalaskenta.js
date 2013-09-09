@@ -181,7 +181,7 @@ app.factory('SijoitteluXls', function($window) {
 app.factory('TulosXls', function($window) {
 	return {
 		query: function(data) {
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/valintalaskennantulos/aktivoi?sijoitteluajoId="+ data.sijoitteluajoId +"&hakukohdeOid=" + data.hakukohdeOid;
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/valintalaskennantulos/aktivoi?hakukohdeOid=" + data.hakukohdeOid;
 		}
 	};
 });
@@ -244,7 +244,17 @@ app.factory('Henkilot', function($resource) {
 
 
   //Paikan vastaanoton tilat
- app.factory('HakemuksenTila', function($resource) {
+ app.factory('VastaanottoTilat', function($resource) {
+     return $resource(SIJOITTELU_URL_BASE + "resources/tila/hakukohde/:hakukohdeOid/:valintatapajonoOid",
+         {
+             hakukohdeOid: "@hakukohdeoid",
+             valintatapajonoOid: "@valintatapajonoOid",
+         }, {
+         get: {method: "GET", isArray:true}
+     });
+ });
+
+ app.factory('VastaanottoTila', function($resource) {
      return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid?selite=:selite",
          {
              hakuoid: "@hakuoid",

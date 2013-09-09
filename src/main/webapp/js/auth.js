@@ -85,7 +85,7 @@ app.factory('AuthService', function($q, $http, $timeout, MyRolesModel, loadingSe
         return deferred.promise;
     }
 
-    // OPH check
+    // OPH check -- voidaan ohittaa organisaatioiden haku
     var ophRead = function(service) {
         return (MyRolesModel.myroles.indexOf(service + READ + "_" + OPH_ORG) > -1
           || MyRolesModel.myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1

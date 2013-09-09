@@ -1,22 +1,26 @@
-<div class="tilaParial" ng-show="tulos.showTilaPartial">
-    <a ng-click="showTilaPartial(tulos)" class="close">X</a>
-    <table class="virkailija-table-1">
-        <thead>
-            <tr class="otsikkorivi">
-                <th class="jarjestyskriteeri">Järjestyskriteeri</th>
-                <th class="pistemaara">Pistemaara</th>
-                <th class="tila">Tila</th>
-                <th class="tilaKuvaus">Tilan kuvaus</th>
-            </tr>
-        </thead>
+<div class="popup" ng-show="tulos.showTilaPartial">
+    <div class="popup-header">
+        <a ng-click="showTilaPartial(tulos)" class="close"></a>
+    </div>
+    <div class="popup-content">
+        <table class="virkailija-table-1">
+            <thead>
+                <tr class="otsikkorivi">
+                    <th class="jarjestyskriteeri">Järjestyskriteeri</th>
+                    <th class="pistemaara">Pistemaara</th>
+                    <th class="tila">Tila</th>
+                    <th class="tilaKuvaus">Tilan kuvaus</th>
+                </tr>
+            </thead>
 
-        <tbody>
-            <tr ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit" >
-                <td class="jarjestyskriteeri">{{$index}}</td>
-                <td class="pistemaara">{{jarjestyskriteeri.arvo}}</td>
-                <td class="tila">{{jarjestyskriteeri.tila}}</td>
-                <td class="tilaKuvaus">{{jarjestyskriteeri.kuvaus}}</td>
-            </tr>
-        </tbody>
-    </table>
+            <tbody>
+                <tr ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit" >
+                    <td class="jarjestyskriteeri">{{$index}}</td>
+                    <td class="pistemaara">{{jarjestyskriteeri.arvo}}</td>
+                    <td class="tila">{{jarjestyskriteeri.tila}}</td>
+                    <td class="tilaKuvaus">{{jarjestyskriteeri.kuvaus}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>    
 </div>
