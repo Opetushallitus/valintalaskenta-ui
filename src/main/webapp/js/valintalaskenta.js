@@ -141,7 +141,7 @@ return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:valinnanvaiheoid/v
 });
 
 app.factory('ValintakoelaskentaAktivointi', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoi", {}, {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHakukohteenValintakoelaskenta", {}, {
         aktivoi: {method: "GET"}
     })
 });
@@ -165,7 +165,7 @@ app.factory('AktivoiHaunValintalaskenta', function($resource) {
   })
 });
 app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
-  return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/haunvalintakoelaskenta/aktivoiHaunValintakoelaskenta", {}, {
+  return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHaunValintakoelaskenta", {}, {
       aktivoi: {method: "GET"}
   })
 });
