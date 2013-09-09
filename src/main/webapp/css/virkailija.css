@@ -1975,13 +1975,10 @@ table.dropmenu-table {
 .form-summary-table td {
   vertical-align: top; }
 .form-summary-table .label {
-  color: #000000;
   font-weight: bold;
-  text-align: right;
   padding-right: 1em;
   line-height: inherit; }
 .form-summary-table .sublabel {
-  color: #000000;
   text-align: right;
   padding-right: 1em; }
 .form-summary-table .extra {
@@ -2343,11 +2340,11 @@ button.edit-link {
   z-index: 10050;
   position: absolute;
   opacity: 1;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -o-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px;
   -webkit-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   -o-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
@@ -2362,6 +2359,39 @@ button.edit-link {
     z-index: 1040;
     background-color: #333;
     opacity: 0.8; }
+
+.popup {
+  position: absolute;
+  line-height: 20px;
+  background: white;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px;
+  -webkit-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
+  .popup .popup-header {
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    background-image: url(../img/texture-45dg-lines-eeeeee.gif);
+    background-repeat: repeat;
+    background-position: 0 0;
+    line-height: 30px;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 10px; }
+    .popup .popup-header .close {
+      background-image: url(../img/popup-close-icon.png);
+      cursor: pointer;
+      width: 16px;
+      height: 17px;
+      position: absolute;
+      right: 7px;
+      top: 7px; }
+  .popup .popup-content {
+    padding: 10px 20px 10px 10px; }
 
 /*** Pagination
 ************************************************/
@@ -3679,71 +3709,6 @@ ul.dropmenu-list {
       background: #f6f6f6;
       background-image: url("../img/texture-45dg-lines-96ccdb.gif"); }
 
-/*** Popups
-************************************************/
-.popup-overlay {
-  background-color: #000;
-  opacity: 0.4;
-  filter: alpha(opacity=40);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 10; }
-
-#popup {
-  margin: 0px auto;
-  background: #ffffff;
-  max-width: 980px;
-  position: relative;
-  padding: 10px;
-  border-radius: 3px 3px 3px 3px;
-  box-shadow: 2px 2px 2px 0 #5f5f5f;
-  background-color: #f9f9f9; }
-  #popup .close {
-    display: block;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 16px;
-    height: 17px;
-    background-image: url(../img/popup-close-icon.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    cursor: pointer; }
-  #popup .popup-content {
-    display: inline-block; }
-  #popup .tagset .tag {
-    margin-bottom: 7px; }
-
-.popup {
-  display: none;
-  background: white;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  z-index: 1000;
-  max-width: 980px; }
-  .popup header {
-    background-color: #eee;
-    border-bottom: 1px dotted #ccc;
-    padding: 0.8em; }
-    .popup header > * {
-      display: inline-block;
-      vertical-align: middle; }
-    .popup header > div {
-      padding: 0 0.8em; }
-    .popup header h3 {
-      margin: 0; }
-    .popup header a.close {
-      background-image: url(../img/close-icon.png);
-      background-repeat: no-repeat;
-      background-position: left top;
-      width: 16px;
-      height: 17px;
-      float: right; }
-
-.arvosanat {
-  overflow-x: scroll; }
-
 .gradingformula,
 .gradingformula-dragged {
   padding: 1em; }
@@ -4014,20 +3979,19 @@ div.tilaParial {
   /* width: 400px; */
   /* height: 200px; */
   line-height: 20px;
-  padding: 5px;
   /* font-size: 14px; */
   /* text-align: center; */
   /* color: rgb(113, 157, 171); */
   background: white;
-  border: 1px solid black;
+  border: 1px solid #bbb;
   border-radius: 5px;
   /* text-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px; */
-  box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px; }
-
-div.tilaParial .close {
-  float: right;
-  padding-bottom: 5px;
-  cursor: pointer; }
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px;
+  -webkit-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
 
 /*
 div.tilaParial:after, div.henkiloPartial:after {

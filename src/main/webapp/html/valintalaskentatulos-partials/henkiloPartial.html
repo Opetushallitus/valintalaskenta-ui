@@ -1,44 +1,20 @@
-<div class="tilaParial" ng-show="tulos.showHenkiloPartial">
-    <a ng-click="showHenkiloPartial(tulos)" class="close">X</a>
-    <div class="etunimi">
-        <div class="form-row">
-            <label class="form-row-label" for="">Nimi</label>
-
-            <div class="form-row-content">
-                <span class="nofield etunimi"> {{tulos.etunimi}}</span>
-                <span class="nofield sukunimi"> {{tulos.sukunimi}}</span>
-            </div>
-            <div class="clear"></div>
-        </div>
+<div class="popup" ng-show="tulos.showHenkiloPartial">
+    <div class="popup-header">
+        <span>Hakija: {{tulos.etunimi}} {{tulos.sukunimi}}</span>
+        <a ng-click="showHenkiloPartial(tulos)" class="close"></a>
     </div>
-
-    <div class="hakemusOid">
-        <div class="form-row">
-            <label class="form-row-label" for="">Hakemuksen tekninen tunniste (OID)</label>
-
-            <div class="form-row-content">
-                <span class="nofield etunimi">
-                   <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{tulos.hakemusOid}}" target="_blank" >
-                       {{tulos.hakemusOid}}
-                   </a>
-                </span>
-            </div>
-            <div class="clear"></div>
-        </div>
+    <div class="popup-content">
+        <dl class="dl-horizontal">
+        
+            <dt class="margin-bottom-3">Hakemuksen tekninen tunniste (OID)</dt>
+            <dd><a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{tulos.hakemusOid}}" target="_blank" >
+                           {{tulos.hakemusOid}}</a></dd>
+            
+            <dt>Oppijan numero</dt>
+            <dd><a href="#" target="_blank" >    <!--lisää linkki henkilonhallintaan jossain vaiheessa -->
+                           {{tulos.hakijaOid}}
+                       </a></dd>
+        </dl>
     </div>
-
-    <div class="oppijaOid">
-        <div class="form-row">
-            <label class="form-row-label" for="">Oppijan numero</label>
-
-            <div class="form-row-content">
-                <span class="nofield etunimi">
-                   <a href="#" target="_blank" >    <!--lisää linkki henkilonhallintaan jossain vaiheessa -->
-                       {{tulos.henkiloOid}}
-                   </a>
-                </span>
-            </div>
-            <div class="clear"></div>
-        </div>
-    </div>
+   
 </div>
