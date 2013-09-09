@@ -23,127 +23,127 @@
         <a ng-show="privileges.valintalaskenta" ng-click="showErrors()" class="button small">Hae virheet</a>
     </p>
 
-    <div>
-    <div class="tabs">
-        <a class="tab" ng-class="!valintalaskentavirheet ? 'current' : ''" ng-click="valintalaskentavirheet = false">
-            <span>Valintakoevirheet</span>
-        </a>
-        <a class="tab" ng-class="valintalaskentavirheet ? 'current' : ''" ng-click="valintalaskentavirheet = true">
-            <span>Valintalaskentavirheet</span>
-        </a>
-    </div>
-    <div class="clear"></div>
-
-    <div class="tabsheets hakuVirheet">
-        <div ng-show="!valintalaskentavirheet">
-            <h2 ng-show="virheet.eiKoeVirheita">Ei virheitä valintakokeissa</h2>
-            <h2 ng-show="virheet.valintakoe.length > 0">Valintakoevirheet ({{virheet.valintakoe.length}})</h2>
-
-            <input ng-show="virheet.valintakoe.length > 0" type="text" class="search margin-vertical-2" placeholder="Suodata hakemuksia" ng-model="hakemusFilter" />
-
-            <div ng-repeat="virhe in (virheet.valintakoe | orderBy:'sukunimi' | filter:hakemusFilter | limitTo:naytaKokeita)" class="valintakoe">
-
-                <div ng-click="show(virhe)" >
-                    <h2><a>{{virhe.sukunimi}}, {{virhe.etunimi}}  ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</a></h2>
-                    <dl class="dl-horizontal"  ng-show="virhe.show" >
-                        <dt>Hakemus oid</dt>
-                        <dd>{{virhe.hakemusOid}}</dd>
-
-                        <dt>Hakija oid</dt>
-                        <dd>{{virhe.hakijaOid}}</dd>
-                    </dl>
-                </div>
-                <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakumodel.hakuOid.oid}}/esikatselu/{{virhe.hakemusOid}}" target="_blank" >Hakemuspalvelu</a>
-                <a href="" ng-click="henkilonakyma(virhe.hakemusOid)">Henkilönäkymä</a>
-
-                <table class="virkailija-table-1">
-                    <thead >
-                    <tr>
-                        <th>Hakukohde</th>
-                        <th>Valinnanvaihe</th>
-                        <th>Järjestysluku</th>
-                        <th>Valintakoe</th>
-                        <th>Tunniste</th>
-                        <th>Osallistuminen</th>
-                        <th>Kuvaus</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr ng-repeat="hakutoive in virhe.hakutoiveet" >
-                        <td><a href="" ng-click="hakukohdenakyma(hakutoive.hakukohdeOid)">{{hakutoive.hakukohdeOid}}</a></td>
-                        <td ng-repeat-start="valinnanVaihe in hakutoive.valinnanVaiheet">{{valinnanVaihe.valinnanVaiheOid}}</td>
-                        <td>{{valinnanVaihe.valinnanVaiheJarjestysluku}}</td>
-                        <td ng-repeat-start="valintakoe in valinnanVaihe.valintakokeet">{{valintakoe.valintakoeOid}}</td>
-                        <td>{{valintakoe.valintakoeTunniste}}</td>
-                        <td>{{valintakoe.osallistuminenTulos.osallistuminen}}</td>
-                        <td ng-repeat-end>{{valintakoe.osallistuminenTulos.kuvaus}}</td>
-                        <td ng-hide="true" ng-repeat-end></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-
-            <a ng-show="virheet.valintakoe.length > 0 && virheet.valintakoe.length > naytaKokeita" ng-click="naytaKokeita = naytaKokeita + 5" class="button small">Näytä lisää hakemuksia</a>
+    <div ng-show="virheet.valintakoe.length > 0 || virheet.valintalaskenta.length > 0 || virheet.eiKoeVirheita || virheet.eiLaskentaVirheita">
+        <div class="tabs">
+            <a class="tab" ng-class="!valintalaskentavirheet ? 'current' : ''" ng-click="valintalaskentavirheet = false">
+                <span>Valintakoevirheet</span>
+            </a>
+            <a class="tab" ng-class="valintalaskentavirheet ? 'current' : ''" ng-click="valintalaskentavirheet = true">
+                <span>Valintalaskentavirheet</span>
+            </a>
         </div>
-        <div ng-show="valintalaskentavirheet">
-            <h2 ng-show="virheet.eiLaskentaVirheita">Ei virheitä laskennassa</h2>
+        <div class="clear"></div>
 
-            <h2 ng-show="virheet.valintalaskenta.length > 0">Laskentavirheet ({{virheet.valintalaskenta.length}})</h2>
-            <div ng-repeat="virhe in virheet.valintalaskenta" ng-click="show(virhe)">
-                <h2><a>{{virhe.show ? '-' : '+'}} Hakukohde: {{ virhe.hakukohdeoid }} ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</a></h2>
-                <div ng-repeat="vaihe in virhe.valinnanvaihe" ng-show="virhe.show" class="valinnanvaihe">
-                    <h3>Vaihe: {{vaihe.valinnanvaiheoid}} ({{vaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h3>
-                    <h3>Järjestyskriteeri: {{vaihe.jarjestysnumero}}</h3>
+        <div class="tabsheets hakuVirheet">
+            <div ng-show="!valintalaskentavirheet">
+                <h2 ng-show="virheet.eiKoeVirheita">Ei virheitä valintakokeissa</h2>
+                <h2 ng-show="virheet.valintakoe.length > 0">Valintakoevirheet ({{virheet.valintakoe.length}})</h2>
 
-                    <div ng-repeat="valintatapajono in vaihe.valintatapajono"  class="valintatapajono">
-                        <h3>{{valintatapajono.nimi}}: {{valintatapajono.valintatapajonooid}} ({{valintatapajono.jonosijat.length}})</h3>
+                <input ng-show="virheet.valintakoe.length > 0" type="text" class="search margin-vertical-2" placeholder="Suodata hakemuksia" ng-model="hakemusFilter" />
 
-                        <div ng-repeat="jonosijat in valintatapajono.jonosijat" class="jonosija" ng-click="stopPropagination($event)">
-                            <div ng-click="jonosijat.lisatiedot =! jonosijat.lisatiedot">
-                                <h3><a>{{jonosijat.sukunimi}}, {{jonosijat.etunimi}}</a></h3>
-                                <dl class="dl-horizontal" ng-show="jonosijat.lisatiedot">
-                                    <dt>Hakemus oid</dt>
-                                    <dd>{{jonosijat.hakemusOid}}</dd>
+                <div ng-repeat="virhe in (virheet.valintakoe | orderBy:'sukunimi' | filter:hakemusFilter | limitTo:naytaKokeita)" class="valintakoe">
 
-                                    <dt>Hakija oid</dt>
-                                    <dd>{{jonosijat.hakijaOid}}</dd>
+                    <div ng-click="show(virhe)" >
+                        <h2><a>{{virhe.sukunimi}}, {{virhe.etunimi}}  ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</a></h2>
+                        <dl class="dl-horizontal"  ng-show="virhe.show" >
+                            <dt>Hakemus oid</dt>
+                            <dd>{{virhe.hakemusOid}}</dd>
 
-                                    <dt>Prioriteetti</dt>
-                                    <dd>{{jonosijat.prioriteetti}}</dd>
+                            <dt>Hakija oid</dt>
+                            <dd>{{virhe.hakijaOid}}</dd>
+                        </dl>
+                    </div>
+                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakumodel.hakuOid.oid}}/esikatselu/{{virhe.hakemusOid}}" target="_blank" >Hakemuspalvelu</a>
+                    <a href="" ng-click="henkilonakyma(virhe.hakemusOid)">Henkilönäkymä</a>
 
-                                    <dt>Harkinnanvarainen</dt>
-                                    <dd>{{jonosijat.harkinnanvarainen ? 'Kyllä' : 'Ei'}}</dd>
-                                </dl>
+                    <table class="virkailija-table-1">
+                        <thead >
+                        <tr>
+                            <th>Hakukohde</th>
+                            <th>Valinnanvaihe</th>
+                            <th>Järjestysluku</th>
+                            <th>Valintakoe</th>
+                            <th>Tunniste</th>
+                            <th>Osallistuminen</th>
+                            <th>Kuvaus</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr ng-repeat="hakutoive in virhe.hakutoiveet" >
+                            <td><a href="" ng-click="hakukohdenakyma(hakutoive.hakukohdeOid)">{{hakutoive.hakukohdeOid}}</a></td>
+                            <td ng-repeat-start="valinnanVaihe in hakutoive.valinnanVaiheet">{{valinnanVaihe.valinnanVaiheOid}}</td>
+                            <td>{{valinnanVaihe.valinnanVaiheJarjestysluku}}</td>
+                            <td ng-repeat-start="valintakoe in valinnanVaihe.valintakokeet">{{valintakoe.valintakoeOid}}</td>
+                            <td>{{valintakoe.valintakoeTunniste}}</td>
+                            <td>{{valintakoe.osallistuminenTulos.osallistuminen}}</td>
+                            <td ng-repeat-end>{{valintakoe.osallistuminenTulos.kuvaus}}</td>
+                            <td ng-hide="true" ng-repeat-end></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <a ng-show="virheet.valintakoe.length > 0 && virheet.valintakoe.length > naytaKokeita" ng-click="naytaKokeita = naytaKokeita + 5" class="button small">Näytä lisää hakemuksia</a>
+            </div>
+            <div ng-show="valintalaskentavirheet">
+                <h2 ng-show="virheet.eiLaskentaVirheita">Ei virheitä laskennassa</h2>
+
+                <h2 ng-show="virheet.valintalaskenta.length > 0">Laskentavirheet ({{virheet.valintalaskenta.length}})</h2>
+                <div ng-repeat="virhe in virheet.valintalaskenta" ng-click="show(virhe)">
+                    <h2><a>{{virhe.show ? '-' : '+'}} Hakukohde: {{ virhe.hakukohdeoid }} ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</a></h2>
+                    <div ng-repeat="vaihe in virhe.valinnanvaihe" ng-show="virhe.show" class="valinnanvaihe">
+                        <h3>Vaihe: {{vaihe.valinnanvaiheoid}} ({{vaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h3>
+                        <h3>Järjestyskriteeri: {{vaihe.jarjestysnumero}}</h3>
+
+                        <div ng-repeat="valintatapajono in vaihe.valintatapajono"  class="valintatapajono">
+                            <h3>{{valintatapajono.nimi}}: {{valintatapajono.valintatapajonooid}} ({{valintatapajono.jonosijat.length}})</h3>
+
+                            <div ng-repeat="jonosijat in valintatapajono.jonosijat" class="jonosija" ng-click="stopPropagination($event)">
+                                <div ng-click="jonosijat.lisatiedot =! jonosijat.lisatiedot">
+                                    <h3><a>{{jonosijat.sukunimi}}, {{jonosijat.etunimi}}</a></h3>
+                                    <dl class="dl-horizontal" ng-show="jonosijat.lisatiedot">
+                                        <dt>Hakemus oid</dt>
+                                        <dd>{{jonosijat.hakemusOid}}</dd>
+
+                                        <dt>Hakija oid</dt>
+                                        <dd>{{jonosijat.hakijaOid}}</dd>
+
+                                        <dt>Prioriteetti</dt>
+                                        <dd>{{jonosijat.prioriteetti}}</dd>
+
+                                        <dt>Harkinnanvarainen</dt>
+                                        <dd>{{jonosijat.harkinnanvarainen ? 'Kyllä' : 'Ei'}}</dd>
+                                    </dl>
+                                </div>
+                                <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakumodel.hakuOid.oid}}/esikatselu/{{jonosijat.hakemusOid}}" target="_blank" >Hakemuspalvelu</a>
+                                <a href="" ng-click="henkilonakyma(jonosijat.hakemusOid)">Henkilönäkymä</a>
+                                <a href="" ng-click="hakukohdenakyma(virhe.hakukohdeoid)">Hakukohdenäkymä</a>
+
+                                <table class="virkailija-table-1">
+                                    <thead>
+                                    <tr>
+                                        <th>Prioriteetti</th>
+                                        <th>Arvo</th>
+                                        <th>Kuvaus</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="(key, value) in jonosijat.jarjestyskriteerit">
+                                        <td>{{key}}</td>
+                                        <td>{{value.arvo}}</td>
+                                        <td>{{value.kuvaus}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakumodel.hakuOid.oid}}/esikatselu/{{jonosijat.hakemusOid}}" target="_blank" >Hakemuspalvelu</a>
-                            <a href="" ng-click="henkilonakyma(jonosijat.hakemusOid)">Henkilönäkymä</a>
-                            <a href="" ng-click="hakukohdenakyma(virhe.hakukohdeoid)">Hakukohdenäkymä</a>
-
-                            <table class="virkailija-table-1">
-                                <thead>
-                                <tr>
-                                    <th>Prioriteetti</th>
-                                    <th>Arvo</th>
-                                    <th>Kuvaus</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="(key, value) in jonosijat.jarjestyskriteerit">
-                                    <td>{{key}}</td>
-                                    <td>{{value.arvo}}</td>
-                                    <td>{{value.kuvaus}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+        </div>
     </div>
 
 
