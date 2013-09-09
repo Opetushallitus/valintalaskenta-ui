@@ -18,12 +18,6 @@
 				}, function(error) {
 					model.errors.push(error);
 				});
-                
-				HakukohdeValinnanvaihe.get({parentOid: model.hakukohdeOid}, function(result) {
-					model.valinnanvaiheet = result;
-				}, function(error) {
-					model.errors.push(error);
-				});
 			}
 		}
 
