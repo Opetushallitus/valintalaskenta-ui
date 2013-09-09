@@ -8,24 +8,48 @@
     <div ng-include="'partials/hakukohdelista.html'"></div>
 
     <div class="toggle-content-container overflow-x-scroll">
+        <h1 class="margin-horizontal-1 margin-bottom-3">{{model.hakukohde.hakukohdeKoodistoNimi}}</h1>
         <div ng-include="'partials/hakukohdeNavigation.html'"></div>
         <div class="tabsheets">
-            <h1 class="margin-horizontal-1 margin-bottom-3">{{model.hakukohde.hakukohdeKoodistoNimi}}</h1>
+            
           
             <div class="grid16-8">
                 <dl class="dl-horizontal">
                     <dt>HakukohdeOid</dt>
                     <dd>{{model.hakukohde.oid}}</dd>
                     
+                    <dt>Aloituspaikat</dt>
+                    <dd>{{model.hakukohde.aloituspaikatLkm}}</dd>
+
+                    
+
+                    <dt>Valinnan aloituspaikat</dt>
+                    <dd></dd>
+                    
+                    <dt>Hakijat yhteensä</dt>
+                    <dd>{{hakeneetModel.hakeneet.length}}</dd>
+
+                    <dt>Hyväksytyt yhteensä</dt>
+                    <dd></dd>
+
+                    <dt class="margin-bottom-3">Harkinnanvaraisesti hyväksytyt yhteensä</dt>
+                    <dd></dd>
+                    
+                    <dt>Varasijoilla yhteensä</dt>
+                    <dd></dd>
+
+                    <dt class="margin-bottom-3">Paikan vastaanottaneet yhteensä</dt>
+                    <dd></dd>
+
+                    <!--
                     <dt>HakuOid</dt>
                     <dd>{{hakumodel.hakuOid.oid}}</dd>
                     
                     <dt>Tila</dt>
                     <dd>{{model.hakukohde.tila}}</dd>
+                    -->
                     
-                    <dt>Aloituspaikat</dt>
-                    <dd>{{model.hakukohde.aloituspaikatLkm}}</dd>
-                    
+                    <!--
                     <dt>Valinnan aloituspaikat</dt>
                     <dd>{{model.hakukohde.valintojenAloituspaikatLkm}}</dd>
                     
@@ -35,18 +59,22 @@
                     <dt>Liitteiden toimitus pvm</dt>
                     <dd>{{model.hakukohde.erapaiva | date:'dd.MM.yyyy'}}</dd>
                     
-                    <dt>Alin hyväksyttävä keskiarvo</dt>
-                    <dd>{{model.hakukohde.alinHyvaksyttavaKeskiarvo}}</dd>
+                    
 
                     <dt>Viimeisin päivittäjä oid</dt>
                     <dd>{{model.hakukohde.modifiedBy}}</dd>
+                    -->
                     
+                    <dt>Alin hyväksyttävä keskiarvo</dt>
+                    <dd>{{model.hakukohde.alinHyvaksyttavaKeskiarvo}}</dd>
+                    
+                    <!--
                     <dt>Viimeisin päivitys pvm</dt>
                     <dd ng-show="model.hakukohde.modified">{{model.hakukohde.modified | date:'dd.MM.yyyy HH:mm:ss'}}</dd>
                     <dd ng-hide="model.hakukohde.modified"></dd>
-                    
+                    -->
                 </dl>
-                
+                <!--
                 <h2 class="margin-top-4 margin-bottom-1">Liitteiden toimitusosoite</h2>
                 <dl class="dl-horizontal">    
                     <dt>Osoite</dt>
@@ -58,6 +86,7 @@
                     <dt>Postitoimipaikka</dt>
                     <dd>{{model.hakukohde.liitteet[0].toimitusosoite.postitoimipaikka}}</dd>
                 </dl>
+            -->
 
             </div>
             <div class="grid16-8">

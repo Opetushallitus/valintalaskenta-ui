@@ -46,9 +46,10 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
     return model;
 });
 
-function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, HakuModel) {
+function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, HakuModel, HakeneetModel) {
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
+    $scope.hakeneetModel = HakeneetModel;
     
     $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
     
