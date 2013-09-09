@@ -181,7 +181,7 @@ app.factory('SijoitteluXls', function($window) {
 app.factory('TulosXls', function($window) {
 	return {
 		query: function(data) {
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/valintalaskennantulos/aktivoi?sijoitteluajoId="+ data.sijoitteluajoId +"&hakukohdeOid=" + data.hakukohdeOid;
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/valintalaskennantulos/aktivoi?hakukohdeOid=" + data.hakukohdeOid;
 		}
 	};
 });
