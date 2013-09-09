@@ -31,8 +31,7 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 
                         VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
                                               valintatapajonoOid: valintatapajonoOid}, function(result) {
-                            //console.log(result);
-                            var startTime = +new Date();
+
                             for(var k = 0 ; k < hakemukset.length ; ++k ){
                                 var hakemus = hakemukset[k];
 
@@ -47,8 +46,6 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                                     }
                                 });
                             }
-                            var endTime = +new Date();
-                            console.log("Time: " + (endTime-startTime));
 
                         }, function(error) {
                             model.errors.push(error);
@@ -126,8 +123,6 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
             VastaanottoTila.post(tilaParams, tilaObj, function(result) {
                 //model.refresh(model.hakuOid, model.hakukohdeOid);
                 model.setVastaanottoTila(hakemus,tilaParams);
-            }, function(error) {
-                alert("Virhe: " + error.data.message);
             });
         }
 
