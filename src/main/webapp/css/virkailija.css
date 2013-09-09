@@ -3399,6 +3399,10 @@ ul.orgmenu {
     background-color: #c2e6f1; }
     .selectlist li.active a:before {
       background-color: #c2e6f1; }
+  .selectlist li.selected a {
+    background-color: #b1d5e0; }
+    .selectlist li.selected a:before {
+      background-color: #b1d5e0; }
 
 /*** Dropmenu-list
 ************************************************/
