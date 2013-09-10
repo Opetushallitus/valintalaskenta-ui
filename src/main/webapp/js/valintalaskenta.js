@@ -216,22 +216,22 @@ app.factory('Jalkiohjauskirjeet', function($resource,$window) {
 	});
 });
 
+
+
+//hakuapp related
 app.factory('Hakemus', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid", {oid: "@oid"}, {
         get: {method: "GET"}
     });
 });
-
 app.factory('HakemusKey', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid/:key?value=:value", {oid: "@oid", key: "@key", value:"@value"}, {
         get: {method: "GET"},
         put: {method: "PUT"}
     });
 });
-
-
 app.factory('HakukohdeHenkilot', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/applicant/:hakuOid/:hakukohdeOid",{hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications",{aoOid: "@aoOid"}, {
         get: {method: "GET", isArray: true}
     });
 });
@@ -243,8 +243,10 @@ app.factory('Henkilot', function($resource) {
 
 
 
-  //Paikan vastaanoton tilat
- app.factory('VastaanottoTilat', function($resource) {
+
+
+//Paikan vastaanoton tilat
+app.factory('VastaanottoTilat', function($resource) {
      return $resource(SIJOITTELU_URL_BASE + "resources/tila/hakukohde/:hakukohdeOid/:valintatapajonoOid",
          {
              hakukohdeOid: "@hakukohdeoid",
@@ -252,7 +254,7 @@ app.factory('Henkilot', function($resource) {
          }, {
          get: {method: "GET", isArray:true}
      });
- });
+});
 
  app.factory('VastaanottoTila', function($resource) {
      return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid?selite=:selite",
@@ -327,11 +329,7 @@ app.factory('HakukohdeAvaimet', function($resource) {
     });
 });
 
-app.factory('HakukohdeHenkilot', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/applicant/:hakuOid/:hakukohdeOid",{hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
-        get: {method: "GET", isArray: true}
-    });
-});
+
 app.factory('ValintalaskentaHistoria', function($resource) {
 	return $resource(SERVICE_URL_BASE + "resources/jonosijahistoria/:valintatapajonoOid/:hakemusOid", {valintatapajonoOid: "@valintatapajonoOid", hakemusOid:"@hakemusOid"}, {
         get: {method: "GET", isArray: true}

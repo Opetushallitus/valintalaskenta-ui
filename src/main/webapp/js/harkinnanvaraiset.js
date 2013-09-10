@@ -12,7 +12,7 @@
             model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
-            HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {
+            HakukohdeHenkilot.get({aoOid: hakukohdeOid}, function(result) {
             model.hakeneet = result;
 
                 model.hakeneet.forEach(function(hakija){
