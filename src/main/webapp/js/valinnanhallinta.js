@@ -11,6 +11,9 @@
 
 		this.refresh = function(hakukohdeOid) {
 			if( hakukohdeOid !== undefined) {
+			    model.hakukohde = {};
+			    model.tulosValinnanvaiheet = [];
+                model.errors = [];
 				model.errors.length = 0;
 				
                 ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: hakukohdeOid}, function(result) {

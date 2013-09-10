@@ -7,6 +7,9 @@
         this.errors = [];
 		
 		this.refresh = function(hakukohdeOid) {
+		    model.hakukohdeOid = {};
+            model.valinnanvaiheet = [];
+            model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {

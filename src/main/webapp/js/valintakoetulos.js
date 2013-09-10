@@ -11,6 +11,12 @@
         this.filter = "OSALLISTUU";
 		
 		this.refresh = function(hakukohdeOid) {
+		    model.hakukohdeOid = {};
+            model.koetulokset = [];
+            model.valintakokeet = {};
+            model.valintakokeetHakijoittain = {};
+            model.valintakokeetHakijoittainArray = [];
+            model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             

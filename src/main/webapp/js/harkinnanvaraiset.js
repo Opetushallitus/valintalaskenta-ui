@@ -7,6 +7,9 @@
         this.errors = [];
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
+		    model.hakeneet = [];
+            model.avaimet = [];
+            model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             HakukohdeHenkilot.get({hakuOid: hakuOid,hakukohdeOid: hakukohdeOid}, function(result) {

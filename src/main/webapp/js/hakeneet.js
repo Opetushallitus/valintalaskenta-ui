@@ -6,6 +6,8 @@
         this.errors = [];
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
+		    model.hakeneet = [];
+            model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             model.hakuOid = hakuOid;

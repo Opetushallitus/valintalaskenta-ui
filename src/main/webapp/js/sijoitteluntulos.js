@@ -10,6 +10,7 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 	    this.errors = [];
 
         this.refresh = function(hakuOid, hakukohdeOid) {
+            model.errors = [];
             model.errors.length = 0;
             model.hakuOid=hakuOid;
             model.hakukohdeOid=hakukohdeOid;
