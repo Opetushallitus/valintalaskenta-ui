@@ -1411,8 +1411,9 @@ dl {
   dl dt {
     line-height: 1.5em;
     height: 1.5em;
+    font-weight: bold;
     width: 173px;
-    margin: 0 15px 0 0;
+    margin: 8px 15px 0 0;
     padding: 0;
     text-align: right; }
   dl dd {
