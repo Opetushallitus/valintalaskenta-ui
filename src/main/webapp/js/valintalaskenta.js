@@ -232,7 +232,7 @@ app.factory('HakemusKey', function($resource) {
 });
 app.factory('HakukohdeHenkilot', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications",{aoOid: "@aoOid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: false}
     });
 });
 app.factory('Henkilot', function($resource) {

@@ -13,7 +13,7 @@
             model.hakuOid = hakuOid;
 
             HakukohdeHenkilot.get({aoOid: hakukohdeOid}, function(result) {
-                model.hakeneet = result;
+                model.hakeneet = result.results;
                 
                 /*
                     model.hakeneet.forEach(function(hakija){

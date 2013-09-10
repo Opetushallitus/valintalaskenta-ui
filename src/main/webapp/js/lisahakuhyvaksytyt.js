@@ -10,8 +10,7 @@
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             HakukohdeHenkilot.get({aoOid: hakukohdeOid}, function(result) {
-            model.hakeneet = result;
-
+                model.hakeneet = result.results;
                 model.hakeneet.forEach(function(hakija){
 
                     Hakemus.get({oid: hakija.applicationOid}, function(result) {
