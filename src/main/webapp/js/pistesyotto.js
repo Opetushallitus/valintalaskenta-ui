@@ -5,6 +5,7 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 		this.hakeneet = [];
 		this.avaimet = [];
         this.errors = [];
+        this.filter = "OSALLISTUU";
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.errors.length = 0;

@@ -19,6 +19,8 @@
                 <h2>Hakeneet</h2>
 
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+                <input id="osallistuu" type="checkbox" ng-model="model.filter" ng-true-value="OSALLISTUU" ng-false-value=""/>
+                <label for="osallistuu">Vain osallistuvat</label>
 
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
@@ -32,7 +34,7 @@
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter">
+                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:model.filter">
                             <td>
                                 <a ng-click="showTiedotPartial(hakija)" >
                                     <span class="sukunimi">{{hakija.lastName}}</span>,
