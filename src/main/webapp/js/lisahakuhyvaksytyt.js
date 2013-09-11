@@ -11,20 +11,23 @@
             model.hakukohdeOid = hakukohdeOid;
             HakukohdeHenkilot.get({aoOid: hakukohdeOid}, function(result) {
                 model.hakeneet = result.results;
-                model.hakeneet.forEach(function(hakija){
+                if(model.hakeneet) {
+                    model.hakeneet.forEach(function(hakija){
 
-                    Hakemus.get({oid: hakija.applicationOid}, function(result) {
-                        hakija.hakemus=result;
-                        HakemusKey.get({
-                            oid: hakija.applicationOid,
-                            "key": "lisahaku-hyvaksytty"
-                        }, function(res) {
-                            if(res["lisahaku-hyvaksytty"] === model.hakukohdeOid) {
-                                hakija.lisahakuHyvaksytty = "Kyllä";
-                            }
-                        });
-                    })
-                });
+                        Hakemus.get({oid: hakija.applicationOid}, function(result) {
+                            hakija.hakemus=result;
+                            HakemusKey.get({
+                                oid: hakija.applicationOid,
+                                "key": "lisahaku-hyvaksytty"
+                            }, function(res) {
+                                if(res["lisahaku-hyvaksytty"] === model.hakukohdeOid) {
+                                    hakija.lisahakuHyvaksytty = "Kyllä";
+                                }
+                            });
+                        })
+                    });    
+                }
+                
             }, function(error) {
                 model.errors.push(error);
             });
