@@ -1,6 +1,5 @@
 
 
-table.virkailija-table-1 td.leftorientedcolumn {text-align: left;}
 
 .hakuVirheet .valintakoe:nth-child(odd), .hakuVirheet .jonosija:nth-child(odd) {background: #F0fafF;}
 .hakuVirheet .valintakoe:nth-child(even), .hakuVirheet .jonosija:nth-child(even) {}
@@ -11,19 +10,14 @@ table.virkailija-table-1 td.leftorientedcolumn {text-align: left;}
 .hakuVirheet table {margin: 10px;}
 .jonosija div {cursor:pointer;}
 
+
+
+
+
+
 .hakukohdeNav a.ng-hide-add {
   animation:1s hide;
   -webkit-animation:1s hide;
-}
-
-@-webkit-keyframes hide {
- from { opacity:1; }
- to { opacity:0; }
-}
-
-@keyframes hide {
-  from { opacity:1; }
-  to { opacity:0; }
 }
 
 .hakukohdeNav a.ng-hide-remove {
@@ -35,12 +29,4 @@ table.virkailija-table-1 td.leftorientedcolumn {text-align: left;}
      so it must be overridden to render the "show"
      animation */
   display:inline-block!important;
-}
-@-webkit-keyframes show {
-  from { opacity:0; }
-  to { opacity:1; }
-}
-@keyframes show {
-  from { opacity:0; }
-  to { opacity:1; }
 }

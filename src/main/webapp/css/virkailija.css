@@ -1354,6 +1354,65 @@ table {
 .margin-left-10 {
   margin-left: 5em; }
 
+.ng-hide-remove {
+  display: block !important; }
+
+@-webkit-keyframes show {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
+
+@keyframes show {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
+
+@-webkit-keyframes hide {
+  from {
+    opacity: 1; }
+
+  to {
+    opacity: 0; } }
+
+@keyframes hide {
+  from {
+    opacity: 1; }
+
+  to {
+    opacity: 0; } }
+
+@-webkit-keyframes hidetoolbarcontainer {
+  from {
+    width: 90%; }
+
+  to {
+    width: 0%; } }
+
+@keyframes hidetoolbarcontainer {
+  from {
+    width: 90%; }
+
+  to {
+    width: 0%; } }
+
+@-webkit-keyframes showtoolbarcontainer {
+  from {
+    width: 0%; }
+
+  to {
+    width: 90%; } }
+
+@keyframes showtoolbarcontainer {
+  from {
+    width: 0%; }
+
+  to {
+    width: 0%; } }
+
 body {
   font-family: helvetica, arial, sans-serif;
   font-size: 13px;
@@ -1770,6 +1829,8 @@ label, .label {
   .virkailija-table-1 input, .virkailija-table-1 select {
     position: relative;
     bottom: 2px; }
+  .virkailija-table-1 td.leftorientedcolumn {
+    text-align: left; }
 
 /*** Virkailija-table-2
 ************************************************/
@@ -3128,7 +3189,12 @@ ul.orgmenu {
     height: 698px;
     position: relative;
     cursor: pointer;
-    border: 1px solid #e4e4e4; }
+    border: 1px solid #e4e4e4;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    transition: 0.2s; }
     #toolbartoggle-btn-container #toolbartoggle-btn:hover {
       background-color: #c5e5ef; }
     #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position {
@@ -3410,8 +3476,18 @@ ul.orgmenu {
     color: #3e3e3e;
     display: block;
     margin: -0.3em 0px;
-    padding: 0.3em 0px; }
+    padding: 0.3em 0px;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+    -ms-transition: 0.3s;
+    transition: 0.3s; }
     .selectlist li a:before {
+      -webkit-transition: 0.3s;
+      -moz-transition: 0.3s;
+      -o-transition: 0.3s;
+      -ms-transition: 0.3s;
+      transition: 0.3s;
       content: '';
       display: block;
       width: 30px;
