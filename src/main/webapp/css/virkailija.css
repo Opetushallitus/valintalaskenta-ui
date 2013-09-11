@@ -1387,14 +1387,14 @@ table {
 
 @-webkit-keyframes hidetoolbarcontainer {
   from {
-    width: 90%; }
+    width: 15%; }
 
   to {
     width: 0%; } }
 
 @keyframes hidetoolbarcontainer {
   from {
-    width: 90%; }
+    width: 15%; }
 
   to {
     width: 0%; } }
@@ -1404,14 +1404,14 @@ table {
     width: 0%; }
 
   to {
-    width: 90%; } }
+    width: 15%; } }
 
 @keyframes showtoolbarcontainer {
   from {
     width: 0%; }
 
   to {
-    width: 0%; } }
+    width: 15%; } }
 
 body {
   font-family: helvetica, arial, sans-serif;
@@ -1472,14 +1472,17 @@ dl {
     height: 1.5em;
     font-weight: bold;
     width: 173px;
-    margin: 8px 15px 0 0;
+    margin: 25px 15px 0 0;
     padding: 0;
     text-align: right; }
+    dl dt:first-of-type {
+      margin-top: 0; }
   dl dd {
     margin: -19px 0 0 195px;
     padding: 0 0 1em;
     line-height: 1.5em;
-    height: 1.5em; }
+    height: 1.5em;
+    float: left; }
     dl dd:after {
       clear: both; }
     dl dd .virkailija-table-1 {
@@ -2398,33 +2401,6 @@ button.edit-link {
   height: 100%; }
 
 .modal {
-  border: 1px solid #bdbdbd;
-  padding: 10px;
-  background-color: #fff;
-  z-index: 10050;
-  position: absolute;
-  opacity: 1;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
-  border-radius: 5px;
-  -webkit-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-  -o-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-  -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
-  .modal .modal-content {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 1040;
-    background-color: #333;
-    opacity: 0.8; }
-
-.popup {
   position: absolute;
   line-height: 20px;
   background: white;
@@ -2435,8 +2411,9 @@ button.edit-link {
   -moz-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   -o-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
-  .popup .popup-header {
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  z-index: 10050; }
+  .modal .modal-header {
     border-bottom: 1px solid #ccc;
     height: 30px;
     background-image: url(../img/texture-45dg-lines-eeeeee.gif);
@@ -2446,7 +2423,7 @@ button.edit-link {
     font-weight: bold;
     text-align: left;
     padding-left: 10px; }
-    .popup .popup-header .close {
+    .modal .modal-header .close {
       background-image: url(../img/popup-close-icon.png);
       cursor: pointer;
       width: 16px;
@@ -2454,7 +2431,7 @@ button.edit-link {
       position: absolute;
       right: 7px;
       top: 7px; }
-  .popup .popup-content {
+  .modal .modal-content {
     padding: 10px 20px 10px 10px; }
 
 /*** Pagination
