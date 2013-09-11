@@ -18,15 +18,16 @@
                 model.hakeneet.forEach(function(hakija){
                     Hakemus.get({oid: hakija.oid}, function(result) {
                      hakija.hakemus=result;
-
-                    for(var i =0; i<10; i++) {
-                        var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
-                      //  console.log("Hakutoive[" + i +"] " + oid);
-                        if(oid === model.hakukohdeOid) {
-                            var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
-                            hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
+                     if(hakija.hakemus.answers) {
+                        for(var i =0; i<10; i++) {
+                            var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                          //  console.log("Hakutoive[" + i +"] " + oid);
+                            if(oid === model.hakukohdeOid) {
+                                var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
+                                hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
+                            }
                         }
-                    }
+                    }   
                     });
                 });
             }, function(error) {

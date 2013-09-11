@@ -50,7 +50,11 @@ function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, Ha
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
     $scope.hakeneetModel = HakeneetModel;
-    
     $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
-    
 }
+
+function HakukohdeNimiController($scope, HakukohdeModel) {
+    $scope.hakukohdeModel = HakukohdeModel;
+}
+
+
