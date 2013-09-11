@@ -66,12 +66,12 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
                                 hakija.osallistuu[avain.tunniste] = false;
 
-                                if(tulokset[hakija.applicationOid] &&
-                                    tulokset[hakija.applicationOid][hakukohdeOid] &&
-                                    tulokset[hakija.applicationOid][hakukohdeOid][avain.tunniste]
+                                if(tulokset[hakija.oid] &&
+                                    tulokset[hakija.oid][hakukohdeOid] &&
+                                    tulokset[hakija.oid][hakukohdeOid][avain.tunniste]
 
                                 ) {
-                                    hakija.osallistuu[avain.tunniste] = tulokset[hakija.applicationOid][hakukohdeOid][avain.tunniste];
+                                    hakija.osallistuu[avain.tunniste] = tulokset[hakija.oid][hakukohdeOid][avain.tunniste];
                                 }
 
                                 if(!hakija.additionalData[avain.tunniste]) {
@@ -141,7 +141,7 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
                 	if(tallenna && hakija.originalData[avain.tunniste] !== value) {
                 		HakemusKey.put({
-                            "oid": hakija.applicationOid,
+                            "oid": hakija.oid,
                             "key": avain.tunniste,
                             "value": value
                             }
@@ -153,7 +153,7 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
         			if(hakija.originalData[avain.osallistuminenTunniste] !== hakija.additionalData[avain.osallistuminenTunniste]) {
 
                         HakemusKey.put({
-                            "oid": hakija.applicationOid,
+                            "oid": hakija.oid,
                             "key": avain.osallistuminenTunniste,
                             "value": hakija.additionalData[avain.osallistuminenTunniste]
                             }
