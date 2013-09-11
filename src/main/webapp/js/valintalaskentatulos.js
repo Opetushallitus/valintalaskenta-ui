@@ -106,4 +106,14 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
     }
 
+    $scope.limit = 50;
+    $scope.lazyLoading = function() {
+
+        if(old !== $scope.limit) {
+            $scope.limit += 50;
+        }
+
+        var old = $scope.limit;
+    }
+
 }
