@@ -37,7 +37,6 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 	    		if(notLastPage || restart) {
 					var self = this;
 		        	TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms:this.lastSearch}, function(result) {
-
 		        		if(restart) { // eka sivu
 		        			self.hakukohteet = result.tulokset;
 			    			self.totalCount = result.kokonaismaara;
@@ -87,7 +86,7 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 
 
 
-function HakukohteetController($scope, $location, $timeout, $routeParams, HakukohteetModel, GlobalStates) {
+function HakukohteetController($rootScope, $scope, $location, $timeout, $routeParams, HakukohteetModel, GlobalStates, HakukohdeNimi) {
 	   $scope.hakuOid = $routeParams.hakuOid;
 	   $scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	   $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
@@ -103,10 +102,12 @@ function HakukohteetController($scope, $location, $timeout, $routeParams, Hakuko
 	      GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
 	   }
 
-	   $scope.showHakukohde = function(hakukohdeOid, lisahaku) {
-	      $scope.hakukohteetVisible = false;
-	      GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
-	      $location.path( (lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohdeOid + '/' + $scope.subpage);
+	   $scope.showHakukohde = function(hakukohde, lisahaku) {
+	   		$rootScope.selectedHakukohdeNimi = hakukohde.hakukohdeNimi.kieli_fi;
+	   		$rootScope.selectedHakukohdeTarjoajaNimi = hakukohde.tarjoajaNimi.kieli_fi;
+			$scope.hakukohteetVisible = false;
+			GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
+			$location.path( (lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + '/' + $scope.subpage);
 	   }
 	   
 	   // uuden sivun lataus
