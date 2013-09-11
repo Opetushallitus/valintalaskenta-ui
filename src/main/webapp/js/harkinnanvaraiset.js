@@ -16,7 +16,7 @@
                 model.hakeneet = result.results;
 
                 model.hakeneet.forEach(function(hakija){
-                    Hakemus.get({oid: hakija.applicationOid}, function(result) {
+                    Hakemus.get({oid: hakija.oid}, function(result) {
                      hakija.hakemus=result;
 
                     for(var i =0; i<10; i++) {
