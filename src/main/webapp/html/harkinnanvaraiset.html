@@ -25,6 +25,7 @@
                             <tr>
                                 <th>Nimi</th>
                                 <th>Hakemus</th>
+                                <th>Hakenut harkinnanvaraisesti</th>
                                 <th>Harkinnanvarainen tila</th>
                                 <th>Hyväksy harkinnanvaraisesti</th>
                             </tr>
@@ -33,17 +34,20 @@
                             <tr ng-repeat="hakija in model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true}">
                                 <td>
                                     <span title="Sukunimi">{{hakija.lastName}}</span>,
-                                    <span title="Etunimi">{{hakija.firstName}}</span>
+                                    <span title="Etunimi">{{hakija.firstNames}}</span>
                                 </td>
                                 <td>
                                     <span title="HakemusOid">
-                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.applicationOid}}" target="_blank" >
-                                            {{hakija.applicationOid}}
+                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.oid}}" target="_blank" >
+                                            {{hakija.oid}}
                                         </a>
                                     </span>
                                 </td>
                                 <td>
-                                    {{hakija.hakenutHarkinnanvaraisesti}}
+                                    <span ng-if="hakija.hakenutHarkinnanvaraisesti">kyllä</span>
+                                </td>
+                                <td>
+
                                     <!--
                                     <ul>
                                         <li ng-repeat="(key, value) in hakija.hakemus.answers.hakutoiveet track by $index">
@@ -53,7 +57,9 @@
                                     -->
                                 </td>
                                 <td>
-                                    <a ng-click="hyvaksyHarkinnanvaisesti(hakija.applicationOid)" class="button small">hyväksy harkinnanvaraisesti</a>
+                                     <span ng-if="hakija.hakenutHarkinnanvaraisesti">
+                                        <a ng-click="hyvaksyHarkinnanvaisesti(hakija.applicationOid)" class="button small">hyväksy harkinnanvaraisesti</a>
+                                    </span>
                                 </td>
                             </tr>
                         </tbody>

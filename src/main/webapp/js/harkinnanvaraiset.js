@@ -1,4 +1,4 @@
-﻿app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
+﻿app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus) {
 	var model;
 	model = new function() {
 
@@ -21,10 +21,11 @@
                      if(hakija.hakemus.answers) {
                         for(var i =0; i<10; i++) {
                             var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
-                          //  console.log("Hakutoive[" + i +"] " + oid);
                             if(oid === model.hakukohdeOid) {
+
                                 var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
-                                hakija.hakenutHarkinnanvaraisesti =harkinnanvarainen;
+                                var discretionary = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];
+                                hakija.hakenutHarkinnanvaraisesti = harkinnanvarainen || discretionary;
                             }
                         }
                     }   
