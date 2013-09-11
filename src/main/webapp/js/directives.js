@@ -97,12 +97,30 @@ app.directive('lazyLoading', function () {
         		var maximumScroll = $(element)[0].scrollHeight - $(element).height();
         		var currentScroll = $(element).scrollTop();
         		var percentage = (currentScroll/maximumScroll);
+
         		if(percentage >= 1) {
         			scope.$apply(function() {
         				scope.lazyLoading();	
         			});
         			
         		}
+        	});
+        }
+    };
+});
+
+app.directive('lazyLoading2', function () {
+    return {
+        scope: true,
+        link: function ( scope, element, attrs ) {
+        	$(window).scroll(function(e) {
+        		// approximation (max scroll is in reality less than the actual
+        		if($(window).scrollTop() + $(window).height() >= $(document).height() * .9) {
+        			scope.$apply(function() {
+        				scope.lazyLoading();
+        			});
+
+                }
         	});
         }
     };
@@ -228,3 +246,13 @@ app.directive('arvovalidaattori', function(){
         }
     };
 });
+
+app.directive('setHtml', function() {
+       return {
+         restrict: "A",
+         priority: 100,
+         link: function($scope, $el, $attr) {
+           $($el).html($scope.$eval($attr.setHtml));
+         }
+       };
+     });

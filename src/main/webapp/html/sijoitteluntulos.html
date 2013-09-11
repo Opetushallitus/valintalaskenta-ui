@@ -28,7 +28,7 @@
             <a ng-show="false" ng-click="createJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo jälkiohjauskirjeet</a>
 			<div class="margin-vertical-2 overflow-x-scroll">
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot">
-                    <table class="virkailija-table-1">
+                    <table class="virkailija-table-1" lazy-loading2>
                         <thead>
                             <tr>
                                 <th colspan="8">
@@ -50,7 +50,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="hakemus in jono.hakemukset">
+                            <tr ng-repeat="hakemus in jono.hakemukset | limitTo:limit">
                                 <td>{{hakemus.jonosija}}</td>
                                 <td>{{hakemus.tasasijaJonosija}}</td>
                                 <td>
