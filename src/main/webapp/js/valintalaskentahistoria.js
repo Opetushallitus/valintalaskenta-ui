@@ -24,18 +24,19 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 			var jarjestyskriteerit = this.get();
 			
 			self.addVisibilityVariable(jarjestyskriteerit);
-			self.setHidingVariables(jarjestyskriteerit);
+			self.setHidingVariables(jarjestyskriteerit, 2, 0);
 		},
 		addVisibilityVariable: function(nodeArray) {
 			var self = this;
 			nodeArray.forEach(function(node) {	
 
-				//extend node with funktio: Nimetty lukuarvo -field
+				//find nodes that should be folders in view
 				if(self.hasNimettyLukuarvo(node)) {
 					angular.extend(node, {"folder": true});
 				} 
 				
-				//extend node with visibility value
+				//show-boolean is used to show & hide node in view
+				//first all nodes are set visible
 				angular.extend(node, {"show": true});
 				
 				//iterate through subtree recursively
@@ -44,36 +45,21 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 				}
 			});
 		},
-		setHidingVariables: function(nodeArray) {
+		//
+		setHidingVariables: function(nodeArray, level, currentLevel) {
 			var self = this;
 			nodeArray.forEach(function(node) {
-				
-				var foundObj = {"found": false};
-				self.hasFolderChildren(self.hasKaavas(node), foundObj);
 
-				if(self.hasNimettyLukuarvo(node) && !foundObj.found) {
+				//piilotetaan noden alipuu, jos level-parametriä syvemmällä puussa
+				if(  (currentLevel > level) && self.hasNimettyLukuarvo(node) ) {
 					angular.extend(node, {"show": false});
 				}
 
 				if(self.hasKaavas(node)) {
-					self.setHidingVariables(self.hasKaavas(node));
+					self.setHidingVariables(self.hasKaavas(node), level, currentLevel + 1);
 				}
 				
 			});
-		},
-		hasFolderChildren: function(nodeArray, foundObj) {
-			
-			var self = this;
-			if(nodeArray) {
-				nodeArray.forEach(function(node) {
-					if(self.hasNimettyLukuarvo(node)) {
-						foundObj.found = true;
-					}
-
-					self.hasFolderChildren(self.hasKaavas(node), foundObj);
-				});
-			} 
-			
 		},
 		hasNimettyLukuarvo: function(node) {
 			if(node.funktio === "Nimetty lukuarvo" || node.funktio === "Nimetty totuusarvo") {
@@ -112,24 +98,9 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 		}
 		return false;
 	}
-	$scope.toggleFolder = function(folderClass) {
-		if(folderClass === "folder-open") {
-			folderClass = "folder-closed";
-		} else {
-			folderClass = "folder-open";
-		}
-	}
 
 	$scope.openTree = function(tree) {
 		tree.show = !tree.show;
-	}
-
-	$scope.folderOpen = function(open) {
-		if(open) {
-			return 'folder-open';
-		} else {
-			return 'folder-closed';
-		}
 	}
 
 

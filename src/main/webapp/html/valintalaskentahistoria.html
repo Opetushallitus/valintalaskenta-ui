@@ -20,7 +20,7 @@
 		</li>
 		<li><h2 class="margin-top-0">Tulos: {{historia.tulos}}</h2></li>
 
-		<button class="small margin-top-2" ng-	init="keys = false" ng-click="keys = !keys">Näytä/Piilota avaimet</button>
+		<button class="small margin-top-2" ng-init="keys = false" ng-click="keys = !keys">Näytä/Piilota avaimet</button>
 		<ul ng-show="keys" class="avaimet">
 			<li class="padding-vertical-1" ng-repeat="(key, value) in historia.avaimet track by $index">
 				<strong>{{key}}</strong> - <span>{{value}}</span><strong> and index: {{$index}}</strong>
@@ -40,9 +40,9 @@
 	<li>
 		<span class="funktio" ng-show="!model.hasNimettyLukuarvo(kaava)"></span>
 
-		<span ng-click="openTree(kaava)" ng-init="folderClass = folderOpen(kaava.show)" ng-class="folderClass" ng-show="kaava.folder"></span>
-		<span ng-show="kaava.show" ng-click="keys = !keys" class="keys-closed"></span>
-		<h3 class="inline-block padding-left-2">{{kaava.avaimet.nimi}}<span ng-show="!model.hasNimettyLukuarvo(kaava)">{{kaava.funktio}}</span><span style="font-weight: normal" ng-show="!isUndefined(kaava.tulos)"> (tulos: {{kaava.tulos}})</span></h3>
+		<span ng-click="openTree(kaava)" ng-class="kaava.show ? 'folder-open' : 'folder-closed'" ng-show="kaava.folder"></span>
+		<span ng-show="kaava.show" ng-click="keys = !keys" ng-class="keys ? 'keys-open' : 'keys-closed'"></span>
+		<h3 class="inline-block padding-left-2">{{kaava.avaimet.nimi}}<span ng-show="!model.hasNimettyLukuarvo(kaava)">{{kaava.funktio}}</span><span style="font-weight: normal" ng-show="!isUndefined(kaava.tulos)"> (tulos: {{kaava.tulos}}) - {{kaava.funktio}}</span></h3>
 	</li>
 
 	<ul ng-show="keys" ng-init="keys = false" class="avaimet">
