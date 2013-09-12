@@ -47,7 +47,7 @@
                                     <span ng-if="hakija.hakenutHarkinnanvaraisesti">kyllä</span>
                                 </td>
                                 <td>
-
+                                    {{model.harkinnanvaraisestiHyvaksytyt}}
                                     <!--
                                     <ul>
                                         <li ng-repeat="(key, value) in hakija.hakemus.answers.hakutoiveet track by $index">
@@ -58,7 +58,7 @@
                                 </td>
                                 <td>
                                      <span ng-if="hakija.hakenutHarkinnanvaraisesti">
-                                        <a ng-click="hyvaksyHarkinnanvaisesti(hakija.applicationOid)" class="button small">hyväksy harkinnanvaraisesti</a>
+                                        <a ng-click="hyvaksyHarkinnanvaisesti(hakija.oid)" class="button small">hyväksy harkinnanvaraisesti</a>
                                     </span>
                                 </td>
                             </tr>

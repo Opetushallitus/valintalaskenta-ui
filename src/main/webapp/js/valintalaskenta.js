@@ -138,16 +138,15 @@ app.factory('HarkinnanvarainenHyvaksynta', function($resource) {
      post:{method: "POST"},
    });
 });
-
 app.factory('HarkinnanvaraisestiHyvaksytyt', function($resource) {
- return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/:hakuOid/hakukohde/:hakukohde", {
-    hakuOid: "@hakuOid",
+return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/:hakuOid/hakukohde/:hakukohdeOid",
+    {hakuOid: "@hakuOid",
     hakukohdeOid: "@hakukohdeOid"
-    }, {
-     get:{method: "GET"},
-   });
-});
 
+    }, {
+    get: {method: "GET", isArray: true}
+  });
+});
 
 
 

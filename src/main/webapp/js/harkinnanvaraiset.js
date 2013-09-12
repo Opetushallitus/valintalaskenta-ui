@@ -1,4 +1,4 @@
-﻿app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus,HarkinnanvarainenHyvaksynta,HarkinnanvaraisestiHyvaksytyt) {
+﻿app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt) {
 	var model;
 	model = new function() {
 
@@ -11,6 +11,7 @@
             model.harkinnanvaraisestiHyvaksytyt = [];
             model.errors = [];
             model.errors.length = 0;
+            model.hakuOid = hakuOid;
             model.hakukohdeOid = hakukohdeOid;
             HakukohdeHenkilot.get({aoOid: hakukohdeOid}, function(result) {
                 model.hakeneet = result.results;
@@ -36,7 +37,7 @@
             });
 
             HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
-
+                model.harkinnanvaraisestiHyvaksytyt = result;
             }, function(error) {
               model.errors.push(error);
             });
@@ -44,18 +45,19 @@
 
 
 		}
-
-
-
-       this.updateJarjestyskriteerinTila = function(hakemusOid,  tila) {
+		 this.hyvaksyHarkinnanvaraisesti = function(hakemusOid) {
                 var updateParams = {
-                    hakuOid : model.hakuOid,
-                    hakukohdeOid:  model.hakukohdeOid,
-                    hakemusOid: hakemusOid,
+                    hakuOid: model.hakuOid,
+                    hakukohdeOid: model.hakukohdeOid,
+                    hakemusOid: hakemusOid
                 }
-                JarjestyskriteeriTila.post(updateParams, tila, function(result) {});
-            };
+                var postParams = {
+                     hyvaksyttyHarkinnanvaraisesti: true,
+                };
+                HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function(result) {
 
+                });
+         }
 
 		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
             if(hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
@@ -88,8 +90,7 @@ function HarkinnanvaraisetController($scope, $location, $routeParams, Harkinnanv
     }
 
     $scope.hyvaksyHarkinnanvaisesti = function(hakemusOid) {
-        var tila ="HYVAKSYTTY_HARKINNANVARAISESTI";
-        $scope.model.updateJarjestyskriteerinTila(hakemusOid, tila)
+        $scope.model.hyvaksyHarkinnanvaraisesti(hakemusOid)
     };
 
 }
