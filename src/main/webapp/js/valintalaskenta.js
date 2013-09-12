@@ -96,6 +96,7 @@ app.factory('Parametrit', function($resource) {
 })
 
 
+//Valintalaskenta
 app.factory('HakukohdeValinnanvaihe', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/hakukohde/:parentOid/valinnanvaihe", {parentOid: "@parentOid"}, {
      get: {method: "GET", isArray: true },
@@ -110,14 +111,49 @@ app.factory('HakuVirheet', function($resource) {
    });
 });
 
-//One does not simply call 'ValinnanVaiheList' 'Hakukohde'
 app.factory('ValinnanvaiheListByHakukohde', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {
     get: {method: "GET", isArray: true}
   });
 });
 
-//One does not simply call 'ValinnanVaiheList' 'Hakukohde'
+app.factory('Valintatapajono', function($resource) {
+return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoid/jarjestyskriteeritulos", {valintatapajonoid: "@valintatapajonoid"}, {
+    get: {method: "GET", isArray: true}
+  });
+});
+
+app.factory('ValintatapajonoListByValinnanvaihe', function($resource) {
+return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:valinnanvaiheoid/valintatapajono", {valinnanvaiheoid: "@valinnanvaiheoid"}, {
+    get: {method: "GET", isArray: true}
+  });
+});
+
+app.factory('HarkinnanvarainenHyvaksynta', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/:hakuOid/hakukohde/:hakukohdeOid/hakemus/:hakemusOid", {
+    hakuOid: "@hakuOid",
+    hakukohdeOid: "@hakukohdeOid",
+    hakemusOid: "@hakemusOid"
+    }, {
+     post:{method: "POST"},
+   });
+});
+
+app.factory('HarkinnanvaraisestiHyvaksytyt', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/:hakuOid/hakukohde/:hakukohde", {
+    hakuOid: "@hakuOid",
+    hakukohdeOid: "@hakukohdeOid"
+    }, {
+     get:{method: "GET"},
+   });
+});
+
+
+
+
+
+
+//valintaperusteet
 app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {
         get: {method: "GET", isArray: true}
@@ -125,21 +161,8 @@ app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
 });
 
 
-// Järjestyskriteeritulokset
-app.factory('Valintatapajono', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoid/jarjestyskriteeritulos", {valintatapajonoid: "@valintatapajonoid"}, {
-    get: {method: "GET", isArray: true}
-  });
-});
 
-
-//Valintatapajonot
-app.factory('ValintatapajonoListByValinnanvaihe', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:valinnanvaiheoid/valintatapajono", {valinnanvaiheoid: "@valinnanvaiheoid"}, {
-    get: {method: "GET", isArray: true}
-  });
-});
-
+//koostepalvelu
 app.factory('ValintakoelaskentaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHakukohteenValintakoelaskenta", {}, {
         aktivoi: {method: "GET"}
@@ -151,7 +174,6 @@ app.factory('ValintalaskentaAktivointi', function($resource) {
         aktivoi: {method: "GET"}
     })
 });
-
 
 app.factory('Sijoitteluktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/sijoittelu/aktivoi", {}, {
@@ -245,7 +267,7 @@ app.factory('Henkilot', function($resource) {
 
 
 
-//Paikan vastaanoton tilat
+ //Sijoittelu
 app.factory('VastaanottoTilat', function($resource) {
      return $resource(SIJOITTELU_URL_BASE + "resources/tila/hakukohde/:hakukohdeOid/:valintatapajonoOid",
          {
@@ -269,14 +291,13 @@ app.factory('VastaanottoTilat', function($resource) {
          post: {method: "POST"}
      });
  });
+
 app.factory('SijoittelunVastaanottotilat', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/", {hakemusOid: "@hakemusOid"}, {
         get: {method: "GET", isArray: true}
     });
 });
 
-
- //Sijoittelu
 app.factory('Sijoittelu', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/", {hakuOid: "@hakuOid"}, {
         get: {method: "GET"}

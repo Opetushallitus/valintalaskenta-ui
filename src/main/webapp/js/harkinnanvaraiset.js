@@ -1,4 +1,4 @@
-﻿app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus) {
+﻿app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus,HarkinnanvarainenHyvaksynta,HarkinnanvaraisestiHyvaksytyt) {
 	var model;
 	model = new function() {
 
@@ -8,7 +8,7 @@
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
 		    model.hakeneet = [];
-            model.avaimet = [];
+            model.harkinnanvaraisestiHyvaksytyt = [];
             model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
@@ -34,7 +34,18 @@
             }, function(error) {
                 model.errors.push(error);
             });
+
+            HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
+
+            }, function(error) {
+              model.errors.push(error);
+            });
+
+
+
 		}
+
+
 
        this.updateJarjestyskriteerinTila = function(hakemusOid,  tila) {
                 var updateParams = {
