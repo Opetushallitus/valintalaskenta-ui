@@ -185,6 +185,13 @@ app.factory('TulosXls', function($window) {
 		}
 	};
 });
+app.factory('JalkiohjausXls', function($window) {
+	return {
+		query: function(data) {
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/jalkiohjaustulos/aktivoi?hakuOid=" + data.hakuOid;
+		}
+	};
+});
 app.factory('ValintakoeXls', function($window) {
 	return {
 		query: function(data) {
