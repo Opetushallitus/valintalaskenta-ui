@@ -1387,14 +1387,14 @@ table {
 
 @-webkit-keyframes hidetoolbarcontainer {
   from {
-    width: 15%; }
+    width: 100%; }
 
   to {
     width: 0%; } }
 
 @keyframes hidetoolbarcontainer {
   from {
-    width: 15%; }
+    width: 100%; }
 
   to {
     width: 0%; } }
@@ -1404,14 +1404,14 @@ table {
     width: 0%; }
 
   to {
-    width: 15%; } }
+    width: 100%; } }
 
 @keyframes showtoolbarcontainer {
   from {
     width: 0%; }
 
   to {
-    width: 15%; } }
+    width: 100%; } }
 
 body {
   font-family: helvetica, arial, sans-serif;
@@ -3144,7 +3144,18 @@ ul.orgmenu {
   .toolbarcontainer #toolbarcontent {
     background-color: #f1f6f7;
     float: left;
-    height: 700px; }
+    height: 700px;
+    /*
+    &.ng-hide-add {
+        animation:0.5s hidetoolbarcontainer;
+        -webkit-animation:0.5s hidetoolbarcontainer;
+    }
+        
+    &.ng-hide-remove {
+        animation:0.5s showtoolbarcontainer;
+        -webkit-animation:0.5s showtoolbarcontainer;
+    }
+    */ }
     .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration,
     .toolbarcontainer #toolbarcontent .toolbar-decoration {
       padding: 10px;
@@ -3314,6 +3325,33 @@ ul.orgmenu {
   .valintalaskentaHistoria .decorate {
     background: #f8f8f8;
     border: 1px solid #ccc; }
+
+/*** Definition list
+************************************************/
+dl.dl-horizontal {
+  margin-bottom: 2em;
+  margin: 0 0 1em;
+  padding: 0; }
+  dl.dl-horizontal dt {
+    line-height: 1.5em;
+    height: 1.5em;
+    font-weight: bold;
+    width: 173px;
+    margin: 25px 15px 0 0;
+    padding: 0;
+    text-align: right; }
+    dl.dl-horizontal dt:first-of-type {
+      margin-top: 0; }
+  dl.dl-horizontal dd {
+    margin: -19px 0 0 195px;
+    padding: 0 0 1em;
+    line-height: 1.5em;
+    height: 1.5em;
+    float: left; }
+    dl.dl-horizontal dd:after {
+      clear: both; }
+    dl.dl-horizontal dd .virkailija-table-1 {
+      width: auto; }
 
 /*** Itemtree
 ************************************************/
