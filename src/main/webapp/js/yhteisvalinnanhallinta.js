@@ -31,13 +31,17 @@
 
 });
 
-function YhteisvalinnanHallintaController($scope, $location, $routeParams, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta) {
+function YhteisvalinnanHallintaController($scope, $location, $routeParams, JalkiohjausXls, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
 	$scope.hakumodel = HakuModel;
 	$scope.virheet = VirheModel;
 	$scope.naytaKokeita = 50;
-
+	
+	$scope.aktivoiJalkiohjaustuloksetXls = function() {
+		JalkiohjausXls.query({hakuOid:$routeParams.hakuOid});
+	}
+	
     $scope.kaynnistaSijoittelu = function() {
         var hakuoid = $routeParams.hakuOid;
             Sijoitteluktivointi.aktivoi({hakuOid: hakuoid}, function() {
