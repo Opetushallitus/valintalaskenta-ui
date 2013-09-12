@@ -44,7 +44,7 @@
 });
 
 
-function ValintalaskentatulosController($scope, $location, $routeParams, ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http) {
+function ValintalaskentatulosController($scope, $location, $routeParams, $timeout, ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -106,14 +106,13 @@ function ValintalaskentatulosController($scope, $location, $routeParams, Valinta
 
     }
 
-    $scope.limit = 50;
+    $scope.limit = 20;
     $scope.lazyLoading = function() {
-
-        if(old !== $scope.limit) {
+        $scope.showLoading = true;
+        $timeout(function(){
             $scope.limit += 50;
-        }
-
-        var old = $scope.limit;
+            $scope.showLoading = false;
+        }, 10);
     }
 
 }

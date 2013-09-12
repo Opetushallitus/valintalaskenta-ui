@@ -109,19 +109,41 @@ app.directive('lazyLoading', function () {
     };
 });
 
-app.directive('lazyLoading2', function () {
+
+app.directive('itemOnScreen', function ($timeout) {
     return {
         scope: true,
         link: function ( scope, element, attrs ) {
-        	$(window).scroll(function(e) {
-        		// approximation (max scroll is in reality less than the actual
-        		if($(window).scrollTop() + $(window).height() >= $(document).height() * .9) {
-        			scope.$apply(function() {
-        				scope.lazyLoading();
-        			});
+            var oldBottom = 0;
+            var oldDocument = 0;
+            var checkHeight = function(){
+              var docViewTop = $(window).scrollTop();
+              var docViewBottom = docViewTop + $(window).height();
+              var elemTop = $(element).offset().top;
 
-                }
-        	});
+              var elemBottom = elemTop + $(element).height();
+
+              if(elemBottom < docViewBottom && oldBottom != elemBottom) {
+                  scope.$apply(function() {
+                      scope.lazyLoading();
+                      oldBottom = elemBottom;
+                  });
+
+                  $timeout(checkHeight,10);
+              }
+              else {
+                $(window).scroll(function(e) {
+                    var documentHeight = $(document).height();
+                    if($(window).scrollTop() + $(window).height() >= documentHeight * .9 && oldDocument != documentHeight) {
+                        scope.$apply(function() {
+                            scope.lazyLoading();
+                            oldDocument = documentHeight;
+                        });
+                    }
+                });
+              }
+            };
+            $timeout(checkHeight,10);
         }
     };
 });
@@ -148,61 +170,62 @@ app.directive('centralize', function() {
 });
 
 
-app.directive('auth', function($animate, AuthService, HakukohdeModel) {
+app.directive('auth', function($animate, $timeout, AuthService, HakukohdeModel) {
     return {
       link : function($scope, element, attrs) {
 
           $animate.addClass(element, 'ng-hide');
-        switch(attrs.auth) {
 
-            case "crudOph":
-                AuthService.crudOph(attrs.authService).then(function(){
-                    $animate.removeClass(element, 'ng-hide');
-                });
-                break;
+            switch(attrs.auth) {
 
-            case "updateOph":
-                AuthService.updateOph(attrs.authService).then(function(){
-                    $animate.removeClass(element, 'ng-hide');
-                })
-                break;
+                case "crudOph":
+                    AuthService.crudOph(attrs.authService).then(function(){
+                        $animate.removeClass(element, 'ng-hide');
+                    });
+                    break;
 
-            case "readOph":
-                AuthService.readOph(attrs.authService).then(function(){
-                    $animate.removeClass(element, 'ng-hide');
-                })
-                break;
-        }
+                case "updateOph":
+                    AuthService.updateOph(attrs.authService).then(function(){
+                        $animate.removeClass(element, 'ng-hide');
+                    })
+                    break;
 
-        attrs.$observe('authOrg', function() {
-            if(attrs.authOrg) {
-                switch(attrs.auth) {
-                    case "crud":
-                        AuthService.crudOrg(attrs.authService, attrs.authOrg).then(function(){
-                            $animate.removeClass(element, 'ng-hide');
-                        }, function(){
-                            $animate.addClass(element, 'ng-hide');
-                        });
-                        break;
-
-                    case "update":
-                        AuthService.updateOrg(attrs.authService, attrs.authOrg).then(function(){
-                            $animate.removeClass(element, 'ng-hide');
-                        }, function(){
-                            $animate.addClass(element, 'ng-hide');
-                        });
-                        break;
-
-                    case "read":
-                        AuthService.readOrg(attrs.authService, attrs.authOrg).then(function(){
-                            $animate.removeClass(element, 'ng-hide');
-                        }, function(){
-                            $animate.addClass(element, 'ng-hide');
-                        });
-                        break;
-                }
+                case "readOph":
+                    AuthService.readOph(attrs.authService).then(function(){
+                        $animate.removeClass(element, 'ng-hide');
+                    })
+                    break;
             }
-        });
+
+            attrs.$observe('authOrg', function() {
+                if(attrs.authOrg) {
+                    switch(attrs.auth) {
+                        case "crud":
+                            AuthService.crudOrg(attrs.authService, attrs.authOrg).then(function(){
+                                $animate.removeClass(element, 'ng-hide');
+                            }, function(){
+                                $animate.addClass(element, 'ng-hide');
+                            });
+                            break;
+
+                        case "update":
+                            AuthService.updateOrg(attrs.authService, attrs.authOrg).then(function(){
+                                $animate.removeClass(element, 'ng-hide');
+                            }, function(){
+                                $animate.addClass(element, 'ng-hide');
+                            });
+                            break;
+
+                        case "read":
+                            AuthService.readOrg(attrs.authService, attrs.authOrg).then(function(){
+                                $animate.removeClass(element, 'ng-hide');
+                            }, function(){
+                                $animate.addClass(element, 'ng-hide');
+                            });
+                            break;
+                    }
+                }
+            });
       }
     };
 });

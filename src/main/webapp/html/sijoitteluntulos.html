@@ -28,7 +28,7 @@
             <a ng-show="false" ng-click="createJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo jälkiohjauskirjeet</a>
 			<div class="margin-vertical-2 overflow-x-scroll">
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot">
-                    <table class="virkailija-table-1" lazy-loading2>
+                    <table class="virkailija-table-1" item-on-screen>
                         <thead>
                             <tr>
                                 <th colspan="8">
@@ -109,9 +109,11 @@
                         </tbody>
                     </table>
                     <a ng-click="submit(jono.oid)" class="button small primary margin-top-2" >Tallenna</a>
+                    <span ng-show="limit < jono.hakemukset.length">Näytetty: {{limit}} / {{jono.hakemukset.length}}</span>
                 </div>
             </div>
 		</div>
 	</div>
 	<div class="clear"></div>
+    <div ng-show="showLoading" style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...</div>
 </div>

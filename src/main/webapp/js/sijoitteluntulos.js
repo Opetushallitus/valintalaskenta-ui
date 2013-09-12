@@ -198,14 +198,13 @@ function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, 
         hakemus.showSijoitteluPartial = !hakemus.showSijoitteluPartial;
     };
 
-    $scope.limit = 50;
+    $scope.limit = 20;
     $scope.lazyLoading = function() {
-
-        if(old !== $scope.limit) {
+        $scope.showLoading = true;
+        $timeout(function(){
             $scope.limit += 50;
-        }
-
-        var old = $scope.limit;
+            $scope.showLoading = false;
+        }, 10);
     }
 
 }
