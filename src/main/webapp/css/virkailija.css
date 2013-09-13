@@ -1385,34 +1385,48 @@ table {
   to {
     opacity: 0; } }
 
+/*
 @-webkit-keyframes hidetoolbarcontainer {
-  from {
-    width: 100%; }
+	from {
+		width: 90%;
+	}
 
-  to {
-    width: 0%; } }
+	to {
+		width: 0%;
+	}
+}
 
 @keyframes hidetoolbarcontainer {
-  from {
-    width: 100%; }
+	from {
+		width: 90%;
+	}
 
-  to {
-    width: 0%; } }
+	to {
+		width: 0%;
+	}
+}
 
 @-webkit-keyframes showtoolbarcontainer {
-  from {
-    width: 0%; }
+	from {
+		width: 0%;
+	}
 
-  to {
-    width: 100%; } }
+	to {
+		width: 90%;
+	}
+}
+
 
 @keyframes showtoolbarcontainer {
-  from {
-    width: 0%; }
+	from {
+		width: 0%;
+	}
 
-  to {
-    width: 100%; } }
-
+	to {
+		width: 90%;
+	}
+}
+*/
 body {
   font-family: helvetica, arial, sans-serif;
   font-size: 13px;
@@ -3136,42 +3150,54 @@ ul.orgmenu {
 
 /*** horizontal toolbar
 ************************************************/
-.toolbarcontainerwithouthakukohde,
 .toolbarcontainer {
   overflow: hidden;
-  height: 700px; }
-  .toolbarcontainerwithouthakukohde #toolbarcontent,
+  height: 700px;
+  float: left;
+  margin-right: 0.625%;
+  margin-left: 0.625%;
+    /*
+    &.hakukohteetVisible-add,
+    &.hakukohteetVisible-remove {
+        -webkit-transition:2s linear all;
+        -moz-transition:2s linear all;
+        -o-transition:2s linear all;
+        transition:2s linear all;
+    }
+
+    &.hakukohteetVisible-add,
+    &.hakukohteetVisible-remove,
+    &.hakukohteetVisible-remove-active {
+        width: 30%;
+        opacity: 1;
+    }
+    
+    &.hakukohteetVisible,
+    &.hakukohteetVisible-remove,
+    &.hakukohteetVisible-add,
+    &.hakukohteetVisible-add-active {
+        width: 5%;
+        opacity: 0.3;
+    }
+*/ }
   .toolbarcontainer #toolbarcontent {
     background-color: #f1f6f7;
     float: left;
-    height: 700px;
-    /*
-    &.ng-hide-add {
-        animation:0.5s hidetoolbarcontainer;
-        -webkit-animation:0.5s hidetoolbarcontainer;
-    }
-        
-    &.ng-hide-remove {
-        animation:0.5s showtoolbarcontainer;
-        -webkit-animation:0.5s showtoolbarcontainer;
-    }
-    */ }
-    .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration,
+    height: 700px; }
     .toolbarcontainer #toolbarcontent .toolbar-decoration {
       padding: 10px;
       border-left: 1px solid #e4e4e4;
       border-bottom: 1px solid #e4e4e4;
       border-top: 1px solid #e4e4e4; }
-      .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration .selectlist,
       .toolbarcontainer #toolbarcontent .toolbar-decoration .selectlist {
         height: 624px;
         overflow: scroll;
         margin: 0 !important;
         background-color: #fff; }
 
-#toolbartoggle-btn-container {
+#toolbartoggle-btn {
   float: left; }
-  #toolbartoggle-btn-container #toolbartoggle-btn {
+  #toolbartoggle-btn > div {
     background-color: #f1f6f7;
     width: 32px;
     height: 698px;
@@ -3183,15 +3209,15 @@ ul.orgmenu {
     -o-transition: 0.2s;
     -ms-transition: 0.2s;
     transition: 0.2s; }
-    #toolbartoggle-btn-container #toolbartoggle-btn:hover {
+    #toolbartoggle-btn > div:hover {
       background-color: #c5e5ef; }
-    #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position {
+    #toolbartoggle-btn > div > div {
       position: absolute;
       left: 50%;
       top: 50%;
       height: 0;
       width: 0; }
-      #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span {
+      #toolbartoggle-btn > div > div span {
         display: block;
         color: #149ecb;
         transform: rotate(-90deg);
@@ -3201,7 +3227,7 @@ ul.orgmenu {
         -webkit-transform-origin: 0;
         -o-transform-origin: 0;
         width: 150px; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:after {
+        #toolbartoggle-btn > div > div span:before, #toolbartoggle-btn > div > div span:after {
           position: absolute;
           font-size: 9px;
           transform-origin: 50% 50%;
@@ -3215,21 +3241,16 @@ ul.orgmenu {
           -ms-transform: rotate(90deg);
           -o-transform: rotate(90deg);
           content: '<<'; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:before {
+        #toolbartoggle-btn > div > div span:before {
           left: -30px; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:after {
+        #toolbartoggle-btn > div > div span:after {
           left: 105px; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span.minimized:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span.minimized:after {
+        #toolbartoggle-btn > div > div span.minimized:before, #toolbartoggle-btn > div > div span.minimized:after {
           transform: rotate(-90deg);
           -webkit-transform: rotate(-90deg);
           -moz-transform: rotate(-90deg);
           -ms-transform: rotate(-90deg);
           -o-transform: rotate(-90deg); }
-
-.toolbarcontainerwithouthakukohde .toolbar-decoration {
-  border-right: 1px solid #e4e4e4; }
-.toolbarcontainerwithouthakukohde #toolbartoggle-btn-container {
-  display: none; }
 
 .togglecontent {
   height: 700px; }

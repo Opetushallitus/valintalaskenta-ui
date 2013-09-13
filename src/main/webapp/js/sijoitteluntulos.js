@@ -8,6 +8,10 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 		this.latestSijoitteluajo = {};
 		this.sijoitteluTulokset = {};
 	    this.errors = [];
+        this.hyvaksytyt = [];
+        this.paikanVastaanottaneet = [];
+        this.hyvaksyttyHarkinnanvaraisesti = [];
+        this.varasijoilla = [];
 
         this.refresh = function(hakuOid, hakukohdeOid) {
             model.errors = [];
@@ -17,6 +21,10 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
             model.sijoittelu = {};
             model.latestSijoitteluajo = {};
             model.sijoitteluTulokset = {};
+            model.hyvaksytyt.length = 0;
+            model.paikanVastaanottaneet.length = 0;
+            model.hyvaksyttyHarkinnanvaraisesti.length = 0;
+            model.varasijoilla.length = 0;
 
             LatestSijoitteluajoHakukohde.get({
                 hakukohdeOid: hakukohdeOid,
@@ -36,6 +44,18 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                             for(var k = 0 ; k < hakemukset.length ; ++k ){
                                 var hakemus = hakemukset[k];
 
+                                if(hakemus.tila === "HYVAKSYTTY") {
+                                    model.hyvaksytyt.push(hakemus);
+                                }
+
+                                if(hakemus.hyvaksyttyHarkinnanvaraisesti) {
+                                    model.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
+                                }
+
+                                if(hakemus.varasijanNumero != undefined) {
+                                    model.varasijoilla.push(hakemus);
+                                }
+
                                 //make rest calls in separate scope to prevent hakemusOid to be overridden
                                 hakemus.vastaanottoTila = "";
                                 hakemus.muokattuVastaanottoTila ="";
@@ -43,6 +63,14 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                                     if(vastaanottotila.hakemusOid === hakemus.hakemusOid) {
                                         hakemus.vastaanottoTila = vastaanottotila.tila;
                                         hakemus.muokattuVastaanottoTila = vastaanottotila.tila;
+
+                                        if(hakemus.vastaanottoTila === "VASTAANOTTANUT_POISSAOLEVA" || hakemus.vastaanottoTila === "VASTAANOTTANUT_LASNA"){
+                                            model.paikanVastaanottaneet.push(hakemus);
+                                            console.log(hakemus)
+                                        }
+
+
+                                        
                                         return true;
                                     }
                                 });
@@ -72,6 +100,7 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                      model.errors.push(error);
                 }).$promise.then(function(result){
                     console.log(result);
+
                 });
         };
 
@@ -90,7 +119,7 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
         }
 
 		//refresh if haku or hakukohde has changed
-		this.refresIfNeeded = function(hakuOid, hakukohdeOid, isHakukohdeChanged) {
+		this.refreshIfNeeded = function(hakuOid, hakukohdeOid, isHakukohdeChanged) {
 			if(model.sijoittelu.hakuOid !== hakuOid || isHakukohdeChanged) {
 				model.refresh(hakuOid, hakukohdeOid);
 			}
@@ -141,7 +170,7 @@ function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, 
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
-    //$scope.model.refresIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
+    
 
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
