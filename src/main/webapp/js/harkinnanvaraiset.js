@@ -33,7 +33,7 @@
                     HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
                         for (var i=0; i<result.length; i++) {
                             var harkinnanvarainen = result[i];
-                            if(harkinnanvarainen.oid === hakija.oid) {
+                            if(harkinnanvarainen.hakemusOid == hakija.oid) {
                                 hakija.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
                                 hakija.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
                             }
@@ -45,21 +45,13 @@
             }, function(error) {
                 model.errors.push(error);
             });
-
-
-
-
-
 		}
 
         this.submit = function() {
-            console.debug("submit");
             for (var i=0; i<model.hakeneet.length; i++) {
-                console.debug("loop");
                 var hakemus = model.hakeneet[i];
                 //console.debug(hakemus.muokattuHarkinnanvaraisuusTila + " vs. " + hakemus.harkinnanvaraisuusTila);
                 if(hakemus.muokattuHarkinnanvaraisuusTila != hakemus.harkinnanvaraisuusTila)  {
-                    console.debug("muuttuneet");
                     var updateParams = {
                         hakuOid: model.hakuOid,
                         hakukohdeOid: model.hakukohdeOid,
@@ -74,8 +66,6 @@
                 }
             }
         }
-
-
 		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
             if(hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
                 model.refresh(hakukohdeOid, hakuOid);
