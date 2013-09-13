@@ -27,7 +27,6 @@
                                 <th>Hakemus</th>
                                 <th>Hakenut harkinnanvaraisesti</th>
                                 <th>Harkinnanvarainen tila</th>
-                                <th>Hyväksy harkinnanvaraisesti</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,24 +46,19 @@
                                     <span ng-if="hakija.hakenutHarkinnanvaraisesti">kyllä</span>
                                 </td>
                                 <td>
-                                    {{model.harkinnanvaraisestiHyvaksytyt}}
-                                    <!--
-                                    <ul>
-                                        <li ng-repeat="(key, value) in hakija.hakemus.answers.hakutoiveet track by $index">
-                                            {{key}} {{value}}
-                                        </li>
-                                    </ul>
-                                    -->
+                                    <select ng-model="hakija.muokattuHarkinnanvaraisuusTila">
+                                        <option value="">Kesken</option>
+                                        <option value="HYVAKSYTTY">Hyväksytty</option>
+                                        <option value="EI_HYVAKSYTTY">Ei Hyväksytty</option>
+                                    </select>
+
                                 </td>
-                                <td>
-                                     <span ng-if="hakija.hakenutHarkinnanvaraisesti">
-                                        <a ng-click="hyvaksyHarkinnanvaisesti(hakija.oid)" class="button small">hyväksy harkinnanvaraisesti</a>
-                                    </span>
-                                </td>
+
                             </tr>
                         </tbody>
                     </table>
                 </form>
+                <a ng-click="submit()" class="button small primary margin-top-2" >Tallenna</a>
             </div>
         </div>
     </div>

@@ -18,46 +18,63 @@
 
                 model.hakeneet.forEach(function(hakija){
                     Hakemus.get({oid: hakija.oid}, function(result) {
-                     hakija.hakemus=result;
-                     if(hakija.hakemus.answers) {
-                        for(var i =0; i<10; i++) {
-                            var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
-                            if(oid === model.hakukohdeOid) {
-
-                                var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
-                                var discretionary = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];
-                                hakija.hakenutHarkinnanvaraisesti = harkinnanvarainen || discretionary;
+                         hakija.hakemus=result;
+                         if(hakija.hakemus.answers) {
+                            for(var i =0; i<10; i++) {
+                                var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                                if(oid === model.hakukohdeOid) {
+                                    var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
+                                    var discretionary = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];
+                                    hakija.hakenutHarkinnanvaraisesti = harkinnanvarainen || discretionary;
+                                }
                             }
                         }
-                    }   
+                    })
+                    HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
+                        for (var i=0; i<result.length; i++) {
+                            var harkinnanvarainen = result[i];
+                            if(harkinnanvarainen.oid === hakija.oid) {
+                                hakija.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                                hakija.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                            }
+                        }
+                    }, function(error) {
+                      model.errors.push(error);
                     });
                 });
             }, function(error) {
                 model.errors.push(error);
             });
 
-            HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
-                model.harkinnanvaraisestiHyvaksytyt = result;
-            }, function(error) {
-              model.errors.push(error);
-            });
+
 
 
 
 		}
-		 this.hyvaksyHarkinnanvaraisesti = function(hakemusOid) {
-                var updateParams = {
-                    hakuOid: model.hakuOid,
-                    hakukohdeOid: model.hakukohdeOid,
-                    hakemusOid: hakemusOid
-                }
-                var postParams = {
-                     hyvaksyttyHarkinnanvaraisesti: true,
-                };
-                HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function(result) {
 
-                });
-         }
+        this.submit = function() {
+            console.debug("submit");
+            for (var i=0; i<model.hakeneet.length; i++) {
+                console.debug("loop");
+                var hakemus = model.hakeneet[i];
+                //console.debug(hakemus.muokattuHarkinnanvaraisuusTila + " vs. " + hakemus.harkinnanvaraisuusTila);
+                if(hakemus.muokattuHarkinnanvaraisuusTila != hakemus.harkinnanvaraisuusTila)  {
+                    console.debug("muuttuneet");
+                    var updateParams = {
+                        hakuOid: model.hakuOid,
+                        hakukohdeOid: model.hakukohdeOid,
+                        hakemusOid: hakemus.oid
+                    }
+                    var postParams = {
+                        harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila,
+                    };
+                    HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function(result) {
+
+                    });
+                }
+            }
+        }
+
 
 		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
             if(hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
@@ -89,8 +106,8 @@ function HarkinnanvaraisetController($scope, $location, $routeParams, Harkinnanv
         HakeneetModel.submit();
     }
 
-    $scope.hyvaksyHarkinnanvaisesti = function(hakemusOid) {
-        $scope.model.hyvaksyHarkinnanvaraisesti(hakemusOid)
+    $scope.submit = function(hakemusOid) {
+        $scope.model.submit();
     };
 
 }
