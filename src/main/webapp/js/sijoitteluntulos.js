@@ -37,6 +37,20 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                     for(var j = 0 ; j < valintatapajonot.length ; ++j) {
                         var valintatapajonoOid = valintatapajonot[j].oid;
                         var hakemukset = valintatapajonot[j].hakemukset;
+                        
+                        hakemukset.forEach(function(hakemus) {
+                            if(hakemus.tila === "HYVAKSYTTY") {
+                                model.hyvaksytyt.push(hakemus);
+                            }
+
+                            if(hakemus.hyvaksyttyHarkinnanvaraisesti) {
+                                model.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
+                            }
+
+                            if(hakemus.varasijanNumero != undefined) {
+                                model.varasijoilla.push(hakemus);
+                            }
+                        });
 
                         VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
                                               valintatapajonoOid: valintatapajonoOid}, function(result) {
@@ -44,33 +58,17 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                             for(var k = 0 ; k < hakemukset.length ; ++k ){
                                 var hakemus = hakemukset[k];
 
-                                if(hakemus.tila === "HYVAKSYTTY") {
-                                    model.hyvaksytyt.push(hakemus);
-                                }
-
-                                if(hakemus.hyvaksyttyHarkinnanvaraisesti) {
-                                    model.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
-                                }
-
-                                if(hakemus.varasijanNumero != undefined) {
-                                    model.varasijoilla.push(hakemus);
-                                }
-
                                 //make rest calls in separate scope to prevent hakemusOid to be overridden
                                 hakemus.vastaanottoTila = "";
                                 hakemus.muokattuVastaanottoTila ="";
+
                                 result.some(function(vastaanottotila){
                                     if(vastaanottotila.hakemusOid === hakemus.hakemusOid) {
                                         hakemus.vastaanottoTila = vastaanottotila.tila;
                                         hakemus.muokattuVastaanottoTila = vastaanottotila.tila;
-
                                         if(hakemus.vastaanottoTila === "VASTAANOTTANUT_POISSAOLEVA" || hakemus.vastaanottoTila === "VASTAANOTTANUT_LASNA"){
                                             model.paikanVastaanottaneet.push(hakemus);
-                                            console.log(hakemus)
                                         }
-
-
-                                        
                                         return true;
                                     }
                                 });
@@ -79,9 +77,6 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                         }, function(error) {
                             model.errors.push(error);
                         });
-
-
-
                     }
 
                     SijoitteluAjo.get( {
@@ -100,7 +95,6 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                      model.errors.push(error);
                 }).$promise.then(function(result){
                     console.log(result);
-
                 });
         };
 
