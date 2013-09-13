@@ -20,73 +20,23 @@
                     
                     <dt>Aloituspaikat</dt>
                     <dd>{{model.hakukohde.aloituspaikatLkm}}</dd>
-
                     
-
-                    <dt>Valinnan aloituspaikat</dt>
-                    <dd></dd>
-                    
-                    <dt>Hakijat yhteensä</dt>
+                    <dt>Hakijoita yhteensä</dt>
                     <dd>{{hakeneetModel.hakeneet.length}}</dd>
 
                     <dt>Hyväksytyt yhteensä</dt>
-                    <dd></dd>
+                    <dd>{{sijoitteluntulosModel.hyvaksytyt.length}}</dd>
 
                     <dt class="margin-bottom-3">Harkinnanvaraisesti hyväksytyt yhteensä</dt>
-                    <dd></dd>
+                    <dd>{{sijoitteluntulosModel.hyvaksyttyHarkinnanvaraisesti.length}}</dd>
                     
                     <dt>Varasijoilla yhteensä</dt>
-                    <dd></dd>
+                    <dd>{{sijoitteluntulosModel.varasijoilla.length}}</dd>
 
                     <dt class="margin-bottom-3">Paikan vastaanottaneet yhteensä</dt>
-                    <dd></dd>
+                    <dd>{{sijoitteluntulosModel.paikanVastaanottaneet.length}}</dd>
 
-                    <!--
-                    <dt>HakuOid</dt>
-                    <dd>{{hakumodel.hakuOid.oid}}</dd>
-                    
-                    <dt>Tila</dt>
-                    <dd>{{model.hakukohde.tila}}</dd>
-                    -->
-                    
-                    <!--
-                    <dt>Valinnan aloituspaikat</dt>
-                    <dd>{{model.hakukohde.valintojenAloituspaikatLkm}}</dd>
-                    
-                    <dt>Sähköinen toimitusosoite</dt>
-                    <dd>{{model.hakukohde.sahkoinenToimitusOsoite}}</dd>
-                    
-                    <dt>Liitteiden toimitus pvm</dt>
-                    <dd>{{model.hakukohde.erapaiva | date:'dd.MM.yyyy'}}</dd>
-                    
-                    
-
-                    <dt>Viimeisin päivittäjä oid</dt>
-                    <dd>{{model.hakukohde.modifiedBy}}</dd>
-                    -->
-                    
-                    <dt>Alin hyväksyttävä keskiarvo</dt>
-                    <dd>{{model.hakukohde.alinHyvaksyttavaKeskiarvo}}</dd>
-                    
-                    <!--
-                    <dt>Viimeisin päivitys pvm</dt>
-                    <dd ng-show="model.hakukohde.modified">{{model.hakukohde.modified | date:'dd.MM.yyyy HH:mm:ss'}}</dd>
-                    <dd ng-hide="model.hakukohde.modified"></dd>
-                    -->
                 </dl>
-                <!--
-                <h2 class="margin-top-4 margin-bottom-1">Liitteiden toimitusosoite</h2>
-                <dl class="dl-horizontal">    
-                    <dt>Osoite</dt>
-                    <dd>{{model.hakukohde.liitteet[0].toimitusosoite.osoiterivi1}}</dd>
-                    
-                    <dt>Postinumero</dt>
-                    <dd>{{model.hakukohde.liitteet[0].toimitusosoite.postinumero}}</dd>
-                    
-                    <dt>Postitoimipaikka</dt>
-                    <dd>{{model.hakukohde.liitteet[0].toimitusosoite.postitoimipaikka}}</dd>
-                </dl>
-            -->
 
             </div>
             <div class="grid16-8">

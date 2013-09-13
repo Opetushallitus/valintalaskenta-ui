@@ -41,7 +41,7 @@
 
 function HakeneetController($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
-    $scope.hakuOid =  $routeParams.hakuOid;;
+    $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);

@@ -9,6 +9,7 @@
 app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
     var model;
     model = new function() {
+        
 
         this.hakukohde = {};
 
@@ -18,6 +19,7 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
                 HakukohdeNimi.get({hakukohdeoid: hakukohdeOid}, function(hakukohdeObject) {
                     model.hakukohde.tarjoajaOid = hakukohdeObject.tarjoajaOid;
                 });
+
             });
         }
 
@@ -46,11 +48,18 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
     return model;
 });
 
-function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, HakuModel, HakeneetModel) {
+function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, HakuModel, HakeneetModel, SijoitteluntulosModel) {
+    $scope.hakuOid = $routeParams.hakuOid;
+    $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
     $scope.hakeneetModel = HakeneetModel;
-    $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+    $scope.hakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
+
+    $scope.model.refreshIfNeeded($scope.hakukohdeOid);
+
+    $scope.sijoitteluntulosModel = SijoitteluntulosModel;
+    $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
 }
 
 function HakukohdeNimiController($scope, HakukohdeModel) {
