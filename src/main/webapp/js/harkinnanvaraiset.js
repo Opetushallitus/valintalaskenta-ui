@@ -24,7 +24,7 @@
                                 var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
                                 if(oid === model.hakukohdeOid) {
                                     var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
-                                    var discretionary = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];
+                                    var discretionary = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
                                     hakija.hakenutHarkinnanvaraisesti = harkinnanvarainen || discretionary;
                                 }
                             }
