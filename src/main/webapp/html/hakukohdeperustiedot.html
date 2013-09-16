@@ -23,19 +23,29 @@
                     
                     <dt>Hakijoita yhteensä</dt>
                     <dd>{{hakeneetModel.hakeneet.length}}</dd>
-
-                    <dt>Hyväksytyt yhteensä</dt>
-                    <dd>{{sijoitteluntulosModel.hyvaksytyt.length}}</dd>
-
-                    <dt class="margin-bottom-3">Harkinnanvaraisesti hyväksytyt yhteensä</dt>
-                    <dd>{{sijoitteluntulosModel.hyvaksyttyHarkinnanvaraisesti.length}}</dd>
                     
-                    <dt>Varasijoilla yhteensä</dt>
-                    <dd>{{sijoitteluntulosModel.varasijoilla.length}}</dd>
+                    <dt class="margin-bottom-5">Valintatapajonokohtaiset tiedot</dt>
 
-                    <dt class="margin-bottom-3">Paikan vastaanottaneet yhteensä</dt>
-                    <dd>{{sijoitteluntulosModel.paikanVastaanottaneet.length}}</dd>
-
+                    <table ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt" class="virkailija-table-1 margin-top-5">
+                        <thead>
+                            <tr><th colspan="4">Valintatapajono: {{$index   }}</th></tr>
+                            <tr>
+                                <th>Hyväksytyt yhteensä</th>
+                                <th>Harkinnanvaraisesti hyväksytyt yhteensä</th>
+                                <th>Varasijoilla yhteensä</th>
+                                <th>Paikan vastaanottaneet yhteensä</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{erittely.hyvaksytyt.length}}</td>
+                                <td>{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>
+                                <td>{{erittely.varasijoilla.length}}</td>
+                                <td>{{erittely.paikanVastaanottaneet.length}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
                 </dl>
 
             </div>
