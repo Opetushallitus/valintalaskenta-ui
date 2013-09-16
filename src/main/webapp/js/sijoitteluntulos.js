@@ -8,10 +8,8 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 		this.latestSijoitteluajo = {};
 		this.sijoitteluTulokset = {};
 	    this.errors = [];
-        this.hyvaksytyt = [];
-        this.paikanVastaanottaneet = [];
-        this.hyvaksyttyHarkinnanvaraisesti = [];
-        this.varasijoilla = [];
+
+        this.hakemusErittelyt = []; //dataa perustietonäkymälle
 
         this.refresh = function(hakuOid, hakukohdeOid) {
             model.errors = [];
@@ -21,10 +19,7 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
             model.sijoittelu = {};
             model.latestSijoitteluajo = {};
             model.sijoitteluTulokset = {};
-            model.hyvaksytyt.length = 0;
-            model.paikanVastaanottaneet.length = 0;
-            model.hyvaksyttyHarkinnanvaraisesti.length = 0;
-            model.varasijoilla.length = 0;
+            model.hakemusErittelyt.length = 0;
 
             LatestSijoitteluajoHakukohde.get({
                 hakukohdeOid: hakukohdeOid,
@@ -33,51 +28,71 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                     model.sijoitteluTulokset = result;
 
                     var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
+                    if(valintatapajonot) {
+                        valintatapajonot.forEach(function(valintatapajono, index) {
 
-                    for(var j = 0 ; j < valintatapajonot.length ; ++j) {
-                        var valintatapajonoOid = valintatapajonot[j].oid;
-                        var hakemukset = valintatapajonot[j].hakemukset;
+                            var valintatapajonoOid = valintatapajono.oid;
+                            var hakemukset = valintatapajono.hakemukset;
                         
-                        hakemukset.forEach(function(hakemus) {
-                            if(hakemus.tila === "HYVAKSYTTY") {
-                                model.hyvaksytyt.push(hakemus);
+                            //pick up data to be shown in basicinformation vie
+                            var hakemuserittely = {
+                                hyvaksytyt: [],
+                                paikanVastaanottaneet: [],
+                                hyvaksyttyHarkinnanvaraisesti: [],
+                                varasijoilla: []
                             }
 
-                            if(hakemus.hyvaksyttyHarkinnanvaraisesti) {
-                                model.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
-                            }
+                            model.hakemusErittelyt.push(hakemuserittely);
 
-                            if(hakemus.varasijanNumero != undefined) {
-                                model.varasijoilla.push(hakemus);
-                            }
-                        });
+                            if(hakemukset) {
+                                hakemukset.forEach(function(hakemus) {
+                                    if(hakemus.tila === "HYVAKSYTTY") {
+                                        hakemuserittely.hyvaksytyt.push(hakemus);
+                                    }
 
-                        VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
-                                              valintatapajonoOid: valintatapajonoOid}, function(result) {
+                                    if(hakemus.hyvaksyttyHarkinnanvaraisesti) {
+                                        hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
+                                    }
 
-                            for(var k = 0 ; k < hakemukset.length ; ++k ){
-                                var hakemus = hakemukset[k];
-
-                                //make rest calls in separate scope to prevent hakemusOid to be overridden
-                                hakemus.vastaanottoTila = "";
-                                hakemus.muokattuVastaanottoTila ="";
-
-                                result.some(function(vastaanottotila){
-                                    if(vastaanottotila.hakemusOid === hakemus.hakemusOid) {
-                                        hakemus.vastaanottoTila = vastaanottotila.tila;
-                                        hakemus.muokattuVastaanottoTila = vastaanottotila.tila;
-                                        if(hakemus.vastaanottoTila === "VASTAANOTTANUT_POISSAOLEVA" || hakemus.vastaanottoTila === "VASTAANOTTANUT_LASNA"){
-                                            model.paikanVastaanottaneet.push(hakemus);
-                                        }
-                                        return true;
+                                    if(hakemus.varasijanNumero != undefined) {
+                                        hakemuserittely.varasijoilla.push(hakemus);
                                     }
                                 });
                             }
 
-                        }, function(error) {
-                            model.errors.push(error);
+                            console.log(model.hakemusErittelyt);
+                            
+                            VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
+                                                  valintatapajonoOid: valintatapajonoOid}, function(result) {
+                                
+                                if(hakemukset) {
+                                    hakemukset.forEach(function(currentHakemus) {
+
+                                        //make rest calls in separate scope to prevent hakemusOid to be overridden during rest call
+                                        currentHakemus.vastaanottoTila = "";
+                                        currentHakemus.muokattuVastaanottoTila ="";
+
+                                        result.some(function(vastaanottotila){
+                                            if(vastaanottotila.hakemusOid === currentHakemus.hakemusOid) {
+                                                currentHakemus.vastaanottoTila = vastaanottotila.tila;
+                                                currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
+                                                if(currentHakemus.vastaanottoTila === "VASTAANOTTANUT_POISSAOLEVA" || currentHakemus.vastaanottoTila === "VASTAANOTTANUT_LASNA"){
+                                                    hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
+                                                }
+                                                return true;
+                                            }
+                                        });
+                                    });
+                                }
+                                
+                            }, function(error) {
+                                model.errors.push(error);
+                            });
+
+                            
                         });
                     }
+                    
 
                     SijoitteluAjo.get( {
                             hakuOid: hakuOid,
@@ -93,8 +108,6 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 
                 }, function(error) {
                      model.errors.push(error);
-                }).$promise.then(function(result){
-                    console.log(result);
                 });
         };
 
