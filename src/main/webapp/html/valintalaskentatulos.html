@@ -28,7 +28,7 @@
                 <h3>Valinnanvaihe OID: <span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span></h3>
                 <h3>Päivämäärä: <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></h3>
                 <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajono">
-                    <h3>Valintatapajono: {{valintatapajono.nimi}} (v.{{valintatapajono.versio}})</h3>
+                    <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
                         <tr>

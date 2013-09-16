@@ -3,7 +3,7 @@
 <div ng-include="'partials/topNavigation.html'"/>
 
 <div class="tabsheets">
-    <h1 class="margin-bottom-3">Haun hallinta</h1>
+    <h1>Haun hallinta</h1>
     <dl class="dl-horizontal">
 		<dt>Haku</dt><dd>{{hakumodel.hakuOid.nimi.kieli_fi}}</dd>
         <dt>Haun tunniste</dt><dd>{{hakumodel.hakuOid.haunTunniste}}</dd>
@@ -23,11 +23,15 @@
         <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintakoelaskenta()" class="button primary small">Suorita valintakoelaskenta haulle</a>
         <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
         <a ng-show="privileges.valintalaskenta" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
+        <a ng-hide="sijotteluRunning" ng-disabled="privileges.valintalaskenta" ng-click="kaynnistaJatkuvaSijoittelu()" class="button primary small">Käynnistä jatkuva sijoittelu</a>
+        <span ng-show="sijotteluRunning">Jatkuva sijoittelu on käynnissä</span>
     </div>
     <div class="clear"></div>
     <div class="margin-top-2">
         <a ng-show="privileges.valintalaskenta" ng-click="showErrors()" class="button small">Hae virheet</a>
     </div>
+
+
 
     <div ng-show="virheet.valintakoe.length > 0 || virheet.valintalaskenta.length > 0 || virheet.eiKoeVirheita || virheet.eiLaskentaVirheita">
         <div class="tabs">
