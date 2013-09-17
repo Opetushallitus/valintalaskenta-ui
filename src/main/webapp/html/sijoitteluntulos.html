@@ -16,16 +16,18 @@
                 <h3>Tietoja haettaessa tapahtui virhe</h3>
                 <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
+            <div ng-show="model.sijoitteluTulokset.sijoitteluajoOid">
+                <div class="margin-vertical-2">
+                    Viimeisimmät sijoittelun tulokset. Sijoitteluajo on alkanut  <strong>{{model.latestSijoitteluajo.startMils | date:'dd.MM.yyyy HH:mm'}}</strong>
+                    ja loppunut <strong>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</strong>. Sijoitteluajon tunniste on <strong>{{model.latestSijoitteluajo.sijoitteluajoId}}</strong>.
+                    Sijoittelu suoritetaan kerran vuorokaudessa.
+                </div>
 
-            <div class="margin-vertical-2">
-                Viimeisimmät sijoittelun tulokset. Sijoitteluajo on alkanut  <strong>{{model.latestSijoitteluajo.startMils | date:'dd.MM.yyyy HH:mm'}}</strong>
-                ja loppunut <strong>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</strong>. Sijoitteluajon tunniste on <strong>{{model.latestSijoitteluajo.sijoitteluajoId}}</strong>.
-                Sijoittelu suoritetaan kerran vuorokaudessa.
+                <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
+                <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo hyväksymiskirjeet</a>
             </div>
+                <a ng-show="false" ng-click="createJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo jälkiohjauskirjeet</a>
 
-            <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
-            <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo hyväksymiskirjeet</a>
-            <a ng-show="false" ng-click="createJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo jälkiohjauskirjeet</a>
 			<div class="margin-vertical-2 overflow-x-scroll">
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot">
                     <table class="virkailija-table-1" item-on-screen>

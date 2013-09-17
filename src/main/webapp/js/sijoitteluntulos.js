@@ -25,10 +25,13 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                 hakukohdeOid: hakukohdeOid,
                 hakuOid: hakuOid
                 }, function(result) {
-                    model.sijoitteluTulokset = result;
+                    if(result.sijoitteluajoId) {
 
-                    var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
-                    if(valintatapajonot) {
+
+                        model.sijoitteluTulokset = result;
+
+                        var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
+                        
                         valintatapajonot.forEach(function(valintatapajono, index) {
 
                             var valintatapajonoOid = valintatapajono.oid;
@@ -44,23 +47,21 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 
                             model.hakemusErittelyt.push(hakemuserittely);
 
-                            if(hakemukset) {
-                                hakemukset.forEach(function(hakemus) {
-                                    if(hakemus.tila === "HYVAKSYTTY") {
-                                        hakemuserittely.hyvaksytyt.push(hakemus);
-                                    }
+                            
+                            hakemukset.forEach(function(hakemus) {
+                                if(hakemus.tila === "HYVAKSYTTY") {
+                                    hakemuserittely.hyvaksytyt.push(hakemus);
+                                }
 
-                                    if(hakemus.hyvaksyttyHarkinnanvaraisesti) {
-                                        hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
-                                    }
+                                if(hakemus.hyvaksyttyHarkinnanvaraisesti) {
+                                    hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
+                                }
 
-                                    if(hakemus.varasijanNumero != undefined) {
-                                        hakemuserittely.varasijoilla.push(hakemus);
-                                    }
-                                });
-                            }
-
-                            console.log(model.hakemusErittelyt);
+                                if(hakemus.varasijanNumero != undefined) {
+                                    hakemuserittely.varasijoilla.push(hakemus);
+                                }
+                            });
+                            
                             
                             VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
                                                   valintatapajonoOid: valintatapajonoOid}, function(result) {
@@ -91,20 +92,22 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 
                             
                         });
-                    }
                     
-
-                    SijoitteluAjo.get( {
-                            hakuOid: hakuOid,
-                            sijoitteluajoOid: result.sijoitteluajoId
-                        }, function(result) {
-                             model.latestSijoitteluajo.startMils = result.startMils;
-                             model.latestSijoitteluajo.endMils = result.endMils;
-                             model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
-                        },function(error) {
-                            model.errors.push(error);
-                        }
-                    );
+                    
+                    
+                        SijoitteluAjo.get( {
+                                hakuOid: hakuOid,
+                                sijoitteluajoOid: result.sijoitteluajoId
+                            }, function(result) {
+                                model.latestSijoitteluajo.startMils = result.startMils;
+                                model.latestSijoitteluajo.endMils = result.endMils;
+                                model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
+                            },function(error) {
+                                model.errors.push(error);
+                            }
+                        );    
+                    
+                    }
 
                 }, function(error) {
                      model.errors.push(error);
