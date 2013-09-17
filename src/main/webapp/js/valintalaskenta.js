@@ -383,7 +383,7 @@ app.factory('MyRoles', function($resource) {
 });
 
 app.factory('JatkuvaSijoittelu', function($resource) {
-	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/sijoittelu/jatkuva/:method", {}, {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/jatkuva/:method", {}, {
         get: {method: "GET"}
     });
 });
