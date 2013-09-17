@@ -24,16 +24,16 @@
     </div>
     <div class="clear"></div>
     <div class="float-left margin-top-2">
-    	<!-- 
+    	<!--
     	TODO: Odottaa sijoittelun rajapintaa!
     	<a ng-show="privileges.valintalaskenta" ng-click="aktivoiKelaVienti()" class="button primary small">Vie Kelan formaattiin</a>
     	 -->
-    	<a ng-show="privileges.valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()" class="button primary small excel">Vie jälkiohjaustulokset exceliin</a>
-        <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintakoelaskenta()" class="button primary small">Suorita valintakoelaskenta haulle</a>
-        <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
-        <a ng-show="privileges.valintalaskenta" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
-        <a ng-hide="jatkuva.hakuOid && privileges.valintalaskenta" ng-click="kaynnistaJatkuvaSijoittelu()" class="button small">Käynnistä jatkuva sijoittelu</a>
-        <a ng-hide="!jatkuva.hakuOid && privileges.valintalaskenta" ng-click="pysaytaJatkuvaSijoittelu()" class="button small">Pysäytä jatkuva sijoittelu</a>
+    	<a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()" class="button primary small excel">Vie jälkiohjaustulokset exceliin</a>
+        <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiHaunValintakoelaskenta()" class="button primary small">Suorita valintakoelaskenta haulle</a>
+        <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
+        <a ng-show="privileges.showValintalaskenta()" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
+        <a ng-hide="jatkuva.hakuOid && privileges.showValintalaskenta()" ng-click="kaynnistaJatkuvaSijoittelu()" class="button small">Käynnistä jatkuva sijoittelu</a>
+        <a ng-hide="!jatkuva.hakuOid && privileges.showValintalaskenta()" ng-click="pysaytaJatkuvaSijoittelu()" class="button small">Pysäytä jatkuva sijoittelu</a>
 
 
     </div>
