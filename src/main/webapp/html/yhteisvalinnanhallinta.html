@@ -13,7 +13,16 @@
         <dd ng-repeat-start="hakuaika in hakumodel.hakuOid.hakuaikas">{{hakuaika.nimi}}</dd>
         <dd ng-repeat-end>{{hakuaika.alkuPvm | date:'dd.MM.yyyy HH:mm'}} - {{hakuaika.loppuPvm | date:'dd.MM.yyyy HH:mm'}}</dd>
 	</dl>
+    <div class="clear"></div>
+    <div ng-show="jatkuva.hakuOid">
+        <h2>Jatkuva sijoittelu</h2>
 
+        <dl class="dl-horizontal">
+            <dt>Viimeksi ajettu</dt><dd>{{jatkuva.viimeksiAjettu | date:'dd.MM.yyyy HH:mm'}}</dd>
+            <dt ng-show="jatkuva.virhe">Virheviesti</dt><dd ng-show="jatkuva.virhe">{{jatkuva.virhe}}</dd>
+        </dl>
+    </div>
+    <div class="clear"></div>
     <div class="float-left margin-top-2">
     	<!-- 
     	TODO: Odottaa sijoittelun rajapintaa!
@@ -23,8 +32,10 @@
         <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintakoelaskenta()" class="button primary small">Suorita valintakoelaskenta haulle</a>
         <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
         <a ng-show="privileges.valintalaskenta" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
-        <a ng-hide="sijotteluRunning" ng-disabled="privileges.valintalaskenta" ng-click="kaynnistaJatkuvaSijoittelu()" class="button primary small">Käynnistä jatkuva sijoittelu</a>
-        <span ng-show="sijotteluRunning">Jatkuva sijoittelu on käynnissä</span>
+        <a ng-hide="jatkuva.hakuOid && privileges.valintalaskenta" ng-click="kaynnistaJatkuvaSijoittelu()" class="button small">Käynnistä jatkuva sijoittelu</a>
+        <a ng-hide="!jatkuva.hakuOid && privileges.valintalaskenta" ng-click="pysaytaJatkuvaSijoittelu()" class="button small">Pysäytä jatkuva sijoittelu</a>
+
+
     </div>
     <div class="clear"></div>
     <div class="margin-top-2">

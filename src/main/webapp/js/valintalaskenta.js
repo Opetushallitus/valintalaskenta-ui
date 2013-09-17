@@ -382,6 +382,12 @@ app.factory('MyRoles', function($resource) {
     });
 });
 
+app.factory('JatkuvaSijoittelu', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/sijoittelu/jatkuva/:method", {}, {
+        get: {method: "GET"}
+    });
+});
+
 
 
 app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
