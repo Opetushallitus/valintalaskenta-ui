@@ -176,50 +176,55 @@ app.directive('auth', function($animate, $timeout, AuthService, HakukohdeModel) 
 
           $animate.addClass(element, 'ng-hide');
 
+          var success = function() {
+              if(additionalCheck()) {
+                  $animate.removeClass(element, 'ng-hide');
+              } else {
+                  $animate.addClass(element, 'ng-hide');
+              }
+          }
+          var additionalCheck = function() {
+              if(attrs.authAdditionalCheck) {
+                  var temp = $scope.$eval(attrs.authAdditionalCheck);
+                  return temp;
+              }
+              return true;
+          }
+
             switch(attrs.auth) {
 
                 case "crudOph":
-                    AuthService.crudOph(attrs.authService).then(function(){
-                        $animate.removeClass(element, 'ng-hide');
-                    });
+                    AuthService.crudOph(attrs.authService).then(success);
                     break;
 
                 case "updateOph":
-                    AuthService.updateOph(attrs.authService).then(function(){
-                        $animate.removeClass(element, 'ng-hide');
-                    })
+                    AuthService.updateOph(attrs.authService).then(success);
                     break;
 
                 case "readOph":
-                    AuthService.readOph(attrs.authService).then(function(){
-                        $animate.removeClass(element, 'ng-hide');
-                    })
+                    AuthService.readOph(attrs.authService).then(success);
                     break;
             }
+
+
 
             attrs.$observe('authOrg', function() {
                 if(attrs.authOrg) {
                     switch(attrs.auth) {
                         case "crud":
-                            AuthService.crudOrg(attrs.authService, attrs.authOrg).then(function(){
-                                $animate.removeClass(element, 'ng-hide');
-                            }, function(){
+                            AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success, function(){
                                 $animate.addClass(element, 'ng-hide');
                             });
                             break;
 
                         case "update":
-                            AuthService.updateOrg(attrs.authService, attrs.authOrg).then(function(){
-                                $animate.removeClass(element, 'ng-hide');
-                            }, function(){
+                            AuthService.updateOrg(attrs.authService, attrs.authOrg).then(success, function(){
                                 $animate.addClass(element, 'ng-hide');
                             });
                             break;
 
                         case "read":
-                            AuthService.readOrg(attrs.authService, attrs.authOrg).then(function(){
-                                $animate.removeClass(element, 'ng-hide');
-                            }, function(){
+                            AuthService.readOrg(attrs.authService, attrs.authOrg).then(success, function(){
                                 $animate.addClass(element, 'ng-hide');
                             });
                             break;

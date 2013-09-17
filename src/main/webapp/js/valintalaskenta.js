@@ -390,9 +390,29 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
 app.factory('ParametriService', function($routeParams, Parametrit) {
     var loaded = false, privilegesMap = {};
     if(!loaded) {
-        privilegesMap = Parametrit.list({hakuOid: $routeParams.hakuOid}, function(data) {
+        Parametrit.list({hakuOid: $routeParams.hakuOid}, function(data) {
+            $.extend(privilegesMap, data);
             loaded = true;
         });
     }
-    return privilegesMap;
+    return {
+        showHakeneet: function() {
+            return privilegesMap.hakeneet;
+        },
+        showValintalaskenta: function() {
+            return privilegesMap.valintalaskenta;
+        },
+        showValintakoekutsut: function() {
+            return privilegesMap.valintakoekutsut;
+        },
+        showPistesyotto: function() {
+            return privilegesMap.pistesyotto;
+        },
+        showHarkinnanvaraiset: function() {
+            return privilegesMap.harkinnanvaraiset;
+        },
+        showValinnanhallinta: function() {
+            return privilegesMap.valinnanhallinta;
+        }
+    };
 })
