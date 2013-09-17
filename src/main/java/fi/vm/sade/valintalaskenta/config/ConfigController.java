@@ -45,6 +45,9 @@ public class ConfigController {
     @Value("${auth.mode:}")
     private String authMode;
 
+    @Value("${valintalaskenta-ui.cas.url:/cas/myroles}")
+    private String casUrl;
+
     /**
      * Generoi javascriptia propertiesseista
      * @return
@@ -64,11 +67,10 @@ public class ConfigController {
         append(b, "ORGANISAATIO_URL_BASE", organisaatioUrl);
         append(b, "HAKEMUS_UI_URL_BASE", hakemusUiUrl);
         append(b, "TEMPLATE_URL_BASE", "");
+        append(b, "CAS_URL", casUrl);
         if(!authMode.isEmpty()) {
             append(b, "AUTH_MODE", authMode);
-            if(authMode.trim().equalsIgnoreCase("dev")) {
-                append(b, "CAS_URL", "/servers/cas/myroles");
-            }
+
         }
         return b.toString();
     }
