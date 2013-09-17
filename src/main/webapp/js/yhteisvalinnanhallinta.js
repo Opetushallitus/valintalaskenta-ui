@@ -31,7 +31,7 @@
 
 });
 
-function YhteisvalinnanHallintaController($scope, $location, $routeParams, JalkiohjausXls, AktivoiKelaVienti, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta) {
+function YhteisvalinnanHallintaController($scope, $location, $routeParams, $route, JalkiohjausXls, AktivoiKelaVienti, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
 	$scope.hakumodel = HakuModel;
@@ -82,6 +82,28 @@ function YhteisvalinnanHallintaController($scope, $location, $routeParams, Jalki
     $scope.hakukohdenakyma = function(hakukohdeOid) {
         $location.path('/haku/' + $routeParams.hakuOid + '/hakukohde/' + hakukohdeOid + '/pistesyotto');
     }
+
+    $scope.kaynnistaJatkuvaSijoittelu = function() {
+        JatkuvaSijoittelu.get({hakuOid: $routeParams.hakuOid, method: 'aktivoi'}, function(result) {
+            $route.reload();
+        }, function(error){
+            alert(error);
+        });
+    }
+
+    $scope.pysaytaJatkuvaSijoittelu = function() {
+        JatkuvaSijoittelu.get({hakuOid: $routeParams.hakuOid, method: 'poista'}, function(result) {
+            $route.reload();
+        }, function(error){
+            alert("virhe");
+        });
+    }
+
+    JatkuvaSijoittelu.get({hakuOid: $routeParams.hakuOid}, function(result) {
+        $scope.jatkuva = result;
+    }, function(error){
+        alert("virhe");
+    });
 
     $scope.privileges = ParametriService;
 }

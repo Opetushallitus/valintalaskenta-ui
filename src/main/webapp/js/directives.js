@@ -274,13 +274,3 @@ app.directive('arvovalidaattori', function(){
         }
     };
 });
-
-app.directive('setHtml', function() {
-       return {
-         restrict: "A",
-         priority: 100,
-         link: function($scope, $el, $attr) {
-           $($el).html($scope.$eval($attr.setHtml));
-         }
-       };
-     });

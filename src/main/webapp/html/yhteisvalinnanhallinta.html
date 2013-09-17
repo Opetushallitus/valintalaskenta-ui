@@ -3,7 +3,7 @@
 <div ng-include="'partials/topNavigation.html'"/>
 
 <div class="tabsheets">
-    <h1 class="margin-bottom-3">Haun hallinta</h1>
+    <h1>Haun hallinta</h1>
     <dl class="dl-horizontal">
 		<dt>Haku</dt><dd>{{hakumodel.hakuOid.nimi.kieli_fi}}</dd>
         <dt>Haun tunniste</dt><dd>{{hakumodel.hakuOid.haunTunniste}}</dd>
@@ -13,21 +13,36 @@
         <dd ng-repeat-start="hakuaika in hakumodel.hakuOid.hakuaikas">{{hakuaika.nimi}}</dd>
         <dd ng-repeat-end>{{hakuaika.alkuPvm | date:'dd.MM.yyyy HH:mm'}} - {{hakuaika.loppuPvm | date:'dd.MM.yyyy HH:mm'}}</dd>
 	</dl>
+    <div class="clear"></div>
+    <div ng-show="jatkuva.hakuOid">
+        <h2>Jatkuva sijoittelu</h2>
 
+        <dl class="dl-horizontal">
+            <dt>Viimeksi ajettu</dt><dd>{{jatkuva.viimeksiAjettu | date:'dd.MM.yyyy HH:mm'}}</dd>
+            <dt ng-show="jatkuva.virhe">Virheviesti</dt><dd ng-show="jatkuva.virhe">{{jatkuva.virhe}}</dd>
+        </dl>
+    </div>
+    <div class="clear"></div>
     <div class="float-left margin-top-2">
-    	<!-- 
+    	<!--
     	TODO: Odottaa sijoittelun rajapintaa!
     	<a ng-show="privileges.valintalaskenta" ng-click="aktivoiKelaVienti()" class="button primary small">Vie Kelan formaattiin</a>
     	 -->
-    	<a ng-show="privileges.valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()" class="button primary small excel">Vie jälkiohjaustulokset exceliin</a>
-        <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintakoelaskenta()" class="button primary small">Suorita valintakoelaskenta haulle</a>
-        <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
-        <a ng-show="privileges.valintalaskenta" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
+    	<a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()" class="button primary small excel">Vie jälkiohjaustulokset exceliin</a>
+        <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiHaunValintakoelaskenta()" class="button primary small">Suorita valintakoelaskenta haulle</a>
+        <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
+        <a ng-show="privileges.showValintalaskenta()" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
+        <a ng-hide="jatkuva.hakuOid && privileges.showValintalaskenta()" ng-click="kaynnistaJatkuvaSijoittelu()" class="button small">Käynnistä jatkuva sijoittelu</a>
+        <a ng-hide="!jatkuva.hakuOid && privileges.showValintalaskenta()" ng-click="pysaytaJatkuvaSijoittelu()" class="button small">Pysäytä jatkuva sijoittelu</a>
+
+
     </div>
     <div class="clear"></div>
     <div class="margin-top-2">
         <a ng-show="privileges.valintalaskenta" ng-click="showErrors()" class="button small">Hae virheet</a>
     </div>
+
+
 
     <div ng-show="virheet.valintakoe.length > 0 || virheet.valintalaskenta.length > 0 || virheet.eiKoeVirheita || virheet.eiLaskentaVirheita">
         <div class="tabs">
