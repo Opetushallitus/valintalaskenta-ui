@@ -39,6 +39,8 @@ app.config(function($routeProvider) {
 
 
     when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:YhteisvalinnanHallintaController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta.html'}).
+
+
     when('/lisahaku/:hakuOid/hakukohde', {controller: LisahakuController, templateUrl: TEMPLATE_URL_BASE + 'lisahakuHakukohde.html'}).
     when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: HakukohdeController, templateUrl: TEMPLATE_URL_BASE + 'lisahaku/hakukohdeperustiedot.html'}).
     when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hyvaksytyt', {controller: LisahakuhyvaksytytController, templateUrl: TEMPLATE_URL_BASE + 'lisahaku/hyvaksytyt.html'}).
@@ -180,6 +182,13 @@ app.factory('Sijoitteluktivointi', function($resource) {
     })
 });
 
+app.factory('AktivoiKelaVienti', function($window) {
+    return {
+		query: function(data) {
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/kela/TKUVAYHVA/aktivoi?hakuOid=" + data.hakuOid;
+		}
+	};
+});
 app.factory('AktivoiHaunValintalaskenta', function($resource) {
   return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoiHaunValintalaskenta", {}, {
       aktivoi: {method: "GET"}
