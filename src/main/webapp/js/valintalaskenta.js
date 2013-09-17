@@ -177,7 +177,7 @@ app.factory('ValintalaskentaAktivointi', function($resource) {
 });
 
 app.factory('Sijoitteluktivointi', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/sijoittelu/aktivoi", {}, {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/aktivoi", {}, {
         aktivoi: {method: "GET"}
     })
 });
