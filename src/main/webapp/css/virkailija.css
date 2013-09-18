@@ -1386,17 +1386,18 @@ table {
     opacity: 0; } }
 
 .smoothToggle.ng-hide-add, .smoothToggle.ng-hide-remove {
-  -webkit-transition: 0.5s linear all;
-  -moz-transition: 0.5s linear all;
-  -o-transition: 0.5s linear all;
-  transition: 0.5s linear all; }
+  -webkit-transition: 0.3s ease all;
+  -moz-transition: 0.3s ease all;
+  -o-transition: 0.3s ease all;
+  transition: 0.3s ease all;
+  display: block !important; }
 .smoothToggle.ng-hide-remove {
   opacity: 0; }
-.smoothToggle.ng-hide-remove-active {
+.smoothToggle.ng-hide-remove.ng-hide-remove-active {
   opacity: 1; }
 .smoothToggle.ng-hide-add {
   opacity: 1; }
-.smoothToggle.ng-hide-add-active {
+.smoothToggle.ng-hide-add.ng-hide-add-active {
   opacity: 0; }
 
 body {

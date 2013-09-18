@@ -169,6 +169,18 @@ app.directive('centralize', function() {
     }
 });
 
+app.directive('smoothToggle', function($animate) {
+  return function(scope, element, attrs) { 
+    scope.$watch(attrs.smoothToggle, function(newVal) {
+      if(newVal) {
+        element.addClass('ng-show');
+      } else {
+        element.removeClass('ng-show');
+      }
+    });
+  }
+});
+
 
 app.directive('auth', function($animate, $timeout, AuthService, HakukohdeModel) {
     return {
