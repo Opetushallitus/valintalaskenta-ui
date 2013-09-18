@@ -179,8 +179,6 @@ app.directive('auth', function($animate, $timeout, AuthService, HakukohdeModel) 
           var success = function() {
               if(additionalCheck()) {
                   $animate.removeClass(element, 'ng-hide');
-              } else {
-                  $animate.addClass(element, 'ng-hide');
               }
           }
           var additionalCheck = function() {
@@ -190,7 +188,7 @@ app.directive('auth', function($animate, $timeout, AuthService, HakukohdeModel) 
               }
               return true;
           }
-
+          $timeout(function() {
             switch(attrs.auth) {
 
                 case "crudOph":
@@ -205,32 +203,26 @@ app.directive('auth', function($animate, $timeout, AuthService, HakukohdeModel) 
                     AuthService.readOph(attrs.authService).then(success);
                     break;
             }
+          },0);
+          
+          attrs.$observe('authOrg', function() {
+              if(attrs.authOrg) {
+                  switch(attrs.auth) {
+                      case "crud":
+                          AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success);
+                          break;
 
+                      case "update":
+                          AuthService.updateOrg(attrs.authService, attrs.authOrg).then(success);
+                          break;
 
+                      case "read":
+                          AuthService.readOrg(attrs.authService, attrs.authOrg).then(success);
+                          break;
+                  }
+              }
+          });
 
-            attrs.$observe('authOrg', function() {
-                if(attrs.authOrg) {
-                    switch(attrs.auth) {
-                        case "crud":
-                            AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success, function(){
-                                $animate.addClass(element, 'ng-hide');
-                            });
-                            break;
-
-                        case "update":
-                            AuthService.updateOrg(attrs.authService, attrs.authOrg).then(success, function(){
-                                $animate.addClass(element, 'ng-hide');
-                            });
-                            break;
-
-                        case "read":
-                            AuthService.readOrg(attrs.authService, attrs.authOrg).then(success, function(){
-                                $animate.addClass(element, 'ng-hide');
-                            });
-                            break;
-                    }
-                }
-            });
       }
     };
 });
