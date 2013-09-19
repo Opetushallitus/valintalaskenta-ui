@@ -16,7 +16,7 @@
                 <h3>Tietoja haettaessa tapahtui virhe</h3>
                 <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
-            <div ng-show="model.sijoitteluTulokset.sijoitteluajoOid">
+            <div ng-show="model.sijoitteluTulokset.sijoitteluajoId">
                 <div class="margin-vertical-2">
                     Viimeisimmät sijoittelun tulokset. Sijoitteluajo on alkanut  <strong>{{model.latestSijoitteluajo.startMils | date:'dd.MM.yyyy HH:mm'}}</strong>
                     ja loppunut <strong>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</strong>. Sijoitteluajon tunniste on <strong>{{model.latestSijoitteluajo.sijoitteluajoId}}</strong>.
