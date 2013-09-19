@@ -25,8 +25,8 @@
 
                 <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
                 <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo hyväksymiskirjeet</a>
+                <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="button small pdf">Luo hyväksytyille osoitetarrat</a>
             </div>
-                <a ng-show="false" ng-click="createJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo jälkiohjauskirjeet</a>
 
 			<div class="margin-vertical-2 overflow-x-scroll">
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot">

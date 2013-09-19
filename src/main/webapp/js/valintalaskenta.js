@@ -241,6 +241,12 @@ app.factory('Osoitetarrat', function($resource,$window) {
 	});
 });
 
+app.factory('Hyvaksymisosoitteet', function($resource,$window) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksyttyjenosoitetarrat/aktivoi", {}, {
+		query:  {method:'GET', isArray:false}
+	});
+});
+
 app.factory('Hyvaksymiskirjeet', function($resource,$window) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksymiskirjeet/aktivoi", {}, {
 		query:  {method:'GET', isArray:false}
