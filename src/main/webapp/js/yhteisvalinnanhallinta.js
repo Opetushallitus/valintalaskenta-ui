@@ -39,7 +39,7 @@ function YhteisvalinnanHallintaController($scope, $location, $routeParams, $rout
 	$scope.naytaKokeita = 50;
 	
 	$scope.aktivoiJalkiohjaustuloksetPdf = function() {
-		Jalkiohjauskirjeet.query({sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function(resurssi) {
+		Jalkiohjauskirjeet.query({hakuOid: $routeParams.hakuOid}, function(resurssi) {
     		$window.location.href = resurssi.latausUrl;
     	}, function(response) {
     		alert(response.data.viesti);
