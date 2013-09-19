@@ -29,6 +29,7 @@
     	<a ng-show="privileges.valintalaskenta" ng-click="aktivoiKelaVienti()" class="button primary small">Vie Kelan formaattiin</a>
     	 -->
     	<a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()" class="button primary small excel">Vie jälkiohjaustulokset exceliin</a>
+    	<a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetPdf()" class="button primary small pdf">Vie jälkiohjauskirjeiksi</a>
         <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiHaunValintakoelaskenta()" class="button primary small">Suorita valintakoelaskenta haulle</a>
         <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiHaunValintalaskenta()" class="button primary small">Suorita valintalaskenta haulle</a>
         <a ng-show="privileges.showValintalaskenta()" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita sijoittelu</a>
