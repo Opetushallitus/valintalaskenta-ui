@@ -173,7 +173,7 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 });
 
 
-function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
+function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel,Hyvaksymisosoitteet, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
    $scope.hakuOid =  $routeParams.hakuOid;
    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
@@ -194,7 +194,13 @@ function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, 
     $scope.submit = function(valintatapajonoOid) {
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     }
-
+    $scope.createHyvaksymisosoitteetPDF  = function() {
+    	Hyvaksymisosoitteet.query({sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function(resurssi) {
+    		$window.location.href = resurssi.latausUrl;
+    	}, function(response) {
+    		alert(response.data.viesti);
+    	});
+    }
     $scope.createHyvaksymiskirjeetPDF = function() {
     	Hyvaksymiskirjeet.query({sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function(resurssi) {
     		$window.location.href = resurssi.latausUrl;
