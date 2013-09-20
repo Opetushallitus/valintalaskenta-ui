@@ -4113,6 +4113,34 @@ div.tilaParial:after, div.henkiloPartial:after {
 .toggle-animation.ng-hide-add.ng-hide-add-active {
   opacity: 0; }
 
+.modal-content-toggle-animation.ng-hide-add, .modal-content-toggle-animation.ng-hide-remove {
+  -webkit-transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) all;
+  -moz-transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) all;
+  -o-transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) all;
+  transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) all; }
+.modal-content-toggle-animation.ng-hide-remove {
+  opacity: 0; }
+.modal-content-toggle-animation.ng-hide-remove.ng-hide-remove-active {
+  opacity: 1; }
+.modal-content-toggle-animation.ng-hide-add {
+  opacity: 1; }
+.modal-content-toggle-animation.ng-hide-add.ng-hide-add-active {
+  opacity: 0; }
+
+.modal-background-toggle-animation.ng-hide-add, .modal-background-toggle-animation.ng-hide-remove {
+  -webkit-transition: 0.3s ease all;
+  -moz-transition: 0.3s ease all;
+  -o-transition: 0.3s ease all;
+  transition: 0.3s ease all; }
+.modal-background-toggle-animation.ng-hide-remove {
+  opacity: 0; }
+.modal-background-toggle-animation.ng-hide-remove.ng-hide-remove-active {
+  opacity: 0.5; }
+.modal-background-toggle-animation.ng-hide-add {
+  opacity: 0.5; }
+.modal-background-toggle-animation.ng-hide-add.ng-hide-add-active {
+  opacity: 0; }
+
 .include-reveal-animation.ng-enter, .include-reveal-animation.ng-leave {
   -webkit-transition: 0.3s linear all;
   /* Safari/Chrome */
@@ -4124,14 +4152,10 @@ div.tilaParial:after, div.henkiloPartial:after {
   /* IE10+ and Future Browsers */
   display: block !important; }
 .include-reveal-animation.ng-enter {
-  display: block !important;
   opacity: 0; }
 .include-reveal-animation.ng-enter.ng-enter-active {
-  display: block !important;
   opacity: 1; }
 .include-reveal-animation.ng-leave {
-  display: block !important;
   opacity: 1; }
 .include-reveal-animation.ng-leave.ng-leave-active {
-  display: block !important;
   opacity: 0; }
