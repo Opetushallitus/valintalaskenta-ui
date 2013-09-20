@@ -235,25 +235,25 @@ app.factory('ValintakoeXls', function($window) {
 		}
 	};
 });
-app.factory('Osoitetarrat', function($resource,$window) {
+app.factory('Osoitetarrat', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/aktivoi", {}, {
 		query:  {method:'GET', isArray:false}
 	});
 });
 
-app.factory('Hyvaksymisosoitteet', function($resource,$window) {
+app.factory('Hyvaksymisosoitteet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksyttyjenosoitetarrat/aktivoi", {}, {
 		query:  {method:'GET', isArray:false}
 	});
 });
 
-app.factory('Hyvaksymiskirjeet', function($resource,$window) {
+app.factory('Hyvaksymiskirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksymiskirjeet/aktivoi", {}, {
 		query:  {method:'GET', isArray:false}
 	});
 });
 
-app.factory('Jalkiohjauskirjeet', function($resource,$window) {
+app.factory('Jalkiohjauskirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/jalkiohjauskirjeet/aktivoi", {}, {
 		query:  {method:'GET', isArray:false}
 	});

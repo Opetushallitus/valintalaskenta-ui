@@ -31,7 +31,7 @@
 
 });
 
-function YhteisvalinnanHallintaController($scope, $location, $routeParams, $route, JalkiohjausXls, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
+function YhteisvalinnanHallintaController($scope, $location, $routeParams, $route, $window, JalkiohjausXls, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
 	$scope.hakumodel = HakuModel;
