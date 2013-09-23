@@ -72,6 +72,7 @@ public class ConfigController {
             append(b, "AUTH_MODE", authMode);
 
         }
+
         return b.toString();
     }
 
