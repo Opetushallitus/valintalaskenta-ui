@@ -36,29 +36,32 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 	    		var notLastPage = startIndex < lastTotalCount;
 	    		if(notLastPage || restart) {
 					var self = this;
-		        	TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms:this.lastSearch}, function(result) {
-		        		if(restart) { // eka sivu
-		        			self.hakukohteet = result.tulokset;
-			    			self.totalCount = result.kokonaismaara;
-		        		} else { // seuraava sivu
-		        			if(startIndex != self.getCount()) {
-		    					//
-		        				// Ei tehda mitaan
-		        				//
-		        				return;
-		    				} else {
-		    					self.hakukohteet = self.hakukohteet.concat(result.tulokset);
-		    					if(self.getTotalCount() !== result.kokonaismaara) {
-		    						// palvelimen tietomalli on paivittynyt joten koko lista on ladattava uudestaan!
-		    						// ... tai vaihtoehtoisesti kayttajalle naytetaan epasynkassa olevaa listaa!!!!!
-		    						self.lastSearch = null;
-		    						self.getNextPage(true);
-		    					}
-		    				}
-		        		}
-		        		model.readyToQueryForNextPage = true;
-		                
-		            });
+					AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN").then(function(model){
+                        console.log(model);
+                        TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms:this.lastSearch, organisationOids: model.toString()}, function(result) {
+                            if(restart) { // eka sivu
+                                self.hakukohteet = result.tulokset;
+                                self.totalCount = result.kokonaismaara;
+                            } else { // seuraava sivu
+                                if(startIndex != self.getCount()) {
+                                    //
+                                    // Ei tehda mitaan
+                                    //
+                                    return;
+                                } else {
+                                    self.hakukohteet = self.hakukohteet.concat(result.tulokset);
+                                    if(self.getTotalCount() !== result.kokonaismaara) {
+                                        // palvelimen tietomalli on paivittynyt joten koko lista on ladattava uudestaan!
+                                        // ... tai vaihtoehtoisesti kayttajalle naytetaan epasynkassa olevaa listaa!!!!!
+                                        self.lastSearch = null;
+                                        self.getNextPage(true);
+                                    }
+                                }
+                            }
+                            model.readyToQueryForNextPage = true;
+
+                        });
+					});
 				}
 			}
     	};
