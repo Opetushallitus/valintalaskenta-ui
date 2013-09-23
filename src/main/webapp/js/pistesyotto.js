@@ -54,38 +54,40 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
                            };
                         });
 
-                        model.hakeneet.forEach(function(hakija){
+                        if(model.hakeneet) {
+                            model.hakeneet.forEach(function(hakija){
 
-                            hakija.originalData = [];
-                            hakija.osallistuu = [];
-                            if(!hakija.additionalData) {
-                               hakija.additionalData = [];
-                            }
-
-                            model.avaimet.forEach(function(avain){
-
-                                hakija.osallistuu[avain.tunniste] = false;
-
-                                if(tulokset[hakija.oid] &&
-                                    tulokset[hakija.oid][hakukohdeOid] &&
-                                    tulokset[hakija.oid][hakukohdeOid][avain.tunniste]
-
-                                ) {
-                                    hakija.osallistuu[avain.tunniste] = tulokset[hakija.oid][hakukohdeOid][avain.tunniste];
+                                hakija.originalData = [];
+                                hakija.osallistuu = [];
+                                if(!hakija.additionalData) {
+                                   hakija.additionalData = [];
                                 }
 
-                                if(!hakija.additionalData[avain.tunniste]) {
-                                   hakija.additionalData[avain.tunniste] = "";
-                                }
-                                hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
+                                model.avaimet.forEach(function(avain){
 
-                                if(!hakija.additionalData[avain.osallistuminenTunniste]) {
-                                   hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-                                }
-                                hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+                                    hakija.osallistuu[avain.tunniste] = false;
+
+                                    if(tulokset[hakija.oid] &&
+                                        tulokset[hakija.oid][hakukohdeOid] &&
+                                        tulokset[hakija.oid][hakukohdeOid][avain.tunniste]
+
+                                    ) {
+                                        hakija.osallistuu[avain.tunniste] = tulokset[hakija.oid][hakukohdeOid][avain.tunniste];
+                                    }
+
+                                    if(!hakija.additionalData[avain.tunniste]) {
+                                       hakija.additionalData[avain.tunniste] = "";
+                                    }
+                                    hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
+
+                                    if(!hakija.additionalData[avain.osallistuminenTunniste]) {
+                                       hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+                                    }
+                                    hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+                                });
+
                             });
-
-                        });
+                        }
                     });
                 }, function(error) {
                     model.errors.push(error);

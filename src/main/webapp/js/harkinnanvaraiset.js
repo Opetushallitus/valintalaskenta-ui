@@ -16,32 +16,34 @@
             HakukohdeHenkilot.get({aoOid: hakukohdeOid}, function(result) {
                 model.hakeneet = result.results;
 
-                model.hakeneet.forEach(function(hakija){
-                    Hakemus.get({oid: hakija.oid}, function(result) {
-                         hakija.hakemus=result;
-                         if(hakija.hakemus.answers) {
-                            for(var i =0; i<10; i++) {
-                                var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
-                                if(oid === model.hakukohdeOid) {
-                                    var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
-                                    var discretionary = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
-                                    hakija.hakenutHarkinnanvaraisesti = harkinnanvarainen || discretionary;
+                if(model.hakeneet) {
+                    model.hakeneet.forEach(function(hakija){
+                        Hakemus.get({oid: hakija.oid}, function(result) {
+                             hakija.hakemus=result;
+                             if(hakija.hakemus.answers) {
+                                for(var i =0; i<10; i++) {
+                                    var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                                    if(oid === model.hakukohdeOid) {
+                                        var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
+                                        var discretionary = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
+                                        hakija.hakenutHarkinnanvaraisesti = harkinnanvarainen || discretionary;
+                                    }
                                 }
                             }
-                        }
-                    })
-                    HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
-                        for (var i=0; i<result.length; i++) {
-                            var harkinnanvarainen = result[i];
-                            if(harkinnanvarainen.hakemusOid == hakija.oid) {
-                                hakija.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
-                                hakija.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                        })
+                        HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
+                            for (var i=0; i<result.length; i++) {
+                                var harkinnanvarainen = result[i];
+                                if(harkinnanvarainen.hakemusOid == hakija.oid) {
+                                    hakija.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                                    hakija.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                                }
                             }
-                        }
-                    }, function(error) {
-                      model.errors.push(error);
+                        }, function(error) {
+                          model.errors.push(error);
+                        });
                     });
-                });
+                }
             }, function(error) {
                 model.errors.push(error);
             });
