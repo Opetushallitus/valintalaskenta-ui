@@ -31,7 +31,9 @@
                                 }
                             }
                         })
-                        HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
+                    });
+                   HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
+                        model.hakeneet.forEach(function(hakija){
                             for (var i=0; i<result.length; i++) {
                                 var harkinnanvarainen = result[i];
                                 if(harkinnanvarainen.hakemusOid == hakija.oid) {
@@ -39,9 +41,9 @@
                                     hakija.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
                                 }
                             }
-                        }, function(error) {
-                          model.errors.push(error);
                         });
+                    }, function(error) {
+                      model.errors.push(error);
                     });
                 }
             }, function(error) {
