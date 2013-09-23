@@ -93,7 +93,7 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
 
 	   // Muistetaan millä alasivulla ollaan, kun vaihdetaan hakukohdetta.
 	   
-	   $scope.subpage = $location.path().split('/')[5] || 'perustiedot';
+//	   $scope.subpage = $location.path().split('/')[5] || 'perustiedot';
 	   $scope.model = HakukohteetModel;
 	   $scope.model.refresh();
 
@@ -107,7 +107,7 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
 	   		$rootScope.selectedHakukohdeTarjoajaNimi = hakukohde.tarjoajaNimi.kieli_fi;
 			$scope.hakukohteetVisible = false;
 			GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
-			$location.path( (lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + '/' + $scope.subpage);
+			$location.path( (lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid  + '/perustiedot');
 	   }
 	   
 	   // uuden sivun lataus

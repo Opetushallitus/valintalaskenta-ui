@@ -1,4 +1,4 @@
 
 <h1 class="inline-block">Haku: </h1>
-<select ng-model="model.hakuOid" ng-options="haku.nimi.kieli_fi for haku in model.haut"></select>
+<select ng-model="model.hakuOid" ng-options="haku.nimi.kieli_fi for haku in model.haut | orderBy:'nimi.kieli_fi'"></select>
         
