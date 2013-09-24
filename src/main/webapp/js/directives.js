@@ -154,15 +154,12 @@ app.directive('centralize', function() {
         link: function($scope, element, attrs) {
             var elemWidth = element.context.offsetWidth;
             var elemHeight = element.context.offsetHeight;
-
-            $scope.$on('centralizeElement', function() {
-                var top = Math.max(0, (($(window).height() - elemHeight) / 2) + $(window).scrollTop());
-                var left = Math.max(0, (($(window).width() - elemWidth) / 2) + $(window).scrollLeft());
-                $(element).css({
-                    margin:0, 
-                    top: (top > 0 ? top : 0)+'px', 
-                    left: (left > 0 ? left : 0)+'px'
-                });
+            var top = Math.max(0, (($(window).height() - elemHeight) / 2) + $(window).scrollTop());
+            var left = Math.max(0, (($(window).width() - elemWidth) / 2) + $(window).scrollLeft());
+            $(element).css({
+                margin:0, 
+                top: (top > 0 ? top : 0)+'px', 
+                left: (left > 0 ? left : 0)+'px'
             });
             
         }
