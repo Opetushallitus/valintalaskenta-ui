@@ -8,7 +8,8 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 		this.searchWord = "";
 		this.lastSearch = null;
 		this.lastHakuOid = null;
-		this.filterToggle = false;
+		this.omatHakukohteet = true;
+		this.valmiitHakukohteet = "JULKAISTU";
 		this.readyToQueryForNextPage = true;
 		
 		this.getCount = function() {
@@ -24,6 +25,7 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 			return this.hakukohteet;
 		}
     	this.getNextPage = function(restart) {
+
     		if(model.readyToQueryForNextPage) {
     			model.readyToQueryForNextPage = false;
 	    		var hakuOid = $routeParams.hakuOid;
@@ -34,10 +36,26 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 	    		var startIndex = this.getCount();
 	    		var lastTotalCount = this.getTotalCount();
 	    		var notLastPage = startIndex < lastTotalCount;
+
 	    		if(notLastPage || restart) {
+
 					var self = this;
-					AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN").then(function(model){
-                        TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms:this.lastSearch, organisationOids: model.toString()}, function(result) {
+					AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN").then(function(roleModel){
+
+					    var searchParams = {
+					        hakuOid:hakuOid,
+					        startIndex:startIndex,
+					        count:model.pageSize,
+					        searchTerms:model.lastSearch};
+
+					    if(model.omatHakukohteet) {
+					        searchParams.organisationOids = roleModel.toString();
+					    }
+
+					    searchParams.hakukohdeTilas = model.valmiitHakukohteet;
+
+
+                        TarjontaHaku.query(searchParams, function(result) {
                             if(restart) { // eka sivu
                                 self.hakukohteet = result.tulokset;
                                 self.totalCount = result.kokonaismaara;
@@ -66,12 +84,17 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
     	};
         
         this.refresh = function() {
+
         	var word = $.trim(this.searchWord);
-        	if(this.lastSearch !== word || this.lastHakuOid !== $routeParams.hakuOid) {
+//        	if(this.lastSearch !== word
+//        	    || this.lastHakuOid !== $routeParams.hakuOid) {
+
         		this.lastSearch = word;
         		this.lastHakuOid = $routeParams.hakuOid;
+
         		this.getNextPage(true);
-        	}
+        	//}
+
         };
 
         this.refreshIfNeeded = function() {

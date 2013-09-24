@@ -4,6 +4,20 @@
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
 			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord" ng-change="model.refresh()"/>
+                <input id="omatHakukohteet" type="checkbox" ng-model="model.omatHakukohteet" ng-change="model.refresh()"/>
+                <label for="omatHakukohteet">Omat hakukohteet</label>
+                <br />
+
+                <input id="julkaistut" type="radio" ng-model="model.valmiitHakukohteet" ng-change="model.refresh()" value="JULKAISTU"/>
+                <label for="julkaistut">Julkaistut</label>
+
+                <input id="valmiit" type="radio" ng-model="model.valmiitHakukohteet" ng-change="model.refresh()" value="VALMIS" />
+                <label for="valmiit">Valmiit</label>
+
+                <input id="kaikki" type="radio" ng-model="model.valmiitHakukohteet" ng-change="model.refresh()" value=""/>
+                <label for="kaikki">Kaikki</label>
+
+
                 <p class="margin-vertical-2">Hakukohteita haettu {{model.getCount()}} / {{model.getTotalCount()}}</p>
 			</div>
 
