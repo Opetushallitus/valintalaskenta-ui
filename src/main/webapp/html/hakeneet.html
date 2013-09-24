@@ -14,10 +14,7 @@
         <div class="tabsheets">
 
             
-            <div ng-show="model.errors.length > 0" class="notification warning">
-                <h3>Tietoja haettaessa tapahtui virhe</h3>
-                <p ng-repeat="error in model.errors">{{error}}</p>
-            </div>
+            <div ng-include="'partials/errors.html'"></div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <form name="form" ng-submit="submit()">

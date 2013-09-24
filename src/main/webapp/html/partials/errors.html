@@ -1,0 +1,5 @@
+<div ng-show="model.errors.length > 0" class="notification warning">
+    <h3>Taustapalvelu on hetkellisesti poissa käytöstä. Yritä hetken kuluttua uudestaan.</h3>
+    <span ng-init="showErrors = false" ng-click="showErrors = !showErrors" class="plainBtn">Näytä lokiviestit</span>
+    <p ng-show="showErrors" ng-repeat="error in model.errors">{{error}}</p>
+</div>
