@@ -182,13 +182,7 @@ app.factory('Sijoitteluktivointi', function($resource) {
     })
 });
 
-app.factory('AktivoiKelaVienti', function($window) {
-    return {
-		query: function(data) {
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/kela/TKUVAYHVA/aktivoi?hakuOid=" + data.hakuOid;
-		}
-	};
-});
+
 app.factory('AktivoiHaunValintalaskenta', function($resource) {
   return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoiHaunValintalaskenta", {}, {
       aktivoi: {method: "GET"}
@@ -235,6 +229,14 @@ app.factory('ValintakoeXls', function($window) {
 		}
 	};
 });
+app.factory('AktivoiKelaVienti', function($window) {
+    return {
+		query: function(data) {
+			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/kela/TKUVAYHVA/aktivoi?hakuOid=" + data.hakuOid + "&hakukohdeOid=" + data.hakukohdeOid+ "&poimintapaivamaara="+ data.poimintapaivamaara + "&lukuvuosi="+data.lukuvuosi;
+		}
+	};
+});
+
 app.factory('Osoitetarrat', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/aktivoi", {}, {
 		query:  {method:'GET', isArray:false}

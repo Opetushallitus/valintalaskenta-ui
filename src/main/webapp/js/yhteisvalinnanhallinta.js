@@ -51,7 +51,7 @@ function YhteisvalinnanHallintaController($scope, $location, $routeParams, $rout
 	}
 	
 	$scope.aktivoiKelaVienti = function() {
-		AktivoiKelaVienti.query({hakuOid:$routeParams.hakuOid});
+		AktivoiKelaVienti.query({hakuOid:$routeParams.hakuOid,hakukohdeOid:"1.2.246.562.5.02371_01_610_1410",lukuvuosi:"22.11.1983",poimintapaivamaara:"22.11.1983"});
 	}
 	
     $scope.kaynnistaSijoittelu = function() {
