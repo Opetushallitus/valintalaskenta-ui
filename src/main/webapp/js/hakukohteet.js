@@ -37,7 +37,6 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 	    		if(notLastPage || restart) {
 					var self = this;
 					AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN").then(function(model){
-                        console.log(model);
                         TarjontaHaku.query({hakuOid:hakuOid, startIndex:startIndex, count:this.pageSize, searchTerms:this.lastSearch, organisationOids: model.toString()}, function(result) {
                             if(restart) { // eka sivu
                                 self.hakukohteet = result.tulokset;
