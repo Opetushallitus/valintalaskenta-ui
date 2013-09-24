@@ -1,6 +1,6 @@
-<div ng-init="tulos.showJarjestyskriteerit = false" class="modal-backdrop" ng-click="tulos.showJarjestyskriteerit = !tulos.showJarjestyskriteerit" ng-show="tulos.showJarjestyskriteerit"></div>
+<div class="modal-backdrop" ng-click="tulos.showJarjestyskriteerit = !tulos.showJarjestyskriteerit" ng-if="tulos.showJarjestyskriteerit"></div>
 
-<div centralize class="modal" ng-show="tulos.showJarjestyskriteerit">
+<div centralize class="modal" ng-if="tulos.showJarjestyskriteerit">
     <div class="modal-header">
         <span>Muokkaus</span>
         <a ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="close"></a>
