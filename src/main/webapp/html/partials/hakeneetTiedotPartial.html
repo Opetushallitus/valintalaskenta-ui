@@ -1,4 +1,4 @@
-<div class="modal henkiloPartial"  ng-show="hakija.showTiedotPartial">
+<div class="modal henkiloPartial"  ng-if="hakija.showTiedotPartial">
     <div class="modal-header">
         <span>Nimi: {{hakija.lastName}}, {{hakija.firstName}}</span>
         <a ng-click="showTiedotPartial(hakija)" class="close"></a>        

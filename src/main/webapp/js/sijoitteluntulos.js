@@ -226,7 +226,6 @@ function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, 
             hakemus.muokattuVastaanottoTila = "ILMOITETTU";
             hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
         }
-        $scope.$broadcast('centralizeElement');
     }
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function() {
