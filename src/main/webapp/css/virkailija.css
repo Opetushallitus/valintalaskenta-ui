@@ -3096,9 +3096,6 @@ ul.orgmenu {
 .toolbarcontainer {
   overflow: hidden;
   height: 700px;
-  float: left;
-  margin-right: 0.625%;
-  margin-left: 0.625%;
     /*
     &.hakukohteetVisible-add,
     &.hakukohteetVisible-remove {
@@ -3127,9 +3124,11 @@ ul.orgmenu {
     background-color: #f1f6f7;
     float: left;
     height: 698px;
+    width: 90%;
     border-bottom: 1px solid #e4e4e4;
     border-top: 1px solid #e4e4e4; }
     .toolbarcontainer #toolbarcontent .toolbar-decoration {
+      height: 683px;
       padding: 10px;
       border-left: 1px solid #e4e4e4; }
       .toolbarcontainer #toolbarcontent .toolbar-decoration .selectlist {
