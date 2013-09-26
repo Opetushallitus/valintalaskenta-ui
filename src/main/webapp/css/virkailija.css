@@ -3126,14 +3126,14 @@ ul.orgmenu {
   .toolbarcontainer #toolbarcontent {
     background-color: #f1f6f7;
     float: left;
-    height: 700px; }
+    height: 698px;
+    border-bottom: 1px solid #e4e4e4;
+    border-top: 1px solid #e4e4e4; }
     .toolbarcontainer #toolbarcontent .toolbar-decoration {
       padding: 10px;
-      border-left: 1px solid #e4e4e4;
-      border-bottom: 1px solid #e4e4e4;
-      border-top: 1px solid #e4e4e4; }
+      border-left: 1px solid #e4e4e4; }
       .toolbarcontainer #toolbarcontent .toolbar-decoration .selectlist {
-        height: 624px;
+        height: 583px;
         overflow: scroll;
         margin: 0 !important;
         background-color: #fff; }

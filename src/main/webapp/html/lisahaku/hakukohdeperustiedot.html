@@ -17,51 +17,35 @@
                     <dt>HakukohdeOid</dt>
                     <dd>{{model.hakukohde.oid}}</dd>
                     
-                    <dt>HakuOid</dt>
-                    <dd>{{hakumodel.hakuOid.oid}}</dd>
-                    
-                    <dt>Tila</dt>
-                    <dd>{{model.hakukohde.tila}}</dd>
-                    
                     <dt>Aloituspaikat</dt>
                     <dd>{{model.hakukohde.aloituspaikatLkm}}</dd>
                     
-                    <dt>Valinnan aloituspaikat</dt>
-                    <dd>{{model.hakukohde.valintojenAloituspaikatLkm}}</dd>
+                    <dt>Hakijoita yhteensä</dt>
+                    <dd>{{hakeneetModel.hakeneet.length}}</dd>
                     
-                    <dt>Sähköinen toimitusosoite</dt>
-                    <dd>{{model.hakukohde.sahkoinenToimitusOsoite}}</dd>
-                    
-                    <dt>Liitteiden toimitus pvm</dt>
-                    <dd>{{model.hakukohde.erapaiva | date:'dd.MM.yyyy'}}</dd>
-                    
-                    <dt>Alin hyväksyttävä keskiarvo</dt>
-                    <dd>{{model.hakukohde.alinHyvaksyttavaKeskiarvo}}</dd>
+                    <dt class="margin-bottom-5">Valintatapajonokohtaiset tiedot</dt>
 
-                    <dt>Viimeisin päivittäjä oid</dt>
-                    <dd>{{model.hakukohde.modifiedBy}}</dd>
-                    
-                    <dt>Viimeisin päivitys pvm</dt>
-                    <dd ng-show="model.hakukohde.modified">{{model.hakukohde.modified | date:'dd.MM.yyyy HH:mm:ss'}}</dd>
-                    <dd ng-hide="model.hakukohde.modified"></dd>
-                    
-                </dl>
-                
-                <h2 class="margin-top-4 margin-bottom-1">Liitteiden toimitusosoite</h2>
-                <dl class="dl-horizontal">    
-                    <dt>Osoite</dt>
-                    <dd>{{model.hakukohde.liitteet[0].toimitusosoite.osoiterivi1}}</dd>
-                    
-                    <dt>Postinumero</dt>
-                    <dd>{{model.hakukohde.liitteet[0].toimitusosoite.postinumero}}</dd>
-                    
-                    <dt>Postitoimipaikka</dt>
-                    <dd>{{model.hakukohde.liitteet[0].toimitusosoite.postitoimipaikka}}</dd>
-                </dl>
+                    <table  class="virkailija-table-1 margin-top-5">
+                        <thead>
+                            <tr>
+                                <th>Valintatapajono</th>
+                                <th>Hyväksytyt yhteensä</th>
+                                <th>Harkinnanvaraisesti hyväksytyt yhteensä</th>
+                                <th>Varasijoilla yhteensä</th>
+                                <th>Paikan vastaanottaneet yhteensä</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt">
+                                <td>{{$index}}</td>
+                                <td>{{erittely.hyvaksytyt.length}}</td>
+                                <td>{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>
+                                <td>{{erittely.varasijoilla.length}}</td>
+                                <td>{{erittely.paikanVastaanottaneet.length}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            </div>
-            <div class="grid16-8">
-                
             </div>
             
             <div class="clear"></div>
