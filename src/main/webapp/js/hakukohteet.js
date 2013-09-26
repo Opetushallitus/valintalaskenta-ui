@@ -25,9 +25,7 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 			return this.hakukohteet;
 		}
     	this.getNextPage = function(restart) {
-
-    		if(model.readyToQueryForNextPage) {
-    			model.readyToQueryForNextPage = false;
+    		
 	    		var hakuOid = $routeParams.hakuOid;
 	    		if(restart) {
 	    			this.hakukohteet = [];
@@ -40,44 +38,48 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 	    		if(notLastPage || restart) {
 
 					var self = this;
-					AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN").then(function(roleModel){
-
-					    var searchParams = {
-					        hakuOid:hakuOid,
-					        startIndex:startIndex,
-					        count:model.pageSize,
-					        searchTerms:model.lastSearch};
-
-					    if(model.omatHakukohteet) {
-					        searchParams.organisationOids = roleModel.toString();
-					    }
-
-					    searchParams.hakukohdeTilas = model.valmiitHakukohteet;
-
-
-                        TarjontaHaku.query(searchParams, function(result) {
-                            if(restart) { // eka sivu
-                                self.hakukohteet = result.tulokset;
-                                self.totalCount = result.kokonaismaara;
-                            } else { // seuraava sivu
-                                if(startIndex != self.getCount()) {
-                                    //
-                                    // Ei tehda mitaan
-                                    //
-                                    return;
-                                } else {
-                                    self.hakukohteet = self.hakukohteet.concat(result.tulokset);
-                                    if(self.getTotalCount() !== result.kokonaismaara) {
-                                        // palvelimen tietomalli on paivittynyt joten koko lista on ladattava uudestaan!
-                                        // ... tai vaihtoehtoisesti kayttajalle naytetaan epasynkassa olevaa listaa!!!!!
-                                        self.lastSearch = null;
-                                        self.getNextPage(true);
-                                    }
-                                }
-                            }
-                            model.readyToQueryForNextPage = true;
-
-                        });
+					if(model.readyToQueryForNextPage) {
+		    			model.readyToQueryForNextPage = false;
+						AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN").then(function(roleModel){
+	
+						    var searchParams = {
+						        hakuOid:hakuOid,
+						        startIndex:startIndex,
+						        count:model.pageSize,
+						        searchTerms:model.lastSearch};
+	
+						    if(model.omatHakukohteet) {
+						        searchParams.organisationOids = roleModel.toString();
+						    }
+	
+						    searchParams.hakukohdeTilas = model.valmiitHakukohteet;
+	
+	
+	                        TarjontaHaku.query(searchParams, function(result) {
+	                        	
+	                            if(restart) { // eka sivu
+	                                self.hakukohteet = result.tulokset;
+	                                self.totalCount = result.kokonaismaara;
+	                            } else { // seuraava sivu
+	                                if(startIndex != self.getCount()) {
+	                                    //
+	                                    // Ei tehda mitaan
+	                                    //
+	                                	model.readyToQueryForNextPage = true;
+	                                    return;
+	                                } else {
+	                                    self.hakukohteet = self.hakukohteet.concat(result.tulokset);
+	                                    if(self.getTotalCount() !== result.kokonaismaara) {
+	                                        // palvelimen tietomalli on paivittynyt joten koko lista on ladattava uudestaan!
+	                                        // ... tai vaihtoehtoisesti kayttajalle naytetaan epasynkassa olevaa listaa!!!!!
+	                                        self.lastSearch = null;
+	                                        model.readyToQueryForNextPage = true;
+	                                        self.getNextPage(true);
+	                                    }
+	                                }
+	                            }
+	                            model.readyToQueryForNextPage = true;
+	                        });
 					});
 				}
 			}
