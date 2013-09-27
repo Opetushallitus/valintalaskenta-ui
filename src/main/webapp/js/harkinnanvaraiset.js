@@ -49,6 +49,8 @@
               }, function(error) {
                   model.errors.push(error);
               });
+
+
       }
 
           this.submit = function() {
