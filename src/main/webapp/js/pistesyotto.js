@@ -59,7 +59,6 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
                                 Hakemus.get({oid: hakija.oid}, function(result) {
                                     if(result.additionalInfo) {
-                                        console.log(result.additionalInfo);
                                         hakija.additionalData=result.additionalInfo;
                                     }
 
