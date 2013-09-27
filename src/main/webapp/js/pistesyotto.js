@@ -1,4 +1,4 @@
-app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey, Valintakoetulokset) {
+app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey, Valintakoetulokset, Hakemus) {
 	var model;
 	model = new function() {
 
@@ -56,6 +56,10 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
                         if(model.hakeneet) {
                             model.hakeneet.forEach(function(hakija){
+
+                                Hakemus.get({oid: hakija.oid}, function(result) {
+                                   hakija.additionalData=result.additionalInfo;
+                                })
 
                                 hakija.originalData = [];
                                 hakija.osallistuu = [];
