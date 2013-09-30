@@ -223,7 +223,6 @@ function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, 
     
     $scope.showMuutaHakemus = function(hakemus) {
         if(($scope.updateOrg && hakemus.tila == 'HYVAKSYTTY') || $scope.updateOph) {
-            hakemus.muokattuVastaanottoTila = hakemus.muokattuVastaanottoTila;
             hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
         }
     }
