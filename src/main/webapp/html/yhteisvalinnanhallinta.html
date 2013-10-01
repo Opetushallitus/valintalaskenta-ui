@@ -40,6 +40,22 @@
     <h2>Jälkiohjaus</h2>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()" class="button primary small excel">Vie jälkiohjaustulokset exceliin</a>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetPdf()" class="button primary small pdf">Vie jälkiohjauskirjeiksi</a>
+	<table class="virkailija-table-1 margin-bottom-2 width-60">
+        <thead>
+        <tr>
+            <th>Tiedosto</th>
+            <th>Luotu</th>
+            <th>Koko</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="tiedosto in viestintapalveluntiedostot">
+        	<tr>
+	            <td class="align-center"><a href="#" ng-click="lataa(tiedosto)">{{tiedosto.filename}}</a></td>
+	            <td class="align-center">{{tiedosto.createdAt}}</td>
+	            <td class="align-center">{{tiedosto.size}}</td>
+        	</tr>
+        </tbody>
+    </table>
 
 	<h2>Kela</h2>
 	<a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiKelaVienti()" class="button primary small">Vie vastaanottaneet Kela-formaattiin</a>

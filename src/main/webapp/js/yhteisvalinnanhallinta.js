@@ -31,20 +31,36 @@
 
 });
 
-function YhteisvalinnanHallintaController($scope, $location, $routeParams, $route, $window, SijoitteluAjo, JalkiohjausXls, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
+function YhteisvalinnanHallintaController($scope, $timeout, $location, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
 	$scope.hakumodel = HakuModel;
 	$scope.virheet = VirheModel;
 	$scope.naytaKokeita = 50;
+	$scope.viestintapalveluntiedostot = [];
 
+	$scope.paivita = function() {
+		// tehdaan pollaus ajax gettina ettei Loading... vilku pollatessa!
+		$.get(VIESTINTAPALVELU_URL_BASE + "/api/v1/download", function( data ) {
+			$scope.viestintapalveluntiedostot = data;
+			$timeout($scope.paivita, 1000);
+		});
+	}
+	$scope.paivita();
+	
+	
+	$scope.lataa = function(tiedosto) {
+		$window.location.href = VIESTINTAPALVELU_URL_BASE + "/api/v1/download/" + tiedosto.documentId;
+	}
+	
 	SijoitteluAjo.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function(result){
 	    $scope.sijoitteluModel = result;
 	});
 	
 	$scope.aktivoiJalkiohjaustuloksetPdf = function() {
 		Jalkiohjauskirjeet.query({hakuOid: $routeParams.hakuOid}, function(resurssi) {
-    		$window.location.href = resurssi.latausUrl;
+    		//$window.location.href = resurssi.latausUrl;
+    		alert(response.data.viesti);
     	}, function(response) {
     		alert(response.data.viesti);
     	});

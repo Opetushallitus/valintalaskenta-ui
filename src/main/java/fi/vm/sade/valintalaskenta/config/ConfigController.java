@@ -48,11 +48,15 @@ public class ConfigController {
     @Value("${valintalaskenta-ui.cas.url:/cas/myroles}")
     private String casUrl;
 
+    @Value("${valintalaskentakoostepalvelu.viestintapalvelu.url}")
+    private String viestintapalveluUrl;
+
     /**
      * Generoi javascriptia propertiesseista
+     * 
      * @return
      */
-    @RequestMapping(value="/configuration.js", method = RequestMethod.GET, produces="text/javascript")
+    @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript")
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
@@ -66,9 +70,10 @@ public class ConfigController {
         append(b, "SERVICE_EXCEL_URL_BASE", valintalaskentaUrl);
         append(b, "ORGANISAATIO_URL_BASE", organisaatioUrl);
         append(b, "HAKEMUS_UI_URL_BASE", hakemusUiUrl);
+        append(b, "VIESTINTAPALVELU_URL_BASE", viestintapalveluUrl);
         append(b, "TEMPLATE_URL_BASE", "");
         append(b, "CAS_URL", casUrl);
-        if(!authMode.isEmpty()) {
+        if (!authMode.isEmpty()) {
             append(b, "AUTH_MODE", authMode);
 
         }
@@ -78,7 +83,7 @@ public class ConfigController {
 
     private void append(StringBuilder b, String key, String value) {
         b.append(key);
-        b.append( " = \"");
+        b.append(" = \"");
         b.append(value);
         b.append("\";\n");
     }
