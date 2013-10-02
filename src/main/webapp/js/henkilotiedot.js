@@ -1,8 +1,9 @@
 
-app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, LatestSijoittelunTilat) {
+app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, LatestSijoittelunTilat, ValintakoetuloksetHakemuksittain) {
 	var model = new function() {
 		this.hakemus = {};
 		this.valintalaskentaHakemus = {};
+		this.valintakokeet = [];
 		
 		this.hakutoiveet = [];
 		this.errors = [];
@@ -35,13 +36,22 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 					}
 					model.hakutoiveet.push(hakutoive);
 				}
-				
+
 				//fetch sijoittelun tilat and extend hakutoiveet
                    LatestSijoittelunTilat.get({hakemusOid: model.hakemus.oid, hakuOid: hakuOid}, function(result) {
                    		extendHakutoiveetWithSijoitteluTila(result);
                     }, function(error) {
                         model.errors.push(error);
                     });
+
+
+                    ValintakoetuloksetHakemuksittain.get({hakemusOid: model.hakemus.oid}, function(result) {
+                         model.valintakokeet = result;
+                    }, function(error) {
+                        model.errors.push(error);
+                    });
+
+
 
 /*
 				SijoitteluajoLatest.get({hakuOid: hakuOid}, function(result) {
