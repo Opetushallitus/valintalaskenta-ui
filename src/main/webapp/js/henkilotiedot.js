@@ -48,9 +48,24 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
                     ValintakoetuloksetHakemuksittain.get({hakemusOid: model.hakemus.oid}, function(result) {
                        result.forEach(function (hakemus) {
                          hakemus.hakutoiveet.forEach(function (hakutoive) {
-                            hakutoive.valinnanVaiheet.forEach(function(valinnanVaihe) {
+                               var hakukohdeoid =  hakutoive.hakukohdeOid;
+                               var oppilaitos;
+                               var koulutuksenNimi;
+                               var hakutoiveNumero;
+                               model.hakutoiveet.forEach(function(ht) {
+                                 if(ht.hakukohdeOid == hakukohdeoid)   {
+                                  koulutuksenNimi = ht.koulutuksenNimi;
+                                  oppilaitos = ht.oppilaitos;
+                                  hakutoiveNumero = ht.hakutoiveNumero;
+                                 }
+                               });
+
+                                 hakutoive.valinnanVaiheet.forEach(function(valinnanVaihe) {
                                   valinnanVaihe.valintakokeet.forEach(function(valintakoe) {
-                                  valintakoe.hakukohdeOid =hakutoive.hakukohdeOid;
+                                    valintakoe.hakukohdeOid = hakukohdeoid;
+                                    valintakoe.oppilaitos = oppilaitos;
+                                    valintakoe.koulutuksenNimi = koulutuksenNimi;
+                                    valintakoe.hakutoiveNumero = hakutoiveNumero;
                                     model.valintakokeet.push(valintakoe);
                                   });
                             });

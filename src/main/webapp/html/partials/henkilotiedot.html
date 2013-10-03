@@ -67,7 +67,7 @@
                     <tr>
                         <th>Hakutoive</th>
                         <th>Hakukohde</th>
-                        <th>valintakoeOid</th>
+                        <!--<th>valintakoeOid</th> -->
                         <th>valintakoeTunniste</th>
                         <th>osallistuminenTulos</th>
                     </tr>
@@ -75,8 +75,11 @@
                     <tbody>
                     <tr ng-repeat="hakutoive in model.valintakokeet">
                         <td>{{hakutoive.hakutoiveNumero}}</td>
-                        <td><div>{{hakutoive.hakukohdeOid}}</div><div>{{hakutoive.hakukohdeOid}}</div></td>
-                        <td>{{hakutoive.valintakoeOid}}</td>
+                        <td>
+                            <div>{{hakutoive.koulutuksenNimi}}</div>
+                            <div>{{hakutoive.oppilaitos}}</div>
+                        </td>
+                        <!--<td>{{hakutoive.valintakoeOid}}</td>-->
                         <td>{{hakutoive.valintakoeTunniste}}</td>
                         <td>{{hakutoive.osallistuminenTulos.osallistuminen}}</td>
                     </tr>
