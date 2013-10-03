@@ -21,7 +21,6 @@
             </div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
-                <h2>Harkinnanvaraiset hakijat</h2>
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
                         <thead>
@@ -36,7 +35,7 @@
                             <tr ng-repeat="hakija in model.hakeneet">
                                 <td>
                                     <span title="Sukunimi">{{hakija.lastName}}</span>,
-                                    <span title="Etunimi">{{hakija.firstName}}</span>
+                                	<span title="Etunimi">{{hakija.firstNames}}</span>
                                 </td>
                                 <td>
                                     <span title="HakemusOid">
