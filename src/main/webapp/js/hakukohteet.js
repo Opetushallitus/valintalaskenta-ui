@@ -130,7 +130,7 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
 	   }
 
 	   $scope.showHakukohde = function(hakukohde, lisahaku) {
-	   		$rootScope.selectedHakukohdeNimi = hakukohde.hakukohdeNimi.kieli_fi;
+	   		$rootScope.selectedHakukohdeNimi = hakukohde.hakukohdeNimi.fi;
 			$scope.hakukohteetVisible = false;
 			GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
 			$location.path( (lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid  + '/perustiedot');
