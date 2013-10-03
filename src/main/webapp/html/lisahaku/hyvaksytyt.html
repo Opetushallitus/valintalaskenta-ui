@@ -39,9 +39,9 @@
                                 </td>
                                 <td>
                                     <span title="HakemusOid">
-                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.applicationOid}}" target="_blank" >
-                                            {{hakija.applicationOid}}
-                                        </a>
+                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.oid}}" target="_blank" >
+	                                        {{hakija.oid}}
+	                                    </a>
                                     </span>
                                 </td>
                                 <td>
@@ -55,8 +55,8 @@
                                     -->
                                 </td>
                                 <td>
-                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuValitse(hakija.applicationOid)" class="button small">aseta valituksi</a>
-                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuPoistavalinta(hakija.applicationOid)" class="button small">poista valinta</a>
+                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuValitse(hakija.oid)" class="button small">hyväksy</a>
+                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuPoistavalinta(hakija.oid)" class="button small">hylkää</a>
                                 </td>
                             </tr>
                         </tbody>
