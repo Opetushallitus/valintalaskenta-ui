@@ -4,7 +4,7 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 		this.hakemus = {};
 		this.valintalaskentaHakemus = {};
 		this.valintakokeet = [];
-		
+
 		this.hakutoiveet = [];
 		this.errors = [];
 
@@ -46,7 +46,16 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 
 
                     ValintakoetuloksetHakemuksittain.get({hakemusOid: model.hakemus.oid}, function(result) {
-                         model.valintakokeet = result;
+                       result.forEach(function (hakemus) {
+                         hakemus.hakutoiveet.forEach(function (hakutoive) {
+                            hakutoive.valinnanVaiheet.forEach(function(valinnanVaihe) {
+                                  valinnanVaihe.valintakokeet.forEach(function(valintakoe) {
+                                  valintakoe.hakukohdeOid =hakutoive.hakukohdeOid;
+                                    model.valintakokeet.push(valintakoe);
+                                  });
+                            });
+                         });
+                       });
                     }, function(error) {
                         model.errors.push(error);
                     });
