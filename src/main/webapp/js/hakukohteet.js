@@ -12,6 +12,21 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 		this.valmiitHakukohteet = "JULKAISTU";
 		this.readyToQueryForNextPage = true;
 		
+		this.getTarjoajaNimi = function(hakukohde) {
+			return this.getNimi(hakukohde.tarjoajaNimi);
+		}
+		this.getHakukohdeNimi = function(hakukohde) {
+			return this.getNimi(hakukohde.hakukohdeNimi);
+		}
+		this.getNimi = function(nimi) {
+			for (var key in nimi) {
+				// avaimia on talla hetkella: fi,en,sv;fi;sv;en
+				// eli esim "fi,en,sv".indexOf("fi") != -1
+				if(key.indexOf("fi") != -1) {
+					return nimi[key];
+				}
+			}
+		}
 		this.getCount = function() {
 			if(this.hakukohteet === undefined) {
 				return 0;
