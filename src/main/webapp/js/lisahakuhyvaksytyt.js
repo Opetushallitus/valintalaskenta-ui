@@ -14,10 +14,10 @@
                 if(model.hakeneet) {
                     model.hakeneet.forEach(function(hakija){
 
-                        Hakemus.get({oid: hakija.applicationOid}, function(result) {
+                        Hakemus.get({oid: hakija.oid}, function(result) {
                             hakija.hakemus=result;
                             HakemusKey.get({
-                                oid: hakija.applicationOid,
+                                oid: hakija.oid,
                                 "key": "lisahaku-hyvaksytty"
                             }, function(res) {
                                 if(res["lisahaku-hyvaksytty"] === model.hakukohdeOid) {
@@ -40,7 +40,7 @@
                "value": model.hakukohdeOid
            });
            model.hakeneet.forEach(function(hakija) {
-               if(hakija.applicationOid == hakemusOid) {
+               if(hakija.oid == hakemusOid) {
                    hakija.lisahakuHyvaksytty = "Kyllä";
                }
            });
@@ -53,7 +53,7 @@
                 "value": ""
             });
             model.hakeneet.forEach(function(hakija) {
-                if(hakija.applicationOid == hakemusOid) {
+                if(hakija.oid == hakemusOid) {
                     hakija.lisahakuHyvaksytty = null;
                 }
             });
