@@ -9,7 +9,7 @@
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
-            HakukohdeHenkilot.get({aoOid: hakukohdeOid}, function(result) {
+            HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows:100000}, function(result) {
                 model.hakeneet = result.results;
                 if(model.hakeneet) {
                     model.hakeneet.forEach(function(hakija){
