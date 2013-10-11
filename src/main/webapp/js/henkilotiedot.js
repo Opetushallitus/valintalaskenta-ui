@@ -11,6 +11,7 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 		this.refresh = function(hakuOid, hakemusOid) {
 			model.errors.length = 0;
 			model.hakutoiveet.length = 0;
+			model.valintakokeet.length = 0;
 
 
 			Hakemus.get({oid: hakemusOid}, function(result) {
@@ -168,6 +169,6 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 
 function HenkiloTiedotController($scope,$routeParams,HenkiloTiedotModel) {
 	$scope.model = HenkiloTiedotModel;
-	$scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
+	$scope.model.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakemusOid);
 	
 }
