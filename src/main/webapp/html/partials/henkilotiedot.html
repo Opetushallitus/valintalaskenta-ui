@@ -45,7 +45,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="hakutoive in model.hakutoiveet">
+                            <tr ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
                                 <td>{{hakutoive.hakutoiveNumero}}</td>
                                 <td>
                                     <div>{{hakutoive.koulutuksenNimi}}</div>
@@ -73,7 +73,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="hakutoive in model.valintakokeet">
+                    <tr ng-repeat="hakutoive in model.valintakokeet | orderBy:'hakutoiveNumero'">
                         <td>{{hakutoive.hakutoiveNumero}}</td>
                         <td>
                             <div>{{hakutoive.koulutuksenNimi}}</div>
