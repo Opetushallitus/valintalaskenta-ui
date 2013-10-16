@@ -40,25 +40,70 @@
     <h2>Jälkiohjaus</h2>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()" class="button primary small excel">Vie jälkiohjaustulokset exceliin</a>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetPdf()" class="button primary small pdf">Vie jälkiohjauskirjeiksi</a>
-	<table class="virkailija-table-1 margin-bottom-2 width-60">
-        <thead>
-        <tr>
-            <th>Tiedosto</th>
-            <th>Luotu</th>
-            <th>Koko</th>
-        </tr>
-        </thead>
-        <tbody ng-repeat="tiedosto in viestintapalveluntiedostot">
-        	<tr>
-	            <td class="align-center"><a href="#" ng-click="lataa(tiedosto)">{{tiedosto.filename}}</a></td>
-	            <td class="align-center">{{tiedosto.createdAt}}</td>
-	            <td class="align-center">{{tiedosto.size}}</td>
-        	</tr>
-        </tbody>
-    </table>
+	<div class="form-row">
+        <label class="form-row-label">Viestintäpalvelun tiedostot</label>
+
+        <div class="form-row-content">
+            <table class="virkailija-table-1" style="width: 800px;">
+		        <thead>
+		        <tr>
+		            <th>Tiedosto</th>
+		            <th>Luotu</th>
+		            <th>Koko</th>
+		        </tr>
+		        </thead>
+		        <tbody ng-repeat="tiedosto in viestintapalveluntiedostot">
+		        	<tr>
+			            <td class="align-center"><a href="#" ng-click="lataa(tiedosto)">{{tiedosto.filename}}</a></td>
+			            <td class="align-center">{{tiedosto.createdAt}}</td>
+			            <td class="align-center">{{tiedosto.size}}</td>
+		        	</tr>
+		        <tfoot ng-hide="viestintapalveluntiedostot">
+					<tr>
+						<td class="align-center" colspan="4">Ei tiedostoja</td>
+					</tr>
+				</tfoot>
+            </table>
+
+        </div>
+        <div class="clear"></div>
+    </div>
 
 	<h2>Kela</h2>
 	<a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiKelaVienti()" class="button primary small">Vie vastaanottaneet Kela-formaattiin</a>
+
+	<div class="form-row">
+        <label class="form-row-label">Kela-tiedostot</label>
+
+        <div class="form-row-content">
+            <table class="virkailija-table-1" style="width: 800px;">
+                <thead>
+                <tr>
+                    <th>Otsikko</th>
+                    <th>Luotu</th>
+                    <th>Koko</th>
+                    <th>Toiminto</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tiedosto in kelatiedostot">
+                    <td class="align-center"><a href="{{VALINTALASKENTAKOOSTE_URL_BASE}}resources/kela/lataa/{{tiedosto.documentId}}" ng-show="{{tiedosto.type=='FILE'}}">{{tiedosto.header}}</a><span ng-hide="{{tiedosto.type=='FILE'}}">{{tiedosto.header}}</span></td>
+                    <td class="align-center">{{tiedosto.createdAt}}</td>
+                    <td class="align-center"><span ng-show="{{tiedosto.type=='FILE'}}">{{tiedosto.size}}</span></td>
+                    <td class="align-center"><a ng-show="{{tiedosto.type=='FILE'}}" class="button small" ng-click="ftpVienti(tiedosto)">FTP vienti</a></td>
+                </tr>
+				
+                </tbody>
+				<tfoot ng-hide="kelatiedostot">
+					<tr>
+						<td class="align-center" colspan="4">Ei tiedostoja</td>
+					</tr>
+				</tfoot>
+            </table>
+
+        </div>
+        <div class="clear"></div>
+    </div>
 
     <div class="clear"></div>
     <div class="float-left margin-top-2">
