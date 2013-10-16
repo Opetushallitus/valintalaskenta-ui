@@ -77,10 +77,9 @@ function YhteisvalinnanHallintaController($scope, $timeout, $location, $routePar
 	
 	$scope.aktivoiJalkiohjaustuloksetPdf = function() {
 		Jalkiohjauskirjeet.query({hakuOid: $routeParams.hakuOid}, function(resurssi) {
-    		//$window.location.href = resurssi.latausUrl;
-    		alert(response.data.viesti);
+			alert("Jälkiohjauskirjeen luonti on käynnistetty! Luonti kestää noin 20minuuttia.");
     	}, function(response) {
-    		alert(response.data.viesti);
+    		alert("Jälkiohjauskirjeen luonti epäonnistui.");
     	});
 	}
 	
