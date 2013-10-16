@@ -230,12 +230,19 @@ app.factory('ValintakoeXls', function($window) {
 		}
 	};
 });
-app.factory('AktivoiKelaVienti', function($window) {
-    return {
-		query: function(data) {
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/kela/TKUVAYHVA/aktivoi?hakuOid=" + data.hakuOid + "&hakukohdeOid=" + data.hakukohdeOid+ "&poimintapaivamaara="+ data.poimintapaivamaara + "&lukuvuosi="+data.lukuvuosi;
-		}
-	};
+
+app.factory('AktivoiKelaFtp', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/laheta/:documentId", {
+			documentId: "@documentId"
+	    }, {
+	    put: {method: "PUT", isArray:false}
+	});
+});
+
+app.factory('AktivoiKelaVienti', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/aktivoi", {}, {
+		query:  {method:'GET', isArray:false}
+	});
 });
 
 app.factory('Osoitetarrat', function($resource) {
