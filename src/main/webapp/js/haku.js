@@ -49,20 +49,19 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
 });
 
 function HakuController($scope, $location, $routeParams, HakuModel) {
-    $scope.model = HakuModel;
-    
+    $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
-    $scope.$watch('model.hakuOid', function() {
+    $scope.$watch('hakumodel.hakuOid', function() {
         
         // set lisahaku-flag to true if selected haku is of type lisahaku
-        if($scope.model.hakuOid && isLisahaku($scope.model.hakuOid.oid)) {
-            $scope.model.lisahaku = true;
+        if($scope.hakumodel.hakuOid && isLisahaku($scope.hakumodel.hakuOid.oid)) {
+            $scope.hakumodel.lisahaku = true;
         } else {
-            $scope.model.lisahaku = false;
+            $scope.hakumodel.lisahaku = false;
         }
         
-        if($scope.model.hakuOid && $scope.model.hakuOid.oid != $routeParams.hakuOid) {
-            if($scope.model.lisahaku) {
+        if($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid != $routeParams.hakuOid) {
+            if($scope.hakumodel.lisahaku) {
                 $location.path('/lisahaku/' + HakuModel.hakuOid.oid + '/hakukohde/');
             } else {
                 $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
@@ -73,7 +72,7 @@ function HakuController($scope, $location, $routeParams, HakuModel) {
     //return true if selected haku is lisahaku, otherwise false
     function isLisahaku(hakuOid) {
         var showLisahakuView = false;
-        $scope.model.haut.forEach(function(haku) {
+        $scope.hakumodel.haut.forEach(function(haku) {
             if(hakuOid === haku.oid) { 
                 var hakutyyppi = haku.hakutyyppiUri;
                 var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
