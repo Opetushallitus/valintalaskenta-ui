@@ -3774,13 +3774,13 @@ ul.dropmenu-list {
     background-image: url(../img/logictree-line-vertical.gif);
     background-repeat: no-repeat;
     background-position: 10px 0px;
-    padding: 18px 0px 0px 10px;
+    padding: 13px 0px 0px 10px;
     margin: 0px; }
     .gradingformula ul > li,
     .gradingformula-dragged ul > li {
       display: block;
       list-style-type: none;
-      padding: 0px 0px 18px 18px;
+      padding: 0px 0px 13px 18px;
       background-image: url(../img/logictree-line-vertical.gif), url(../img/logictree-line-horizontal.gif);
       background-repeat: repeat-y, no-repeat;
       background-position: 0px -13px, 2px 9px; }
@@ -3788,6 +3788,9 @@ ul.dropmenu-list {
     .gradingformula-dragged ul > li:last-child {
       background-repeat: no-repeat, no-repeat;
       padding-bottom: 0px; }
+  .gradingformula ul.function-pair,
+  .gradingformula-dragged ul.function-pair {
+    background-repeat: repeat-y; }
   .gradingformula .frame, .gradingformula .function, .gradingformula .parameter,
   .gradingformula-dragged .frame,
   .gradingformula-dragged .function,
@@ -3807,7 +3810,8 @@ ul.dropmenu-list {
       border: solid 0px transparent;
       background-color: transparent;
       background-image: url("../img/18x18-ui-icons.png");
-      background-repeat: no-repeat; }
+      background-repeat: no-repeat;
+      cursor: move; }
       .gradingformula .frame .icon.dropmenu, .gradingformula .function .icon.dropmenu, .gradingformula .parameter .icon.dropmenu,
       .gradingformula-dragged .frame .icon.dropmenu,
       .gradingformula-dragged .function .icon.dropmenu,
