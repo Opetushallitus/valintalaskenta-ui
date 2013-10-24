@@ -43,17 +43,23 @@ function YhteisvalinnanHallintaController($scope, $timeout, $location, $routePar
 	$scope.paivita = function() {
 		// tehdaan pollaus ajax gettina ettei Loading... vilku pollatessa!
 		$.get(VIESTINTAPALVELU_URL_BASE + "/api/v1/download", function( data ) {
-			$scope.viestintapalveluntiedostot = data;
+			if(data.length != $scope.viestintapalveluntiedostot.length) {
+				$scope.viestintapalveluntiedostot = data;
+			}
 			$timeout($scope.paivita, 3000);
 		});
 		$.get(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/listaus", function( data ) {
-			$scope.kelatiedostot = data;
+			if(data.length != $scope.kelatiedostot.length) {
+				$scope.kelatiedostot = data;
+			}
 			$timeout($scope.paivita, 3000);
 		});
 	}
 	$scope.paivitaKelaListaus = function() {
 		$.get(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/listaus", function( data ) {
-			$scope.kelatiedostot = data;
+			if(data.length != $scope.kelatiedostot.length) {
+				$scope.kelatiedostot = data;
+			}
 		});
 	}
 	$scope.paivita();
