@@ -236,19 +236,19 @@ app.directive('auth', function($animate, $timeout, AuthService, HakukohdeModel) 
     };
 });
 
-var INTEGER_REGEXP = /^\-?\d*$/;
+var FLOAT_REGEXP = /^\-?([0-9]+(\.[0-9]+)?)$/;
 app.directive('arvovalidaattori', function(){
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
 
         	ctrl.$parsers.unshift(function(viewValue) {
-			  if (INTEGER_REGEXP.test(viewValue)) {
-				  var min = parseInt($(elm).attr("min"), 10);
-				  var max = parseInt($(elm).attr("max"), 10);
-				  var intVal = parseInt(viewValue, 10);
-				  if(!isNaN(min) && !isNaN(max) && intVal) {
-					  if(min <= intVal && max >= intVal) {
+			  if (FLOAT_REGEXP.test(viewValue)) {
+				  var min = parseFloat($(elm).attr("min"));
+				  var max = parseFloat($(elm).attr("max"));
+				  var floatVal = parseFloat(viewValue);
+				  if(!isNaN(min) && !isNaN(max) && floatVal) {
+					  if(min <= floatVal && max >= floatVal) {
 						// it is valid
 						$(elm).siblings("span").empty();
 						ctrl.$setValidity('arvovalidaattori', true);
