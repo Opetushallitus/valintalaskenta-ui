@@ -26,19 +26,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="hakija in model.hakeneet">
-                            <td>
-                                <span title="Sukunimi">{{hakija.lastName}}</span>,
-                                <span title="Etunimi">{{hakija.firstNames}}</span>
-                            </td>
-                            <td>
-                                <span title="HakemusOid">
-                                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.oid}}" target="_blank" >
-                                        {{hakija.oid}}
-                                    </a>
-                                </span>
-                            </td>
-                        </tr>
+                            <tr ng-repeat="hakija in model.hakeneet | orderBy:'lastName'">
+                                <td>
+                                    <span title="Sukunimi">{{hakija.lastName}}</span>,
+                                    <span title="Etunimi">{{hakija.firstNames}}</span>
+                                </td>
+                                <td>
+                                    <span title="HakemusOid">
+                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.oid}}" target="_blank" >
+                                            {{hakija.oid}}
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </form>
