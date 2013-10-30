@@ -54,7 +54,7 @@
 		        </thead>
 		        <tbody ng-repeat="tiedosto in viestintapalveluntiedostot">
 		        	<tr>
-			            <td class="align-center"><a href="#" ng-click="lataa(tiedosto)">{{tiedosto.filename}}</a></td>
+			            <td class="align-center"><a href="#" ng-click="lataa(tiedosto);$event.preventDefault();">{{tiedosto.filename}}</a></td>
 			            <td class="align-center">{{tiedosto.createdAt}}</td>
 			            <td class="align-center">{{tiedosto.size}}</td>
 		        	</tr>
@@ -70,7 +70,7 @@
     </div>
 
 	<h2>Kela</h2>
-	<a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiKelaVienti()" class="button primary small">Vie vastaanottaneet Kela-formaattiin</a>
+	<a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiKelaVienti();$event.preventDefault();" class="button primary small">Vie vastaanottaneet Kela-formaattiin</a>
 
 	<div class="form-row">
         <label class="form-row-label">Kela-tiedostot</label>
@@ -90,7 +90,7 @@
                     <td class="align-center"><a href="{{VALINTALASKENTAKOOSTE_URL_BASE}}resources/kela/lataa/{{tiedosto.documentId}}" ng-show="{{tiedosto.type=='FILE'}}">{{tiedosto.header}}</a><span ng-hide="{{tiedosto.type=='FILE'}}">{{tiedosto.header}}</span></td>
                     <td class="align-center">{{tiedosto.createdAt}}</td>
                     <td class="align-center"><span ng-show="{{tiedosto.type=='FILE'}}">{{tiedosto.size}}</span></td>
-                    <td class="align-center"><a ng-show="{{tiedosto.type=='FILE'}}" class="button small" ng-click="ftpVienti(tiedosto)">FTP vienti</a></td>
+                    <td class="align-center"><a ng-show="{{tiedosto.type=='FILE'}}" class="button small" ng-click="ftpVienti(tiedosto);$event.preventDefault();">FTP vienti</a></td>
                 </tr>
 				
                 </tbody>
