@@ -117,14 +117,14 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 
             model.hakeneet.forEach( function(hakija) {
                 model.avaimet.forEach( function(avain) {
-                	var min = parseInt(avain.min);
-                	var max = parseInt(avain.max);
+                	var min = parseFloat(avain.min);
+                	var max = parseFloat(avain.max);
                 	var value = hakija.additionalData[avain.tunniste];
-                	var valueInt = parseInt(value);
+                	var valueFloat = parseFloat(value);
                 	var tallenna = false;
                 	if(!isNaN(min) && !isNaN(max)) {
                 		// arvovali on kaytossa
-                		if(isNaN(valueInt)) {
+                		if(isNaN(valueFloat)) {
                 			// tallenna jos null?
                 			if(!value) {
                 				value = "";
@@ -134,7 +134,7 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
                 				// virhe roskaa
                 				//hakija.errorField[avain.tunniste] = "Arvo on virheellinen!";
                 			}
-                		} else if(min <= valueInt && max >= valueInt) {
+                		} else if(min <= valueFloat && max >= valueFloat) {
                 			tallenna = true;
                 			//hakija.errorField[avain.tunniste] = "";
                 		} else {
