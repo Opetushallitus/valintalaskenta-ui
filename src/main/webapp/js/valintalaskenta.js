@@ -1,5 +1,7 @@
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
+}).run(function($http){
+    $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt.auth")
 });
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
