@@ -51,7 +51,7 @@
                                                        size="2"
                                                        ng-model="hakija.additionalData[avain.tunniste]"
                                                        arvovalidaattori
-                                                       ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])" />
+                                                       ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste)" />
 
 
                                                 <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
@@ -62,6 +62,7 @@
                                                     <option value="OSALLISTUI">Osallistui</option>
                                                     <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
                                                 </select>
+                                                <br />
                                                 <span style="color: red;"></span>
                                             </div>
 
