@@ -241,37 +241,48 @@ app.directive('arvovalidaattori', function(){
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
+            var validator = function(viewValue) {
+              var osallistui = $(elm.next()[0]).val() == 'OSALLISTUI';
+              console.log("osallistui: " + osallistui);
+              console.log("viewValue: " + viewValue);
+              if (osallistui && FLOAT_REGEXP.test(viewValue)) {
+                  var min = parseFloat($(elm).attr("min"));
+                  var max = parseFloat($(elm).attr("max"));
+                  var floatVal = parseFloat(viewValue);
+                  if(!isNaN(min) && !isNaN(max) && floatVal) {
+                      if(min <= floatVal && max >= floatVal) {
+                        // it is valid
+                        $(elm).siblings("span").empty();
+                        ctrl.$setValidity('arvovalidaattori', true);
+                      } else {
+                          // not in range
+                          $(elm).siblings("span").text("Arvo ei ole välillä " + min + " - " + max);
+                          ctrl.$setValidity('arvovalidaattori', false);
+                      }
+                  } else {
+                    // it is valid
+                        $(elm).siblings("span").empty();
+                        ctrl.$setValidity('arvovalidaattori', true);
+                  }
+                  return viewValue;
 
-        	ctrl.$parsers.unshift(function(viewValue) {
-			  if (FLOAT_REGEXP.test(viewValue)) {
-				  var min = parseFloat($(elm).attr("min"));
-				  var max = parseFloat($(elm).attr("max"));
-				  var floatVal = parseFloat(viewValue);
-				  if(!isNaN(min) && !isNaN(max) && floatVal) {
-					  if(min <= floatVal && max >= floatVal) {
-						// it is valid
-						$(elm).siblings("span").empty();
-						ctrl.$setValidity('arvovalidaattori', true);
-					  } else {
-						  // not in range
-						  $(elm).siblings("span").text("Arvo ei ole välillä " + min + " - " + max);
-						  ctrl.$setValidity('arvovalidaattori', false);
-					  }
-				  } else {
-					// it is valid
-						$(elm).siblings("span").empty();
-						ctrl.$setValidity('arvovalidaattori', true);
-				  }
+              } else {
+                  // it is invalid, return undefined (no model update)
+                  if(osallistui) {
+                    $(elm).siblings("span").text("Arvo ei ole laillinen!");
+                    ctrl.$setValidity('arvovalidaattori', false);
 
-				  return viewValue;
-			  } else {
-				  // it is invalid, return undefined (no model update)
+                    return undefined;
+                  } else {
+                    $(elm).siblings("span").empty();
+                    ctrl.$setValidity('arvovalidaattori', true);
 
-				  $(elm).siblings("span").text("Arvo ei ole laillinen!");
-				  ctrl.$setValidity('arvovalidaattori', false);
-			      return undefined;
-			  }
-            });
+                    return viewValue;
+                  }
+              }
+            };
+        	ctrl.$parsers.unshift(validator);
+        	ctrl.$formatters.unshift(validator);
         }
     };
 });
