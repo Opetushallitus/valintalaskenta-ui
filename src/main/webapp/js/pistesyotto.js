@@ -210,15 +210,13 @@ function PistesyottoController($scope, $timeout, $location, $routeParams, Pistes
         }
     }
     $scope.changeArvo = function(hakija, tunniste, value, tyyppi) {
-
-        if(value == "OSALLISTUI" && !hakija.additionalData[tunniste]) {
+        hakija.additionalData[tunniste] = "";
+        if(value == "OSALLISTUI") {
             if(tyyppi == "boolean") {
                 hakija.additionalData[tunniste] = "true";
             } else {
                 hakija.additionalData[tunniste] = undefined;
             }
-        } else {
-            hakija.additionalData[tunniste] = "";
         }
 
     }
