@@ -239,12 +239,13 @@ app.directive('auth', function($animate, $timeout, AuthService, HakukohdeModel) 
 var FLOAT_REGEXP = /^\-?([0-9]+(\.[0-9]+)?)$/;
 app.directive('arvovalidaattori', function(){
     return {
-        require: 'ngModel',
+        require: '?ngModel',
+//        scope: {temp: '=ngModel'},
         link: function(scope, elm, attrs, ctrl) {
+
             var validator = function(viewValue) {
               var osallistui = $(elm.next()[0]).val() == 'OSALLISTUI';
-              console.log("osallistui: " + osallistui);
-              console.log("viewValue: " + viewValue);
+
               if (osallistui && FLOAT_REGEXP.test(viewValue)) {
                   var min = parseFloat($(elm).attr("min"));
                   var max = parseFloat($(elm).attr("max"));
@@ -261,6 +262,7 @@ app.directive('arvovalidaattori', function(){
                       }
                   } else {
                     // it is valid
+                        console.log("5");
                         $(elm).siblings("span").empty();
                         ctrl.$setValidity('arvovalidaattori', true);
                   }
@@ -281,8 +283,11 @@ app.directive('arvovalidaattori', function(){
                   }
               }
             };
-        	ctrl.$parsers.unshift(validator);
-        	ctrl.$formatters.unshift(validator);
+
+            scope.$watch(attrs.ngModel, function() {
+                validator(ctrl.$viewValue);
+            });
+
         }
     };
 });

@@ -103,10 +103,9 @@
 
                         </tbody>
                     </table>
-
-                    <button ng-disabled="!form.$valid" class="button small primary margin-top-2" type="submit">Tallenna</button>
+                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" class="button small primary margin-top-2" type="submit">Tallenna</button>
                     <div>
-                        <div class="notification warning" ng-show="form.$error.arvovalidaattori">Tarkista virheet!</div>
+                        <div class="notification warning" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista virheet!</div>
                     </div>
                 </form>
             </div>
