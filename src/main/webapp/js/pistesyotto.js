@@ -159,7 +159,7 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
                         });
         			}
 
-        			if(hakija.originalData[avain.osallistuminenTunniste] !== hakija.additionalData[avain.osallistuminenTunniste]) {
+                    if(hakija.originalData[avain.osallistuminenTunniste] !== hakija.additionalData[avain.osallistuminenTunniste]) {
 
                         HakemusKey.put({
                             "oid": hakija.oid,
@@ -168,15 +168,9 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
                             }
                         , function(){
                             hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+
                         });
                     }
-
-                    /*
-                	if(hakija.originalData[avain.tunniste] !== hakija.additionalData[avain.tunniste]) {
-                        console.log(hakija.additionalData[avain.tunniste]);
-
-                    }
-                    */
                 });
             });
         };
@@ -187,7 +181,7 @@ app.factory('PistesyottoModel', function($http, HakukohdeAvaimet, HakukohdeHenki
 });
 
 
-function PistesyottoController($scope, $location, $routeParams, PistesyottoModel, HakukohdeModel) {
+function PistesyottoController($scope, $timeout, $location, $routeParams, PistesyottoModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = PistesyottoModel;
     $scope.hakuOid =  $routeParams.hakuOid;;
@@ -210,22 +204,20 @@ function PistesyottoController($scope, $location, $routeParams, PistesyottoModel
         hakija.showTiedotPartial = !hakija.showTiedotPartial;
     };
 
-    $scope.changeOsallistuminen = function(hakija, tunniste, value) {
+    $scope.changeOsallistuminen = function(hakija, tunniste, value, avain) {
         if(value) {
             hakija.additionalData[tunniste] = "OSALLISTUI";
-        } else {
-            hakija.additionalData[tunniste] = "MERKITSEMATTA";
         }
     }
     $scope.changeArvo = function(hakija, tunniste, value, tyyppi) {
-        if(value == "OSALLISTUI" && !hakija.additionalData[tunniste]) {
+        hakija.additionalData[tunniste] = "";
+        if(value == "OSALLISTUI") {
             if(tyyppi == "boolean") {
                 hakija.additionalData[tunniste] = "true";
             } else {
-                hakija.additionalData[tunniste] = "0";
+                hakija.additionalData[tunniste] = undefined;
             }
-        } else if(value == "MERKITSEMATTA") {
-            hakija.additionalData[tunniste] = "";
         }
+
     }
 }
