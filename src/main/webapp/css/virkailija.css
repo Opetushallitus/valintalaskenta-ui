@@ -3982,7 +3982,7 @@ ul.dropmenu-list {
   background-color: transparent;
   background-color: rgba(255, 255, 255, 0.75); }
 
-/*** Valintaperusteiden valintaryhmien ja hakukohteiden drag & drop
+/*** Valintaperusteiden valintaryhmien ja hakukohteiden drag & drop + laskentakaavaeditorin drag & drop
 ************************************************/
 .placeholder {
   outline: 1px dashed #4183C4;
@@ -4032,6 +4032,9 @@ li.uiCollapsed.mjs-nestedSortable-hovering div {
 
 .sortable li > div > .disclose {
   display: inline-block; }
+
+.no-nesting .placeholder {
+  background-color: #fbe3e4; }
 
 /*** tilatiedot & henkilötiedot
 ************************************************/
