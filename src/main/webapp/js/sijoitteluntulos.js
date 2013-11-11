@@ -158,6 +158,9 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                 selite: hakemus.selite
             }
             hakemus.selite = "";
+            if(hakemus.muokattuVastaanottoTila == "") {
+             hakemus.muokattuVastaanottoTila = null;
+            }
             var tilaObj = {tila: hakemus.muokattuVastaanottoTila};
             
             VastaanottoTila.post(tilaParams, tilaObj, function(result) {
