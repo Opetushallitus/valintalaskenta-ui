@@ -35,9 +35,6 @@ app.config(function($routeProvider) {
 
     when('/haku/:hakuOid/henkiloittain/', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkilo.html'}).
     when('/haku/:hakuOid/henkiloittain/:hakemusOid/henkilotiedot', {controller:HenkiloTiedotController, templateUrl:TEMPLATE_URL_BASE + 'partials/henkilotiedot.html'}).
-    //when('/haku/:hakuOid/henkiloittain', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkiloittain.html'}).
-    //when('/haku/:hakuOid/henkiloittain/mitätuleekin', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'henkiloittain.html'}).
-
 
     when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:YhteisvalinnanHallintaController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta.html'}).
 
@@ -54,7 +51,7 @@ app.config(function($routeProvider) {
 
 });
 
- 
+
 //TARJONTA RESOURCES
 app.factory('Haku', function($resource) {
   return $resource(TARJONTA_URL_BASE + "haku", {}, {
@@ -224,7 +221,7 @@ app.factory('ValintakoeXls', function($window) {
 			var postfix = "";
 			data.valintakoeOid.forEach(function(oid) {
 				postfix = postfix + "&valintakoeOid=" + oid;
-				
+
 			});
 			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/valintakoekutsut/aktivoi?hakukohdeOid="+ data.hakukohdeOid + postfix;
 		}
