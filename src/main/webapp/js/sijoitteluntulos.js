@@ -53,11 +53,11 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                                     hakemuserittely.hyvaksytyt.push(hakemus);
                                 }
 
-                                if(hakemus.hyvaksyttyHarkinnanvaraisesti) {
+                                if(hakemus.tila === "HYVAKSYTTY" && hakemus.hyvaksyttyHarkinnanvaraisesti) {
                                     hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
                                 }
 
-                                if(hakemus.varasijanNumero != undefined) {
+                                if(hakemus.tila === "VARALLA" ) {
                                     hakemuserittely.varasijoilla.push(hakemus);
                                 }
                             });
