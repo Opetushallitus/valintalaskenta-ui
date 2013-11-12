@@ -41,6 +41,22 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 				//fetch sijoittelun tilat and extend hakutoiveet
                    LatestSijoittelunTilat.get({hakemusOid: model.hakemus.oid, hakuOid: hakuOid}, function(result) {
                    		extendHakutoiveetWithSijoitteluTila(result);
+
+                        //fetch sijoittelun vastaanottotilat and extend hakutoiveet
+                        SijoittelunVastaanottotilat.get({hakemusOid: model.hakemus.oid}, function(result) {
+                            if(result.length > 0) {
+                                result.forEach(function(vastaanottotila) {
+                                    model.hakutoiveet.some(function(hakutoive) {
+                                        if(hakutoive.hakukohdeOid === vastaanottotila.hakukohdeOid) {
+                                            hakutoive.vastaanottotila = vastaanottotila.tila;
+                                            return true;
+                                        }
+                                    });
+                                });
+                            }
+                        }, function(error) {
+                            model.errors.push(error)
+                        });
                     }, function(error) {
                         model.errors.push(error);
                     });
@@ -72,6 +88,30 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
                             });
                          });
                        });
+
+                        //Extend hakutoiveet with tulos
+                        ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function(result) {
+                            model.valintalaskentaHakemus = result;
+
+                            //iterate hakutoiveet
+                            model.hakutoiveet.forEach(function(hakutoive, index, array) {
+                                var hakukohdeOid = hakutoive.hakukohdeOid;
+
+                                //iterate laskentatulos for each hakutoive and extend hakutoiveObjects accordingly
+                                model.valintalaskentaHakemus.hakukohteet.forEach(function(hakukohdetulos, index, array) {
+                                    if(hakukohdetulos.hakukohdeoid === hakukohdeOid) {
+                                        var jk1 = hakukohdetulos.valinnanvaihe[0].valintatapajono[0].jonosijat[0].jarjestyskriteerit[0];
+                                        hakutoive.pisteet = jk1.arvo;
+                                        hakutoive.valintalaskentatila = jk1.tila;
+                                    }
+                                });
+
+                            });
+
+
+                        }, function(error) {
+                            model.errors.push(error);
+                        });
                     }, function(error) {
                         model.errors.push(error);
                     });
@@ -93,47 +133,6 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 				});
 */
 
-				//fetch sijoittelun vastaanottotilat and extend hakutoiveet
-				SijoittelunVastaanottotilat.get({hakemusOid: model.hakemus.oid}, function(result) {
-					if(result.length > 0) {
-						result.forEach(function(vastaanottotila) {
-							model.hakutoiveet.some(function(hakutoive) {
-								if(hakutoive.hakukohdeOid === vastaanottotila.hakukohdeOid) {
-									hakutoive.vastaanottotila = vastaanottotila.tila;
-									return true;
-								}
-							});
-						});
-					}
-				}, function(error) {
-					model.errors.push(error)
-				});
-
-				
-				//Extend hakutoiveet with tulos 
-				ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function(result) {
-					model.valintalaskentaHakemus = result;
-
-					//iterate hakutoiveet
-					model.hakutoiveet.forEach(function(hakutoive, index, array) {
-						var hakukohdeOid = hakutoive.hakukohdeOid;
-
-						//iterate laskentatulos for each hakutoive and extend hakutoiveObjects accordingly
-						model.valintalaskentaHakemus.hakukohteet.forEach(function(hakukohdetulos, index, array) {
-							if(hakukohdetulos.hakukohdeoid === hakukohdeOid) {
-								var jk1 = hakukohdetulos.valinnanvaihe[0].valintatapajono[0].jonosijat[0].jarjestyskriteerit[0];
-								hakutoive.pisteet = jk1.arvo;
-								hakutoive.valintalaskentatila = jk1.tila;
-							}
-						});
-
-					});
-					
-				
-				}, function(error) {
-					model.errors.push(error);
-				});
-	
 				
 			}, function(error) {
 				model.errors.push(error);
