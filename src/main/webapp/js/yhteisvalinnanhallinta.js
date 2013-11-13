@@ -30,8 +30,19 @@
     return factory;
 
 });
+app.factory('Poller', function($http,$q){
+    return {
+         poll : function(api){
+             var deferred = $q.defer();
+             $http.get(api).then(function (response) {
+                     deferred.resolve(response.data);
+             });
+             return deferred.promise;
+         }
 
-function YhteisvalinnanHallintaController($scope, $timeout, $location, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, AktivoiKelaFtp, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
+     }
+ });
+function YhteisvalinnanHallintaController($scope, $timeout, $q,$interval, $location, Poller, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, AktivoiKelaFtp, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 	$scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
 	$scope.hakumodel = HakuModel;
@@ -40,36 +51,35 @@ function YhteisvalinnanHallintaController($scope, $timeout, $location, $routePar
 	$scope.viestintapalveluntiedostot = [];
 	$scope.kelatiedostot = [];
 	
-	$scope.paivita = function() {
-		// tehdaan pollaus ajax gettina ettei Loading... vilku pollatessa!
-		$.get(VIESTINTAPALVELU_URL_BASE + "/api/v1/download", function( data ) {
-			if(data.length != $scope.viestintapalveluntiedostot.length) {
-				$scope.viestintapalveluntiedostot = data;
-			}
-			$timeout($scope.paivita, 3000);
-		});
-		$.get(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/listaus", function( data ) {
-			if(data.length != $scope.kelatiedostot.length) {
-				$scope.kelatiedostot = data;
-			}
-			$timeout($scope.paivita, 3000);
-		});
-	}
-	$scope.paivitaKelaListaus = function() {
-		$.get(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/listaus", function( data ) {
-			if(data.length != $scope.kelatiedostot.length) {
-				$scope.kelatiedostot = data;
-			}
-		});
-	}
-	$scope.paivita();
+	var Repeater = function () {
+        $scope.$apply(function () {
+            $scope.p1 = Poller.poll(VIESTINTAPALVELU_URL_BASE + "/api/v1/download");
+            $scope.p1.then(function(data){
+            	if(data.length != $scope.viestintapalveluntiedostot.length) {
+    				$scope.viestintapalveluntiedostot = data;
+    			}
+            });
+            $scope.p2 = Poller.poll(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/listaus");
+            $scope.p2.then(function(data){
+            	if(data.length != $scope.kelatiedostot.length) {
+    				$scope.kelatiedostot = data;
+    			}
+            });
+        });
+    };
+    
+    var timer = $window.setInterval(Repeater, 5000);
+    $scope.$on('$destroy', function cleanup() {
+    	$window.clearInterval(timer);
+	});
+    
 	$scope.ftpVienti = function(tiedosto) {
 		AktivoiKelaFtp.put({
 			documentId:tiedosto.documentId
 		}, function() {
-			$scope.paivitaKelaListaus();
+			//$scope.paivitaKelaListaus();
 		}, function() {
-			$scope.paivitaKelaListaus();
+			//$scope.paivitaKelaListaus();
 		});
 	}
 	
