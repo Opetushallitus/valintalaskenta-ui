@@ -75,7 +75,9 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 
                                         result.some(function(vastaanottotila){
                                             if(vastaanottotila.hakemusOid === currentHakemus.hakemusOid) {
-                                                currentHakemus.vastaanottoTila = vastaanottotila.tila;
+                                                if(vastaanottotila.tila != null) {
+                                                    currentHakemus.vastaanottoTila = vastaanottotila.tila;
+                                                }
                                                 currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
                                                 if(currentHakemus.vastaanottoTila === "VASTAANOTTANUT_POISSAOLEVA" || currentHakemus.vastaanottoTila === "VASTAANOTTANUT_LASNA"){
                                                     hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
