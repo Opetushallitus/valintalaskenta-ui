@@ -53,11 +53,11 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                                     hakemuserittely.hyvaksytyt.push(hakemus);
                                 }
 
-                                if(hakemus.hyvaksyttyHarkinnanvaraisesti) {
+                                if(hakemus.tila === "HYVAKSYTTY" && hakemus.hyvaksyttyHarkinnanvaraisesti) {
                                     hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
                                 }
 
-                                if(hakemus.varasijanNumero != undefined) {
+                                if(hakemus.tila === "VARALLA" ) {
                                     hakemuserittely.varasijoilla.push(hakemus);
                                 }
                             });
@@ -75,7 +75,9 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 
                                         result.some(function(vastaanottotila){
                                             if(vastaanottotila.hakemusOid === currentHakemus.hakemusOid) {
-                                                currentHakemus.vastaanottoTila = vastaanottotila.tila;
+                                                if(vastaanottotila.tila != null) {
+                                                    currentHakemus.vastaanottoTila = vastaanottotila.tila;
+                                                }
                                                 currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
                                                 if(currentHakemus.vastaanottoTila === "VASTAANOTTANUT_POISSAOLEVA" || currentHakemus.vastaanottoTila === "VASTAANOTTANUT_LASNA"){
                                                     hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
@@ -158,6 +160,9 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
                 selite: hakemus.selite
             }
             hakemus.selite = "";
+            if(hakemus.muokattuVastaanottoTila == "") {
+             hakemus.muokattuVastaanottoTila = null;
+            }
             var tilaObj = {tila: hakemus.muokattuVastaanottoTila};
             
             VastaanottoTila.post(tilaParams, tilaObj, function(result) {
