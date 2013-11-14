@@ -65,7 +65,7 @@
                                 <div ng-include="'valintalaskentatulos-partials/tilaPartial.html'"/>
                             </td>
                             <td>
-                                <a ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="button small">Muokkaus</a>
+                                <a ng-disabled="!(updateOph)" ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="button small">Muokkaus</a>
                                <div ng-include="'valintalaskentatulos-partials/muutaJarjestyskriteeri.html'">
                                </div>
 

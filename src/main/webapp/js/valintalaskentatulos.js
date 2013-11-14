@@ -44,7 +44,7 @@
 });
 
 
-function ValintalaskentatulosController($scope, $location, $routeParams, $timeout, ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http) {
+function ValintalaskentatulosController($scope, $location, $routeParams, $timeout, ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -82,27 +82,33 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     };
 
     $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos) {
-        valintatulos.prioriteetit = [];
-        for(i in valintatulos.jarjestyskriteerit) {
-            if(i == 0) {
-                var obj = {name: "Yhteispisteet", value: i};
-                valintatulos.jarjestyskriteeriPrioriteetti = obj;
-                valintatulos.prioriteetit.push(obj);
+        if($scope.updateOph) {
+            valintatulos.prioriteetit = [];
+            for(i in valintatulos.jarjestyskriteerit) {
+                if(i == 0) {
+                    var obj = {name: "Yhteispisteet", value: i};
+                    valintatulos.jarjestyskriteeriPrioriteetti = obj;
+                    valintatulos.prioriteetit.push(obj);
+                }
+                else {
+                    var obj = {name: i, value: i};
+                    valintatulos.prioriteetit.push(obj);
+                }
             }
-            else {
-                var obj = {name: i, value: i};
-                valintatulos.prioriteetit.push(obj);
-            }
-        }  
 
-        if(valintatulos.showJarjestyskriteerit == null || valintatulos.showJarjestyskriteerit == false) {
-            valintatulos.showJarjestyskriteerit = true;
-        } else {
-            valintatulos.showJarjestyskriteerit = false;
+            if(valintatulos.showJarjestyskriteerit == null || valintatulos.showJarjestyskriteerit == false) {
+                valintatulos.showJarjestyskriteerit = true;
+            } else {
+                valintatulos.showJarjestyskriteerit = false;
+            }
+            valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
         }
-        valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
 
     }
+
+    AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
+        $scope.updateOph = true;
+    });
 
     $scope.limit = 20;
     $scope.lazyLoading = function() {
