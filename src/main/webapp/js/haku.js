@@ -37,6 +37,13 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
                             if(haku.oid == oid) {
                                 model.hakuOid = haku;
                             }
+
+                            var hakutyyppi = haku.hakutyyppiUri;
+                            var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
+                            var match = lisahakutyyppiRegExp.exec(hakutyyppi);
+                            match ? showLisahakuView = true : showLisahakuView = false;
+
+                            haku.lisahaku = showLisahakuView;
                         });
                     }); 
                 });
@@ -52,35 +59,14 @@ function HakuController($scope, $location, $routeParams, HakuModel) {
     $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
     $scope.$watch('hakumodel.hakuOid', function() {
-        
-        // set lisahaku-flag to true if selected haku is of type lisahaku
-        if($scope.hakumodel.hakuOid && isLisahaku($scope.hakumodel.hakuOid.oid)) {
-            $scope.hakumodel.lisahaku = true;
-        } else {
-            $scope.hakumodel.lisahaku = false;
-        }
-        
+
         if($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid != $routeParams.hakuOid) {
-            if($scope.hakumodel.lisahaku) {
+            if($scope.hakumodel.hakuOid.lisahaku) {
                 $location.path('/lisahaku/' + HakuModel.hakuOid.oid + '/hakukohde/');
             } else {
                 $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
             }
         }
     });
-
-    //return true if selected haku is lisahaku, otherwise false
-    function isLisahaku(hakuOid) {
-        var showLisahakuView = false;
-        $scope.hakumodel.haut.forEach(function(haku) {
-            if(hakuOid === haku.oid) { 
-                var hakutyyppi = haku.hakutyyppiUri;
-                var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
-                var match = lisahakutyyppiRegExp.exec(hakutyyppi);
-                match ? showLisahakuView = true : showLisahakuView = false;
-            }
-        });
-        return showLisahakuView;
-    }
     
 }
