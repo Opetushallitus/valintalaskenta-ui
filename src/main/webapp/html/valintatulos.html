@@ -1,0 +1,85 @@
+<div class="valinta-tulokset">
+
+
+    <h1>Valinnan tulokset</h1>
+
+    <div class="filters">
+        <div class="tyyppiSuodatin">
+            <span>Tyyppi</span>
+            <select ng-model="model.filter.type" >
+                <option value="KAIKKI">Kaikki</option>
+                <option value="HYVAKSYTYT">Hyväksytyt</option>
+                <option value="ILMANHYVAKSYNTAA">Ei yhtään hyväksyttyä hakutoivetta</option>
+                <option value="VASTAANOTTANEET">Paikan Vastaanottaneet</option>
+            </select>
+        </div>
+        <div class="hakukohdeSuodatin">
+            <span>Hakukohde Oid</span>
+            <input type="text" ng-model="hakukohdeToAdd">
+            <span class="button small primary" ng-click="addHakukohde()">Lisää</span>
+            <span ng-repeat="hakukohde in model.filter.hakukohteet">
+                {{hakukohde}} <span ng-click="deleteHakukohde($index)">(X)</span>
+            </span>
+        </div>
+        <div class="tarjoajaSuodatin">
+            <span>Tarjoaja Oid</span>
+            <input type="text" ng-model="tarjoajaToAdd">
+            <span class="button small primary" ng-click="addTarjoaja()">Lisää</span>
+            <span ng-repeat="tarjoaja in model.filter.tarjoajat">
+                {{tarjoaja}} <span ng-click="deleteTarjoaja($index)">(X)</span>
+            </span>
+        </div>
+         <!--
+        <div class="hakijaSuodatin">
+            <span>Hakijat</span>
+            <input type="text" ng-model="hakukohdeToAdd">
+            <span class="button small primary" ng-click="addHakukohde()">Lisää</span>
+            <span ng-repeat="hakukohde in model.filter.hakukohteet">
+                {{hakukohde}} <span ng-click="deleteHakukohde($index)">(X)</span>
+            </span>
+        </div>
+        -->
+        <div>
+            <span class="button large primary" ng-click="refresh()">Hae</span>
+            <a class="button large primary" href="#/haku/{{hakuOid}}/yhteisvalinnanhallinta/" >Takaisin</a>
+        </div>
+
+    </div>
+    <div class="results" ng-if="model.hakemukset.length>0">
+        <div >Näytetään {{model.filter.shownOnUi}} / {{model.hakemukset.length}} tulosta</div>
+
+        <table item-on-screen>
+            <tbody>
+                <tr ng-repeat="hakemus in model.hakemukset | limitTo:model.filter.shownOnUi">
+                    <td>
+                        <div>{{hakemus.hakemusOid}}</div>
+                        <div>{{hakemus.sukunimi}} {{hakemus.etunimi}} </div>
+                    </td>
+                    <td class="valinta-block-column">
+                        <div class="valinta-block" ng-repeat="hakutoive in hakemus.hakutoiveet">
+                            <div class="hakukohde {{getHakukohdeStyle(hakutoive)}}">
+                                <span>{{hakutoive.hakukohdeOid}}</span>
+                                <span>{{hakutoive.tarjoajaOid}}</span>
+                            </div>
+                            <div class="valintatapajonot">
+                                <div ng-repeat="valintatapajono in hakutoive.hakutoiveenValintatapajonot" class="valintatapajono {{valintatapajono.tila}}">
+                                    {{valintatapajono.tila}} |
+                                    {{valintatapajono.vastaanottotieto}}
+                                    <br>
+                                    {{valintatapajono.jonosija}}
+                                    {{valintatapajono.varasijanNumero}}
+                                    <br>
+                                    {{valintatapajono.hakeneet}}   |
+                                    {{valintatapajono.hyvaksytty}} |
+                                    {{valintatapajono.varalla}}    |
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div>Näytetään {{model.filter.shownOnUi}} / {{model.hakemukset.length}} tulosta</div>
+    </div>
+</div>

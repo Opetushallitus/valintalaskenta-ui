@@ -40,7 +40,8 @@
     <h2>Jälkiohjaus</h2>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()" class="button primary small excel">Vie jälkiohjaustulokset exceliin</a>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetPdf()" class="button primary small pdf">Vie jälkiohjauskirjeiksi</a>
-	<div class="form-row">
+    <a href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"  class="button small">Valinnan tulokset</a>
+    <div class="form-row">
         <label class="form-row-label">Viestintäpalvelun tiedostot</label>
 
         <div class="form-row-content">

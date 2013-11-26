@@ -30,3 +30,54 @@
      animation */
   display:inline-block!important;
 }
+
+.valinta-block-column *{
+ float: left;
+}
+.valinta-block {
+     height: 200px;
+     width: 300px;
+
+
+}
+.valinta-block .valintatapajonot {
+    float: left;
+}
+.valinta-block .valintatapajonot .valintatapajono{
+    width:120px;
+    height: 100px;
+    margin-right: 1px;
+
+}
+
+.valinta-block .valintatapajonot .valintatapajono.HYVAKSYTTY{
+    background: green;
+}
+.valinta-block .valintatapajonot .valintatapajono.HYLATTY{
+    background: red;
+}
+.valinta-block .valintatapajonot .valintatapajono.VARALLA{
+    background: gold;
+}
+.valinta-block .valintatapajonot .valintatapajono.VIRHE{
+    background: violet;
+}
+.valinta-block .valintatapajonot .valintatapajono.PERUUNTUNUT{
+    background: lightgray;
+}
+
+.valinta-block .hakukohde.HYVAKSYTTY{
+    background: green;
+}
+.valinta-block .hakukohde.HYLATTY{
+    background: red;
+}
+.valinta-block .hakukohde.VARALLA{
+    background: gold;
+}
+.valinta-block .hakukohde.VIRHE{
+    background: violet;
+}
+.valinta-block .hakukohde.PERUUNTUNUT{
+    background: lightgray;
+}

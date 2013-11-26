@@ -39,7 +39,7 @@ app.config(function($routeProvider) {
     when('/haku/:hakuOid/henkiloittain/:hakemusOid/henkilotiedot', {controller:HenkiloTiedotController, templateUrl:TEMPLATE_URL_BASE + 'partials/henkilotiedot.html'}).
 
     when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:YhteisvalinnanHallintaController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta.html'}).
-
+    when('/haku/:hakuOid/yhteisvalinnanhallinta/valintatulos', {controller:ValintatulosController, templateUrl:TEMPLATE_URL_BASE + 'valintatulos.html'}).
 
     when('/lisahaku/:hakuOid/hakukohde', {controller: LisahakuController, templateUrl: TEMPLATE_URL_BASE + 'lisahakuHakukohde.html'}).
     when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: HakukohdeController, templateUrl: TEMPLATE_URL_BASE + 'lisahaku/hakukohdeperustiedot.html'}).
@@ -351,9 +351,11 @@ app.factory('LatestSijoitteluajoHakukohde', function($resource) {
     });
 });
 
-
-
-
+app.factory('Valintatulos', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakemukset", {hakuOid:"@hakuOid"}, {
+        get: {method: "GET"}
+    });
+});
 
 
 
