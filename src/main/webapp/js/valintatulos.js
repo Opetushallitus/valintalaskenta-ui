@@ -7,12 +7,39 @@ app.factory('ValintatulosModel', function(Valintatulos) {
         this.filter = { 
             type: "KAIKKI",
             hakukohteet : [],
-            shownOnUi: 100
+            shownOnUi: 100 ,
+            count:6000,
+            index:0,
+
+
         };
 
         this.hakemukset = [];
         this.hakemusCount = null;
         this.hakuOid = null;
+
+
+
+        this.shown = function() {
+            return model.filter.shownOnUi;
+        }
+        this.page = function() {
+
+        };
+        this.totalPages = function() {
+
+        };
+
+        this.from = function() {
+            return model.filter.index;
+        };
+        this.to = function() {
+            return Math.min(model.filter.index + model.filter.count, model.hakemusCount);
+        };
+        this.totalResults = function() {
+         return model.hakemusCount;
+        }
+
 
         this.refresh = function(hakuOid) {
             model.hakuOid = hakuOid;
@@ -33,6 +60,14 @@ app.factory('ValintatulosModel', function(Valintatulos) {
              if(model.filter.hakukohteet.length > 0 ){
                 searchParams.hakukohdeOid=model.filter.hakukohteet;
              }
+            if(model.filter.count != null) {
+               searchParams.count=model.filter.count;
+            }
+             if(model.filter.index != null) {
+               searchParams.index=model.filter.index;
+            }
+
+
 
             Valintatulos.get(searchParams, function(result) {
                  model.hakemukset = result.results;

@@ -29,6 +29,10 @@
                 {{tarjoaja}} <span ng-click="deleteTarjoaja($index)">(X)</span>
             </span>
         </div>
+        <div class="sivutusSuodatin">
+            <span>Näytä Kerralla</span>
+            <input type="text" ng-model="model.filter.count">
+        </div>
          <!--
         <div class="hakijaSuodatin">
             <span>Hakijat</span>
@@ -46,7 +50,13 @@
 
     </div>
     <div class="results" ng-if="model.hakemukset.length>0">
-        <div >Näytetään {{model.filter.shownOnUi}} / {{model.hakemukset.length}} tulosta</div>
+        <div >
+
+           Tuloksia yhteensä {{ model.totalResults() }}
+           Haettuna tulokset {{ model.from() }} - {{ model.to() }} joista näytetään {{ model.shown() }}
+
+
+        </div>
 
         <table item-on-screen>
             <tbody>
