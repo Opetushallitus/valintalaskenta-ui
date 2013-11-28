@@ -10,8 +10,6 @@ app.factory('ValintatulosModel', function(Valintatulos) {
             shownOnUi: 100 ,
             count:6000,
             index:0,
-
-
         };
 
         this.hakemukset = [];
@@ -27,7 +25,10 @@ app.factory('ValintatulosModel', function(Valintatulos) {
 
         };
         this.totalPages = function() {
-
+            console.debug("total pages: " + model.hakemusCount + "   " + model.filter.count)
+             var a = Math.ceil(model.hakemusCount / model.filter.count);
+              console.debug(a);
+              return a
         };
 
         this.from = function() {

@@ -53,12 +53,15 @@
         <div >
 
            Tuloksia yhteensä {{ model.totalResults() }}
-           Haettuna tulokset {{ model.from() }} - {{ model.to() }} joista näytetään {{ model.shown() }}
+           Haettuna tulokset {{ model.from() }} - {{ model.to() }}
+           joista näytetään {{ model.shown() }}
+            Sivu {{model.page() }}   / {{model.totalPages() }}
 
 
         </div>
 
-        <table item-on-screen>
+        <table>
+            |
             <tbody>
                 <tr ng-repeat="hakemus in model.hakemukset | limitTo:model.filter.shownOnUi">
                     <td>
