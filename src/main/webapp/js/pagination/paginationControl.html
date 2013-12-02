@@ -1,0 +1,12 @@
+<div ng-if="paginator.model!=null">
+    <div class="kokonaistulokset">
+        Tuloksia {{paginator.totalResults()}}, joista haettuna {{paginator.from()}}-{{paginator.to()}}.
+        Näytetään {{inMemoryPaginator.inMemoryTo()}}
+    </div>
+    <div class="sivutus" ng-if="paginator.pageCount() > 0">
+        <span>sivu {{paginator.currentPage()+1}}/{{paginator.pageCount()}}</span>
+        <span ng-repeat="i in [] | forLoop:0:paginator.pageCount()" >
+            <a ng-click="paginator.changePage(i)">{{i+1}}</a>
+        </span>
+    </div>
+</div>

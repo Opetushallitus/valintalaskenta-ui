@@ -7,9 +7,6 @@ app.factory('ValintatulosModel', function(Valintatulos) {
         this.filter = { 
             type: "KAIKKI",
             hakukohteet : [],
-            shownOnUi: 100 ,
-            count:6000,
-            index:0,
         };
 
         this.hakemukset = [];
@@ -18,35 +15,17 @@ app.factory('ValintatulosModel', function(Valintatulos) {
 
 
 
-        this.shown = function() {
-            return model.filter.shownOnUi;
+        this.search = function(hakuOid, index, count) {
+            model.hakuOid =hakuOid;
+            model.refresh(index,count);
         }
-        this.page = function() {
-
-        };
-        this.totalPages = function() {
-            console.debug("total pages: " + model.hakemusCount + "   " + model.filter.count)
-             var a = Math.ceil(model.hakemusCount / model.filter.count);
-              console.debug(a);
-              return a
-        };
-
-        this.from = function() {
-            return model.filter.index;
-        };
-        this.to = function() {
-            return Math.min(model.filter.index + model.filter.count, model.hakemusCount);
-        };
-        this.totalResults = function() {
-         return model.hakemusCount;
+        this.getTotalResults = function(){
+                   return this.hakemusCount;
         }
-
-
-        this.refresh = function(hakuOid) {
-            model.hakuOid = hakuOid;
+        this.refresh = function(index, count) {
 
             var searchParams = {
-              hakuOid: hakuOid
+              hakuOid: model.hakuOid
             };
 
             if(model.filter.type == "HYVAKSYTYT"){
@@ -58,21 +37,16 @@ app.factory('ValintatulosModel', function(Valintatulos) {
             if(model.filter.type == "VASTAANOTTANEET"){
                  searchParams.vastaanottaneet=true
             }
-             if(model.filter.hakukohteet.length > 0 ){
+            if(model.filter.hakukohteet.length > 0 ){
                 searchParams.hakukohdeOid=model.filter.hakukohteet;
-             }
-            if(model.filter.count != null) {
-               searchParams.count=model.filter.count;
-            }
-             if(model.filter.index != null) {
-               searchParams.index=model.filter.index;
             }
 
-
+            searchParams.count=count;
+            searchParams.index=index;
 
             Valintatulos.get(searchParams, function(result) {
-                 model.hakemukset = result.results;
-                 model.hakemusCount = result.totalCount;
+                model.hakemukset = result.results;
+                model.hakemusCount = result.totalCount;
             });
         };
 	}
@@ -122,7 +96,7 @@ function ValintatulosController($scope,ValintatulosModel, $routeParams) {
     }
 
 
-    $scope.refresh=function() {
-        $scope.model.refresh($scope.hakuOid);
+    $scope.search=function() {
+        $scope.model.search($scope.hakuOid,0,500);
     };
 }
