@@ -3324,8 +3324,7 @@ dl.dl-horizontal {
   padding: 0 0 0 24px; }
   .selectlist.collapsible,
   .treelist.collapsible {
-    margin-left: 0px;
-    padding: 0 0 0 32px; }
+    margin-left: 0px; }
   .selectlist li,
   .treelist li {
     margin: 0.3em 0;
@@ -3653,6 +3652,7 @@ ul.dropmenu-list {
     background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
     background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
     background: -o-linear-gradient(top, whitesmoke, #c6c6c6);
+    background: linear-gradient(top, whitesmoke, #c6c6c6);
     -webkit-box-shadow: 1px 1px 5px white inset, -1px -1px 5px white inset;
     -moz-box-shadow: 1px 1px 5px white inset, -1px -1px 5px white inset;
     -o-box-shadow: 1px 1px 5px white inset, -1px -1px 5px white inset;
@@ -3667,14 +3667,16 @@ ul.dropmenu-list {
       background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
       background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
       background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
+      background: -o-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: linear-gradient(top, #c6c6c6, whitesmoke); }
     .tabsheet-container .nav-tabs li:active {
       background: whitesmoke;
       background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(whitesmoke));
       background: -webkit-linear-gradient(top, whitesmoke, whitesmoke);
       background: -moz-linear-gradient(top, whitesmoke, whitesmoke);
       background: -ms-linear-gradient(top, whitesmoke, whitesmoke);
-      background: -o-linear-gradient(top, whitesmoke, whitesmoke); }
+      background: -o-linear-gradient(top, whitesmoke, whitesmoke);
+      background: linear-gradient(top, whitesmoke, whitesmoke); }
     .tabsheet-container .nav-tabs li.active {
       background: white;
       background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
@@ -3682,6 +3684,7 @@ ul.dropmenu-list {
       background: -moz-linear-gradient(top, whitesmoke, white);
       background: -ms-linear-gradient(top, whitesmoke, white);
       background: -o-linear-gradient(top, whitesmoke, white);
+      background: linear-gradient(top, whitesmoke, white);
       border-bottom: 1px solid white; }
     .tabsheet-container .nav-tabs li a {
       display: block;
@@ -3737,6 +3740,7 @@ ul.dropmenu-list {
       background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
       background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
       background: -o-linear-gradient(top, whitesmoke, #c6c6c6);
+      background: linear-gradient(top, whitesmoke, #c6c6c6);
       font-size: 13px; }
     .tabs .tab:hover span {
       background: #c6c6c6;
@@ -3745,7 +3749,8 @@ ul.dropmenu-list {
       background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
       background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
       background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
+      background: -o-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: linear-gradient(top, #c6c6c6, whitesmoke); }
     .tabs .tab.current {
       border-top-width: 1px;
       border-right-width: 1px;
@@ -3761,7 +3766,8 @@ ul.dropmenu-list {
         background: -webkit-linear-gradient(top, whitesmoke, white);
         background: -moz-linear-gradient(top, whitesmoke, white);
         background: -ms-linear-gradient(top, whitesmoke, white);
-        background: -o-linear-gradient(top, whitesmoke, white); }
+        background: -o-linear-gradient(top, whitesmoke, white);
+        background: linear-gradient(top, whitesmoke, white); }
     .tabs .tab.disabled span, .tabs .tab.disabled:hover span {
       background: #f6f6f6;
       background-image: url("../img/texture-45dg-lines-96ccdb.gif"); }
@@ -3799,10 +3805,16 @@ ul.dropmenu-list {
     position: relative;
     height: 18px;
     line-height: 18px; }
-    .gradingformula .frame .icon, .gradingformula .function .icon, .gradingformula .parameter .icon,
+    .gradingformula .frame .icon,
+    .gradingformula .frame .staticicon, .gradingformula .function .icon,
+    .gradingformula .function .staticicon, .gradingformula .parameter .icon,
+    .gradingformula .parameter .staticicon,
     .gradingformula-dragged .frame .icon,
+    .gradingformula-dragged .frame .staticicon,
     .gradingformula-dragged .function .icon,
-    .gradingformula-dragged .parameter .icon {
+    .gradingformula-dragged .function .staticicon,
+    .gradingformula-dragged .parameter .icon,
+    .gradingformula-dragged .parameter .staticicon {
       display: inline-block;
       margin-right: 0.5em;
       width: 18px;
@@ -3812,26 +3824,44 @@ ul.dropmenu-list {
       background-image: url("../img/18x18-ui-icons.png");
       background-repeat: no-repeat;
       cursor: move; }
-      .gradingformula .frame .icon.dropmenu, .gradingformula .function .icon.dropmenu, .gradingformula .parameter .icon.dropmenu,
+      .gradingformula .frame .icon.dropmenu,
+      .gradingformula .frame .staticicon.dropmenu, .gradingformula .function .icon.dropmenu,
+      .gradingformula .function .staticicon.dropmenu, .gradingformula .parameter .icon.dropmenu,
+      .gradingformula .parameter .staticicon.dropmenu,
       .gradingformula-dragged .frame .icon.dropmenu,
+      .gradingformula-dragged .frame .staticicon.dropmenu,
       .gradingformula-dragged .function .icon.dropmenu,
-      .gradingformula-dragged .parameter .icon.dropmenu {
+      .gradingformula-dragged .function .staticicon.dropmenu,
+      .gradingformula-dragged .parameter .icon.dropmenu,
+      .gradingformula-dragged .parameter .staticicon.dropmenu {
         position: relative;
         background-image: none;
         width: auto; }
-        .gradingformula .frame .icon.dropmenu > .dropmenu-list, .gradingformula .function .icon.dropmenu > .dropmenu-list, .gradingformula .parameter .icon.dropmenu > .dropmenu-list,
+        .gradingformula .frame .icon.dropmenu > .dropmenu-list,
+        .gradingformula .frame .staticicon.dropmenu > .dropmenu-list, .gradingformula .function .icon.dropmenu > .dropmenu-list,
+        .gradingformula .function .staticicon.dropmenu > .dropmenu-list, .gradingformula .parameter .icon.dropmenu > .dropmenu-list,
+        .gradingformula .parameter .staticicon.dropmenu > .dropmenu-list,
         .gradingformula-dragged .frame .icon.dropmenu > .dropmenu-list,
+        .gradingformula-dragged .frame .staticicon.dropmenu > .dropmenu-list,
         .gradingformula-dragged .function .icon.dropmenu > .dropmenu-list,
-        .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list {
+        .gradingformula-dragged .function .staticicon.dropmenu > .dropmenu-list,
+        .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list,
+        .gradingformula-dragged .parameter .staticicon.dropmenu > .dropmenu-list {
           position: absolute;
           top: 16px;
           left: 0px;
           background-image: none;
           background-color: #eeeeee; }
-          .gradingformula .frame .icon.dropmenu > .dropmenu-list > li, .gradingformula .function .icon.dropmenu > .dropmenu-list > li, .gradingformula .parameter .icon.dropmenu > .dropmenu-list > li,
+          .gradingformula .frame .icon.dropmenu > .dropmenu-list > li,
+          .gradingformula .frame .staticicon.dropmenu > .dropmenu-list > li, .gradingformula .function .icon.dropmenu > .dropmenu-list > li,
+          .gradingformula .function .staticicon.dropmenu > .dropmenu-list > li, .gradingformula .parameter .icon.dropmenu > .dropmenu-list > li,
+          .gradingformula .parameter .staticicon.dropmenu > .dropmenu-list > li,
           .gradingformula-dragged .frame .icon.dropmenu > .dropmenu-list > li,
+          .gradingformula-dragged .frame .staticicon.dropmenu > .dropmenu-list > li,
           .gradingformula-dragged .function .icon.dropmenu > .dropmenu-list > li,
-          .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list > li {
+          .gradingformula-dragged .function .staticicon.dropmenu > .dropmenu-list > li,
+          .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list > li,
+          .gradingformula-dragged .parameter .staticicon.dropmenu > .dropmenu-list > li {
             background-image: none; }
     .gradingformula .frame .label, .gradingformula .function .label, .gradingformula .parameter .label,
     .gradingformula-dragged .frame .label,
@@ -3924,19 +3954,27 @@ ul.dropmenu-list {
       color: #333;
       background-color: #c6f1cb; }
   .gradingformula .frame .icon,
-  .gradingformula-dragged .frame .icon {
+  .gradingformula .frame .staticicon,
+  .gradingformula-dragged .frame .icon,
+  .gradingformula-dragged .frame .staticicon {
     background-position: -126px 0px; }
   .gradingformula > .frame,
   .gradingformula-dragged > .frame {
     padding-top: 18px; }
   .gradingformula .function .icon,
-  .gradingformula-dragged .function .icon {
+  .gradingformula .function .staticicon,
+  .gradingformula-dragged .function .icon,
+  .gradingformula-dragged .function .staticicon {
     background-position: -90px 0px; }
     .gradingformula .function .icon.sum,
-    .gradingformula-dragged .function .icon.sum {
+    .gradingformula .function .staticicon.sum,
+    .gradingformula-dragged .function .icon.sum,
+    .gradingformula-dragged .function .staticicon.sum {
       background-position: -36px 0px; }
   .gradingformula .parameter .icon,
-  .gradingformula-dragged .parameter .icon {
+  .gradingformula .parameter .staticicon,
+  .gradingformula-dragged .parameter .icon,
+  .gradingformula-dragged .parameter .staticicon {
     background-position: -72px 0px; }
   .gradingformula .placeholder,
   .gradingformula .empty,
