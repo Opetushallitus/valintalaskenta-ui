@@ -53,9 +53,7 @@ app.directive('paginationPaginatedElement', function ($timeout, Paginator, InMem
 
               if(elemBottom < docViewBottom && oldBottom != elemBottom) {
                   scope.$apply(function() {
-                       console.debug("Scroll triggered");
-                        InMemoryPaginator.showMore();
-                     // scope.lazyLoading();
+                      InMemoryPaginator.showMore();
                       oldBottom = elemBottom;
                   });
 
@@ -66,8 +64,6 @@ app.directive('paginationPaginatedElement', function ($timeout, Paginator, InMem
                     var documentHeight = $(document).height();
                     if($(window).scrollTop() + $(window).height() >= documentHeight * .9 && oldDocument != documentHeight) {
                         scope.$apply(function() {
-                           // scope.lazyLoading();
-                              console.debug("Scroll triggered");
                             InMemoryPaginator.showMore();
                             oldDocument = documentHeight;
                         });
