@@ -53,14 +53,19 @@
 		            <th>Koko</th>
 		        </tr>
 		        </thead>
-		        <tbody ng-repeat="tiedosto in viestintapalveluntiedostot">
+		        <tbody ng-repeat="tiedosto in viestintapalveluntiedostot | limitTo:jalkiohjausLimit">
 		        	<tr>
 			            <td class="align-center"><span ng-show="tiedosto.contentType=='text/plain'">{{tiedosto.filename}}</span><a ng-hide="tiedosto.contentType=='text/plain'" href="#" ng-click="lataa(tiedosto);$event.preventDefault();">{{tiedosto.filename}}</a></td>
 			            <td class="align-center">{{tiedosto.createdAt}}</td>
 			            <td class="align-center">{{tiedosto.size}}</td>
 		        	</tr>
-		        <tfoot ng-hide="viestintapalveluntiedostot">
-					<tr>
+		        <tfoot>
+		        	<tr ng-show="viestintapalveluntiedostot.length > jalkiohjausLimit">
+						<td class="align-center" colspan="4">
+							<a ng-click="showMoreJalkiohjaus()" class="button small" style="">Näytä lisää ( +{{viestintapalveluntiedostot.length - jalkiohjausLimit}} )</a>
+						</td>
+					</tr>
+					<tr ng-hide="viestintapalveluntiedostot">
 						<td class="align-center" colspan="4">Ei tiedostoja</td>
 					</tr>
 				</tfoot>
@@ -87,16 +92,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="tiedosto in kelatiedostot">
-                    <td class="align-center"><a href="{{VALINTALASKENTAKOOSTE_URL_BASE}}resources/kela/lataa/{{tiedosto.documentId}}" ng-show="{{tiedosto.type=='FILE'}}">{{tiedosto.header}}</a><span ng-hide="{{tiedosto.type=='FILE'}}">{{tiedosto.header}}</span></td>
+                <tr ng-repeat="tiedosto in kelatiedostot  | limitTo:kelaLimit">
+                    <td class="align-center"><a href="{{VALINTALASKENTAKOOSTE_URL_BASE}}resources/kela/lataa/{{tiedosto.documentId}}" ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</a><span ng-show="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</span></td>
                     <td class="align-center">{{tiedosto.createdAt}}</td>
-                    <td class="align-center"><span ng-show="{{tiedosto.type=='FILE'}}">{{tiedosto.size}}</span></td>
-                    <td class="align-center"><a ng-show="{{tiedosto.type=='FILE'}}" class="button small" ng-click="ftpVienti(tiedosto);$event.preventDefault();">FTP vienti</a></td>
+                    <td class="align-center"><span ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.size}}</span></td>
+                    <td class="align-center"><a ng-show="{{tiedosto.mimeType==''}}" class="button small" ng-click="ftpVienti(tiedosto);$event.preventDefault();">FTP vienti</a></td>
                 </tr>
 				
                 </tbody>
-				<tfoot ng-hide="kelatiedostot">
-					<tr>
+				<tfoot>
+					<tr ng-show="kelatiedostot > kelaLimit">
+						<td class="align-center" colspan="4">
+							<a ng-click="showMoreKela()" class="button small" style="">Näytä lisää ( +{{kelatiedostot.length - kelaLimit}} )</a>
+						</td>
+					</tr>
+					<tr ng-hide="kelatiedostot">
 						<td class="align-center" colspan="4">Ei tiedostoja</td>
 					</tr>
 				</tfoot>

@@ -50,6 +50,15 @@ function YhteisvalinnanHallintaController($scope, $timeout, $q, $location, Polle
 	$scope.naytaKokeita = 50;
 	$scope.viestintapalveluntiedostot = [];
 	$scope.kelatiedostot = [];
+	$scope.jalkiohjausLimit = 5;
+	$scope.kelaLimit = 5;
+	
+	$scope.showMoreJalkiohjaus = function() {
+		$scope.jalkiohjausLimit = $scope.jalkiohjausLimit + 10;
+	};
+	$scope.showMoreKela = function() {
+		$scope.kelaLimit = $scope.kelaLimit + 10;
+	};
 	
 	var Repeater = function () {
         $scope.$apply(function () {
