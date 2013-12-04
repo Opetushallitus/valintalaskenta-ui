@@ -51,6 +51,9 @@ public class ConfigController {
     @Value("${valintalaskentakoostepalvelu.viestintapalvelu.url}")
     private String viestintapalveluUrl;
 
+    @Value("${valintalaskentakoostepalvelu.dokumenttipalvelu.rest.url}")
+    private String dokumenttipalveluUrl;
+
     /**
      * Generoi javascriptia propertiesseista
      * 
@@ -61,7 +64,8 @@ public class ConfigController {
     public String index() {
         StringBuilder b = new StringBuilder();
         append(b, "TARJONTA_URL_BASE", tarjontaServiceUrl);
-        append(b, "VALINTAPERUSTEET_URL_BASE ", valintaperusteetServiceUrl);
+        append(b, "VALINTAPERUSTEET_URL_BASE", valintaperusteetServiceUrl);
+        append(b, "DOKUMENTTIPALVELU_URL_BASE", dokumenttipalveluUrl);
         append(b, "VALINTALASKENTAKOOSTE_URL_BASE", valintalaskentakoostepalveluServiceUrl);
         append(b, "HAKEMUS_URL_BASE", hakemusServiceUrl);
         append(b, "SIJOITTELU_URL_BASE", sijoitteluServiceUrl);

@@ -44,12 +44,22 @@ app.factory('Poller', function($http,$q){
  });
 function YhteisvalinnanHallintaController($scope, $timeout, $q, $location, Poller, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, AktivoiKelaFtp, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	$scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
 	$scope.hakumodel = HakuModel;
 	$scope.virheet = VirheModel;
 	$scope.naytaKokeita = 50;
 	$scope.viestintapalveluntiedostot = [];
 	$scope.kelatiedostot = [];
+	$scope.jalkiohjausLimit = 5;
+	$scope.kelaLimit = 5;
+	
+	$scope.showMoreJalkiohjaus = function() {
+		$scope.jalkiohjausLimit = $scope.jalkiohjausLimit + 10;
+	};
+	$scope.showMoreKela = function() {
+		$scope.kelaLimit = $scope.kelaLimit + 10;
+	};
 	
 	var Repeater = function () {
         $scope.$apply(function () {
