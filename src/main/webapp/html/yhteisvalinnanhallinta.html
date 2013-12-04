@@ -93,7 +93,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="tiedosto in kelatiedostot  | limitTo:kelaLimit">
-                    <td class="align-center"><a href="{{VALINTALASKENTAKOOSTE_URL_BASE}}resources/kela/lataa/{{tiedosto.documentId}}" ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</a><span ng-show="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</span></td>
+                    <td class="align-center"><a href="{{DOKUMENTTIPALVELU_URL_BASE}}/dokumentit/lataa/{{tiedosto.documentId}}" ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</a><span ng-show="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</span></td>
                     <td class="align-center">{{tiedosto.createdAt}}</td>
                     <td class="align-center"><span ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.size}}</span></td>
                     <td class="align-center"><a ng-show="{{tiedosto.mimeType==''}}" class="button small" ng-click="ftpVienti(tiedosto);$event.preventDefault();">FTP vienti</a></td>
