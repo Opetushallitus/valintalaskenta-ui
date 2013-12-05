@@ -179,7 +179,7 @@ app.directive('smoothToggle', function($animate) {
 });
 
 
-app.directive('auth', function($animate, $timeout, AuthService, HakukohdeModel) {
+app.directive('auth', function($animate, $timeout, AuthService) {
     return {
       link : function($scope, element, attrs) {
 
