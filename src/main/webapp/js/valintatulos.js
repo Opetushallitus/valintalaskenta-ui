@@ -97,6 +97,6 @@ function ValintatulosController($scope,ValintatulosModel, $routeParams) {
 
 
     $scope.search=function() {
-        $scope.model.search($scope.hakuOid,0,500);
+        $scope.model.search($scope.hakuOid,0,200);
     };
 }

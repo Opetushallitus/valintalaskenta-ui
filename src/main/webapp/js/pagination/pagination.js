@@ -29,7 +29,7 @@ For backend scrolling model has to contain 2 methods getTotalResults() and refre
 
 */
 
-app.filter('pagination', function(InMemoryPaginator) {
+app.filter('pagination', function(InMemoryPaginator, Paginator) {
    return function(input) {
            InMemoryPaginator.setTotalItems(input.length);
            return input.slice(0, InMemoryPaginator.inMemoryTo() );
@@ -41,6 +41,7 @@ app.directive('paginationPaginatedElement', function ($timeout, Paginator, InMem
         link: function ( scope, element, attrs ) {
 
             Paginator.setModel(scope[attrs.model]);
+
 
             var oldBottom = 0;
             var oldDocument = 0;
@@ -96,32 +97,44 @@ app.service('InMemoryPaginator', function ($rootScope) {
 
 app.service('Paginator', function ($rootScope, InMemoryPaginator) {
 
-    var ITEMS_PER_PAGE = 500;
+    var ITEMS_PER_PAGE = 200;
+    var internalModel = {
+         model: null,
+         index: 0
+    };
 
-    this.model =  null;
-    this.index = 0;
     this.setModel = function(model) {
-        this.model = model;
+        //wrap original refresh so that correct page is set if refresh is called outside of paging
+        internalModel.model = model;
+        var originalRefresh = model.refresh;
+        model.refresh = function(index, items) {
+            originalRefresh(index, items);
+            internalModel.index = index;
+        }
     }
+    this.getModel = function() {return internalModel.model;}
     this.totalResults = function() {
-        return this.model.getTotalResults();
+        return internalModel.model.getTotalResults();
     }
     this.currentPage = function() {
-        return Math.floor(this.index / ITEMS_PER_PAGE);
+        return Math.floor(internalModel.index / ITEMS_PER_PAGE);
     }
    this.pageCount = function () {
         return Math.ceil(this.totalResults()/ITEMS_PER_PAGE);
     };
     this.changePage = function(page) {
        InMemoryPaginator.reset();
-       this.index=parseInt(page)*ITEMS_PER_PAGE;
-       this.model.refresh(this.index, ITEMS_PER_PAGE);
+       internalModel.index=parseInt(page)*ITEMS_PER_PAGE;
+       internalModel.model.refresh(internalModel.index, ITEMS_PER_PAGE);
+    }
+    this.reset = function() {
+        internalModel.index =0;
     }
     this.from = function() {
-        return this.index;
+        return internalModel.index;
     }
     this.to = function() {
-       return Math.min(this.totalResults(), this.index+ITEMS_PER_PAGE);
+       return Math.min(this.totalResults(), internalModel.index+ITEMS_PER_PAGE);
     }
 });
 
@@ -142,7 +155,8 @@ app.filter('forLoop', function() {
         for (var i = 0; start < end; start++, i++) {
             input[i] = start;
         }
-
         return input;
     }
 });
+
+

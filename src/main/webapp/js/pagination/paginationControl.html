@@ -1,12 +1,38 @@
-<div ng-if="paginator.model!=null">
+<div ng-if="paginator.getModel()!=null">
     <div class="kokonaistulokset">
         Tuloksia {{paginator.totalResults()}}, joista haettuna {{paginator.from()}}-{{paginator.to()}}.
         Näytetään {{inMemoryPaginator.inMemoryTo()}}
     </div>
     <div class="sivutus" ng-if="paginator.pageCount() > 0">
         <span>sivu {{paginator.currentPage()+1}}/{{paginator.pageCount()}}</span>
-        <span ng-repeat="i in [] | forLoop:0:paginator.pageCount()" >
+        <span ng-if="paginator.pageCount() <= 9"  ng-repeat="i in [] | forLoop:0:paginator.pageCount()" >
             <a ng-click="paginator.changePage(i)">{{i+1}}</a>
         </span>
+
+
+        <span ng-if="paginator.pageCount() > 9 && paginator.currentPage() < 5" ng-repeat="i in [] | forLoop:0:6" >
+            <a ng-click="paginator.changePage(i)">{{i+1}}</a>
+        </span>
+         <span ng-if="paginator.pageCount() > 9 && paginator.currentPage() >= 5" ng-repeat="i in [] | forLoop:0:3" >
+            <a ng-click="paginator.changePage(i)">{{i+1}}</a>
+        </span>
+        <span ng-if="paginator.pageCount() > 9 && paginator.currentPage() >= 5" > ... </span>
+
+
+
+        <span ng-if="paginator.pageCount() > 9 && paginator.currentPage() >= 5 && paginator.currentPage() < paginator.pageCount()-5" ng-repeat="i in [] | forLoop:paginator.currentPage()-1:paginator.currentPage()+2" >
+          <a ng-click="paginator.changePage(i)">{{i+1}}</a>
+        </span>
+
+
+
+        <span ng-if="paginator.pageCount() > 9 && paginator.currentPage() < paginator.pageCount()-5" > ... </span>
+        <span ng-if="paginator.pageCount() > 9 && paginator.currentPage() > paginator.pageCount()-6" ng-repeat="i in [] | forLoop:paginator.pageCount()-6:paginator.pageCount()" >
+            <a ng-click="paginator.changePage(i)">{{i+1}}</a>
+        </span>
+        <span ng-if="paginator.pageCount() > 9 && paginator.currentPage() <= paginator.pageCount()-6" ng-repeat="i in [] | forLoop:paginator.pageCount()-3:paginator.pageCount()" >
+            <a ng-click="paginator.changePage(i)">{{i+1}}</a>
+        </span>
+
     </div>
 </div>
