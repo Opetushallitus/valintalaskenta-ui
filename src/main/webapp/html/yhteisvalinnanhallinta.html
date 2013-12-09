@@ -62,7 +62,7 @@
 		        <tfoot>
 		        	<tr ng-show="viestintapalveluntiedostot.length > jalkiohjausLimit">
 						<td class="align-center" colspan="4">
-							<a ng-click="showMoreJalkiohjaus()" class="button small" style="">Näytä lisää ( +{{viestintapalveluntiedostot.length - jalkiohjausLimit}} )</a>
+							<a ng-click="showMoreJalkiohjaus()" class="button small" style="">Näytä lisää +{{viestintapalveluntiedostot.length - jalkiohjausLimit}}</a>
 						</td>
 					</tr>
 					<tr ng-hide="viestintapalveluntiedostot">
@@ -103,7 +103,7 @@
 				<tfoot>
 					<tr ng-show="kelatiedostot > kelaLimit">
 						<td class="align-center" colspan="4">
-							<a ng-click="showMoreKela()" class="button small" style="">Näytä lisää ( +{{kelatiedostot.length - kelaLimit}} )</a>
+							<a ng-click="showMoreKela()" class="button small" style="">Näytä lisää +{{kelatiedostot.length - kelaLimit}}</a>
 						</td>
 					</tr>
 					<tr ng-hide="kelatiedostot">
