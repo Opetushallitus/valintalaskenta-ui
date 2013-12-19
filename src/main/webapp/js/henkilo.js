@@ -45,7 +45,7 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
     function refresh() {
     	// should also clear all paging information
     	var word = $.trim(this.searchWord);
-    	if(this.lastSearch !== word) {
+    	if(!word || this.lastSearch !== word) {
     		this.lastSearch = word;
     		var self = this;
     		Henkilot.query({appState: ["ACTIVE","INCOMPLETE"], asId:$routeParams.hakuOid, start:0, rows:this.pageSize, q:word }, function(result) {
@@ -77,7 +77,7 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 function HenkiloController($scope,$location,$routeParams,HenkiloModel) {
 	
 	$scope.model = HenkiloModel;
-	$scope.model.refresh()
+	$scope.model.refresh();
 	$scope.henkiloittainVisible = true;
 	
 	$scope.lazyLoading = function() {
