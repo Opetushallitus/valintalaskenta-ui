@@ -27,7 +27,10 @@
                 <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">Henkilötunnus</dt>
                 <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
                 <dt>hakemuksen oid: </dt>
-                <dd>{{model.hakemus.oid}}</dd>
+                <dd><a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{model.hakemus.oid}}" target="_blank" >
+                    {{model.hakemus.oid}}
+                    </a>
+                </dd>
                 <dt ng-show="model.hakemus.answers.henkilotiedot">Lähiosoite</dt>
                 <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}}, {{model.hakemus.answers.henkilotiedot.Postinumero}} {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}</dd>
                 
