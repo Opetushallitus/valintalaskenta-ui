@@ -75,7 +75,7 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 	return modelInterface;
 });
 
-function HenkiloController($scope,$location,$routeParams,$anchorScroll, HenkiloModel) {
+function HenkiloController($scope,$location,$routeParams, HenkiloModel) {
 	
 	$scope.model = HenkiloModel;
 	$scope.model.refresh($routeParams.hakuOid);
