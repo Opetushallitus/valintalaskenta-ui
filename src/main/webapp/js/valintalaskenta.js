@@ -343,7 +343,7 @@ app.factory('SijoitteluAjo', function($resource) {
 
 app.factory('LatestSijoittelunTilat', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakemus/:hakemusOid", {hakemusOid: "@hakemusOid", hakuOid:"@hakuOid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET"}
     });
 });
 
