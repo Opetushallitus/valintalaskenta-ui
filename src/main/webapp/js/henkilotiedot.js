@@ -170,5 +170,5 @@ function HenkiloTiedotController($scope,$routeParams,HenkiloTiedotModel) {
 	$scope.model = HenkiloTiedotModel;
 	$scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.hakuOid = $routeParams.hakuOid;
-	
+    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 }
