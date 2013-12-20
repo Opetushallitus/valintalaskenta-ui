@@ -20,8 +20,6 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 				model.hakemus = result;
 
                 // autoscroll kutsuu controlleria kahteen kertaan. öri öri
-                model.valintakokeet.length = 0;
-                model.errors.length = 0;
                 model.hakutoiveet.length = 0;
 
 				for(var i = 1; i < 10; i++) {
@@ -71,6 +69,9 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 
 
                     ValintakoetuloksetHakemuksittain.get({hakemusOid: model.hakemus.oid}, function(result) {
+                        // autoscroll kutsuu controlleria kahteen kertaan. öri öri
+                        model.valintakokeet.length = 0;
+
                        result.forEach(function (hakemus) {
                          hakemus.hakutoiveet.forEach(function (hakutoive) {
                                var hakukohdeoid =  hakutoive.hakukohdeOid;
