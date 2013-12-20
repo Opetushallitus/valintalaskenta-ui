@@ -9,7 +9,6 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 		this.errors = [];
 
 		this.refresh = function(hakuOid, hakemusOid) {
-			model.errors.length = 0;
 			model.valintakokeet.length = 0;
             model.hakemus = {};
             model.valintalaskentaHakemus = {};
@@ -21,7 +20,10 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 				model.hakemus = result;
 
                 // autoscroll kutsuu controlleria kahteen kertaan. öri öri
+                model.valintakokeet.length = 0;
+                model.errors.length = 0;
                 model.hakutoiveet.length = 0;
+
 				for(var i = 1; i < 10; i++) {
 					var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
 
