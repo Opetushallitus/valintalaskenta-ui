@@ -1948,8 +1948,6 @@ table.dropmenu-table {
       -ms-box-shadow: 0px 0px 1px 0 rgba(0, 0, 0, 0.5) inset;
       box-shadow: 0px 0px 1px 0 rgba(0, 0, 0, 0.5) inset; }
 
-.function table.dropmenu-table {
-  display: none; }
 .function:hover table.dropmenu-table {
   display: block; }
 
@@ -3315,6 +3313,11 @@ dl.dl-horizontal {
       clear: both; }
     dl.dl-horizontal dd .virkailija-table-1 {
       width: auto; }
+
+/*** kaavaeditor
+************************************************/
+.kaavaeditor-blue {
+  color: #147fa2; }
 
 /*** Itemtree
 ************************************************/
