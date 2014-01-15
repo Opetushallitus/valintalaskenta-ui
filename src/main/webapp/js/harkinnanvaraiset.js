@@ -92,6 +92,16 @@
       $scope.arvoFilter = "SYOTETTAVA_ARVO";
       $scope.muutettu = false;
 
+      $scope.pohjakoulutukset = {
+            0: "Ulkomailla suoritettu koulutus",
+            1: "Perusopetuksen oppimäärä",
+            2: "Perusopetuksen osittain yksilöllistetty oppimäärä",
+            3: "Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
+            6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
+            7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
+            9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti",
+      }
+
       HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 
       HarkinnanvaraisetModel.refreshIfNeeded($scope.hakukohdeOid, $routeParams.hakuOid);

@@ -22,7 +22,7 @@
                             <tr>
                                 <th>Nimi</th>
                                 <th>Hakemus</th>
-                                <th>Hakenut harkinnanvaraisesti</th>
+                                <th>Pohjakoulutus</th>
                                 <th>Harkinnanvarainen tila</th>
                             </tr>
                         </thead>
@@ -40,7 +40,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span ng-if="hakija.hakenutHarkinnanvaraisesti">kyllä</span>
+                                    {{pohjakoulutukset[hakija.hakemus.answers.koulutustausta.POHJAKOULUTUS]}}
                                 </td>
                                 <td>
 
