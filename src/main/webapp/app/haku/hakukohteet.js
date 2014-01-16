@@ -11,22 +11,19 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 		this.omatHakukohteet = true;
 		this.valmiitHakukohteet = "JULKAISTU";
 		this.readyToQueryForNextPage = true;
+
+        this.getTarjoajaNimi = function(hakukohde) {
+            for(var lang in hakukohde.tarjoajaNimi) {
+                return hakukohde.tarjoajaNimi[lang];
+            }
+        }
+
+        this.getHakukohdeNimi = function(hakukohde) {
+            for(var lang in hakukohde.tarjoajaNimi) {
+                return hakukohde.hakukohdeNimi[lang];
+            }
+        }
 		
-		this.getTarjoajaNimi = function(hakukohde) {
-			return this.getNimi(hakukohde.tarjoajaNimi);
-		}
-		this.getHakukohdeNimi = function(hakukohde) {
-			return this.getNimi(hakukohde.hakukohdeNimi);
-		}
-		this.getNimi = function(nimi) {
-			for (var key in nimi) {
-				// avaimia on talla hetkella: fi,en,sv;fi;sv;en
-				// eli esim "fi,en,sv".indexOf("fi") != -1
-				if(key.indexOf("fi") != -1) {
-					return nimi[key];
-				}
-			}
-		}
 		this.getCount = function() {
 			if(this.hakukohteet === undefined) {
 				return 0;
@@ -128,10 +125,11 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 
 
 
-function HakukohteetController($rootScope, $scope, $location, $timeout, $routeParams, HakukohteetModel, GlobalStates, HakukohdeNimi) {
+function HakukohteetController($rootScope, $scope, $location, $timeout, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
 	   $scope.hakuOid = $routeParams.hakuOid;
 	   $scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	   $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
+       $scope.hakuModel = HakuModel;
 
 	   // Muistetaan millä alasivulla ollaan, kun vaihdetaan hakukohdetta.
 	   

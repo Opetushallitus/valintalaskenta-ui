@@ -13,6 +13,18 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
 
         this.hakukohde = {};
 
+        this.getTarjoajaNimi = function() {
+            for(var lang in model.hakukohde.tarjoajaNimi) {
+                return model.hakukohde.tarjoajaNimi[lang];
+            }
+        }
+
+        this.getHakukohdeNimi = function() {
+            for(var lang in model.hakukohde.tarjoajaNimi) {
+                return model.hakukohde.hakukohdeNimi[lang];
+            }
+        }
+
         this.refresh = function(hakukohdeOid) {
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.hakukohde = result;

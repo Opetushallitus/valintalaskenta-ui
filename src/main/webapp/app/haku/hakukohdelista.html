@@ -9,20 +9,19 @@
 
                 <p class="margin-vertical-2">Hakukohteita haettu {{model.getCount()}} / {{model.getTotalCount()}}</p>
 			</div>
-
 			<ul  class="selectlist" lazy-loading>
 			    <li ng-class="hakukohdeOid === hakukohde.hakukohdeOid ? 'selected' : ''" ng-repeat="hakukohde in model.hakukohteet">
-			        <a ng-click="showHakukohde(hakukohde)">
+			        <a ng-click="showHakukohde(hakukohde, hakuModel.hakuOid.lisahaku)">
 			        	<!--
 			        		href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}"
 			        	-->
 			            <span class="icon file"></span>
 			            <span class="label">
-			                {{hakukohde.tarjoajaNimi.fi || hakukohde.tarjoajaNimi.sv}}
+			                {{model.getTarjoajaNimi(hakukohde)}}
 			            </span>
 			            <br>
 		                <span class="label">
-			                {{hakukohde.hakukohdeNimi.fi || hakukohde.hakukohdeNimi.sv}}
+			                {{model.getHakukohdeNimi(hakukohde)}}
 			            </span>
 			        </a>
 			    </li>
