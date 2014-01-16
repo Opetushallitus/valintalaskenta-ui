@@ -1,0 +1,97 @@
+<h1>Valinnat</h1>
+
+
+<div ng-include="'haku/topNavigation.html'"></div>
+
+
+<div class="clear"></div>
+
+<div class="tabsheets">
+
+    <div ng-include="'haku/henkilot/henkilolista.html'" autoscroll></div>
+    
+    <div class="toggle-content-container overflow-x-scroll">
+
+        <div class="tabsheets">
+
+            <h1 ng-show="model.hakemus.answers.henkilotiedot">Hakija: {{model.hakemus.answers.henkilotiedot.Sukunimi}}, {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
+
+             <div ng-show="model.errors.length > 0" class="notification warning">
+                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <p ng-repeat="error in model.errors">{{error}}</p>
+            </div>
+            
+            <dl class="margin-top-6">
+                <dt class="margin-bottom-2"><h2>Hakijan tiedot</h2></dt>
+                
+                <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">Henkilötunnus</dt>
+                <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
+                <dt>hakemuksen oid: </dt>
+                <dd><a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{model.hakemus.oid}}" target="_blank" >
+                    {{model.hakemus.oid}}
+                    </a>
+                </dd>
+                <dt ng-show="model.hakemus.answers.henkilotiedot">Lähiosoite</dt>
+                <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}}, {{model.hakemus.answers.henkilotiedot.Postinumero}} {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}</dd>
+                
+                <dt class="margin-bottom-2"><h2>Hakutoiveet</h2></dt>
+                
+                    <table class="virkailija-table-1">
+                        <thead>
+                            <tr>
+                                <th>Hakutoive</th>
+                                <th>Hakukohde</th>
+                                <th>Pisteet</th>
+                                <th>Valintalaskennan tila</th>
+                                <th>Sijoittelun tila</th>
+                                <th>Paikan vastaanottotila</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
+                                <td>{{hakutoive.hakutoiveNumero}}</td>
+                                <td>
+                                    <div>{{hakutoive.koulutuksenNimi}}</div>
+                                    <div>{{hakutoive.oppilaitos}}</div>
+                                  <!--  <div>{{hakutoive.hakukohdeOid}}</div> -->
+                                </td>
+                                <td>{{hakutoive.pisteet}}</td>
+                                <td>{{hakutoive.valintalaskentatila}}</td>
+                                <td>{{hakutoive.sijoittelunTila}}</td>
+                                <td>{{hakutoive.vastaanottotila}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </dl>
+            <dl class="margin-top-6">
+                <dt class="margin-bottom-4"><h2>Valintakokeisiin osallistuminen</h2></dt>
+                <table class="virkailija-table-1">
+                    <thead>
+                    <tr>
+                        <th>Hakutoive</th>
+                        <th>Hakukohde</th>
+                        <!--<th>valintakoeOid</th> -->
+                        <th>valintakoeTunniste</th>
+                        <th>osallistuminenTulos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="hakutoive in model.valintakokeet | orderBy:'hakutoiveNumero'">
+                        <td>{{hakutoive.hakutoiveNumero}}</td>
+                        <td>
+                            <div>{{hakutoive.koulutuksenNimi}}</div>
+                            <div>{{hakutoive.oppilaitos}}</div>
+                      <!--  <div>{{hakutoive.hakukohdeOid}}</div> -->
+                        </td>
+                        <!--<td>{{hakutoive.valintakoeOid}}</td>-->
+                        <td>{{hakutoive.valintakoeTunniste}}</td>
+                        <td>{{hakutoive.osallistuminenTulos.osallistuminen}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </dl>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+

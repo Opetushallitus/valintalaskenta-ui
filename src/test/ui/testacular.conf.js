@@ -18,7 +18,7 @@ files = [
   'jslib/angular-1.0.3/angular-sanitize.js',
 //  'jslib/angular-1.0.3/angular-scenario.js',
   'jslib/angular-1.0.3/angular-mocks.js',
-  'js/valintalaskenta.js',
+  'js/app.js',
   'js/*.js',
   '../../test/ui/unit/**/*.js'
 ];
