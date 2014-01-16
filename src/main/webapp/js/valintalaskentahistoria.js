@@ -22,7 +22,7 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 		prepareHistoryForUi: function() {
 			var self = this;
 			var jarjestyskriteerit = this.get();
-			
+
 			self.addVisibilityVariable(jarjestyskriteerit);
 			self.setHidingVariables(jarjestyskriteerit, 2, 0);
 		},
@@ -78,7 +78,8 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 	};
     modelInterface.refresh();
 
-    return deferred.promise;
+    //return deferred.promise;
+    return modelInterface;
 });
 
 

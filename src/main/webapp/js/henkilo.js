@@ -42,10 +42,11 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 		    }
 		}
 	}
-    function refresh() {
+    function refresh(hakuOid) {
     	// should also clear all paging information
     	var word = $.trim(this.searchWord);
-    	if(this.lastSearch !== word) {
+    	if(this.lastSearch !== word || this.hakuOid != hakuOid) {
+            this.hakuOid = hakuOid;
     		this.lastSearch = word;
     		var self = this;
     		Henkilot.query({appState: ["ACTIVE","INCOMPLETE"], asId:$routeParams.hakuOid, start:0, rows:this.pageSize, q:word }, function(result) {
@@ -74,11 +75,13 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 	return modelInterface;
 });
 
-function HenkiloController($scope,$location,$routeParams,HenkiloModel) {
+function HenkiloController($scope,$location,$routeParams, HenkiloModel) {
 	
 	$scope.model = HenkiloModel;
-	$scope.model.refresh()
+	$scope.model.refresh($routeParams.hakuOid);
+	$scope.hakemusOid = $routeParams.hakemusOid;
 	$scope.henkiloittainVisible = true;
+    $location.hash($routeParams.scrollTo);
 	
 	$scope.lazyLoading = function() {
 		$scope.model.getNextPage();	
@@ -89,7 +92,7 @@ function HenkiloController($scope,$location,$routeParams,HenkiloModel) {
 	}
 	
 	$scope.showHakemus = function(hakemus) {
-      $location.path('/haku/' + $routeParams.hakuOid + '/henkiloittain/' + hakemus.oid + "/henkilotiedot");
+      $location.path('/haku/' + $routeParams.hakuOid + '/henkiloittain/' + hakemus.oid + "/henkilotiedot/id_" + hakemus.oid);
    }
 	
 }
