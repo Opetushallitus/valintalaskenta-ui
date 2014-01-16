@@ -14,7 +14,7 @@
 
         <div class="tabsheets">
 
-            <h1 ng-show="model.hakemus.answers.henkilotiedot">Hakija: {{model.hakemus.answers.henkilotiedot.Sukunimi}}, {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
+            <h1 ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.Sukunimi}}, {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
 
              <div ng-show="model.errors.length > 0" class="notification warning">
                 <h3>Tietoja haettaessa tapahtui virhe</h3>
@@ -27,13 +27,17 @@
                 <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">Henkilötunnus</dt>
                 <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
                 <dt>hakemuksen oid: </dt>
-                <dd><a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{model.hakemus.oid}}" target="_blank" >
+                <dd>
+                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{model.hakemus.oid}}" target="_blank" >
                     {{model.hakemus.oid}}
                     </a>
                 </dd>
                 <dt ng-show="model.hakemus.answers.henkilotiedot">Lähiosoite</dt>
                 <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}}, {{model.hakemus.answers.henkilotiedot.Postinumero}} {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}</dd>
-                
+
+                <pre>
+                    {{model.hakutoiveet[0] | json}}
+                </pre>
                 <dt class="margin-bottom-2"><h2>Hakutoiveet</h2></dt>
                 
                     <table class="virkailija-table-1">
@@ -89,7 +93,7 @@
                     </tr>
                     </tbody>
                 </table>
-                </dl>
+            </dl>
         </div>
     </div>
     <div class="clear"></div>
