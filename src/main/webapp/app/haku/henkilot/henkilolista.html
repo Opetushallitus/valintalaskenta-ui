@@ -5,7 +5,7 @@
 	<div id="toolbarcontent" class="width-90" ng-show="henkiloittainVisible">
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
-			    <input type="text" class="search" placeholder="Suodata nimen perusteella" ng-model="model.searchWord" ng-change="model.refresh()"/>
+			    <input type="text" class="search" placeholder="Suodata nimen perusteella" ng-model="model.searchWord"/>
                 <p class="margin-vertical-2">Henkilöitä haettu {{model.getCount()}} / {{model.getTotalCount()}}</p>
 			</div>
 			<ul class="selectlist" lazy-loading>

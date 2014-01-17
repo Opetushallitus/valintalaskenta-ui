@@ -100,23 +100,19 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
         this.refresh = function() {
 
         	var word = $.trim(this.searchWord);
-//        	if(this.lastSearch !== word
-//        	    || this.lastHakuOid !== $routeParams.hakuOid) {
 
-        		this.lastSearch = word;
-        		this.lastHakuOid = $routeParams.hakuOid;
-
-        		this.getNextPage(true);
-        	//}
+            model.lastSearch = word;
+            model.getNextPage(true);
 
         };
 
         this.refreshIfNeeded = function() {
-        	/*var hakuOid = $routeParams.hakuOid;
-            if( (hakuOid) && (hakuOid !== "undefined") && (hakuOid != model.hakuOid) ) {
+            var hakuOid = $routeParams.hakuOid;
+            if( hakuOid != model.lastHakuOid ) {
                 model.searchWord = "";
-                model.refresh(hakuOid);
-            }*/
+                model.lastHakuOid = hakuOid;
+                model.refresh();
+            }
         };
     };
 
@@ -135,7 +131,22 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
 	   
 //	   $scope.subpage = $location.path().split('/')[5] || 'perustiedot';
 	   $scope.model = HakukohteetModel;
-	   $scope.model.refresh();
+	   $scope.model.refreshIfNeeded();
+
+        $scope.$watch('model.searchWord', debounce(function() {
+            HakukohteetModel.refresh();
+        }, 500));
+
+        function debounce(fn, delay) {
+            var timer = null;
+            return function () {
+                var context = this, args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    fn.apply(context, args);
+                }, delay);
+            };
+        }
 
 	   $scope.toggleHakukohteetVisible = function() {
 	      $scope.hakukohteetVisible = !$scope.hakukohteetVisible;

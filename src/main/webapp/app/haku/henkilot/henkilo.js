@@ -42,14 +42,30 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 		    }
 		}
 	}
-    function refresh(hakuOid) {
+    function refresh() {
+        console.log("refresh");
     	// should also clear all paging information
     	var word = $.trim(this.searchWord);
-    	if(this.lastSearch !== word || this.hakuOid != hakuOid) {
+
+        this.lastSearch = word;
+        var self = this;
+
+        Henkilot.query({appState: ["ACTIVE","INCOMPLETE"], asId:$routeParams.hakuOid, start:0, rows:this.pageSize, q:word }, function(result) {
+            self.hakemukset = result.results;
+            self.totalCount = result.totalCount;
+        });
+
+    }
+
+    function refreshIfNeeded(hakuOid) {
+    	if(this.hakuOid != hakuOid) {
+            console.log(hakuOid);
+            console.log(this.hakuOid);
             this.hakuOid = hakuOid;
-    		this.lastSearch = word;
+            this.searchWord = "";
+            this.lastSearch = "";
     		var self = this;
-    		Henkilot.query({appState: ["ACTIVE","INCOMPLETE"], asId:$routeParams.hakuOid, start:0, rows:this.pageSize, q:word }, function(result) {
+    		Henkilot.query({appState: ["ACTIVE","INCOMPLETE"], asId:$routeParams.hakuOid, start:0, rows:this.pageSize, q:this.lastSearch }, function(result) {
     			self.hakemukset = result.results;
 	    		self.totalCount = result.totalCount;
 	    	});
@@ -60,10 +76,12 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 		totalCount: 0,
 		pageSize: 30,
 		searchWord: "",
-		lastSearch: null,
+		lastSearch: "",
         readyToQueryForNextPage: true,
+        hakuOid: null,
 
 		refresh: refresh,
+        refreshIfNeeded: refreshIfNeeded,
 		getTotalCount: getTotalCount,
 		getHakemukset: getHakemukset,
         getNextPage: getNextPage,
@@ -78,10 +96,25 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 function HenkiloController($scope,$location,$routeParams, HenkiloModel) {
 	
 	$scope.model = HenkiloModel;
-	$scope.model.refresh($routeParams.hakuOid);
+	$scope.model.refreshIfNeeded($routeParams.hakuOid);
 	$scope.hakemusOid = $routeParams.hakemusOid;
 	$scope.henkiloittainVisible = true;
     $location.hash($routeParams.scrollTo);
+
+    $scope.$watch('model.searchWord', debounce(function() {
+        HenkiloModel.refresh();
+    }, 500));
+
+    function debounce(fn, delay) {
+        var timer = null;
+        return function () {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                fn.apply(context, args);
+            }, delay);
+        };
+    }
 	
 	$scope.lazyLoading = function() {
 		$scope.model.getNextPage();	
