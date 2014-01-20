@@ -102,8 +102,11 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a ng-disabled="!(updateOph)" ng-click="showMuutaHakemus(hakemus)" class="button small">Tila</a>
-                                    <div ng-include="'haku/hakukohteet/sijoittelu_tulos/muutaHakemus.html'"/>
+                                    <sijoittelu-vastaanotto-tila hakemus="hakemus"
+                                                                 valintatapajono-oid="jono.oid"
+                                                                 haku-oid="model.hakuOid"
+                                                                 hakukohde-oid="model.hakukohdeOid"
+                                                                 enabled="updateOph" />
                                 </td>
                             </tr>
                         </tbody>

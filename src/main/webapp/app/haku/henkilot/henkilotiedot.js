@@ -9,6 +9,7 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 		this.errors = [];
 
 		this.refresh = function(hakuOid, hakemusOid) {
+            model.hakuOid = hakuOid;
 			model.valintakokeet.length = 0;
             model.hakemus = {};
             model.valintalaskentaHakemus = {};
@@ -38,9 +39,10 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 						hakukohdeOid: oid,
 						hakutoiveNumero: hakutoiveIndex,
 						koulutuksenNimi: koulutus,
-						oppilaitos: oppilaitos
+						oppilaitos: oppilaitos,
+                        hakemusOid: model.hakemus.oid
 					}
-                    console.log(hakutoive);
+
 					model.hakutoiveet.push(hakutoive);
 				}
 
@@ -51,10 +53,11 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
                         //fetch sijoittelun vastaanottotilat and extend hakutoiveet
                         SijoittelunVastaanottotilat.get({hakemusOid: model.hakemus.oid}, function(result) {
                             if(result.length > 0) {
-                                result.forEach(function(vastaanottotila) {
+                                result.forEach(function(vastaanottoTila) {
                                     model.hakutoiveet.some(function(hakutoive) {
-                                        if(hakutoive.hakukohdeOid === vastaanottotila.hakukohdeOid) {
-                                            hakutoive.vastaanottotila = vastaanottotila.tila;
+                                        if(hakutoive.hakukohdeOid === vastaanottoTila.hakukohdeOid) {
+                                            hakutoive.vastaanottoTila = vastaanottoTila.tila;
+                                            hakutoive.muokattuVastaanottoTila = vastaanottoTila.tila;
                                             return true;
                                         }
                                     });
@@ -132,10 +135,13 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 
 			//extend each hakutoive with sijoitteluntila -property
 			function extendHakutoiveetWithSijoitteluTila(sijoittelunTilat) {
+
 				sijoittelunTilat.hakutoiveet.forEach(function(tila, index, array) {
 					model.hakutoiveet.some(function(hakutoive, index, array) {
 						if(tila.hakukohdeOid === hakutoive.hakukohdeOid) {
-							angular.extend(hakutoive, {sijoittelunTila: tila.hakutoiveenValintatapajonot[0].tila});
+							angular.extend(hakutoive, {sijoittelunTila: tila.hakutoiveenValintatapajonot[0].tila,
+                                                       valintatapajonoOid: tila.hakutoiveenValintatapajonot[0].valintatapajonoOid
+                            });
 							return true;
 						}
 					});
@@ -158,9 +164,13 @@ app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, Vali
 	return model;
 });
 
-function HenkiloTiedotController($scope,$routeParams,HenkiloTiedotModel) {
+function HenkiloTiedotController($scope,$routeParams,HenkiloTiedotModel, AuthService) {
 	$scope.model = HenkiloTiedotModel;
 	$scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+
+    AuthService.crudOph("APP_SIJOITTELU").then(function(){
+        $scope.updateOph = true;
+    });
 }

@@ -1,4 +1,4 @@
-
+"use strict";
 /**
  * JQuery Nestable drag'n'drop tree.
  */
@@ -287,6 +287,67 @@ app.directive('arvovalidaattori', function(){
             scope.$watch(attrs.ngModel, function() {
                 validator(ctrl.$viewValue);
             });
+
+        }
+    };
+});
+
+app.directive('sijoitteluVastaanottoTila', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            hakuOid: '=',
+            hakukohdeOid: '=',
+            valintatapajonoOid: '=',
+            enabled: '=',
+            hakemus: '='
+        },
+        templateUrl: '../common/html/sijoitteluVastaanottoTila.html',
+        controller: function($scope, VastaanottoTila){
+            // Errors.html haluaa errorit modeliin
+            $scope.model = {errors: []};
+
+            $scope.show = function() {
+                if($scope.enabled) {
+                    $scope.showForm = !$scope.showForm;
+                }
+            }
+
+            $scope.update = function() {
+                var tilaParams = {
+                    hakuoid: $scope.hakuOid,
+                    hakukohdeOid: $scope.hakukohdeOid,
+                    valintatapajonoOid: $scope.valintatapajonoOid,
+                    hakemusOid: $scope.hakemus.hakemusOid,
+                    selite: $scope.hakemus.selite
+                }
+                $scope.selite = "";
+                if($scope.hakemus.muokattuVastaanottoTila == "") {
+                    $scope.hakemus.muokattuVastaanottoTila = null;
+                }
+                var tilaObj = {tila: $scope.hakemus.muokattuVastaanottoTila};
+
+                VastaanottoTila.post(tilaParams, tilaObj, function() {
+                    setVastaanottoTila($scope.hakemus,tilaParams);
+                }, function(error) {
+                    $scope.model.errors.push(error);
+                });
+            }
+
+            var setVastaanottoTila = function(hakemus, tilaParams) {
+                VastaanottoTila.get(tilaParams, function(result) {
+                    if(!result.tila) {
+                        hakemus.vastaanottoTila = "";
+                        hakemus.muokattuVastaanottoTila ="";
+                    } else {
+                        hakemus.vastaanottoTila = result.tila;
+                        hakemus.muokattuVastaanottoTila =   result.tila;
+                    }
+                    $scope.show();
+                }, function(error) {
+                    $scope.model.errors.push(error);
+                });
+            }
 
         }
     };

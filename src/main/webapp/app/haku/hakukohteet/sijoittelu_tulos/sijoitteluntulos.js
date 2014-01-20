@@ -178,7 +178,9 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 });
 
 
-function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, $window, $http, HakukohdeModel, SijoitteluntulosModel,Hyvaksymisosoitteet, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
+function SijoitteluntulosController($scope, $timeout, $routeParams, $window, HakukohdeModel, SijoitteluntulosModel,
+                                    Hyvaksymisosoitteet, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls,
+                                    AuthService) {
    $scope.hakuOid =  $routeParams.hakuOid;
    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
@@ -225,21 +227,16 @@ function SijoitteluntulosController($rootScope, $scope, $timeout, $routeParams, 
     $scope.sijoittelunTulosXLS = function() {
     	SijoitteluXls.query({hakuOid: $routeParams.hakuOid, hakukohdeOid:$routeParams.hakukohdeOid, sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId});
     }
-    
-    $scope.showMuutaHakemus = function(hakemus) {
-        if($scope.updateOph) {
-            hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
-        }
-    }
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function() {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function(){
             $scope.updateOrg = true;
         });
 
-        AuthService.crudOph("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function(){
-            $scope.updateOph = true;
-        });
+    });
+
+    AuthService.crudOph("APP_SIJOITTELU").then(function(){
+        $scope.updateOph = true;
     });
 
     $scope.limit = 20;

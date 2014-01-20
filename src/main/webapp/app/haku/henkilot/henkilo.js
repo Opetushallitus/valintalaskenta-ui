@@ -43,7 +43,6 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 		}
 	}
     function refresh() {
-        console.log("refresh");
     	// should also clear all paging information
     	var word = $.trim(this.searchWord);
 
@@ -59,8 +58,6 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 
     function refreshIfNeeded(hakuOid) {
     	if(this.hakuOid != hakuOid) {
-            console.log(hakuOid);
-            console.log(this.hakuOid);
             this.hakuOid = hakuOid;
             this.searchWord = "";
             this.lastSearch = "";

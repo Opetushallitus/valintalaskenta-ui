@@ -1,9 +1,11 @@
-<div class="modal-backdrop" ng-click="hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus" ng-if="hakemus.showMuutaHakemus"></div>
-<div centralize class="modal" ng-if="hakemus.showMuutaHakemus">
+<a ng-disabled="!enabled" ng-click="show(hakemus)" class="button small">Tila</a>
+<div class="modal-backdrop" ng-click="show(hakemus)" ng-if="showForm"></div>
+<div centralize class="modal" ng-if="showForm">
     <br>
+    <div ng-include="'../common/html/errors.html'"></div>
     <dl class="dl-horizontal">
-        <dt>Oppijanumero</dt>
-        <dd>{{hakemus.hakijaOid}}</dd>
+        <!--<dt>Oppijanumero</dt>-->
+        <!--<dd>{{hakemus.hakijaOid}}</dd>-->
 
         <dt>Hakemuksen tunniste</dt>
         <dd>{{hakemus.hakemusOid}}</dd>
@@ -26,13 +28,8 @@
     <dl class="dl-horizontal">
         <dt></dt>
         <dd>
-        <a ng-click="showMuutaHakemus(hakemus)" class="button small">Peruuta</a>
-        <a ng-click="updateVastaanottoTila(hakemus, jono.oid)" class="button small primary">Tallenna</a>
+        <a ng-click="show()" class="button small">Peruuta</a>
+        <a ng-click="update()" class="button small primary">Tallenna</a>
         </dd>
     </dl>
-    <!--
-    <div>
-        {{hakemus}}
-    </div>
-   -->
 </div>
