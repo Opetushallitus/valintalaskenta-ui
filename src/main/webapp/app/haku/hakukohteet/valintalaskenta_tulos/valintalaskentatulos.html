@@ -1,0 +1,83 @@
+﻿<h1>Valintojen toteuttaminen</h1>
+<div ng-include="'haku/topNavigation.html'" />
+
+<div class="tabsheets">
+
+    <div ng-include="'haku/hakukohdelista.html'"></div>
+
+    <div class="toggle-content-container overflow-x-scroll">
+
+        <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'" />
+
+        <div class="tabsheets">
+            
+
+            <div ng-include="'../common/html/errors.html'"></div>
+
+            <a ng-show="model.valinnanvaiheet" ng-click="valintalaskentaTulosXLS(); $event.stopPropagation();" class="button small excel">Vie exceliin</a>
+
+
+
+            <!--
+            <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
+             -->
+            <div ng-repeat="valinnanvaihe in model.valinnanvaiheet">
+
+                <h3>Valinnanvaihe OID: <span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span></h3>
+                <h3>Päivämäärä: <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></h3>
+                <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajono">
+                    <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
+                    <table class="virkailija-table-1" item-on-screen>
+                        <thead>
+                        <tr>
+                            <th> </th>
+                            <th>Hakija</th>
+                            <th>Yhteispisteet</th>
+                            <th>Hakutoive</th>
+                            <th>Valintatieto</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tulos in valintatapajono.jonosijat | limitTo:limit">
+                            <td>{{tulos.jonosija}}</td>
+                            <td>
+                                <a ng-click="showHenkiloPartial(tulos)" >
+                                     <span class="sukunimi">{{tulos.sukunimi}}</span>,
+                                     <span class="etunimi">{{tulos.etunimi}}</span>
+                                </a>
+                                <div ng-include="'haku/hakukohteet/valintalaskenta_tulos/henkiloPartial.html'">
+                            </td>
+                            <td>
+                                {{tulos.jarjestyskriteerit[0].arvo}}
+                                <a href="/valintalaskenta-ui/html/index.html#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria" target="_blank" class="historylink">
+                                    Lisätietoja
+                                </a>
+                            </td>
+                            <td>
+                                {{tulos.prioriteetti}}
+                            </td>
+                            <td>
+                                <a ng-click="showTilaPartial(tulos)" >
+                                    {{tulos.tuloksenTila}}
+                                </a>
+                                <div ng-include="'haku/hakukohteet/valintalaskenta_tulos/tilaPartial.html'"/>
+                            </td>
+                            <td>
+                                <a ng-disabled="!(updateOph)" ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="button small">Muokkaus</a>
+                               <div ng-include="'haku/hakukohteet/valintalaskenta_tulos/muutaJarjestyskriteeri.html'">
+                               </div>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span ng-show="limit < valintatapajono.jonosijat.length">Näytetty: {{limit}} / {{valintatapajono.jonosijat.length}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div ng-show="showLoading" style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...</div>
+</div>

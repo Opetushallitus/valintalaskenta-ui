@@ -1,0 +1,115 @@
+<h1>Valintojen toteuttaminen</h1>
+<div ng-include="'haku/topNavigation.html'" />
+
+<div class="tabsheets">
+
+    <div ng-include="'haku/hakukohdelista.html'"></div>
+
+    <div class="toggle-content-container overflow-x-scroll">
+        <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'" />
+
+		<div class="tabsheets">
+
+            <div ng-include="'../common/html/errors.html'"></div>
+             <div>
+                <div>
+                    <span>Näytä</span>
+                    <select ng-model="nakymanTila">
+                        <option value="Hakijoittain">Hakijoittain</option>
+                        <option value="Kokeittain">Kokeittain</option>
+                    </select>
+
+                     <input id="osallistuu" type="checkbox" ng-model="model.filter" ng-true-value="OSALLISTUU" ng-false-value=""/>
+                     <label for="osallistuu">Vain kutsuttavat</label>
+                    <br/>
+                 </div>
+                 <!--
+                 <div>
+                    <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+                </div>
+                -->
+            </div>
+
+            <div ng-show="nakymanTila == 'Hakijoittain'">
+                <h2>Hakijoittain</h2>
+            	<a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
+            	<a ng-click="allAddressLabelPDF(); $event.stopPropagation()" class="button small pdf">Lataa osoitetarrat</a>
+
+                <table class="virkailija-table-1">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Nimi</th>
+                            <th rowspan="2">Hakemus</th>
+                            <th colspan="{{model.koetyypit.length}}">Kokeet</th>
+                        </tr>
+                        <tr>
+                            <th ng-repeat="koetyyppi in model.koetyypit">{{koetyyppi}}</th>
+                        </tr>
+                    </thead>
+
+                    <tr ng-repeat="hakemus in (model.valintakokeetHakijoittainArray | filter:model.filter)">
+                        <td>
+
+                            <span title="Sukunimi">{{hakemus.sukunimi}}</span>,
+                            <span title="Etunimi">{{hakemus.etunimi}}</span>
+                        </td>
+                        <td>
+                            <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakemus.hakemusOid}}" target="_blank" >
+                                {{hakemus.hakemusOid}}
+                            </a>
+                        </td>
+                        <td ng-repeat="koetyyppi in model.koetyypit">
+                            <div ng-switch="hakemus.kokeet[koetyyppi].osallistuminen">
+                                <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
+                                <span ng-switch-default></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+             </div>
+
+            <div ng-show="nakymanTila == 'Kokeittain'">
+                <div ng-repeat="valintakoe in model.valintakokeet" class="margin-vertical-2">
+                    <h2>{{valintakoe.valintakoeTunniste}} - {{valintakoe.valinnanVaihe}}</h2>
+
+                    <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
+                    <a ng-click="addressLabelPDF(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small pdf">Lataa osoitetarrat</a>
+                    <table class="virkailija-table-1">
+                        <thead>
+                        <tr>
+                            <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Nimi</a></th>
+                            <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Hakemus</a></th>
+                            <th><a href="" ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a></th>
+                            <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">Laskettu pvm</a></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter">
+                            <td>
+
+                                <span title="Sukunimi">{{koe.sukunimi}}</span>,
+                                <span title="Etunimi">{{koe.etunimi}}</span>
+                            </td>
+                            <td>
+                                <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{koe.hakemusOid}}" target="_blank" >
+                                    {{koe.hakemusOid}}
+                                </a>
+                            </td>
+                            <td>
+                                <div ng-switch="koe.osallistuminen">
+                                    <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
+                                    <span ng-switch-default></span>
+                                </div>
+                            </td>
+                            <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div class="clear"></div>
+</div>

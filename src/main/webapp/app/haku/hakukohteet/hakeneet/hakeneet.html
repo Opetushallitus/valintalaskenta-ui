@@ -1,0 +1,56 @@
+<h1>Valintojen toteuttaminen</h1>
+<div ng-include="'haku/topNavigation.html'" />
+
+<div class="tabsheets">
+
+    <div ng-include="'haku/hakukohdelista.html'"></div>
+
+    <div class="toggle-content-container overflow-x-scroll">
+
+        <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
+
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'" />
+
+        <div class="tabsheets">
+
+            
+            <div ng-include="'../common/html/errors.html'"></div>
+
+            <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
+                <form name="form" ng-submit="submit()">
+                    <table class="virkailija-table-1">
+                        <thead>
+                        <tr>
+                            <th>Nimi</th>
+                            <th>Hakemus</th>
+                            <th>Tila</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="hakija in model.hakeneet | orderBy:'lastName'">
+                                <td>
+                                    <span title="Sukunimi">{{hakija.lastName}}</span>,
+                                    <span title="Etunimi">{{hakija.firstNames}}</span>
+                                </td>
+                                <td>
+                                    <span title="HakemusOid">
+                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.oid}}" target="_blank" >
+                                            {{hakija.oid}}
+                                        </a>
+                                    </span>
+                                </td>
+                                <td>
+                                    {{hakija.state}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+</div>
+
+

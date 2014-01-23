@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html id="ng-app" ng-app="valintalaskenta">
+
+<head>
+    <title>Valintojen toteuttaminen</title>
+
+
+    <!-- libs -->
+    <script type="text/javascript" src="../common/jslib/jquery-1.8.3/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="../common/jslib/jquery-1.8.3/jquery.nestable.js"></script>
+    <script type="text/javascript" src="../common/jslib/jquery-ui-1.9.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../common/jslib/angular-1.2.2/angular.js"></script>
+    <script type="text/javascript" src="../common/jslib/angular-1.2.2/angular-resource.js"></script>
+    <script type="text/javascript" src="../common/jslib/angular-1.2.2/angular-route.js"></script>
+    <script type="text/javascript" src="../common/jslib/angular-1.2.2/angular-animate.js"></script>
+
+    <!--conf -->
+    <script type="text/javascript"  src="../configuration/configuration.js"></script>
+
+    <!-- app js-->
+    <script type="text/javascript" src="app.js"></script>
+
+    <script type="text/javascript" src="../common/js/auth.js"></script>
+    <script type="text/javascript" src="../common/js/filters.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet/valintalaskenta_tulos/valintalaskentatulos.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet/valintalaskenta_tulos/valintalaskentahistoria.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet/koekutsut/valintakoetulos.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet/harkinnanvaraiset/harkinnanvaraiset.js"></script>
+    <script type="text/javascript" src="haku/henkilot/henkilo.js"></script>
+    <script type="text/javascript" src="haku/henkilot/henkilotiedot.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet/hallinta/valinnanhallinta.js"></script>
+    <script type="text/javascript" src="haku/hallinta/yhteisvalinnanhallinta.js"></script>
+    <script type="text/javascript" src="haku/hallinta/tulos/valintatulos.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet/sijoittelu_tulos/sijoitteluntulos.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet/perustiedot/hakukohdeyleistiedot.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet/hakeneet/hakeneet.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet.js"></script>
+    <script type="text/javascript" src="haku/haku.js"></script>
+    <script type="text/javascript" src="haku/hakukohteet/pistesyotto/pistesyotto.js"></script>
+    <script type="text/javascript" src="haku/lisahaku/lisahaku.js"></script>
+    <script type="text/javascript" src="haku/lisahaku/lisahakuhyvaksytyt.js"></script>
+    <script type="text/javascript" src="../common/js/navigation.js"></script>
+    <script type="text/javascript" src="../common/js/loading.js"></script>
+    <script type="text/javascript" src="../common/js/directives.js"></script>
+
+    <!-- Common scripts-->
+    <script type="text/javascript" src="../common/js/pagination/pagination.js"></script>
+    
+    <!--Virkailija layout script -->
+    <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
+    
+
+    <!-- css -->
+    <link href="../common/css/virkailija.css" rel="stylesheet" type="text/css" />
+    <link href="../common/css/other.css" rel="stylesheet" type="text/css" />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <div id="application-wrapper">
+        <div id="angularbox" ng-view=""></div>
+    </div>
+
+    <div ng-controller="LoadingCtrl"><div ng-show="loading" style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...</div></div>
+</body>
+
+</html>
