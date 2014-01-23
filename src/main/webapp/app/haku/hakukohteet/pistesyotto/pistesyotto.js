@@ -41,8 +41,7 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
 
                 HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
                     model.hakeneet = result.results;
-                    var params = hakukohdeOid;
-                    HakukohdeAvaimet.post(params, function (result) {
+                    HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}, function (result) {
                         model.avaimet = result;
 
                         model.avaimet.forEach(function (avain) {

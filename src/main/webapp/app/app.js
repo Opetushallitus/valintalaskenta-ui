@@ -385,8 +385,8 @@ app.factory('ValintakoetuloksetHakemuksittain', function($resource) {
 });
 
 app.factory('HakukohdeAvaimet', function($resource) {
-    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/avaimet",{}, {
-        post: {method: "POST", isArray: true}
+    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/avaimet/:hakukohdeOid",{hakukohdeOid: "@hakukohdeOid"}, {
+        get: {method: "GET", isArray: true}
     });
 });
 
