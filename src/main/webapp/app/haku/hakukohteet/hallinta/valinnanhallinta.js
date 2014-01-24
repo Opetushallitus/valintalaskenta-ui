@@ -15,10 +15,7 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
                 model.tulosValinnanvaiheet = [];
                 model.errors = [];
                 model.errors.length = 0;
-                console.log("jee");
                 ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: hakukohdeOid}, function (result) {
-                    console.log("jii");
-                    console.log(result);
                     model.tulosValinnanvaiheet = result;
                 }, function (error) {
                     model.errors.push(error);
@@ -27,7 +24,6 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
         }
 
         this.refreshIfNeeded = function (hakukohdeOid) {
-            console.log("joo");
             this.hakukohdeOid = hakukohdeOid;
             if (model.hakukohde.oid !== hakukohdeOid) {
                 model.refresh(hakukohdeOid);

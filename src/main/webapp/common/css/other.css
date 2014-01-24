@@ -81,3 +81,20 @@
 .valinta-block .hakukohde.PERUUNTUNUT{
     background: lightgray;
 }
+
+.henkilotiedot {
+    padding: 0 1em;
+    margin-bottom: 1em;
+    border: 1px solid #eee;
+    background: #BCC7CA;
+    border-radius: 10px;
+}
+
+.henkilotiedot table tbody tr{
+    background: white;
+}
+
+.henkilotiedot table {
+    margin-bottom: 1em;
+}
+

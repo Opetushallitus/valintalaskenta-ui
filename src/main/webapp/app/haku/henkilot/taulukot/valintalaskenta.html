@@ -1,0 +1,43 @@
+<table class="virkailija-table-1">
+    <thead>
+    <tr><th colspan="7">Valintalaskenta</th></tr>
+    <tr>
+        <th>Valinnanvaihe</th>
+        <th>Valintatapajono</th>
+        <th>Jonosija</th>
+        <th>Yhteispisteet</th>
+        <th>Hakutoive</th>
+        <th>Valintatieto</th>
+        <th></th>
+        <th ng-if="false"></th>
+        <th ng-if="false"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="valinnanvaihe in hakutoive.valintalaskenta">
+        <td>
+            <span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span>
+            <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">
+        </td>
+        <td ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajono">{{valintatapajono.nimi}}</span></td>
+        <td ng-repeat-start="tulos in valintatapajono.jonosijat">{{tulos.jonosija}}</td>
+        <td>
+            {{tulos.jarjestyskriteerit[0].arvo}}
+        </td>
+        <td>
+            {{tulos.prioriteetti}}
+        </td>
+        <td>
+            {{tulos.tuloksenTila}}
+        </td>
+        <td>
+            <jarjestyskriteeri-muokkaus jonosija="tulos"
+                                        valintatapajono-oid="valintatapajono.valintatapajonooid"
+                                        hakemus-oid="tulos.hakemusOid"
+                                        enabled="updateOph" />
+        </td>
+        <td ng-repeat-end ng-if="false"></td>
+        <td ng-repeat-end ng-if="false"></td>
+    </tr>
+    </tbody>
+</table>

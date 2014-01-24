@@ -1,4 +1,4 @@
-     app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt) {
+app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt) {
     var model;
     model = new function() {
 
@@ -83,7 +83,7 @@
     return model;
   });
 
-  function HarkinnanvaraisetController($scope, $location, $routeParams, HarkinnanvaraisetModel, HakukohdeModel) {
+  function HarkinnanvaraisetController($scope, $location, $routeParams, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
       $scope.model = HarkinnanvaraisetModel;
       $scope.hakuOid =  $routeParams.hakuOid;;
@@ -92,15 +92,7 @@
       $scope.arvoFilter = "SYOTETTAVA_ARVO";
       $scope.muutettu = false;
 
-      $scope.pohjakoulutukset = {
-            0: "Ulkomailla suoritettu koulutus",
-            1: "Perusopetuksen oppimäärä",
-            2: "Perusopetuksen osittain yksilöllistetty oppimäärä",
-            3: "Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
-            6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
-            7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
-            9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti",
-      }
+      $scope.pohjakoulutukset = Pohjakuolutukset;
 
       HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 

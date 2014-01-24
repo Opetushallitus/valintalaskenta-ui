@@ -352,3 +352,132 @@ app.directive('sijoitteluVastaanottoTila', function() {
         }
     };
 });
+
+app.directive('harkinnanvarainenTila', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            hakuOid: '=',
+            hakukohdeOid: '=',
+            enabled: '=',
+            hakemus: '='
+        },
+        templateUrl: '../common/html/harkinnanvarainenTila.html',
+        controller: function($scope, HarkinnanvaraisestiHyvaksytty, HarkinnanvarainenHyvaksynta){
+            // Errors.html haluaa errorit modeliin
+            $scope.model = {errors: []};
+
+            $scope.show = function() {
+                if($scope.enabled) {
+                    $scope.showForm = !$scope.showForm;
+                }
+            }
+
+            $scope.update = function() {
+
+                var updateParams = {
+                    hakuOid: $scope.hakuOid,
+                    hakukohdeOid: $scope.hakukohdeOid,
+                    hakemusOid: $scope.hakemus.hakemusOid
+                }
+
+                var postParams = {
+                    harkinnanvaraisuusTila: $scope.hakemus.muokattuHarkinnanvaraisuusTila
+                };
+
+                HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function() {
+                    setTila(updateParams);
+                }, function(error) {
+                    $scope.model.errors.push(error);
+                });
+            }
+
+            var setTila = function(updateParams) {
+
+                HarkinnanvaraisestiHyvaksytty.get(updateParams, function (result) {
+
+                    result.forEach(function(harkinnanvarainen){
+                        if ($scope.hakukohdeOid == harkinnanvarainen.hakukohdeOid) {
+                            $scope.hakemus.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                            $scope.hakemus.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                        }
+                    });
+
+                    $scope.show();
+
+                }, function (error) {
+                    model.errors.push(error);
+                });
+            }
+
+        }
+    };
+});
+
+app.directive('jarjestyskriteeriMuokkaus', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            valintatapajonoOid: '=',
+            hakemusOid: '=',
+            enabled: '=',
+            jonosija: '='
+        },
+        templateUrl: '../common/html/muutaJarjestyskriteeri.html',
+        controller: function($scope, $route, JarjestyskriteeriMuokattuJonosija){
+            // Errors.html haluaa errorit modeliin
+            $scope.model = {errors: []};
+
+            if($scope.jonosija.tuloksenTila == 'HYVAKSYTTY_HARKINNANVARAISESTI') {
+                $scope.harkinnanvarainen = true;
+            }
+
+            $scope.show = function() {
+                if($scope.enabled) {
+                    $scope.jonosija.muokkaus = {};
+                    $scope.jonosija.muokkaus.prioriteetit = [];
+                    for(var i in $scope.jonosija.jarjestyskriteerit) {
+                        if(i == 0) {
+                            var obj = {name: "Yhteispisteet", value: i};
+                            $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti = obj;
+                            $scope.jonosija.muokkaus.prioriteetit.push(obj);
+                        }
+                        else {
+                            var obj = {name: i, value: i};
+                            $scope.jonosija.muokkaus.prioriteetit.push(obj);
+                        }
+                    }
+
+                    $scope.jonosija.muokkaus.tila = $scope.jonosija.tuloksenTila;
+                    $scope.jonosija.muokkaus.arvo = $scope.jonosija.jarjestyskriteerit[0].arvo;
+
+                    $scope.showForm = !$scope.showForm;
+                }
+            }
+
+            $scope.update = function() {
+
+                var updateParams = {
+                    valintatapajonoOid: $scope.valintatapajonoOid,
+                    hakemusOid: $scope.hakemusOid,
+                    jarjestyskriteeriprioriteetti: $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti.value
+                }
+
+                var postParams = {
+                    tila: $scope.jonosija.muokkaus.tila,
+                    arvo: $scope.jonosija.muokkaus.arvo,
+                    selite: $scope.jonosija.muokkaus.selite
+                };
+                console.log(updateParams);
+                JarjestyskriteeriMuokattuJonosija.post(updateParams, postParams, function() {
+                    // resurssi palauttaa hakemukset muutoksen jälkeen todennäköisesti eri järjestyksessä
+                    $route.reload();
+                }, function (error) {
+                    $scope.model.errors.push(error);
+                });
+
+
+            }
+        }
+    };
+});

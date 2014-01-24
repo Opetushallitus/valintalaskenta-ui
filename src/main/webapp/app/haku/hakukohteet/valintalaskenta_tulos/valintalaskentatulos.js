@@ -19,25 +19,6 @@
             });
 		}
 
-		this.updateJarjestyskriteeri = function(valintatapajonoOid, hakemusOid, jarjestyskriteeriprioriteetti, kriteerinArvo, tila, selite) {
-			var updateParams = {
-				valintatapajonoOid: valintatapajonoOid,
-        		hakemusOid: hakemusOid,
-        		jarjestyskriteeriprioriteetti: jarjestyskriteeriprioriteetti,
-        		selite: selite
-			}
-
-			var postParams = {
-                tila: tila,
-                arvo: kriteerinArvo
-			};
-
-			JarjestyskriteeriMuokattuJonosija.post(updateParams, postParams, function(result) {
-			    model.refresh(model.hakukohdeOid);
-			});
-
-		}
-
 	};
 
 	return model;
@@ -61,11 +42,6 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
         $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
     };
 
-    $scope.muutaJarjestyskriteerinArvo = function(tulos, valintatapajonoOid, self) {
-    	$scope.model.updateJarjestyskriteeri(valintatapajonoOid, tulos.hakemusOid, tulos.jarjestyskriteeriPrioriteetti.value, tulos.jarjestyskriteeriArvo, tulos.jarjestyskriteeriTila, tulos.selite);
-
-    };
-
     $scope.showTilaPartial = function(valintatulos) {
          if(valintatulos.showTilaPartial == null || valintatulos.showTilaPartial == false) {
              valintatulos.showTilaPartial = true;
@@ -80,31 +56,6 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
             valintatulos.showHenkiloPartial = false;
         }
     };
-
-    $scope.showMuutaJarjestyskriteerinArvo = function(valintatulos) {
-        if($scope.updateOph) {
-            valintatulos.prioriteetit = [];
-            for(i in valintatulos.jarjestyskriteerit) {
-                if(i == 0) {
-                    var obj = {name: "Yhteispisteet", value: i};
-                    valintatulos.jarjestyskriteeriPrioriteetti = obj;
-                    valintatulos.prioriteetit.push(obj);
-                }
-                else {
-                    var obj = {name: i, value: i};
-                    valintatulos.prioriteetit.push(obj);
-                }
-            }
-
-            if(valintatulos.showJarjestyskriteerit == null || valintatulos.showJarjestyskriteerit == false) {
-                valintatulos.showJarjestyskriteerit = true;
-            } else {
-                valintatulos.showJarjestyskriteerit = false;
-            }
-            valintatulos.jarjestyskriteeriTila ="HYVAKSYTTY_HARKINNANVARAISESTI";
-        }
-
-    }
 
     AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
         $scope.updateOph = true;

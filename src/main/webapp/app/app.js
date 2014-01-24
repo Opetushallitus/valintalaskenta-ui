@@ -1,3 +1,4 @@
+"use strict";
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http){
@@ -139,7 +140,7 @@ app.factory('HarkinnanvarainenHyvaksynta', function($resource) {
     hakukohdeOid: "@hakukohdeOid",
     hakemusOid: "@hakemusOid"
     }, {
-     post:{method: "POST"},
+     post:{method: "POST"}
    });
 });
 app.factory('HarkinnanvaraisestiHyvaksytyt', function($resource) {
@@ -149,6 +150,16 @@ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/
 
     }, {
     get: {method: "GET", isArray: true}
+  });
+});
+app.factory('HarkinnanvaraisestiHyvaksytty', function($resource) {
+return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/:hakuOid/hakemus/:hakemusOid",
+    {
+        hakuOid: "@hakuOid",
+        hakemusOid: "@hakemusOid"
+
+    }, {
+        get: {method: "GET", isArray: true}
   });
 });
 
@@ -380,7 +391,7 @@ app.factory('Valintakoetulokset', function($resource) {
 
 app.factory('ValintakoetuloksetHakemuksittain', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintakoe/hakemus/:hakemusOid", {hakemusOid: "@hakemusOid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET"}
     });
 });
 
@@ -416,11 +427,10 @@ app.factory('JatkuvaSijoittelu', function($resource) {
 
 
 app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
-    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/jonosija?selite=:selite", {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/:hakemusOid/:jarjestyskriteeriprioriteetti/jonosija", {
         valintatapajonoOid: "@valintatapajonoOid",
         hakemusOid: "@hakemusOid",
-        jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti",
-        selite:"@selite"
+        jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti"
     },
     {
         post: {method: "POST"}
@@ -456,3 +466,16 @@ app.factory('ParametriService', function($routeParams, Parametrit) {
         }
     };
 })
+
+
+app.constant('Pohjakuolutukset',
+    {
+        0: "Ulkomailla suoritettu koulutus",
+        1: "Perusopetuksen oppimäärä",
+        2: "Perusopetuksen osittain yksilöllistetty oppimäärä",
+        3: "Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
+        6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
+        7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
+        9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti",
+    }
+);

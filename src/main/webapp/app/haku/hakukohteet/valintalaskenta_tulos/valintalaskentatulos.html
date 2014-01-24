@@ -51,7 +51,7 @@
                             </td>
                             <td>
                                 {{tulos.jarjestyskriteerit[0].arvo}}
-                                <a href="/valintalaskenta-ui/html/index.html#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria" target="_blank" class="historylink">
+                                <a href="#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria" target="_blank" class="historylink">
                                     Lisätietoja
                                 </a>
                             </td>
@@ -65,10 +65,10 @@
                                 <div ng-include="'haku/hakukohteet/valintalaskenta_tulos/tilaPartial.html'"/>
                             </td>
                             <td>
-                                <a ng-disabled="!(updateOph)" ng-click="showMuutaJarjestyskriteerinArvo(tulos)" class="button small">Muokkaus</a>
-                               <div ng-include="'haku/hakukohteet/valintalaskenta_tulos/muutaJarjestyskriteeri.html'">
-                               </div>
-
+                                <jarjestyskriteeri-muokkaus jonosija="tulos"
+                                                            valintatapajono-oid="valintatapajono.valintatapajonooid"
+                                                            hakemus-oid="tulos.hakemusOid"
+                                                            enabled="updateOph" />
                             </td>
                         </tr>
                         </tbody>

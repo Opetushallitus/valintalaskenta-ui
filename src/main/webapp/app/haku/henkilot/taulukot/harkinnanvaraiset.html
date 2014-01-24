@@ -1,0 +1,31 @@
+<table class="virkailija-table-1" ng-if="hakutoive.hakenutHarkinnanvaraisesti">
+    <thead>
+    <tr><th colspan="3">Harkinnanvarainen</th></tr>
+    <tr>
+        <th>Pohjakoulutus</th>
+        <th>Harkinnanvarainen tila</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            {{pohjakoulutukset[model.hakemus.answers.koulutustausta.POHJAKOULUTUS]}}
+        </td>
+        <td>
+            {{hakutoive.harkinnanvaraisuusTila}}
+        </td>
+        <td>
+            <!--<select ng-model="hakutoive.muokattuHarkinnanvaraisuusTila">
+                <option value="KESKEN">Kesken</option>
+                <option value="HYVAKSYTTY">Hyväksytty</option>
+                <option value="EI_HYVAKSYTTY">Ei Hyväksytty</option>
+            </select>-->
+            <harkinnanvarainen-tila hakemus="hakutoive"
+                                     haku-oid="model.hakuOid"
+                                     hakukohde-oid="hakutoive.hakukohdeOid"
+                                     enabled="updateOph" />
+        </td>
+    </tr>
+    </tbody>
+</table>

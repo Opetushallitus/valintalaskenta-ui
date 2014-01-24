@@ -1,176 +1,177 @@
+"use strict";
+app.factory('HenkiloTiedotModel', function (Hakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, LatestSijoittelunTilat, ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty) {
+    var model = new function () {
+        this.hakemus = {};
+        this.hakutoiveetMap = {};
+        this.hakutoiveet = [];
 
-app.factory('HenkiloTiedotModel', function(Hakemus, ValintalaskentaHakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, LatestSijoittelunTilat, ValintakoetuloksetHakemuksittain) {
-	var model = new function() {
-		this.hakemus = {};
-		this.valintalaskentaHakemus = {};
-		this.valintakokeet = [];
+        this.errors = [];
 
-		this.hakutoiveet = [];
-		this.errors = [];
-
-		this.refresh = function(hakuOid, hakemusOid) {
+        this.refresh = function (hakuOid, hakemusOid) {
             model.hakuOid = hakuOid;
-			model.valintakokeet.length = 0;
             model.hakemus = {};
-            model.valintalaskentaHakemus = {};
+            model.hakutoiveetMap = {};
             model.hakutoiveet.length = 0;
             model.errors.length = 0;
 
 
-			Hakemus.get({oid: hakemusOid}, function(result) {
-				model.hakemus = result;
+            Hakemus.get({oid: hakemusOid}, function (result) {
+                model.hakemus = result;
 
                 // autoscroll kutsuu controlleria kahteen kertaan. öri öri
+                model.hakutoiveetMap = {};
                 model.hakutoiveet.length = 0;
 
-				for(var i = 1; i < 10; i++) {
-					var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                for (var i = 1; i < 10; i++) {
+                    var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
 
-					if(oid === undefined) {
-						break;
-					}
+                    if (oid === undefined) {
+                        break;
+                    }
 
-					var hakutoiveIndex = i;
-					var koulutus = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"];
-					var oppilaitos = model.hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"];
+                    var hakutoiveIndex = i;
+                    var koulutus = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"];
+                    var oppilaitos = model.hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"];
 
-					//create hakutoiveObject that can easily be iterated in view
-					var hakutoive = {
-						hakukohdeOid: oid,
-						hakutoiveNumero: hakutoiveIndex,
-						koulutuksenNimi: koulutus,
-						oppilaitos: oppilaitos,
-                        hakemusOid: model.hakemus.oid
-					}
+                    var harkinnanvarainen = model.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
+                    var discretionary = model.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
 
-					model.hakutoiveet.push(hakutoive);
-				}
+                    //create hakutoiveObject that can easily be iterated in view
+                    var hakutoive = {
+                        hakukohdeOid: oid,
+                        hakutoiveNumero: hakutoiveIndex,
+                        koulutuksenNimi: koulutus,
+                        oppilaitos: oppilaitos,
+                        hakemusOid: model.hakemus.oid,
+                        hakenutHarkinnanvaraisesti: harkinnanvarainen || discretionary
+                    }
 
-				//fetch sijoittelun tilat and extend hakutoiveet
-                   LatestSijoittelunTilat.get({hakemusOid: model.hakemus.oid, hakuOid: hakuOid}, function(result) {
-                        extendHakutoiveetWithSijoitteluTila(result);
+                    model.hakutoiveetMap[oid] = hakutoive;
+                    model.hakutoiveet.push(hakutoive);
 
-                        //fetch sijoittelun vastaanottotilat and extend hakutoiveet
-                        SijoittelunVastaanottotilat.get({hakemusOid: model.hakemus.oid}, function(result) {
-                            if(result.length > 0) {
-                                result.forEach(function(vastaanottoTila) {
-                                    model.hakutoiveet.some(function(hakutoive) {
-                                        if(hakutoive.hakukohdeOid === vastaanottoTila.hakukohdeOid) {
-                                            hakutoive.vastaanottoTila = vastaanottoTila.tila;
-                                            hakutoive.muokattuVastaanottoTila = vastaanottoTila.tila;
-                                            return true;
+
+                }
+
+                HarkinnanvaraisestiHyvaksytty.get({hakemusOid: hakemusOid, hakuOid: hakuOid}, function (result) {
+
+                    result.forEach(function(harkinnanvarainen){
+                        var hakutoive = model.hakutoiveetMap[harkinnanvarainen.hakukohdeOid];
+                        if (hakutoive) {
+                            hakutoive.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                            hakutoive.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                        }
+                    });
+
+                }, function (error) {
+                    model.errors.push(error);
+                });
+
+                //fetch sijoittelun tilat and extend hakutoiveet
+                LatestSijoittelunTilat.get({hakemusOid: model.hakemus.oid, hakuOid: hakuOid}, function (latest) {
+                    latest.hakutoiveet.forEach(function(hakutoive){
+                        if(model.hakutoiveetMap[hakutoive.hakukohdeOid]) {
+                            // Sijoittelun tilan muutosta varten
+                            hakutoive.hakutoiveenValintatapajonot.forEach(function(sijoittelu) {
+                                sijoittelu.hakemusOid = model.hakemus.oid;
+                            });
+                            model.hakutoiveetMap[hakutoive.hakukohdeOid].sijoittelu = hakutoive.hakutoiveenValintatapajonot;
+                        }
+                    });
+
+                    //fetch sijoittelun vastaanottotilat and extend hakutoiveet
+                    SijoittelunVastaanottotilat.get({hakemusOid: model.hakemus.oid}, function (vastaanottotilat) {
+                        if (vastaanottotilat.length > 0) {
+                            vastaanottotilat.forEach(function (vastaanottoTila) {
+
+                                if(model.hakutoiveetMap[vastaanottoTila.hakukohdeOid] &&
+                                    model.hakutoiveetMap[vastaanottoTila.hakukohdeOid].sijoittelu) {
+                                    model.hakutoiveetMap[vastaanottoTila.hakukohdeOid].sijoittelu.forEach(function(sijoittelu) {
+                                        // Sijoittelun tilan muutosta varten
+                                        sijoittelu.hakemusOid = model.hakemus.oid;
+                                        if(sijoittelu.valintatapajonoOid == vastaanottoTila.valintatapajonoOid) {
+                                            sijoittelu.vastaanottoTila = vastaanottoTila.tila;
+                                            sijoittelu.muokattuVastaanottoTila = vastaanottoTila.tila;
                                         }
                                     });
+
+                                }
+                            });
+
+                        }
+                    }, function (error) {
+                        model.errors.push(error);
+                    });
+                }, function (error) {
+                    model.errors.push(error);
+                });
+
+
+                ValintakoetuloksetHakemuksittain.get({hakemusOid: model.hakemus.oid}, function (hakemus) {
+                    hakemus.hakutoiveet.forEach(function (hakutoive) {
+
+                        if(model.hakutoiveetMap[hakutoive.hakukohdeOid]) {
+                            model.hakutoiveetMap[hakutoive.hakukohdeOid].valintakokeet = [];
+                            hakutoive.valinnanVaiheet.forEach(function (valinnanVaihe) {
+
+                                valinnanVaihe.valintakokeet.forEach(function (valintakoe) {
+                                    var valintakoe = {
+                                        jarjestysluku: valinnanVaihe.valinnanVaiheJarjestysluku,
+                                        valinnanVaiheOid: valinnanVaihe.valinnanVaiheOid,
+                                        valintakoeOid: valintakoe.valintakoeOid,
+                                        valintakoeTunniste: valintakoe.valintakoeTunniste,
+                                        osallistuminen: valintakoe.osallistuminenTulos.osallistuminen
+                                    };
+
+                                    model.hakutoiveetMap[hakutoive.hakukohdeOid].valintakokeet.push(valintakoe);
+
                                 });
+
+                            });
+                        }
+                    });
+
+
+
+                    ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function (valintalaskenta) {
+                        valintalaskenta.hakukohteet.forEach(function(hakukohde){
+                            var hakutoive = model.hakutoiveetMap[hakukohde.hakukohdeoid];
+                            if(hakutoive) {
+                                hakutoive.valintalaskenta = hakukohde.valinnanvaihe;
                             }
-                        }, function(error) {
-                            model.errors.push(error)
-                        });
-                    }, function(error) {
+                        })
+
+                    }, function (error) {
                         model.errors.push(error);
                     });
 
+                }, function (error) {
+                    model.errors.push(error);
+                });
 
-                    ValintakoetuloksetHakemuksittain.get({hakemusOid: model.hakemus.oid}, function(result) {
-                        // autoscroll kutsuu controlleria kahteen kertaan. öri öri
-                        model.valintakokeet.length = 0;
+            }, function (error) {
+                model.errors.push(error);
+            });
 
-                       result.forEach(function (hakemus) {
-                         hakemus.hakutoiveet.forEach(function (hakutoive) {
-                               var hakukohdeoid =  hakutoive.hakukohdeOid;
-                               var oppilaitos;
-                               var koulutuksenNimi;
-                               var hakutoiveNumero;
-                               model.hakutoiveet.forEach(function(ht) {
-                                 if(ht.hakukohdeOid == hakukohdeoid)   {
-                                  koulutuksenNimi = ht.koulutuksenNimi;
-                                  oppilaitos = ht.oppilaitos;
-                                  hakutoiveNumero = ht.hakutoiveNumero;
-                                 }
-                               });
+        }
 
-                                 hakutoive.valinnanVaiheet.forEach(function(valinnanVaihe) {
-                                  valinnanVaihe.valintakokeet.forEach(function(valintakoe) {
-                                    valintakoe.hakukohdeOid = hakukohdeoid;
-                                    valintakoe.oppilaitos = oppilaitos;
-                                    valintakoe.koulutuksenNimi = koulutuksenNimi;
-                                    valintakoe.hakutoiveNumero = hakutoiveNumero;
-                                    model.valintakokeet.push(valintakoe);
-                                  });
-                            });
-                         });
-                       });
+        this.refreshIfNeeded = function (hakuOid, hakemusOid) {
+            if (model.hakemus.oid !== hakemusOid || model.valintalaskentaHakemus.hakuoid !== hakuOid) {
+                model.refresh(hakuOid, hakemusOid);
+            }
+        }
 
-                        //Extend hakutoiveet with tulos
-                        ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function(result) {
-                            model.valintalaskentaHakemus = result;
-
-                            //iterate hakutoiveet
-                            model.hakutoiveet.forEach(function(hakutoive, index, array) {
-                                var hakukohdeOid = hakutoive.hakukohdeOid;
-
-                                //iterate laskentatulos for each hakutoive and extend hakutoiveObjects accordingly
-                                model.valintalaskentaHakemus.hakukohteet.forEach(function(hakukohdetulos, index, array) {
-                                    if(hakukohdetulos.hakukohdeoid === hakukohdeOid) {
-                                        var jk1 = hakukohdetulos.valinnanvaihe[0].valintatapajono[0].jonosijat[0].jarjestyskriteerit[0];
-                                        hakutoive.pisteet = jk1.arvo;
-                                        hakutoive.valintalaskentatila = jk1.tila;
-                                    }
-                                });
-
-                            });
-
-
-                        }, function(error) {
-                            model.errors.push(error);
-                        });
-                    }, function(error) {
-                        model.errors.push(error);
-                    });
-
-
-			}, function(error) {
-				model.errors.push(error);
-			});
-
-			//extend each hakutoive with sijoitteluntila -property
-			function extendHakutoiveetWithSijoitteluTila(sijoittelunTilat) {
-
-				sijoittelunTilat.hakutoiveet.forEach(function(tila, index, array) {
-					model.hakutoiveet.some(function(hakutoive, index, array) {
-						if(tila.hakukohdeOid === hakutoive.hakukohdeOid) {
-							angular.extend(hakutoive, {sijoittelunTila: tila.hakutoiveenValintatapajonot[0].tila,
-                                                       valintatapajonoOid: tila.hakutoiveenValintatapajonot[0].valintatapajonoOid
-                            });
-							return true;
-						}
-					});
-				});
-			}
-
-
-			
-			
-
-		}
-
-		this.refreshIfNeeded = function(hakuOid, hakemusOid) {
-			if(model.hakemus.oid !== hakemusOid || model.valintalaskentaHakemus.hakuoid !== hakuOid) {
-				model.refresh(hakuOid, hakemusOid);
-			}
-		}
-
-	}
-	return model;
+    }
+    return model;
 });
 
-function HenkiloTiedotController($scope,$routeParams,HenkiloTiedotModel, AuthService) {
-	$scope.model = HenkiloTiedotModel;
-	$scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
-    $scope.hakuOid = $routeParams.hakuOid;
+function HenkiloTiedotController($scope, $routeParams, HenkiloTiedotModel, AuthService, Pohjakuolutukset) {
+    $scope.model = HenkiloTiedotModel;
+    $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
-    AuthService.crudOph("APP_SIJOITTELU").then(function(){
+    $scope.pohjakoulutukset = Pohjakuolutukset;
+
+    AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
     });
 }

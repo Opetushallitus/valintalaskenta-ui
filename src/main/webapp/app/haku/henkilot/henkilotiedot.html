@@ -9,96 +9,111 @@
 <div class="tabsheets">
 
     <div ng-include="'haku/henkilot/henkilolista.html'" autoscroll></div>
-    
+
     <div class="toggle-content-container overflow-x-scroll">
 
         <div class="tabsheets">
 
-            <h1 ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.Sukunimi}}, {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
+            <h1 ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.Sukunimi}},
+                {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
 
-             <div ng-show="model.errors.length > 0" class="notification warning">
+            <div ng-show="model.errors.length > 0" class="notification warning">
                 <h3>Tietoja haettaessa tapahtui virhe</h3>
+
                 <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
-            
+
             <dl class="margin-top-6">
-                <dt class="margin-bottom-2"><h2>Hakijan tiedot</h2></dt>
-                
+
                 <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">Henkilötunnus</dt>
                 <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
-                <dt>hakemuksen oid: </dt>
+                <dt>hakemuksen oid:</dt>
                 <dd>
-                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{model.hakemus.oid}}" target="_blank" >
-                    {{model.hakemus.oid}}
+                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{model.hakuOid}}/esikatselu/{{model.hakemus.oid}}"
+                       target="_blank">
+                        {{model.hakemus.oid}}
                     </a>
                 </dd>
                 <dt ng-show="model.hakemus.answers.henkilotiedot">Lähiosoite</dt>
-                <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}}, {{model.hakemus.answers.henkilotiedot.Postinumero}} {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}</dd>
+                <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}},
+                    {{model.hakemus.answers.henkilotiedot.Postinumero}}
+                    {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}
+                </dd>
+            </dl>
 
-                <dt class="margin-bottom-2"><h2>Hakutoiveet</h2></dt>
-                
-                    <table class="virkailija-table-1">
-                        <thead>
-                            <tr>
-                                <th>Hakutoive</th>
-                                <th>Hakukohde</th>
-                                <th>Pisteet</th>
-                                <th>Valintalaskennan tila</th>
-                                <th>Sijoittelun tila</th>
-                                <th>Paikan vastaanottotila</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
-                                <td>{{hakutoive.hakutoiveNumero}}</td>
-                                <td>
-                                    <div>{{hakutoive.koulutuksenNimi}}</div>
-                                    <div>{{hakutoive.oppilaitos}}</div>
-                                  <!--  <div>{{hakutoive.hakukohdeOid}}</div> -->
-                                </td>
-                                <td>{{hakutoive.pisteet}}</td>
-                                <td>{{hakutoive.valintalaskentatila}}</td>
-                                <td>{{hakutoive.sijoittelunTila}}</td>
-                                <td>{{hakutoive.vastaanottoTila}}<br/>
-                                    <div ng-if="hakutoive.sijoittelunTila">
-                                    <sijoittelu-vastaanotto-tila hakemus="hakutoive"
-                                                                 valintatapajono-oid="hakutoive.valintatapajonoOid"
-                                                                 haku-oid="model.hakuOid"
-                                                                 hakukohde-oid="hakutoive.hakukohdeOid"
-                                                                 enabled="updateOph" />
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-            </dl>
-            <dl class="margin-top-6">
-                <dt class="margin-bottom-4"><h2>Valintakokeisiin osallistuminen</h2></dt>
-                <table class="virkailija-table-1">
-                    <thead>
-                    <tr>
-                        <th>Hakutoive</th>
-                        <th>Hakukohde</th>
-                        <!--<th>valintakoeOid</th> -->
-                        <th>valintakoeTunniste</th>
-                        <th>osallistuminenTulos</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="hakutoive in model.valintakokeet | orderBy:'hakutoiveNumero'">
-                        <td>{{hakutoive.hakutoiveNumero}}</td>
-                        <td>
-                            <div>{{hakutoive.koulutuksenNimi}}</div>
-                            <div>{{hakutoive.oppilaitos}}</div>
-                      <!--  <div>{{hakutoive.hakukohdeOid}}</div> -->
-                        </td>
-                        <!--<td>{{hakutoive.valintakoeOid}}</td>-->
-                        <td>{{hakutoive.valintakoeTunniste}}</td>
-                        <td>{{hakutoive.osallistuminenTulos.osallistuminen}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </dl>
+            <div class="margin-top-6">
+                <!--<h2>Hakutoiveet</h2>-->
+                <div ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" class="henkilotiedot" >
+                    <!--<pre>{{hakutoive | json}}</pre>-->
+                    <h2>
+                        {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
+                        <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                            {{hakutoive.oppilaitos}}
+                        </a>
+                    </h2>
+
+                    <div ng-include="'haku/henkilot/taulukot/valintakokeet.html'"></div>
+                    <div ng-include="'haku/henkilot/taulukot/harkinnanvaraiset.html'" ></div>
+                    <div ng-include="'haku/henkilot/taulukot/valintalaskenta.html'" ></div>
+                    <div ng-include="'haku/henkilot/taulukot/sijoittelu.html'"></div>
+
+                </div>
+
+
+                <!--<table class="virkailija-table-1">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                <!--<th>Hakutoive</th>-->
+                <!--<th>Hakukohde</th>-->
+                <!--<th>Pisteet</th>-->
+                <!--<th>Valintalaskennan tila</th>-->
+                <!--<th>Sijoittelun tila</th>-->
+                <!--<th>Paikan vastaanottotila</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr >-->
+                <!--<td>{{hakutoive.hakutoiveNumero}}</td>-->
+                <!--<td>-->
+                <!--<div>{{hakutoive.koulutuksenNimi}}</div>-->
+                <!--<div><a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">{{hakutoive.oppilaitos}}</a></div>-->
+                <!--&lt;!&ndash;  <div>{{hakutoive.hakukohdeOid}}</div> &ndash;&gt;-->
+                <!--</td>-->
+                <!--&lt;!&ndash;<td><pre>{{hakutoive.valinnanvaiheet | json}}</pre></td>&ndash;&gt;-->
+                <!--&lt;!&ndash;<td>{{valinnanvaihe}}<br /></td>&ndash;&gt;-->
+                <!--&lt;!&ndash;<td ng-repeat="hakukohdetulos in hakutoive.hakukohdetulos">{{hakukohdetulos}}</td>&ndash;&gt;
+                -->
+
+                <!--&lt;!&ndash;<td ng-repeat-start="hakukohdetulos in hakutoive.hakukohdetulos">{{hakutoive.pisteet}}</td>&ndash;&gt;
+                -->
+                <!--&lt;!&ndash;<td>{{hakutoive.valintalaskentatila}}</td>&ndash;&gt;-->
+                <!--&lt;!&ndash;<td>{{hakutoive.sijoittelunTila}}</td>&ndash;&gt;-->
+                <!--&lt;!&ndash;<td ng-repeat-end>{{hakutoive.vastaanottoTila}}<br/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div ng-if="hakutoive.sijoittelunTila">&ndash;&gt;-->
+                <!--&lt;!&ndash;<sijoittelu-vastaanotto-tila hakemus="hakutoive"&ndash;&gt;-->
+                <!--&lt;!&ndash;valintatapajono-oid="hakutoive.valintatapajonoOid"&ndash;&gt;-->
+                <!--&lt;!&ndash;haku-oid="model.hakuOid"&ndash;&gt;-->
+                <!--&lt;!&ndash;hakukohde-oid="hakutoive.hakukohdeOid"&ndash;&gt;-->
+                <!--&lt;!&ndash;enabled="updateOph" />&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--<td colspan="4">-->
+                <!--<table>-->
+                <!--<tr ng-repeat="valinnanVaihe in hakutoive.valinnanvaiheet">-->
+                <!--<td>{{valinnanVaihe}}</td>-->
+                <!--</tr>-->
+                <!--</table>-->
+                <!--</td>-->
+                <!--&lt;!&ndash;<td>{{valinnanVaihe.jarjestysnumero}}</td>&ndash;&gt;-->
+                <!--&lt;!&ndash;<td ng-repeat-start="valintatapajono in valinnanVaihe.valintatapajono">{{valintatapajono.valintatapajono}}</td>&ndash;&gt;
+                -->
+                <!--&lt;!&ndash;<td>{{valintatapajono.nimi}}</td>&ndash;&gt;-->
+                <!--&lt;!&ndash;<td ng-repeat-end></td>&ndash;&gt;-->
+                <!--&lt;!&ndash;<td ng-hide="true" ng-repeat-end></td>&ndash;&gt;-->
+                <!--</tr>-->
+                <!--</tbody>-->
+                <!--</table>-->
+            </div>
+
         </div>
     </div>
     <div class="clear"></div>
