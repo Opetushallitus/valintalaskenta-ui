@@ -244,7 +244,9 @@ app.directive('arvovalidaattori', function(){
         link: function(scope, elm, attrs, ctrl) {
 
             var validator = function(viewValue) {
-              viewValue = viewValue.replace(",", ".");
+              if(viewValue) {
+                viewValue = viewValue.replace(",", ".");
+              }
               var osallistui = $(elm.next()[0]).val() == 'OSALLISTUI';
 
               if (osallistui && FLOAT_REGEXP.test(viewValue)) {

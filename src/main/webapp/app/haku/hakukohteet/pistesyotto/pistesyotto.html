@@ -25,7 +25,7 @@
                         <tr>
                             <th><a href="" ng-click="predicate = 'lastName'; reverse=!reverse">Tiedot</a></th>
                             <th ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}">{{avain.tunniste}} {{avain.kuvaus}}
-                                <span ng-show="avain.min || avain.min == 0" ng-show="avain.max || avain.max == 0">({{avain.min}} - {{avain.max}})</span>
+                                <span ng-show="avain.min || avain.min == 0">({{avain.min}}</span> - <span ng-show="avain.max || avain.max == 0">{{avain.max}})</span>
                             </th>
                         </tr>
                         </thead>

@@ -11,7 +11,6 @@
     <div ng-include="'haku/henkilot/henkilolista.html'" autoscroll></div>
 
     <div class="toggle-content-container overflow-x-scroll">
-
         <div class="tabsheets">
 
             <h1 ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.Sukunimi}},
@@ -40,25 +39,26 @@
                     {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}
                 </dd>
             </dl>
+        <div class="clear"></div>
 
-            <div class="margin-top-6">
-                <!--<h2>Hakutoiveet</h2>-->
-                <div ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" class="henkilotiedot" >
-                    <!--<pre>{{hakutoive | json}}</pre>-->
-                    <h2>
-                        {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
-                        <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
-                            {{hakutoive.oppilaitos}}
-                        </a>
-                    </h2>
+            <!--<h2>Hakutoiveet</h2>-->
+            <div ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" class="henkilotiedot" >
+                <!--<pre>{{hakutoive | json}}</pre>-->
+                <h2>
+                    {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
+                    <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                        {{hakutoive.oppilaitos}}
+                    </a>
+                </h2>
 
-                    <div ng-include="'haku/henkilot/taulukot/valintakokeet.html'"></div>
-                    <div ng-include="'haku/henkilot/taulukot/harkinnanvaraiset.html'" ></div>
-                    <div ng-include="'haku/henkilot/taulukot/valintalaskenta.html'" ></div>
-                    <div ng-include="'haku/henkilot/taulukot/sijoittelu.html'"></div>
+                <div ng-include="'haku/henkilot/taulukot/valintakokeet.html'"></div>
+                <div ng-include="'haku/henkilot/taulukot/harkinnanvaraiset.html'" ></div>
+                <div ng-include="'haku/henkilot/taulukot/pistesyotto.html'" ></div>
+                <div ng-include="'haku/henkilot/taulukot/valintalaskenta.html'" ></div>
+                <div ng-include="'haku/henkilot/taulukot/sijoittelu.html'"></div>
 
-                </div>
             </div>
+
 
         </div>
     </div>

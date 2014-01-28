@@ -8,16 +8,15 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
         this.filter = "OSALLISTUU";
 
         this.refresh = function (hakukohdeOid, hakuOid) {
-            model.hakeneet = [];
-            model.avaimet = [];
-            model.errors = [];
+            model.hakeneet.length = 0;
+            model.avaimet.length = 0;
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
 
             Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function (tulos) {
                 var tulokset = {};
 
-                // Haetaan onko hakija osallistunut kokeeseen
+                // Haetaan osallistuuko hakija kokeeseen
                 tulos.forEach(function (vkt) {
                     var hakutoiveet = {};
                     vkt.hakutoiveet.forEach(function (ht) {
@@ -60,7 +59,6 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                                     if (result.additionalInfo) {
                                         hakija.additionalData = result.additionalInfo;
                                     }
-
 
                                     hakija.originalData = [];
                                     hakija.osallistuu = [];
