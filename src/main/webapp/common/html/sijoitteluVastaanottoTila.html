@@ -27,13 +27,15 @@
             </dd>
 
             <dt>Muokkaajan kommentti</dt>
-            <dd><textarea ng-model="hakemus.selite"/></dd>
+            <dd></dd>
         </dl>
-        <br/>
-        <br/>
+
+        <textarea class="width-90 float-left" ng-model="jhakemus.selite" ></textarea>
+        <div class="clear"></div>
         <dl class="dl-horizontal">
             <dt></dt>
             <dd>
+                <a ng-click="show()" class="button small">Peruuta</a>
                 <a ng-click="update()" class="button small primary">Tallenna</a>
             </dd>
         </dl>

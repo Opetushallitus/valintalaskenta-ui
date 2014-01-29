@@ -210,14 +210,13 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
 
         this.submit = function (hakutoive) {
+            model.errors.length = 0;
             var promises = [];
             hakutoive.avaimet.forEach(function (avain) {
                 var value = hakutoive.additionalData[avain.tunniste];
 
                 if (hakutoive.originalData[avain.tunniste] !== value) {
-                    console.log(value);
                     var promise = function () {
-                        console.log(hakutoive.originalData[avain.tunniste]);
                         var deferred = $q.defer();
                         HakemusKey.put({
                                 "oid": hakutoive.hakemusOid,
@@ -247,6 +246,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                 hakutoive.originalData[avain.osallistuminenTunniste] = hakutoive.additionalData[avain.osallistuminenTunniste];
                                 deferred.resolve();
                             }, function(error) {
+
                                 model.errors.push(error);
                                 deferred.reject();
                             });
@@ -254,7 +254,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     }());
                 }
             });
-            console.log(promises);
             return promises;
         };
     }

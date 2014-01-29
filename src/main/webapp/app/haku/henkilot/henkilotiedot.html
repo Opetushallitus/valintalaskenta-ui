@@ -13,14 +13,10 @@
     <div class="toggle-content-container overflow-x-scroll">
         <div class="tabsheets">
 
+            <div ng-include="'../common/html/errors.html'"></div>
+
             <h1 ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.Sukunimi}},
                 {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
-
-            <div ng-show="model.errors.length > 0" class="notification warning">
-                <h3>Tietoja haettaessa tapahtui virhe</h3>
-
-                <p ng-repeat="error in model.errors">{{error}}</p>
-            </div>
 
             <dl class="margin-top-6">
 

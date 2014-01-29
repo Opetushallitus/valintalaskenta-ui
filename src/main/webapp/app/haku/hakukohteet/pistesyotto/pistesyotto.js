@@ -110,7 +110,7 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
 
 
         this.submit = function () {
-
+            model.errors.length = 0;
             model.hakeneet.forEach(function (hakija) {
                 model.avaimet.forEach(function (avain) {
                     var min = parseFloat(avain.min);
@@ -152,6 +152,8 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                             }
                             , function () {
                                 hakija.originalData[avain.tunniste] = value;
+                            }, function(error) {
+                                model.errors.push(error);
                             });
                     }
 
@@ -165,6 +167,8 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                             , function () {
                                 hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
 
+                            }, function(error) {
+                                model.errors.push(error);
                             });
                     }
                 });
