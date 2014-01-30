@@ -85,9 +85,11 @@
 .henkilotiedot {
     padding: 0 1em;
     margin-bottom: 1em;
-    border: 1px solid #eee;
-    background: #BCC7CA;
-    border-radius: 10px;
+    border: 1px solid #C6C6C6;
+    background: #fafafa;
+    border-radius: 0px;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
 }
 
 .henkilotiedot table tbody tr{

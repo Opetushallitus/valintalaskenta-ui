@@ -70,6 +70,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
                 //fetch sijoittelun tilat and extend hakutoiveet
                 LatestSijoittelunTilat.get({hakemusOid: model.hakemus.oid, hakuOid: hakuOid}, function (latest) {
+                    model.sijoittelu = {};
                     if (latest.hakutoiveet) {
                         latest.hakutoiveet.forEach(function (hakutoive) {
                             if (model.hakutoiveetMap[hakutoive.hakukohdeOid]) {
@@ -78,6 +79,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                     sijoittelu.hakemusOid = model.hakemus.oid;
                                 });
                                 model.hakutoiveetMap[hakutoive.hakukohdeOid].sijoittelu = hakutoive.hakutoiveenValintatapajonot;
+                                if(hakutoive.hakutoiveenValintatapajonot) {
+                                    hakutoive.hakutoiveenValintatapajonot.forEach(function(valintatapajono){
+                                        model.sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
+                                    });
+                                }
                             }
                         });
 
@@ -153,12 +159,16 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                     hakukohde.additionalData = {};
                                 }
 
+                                model.naytaPistetsyotto = false;
                                 hakukohde.avaimet.forEach(function (avain) {
                                     hakukohde.osallistuu[avain.tunniste] = false;
 
                                     if (hakukohde.valintakokeet &&
                                         hakukohde.valintakokeet[avain.tunniste]) {
                                         hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
+                                        if(hakukohde.osallistuu[avain.tunniste] == 'OSALLISTUU') {
+                                            hakukohde.naytaPistesyotto = true;
+                                        }
                                     }
 
                                     if (!hakukohde.additionalData[avain.tunniste]) {
@@ -171,6 +181,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
                                     hakukohde.originalData[avain.tunniste] = hakukohde.additionalData[avain.tunniste];
                                     hakukohde.originalData[avain.osallistuminenTunniste] = hakukohde.additionalData[avain.osallistuminenTunniste];
+
                                 });
 
                             }, function (error) {
