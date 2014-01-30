@@ -30,7 +30,12 @@
                 </div>
                 -->
             </div>
-
+			
+			<form method="post">
+			  <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
+			  <a ng-click="tulostaKoekutsukirjeet(); $event.stopPropagation()" class="button small pdf">Lataa koekutsukirje</a>
+			</form>
+			
             <div ng-show="nakymanTila == 'Hakijoittain'">
                 <h2>Hakijoittain</h2>
             	<a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
