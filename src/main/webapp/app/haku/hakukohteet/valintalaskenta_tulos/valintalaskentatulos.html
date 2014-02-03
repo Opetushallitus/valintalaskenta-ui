@@ -43,11 +43,11 @@
                         <tr ng-repeat="tulos in valintatapajono.jonosijat | limitTo:limit">
                             <td>{{tulos.jonosija}}</td>
                             <td>
-                                <a ng-click="showHenkiloPartial(tulos)" >
-                                     <span class="sukunimi">{{tulos.sukunimi}}</span>,
-                                     <span class="etunimi">{{tulos.etunimi}}</span>
-                                </a>
-                                <div ng-include="'haku/hakukohteet/valintalaskenta_tulos/henkiloPartial.html'">
+                                <show-person-information sukunimi="{{tulos.sukunimi}}"
+                                                         etunimi="{{tulos.etunimi}}"
+                                                         hakemus-oid="{{tulos.hakemusOid}}"
+                                                         haku-oid="{{hakuOid}}"
+                                                         henkilo-oid="{{tulos.hakijaOid}}" />
                             </td>
                             <td>
                                 {{tulos.jarjestyskriteerit[0].arvo}}

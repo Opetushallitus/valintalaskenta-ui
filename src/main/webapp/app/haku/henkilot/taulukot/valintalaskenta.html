@@ -45,8 +45,10 @@
                                         hakemus-oid="tulos.hakemusOid"
                                         enabled="updateOph"/>
         </td>
-        <td>{{model.sijoittelu[valintatapajono.valintatapajonooid].tila}}
-            {{model.sijoittelu[valintatapajono.valintatapajonooid].varasijanNumero}}
+        <td>
+            <span>{{model.sijoittelu[valintatapajono.valintatapajonooid].tila}}</span>
+            <span ng-if="model.sijoittelu[valintatapajono.valintatapajonooid].hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>
+            <span ng-if="model.sijoittelu[valintatapajono.valintatapajonooid].varasijanNumero != undefined">({{model.sijoittelu[valintatapajono.valintatapajonooid].varasijanNumero}})</span>
         </td>
         <td>{{model.sijoittelu[valintatapajono.valintatapajonooid].vastaanottoTila}}</td>
         <td ng-repeat-end>

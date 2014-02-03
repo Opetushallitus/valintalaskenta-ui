@@ -21,7 +21,6 @@
                         <thead>
                             <tr>
                                 <th>Nimi</th>
-                                <th>Hakemus</th>
                                 <th>Pohjakoulutus</th>
                                 <th>Harkinnanvarainen tila</th>
                             </tr>
@@ -29,15 +28,11 @@
                         <tbody>
                             <tr ng-repeat="hakija in model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true}">
                                 <td>
-                                    <span title="Sukunimi">{{hakija.lastName}}</span>,
-                                    <span title="Etunimi">{{hakija.firstNames}}</span>
-                                </td>
-                                <td>
-                                    <span title="HakemusOid">
-                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.oid}}" target="_blank" >
-                                            {{hakija.oid}}
-                                        </a>
-                                    </span>
+                                    <show-person-information sukunimi="{{hakija.lastName}}"
+                                                             etunimi="{{hakija.firstNames}}"
+                                                             hakemus-oid="{{hakija.oid}}"
+                                                             haku-oid="{{hakuOid}}"
+                                                             henkilo-oid="" />
                                 </td>
                                 <td>
                                     {{pohjakoulutukset[hakija.hakemus.answers.koulutustausta.POHJAKOULUTUS]}}

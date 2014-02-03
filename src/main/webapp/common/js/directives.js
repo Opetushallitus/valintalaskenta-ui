@@ -483,3 +483,24 @@ app.directive('jarjestyskriteeriMuokkaus', function() {
         }
     };
 });
+
+app.directive('showPersonInformation', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            sukunimi: '@',
+            etunimi: '@',
+            hakemusOid: '@',
+            hakuOid: '@',
+            henkiloOid: '@'
+        },
+        templateUrl: '../common/html/personInformationPartial.html',
+        controller: function($scope){
+
+            $scope.show = function() {
+                $scope.showInfo = !$scope.showInfo;
+            }
+
+        }
+    };
+});
