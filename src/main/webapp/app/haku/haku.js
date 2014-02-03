@@ -32,7 +32,7 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
                     //wait until all hakuobjects have been fetched
                     $q.all(promises).then(function() {
                         //set the previously selected haku or first in list
-                        model.hakuOid = model.haut[0];
+//                        model.hakuOid = model.haut[0];
                         model.haut.forEach(function(haku){
                             if(haku.oid == oid) {
                                 model.hakuOid = haku;
