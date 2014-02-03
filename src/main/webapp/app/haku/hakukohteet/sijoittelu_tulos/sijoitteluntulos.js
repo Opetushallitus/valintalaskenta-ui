@@ -47,8 +47,8 @@ app.factory('SijoitteluntulosModel', function($q, Sijoittelu, LatestSijoitteluaj
 
                             model.hakemusErittelyt.push(hakemuserittely);
 
-                            var lastTasaSija = 0;
-                            var sija = 0;
+                            var lastTasaSija = 1;
+                            var sija = 1;
                             hakemukset.forEach(function(hakemus, index) {
                                 if(lastTasaSija > hakemus.tasasijaJonosija) {
                                     sija = index+1;
