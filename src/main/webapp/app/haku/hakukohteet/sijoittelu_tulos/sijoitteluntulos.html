@@ -31,7 +31,7 @@
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
                             <tr>
-                                <th colspan="6">
+                                <th colspan="7">
                                     {{jono.nimi}}:  {{jono.prioriteetti}} /
                                     <!---Valintatapajono OID: {{jono.oid}}-->
                                     Aloituspaikat:  {{jono.aloituspaikat}} /
@@ -44,6 +44,7 @@
                                 <th>Hakutoive</th>
                                 <th>Sijoittelun tila</th>
                                 <th>Vastaanottotieto</th>
+                                <th>Muokattu</th>
                                 <th>Muokkaa</th>
                             </tr>
                         </thead>
@@ -95,6 +96,7 @@
                                         </span>
                                     </div>
                                 </td>
+                                    <td>{{hakemus.logEntries[hakemus.logEntries.length-1].luotu | date:'dd.MM.yyyy HH:mm'}}</td>
                                 <td>
                                     <sijoittelu-vastaanotto-tila hakemus="hakemus"
                                                                  valintatapajono-oid="jono.oid"

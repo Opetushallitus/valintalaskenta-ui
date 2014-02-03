@@ -82,6 +82,7 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
 
                                     result.some(function (vastaanottotila) {
                                         if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid) {
+                                            currentHakemus.logEntries = vastaanottotila.logEntries;
                                             if (vastaanottotila.tila != null) {
                                                 currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             }
