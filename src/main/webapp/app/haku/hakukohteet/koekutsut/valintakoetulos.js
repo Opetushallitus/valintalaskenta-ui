@@ -94,9 +94,27 @@
 });
 
 
-function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Osoitetarrat,ValintakoeXls) {
-    $scope.hakukohdeOid = $routeParams.hakukohdeOid;
-    $scope.hakuOid =  $routeParams.hakuOid;;
+function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls) {
+	$scope.tinymceModel = {};
+	
+	$scope.tinymceOptions = {
+		handle_event_callback: function (e) {
+			
+		}
+	};
+	
+	$scope.tulostaKoekutsukirjeet = function(valintakoeOid) {
+		Koekutsukirjeet.post({
+			hakukohdeOid:$routeParams.hakukohdeOid, 
+			valintakoeOids: [valintakoeOid]},
+			$scope.tinymceModel[valintakoeOid],
+			function(r) {
+    		
+    	});
+	};
+	
+	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
+    $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.model = ValintakoetulosModel;

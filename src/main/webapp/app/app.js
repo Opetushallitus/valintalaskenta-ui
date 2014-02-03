@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate'], function($rootScopeProvider) {
+var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http){
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth")
@@ -254,6 +254,12 @@ app.factory('AktivoiKelaFtp', function($resource) {
 app.factory('AktivoiKelaVienti', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/aktivoi", {}, {
 		query:  {method:'GET', isArray:false}
+	});
+});
+
+app.factory('Koekutsukirjeet', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/koekutsukirjeet/aktivoi", {}, {
+		post:  {method:'POST', isArray:false}
 	});
 });
 

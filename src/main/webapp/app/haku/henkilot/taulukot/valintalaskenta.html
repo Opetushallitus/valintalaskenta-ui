@@ -1,25 +1,34 @@
 <table class="virkailija-table-1" ng-if="hakutoive.valintalaskenta">
     <thead>
-    <tr><th colspan="7">Valintalaskenta</th></tr>
     <tr>
-        <th>Valinnanvaihe</th>
-        <th>Valintatapajono</th>
+        <th></th>
+        <th colspan="5">Valintalaskenta</th>
+        <th colspan="3">Sijoittelu</th>
+    </tr>
+    <tr>
+        <!--<th>Valinnanvaihe</th>-->
+        <th>Valintatapajono
+            <a href="" ng-model="filter" ng-init="false" ng-click="filter = !filter">({{filter ? 'Kaikki' : 'Viimeinen'}})</a>
+        </th>
         <th>Jonosija</th>
         <th>Yhteispisteet</th>
         <th>Hakutoive</th>
-        <th>Valintatieto</th>
-        <th></th>
-        <th ng-if="false"></th>
-        <th ng-if="false"></th>
+        <th colspan="2">Valintatieto</th>
+        <th>Tila</th>
+        <th colspan="2">Vastaanottotila</th>
+
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="valinnanvaihe in hakutoive.valintalaskenta">
-        <td>
-            <span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span>
-            <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">
+    <tr ng-repeat="valinnanvaihe in hakutoive.valintalaskenta" ng-if="($last && !filter) || filter">
+        <!--<td>-->
+        <!--<span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span>-->
+        <!--<span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'"></span>-->
+        <!--</td>-->
+        <td ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajono">{{valintatapajono.nimi}}</span><br />
+            <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'"></span>
         </td>
-        <td ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajono">{{valintatapajono.nimi}}</span></td>
+        <!-- jonosijoja pitäisi olla hakemuksella vain yksi per jono -->
         <td ng-repeat-start="tulos in valintatapajono.jonosijat">{{tulos.jonosija}}</td>
         <td>
             {{tulos.jarjestyskriteerit[0].arvo}}
@@ -30,14 +39,26 @@
         <td>
             {{tulos.tuloksenTila}}
         </td>
-        <td>
+        <td ng-repeat-end>
             <jarjestyskriteeri-muokkaus jonosija="tulos"
                                         valintatapajono-oid="valintatapajono.valintatapajonooid"
                                         hakemus-oid="tulos.hakemusOid"
-                                        enabled="updateOph" />
+                                        enabled="updateOph"/>
         </td>
-        <td ng-repeat-end ng-if="false"></td>
-        <td ng-repeat-end ng-if="false"></td>
+        <td>{{model.sijoittelu[valintatapajono.valintatapajonooid].tila}}
+            {{model.sijoittelu[valintatapajono.valintatapajonooid].varasijanNumero}}
+        </td>
+        <td>{{model.sijoittelu[valintatapajono.valintatapajonooid].vastaanottoTila}}</td>
+        <td ng-repeat-end>
+            <sijoittelu-vastaanotto-tila hakemus="model.sijoittelu[valintatapajono.valintatapajonooid]"
+                                         valintatapajono-oid="valintatapajono.valintatapajonooid"
+                                         haku-oid="model.hakuOid"
+                                         hakukohde-oid="hakutoive.hakukohdeOid"
+                                         enabled="updateOph"/>
+        </td>
     </tr>
     </tbody>
 </table>
+
+
+<div class="clear"></div>

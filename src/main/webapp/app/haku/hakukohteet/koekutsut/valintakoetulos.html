@@ -30,7 +30,7 @@
                 </div>
                 -->
             </div>
-
+			
             <div ng-show="nakymanTila == 'Hakijoittain'">
                 <h2>Hakijoittain</h2>
             	<a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
@@ -71,8 +71,11 @@
 
             <div ng-show="nakymanTila == 'Kokeittain'">
                 <div ng-repeat="valintakoe in model.valintakokeet" class="margin-vertical-2">
-                    <h2>{{valintakoe.valintakoeTunniste}} - {{valintakoe.valinnanVaihe}}</h2>
-
+                    <h2>{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></h2>
+					<form method="post">
+						  <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel[valintakoe.valintakoeOid]"></textarea>
+						  <a ng-click="tulostaKoekutsukirjeet(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small pdf">Lataa koekutsukirjeet</a>
+					</form>
                     <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
                     <a ng-click="addressLabelPDF(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small pdf">Lataa osoitetarrat</a>
                     <table class="virkailija-table-1">
