@@ -40,7 +40,7 @@
                             </tr>
                             <tr>
                                 <th>Jonosija</th>
-                                <th>Tasasijan jonosija</th>
+                                <!--<th>Tasasijan jonosija</th>-->
                                 <th>Hakija</th>
                                 <th>Hakemus</th>
                                 <th>Hakutoive</th>
@@ -51,8 +51,8 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="hakemus in jono.hakemukset | limitTo:limit">
-                                <td>{{hakemus.jonosija}}</td>
-                                <td>{{hakemus.tasasijaJonosija}}</td>
+                                <td>{{hakemus.sija}}</td>
+                                <!--<td>{{hakemus.tasasijaJonosija}}</td>-->
                                 <td>
                                     <span title="Sukunimi">{{hakemus.etunimi}}</span>,
                                     <span title="Etunimi">{{hakemus.sukunimi}}</span>
