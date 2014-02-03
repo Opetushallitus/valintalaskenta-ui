@@ -51,7 +51,9 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         model.hakutoiveet.push(hakutoive);
                     }
 
-
+                    if(hakutoive.hakenutHarkinnanvaraisesti) {
+                        model.hakenutHarkinnanvaraisesti = true;
+                    }
                 }
 
                 HarkinnanvaraisestiHyvaksytty.get({hakemusOid: hakemusOid, hakuOid: hakuOid}, function (result) {
@@ -168,6 +170,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                         hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
                                         if(hakukohde.osallistuu[avain.tunniste] == 'OSALLISTUU') {
                                             hakukohde.naytaPistesyotto = true;
+                                            model.naytaPistesyotto = true;
                                         }
                                     }
 
@@ -271,7 +274,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
     return model;
 });
 
-function HenkiloTiedotController($q, $scope, $route, $routeParams, HenkiloTiedotModel, AuthService, Pohjakuolutukset) {
+function HenkiloTiedotController($q, $scope, $route, $routeParams, HenkiloTiedotModel, AuthService, Pohjakuolutukset, HenkiloModel) {
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
