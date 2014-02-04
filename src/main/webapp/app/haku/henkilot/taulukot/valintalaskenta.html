@@ -10,8 +10,8 @@
         <tr>
             <th>Hakutoive</th>
             <th>Valintatapajono
-                <a href="" ng-model="filter" ng-init="false" ng-click="filter = !filter">({{filter ? 'Kaikki' :
-                    'Viimeinen'}})</a>
+                <a href="" ng-model="filter" ng-init="false" ng-click="filter = !filter">({{filter ? 'Viimeinen' :
+                    'Kaikki'}})</a>
             </th>
             <th>Yhteispisteet</th>
             <th colspan="2">Valintatieto</th>
@@ -20,8 +20,8 @@
 
         </tr>
         </thead>
-        <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
-        <tr ng-repeat="valinnanvaihe in hakutoive.valintalaskenta"  ng-show="($last && !filter) || filter">
+        <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'">
+        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta"  ng-show="($last && !filter) || filter">
             <td>
                 <div ng-if="($first && filter) || ($last && !filter)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
@@ -60,6 +60,8 @@
                                              enabled="updateOph"/>
             </td>
         </tr>
+        <!-- rivien väritys pitäisi hoitaa jotenkin, tai sitten muokata alkuperäinen data helpommin esitettävään muotoon -->
+        <tr ng-repeat-end ng-show="false"></tr>
         </tbody>
     </table>
 </div>
