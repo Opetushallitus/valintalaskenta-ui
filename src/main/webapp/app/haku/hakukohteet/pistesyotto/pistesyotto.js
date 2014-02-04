@@ -60,8 +60,8 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                                         hakija.additionalData = result.additionalInfo;
                                     }
 
-                                    hakija.originalData = [];
-                                    hakija.osallistuu = [];
+                                    hakija.originalData = {};
+                                    hakija.osallistuu = {};
 
                                     if (!hakija.additionalData) {
                                         hakija.additionalData = [];
@@ -82,12 +82,15 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                                         if (!hakija.additionalData[avain.tunniste]) {
                                             hakija.additionalData[avain.tunniste] = "";
                                         }
-                                        hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
 
                                         if (!hakija.additionalData[avain.osallistuminenTunniste]) {
                                             hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
                                         }
-                                        hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+
+                                        if(hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
+                                            hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
+                                            hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+                                        }
                                     });
                                 });
                             });
