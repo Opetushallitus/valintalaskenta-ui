@@ -31,7 +31,7 @@
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
                             <tr>
-                                <th colspan="8">
+                                <th colspan="7">
                                     {{jono.nimi}}:  {{jono.prioriteetti}} /
                                     <!---Valintatapajono OID: {{jono.oid}}-->
                                     Aloituspaikat:  {{jono.aloituspaikat}} /
@@ -40,12 +40,11 @@
                             </tr>
                             <tr>
                                 <th>Jonosija</th>
-                                <!--<th>Tasasijan jonosija</th>-->
                                 <th>Hakija</th>
-                                <th>Hakemus</th>
                                 <th>Hakutoive</th>
                                 <th>Sijoittelun tila</th>
                                 <th>Vastaanottotieto</th>
+                                <th>Muokattu</th>
                                 <th>Muokkaa</th>
                             </tr>
                         </thead>
@@ -54,15 +53,11 @@
                                 <td>{{hakemus.sija}}</td>
                                 <!--<td>{{hakemus.tasasijaJonosija}}</td>-->
                                 <td>
-                                    <span title="Sukunimi">{{hakemus.etunimi}}</span>,
-                                    <span title="Etunimi">{{hakemus.sukunimi}}</span>
-                                </td>
-                                <td>
-                                    <span title="HakemusOid">
-                                        <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakemus.hakemusOid}}" target="_blank" >
-                                            {{hakemus.hakemusOid}}
-                                        </a>
-                                    </span>
+                                    <show-person-information sukunimi="{{hakemus.sukunimi}}"
+                                                             etunimi="{{hakemus.etunimi}}"
+                                                             hakemus-oid="{{hakemus.hakemusOid}}"
+                                                             haku-oid="{{hakuOid}}"
+                                                             henkilo-oid="{{hakemus.hakijaOid}}" />
                                 </td>
                                 <td>{{hakemus.prioriteetti}}</td>
                                 <!--
@@ -99,6 +94,41 @@
                                             <span ng-if="hakemus.vastaanottoTila == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
                                             <span ng-if="hakemus.vastaanottoTila == 'PERUNUT'">Perunut</span>
                                         </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- TODO: directiivi olis kiva -->
+                                    <a href="" ng-click="hakemus.showLog = !hakemus.showLog">{{hakemus.logEntries[hakemus.logEntries.length-1].luotu | date:'dd.MM.yyyy HH:mm'}}</a>
+                                    <div class="modal-backdrop" ng-click="hakemus.showLog = !hakemus.showLog" ng-if="hakemus.showLog"></div>
+                                    <div centralize class="modal" ng-if="hakemus.showLog">
+                                        <div class="modal-header">
+                                            <span>Muutokset</span>
+                                            <a ng-click="hakemus.showLog = !hakemus.showLog" class="close"></a>
+                                        </div>
+                                        <div class="modal-content">
+                                            <table class="virkailija-table-1">
+                                                <thead>
+                                                <tr>
+                                                    <th>Luotu</th   >
+                                                    <th>Muokkaaja</th>
+                                                    <th>Muutos</th>
+                                                    <th>Selite</th>
+                                                </tr>
+                                                </thead>
+                                                <tr ng-repeat="entry in hakemus.logEntries" >
+                                                    <td>{{entry.luotu | date:'dd.MM.yyyy HH:mm'}}</td>
+                                                    <td>{{entry.muokkaaja}}</td>
+                                                    <td><span ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
+                                                        <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
+                                                        <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
+                                                        <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
+                                                        <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span></td>
+                                                    <td>{{entry.selite}}</td>
+                                                </tr>
+                                            </table>
+
+                                            <div class="clear"></div>
+                                        </div>
                                     </div>
                                 </td>
                                 <td>

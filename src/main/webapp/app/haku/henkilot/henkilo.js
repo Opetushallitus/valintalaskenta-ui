@@ -57,6 +57,7 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
     }
 
     function refreshIfNeeded(hakuOid) {
+        console.log("refreshIfNeeded()");
     	if(this.hakuOid != hakuOid) {
             this.hakuOid = hakuOid;
             this.searchWord = "";
@@ -91,12 +92,14 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
 });
 
 function HenkiloController($scope,$location,$routeParams, HenkiloModel) {
-	
+
 	$scope.model = HenkiloModel;
 	$scope.model.refreshIfNeeded($routeParams.hakuOid);
 	$scope.hakemusOid = $routeParams.hakemusOid;
 	$scope.henkiloittainVisible = true;
-    $location.hash($routeParams.scrollTo);
+    if($routeParams.scrollTo) {
+        $location.hash($routeParams.scrollTo);
+    }
 
     $scope.$watch('model.searchWord', debounce(function() {
         HenkiloModel.refresh();
