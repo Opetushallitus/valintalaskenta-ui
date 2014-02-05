@@ -17,7 +17,8 @@
 
             <a ng-show="model.valinnanvaiheet" ng-click="valintalaskentaTulosXLS(); $event.stopPropagation();"
                class="button small excel">Vie exceliin</a>
-
+            <br />
+            <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
             <!--
             <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
              -->
@@ -33,7 +34,7 @@
                         <table class="virkailija-table-1" item-on-screen>
                             <thead>
                             <tr>
-                                <th></th>
+                                <th>{{valintatapajono.jonosijat.length}}</th>
                                 <th>Hakija</th>
                                 <th>Yhteispisteet</th>
                                 <th>Hakutoive</th>
@@ -42,7 +43,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="tulos in valintatapajono.jonosijat | limitTo:limit">
+                            <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit">
                                 <td>{{tulos.jonosija}}</td>
                                 <td>
                                     <show-person-information sukunimi="{{tulos.sukunimi}}"
