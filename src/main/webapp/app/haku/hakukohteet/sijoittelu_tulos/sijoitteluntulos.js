@@ -39,6 +39,7 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
 
                         //pick up data to be shown in basicinformation vie
                         var hakemuserittely = {
+                            nimi: valintatapajono.nimi,
                             hyvaksytyt: [],
                             paikanVastaanottaneet: [],
                             hyvaksyttyHarkinnanvaraisesti: [],

@@ -37,15 +37,17 @@
                                 <th>Harkinnanvaraisesti hyväksytyt yhteensä</th>
                                 <th>Varasijoilla yhteensä</th>
                                 <th>Paikan vastaanottaneet yhteensä</th>
+                                <th>Alin hyväksytty pistemäärä</th>
                             </tr>
                         </thead>
                         <tbody >
                             <tr ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt">
-                                <td>{{$index}}</td>
+                                <td>{{erittely.nimi}}</td>
                                 <td>{{erittely.hyvaksytyt.length}}</td>
                                 <td>{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>
                                 <td>{{erittely.varasijoilla.length}}</td>
                                 <td>{{erittely.paikanVastaanottaneet.length}}</td>
+                                <td>{{erittely.hyvaksytyt[erittely.hyvaksytyt.length-1].pisteet}}</td>
                             </tr>
                         </tbody>
                     </table>
