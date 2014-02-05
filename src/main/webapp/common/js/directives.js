@@ -496,6 +496,7 @@ app.directive('showPersonInformation', function() {
         },
         templateUrl: '../common/html/personInformationPartial.html',
         controller: function($scope){
+            $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
             $scope.show = function() {
                 $scope.showInfo = !$scope.showInfo;
