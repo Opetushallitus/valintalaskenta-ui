@@ -1,33 +1,5 @@
-﻿<div ng-controller="AccordionDemoCtrl">
-    <label class="checkbox">
-        <input type="checkbox" ng-model="oneAtATime">
-        Open only one at a time
-    </label>
-
-    <accordion close-others="oneAtATime">
-        <accordion-group heading="Static Header, initially expanded" is-open="true">
-            This content is straight in the template.
-        </accordion-group>
-        <accordion-group heading="{{group.title}}" ng-repeat="group in groups">
-            {{group.content}}
-        </accordion-group>
-        <accordion-group heading="Dynamic Body Content">
-            <p>The body of the accordion group grows to fit the contents</p>
-            <button class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
-            <div ng-repeat="item in items">{{item}}</div>
-        </accordion-group>
-        <accordion-group is-open="isopen">
-            <accordion-heading>
-                I can have markup, too! <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
-            </accordion-heading>
-            This is just some content to illustrate fancy headings.
-        </accordion-group>
-    </accordion>
-</div>
-
-
-<h1>Valintojen toteuttaminen</h1>
-<div ng-include="'haku/topNavigation.html'" />
+﻿<h1>Valintojen toteuttaminen</h1>
+<div ng-include="'haku/topNavigation.html'"/>
 
 <div class="tabsheets">
 
@@ -36,74 +8,83 @@
     <div class="toggle-content-container overflow-x-scroll">
 
         <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
-        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'" />
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
 
         <div class="tabsheets">
-            
+
 
             <div ng-include="'../common/html/errors.html'"></div>
 
-            <a ng-show="model.valinnanvaiheet" ng-click="valintalaskentaTulosXLS(); $event.stopPropagation();" class="button small excel">Vie exceliin</a>
+            <a ng-show="model.valinnanvaiheet" ng-click="valintalaskentaTulosXLS(); $event.stopPropagation();"
+               class="button small excel">Vie exceliin</a>
 
             <!--
             <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
              -->
             <div ng-repeat="valinnanvaihe in model.valinnanvaiheet | orderBy:'jarjestysnumero':true">
 
-                <h3>Valinnanvaihe OID: <span ng-bind="valinnanvaihe.valinnanvaiheoid">-</span></h3>
-                <h3>Päivämäärä: <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></h3>
-                <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajono">
-                    <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
-                    <table class="virkailija-table-1" item-on-screen>
-                        <thead>
-                        <tr>
-                            <th> </th>
-                            <th>Hakija</th>
-                            <th>Yhteispisteet</th>
-                            <th>Hakutoive</th>
-                            <th>Valintatieto</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="tulos in valintatapajono.jonosijat | limitTo:limit">
-                            <td>{{tulos.jonosija}}</td>
-                            <td>
-                                <show-person-information sukunimi="{{tulos.sukunimi}}"
-                                                         etunimi="{{tulos.etunimi}}"
-                                                         hakemus-oid="{{tulos.hakemusOid}}"
-                                                         haku-oid="{{hakuOid}}"
-                                                         henkilo-oid="{{tulos.hakijaOid}}" />
-                            </td>
-                            <td>
-                                {{tulos.jarjestyskriteerit[0].arvo}}
-                                <a href="#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria" target="_blank" class="historylink">
-                                    Lisätietoja
-                                </a>
-                            </td>
-                            <td>
-                                {{tulos.prioriteetti}}
-                            </td>
-                            <td>
-                                <a ng-click="showTilaPartial(tulos)" >
-                                    {{tulos.tuloksenTila}}
-                                </a>
-                                <div ng-include="'haku/hakukohteet/valintalaskenta_tulos/tilaPartial.html'"/>
-                            </td>
-                            <td>
-                                <jarjestyskriteeri-muokkaus jonosija="tulos"
-                                                            valintatapajono-oid="valintatapajono.valintatapajonooid"
-                                                            hakemus-oid="tulos.hakemusOid"
-                                                            enabled="updateOph" />
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <span ng-show="limit < valintatapajono.jonosijat.length">Näytetty: {{limit}} / {{valintatapajono.jonosijat.length}}</span>
+
+                <h3 ng-if="$first">Valinnanvaihe: <span ng-bind="valinnanvaihe.nimi">-</span> (<span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span>)</h3>
+                <h3 ng-if="!$first"><a href="" ng-click="valinnanvaihe.show = !valinnanvaihe.show">Valinnanvaihe: <span ng-bind="valinnanvaihe.nimi">-</span> (<span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span>)</a></h3>
+
+                <div ng-if="valinnanvaihe.show || $first">
+                    <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajono">
+                        <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
+                        <table class="virkailija-table-1" item-on-screen>
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Hakija</th>
+                                <th>Yhteispisteet</th>
+                                <th>Hakutoive</th>
+                                <th>Valintatieto</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="tulos in valintatapajono.jonosijat | limitTo:limit">
+                                <td>{{tulos.jonosija}}</td>
+                                <td>
+                                    <show-person-information sukunimi="{{tulos.sukunimi}}"
+                                                             etunimi="{{tulos.etunimi}}"
+                                                             hakemus-oid="{{tulos.hakemusOid}}"
+                                                             haku-oid="{{hakuOid}}"
+                                                             henkilo-oid="{{tulos.hakijaOid}}"/>
+                                </td>
+                                <td>
+                                    {{tulos.jarjestyskriteerit[0].arvo}}
+                                    <a href="#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria"
+                                       target="_blank" class="historylink">
+                                        Lisätietoja
+                                    </a>
+                                </td>
+                                <td>
+                                    {{tulos.prioriteetti}}
+                                </td>
+                                <td>
+                                    <a ng-click="showTilaPartial(tulos)">
+                                        {{tulos.tuloksenTila}}
+                                    </a>
+
+                                    <div ng-include="'haku/hakukohteet/valintalaskenta_tulos/tilaPartial.html'"/>
+                                </td>
+                                <td>
+                                    <jarjestyskriteeri-muokkaus jonosija="tulos"
+                                                                valintatapajono-oid="valintatapajono.valintatapajonooid"
+                                                                hakemus-oid="tulos.hakemusOid"
+                                                                enabled="updateOph"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span ng-show="limit < valintatapajono.jonosijat.length">Näytetty: {{limit}} / {{valintatapajono.jonosijat.length}}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="clear"></div>
-    <div ng-show="showLoading" style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...</div>
+    <div ng-show="showLoading"
+         style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...
+    </div>
 </div>

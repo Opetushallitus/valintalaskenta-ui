@@ -14,9 +14,18 @@
             <div ng-include="'../common/html/errors.html'"></div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
-
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
-                <input id="osallistuu" type="checkbox" ng-model="model.filter" ng-true-value="OSALLISTUU" ng-false-value=""/>
+                <!--<input type="text" class="search margin-vertical-2" placeholder="Suodata kenttiä" ng-model="arvoFilter" />-->
+                <select ng-model="arvoFilter" ng-options="avain.kuvaus for avain in model.avaimet">
+                    <option value="">Kaikki kokeet</option>
+                </select>
+                <select ng-model="tila">
+                    <option value="">Kaikki tilat</option>
+                    <option value="MERKITSEMATTA">Merkitsemättä</option>
+                    <option value="OSALLISTUI">Osallistui</option>
+                    <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                </select>
+                <input id="osallistuu" type="checkbox" ng-init="vainOsallistuvat = 'OSALLISTUU'" ng-model="vainOsallistuvat" ng-true-value="OSALLISTUU" ng-false-value=""/>
                 <label for="osallistuu">Vain osallistuvat</label>
 
                 <form name="form" ng-submit="submit()">
@@ -24,17 +33,14 @@
                         <thead>
                         <tr>
                             <th><a href="" ng-click="predicate = 'lastName'; reverse=!reverse">Tiedot</a></th>
-                            <th ng-repeat-start="avain in model.avaimet | filter:{'lahde': arvoFilter}">{{avain.tunniste}} {{avain.kuvaus}}
-                                <span ng-show="avain.min || avain.min == 0">({{avain.min}}</span> - <span ng-show="avain.max || avain.max == 0">{{avain.max}})</span>
-                            </th>
-                            <th ng-repeat-end>
-                                Osallistuminen
+                            <th ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste}">{{avain.tunniste}} {{avain.kuvaus}}
+                                ({{avain.min}} - {{avain.max}})
                             </th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:model.filter">
+                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:vainOsallistuvat | filter:{'originalData':(tila ? tila : undefined)}">
                             <td>
                                 <show-person-information sukunimi="{{hakija.lastName}}"
                                                          etunimi="{{hakija.firstNames}}"
@@ -42,7 +48,7 @@
                                                          haku-oid="{{hakuOid}}"
                                                          henkilo-oid="{{hakemus.personOid}}" />
                             </td>
-                            <td ng-repeat="avain in model.avaimet | filter:{'lahde': arvoFilter}" colspan="2">
+                            <td ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste}">
                                 <div ng-show="hakija.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch on="avain.lahde">
                                     <div ng-switch-when="SYOTETTAVA_ARVO">
                                         <div ng-switch on="avain.tyyppi()">
