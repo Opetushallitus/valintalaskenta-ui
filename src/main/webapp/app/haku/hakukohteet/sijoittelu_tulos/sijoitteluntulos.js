@@ -1,3 +1,4 @@
+"use strict";
 app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, $timeout, SijoitteluAjo, VastaanottoTilat) {
 
     var model = new function () {
@@ -160,6 +161,7 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
         };
 
         this.updateVastaanottoTila = function (hakemus, valintatapajonoOid) {
+            model.errors.length = 0;
             var tilaParams = {
                 hakuoid: model.hakuOid,
                 hakukohdeOid: model.hakukohdeOid,
@@ -176,6 +178,8 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
                 //model.refresh(model.hakuOid, model.hakukohdeOid);
                 model.setVastaanottoTila(hakemus, tilaParams);
+            }, function (error) {
+                model.errors.push(error);
             });
         }
 
