@@ -78,6 +78,7 @@
                                           <select ng-model="hakemus.muokattuVastaanottoTila">
                                               <option value="">Kesken</option>
                                               <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
+                                              <option value="PERUUTETTU">Peruutettu</option>
                                           </select>
                                         </span>
                                         <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == 'ILMOITETTU'">
@@ -87,6 +88,7 @@
                                                 <option value="VASTAANOTTANUT_POISSAOLEVA">Vastaanottanut poissaolevana</option>
                                                 <option value="EI_VASTAANOTETTU_MAARA_AIKANA">Ei vastaanotettu määräaikana</option>
                                                 <option value="PERUNUT">Perunut</option>
+                                                <option value="PERUUTETTU">Peruutettu</option>
                                             </select>
                                         </span>
                                         <span ng-if="!(hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == 'ILMOITETTU') && !(hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == '')">
@@ -95,6 +97,7 @@
                                             <span ng-if="hakemus.vastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
                                             <span ng-if="hakemus.vastaanottoTila == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
                                             <span ng-if="hakemus.vastaanottoTila == 'PERUNUT'">Perunut</span>
+                                            <span ng-if="hakemus.vastaanottoTila == 'PERUUTETTU'">Peruutettu</span>
                                         </span>
                                     </div>
                                 </td>
@@ -125,6 +128,7 @@
                                                         <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
                                                         <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
                                                         <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span></td>
+                                                        <span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span></td>
                                                     <td>{{entry.selite}}</td>
                                                 </tr>
                                             </table>
