@@ -24,9 +24,12 @@
                     <dt>Hakijoita yhteensä</dt>
                     <dd>{{hakeneetModel.hakeneet.length}}</dd>
                     
-                    <dt class="margin-bottom-5">Valintatapajonokohtaiset tiedot</dt>
 
-                    <table  class="virkailija-table-1 margin-top-5">
+
+                </dl>
+                <div class="clear"></div>
+                    <h3 class="margin-top-5">Valintatapajonokohtaiset tiedot</h3>
+                    <table  class="virkailija-table-1">
                         <thead>
                             <tr>
                                 <th>Valintatapajono</th>
@@ -34,20 +37,20 @@
                                 <th>Harkinnanvaraisesti hyväksytyt yhteensä</th>
                                 <th>Varasijoilla yhteensä</th>
                                 <th>Paikan vastaanottaneet yhteensä</th>
+                                <th>Alin hyväksytty pistemäärä</th>
                             </tr>
                         </thead>
                         <tbody >
                             <tr ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt">
-                                <td>{{$index}}</td>
+                                <td>{{erittely.nimi}}</td>
                                 <td>{{erittely.hyvaksytyt.length}}</td>
                                 <td>{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>
                                 <td>{{erittely.varasijoilla.length}}</td>
                                 <td>{{erittely.paikanVastaanottaneet.length}}</td>
+                                <td>{{erittely.hyvaksytyt[erittely.hyvaksytyt.length-1].pisteet}}</td>
                             </tr>
                         </tbody>
                     </table>
-                    
-                </dl>
 
             </div>
             
