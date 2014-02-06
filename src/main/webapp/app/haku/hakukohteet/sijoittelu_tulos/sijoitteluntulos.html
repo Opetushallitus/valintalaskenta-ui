@@ -44,6 +44,7 @@
                                 <th>Jonosija ({{jono.hakemukset.length}})</th>
                                 <th>Hakija</th>
                                 <th>Hakutoive</th>
+                                <th>Pisteet</th>
                                 <th>Sijoittelun tila</th>
                                 <th>Vastaanottotieto</th>
                                 <th>Muokattu</th>
@@ -53,7 +54,6 @@
                         <tbody>
                             <tr ng-repeat="hakemus in jono.hakemukset | limitTo:limit | filter:hakijaFilter">
                                 <td>{{hakemus.sija}}</td>
-                                <!--<td>{{hakemus.tasasijaJonosija}}</td>-->
                                 <td>
                                     <show-person-information sukunimi="{{hakemus.sukunimi}}"
                                                              etunimi="{{hakemus.etunimi}}"
@@ -62,12 +62,9 @@
                                                              henkilo-oid="{{hakemus.hakijaOid}}" />
                                 </td>
                                 <td>{{hakemus.prioriteetti}}</td>
-                                <!--
-                                    <td><input type="checkbox" ng-model="hakemus.harkinnanvarainen" disabled /></td>
-                                -->
+                                <td>{{hakemus.pisteet}}</td>
                                 <td>
                                     <span>{{hakemus.tila}}</span>
-                                    <!--<span ng-if="hakemus.hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>-->
                                     <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
                                 </td>
 
