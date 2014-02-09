@@ -1,14 +1,9 @@
-// Ei tämä toimi, mutta muut filterit varmaan tänne, jos niitä tulee
-app.filter('matchOrg', function(AuthService) {
-  return function( items) {
-    var filtered = [];
+app.filter('duration', function() {
+    return function(input) {
 
-    items.forEach(function(item){
-        AuthService.readOrg(item.tarjoajaOid).then(function(){
-            console.log("new: " + items.length);
-            filtered.push(item);
-        });
-    });
-    return filtered;
-  }
+        return ((input) % (60 * 60 * 24) / (60 * 60) | 0) + 'min ' +
+            ((input) % (60 * 60) / 60 | 0) + 's ' +
+            ((input) % 60 | 0) + 'ms';
+
+    };
 });

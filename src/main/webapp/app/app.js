@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce'], function($rootScopeProvider) {
+var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce', 'valvomo'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http){
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth")
