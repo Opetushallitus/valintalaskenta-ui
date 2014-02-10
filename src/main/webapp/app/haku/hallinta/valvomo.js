@@ -48,7 +48,7 @@ angular.module('valvomo').controller('ValvomoController', ['$scope', '$interval'
     );
 
     $scope.width = 100;
-    $scope.size = 5;
+    $scope.size = 10;
     $scope.gap = 2;
 
     $scope.range = function (n) {
@@ -57,12 +57,12 @@ angular.module('valvomo').controller('ValvomoController', ['$scope', '$interval'
 
     $scope.x = function (n) {
         var jee = n % $scope.width * ($scope.size + $scope.gap);
-        return jee;
+        return jee + Math.sin(n+Math.PI)+2;
     }
 
     $scope.y = function (n) {
         var jee = Math.floor(n / $scope.width) * ($scope.size + $scope.gap);
-        return jee;
+        return jee + Math.sin(n+Math.PI)+2;
     }
 
     $scope.fill = function (n, laskettu, virheet) {
@@ -73,6 +73,10 @@ angular.module('valvomo').controller('ValvomoController', ['$scope', '$interval'
         } else {
             return '#0000ff'
         }
+    }
+
+    $scope.blockSize = function(n) {
+        return $scope.size+Math.sin(n)*2-2;
     }
 
 }]);

@@ -1,8 +1,9 @@
 "use strict";
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce', 'valvomo'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
-}).run(function($http){
-    $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth")
+}).run(function($rootScope, $http, Dokumenttipalvelu){
+    $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
+    $rootScope.dokumenttipalvelu = Dokumenttipalvelu;
 });
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
@@ -174,7 +175,32 @@ app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
     });
 });
 
-
+//dokumenttipalvelu
+app.factory('Dokumenttipalvelu', function($rootScope, $resource, $window, Poller) {
+	
+    
+    return {
+    	_p1: null,
+    	_repeater: function() {
+    		var self = this;
+    		$rootScope.$apply(function () {
+                self._p1 = Poller.poll(DOKUMENTTIPALVELU_URL_BASE + "/dokumentit/hae");
+                self._p1.then(function(data){
+                	console.log(data);
+                });
+            });
+    	},
+    	_timer: null,
+    	aloitaPollaus: function() {
+    		this._timer = $window.setInterval(this._repeater, 5000);
+    		console.log('start polling start' + this._timer);
+    	},
+    	lopetaPollaus: function() {
+    		$window.clearInterval(this._timer);
+    		console.log('end polling end'+ this._timer);
+    	}
+    };
+});
 
 //koostepalvelu
 app.factory('ValintakoelaskentaAktivointi', function($resource) {
