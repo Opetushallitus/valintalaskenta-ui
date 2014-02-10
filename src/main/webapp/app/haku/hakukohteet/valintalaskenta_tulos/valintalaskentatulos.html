@@ -22,7 +22,7 @@
             <!--
             <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
              -->
-            <div ng-repeat="valinnanvaihe in model.valinnanvaiheet | orderBy:'jarjestysnumero':true">
+            <div ng-repeat="valinnanvaihe in model.valinnanvaiheet | orderBy:['jarjestysnumero', 'createdAt']:true">
 
 
                 <h3 ng-if="$first">Valinnanvaihe: <span ng-bind="valinnanvaihe.nimi">-</span> (<span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span>)</h3>
