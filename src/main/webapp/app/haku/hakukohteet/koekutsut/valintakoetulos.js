@@ -95,6 +95,11 @@
 
 
 function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls) {
+	// kayttaa dokumenttipalvelua
+	$scope.dokumenttipalvelu.aloitaPollaus();
+	$scope.$on('$destroy', function() {$scope.dokumenttipalvelu.lopetaPollaus();});
+	// kayttaa dokumenttipalvelua
+	
 	$scope.tinymceModel = {};
 	
 	$scope.tinymceOptions = {
@@ -102,6 +107,8 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 			
 		}
 	};
+	
+	
 	
 	$scope.tulostaKoekutsukirjeet = function(valintakoeOid) {
 		Koekutsukirjeet.post({
