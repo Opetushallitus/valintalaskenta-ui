@@ -29,11 +29,12 @@
             </div>
 
 			<div class="margin-vertical-2 overflow-x-scroll">
-                <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot">
+                <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot | orderBy:'index':true">
+
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
                             <tr>
-                                <th colspan="7">
+                                <th colspan="8">
                                     {{jono.nimi}}:  {{jono.prioriteetti}} /
                                     <!---Valintatapajono OID: {{jono.oid}}-->
                                     Aloituspaikat:  {{jono.aloituspaikat}} /
@@ -69,7 +70,7 @@
                                 </td>
 
 
-                                <td class="leftorientedcolumn">
+                                <td>
                                     <div ng-show="((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))">
                                         <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == ''">
                                           <select ng-model="hakemus.muokattuVastaanottoTila">
@@ -111,7 +112,7 @@
                                             <table class="virkailija-table-1">
                                                 <thead>
                                                 <tr>
-                                                    <th>Luotu</th   >
+                                                    <th>Luotu</th>
                                                     <th>Muokkaaja</th>
                                                     <th>Muutos</th>
                                                     <th>Selite</th>

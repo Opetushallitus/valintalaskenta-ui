@@ -28,13 +28,12 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
             }, function (result) {
                 if (result.sijoitteluajoId) {
 
-
                     model.sijoitteluTulokset = result;
 
                     var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
 
                     valintatapajonot.forEach(function (valintatapajono, index) {
-
+                        valintatapajono.index = index;
                         var valintatapajonoOid = valintatapajono.oid;
                         var hakemukset = valintatapajono.hakemukset;
 
@@ -121,7 +120,7 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
                 }
 
             }, function (error) {
-                model.errors.push(error);
+                model.errors.push(error.data.message);
             });
         };
 
