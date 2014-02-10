@@ -36,7 +36,7 @@
              ng-attr-width="{{width*(gap+size)}}">
             <rect ng-repeat="r in range(prosessi.prosessi.hakukohteitaYhteensa) track by $index"
                   ng-attr-y="{{1+y($index)}}" ng-attr-x="{{1+x($index)}}"
-                  ng-attr-width="{{size}}" ng-attr-height="{{size}}"
+                  ng-attr-width="{{blockSize($index)}}" ng-attr-height="{{blockSize($index)}}"
                   ng-attr-fill="{{fill($index, prosessi.prosessi.kasitellytHakukohteet.length, prosessi.prosessi.exceptions.length)}}"></rect>
         </svg>
         <hr/>
