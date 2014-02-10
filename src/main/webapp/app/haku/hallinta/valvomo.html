@@ -1,0 +1,94 @@
+<h1>Valvomo</h1>
+
+
+<div class="tabs hakukohdeNav" ng-controller="navigationController">
+
+    <a href="" ng-class="{current: (valittu=='valintalaskenta')}" ng-click="valitse('valintalaskenta')" class="tab">
+        <span>Valintalaskenta</span>
+    </a>
+
+    <a href="" ng-class="{current: (valittu=='valintakoelaskenta')}" ng-click="valitse('valintakoelaskenta')" class="tab">
+        <span>Valintakoelaskenta</span>
+    </a>
+
+    <a href="" ng-class="{current: (valittu=='sijoittelu')}" ng-click="valitse('sijoittelu')" class="tab">
+        <span>Sijoittelu</span>
+    </a>
+
+</div>
+<div class="tabsheets">
+    <div ng-repeat="prosessi in valintalaskenta" ng-if="valittu == 'valintalaskenta'">
+        Viesti: <span>{{prosessi.message}}</span><br/>
+        Status: <span>{{prosessi.status}}</span><br/>
+        Kesto: <span>{{prosessi.duration | duration}}</span><br/>
+        <br/>
+        Toiminto: <span>{{prosessi.prosessi.toiminto}}</span><br/>
+        Käyttäjä: <span>{{prosessi.prosessi.createdBy}}</span><br/>
+        Aika: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
+        <br/>
+        Hakukohteia: <span>{{prosessi.prosessi.kasitellytHakukohteet.length}} / {{prosessi.prosessi.hakukohteitaYhteensa}}</span><br/>
+        Valinnan vaihe: <span>{{prosessi.prosessi.valinnanvaihe}}</span><br/>
+
+        <div ng-repeat="virhe in prosessi.prosessi.exceptions">{{virhe}}</div>
+
+        <svg ng-if="$index == 0 && prosessi.prosessi.hakukohteitaYhteensa > 0" style="border: 2px solid black"
+             ng-attr-height="{{y(prosessi.prosessi.hakukohteitaYhteensa)+(gap+size)}}"
+             ng-attr-width="{{width*(gap+size)}}">
+            <rect ng-repeat="r in range(prosessi.prosessi.hakukohteitaYhteensa) track by $index"
+                  ng-attr-y="{{1+y($index)}}" ng-attr-x="{{1+x($index)}}"
+                  ng-attr-width="{{size}}" ng-attr-height="{{size}}"
+                  ng-attr-fill="{{fill($index, prosessi.prosessi.kasitellytHakukohteet.length, prosessi.prosessi.exceptions.length)}}"></rect>
+        </svg>
+        <hr/>
+    </div>
+
+    <div ng-repeat="prosessi in valintakoelaskenta" ng-if="valittu == 'valintakoelaskenta'">
+        Viesti: <span>{{prosessi.message}}</span><br/>
+        Status: <span>{{prosessi.status}}</span><br/>
+        Kesto: <span>{{prosessi.duration}}</span><br/>
+        <br/>
+        Toiminto: <span>{{prosessi.prosessi.toiminto}}</span><br/>
+        Käyttäjä: <span>{{prosessi.prosessi.createdBy}}</span><br/>
+        Aika: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
+        <br/>
+        Hakukohteia: <span>{{prosessi.prosessi.kasitellytHakukohteet.length}} / {{prosessi.prosessi.hakukohteitaYhteensa}}</span><br/>
+        Valinnan vaihe: <span>{{prosessi.prosessi.valinnanvaihe}}</span><br/>
+
+        <div ng-repeat="virhe in prosessi.prosessi.exceptions">{{virhe}}</div>
+
+        <svg ng-if="$index == 0 && prosessi.prosessi.hakukohteitaYhteensa > 0" style="border: 2px solid black"
+             ng-attr-height="{{y(prosessi.prosessi.hakukohteitaYhteensa)+(gap+size)}}"
+             ng-attr-width="{{width*(gap+size)}}">
+            <rect ng-repeat="r in range(prosessi.prosessi.hakukohteitaYhteensa) track by $index"
+                  ng-attr-y="{{1+y($index)}}" ng-attr-x="{{1+x($index)}}"
+                  ng-attr-width="{{size}}" ng-attr-height="{{size}}"
+                  ng-attr-fill="{{fill($index, prosessi.prosessi.kasitellytHakukohteet.length, prosessi.prosessi.exceptions.length)}}"></rect>
+        </svg>
+        <hr/>
+    </div>
+
+    <div ng-repeat="prosessi in sijoittelu" ng-if="valittu == 'sijoittelu'">
+        Viesti: <span>{{prosessi.message}}</span><br/>
+        Status: <span>{{prosessi.status}}</span><br/>
+        Kesto: <span>{{prosessi.duration}}</span><br/>
+        <br/>
+        Toiminto: <span>{{prosessi.prosessi.toiminto}}</span><br/>
+        Käyttäjä: <span>{{prosessi.prosessi.createdBy}}</span><br/>
+        Aika: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
+        <br/>
+        Hakukohteia: <span>{{prosessi.prosessi.kasitellytHakukohteet.length}} / {{prosessi.prosessi.hakukohteitaYhteensa}}</span><br/>
+        Valinnan vaihe: <span>{{prosessi.prosessi.valinnanvaihe}}</span><br/>
+
+        <div ng-repeat="virhe in prosessi.prosessi.exceptions">{{virhe}}</div>
+
+        <svg ng-if="$index == 0 && prosessi.prosessi.hakukohteitaYhteensa > 0" style="border: 2px solid black"
+             ng-attr-height="{{y(prosessi.prosessi.hakukohteitaYhteensa)+(gap+size)}}"
+             ng-attr-width="{{width*(gap+size)}}">
+            <rect ng-repeat="r in range(prosessi.prosessi.hakukohteitaYhteensa) track by $index"
+                  ng-attr-y="{{1+y($index)}}" ng-attr-x="{{1+x($index)}}"
+                  ng-attr-width="{{size}}" ng-attr-height="{{size}}"
+                  ng-attr-fill="{{fill($index, prosessi.prosessi.kasitellytHakukohteet.length, prosessi.prosessi.exceptions.length)}}"></rect>
+        </svg>
+        <hr/>
+    </div>
+</div>
