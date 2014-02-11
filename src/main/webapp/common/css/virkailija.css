@@ -1925,11 +1925,11 @@ table.dropmenu-table {
     padding: 0.5em;
     background: #eee;
     border: 1px solid #ccc;
-    -webkit-transition: 0.1s;
-    -moz-transition: 0.1s;
-    -o-transition: 0.1s;
-    -ms-transition: 0.1s;
-    transition: 0.1s;
+    -webkit-transition: background-color 0.1s;
+    -moz-transition: background-color 0.1s;
+    -o-transition: background-color 0.1s;
+    -ms-transition: background-color 0.1s;
+    transition: background-color 0.1s;
     padding: 0.5em 1.5em 0.5em 1.5em;
     text-align: center; }
     table.dropmenu-table tbody td:hover {
@@ -2022,11 +2022,11 @@ a.button {
   box-shadow: -1px 1px 1px 0px #dff2f8 inset;
   border: solid 1px #92cce0;
   background-color: #d2ecf5;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -o-transition: 0.3s;
-  -ms-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
+  -ms-transition: background-color 0.3s;
+  transition: background-color 0.3s;
   /*  Primary button */
   /* Expand button */
   /* Collapse button*/
@@ -2319,16 +2319,16 @@ button.edit-link {
 
 .plainBtn {
   cursor: pointer;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -o-transition: 0.3s;
-  -ms-transition: 0.3s;
-  transition: 0.3s;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -o-transition: 0.3s;
-  -ms-transition: 0.3s;
-  transition: 0.3s; }
+  -webkit-transition: text-decoration 0.3s;
+  -moz-transition: text-decoration 0.3s;
+  -o-transition: text-decoration 0.3s;
+  -ms-transition: text-decoration 0.3s;
+  transition: text-decoration 0.3s;
+  -webkit-transition: font-weight 0.3s;
+  -moz-transition: font-weight 0.3s;
+  -o-transition: font-weight 0.3s;
+  -ms-transition: font-weight 0.3s;
+  transition: font-weight 0.3s; }
   .plainBtn:hover {
     text-decoration: underline;
     font-weight: bold; }
@@ -3144,11 +3144,11 @@ ul.orgmenu {
     position: relative;
     cursor: pointer;
     border: 1px solid #e4e4e4;
-    -webkit-transition: 0.2s;
-    -moz-transition: 0.2s;
-    -o-transition: 0.2s;
-    -ms-transition: 0.2s;
-    transition: 0.2s; }
+    -webkit-transition: "background-color" 0.2s;
+    -moz-transition: "background-color" 0.2s;
+    -o-transition: "background-color" 0.2s;
+    -ms-transition: "background-color" 0.2s;
+    transition: "background-color" 0.2s; }
     #toolbartoggle-btn > div:hover {
       background-color: #c5e5ef; }
     #toolbartoggle-btn > div > div {
@@ -3163,6 +3163,7 @@ ul.orgmenu {
         transform: rotate(-90deg);
         -webkit-transform: rotate(-90deg);
         -o-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
         transform-origin: 0;
         -webkit-transform-origin: 0;
         -o-transform-origin: 0;
@@ -3457,17 +3458,17 @@ dl.dl-horizontal {
     display: block;
     margin: -0.3em 0px;
     padding: 0.3em 0px;
-    -webkit-transition: 0.3s;
-    -moz-transition: 0.3s;
-    -o-transition: 0.3s;
-    -ms-transition: 0.3s;
-    transition: 0.3s; }
+    -webkit-transition: "background-color" 0.3s;
+    -moz-transition: "background-color" 0.3s;
+    -o-transition: "background-color" 0.3s;
+    -ms-transition: "background-color" 0.3s;
+    transition: "background-color" 0.3s; }
     .selectlist li a:before {
-      -webkit-transition: 0.3s;
-      -moz-transition: 0.3s;
-      -o-transition: 0.3s;
-      -ms-transition: 0.3s;
-      transition: 0.3s;
+      -webkit-transition: "background-color" 0.3s;
+      -moz-transition: "background-color" 0.3s;
+      -o-transition: "background-color" 0.3s;
+      -ms-transition: "background-color" 0.3s;
+      transition: "background-color" 0.3s;
       content: '';
       display: block;
       width: 30px;
