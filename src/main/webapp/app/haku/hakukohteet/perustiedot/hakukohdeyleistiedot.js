@@ -8,18 +8,42 @@
 
 app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
     var model;
+
     model = new function() {
-        
 
         this.hakukohde = {};
 
+
+        // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
+        this.getKieli = function() {
+            // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
+            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
+
+           for(var lang in kielet) {
+               if(model.hakukohde.tarjoajaNimi && model.hakukohde.tarjoajaNimi[kielet[lang]]) {
+                   return kielet[lang];
+               }
+           }
+           return kielet[0];
+        }
+
         this.getTarjoajaNimi = function() {
+
+            if(model.hakukohde.tarjoajaNimi && model.hakukohde.tarjoajaNimi[this.getKieli()]) {
+                return model.hakukohde.tarjoajaNimi[this.getKieli()];
+            }
+
             for(var lang in model.hakukohde.tarjoajaNimi) {
                 return model.hakukohde.tarjoajaNimi[lang];
             }
         }
 
         this.getHakukohdeNimi = function() {
+
+            if (model.hakukohde.hakukohdeNimi && model.hakukohde.hakukohdeNimi[this.getKieli()]) {
+                 return model.hakukohde.hakukohdeNimi[this.getKieli()];
+            }
+
             for(var lang in model.hakukohde.tarjoajaNimi) {
                 return model.hakukohde.hakukohdeNimi[lang];
             }

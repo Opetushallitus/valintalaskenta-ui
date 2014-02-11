@@ -1,5 +1,6 @@
 app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeChildren, HakukohdeNimi, AuthService, TarjontaHaku) {
     var model;
+
     model = new function(){
     	this.hakukohteet= [];
 		this.filtered = [];
@@ -12,13 +13,36 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 		this.valmiitHakukohteet = "JULKAISTU";
 		this.readyToQueryForNextPage = true;
 
+		// Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
+        this.getKieli = function(hakukohde) {
+            // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
+            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
+
+           for(var lang in kielet) {
+               if(hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]]) {
+                   return kielet[lang];
+               }
+           }
+           return kielet[0];
+        }
+
         this.getTarjoajaNimi = function(hakukohde) {
+
+            if(hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[this.getKieli(hakukohde)]) {
+                return hakukohde.tarjoajaNimi[this.getKieli(hakukohde)];
+            }
+
             for(var lang in hakukohde.tarjoajaNimi) {
                 return hakukohde.tarjoajaNimi[lang];
             }
         }
 
         this.getHakukohdeNimi = function(hakukohde) {
+
+            if (hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[this.getKieli(hakukohde)]) {
+                 return hakukohde.hakukohdeNimi[this.getKieli(hakukohde)];
+            }
+
             for(var lang in hakukohde.tarjoajaNimi) {
                 return hakukohde.hakukohdeNimi[lang];
             }
