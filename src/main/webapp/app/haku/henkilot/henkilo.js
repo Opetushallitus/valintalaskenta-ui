@@ -57,7 +57,6 @@ app.factory('HenkiloModel', function($resource,$q,$routeParams, Henkilot) {
     }
 
     function refreshIfNeeded(hakuOid) {
-        console.log("refreshIfNeeded()");
     	if(this.hakuOid != hakuOid) {
             this.hakuOid = hakuOid;
             this.searchWord = "";
