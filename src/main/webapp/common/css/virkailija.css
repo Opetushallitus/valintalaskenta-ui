@@ -3167,6 +3167,7 @@ ul.orgmenu {
         transform-origin: 0;
         -webkit-transform-origin: 0;
         -o-transform-origin: 0;
+        -ms-transform-origin: 0;
         width: 150px; }
         #toolbartoggle-btn > div > div span:before, #toolbartoggle-btn > div > div span:after {
           position: absolute;
