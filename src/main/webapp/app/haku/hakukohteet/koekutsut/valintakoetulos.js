@@ -96,10 +96,21 @@
 
 function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls, Dokumenttipalvelu) {
 	// kayttaa dokumenttipalvelua
-	Dokumenttipalvelu.aloitaPollaus();
+	$scope.dokumenttiLimit = 5;
+	$scope.dokumentit = [];
+	$scope.update = function(data) {
+		// paivitetaan ainoastaan tarpeen vaatiessa
+		if(data.length != $scope.dokumentit.length) {
+			$scope.dokumentit = data;
+		}
+	}
+	Dokumenttipalvelu.aloitaPollaus($scope.update);
 	$scope.$on('$destroy', function() {Dokumenttipalvelu.lopetaPollaus();});
 	// kayttaa dokumenttipalvelua
 	
+	$scope.showMoreDokumentit = function() {
+		$scope.dokumenttiLimit = $scope.dokumenttiLimit + 10;
+	};
 	$scope.tinymceModel = {};
 	
 	$scope.tinymceOptions = {
@@ -109,14 +120,15 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 	};
 	
 	
-	
 	$scope.tulostaKoekutsukirjeet = function(valintakoeOid) {
 		Koekutsukirjeet.post({
 			hakukohdeOid:$routeParams.hakukohdeOid, 
 			valintakoeOids: [valintakoeOid]},
 			$scope.tinymceModel[valintakoeOid],
-			function(r) {
-    		
+			function() {
+			Dokumenttipalvelu.paivita($scope.update);
+    	},function() {
+    		Dokumenttipalvelu.paivita($scope.update);
     	});
 	};
 	
