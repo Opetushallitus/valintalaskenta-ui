@@ -48,31 +48,35 @@ angular.module('valvomo').controller('ValvomoController', ['$scope', '$interval'
     );
 
     $scope.width = 100;
-    $scope.size = 5;
+    $scope.size = 10;
     $scope.gap = 2;
 
     $scope.range = function (n) {
         return new Array(n);
     };
-
+    var kuvio = Math.random()*10;
     $scope.x = function (n) {
         var jee = n % $scope.width * ($scope.size + $scope.gap);
-        return jee;
+        return jee + Math.sin(n/kuvio+Math.PI)+2;
     }
 
     $scope.y = function (n) {
         var jee = Math.floor(n / $scope.width) * ($scope.size + $scope.gap);
-        return jee;
+        return jee + Math.sin(n/kuvio+Math.PI)+2;
     }
 
     $scope.fill = function (n, laskettu, virheet) {
         if (n < laskettu) {
-            return '#00ff00'
+            return '#aaffaa'
         } else if (n < laskettu + virheet) {
-            return '#ff0000'
+            return '#ffaaaa'
         } else {
-            return '#0000ff'
+            return '#aaaaff'
         }
+    }
+
+    $scope.blockSize = function(n) {
+        return $scope.size+Math.sin(n/kuvio)-2;
     }
 
 }]);

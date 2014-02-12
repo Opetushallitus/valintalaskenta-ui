@@ -29,11 +29,12 @@
             </div>
 
 			<div class="margin-vertical-2 overflow-x-scroll">
-                <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot">
+                <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot | orderBy:'index':true">
+
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
                             <tr>
-                                <th colspan="7">
+                                <th colspan="8">
                                     {{jono.nimi}}:  {{jono.prioriteetti}} /
                                     <!---Valintatapajono OID: {{jono.oid}}-->
                                     Aloituspaikat:  {{jono.aloituspaikat}} /
@@ -66,10 +67,36 @@
                                 <td>
                                     <span>{{hakemus.tila}}</span>
                                     <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
+                                    <span></span>
+                                    <!-- TODO: directiivi olis kiva -->
+                                    <a href="" ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria">{{(hakemus.tilaHistoria  | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}</a>
+                                    <div class="modal-backdrop" ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria" ng-if="hakemus.showTilaHistoria"></div>
+                                    <div centralize class="modal" ng-if="hakemus.showTilaHistoria">
+                                        <div class="modal-header">
+                                            <span>Muutokset</span>
+                                            <a ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria" class="close"></a>
+                                        </div>
+                                        <div class="modal-content">
+                                            <table class="virkailija-table-1">
+                                                <thead>
+                                                <tr>
+                                                    <th>Luotu</th>
+                                                    <th>Tila</th>
+                                                </tr>
+                                                </thead>
+                                                <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true" >
+                                                    <td>{{entry.luotu | date:'dd.MM.yyyy HH:mm'}}</td>
+                                                    <td>{{entry.tila}}</td>
+                                                </tr>
+                                            </table>
+
+                                            <div class="clear"></div>
+                                        </div>
+                                    </div>
                                 </td>
 
 
-                                <td class="leftorientedcolumn">
+                                <td>
                                     <div ng-show="((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))">
                                         <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == ''">
                                           <select ng-model="hakemus.muokattuVastaanottoTila">
@@ -111,13 +138,13 @@
                                             <table class="virkailija-table-1">
                                                 <thead>
                                                 <tr>
-                                                    <th>Luotu</th   >
+                                                    <th>Luotu</th>
                                                     <th>Muokkaaja</th>
                                                     <th>Muutos</th>
                                                     <th>Selite</th>
                                                 </tr>
                                                 </thead>
-                                                <tr ng-repeat="entry in hakemus.logEntries" >
+                                                <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true" >
                                                     <td>{{entry.luotu | date:'dd.MM.yyyy HH:mm'}}</td>
                                                     <td>{{entry.muokkaaja}}</td>
                                                     <td><span ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>

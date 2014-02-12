@@ -168,9 +168,11 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                                 "value": hakija.additionalData[avain.osallistuminenTunniste]
                             }
                             , function () {
+                                toastr.success('Tallennus onnistui');
                                 hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
 
                             }, function(error) {
+                                toastr.error('Tallennus epäonnistui');
                                 model.errors.push(error);
                             });
                     }

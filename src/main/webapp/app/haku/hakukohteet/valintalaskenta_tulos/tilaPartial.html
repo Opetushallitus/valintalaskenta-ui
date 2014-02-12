@@ -15,7 +15,7 @@
 
             <tbody>
                 <tr ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit" >
-                    <td class="jarjestyskriteeri">{{$index}}</td>
+                    <td class="jarjestyskriteeri">{{jarjestyskriteeri.prioriteetti + 1}}. {{jarjestyskriteeri.nimi}}</td>
                     <td class="pistemaara">{{jarjestyskriteeri.arvo}}</td>
                     <td class="tila">{{jarjestyskriteeri.tila}}</td>
                     <td class="tilaKuvaus">{{jarjestyskriteeri.kuvaus}}</td>
