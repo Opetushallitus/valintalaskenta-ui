@@ -228,6 +228,10 @@ app.directive('auth', function($animate, $timeout, AuthService) {
                       case "read":
                           AuthService.readOrg(attrs.authService, attrs.authOrg).then(success);
                           break;
+
+                      default:
+                          AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrg).then(success);
+                          break;
                   }
               }
           });
@@ -470,7 +474,7 @@ app.directive('jarjestyskriteeriMuokkaus', function() {
                     arvo: $scope.jonosija.muokkaus.arvo,
                     selite: $scope.jonosija.muokkaus.selite
                 };
-                console.log(updateParams);
+
                 JarjestyskriteeriMuokattuJonosija.post(updateParams, postParams, function() {
                     // resurssi palauttaa hakemukset muutoksen jälkeen todennäköisesti eri järjestyksessä
                     $route.reload();
