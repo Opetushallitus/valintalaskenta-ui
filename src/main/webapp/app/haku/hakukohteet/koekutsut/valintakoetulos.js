@@ -94,10 +94,10 @@
 });
 
 
-function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls) {
+function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls, Dokumenttipalvelu) {
 	// kayttaa dokumenttipalvelua
-	$scope.dokumenttipalvelu.aloitaPollaus();
-	$scope.$on('$destroy', function() {$scope.dokumenttipalvelu.lopetaPollaus();});
+	Dokumenttipalvelu.aloitaPollaus();
+	$scope.$on('$destroy', function() {Dokumenttipalvelu.lopetaPollaus();});
 	// kayttaa dokumenttipalvelua
 	
 	$scope.tinymceModel = {};
