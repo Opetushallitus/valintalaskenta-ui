@@ -1,3 +1,4 @@
+"use strict";
 app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey, Valintakoetulokset, Hakemus, $q) {
     var model;
     model = new function () {
@@ -203,7 +204,9 @@ function PistesyottoController($scope, $timeout, $location, $routeParams, Pistes
 
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.hakukohdeModel = HakukohdeModel;
-    $scope.arvoFilter = "SYOTETTAVA_ARVO";
+    $scope.arvoFilter = null;
+    $scope.tila = "";
+    $scope.vainOsallistuvat = true;
     $scope.muutettu = false;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
@@ -234,6 +237,48 @@ function PistesyottoController($scope, $timeout, $location, $routeParams, Pistes
                 hakija.additionalData[tunniste] = undefined;
             }
         }
+
+    }
+
+    $scope.osallistuvatFilter = function(actual) {
+        var show = false;
+
+        if(!$scope.vainOsallistuvat) {
+            show = true;
+        } else if($scope.arvoFilter == null) {
+            if(actual.osallistuu) {
+                for(var osallistuu in actual.osallistuu) {
+                    if(actual.osallistuu[osallistuu] == 'OSALLISTUU') {
+                        show = true;
+                    }
+                }
+            }
+        } else if($scope.arvoFilter
+            && $scope.vainOsallistuvat
+            && actual.osallistuu
+            && actual.osallistuu[$scope.arvoFilter.tunniste] == 'OSALLISTUU') {
+
+            show = true;
+        }
+
+        if(show && $scope.tila != "") {
+            if($scope.arvoFilter == null) {
+                if(actual.originalData) {
+                    for(var tila in actual.originalData) {
+                        if(tila.indexOf('-OSALLISTUMINEN') > -1) {
+                            if(actual.originalData[tila] != $scope.tila) {
+                                show = false;
+                            }
+                        }
+                    }
+                }
+            } else if( actual.originalData
+                && actual.originalData[$scope.arvoFilter.tunniste + '-OSALLISTUMINEN'] != $scope.tila ) {
+                show = false;
+            }
+        }
+
+        return show;
 
     }
 }

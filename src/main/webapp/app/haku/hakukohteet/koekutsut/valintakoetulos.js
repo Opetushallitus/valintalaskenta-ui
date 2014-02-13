@@ -33,26 +33,25 @@
 			});
 		};
 		this.filterOsallistujat = function(hakijat) {
+			var self = this;
 			return _.filter(hakijat,function(hakija) {
-				return hakija.osallistuminen == this.filter;
+				return hakija.osallistuminen == self.filter;
 			});
 		};
 		this.isAllValittu = function(valintakoe) {
-			// fold left with valittu-and-function in hakijat
-			var reducedValittu = _.reduce(valintakoe.hakijat, function(a, b){
-				return {valittu: a.valittu && b.valittu}; }, {valittu:true});
-			return reducedValittu.valittu;
+			var osallistujat = this.filterOsallistujat(valintakoe.hakijat);
+			return osallistujat.length == this.filterValitut(osallistujat).length;
 		};
 		this.check = function(valintakoe) {
 			valintakoe.valittu = this.isAllValittu(valintakoe);
 		};
 		this.checkAll = function(valintakoe) {
-			_.each(valintakoe.hakijat, function(hakija) {
-				hakija.valittu = !valintakoe.valittu; 
+			var kaikkienUusiTila = valintakoe.valittu;
+			_.each(this.filterOsallistujat(valintakoe.hakijat), function(hakija) {
+				hakija.valittu = kaikkienUusiTila;
 			});
-			this.check(valintakoe);
+			valintakoe.valittu = this.isAllValittu(valintakoe);
 		};
-		
 		
 		this.valitutHakemusOids = function(valintakoe) {
 			return _.map(this.filterValitut(this.filterOsallistujat(valintakoe.hakijat)), function(hakija){ return hakija.hakemusOid; });
@@ -181,14 +180,12 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 				return; // ei tehda tyhjalle joukolle
 			}
 		}
-		
     	Osoitetarrat.post({
     		hakemusOids: hakemusOids, 
     		hakukohdeOid:$routeParams.hakukohdeOid, 
     		valintakoeOid:[valintakoe.valintakoeOid]},function(resurssi) {
     			Dokumenttipalvelu.paivita($scope.update);
     	});
-    	
     };
     $scope.allAddressLabelPDF = function() {
     	var kokeet = [];
@@ -218,7 +215,6 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     $scope.model.refresh($scope.hakukohdeOid);
 
     $scope.nakymanTila = "Hakijoittain"; // Hakijoittain
-
 
     $scope.predicate = 'hakijaOid';
 

@@ -111,7 +111,7 @@
 					<table class="virkailija-table-1">
                         <thead>
                         <tr>
-                            <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse"><input type="checkbox" ng-click="model.checkAll(valintakoe); $event.stopPropagation()" ng-model="valintakoe.valittu"> Nimi</a></th>
+                            <th><input type="checkbox" ng-model="valintakoe.valittu" ng-change="model.checkAll(valintakoe);"/><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Nimi</a></th>
                             <th><a href="" ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a></th>
                             <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">Laskettu pvm</a></th>
                         </tr>
