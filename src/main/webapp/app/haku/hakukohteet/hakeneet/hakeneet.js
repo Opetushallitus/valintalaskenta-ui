@@ -49,4 +49,9 @@ function HakeneetController($scope, $location, $routeParams, HakeneetModel, Haku
 
     HakeneetModel.refreshIfNeeded($scope.hakukohdeOid,$scope.hakuOid);
     $scope.model = HakeneetModel;
+    // Kielistys joskus
+    $scope.tila = {
+        "ACTIVE": "Aktiivinen",
+        "INCOMPLETE": "Puutteellinen"
+    }
 }
