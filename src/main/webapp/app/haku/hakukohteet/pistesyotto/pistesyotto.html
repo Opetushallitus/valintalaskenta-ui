@@ -25,7 +25,7 @@
                     <option value="OSALLISTUI">Osallistui</option>
                     <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
                 </select>
-                <input id="osallistuu" type="checkbox" ng-init="vainOsallistuvat = 'OSALLISTUU'" ng-model="vainOsallistuvat" ng-true-value="OSALLISTUU" ng-false-value=""/>
+                <input id="osallistuu" type="checkbox"  ng-model="vainOsallistuvat" />
                 <label for="osallistuu">Vain osallistuvat</label>
 
                 <form name="form" ng-submit="submit()">
@@ -42,7 +42,7 @@
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:vainOsallistuvat | filter:{'originalData':(tila ? tila : undefined)}">
+                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter">
                             <td>
                                 <show-person-information sukunimi="{{hakija.lastName}}"
                                                          etunimi="{{hakija.firstNames}}"
