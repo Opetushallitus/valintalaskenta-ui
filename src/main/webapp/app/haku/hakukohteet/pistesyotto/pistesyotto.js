@@ -1,4 +1,4 @@
-app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey, Valintakoetulokset, Hakemus) {
+app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey, Valintakoetulokset, Hakemus, $q) {
     var model;
     model = new function () {
 
@@ -113,9 +113,12 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
 
 
         this.submit = function () {
+            var promises = [];
             model.errors.length = 0;
             model.hakeneet.forEach(function (hakija) {
                 model.avaimet.forEach(function (avain) {
+                    var deferred = $q.defer();
+                    promises.push(deferred);
                     var min = parseFloat(avain.min);
                     var max = parseFloat(avain.max);
                     var value = hakija.additionalData[avain.tunniste];
@@ -168,16 +171,23 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                                 "value": hakija.additionalData[avain.osallistuminenTunniste]
                             }
                             , function () {
-                                toastr.success('Tallennus onnistui');
+                                deferred.resolve();
                                 hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
-
                             }, function(error) {
-                                toastr.error('Tallennus epäonnistui');
+                                deferred.reject();
                                 model.errors.push(error);
                             });
                     }
                 });
             });
+            var promise = $q.all(promises);
+
+            promise.then(function(){
+                toastr.success('Tallennus onnistui');
+            }, function() {
+                toastr.error('Tallennus epäonnistui');
+            })
+            
         };
 
     };

@@ -1,3 +1,4 @@
+"use strict";
 //var VALINTAPERUSTEET = "APP_VALINTAPERUSTEET";
 //var VALINTOJENTOTEUTTAMIEN = "APP_VALINTOJENTOTEUTTAMINEN";
 //var SIJOITTELU = "APP_SIJOITTELU";
@@ -7,12 +8,28 @@ var UPDATE = "READ_UPDATE";
 var CRUD = "CRUD";
 var OPH_ORG = "1.2.246.562.10.00000000001";
 
-app.factory('MyRolesModel', function ($q, $http) {
+app.factory('MyRolesModel', function ($q, $http, $timeout) {
     var deferred = $q.defer();
 
-    $http.get(CAS_URL).success(function (result) {
-        deferred.resolve(result);
-    });
+    // retrytetään niin kauan, että oikeuksia saadaan.
+    var refresh = function() {
+        $http.get(CAS_URL).success(function (result) {
+            // kyllä nyt jotain oikeuksia pitäis olla, jos tänne on tultu
+            if(result.length > 0) {
+                deferred.resolve(result);
+            } else {
+                $timeout(function(){
+                    refresh();
+                }, 1000);
+            }
+        }).error(function(){
+            $timeout(function(){
+                refresh();
+            }, 1000);
+        });
+    }
+
+    refresh();
 
     return deferred.promise;
 });

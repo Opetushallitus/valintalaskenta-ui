@@ -209,7 +209,10 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Hak
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     }
     $scope.createHyvaksymisosoitteetPDF = function () {
-        Hyvaksymisosoitteet.query({sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
+        Hyvaksymisosoitteet.post({
+        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
+        	hakuOid: $routeParams.hakuOid, 
+        	hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
             $window.location.href = resurssi.latausUrl;
         }, function (response) {
             alert(response.data.viesti);
@@ -255,4 +258,21 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Hak
         }, 10);
     }
 
+    var order = {
+        "HYVAKSYTTY": 1,
+        "VARALLA": 2,
+        "PERUNUT": 3,
+        "PERUUTETTU": 4,
+        "PERUUNTUNUT": 5,
+        "HYLATTY": 6
+
+    }
+
+    $scope.jarjesta = function(value) {
+        var i = order[value.tila];
+        if(i == order["HYVAKSYTTY"] && value.harkinnanvarainen) {
+            i = 0;
+        }
+        return i;
+    };
 }

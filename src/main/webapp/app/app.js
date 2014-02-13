@@ -1,7 +1,8 @@
 "use strict";
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce', 'valvomo'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
-}).run(function($http){
+}).run(function($http, MyRolesModel){
+    MyRolesModel;
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
 });
 
@@ -299,13 +300,13 @@ app.factory('Koekutsukirjeet', function($resource) {
 
 app.factory('Osoitetarrat', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/aktivoi", {}, {
-		query:  {method:'GET', isArray:false}
+		post:  {method:'POST', isArray:false}
 	});
 });
 
 app.factory('Hyvaksymisosoitteet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksyttyjenosoitetarrat/aktivoi", {}, {
-		query:  {method:'GET', isArray:false}
+		post:  {method:'POST', isArray:false}
 	});
 });
 
