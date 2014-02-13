@@ -46,6 +46,13 @@
 		this.check = function(valintakoe) {
 			valintakoe.valittu = this.isAllValittu(valintakoe);
 		};
+		this.checkAll = function(valintakoe) {
+			_.each(valintakoe.hakijat, function(hakija) {
+				hakija.valittu = !valintakoe.valittu; 
+			});
+			this.check(valintakoe);
+		};
+		
 		
 		this.valitutHakemusOids = function(valintakoe) {
 			return _.map(this.filterValitut(this.filterOsallistujat(valintakoe.hakijat)), function(hakija){ return hakija.hakemusOid; });
@@ -164,7 +171,41 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     	});
     	
 	};
-	
+	$scope.addressLabelPDF = function(valintakoe) {
+		var hakemusOids = null;
+		if($scope.model.isAllValittu(valintakoe)) {
+			// luodaan uusimmasta kannan datasta. kayttoliittama voi olla epasynkassa
+		} else {
+			hakemusOids =  $scope.model.valitutHakemusOids(valintakoe);
+			if(hakemusOids.length == 0) {
+				return; // ei tehda tyhjalle joukolle
+			}
+		}
+		
+    	Osoitetarrat.post({
+    		hakemusOids: hakemusOids, 
+    		hakukohdeOid:$routeParams.hakukohdeOid, 
+    		valintakoeOid:[valintakoe.valintakoeOid]},function(resurssi) {
+    			Dokumenttipalvelu.paivita($scope.update);
+    	});
+    	
+    };
+    $scope.allAddressLabelPDF = function() {
+    	var kokeet = [];
+    	for (var key in $scope.model.valintakokeet) {
+    	    kokeet.push(key);
+    	}
+    	Osoitetarrat.post({
+    		hakemusOids: null,
+    		hakukohdeOid:$routeParams.hakukohdeOid, 
+    		valintakoeOid:kokeet}, function(resurssi) {
+    		$window.location.href = resurssi.latausUrl;
+    	}, function(response) {
+    		Dokumenttipalvelu.paivita($scope.update);
+    	});
+    	//console.log(kokeet);
+    };
+    
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -187,26 +228,10 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     	    kokeet.push(key);
     	}
     	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet});
-    } 
+    };
     $scope.valintakoeTulosXLS = function(valintakoeOid) {
     	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:[valintakoeOid]});
-    }
-    $scope.allAddressLabelPDF = function() {
-    	var kokeet = [];
-    	for (var key in $scope.model.valintakokeet) {
-    	    kokeet.push(key);
-    	}
-    	Osoitetarrat.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet}, function(resurssi) {
-    		$window.location.href = resurssi.latausUrl;
-    	}, function(response) {
-    		alert(response.data.viesti);
-    	});
-    	//console.log(kokeet);
-    }
-    $scope.addressLabelPDF = function(valintakoeOid) {
-    	Osoitetarrat.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:[valintakoeOid]},function(resurssi) {
-    		$window.location.href = resurssi.latausUrl;
-    	});
-    	
-    }
+    };
+    
+    
 }   

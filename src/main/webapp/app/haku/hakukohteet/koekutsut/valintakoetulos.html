@@ -107,11 +107,11 @@
 					<hr>
                     <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small excel">Vie taulukkolaskentaan</a>
                     <a ng-click="tulostaKoekutsukirjeet(valintakoe); $event.stopPropagation()" class="button small pdf">Muodosta koekutsut</a>
-                    <a ng-click="addressLabelPDF(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small pdf">Muodosta osoitetarrat</a>
+                    <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()" class="button small pdf">Muodosta osoitetarrat</a>
 					<table class="virkailija-table-1">
                         <thead>
                         <tr>
-                            <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse"><input type="checkbox" ng-model="valintakoe.valittu"> Nimi</a></th>
+                            <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse"><input type="checkbox" ng-click="model.checkAll(valintakoe); $event.stopPropagation()" ng-model="valintakoe.valittu"> Nimi</a></th>
                             <th><a href="" ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a></th>
                             <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">Laskettu pvm</a></th>
                         </tr>

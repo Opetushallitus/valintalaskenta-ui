@@ -300,13 +300,13 @@ app.factory('Koekutsukirjeet', function($resource) {
 
 app.factory('Osoitetarrat', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/aktivoi", {}, {
-		query:  {method:'GET', isArray:false}
+		post:  {method:'POST', isArray:false}
 	});
 });
 
 app.factory('Hyvaksymisosoitteet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksyttyjenosoitetarrat/aktivoi", {}, {
-		query:  {method:'GET', isArray:false}
+		post:  {method:'POST', isArray:false}
 	});
 });
 

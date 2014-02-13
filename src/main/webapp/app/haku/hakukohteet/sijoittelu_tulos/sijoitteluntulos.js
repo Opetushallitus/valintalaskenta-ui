@@ -209,7 +209,10 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Hak
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     }
     $scope.createHyvaksymisosoitteetPDF = function () {
-        Hyvaksymisosoitteet.query({sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
+        Hyvaksymisosoitteet.post({
+        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
+        	hakuOid: $routeParams.hakuOid, 
+        	hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
             $window.location.href = resurssi.latausUrl;
         }, function (response) {
             alert(response.data.viesti);
