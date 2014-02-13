@@ -258,4 +258,21 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Hak
         }, 10);
     }
 
+    var order = {
+        "HYVAKSYTTY": 1,
+        "VARALLA": 2,
+        "PERUNUT": 3,
+        "PERUUTETTU": 4,
+        "PERUUNTUNUT": 5,
+        "HYLATTY": 6
+
+    }
+
+    $scope.jarjesta = function(value) {
+        var i = order[value.tila];
+        if(i == order["HYVAKSYTTY"] && value.harkinnanvarainen) {
+            i = 0;
+        }
+        return i;
+    };
 }
