@@ -26,10 +26,30 @@
 			}, function(error) {
                 model.errors.push(error);
             });
-		}
-
-
-
+		};
+		this.filterValitut = function(hakijat) {
+			return _.filter(hakijat,function(hakija) {
+				return hakija.valittu;
+			});
+		};
+		this.filterOsallistujat = function(hakijat) {
+			return _.filter(hakijat,function(hakija) {
+				return hakija.osallistuminen == this.filter;
+			});
+		};
+		this.isAllValittu = function(valintakoe) {
+			// fold left with valittu-and-function in hakijat
+			var reducedValittu = _.reduce(valintakoe.hakijat, function(a, b){
+				return {valittu: a.valittu && b.valittu}; }, {valittu:true});
+			return reducedValittu.valittu;
+		};
+		this.check = function(valintakoe) {
+			valintakoe.valittu = this.isAllValittu(valintakoe);
+		};
+		
+		this.valitutHakemusOids = function(valintakoe) {
+			return _.map(this.filterValitut(this.filterOsallistujat(valintakoe.hakijat)), function(hakija){ return hakija.hakemusOid; });
+		};
 
 		// helpommin käsiteltävään muotoon tulokset. samoin privaattina
 		// funktiona, niin ei turhaan pysty kutsumaan tätä suoraan ulkopuolelta.
@@ -51,13 +71,14 @@
                                 entry.createdAt = koetulos.createdAt;
                                 entry.etunimi = koetulos.etunimi;
                                 entry.sukunimi = koetulos.sukunimi;
-
+                                entry.valittu = true;
+                                
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
                                 entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 
                                 if (model.valintakokeet[entry.valintakoeOid] === undefined ) {
-                                	model.valintakokeet[entry.valintakoeOid] = {valintakoeOid: entry.valintakoeOid, valintakoeTunniste: entry.valintakoeTunniste, hakijat: [entry]};    
+                                	model.valintakokeet[entry.valintakoeOid] = {valittu: true, valintakoeOid: entry.valintakoeOid, valintakoeTunniste: entry.valintakoeTunniste, hakijat: [entry]};    
                                 } else {
                                 	model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
                                 }
@@ -85,7 +106,7 @@
               if (model.valintakokeetHakijoittain.hasOwnProperty(key)) {
                 model.valintakokeetHakijoittainArray.push(model.valintakokeetHakijoittain[key]);
               }
-            }
+            };
 		}
 
 	};
@@ -95,6 +116,7 @@
 
 
 function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls, Dokumenttipalvelu) {
+	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	// kayttaa dokumenttipalvelua
 	$scope.dokumenttiLimit = 5;
 	$scope.dokumentit = [];
@@ -119,17 +141,28 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 		}
 	};
 	
-	
-	$scope.tulostaKoekutsukirjeet = function(valintakoeOid) {
+	$scope.tulostaKoekutsukirjeet = function(valintakoe) {
+		var hakemusOids = null;
+		if($scope.model.isAllValittu(valintakoe)) {
+			// luodaan uusimmasta kannan datasta. kayttoliittama voi olla epasynkassa
+		} else {
+			hakemusOids =  $scope.model.valitutHakemusOids(valintakoe);
+			if(hakemusOids.length == 0) {
+				return; // ei tehda tyhjalle joukolle
+			}
+		}
+		
 		Koekutsukirjeet.post({
+			hakemusOids: hakemusOids,
 			hakukohdeOid:$routeParams.hakukohdeOid, 
-			valintakoeOids: [valintakoeOid]},
-			$scope.tinymceModel[valintakoeOid],
+			valintakoeOids: [valintakoe.valintakoeOid]},
+			$scope.tinymceModel[valintakoe.valintakoeOid],
 			function() {
 			Dokumenttipalvelu.paivita($scope.update);
     	},function() {
     		Dokumenttipalvelu.paivita($scope.update);
     	});
+    	
 	};
 	
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -148,9 +181,6 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 
     $scope.predicate = 'hakijaOid';
 
-    /*$scope.valintakoeTulosXLS = function(valintakoeOid) {
-    	$window.location.href = SERVICE_EXCEL_URL_BASE + "export/valintakoetulos.xls?hakukohdeOid=" + $routeParams.hakukohdeOid + "&valintakoeOid=" + valintakoeOid;
-    }*/
     $scope.allValintakoeTulosXLS = function() {
     	var kokeet = [];
     	for (var key in $scope.model.valintakokeet) {

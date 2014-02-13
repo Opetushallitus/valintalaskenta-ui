@@ -176,10 +176,10 @@ app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
 });
 
 //dokumenttipalvelu
-app.factory('Dokumenttipalvelu', function($rootScope, $resource, $window, Poller) {
+app.factory('Dokumenttipalvelu', function($http, $rootScope, $resource, $window, Poller) {
 	
-    
     return {
+    	_filter: "",
     	_p1: null,
     	_repeater: function() {
     		var self = this;
@@ -191,7 +191,16 @@ app.factory('Dokumenttipalvelu', function($rootScope, $resource, $window, Poller
             });
     	},
     	_timer: null,
-    	aloitaPollaus: function() {
+    	paivita: function(callback) {
+    		$http({method: "GET", url: DOKUMENTTIPALVELU_URL_BASE + "/dokumentit/hae"}).
+    		  success(function(data) {
+    			  callback(data);
+    			  console.log(data);
+    		  });
+    	},
+    	aloitaPollaus: function(callback, filter) {
+    		this._filter = filter;
+    		this.paivita(callback);
     		this._timer = $window.setInterval(this._repeater, 5000);
     		console.log('start polling start' + this._timer);
     	},
