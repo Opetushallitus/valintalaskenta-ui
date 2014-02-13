@@ -21,7 +21,7 @@
                     <table class="virkailija-table-1">
                         <thead>
                             <tr>
-                                <th>Nimi</th>
+                                <th><input type="checkbox" ng-change="model.checkAll();" ng-model="model.valittu"> Nimi</th>
                                 <th>Pohjakoulutus</th>
                                 <th>Harkinnanvarainen tila</th>
                             </tr>
@@ -29,6 +29,7 @@
                         <tbody>
                             <tr ng-repeat="hakija in model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true} | filter:hakijaFilter">
                                 <td>
+                                	<input type="checkbox" ng-change="model.check();" ng-model="hakija.valittu"> 
                                     <show-person-information sukunimi="{{hakija.lastName}}"
                                                              etunimi="{{hakija.firstNames}}"
                                                              hakemus-oid="{{hakija.oid}}"

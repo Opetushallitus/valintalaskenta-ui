@@ -11,7 +11,26 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
         this.errors = [];
 
         this.hakemusErittelyt = []; //dataa perustietonäkymälle
-
+        
+        this.filterValitut = function(hakemukset) {
+			return _.filter(hakemukset,function(hakemus) {
+				return hakemus.valittu;
+			});
+		};
+		this.isAllValittu = function(valintatapajono) {
+			return valintatapajono.hakemukset.length == this.filterValitut(valintatapajono.hakemukset).length;
+		};
+		this.check = function(valintatapajono) {
+			valintatapajono.valittu = this.isAllValittu(valintatapajono);
+		};
+		this.checkAll = function(valintatapajono) {
+			var kaikkienUusiTila = valintatapajono.valittu;
+			_.each(this.filterOsallistujat(valintatapajono.hakemukset), function(hakemus) {
+				hakemus.valittu = kaikkienUusiTila;
+			});
+			valintatapajono.valittu = this.isAllValittu(valintatapajono);
+		};
+		
         this.refresh = function (hakuOid, hakukohdeOid) {
             model.errors = [];
             model.errors.length = 0;
@@ -34,6 +53,7 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
 
                     valintatapajonot.forEach(function (valintatapajono, index) {
                         valintatapajono.index = index;
+                        valintatapajono.valittu = true;
                         var valintatapajonoOid = valintatapajono.oid;
                         var hakemukset = valintatapajono.hakemukset;
 
@@ -66,6 +86,7 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
                             if (hakemus.tila === "VARALLA") {
                                 hakemuserittely.varasijoilla.push(hakemus);
                             }
+                            hakemus.valittu = true;
                             hakemus.sija = sija;
                             lastTasaSija = hakemus.tasasijaJonosija;
                         });
