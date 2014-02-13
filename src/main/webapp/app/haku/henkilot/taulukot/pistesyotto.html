@@ -15,8 +15,8 @@
                     </tr>
                     <tr>
                         <th ng-repeat="avain in hakutoive.avaimet | filter:{'lahde': arvoFilter}">
-                            {{avain.kuvaus}} 
-                            <span ng-if="avain.min !== undefined || avain.max !== undefined">
+                            {{avain.kuvaus}}
+                            <span ng-if="avain.min !== undefined && avain.min !== null|| avain.max !== null && avain.max !== undefined">
                                 ({{avain.min}} - {{avain.max}})
                             </span>
                         </th>

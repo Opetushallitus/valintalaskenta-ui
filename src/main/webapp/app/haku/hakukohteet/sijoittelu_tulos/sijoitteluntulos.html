@@ -67,6 +67,7 @@
                                 <td>{{hakemus.pisteet}}</td>
                                 <td>
                                     <span>{{hakemus.tila}}</span>
+                                    <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>
                                     <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
                                     <span></span>
                                     <!-- TODO: directiivi olis kiva -->

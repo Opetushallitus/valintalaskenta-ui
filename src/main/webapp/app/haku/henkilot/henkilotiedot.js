@@ -288,7 +288,9 @@ function HenkiloTiedotController($q, $scope, $route, $routeParams, HenkiloTiedot
     $scope.submit = function (hakutoive) {
         var promises = $scope.model.submit(hakutoive)
         $q.all(promises).then(function(){
-            $route.reload();
+            toastr.success('Tallennus onnistui');
+        }, function() {
+            toastr.error('Tallennus epäonnistui');
         });
     }
     $scope.changeOsallistuminen = function (hakija, tunniste, value) {

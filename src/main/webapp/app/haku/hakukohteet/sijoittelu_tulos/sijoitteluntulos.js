@@ -291,7 +291,7 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Hak
 
     $scope.jarjesta = function(value) {
         var i = order[value.tila];
-        if(i == order["HYVAKSYTTY"] && value.harkinnanvarainen) {
+        if(i == order["HYVAKSYTTY"] && value.hyvaksyttyHarkinnanvaraisesti) {
             i = 0;
         }
         return i;
