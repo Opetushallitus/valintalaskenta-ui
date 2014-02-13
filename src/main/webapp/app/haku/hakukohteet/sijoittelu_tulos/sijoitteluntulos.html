@@ -53,7 +53,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="hakemus in jono.hakemukset | limitTo:limit | filter:hakijaFilter">
+                            <tr ng-repeat="hakemus in jono.hakemukset | orderBy:jarjesta | limitTo:limit | filter:hakijaFilter">
                                 <td>{{hakemus.sija}}</td>
                                 <td>
                                     <show-person-information sukunimi="{{hakemus.sukunimi}}"
