@@ -29,7 +29,7 @@
                 <label for="osallistuu">Vain osallistuvat</label>
 
                 <form name="form" ng-submit="submit()">
-                    <table class="virkailija-table-1">
+                    <table class="virkailija-table-1" item-on-screen>
                         <thead>
                         <tr>
                             <th><a href="" ng-click="predicate = 'lastName'; reverse=!reverse">Tiedot</a></th>
@@ -42,7 +42,7 @@
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter">
+                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter | limitTo:limit">
                             <td>
                                 <show-person-information sukunimi="{{hakija.lastName}}"
                                                          etunimi="{{hakija.firstNames}}"
@@ -124,4 +124,7 @@
     </div>
 
     <div class="clear"></div>
+    <div ng-show="showLoading"
+         style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...
+    </div>
 </div>
