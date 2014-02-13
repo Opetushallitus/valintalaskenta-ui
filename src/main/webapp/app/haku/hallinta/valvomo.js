@@ -14,6 +14,7 @@ angular.module('valvomo').controller('ValvomoController', ['$scope', '$interval'
     $scope.sijoittelu = [];
     $scope.valintalaskenta = [];
     $scope.valintakoelaskenta = [];
+    $scope.hakuimport = [];
     $scope.valittu = 'valintalaskenta';
 
     var update = function (valittu) {
