@@ -312,13 +312,13 @@ app.factory('Hyvaksymisosoitteet', function($resource) {
 
 app.factory('Hyvaksymiskirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksymiskirjeet/aktivoi", {}, {
-		query:  {method:'GET', isArray:false}
+		post:  {method:'POST', isArray:false}
 	});
 });
 
 app.factory('Jalkiohjauskirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/jalkiohjauskirjeet/aktivoi", {}, {
-		query:  {method:'GET', isArray:false}
+		post:  {method:'POST', isArray:false}
 	});
 });
 

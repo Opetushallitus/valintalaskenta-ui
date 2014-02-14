@@ -281,4 +281,14 @@ function PistesyottoController($scope, $timeout, $location, $routeParams, Pistes
         return show;
 
     }
+
+    $scope.limit = 20;
+    $scope.lazyLoading = function () {
+
+        $scope.showLoading = true;
+        $timeout(function () {
+            $scope.limit += 50;
+            $scope.showLoading = false;
+        }, 10);
+    }
 }
