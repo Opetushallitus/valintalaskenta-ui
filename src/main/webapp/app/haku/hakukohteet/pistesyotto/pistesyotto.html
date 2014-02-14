@@ -25,22 +25,24 @@
                     <option value="OSALLISTUI">Osallistui</option>
                     <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
                 </select>
-                <input id="osallistuu" type="checkbox" ng-init="vainOsallistuvat = 'OSALLISTUU'" ng-model="vainOsallistuvat" ng-true-value="OSALLISTUU" ng-false-value=""/>
+                <input id="osallistuu" type="checkbox"  ng-model="vainOsallistuvat" />
                 <label for="osallistuu">Vain osallistuvat</label>
 
                 <form name="form" ng-submit="submit()">
-                    <table class="virkailija-table-1">
+                    <table class="virkailija-table-1" item-on-screen>
                         <thead>
                         <tr>
                             <th><a href="" ng-click="predicate = 'lastName'; reverse=!reverse">Tiedot</a></th>
-                            <th ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste}">{{avain.tunniste}} {{avain.kuvaus}}
+                            <th ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste}">{{avain.kuvaus}}
+                                <span ng-if="avain.min !== undefined && avain.min !== null|| avain.max !== null && avain.max !== undefined">
                                 ({{avain.min}} - {{avain.max}})
+                            </span>
                             </th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:vainOsallistuvat | filter:{'originalData':(tila ? tila : undefined)}">
+                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter | limitTo:limit">
                             <td>
                                 <show-person-information sukunimi="{{hakija.lastName}}"
                                                          etunimi="{{hakija.firstNames}}"
@@ -122,4 +124,7 @@
     </div>
 
     <div class="clear"></div>
+    <div ng-show="showLoading"
+         style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...
+    </div>
 </div>

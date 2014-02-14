@@ -1,5 +1,5 @@
 <h1>Valintojen toteuttaminen</h1>
-<div ng-include="'haku/topNavigation.html'" />
+<div ng-include="'haku/topNavigation.html'"/>
 
 <div class="tabsheets">
 
@@ -8,96 +8,111 @@
     <div class="toggle-content-container overflow-x-scroll">
 
         <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
-        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'" />
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
 
-		<div class="tabsheets">
+        <div class="tabsheets">
 
             <div ng-include="'../common/html/errors.html'"></div>
-            
+
             <div ng-show="model.sijoitteluTulokset.sijoitteluajoId">
                 <div class="margin-vertical-2">
-                    Viimeisimmät sijoittelun tulokset. Sijoitteluajo on alkanut  <strong>{{model.latestSijoitteluajo.startMils | date:'dd.MM.yyyy HH:mm'}}</strong>
-                    ja loppunut <strong>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</strong>. Sijoitteluajon tunniste on <strong>{{model.latestSijoitteluajo.sijoitteluajoId}}</strong>.
+                    Viimeisimmät sijoittelun tulokset. Sijoitteluajo on alkanut <strong>{{model.latestSijoitteluajo.startMils
+                    | date:'dd.MM.yyyy HH:mm'}}</strong>
+                    ja loppunut <strong>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</strong>.
+                    Sijoitteluajon tunniste on <strong>{{model.latestSijoitteluajo.sijoitteluajoId}}</strong>.
                     Sijoittelu suoritetaan kerran vuorokaudessa.
                 </div>
 
-                <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="button small excel">Vie exceliin</a>
-                <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo hyväksymiskirjeet</a>
-                <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="button small pdf">Luo hyväksytyille osoitetarrat</a>
-                <br />
-                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+                <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="button small excel">Vie
+                    exceliin</a>
+                <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo
+                    hyväksymiskirjeet</a>
+                <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="button small pdf">Luo
+                    hyväksytyille osoitetarrat</a>
+                <br/>
+                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
+                       ng-model="hakijaFilter"/>
             </div>
 
-			<div class="margin-vertical-2 overflow-x-scroll">
+            <div class="margin-vertical-2 overflow-x-scroll">
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot | orderBy:'index':true">
 
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
-                            <tr>
-                                <th colspan="8">
-                                    {{jono.nimi}}:  {{jono.prioriteetti}} /
-                                    <!---Valintatapajono OID: {{jono.oid}}-->
-                                    Aloituspaikat:  {{jono.aloituspaikat}} /
-                                    Tasasijasaanto: {{jono.tasasijasaanto}}
-                                </th>
-                            </tr>
-                            <tr>
-                                <th>Jonosija ({{jono.hakemukset.length}})</th>
-                                <th>Hakija</th>
-                                <th>Hakutoive</th>
-                                <th>Pisteet</th>
-                                <th>Sijoittelun tila</th>
-                                <th>Vastaanottotieto</th>
-                                <th>Muokattu</th>
-                                <th>Muokkaa</th>
-                            </tr>
+                        <tr>
+                            <th colspan="9">
+                                {{jono.nimi}}: {{jono.prioriteetti}} /
+                                <!---Valintatapajono OID: {{jono.oid}}-->
+                                Aloituspaikat: {{jono.aloituspaikat}} /
+                                Tasasijasaanto: {{jono.tasasijasaanto}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th><input type="checkbox" ng-model="jono.valittu" ng-change="model.checkAll(jono);"></th>
+                            <th>Jonosija ({{jono.hakemukset.length}})</th>
+                            <th>Hakija</th>
+                            <th>Hakutoive</th>
+                            <th>Pisteet</th>
+                            <th>Sijoittelun tila</th>
+                            <th>Vastaanottotieto</th>
+                            <th>Muokattu</th>
+                            <th>Muokkaa</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="hakemus in jono.hakemukset | orderBy:jarjesta | limitTo:limit | filter:hakijaFilter">
-                                <td>{{hakemus.sija}}</td>
-                                <td>
-                                    <show-person-information sukunimi="{{hakemus.sukunimi}}"
-                                                             etunimi="{{hakemus.etunimi}}"
-                                                             hakemus-oid="{{hakemus.hakemusOid}}"
-                                                             haku-oid="{{hakuOid}}"
-                                                             henkilo-oid="{{hakemus.hakijaOid}}" />
-                                </td>
-                                <td>{{hakemus.prioriteetti}}</td>
-                                <td>{{hakemus.pisteet}}</td>
-                                <td>
-                                    <span>{{hakemus.tila}}</span>
-                                    <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
-                                    <span></span>
-                                    <!-- TODO: directiivi olis kiva -->
-                                    <a href="" ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria">{{(hakemus.tilaHistoria  | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}</a>
-                                    <div class="modal-backdrop" ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria" ng-if="hakemus.showTilaHistoria"></div>
-                                    <div centralize class="modal" ng-if="hakemus.showTilaHistoria">
-                                        <div class="modal-header">
-                                            <span>Muutokset</span>
-                                            <a ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria" class="close"></a>
-                                        </div>
-                                        <div class="modal-content">
-                                            <table class="virkailija-table-1">
-                                                <thead>
-                                                <tr>
-                                                    <th>Luotu</th>
-                                                    <th>Tila</th>
-                                                </tr>
-                                                </thead>
-                                                <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true" >
-                                                    <td>{{entry.luotu | date:'dd.MM.yyyy HH:mm'}}</td>
-                                                    <td>{{entry.tila}}</td>
-                                                </tr>
-                                            </table>
+                        <tr ng-repeat="hakemus in jono.hakemukset | orderBy:jarjesta | limitTo:limit | filter:hakijaFilter">
+                            <td><input type="checkbox" ng-model="hakemus.valittu" ng-change="model.check(jono);"></td>
 
-                                            <div class="clear"></div>
-                                        </div>
+                            <td>{{hakemus.sija}}</td>
+                            <td>
+                                <show-person-information sukunimi="{{hakemus.sukunimi}}"
+                                                         etunimi="{{hakemus.etunimi}}"
+                                                         hakemus-oid="{{hakemus.hakemusOid}}"
+                                                         haku-oid="{{hakuOid}}"
+                                                         henkilo-oid="{{hakemus.hakijaOid}}"/>
+                            </td>
+                            <td>{{hakemus.prioriteetti}}</td>
+                            <td>{{hakemus.pisteet}}</td>
+                            <td>
+                                <span>{{hakemus.tila}}</span>
+                                <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>
+                                <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
+                                <span></span>
+                                <!-- TODO: directiivi olis kiva -->
+                                <a href="" ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria">{{(hakemus.tilaHistoria
+                                    | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}</a>
+
+                                <div class="modal-backdrop"
+                                     ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria"
+                                     ng-if="hakemus.showTilaHistoria"></div>
+                                <div centralize class="modal" ng-if="hakemus.showTilaHistoria">
+                                    <div class="modal-header">
+                                        <span>Muutokset</span>
+                                        <a ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria"
+                                           class="close"></a>
                                     </div>
-                                </td>
+                                    <div class="modal-content">
+                                        <table class="virkailija-table-1">
+                                            <thead>
+                                            <tr>
+                                                <th>Luotu</th>
+                                                <th>Tila</th>
+                                            </tr>
+                                            </thead>
+                                            <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true">
+                                                <td>{{entry.luotu | date:'dd.MM.yyyy HH:mm'}}</td>
+                                                <td>{{entry.tila}}</td>
+                                            </tr>
+                                        </table>
+
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                            </td>
 
 
-                                <td>
-                                    <div ng-show="((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))">
+                            <td>
+                                <div ng-show="((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))">
                                         <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == ''">
                                           <select ng-model="hakemus.muokattuVastaanottoTila">
                                               <option value="">Kesken</option>
@@ -108,9 +123,14 @@
                                         <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == 'ILMOITETTU'">
                                             <select ng-model="hakemus.muokattuVastaanottoTila">
                                                 <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
-                                                <option value="VASTAANOTTANUT_LASNA">Vastaanottanut läsnäolevana</option>
-                                                <option value="VASTAANOTTANUT_POISSAOLEVA">Vastaanottanut poissaolevana</option>
-                                                <option value="EI_VASTAANOTETTU_MAARA_AIKANA">Ei vastaanotettu määräaikana</option>
+                                                <option value="VASTAANOTTANUT_LASNA">Vastaanottanut läsnäolevana
+                                                </option>
+                                                <option value="VASTAANOTTANUT_POISSAOLEVA">Vastaanottanut
+                                                    poissaolevana
+                                                </option>
+                                                <option value="EI_VASTAANOTETTU_MAARA_AIKANA">Ei vastaanotettu
+                                                    määräaikana
+                                                </option>
                                                 <option value="PERUNUT">Perunut</option>
                                                 <option value="PERUUTETTU">Peruutettu</option>
                                             </select>
@@ -123,60 +143,66 @@
                                             <span ng-if="hakemus.vastaanottoTila == 'PERUNUT'">Perunut</span>
                                             <span ng-if="hakemus.vastaanottoTila == 'PERUUTETTU'">Peruutettu</span>
                                         </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <!-- TODO: directiivi olis kiva -->
-                                    <a href="" ng-click="hakemus.showLog = !hakemus.showLog">{{hakemus.logEntries[hakemus.logEntries.length-1].luotu | date:'dd.MM.yyyy HH:mm'}}</a>
-                                    <div class="modal-backdrop" ng-click="hakemus.showLog = !hakemus.showLog" ng-if="hakemus.showLog"></div>
-                                    <div centralize class="modal" ng-if="hakemus.showLog">
-                                        <div class="modal-header">
-                                            <span>Muutokset</span>
-                                            <a ng-click="hakemus.showLog = !hakemus.showLog" class="close"></a>
-                                        </div>
-                                        <div class="modal-content">
-                                            <table class="virkailija-table-1">
-                                                <thead>
-                                                <tr>
-                                                    <th>Luotu</th>
-                                                    <th>Muokkaaja</th>
-                                                    <th>Muutos</th>
-                                                    <th>Selite</th>
-                                                </tr>
-                                                </thead>
-                                                <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true" >
-                                                    <td>{{entry.luotu | date:'dd.MM.yyyy HH:mm'}}</td>
-                                                    <td>{{entry.muokkaaja}}</td>
-                                                    <td><span ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
-                                                        <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
-                                                        <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
-                                                        <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
-                                                        <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span></td>
-                                                        <span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span></td>
-                                                    <td>{{entry.selite}}</td>
-                                                </tr>
-                                            </table>
+                                </div>
+                            </td>
+                            <td>
+                                <!-- TODO: directiivi olis kiva -->
+                                <a href="" ng-click="hakemus.showLog = !hakemus.showLog">{{hakemus.logEntries[hakemus.logEntries.length-1].luotu
+                                    | date:'dd.MM.yyyy HH:mm'}}</a>
 
-                                            <div class="clear"></div>
-                                        </div>
+                                <div class="modal-backdrop" ng-click="hakemus.showLog = !hakemus.showLog"
+                                     ng-if="hakemus.showLog"></div>
+                                <div centralize class="modal" ng-if="hakemus.showLog">
+                                    <div class="modal-header">
+                                        <span>Muutokset</span>
+                                        <a ng-click="hakemus.showLog = !hakemus.showLog" class="close"></a>
                                     </div>
-                                </td>
-                                <td>
-                                    <sijoittelu-vastaanotto-tila hakemus="hakemus"
-                                                                 valintatapajono-oid="jono.oid"
-                                                                 haku-oid="model.hakuOid"
-                                                                 hakukohde-oid="model.hakukohdeOid"
-                                                                 enabled="updateOph" />
-                                </td>
-                            </tr>
+                                    <div class="modal-content">
+                                        <table class="virkailija-table-1">
+                                            <thead>
+                                            <tr>
+                                                <th>Luotu</th>
+                                                <th>Muokkaaja</th>
+                                                <th>Muutos</th>
+                                                <th>Selite</th>
+                                            </tr>
+                                            </thead>
+                                            <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true">
+                                                <td>{{entry.luotu | date:'dd.MM.yyyy HH:mm'}}</td>
+                                                <td>{{entry.muokkaaja}}</td>
+                                                <td><span
+                                                        ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
+                                                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
+                                                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
+                                                    <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
+                                                    <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span></td>
+                                                <span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span></td>
+                                                <td>{{entry.selite}}</td>
+                                            </tr>
+                                        </table>
+
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <sijoittelu-vastaanotto-tila hakemus="hakemus"
+                                                             valintatapajono-oid="jono.oid"
+                                                             haku-oid="model.hakuOid"
+                                                             hakukohde-oid="model.hakukohdeOid"
+                                                             enabled="updateOph"/>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
-                    <a ng-click="submit(jono.oid)" class="button small primary margin-top-2" >Tallenna</a>
+                    <a ng-click="submit(jono.oid)" class="button small primary margin-top-2">Tallenna</a>
                     <span ng-show="limit < jono.hakemukset.length">Näytetty: {{limit}} / {{jono.hakemukset.length}}</span>
                 </div>
             </div>
-		</div>
-	</div>
-	<div class="clear"></div>
-    <div ng-show="showLoading" style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...</div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div ng-show="showLoading"
+         style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...
+    </div>
 </div>

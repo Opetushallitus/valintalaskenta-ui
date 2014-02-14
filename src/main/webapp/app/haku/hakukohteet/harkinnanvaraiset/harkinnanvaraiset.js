@@ -1,13 +1,34 @@
 app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt) {
     var model;
     model = new function() {
-
+      this.valittu = true;
       this.hakeneet = [];
       this.avaimet = [];
           this.errors = [];
 
-      this.refresh = function(hakukohdeOid, hakuOid) {
-          model.hakeneet = [];
+        this.filterValitut = function() {
+  			return _.filter(this.hakeneet,function(hakija) {
+  				return hakija.valittu;
+  			});
+  		};
+  		this.isAllValittu = function() {
+  			return this.hakeneet.length == this.filterValitut().length;
+  		};
+  		this.check = function() {
+  			this.valittu = this.isAllValittu();
+  		};
+  		this.checkAll = function() {
+  			var kaikkienUusiTila = this.valittu;
+  			_.each(this.hakeneet, function(hakija) {
+  				hakija.valittu = kaikkienUusiTila;
+  			});
+  			this.valittu = this.isAllValittu();
+  		};
+  		
+          
+      this.refresh = function(hakukohdeOid, hakuOid) {	
+    	  	  model.valittu = true;
+    	  	  model.hakeneet = [];
               model.harkinnanvaraisestiHyvaksytyt = [];
               model.errors = [];
               model.errors.length = 0;
@@ -18,6 +39,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
 
                   if(model.hakeneet) {
                       model.hakeneet.forEach(function(hakija){
+                    	  hakija.valittu = true;
                           Hakemus.get({oid: hakija.oid}, function(result) {
                                hakija.hakemus=result;
                                if(hakija.hakemus.answers) {
