@@ -1,11 +1,11 @@
 <a ng-click="show()" >
-    <span title="Etunimi">{{sukunimi}}</span>,
-    <span title="Sukunimi">{{etunimi}}</span>
+    <span title="Etunimi" fast-bind-once="sukunimi"></span>,
+    <span title="Sukunimi" fast-bind-once="etunimi"></span>
 </a>
 <div class="modal-backdrop" ng-click="show()" ng-if="showInfo"></div>
 <div centralize  class="modal henkiloPartial"  ng-if="showInfo">
     <div class="modal-header">
-        <span>Nimi: {{sukunimi}}, {{etunimi}}</span>
+        Nimi: <span fast-bind-once="sukunimi + ', ' + etunimi"></span>
         <a ng-click="show()" class="close"></a>
     </div>
     <div class="modal-content">
@@ -13,11 +13,11 @@
 
             <dt>Hakemuksen tekninen tunniste (OID)</dt>
             <dd>
-                <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakemusOid}}" target="_blank" >{{hakemusOid}}</a>
+                <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakemusOid}}" target="_blank" fast-bind-once="hakemusOid"></a>
             </dd>
             
             <dt ng-if="henkiloOid">Oppijan numero</dt>
-            <dd ng-if="henkiloOid">{{henkiloOid}}</dd>
+            <dd ng-if="henkiloOid" fast-bind-once="henkiloOid"></dd>
             
         </dl>
     </div>

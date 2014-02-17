@@ -509,3 +509,16 @@ app.directive('showPersonInformation', function() {
         }
     };
 });
+
+// https://github.com/kseamon/fast-bind/blob/master/src/directives/bind-once/bind-once.js
+app.directive('fastBindOnce', ['$parse', function($parse) {
+    return {
+        compile: function compile(element, attributes) {
+            var expr = $parse(attributes.fastBindOnce);
+
+            return function link(scope, element) {
+                element.text(expr(scope));
+            };
+        }
+    };
+}]);
