@@ -21,7 +21,14 @@
         </tr>
         </thead>
         <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'">
-        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta"  ng-show="($last && !filter) || filter">
+        <tr ng-hide="hakutoive.valintalaskenta">
+            <td colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
+                <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                {{hakutoive.oppilaitos}}
+                </a>
+            </td>
+        </tr>
+        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta"  ng-show="hakutoive.valintalaskenta && (($last && !filter) || filter)">
             <td>
                 <div ng-if="($first && filter) || ($last && !filter)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -

@@ -16,7 +16,9 @@
                 <tr ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
                     <td>
                         {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
-                        {{hakutoive.oppilaitos}}
+                        <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                            {{hakutoive.oppilaitos}}
+                        </a>
                     </td>
                     <td>
                         {{pohjakoulutukset[model.hakemus.answers.koulutustausta.POHJAKOULUTUS]}}
