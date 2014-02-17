@@ -303,6 +303,11 @@ app.factory('Osoitetarrat', function($resource) {
 		post:  {method:'POST', isArray:false}
 	});
 });
+app.factory('OsoitetarratHakemuksille', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/hakemuksille/aktivoi", {}, {
+		post:  {method:'POST', isArray:false}
+	});
+});
 
 app.factory('Hyvaksymisosoitteet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksyttyjenosoitetarrat/aktivoi", {}, {

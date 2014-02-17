@@ -14,22 +14,29 @@
 
             <div ng-include="'../common/html/errors.html'"></div>
 
+			<div ng-include="'../common/html/dokumenttipalvelu.html'"></div>
+
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <h2>Harkinnanvaraiset hakijat</h2>
+                
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+                <br>
+                <a ng-click="muodostaOsoitetarrat();" class="button small pdf">Muodosta osoitetarrat</a>
+                
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" ng-change="model.checkAll();" ng-model="model.valittu"> Nimi</th>
+                                <th><input type="checkbox" ng-change="model.checkAll();" ng-model="model.valittu"></th>
+                                <th>Nimi</th>
                                 <th>Pohjakoulutus</th>
                                 <th>Harkinnanvarainen tila</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="hakija in model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true} | filter:hakijaFilter">
+                                <td><input type="checkbox" ng-change="model.check();" ng-model="hakija.valittu"></td>
                                 <td>
-                                	<input type="checkbox" ng-change="model.check();" ng-model="hakija.valittu"> 
                                     <show-person-information sukunimi="{{hakija.lastName}}"
                                                              etunimi="{{hakija.firstNames}}"
                                                              hakemus-oid="{{hakija.oid}}"

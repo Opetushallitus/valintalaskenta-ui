@@ -122,8 +122,8 @@
 
 
 function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls, Dokumenttipalvelu) {
-	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	// kayttaa dokumenttipalvelua
+	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	$scope.dokumenttiLimit = 5;
 	$scope.dokumentit = [];
 	$scope.update = function(data) {
@@ -134,11 +134,10 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 	}
 	Dokumenttipalvelu.aloitaPollaus($scope.update);
 	$scope.$on('$destroy', function() {Dokumenttipalvelu.lopetaPollaus();});
-	// kayttaa dokumenttipalvelua
-	
 	$scope.showMoreDokumentit = function() {
 		$scope.dokumenttiLimit = $scope.dokumenttiLimit + 10;
 	};
+	// kayttaa dokumenttipalvelua
 	$scope.tinymceModel = {};
 	
 	$scope.tinymceOptions = {
