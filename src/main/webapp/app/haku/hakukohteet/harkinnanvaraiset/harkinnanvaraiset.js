@@ -3,23 +3,28 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
     model = new function() {
       this.valittu = true;
       this.hakeneet = [];
+      this.harkinnanvaraisestiHyvaksytyt = [];
       this.avaimet = [];
           this.errors = [];
-
+        this.filterHarkinnanvaraiset = function() {
+        	return _.filter(this.hakeneet,function(hakija) {
+  				return hakija.hakenutHarkinnanvaraisesti != "false";
+  			});
+        };
         this.filterValitut = function() {
-  			return _.filter(this.hakeneet,function(hakija) {
+  			return _.filter(this.filterHarkinnanvaraiset(),function(hakija) {
   				return hakija.valittu;
   			});
   		};
   		this.isAllValittu = function() {
-  			return this.hakeneet.length == this.filterValitut().length;
+  			return this.filterHarkinnanvaraiset().length == this.filterValitut().length;
   		};
   		this.check = function() {
   			this.valittu = this.isAllValittu();
   		};
   		this.checkAll = function() {
   			var kaikkienUusiTila = this.valittu;
-  			_.each(this.hakeneet, function(hakija) {
+  			_.each(this.filterHarkinnanvaraiset(), function(hakija) {
   				hakija.valittu = kaikkienUusiTila;
   			});
   			this.valittu = this.isAllValittu();
@@ -105,7 +110,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
     return model;
   });
 
-  function HarkinnanvaraisetController($scope, $location, $routeParams, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
+  function HarkinnanvaraisetController($scope, $location, $routeParams, OsoitetarratHakemuksille, Dokumenttipalvelu, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
       $scope.model = HarkinnanvaraisetModel;
       $scope.hakuOid =  $routeParams.hakuOid;;
@@ -124,10 +129,33 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
 
       $scope.submit = function() {
           HakeneetModel.submit();
-      }
+      };
 
       $scope.submit = function(hakemusOid) {
           $scope.model.submit();
       };
-
+      
+      $scope.muodostaOsoitetarrat = function() {
+    	  OsoitetarratHakemuksille.post({
+      		hakemusOids: $scope.model.filterValitut()},function(resurssi) {
+      			Dokumenttipalvelu.paivita($scope.update);
+      	});
+      };
+      
+      // kayttaa dokumenttipalvelua
+		$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
+		$scope.dokumenttiLimit = 5;
+		$scope.dokumentit = [];
+		$scope.update = function(data) {
+			// paivitetaan ainoastaan tarpeen vaatiessa
+			if(data.length != $scope.dokumentit.length) {
+				$scope.dokumentit = data;
+			}
+		}
+		Dokumenttipalvelu.aloitaPollaus($scope.update);
+		$scope.$on('$destroy', function() {Dokumenttipalvelu.lopetaPollaus();});
+		$scope.showMoreDokumentit = function() {
+			$scope.dokumenttiLimit = $scope.dokumenttiLimit + 10;
+		};
+		// kayttaa dokumenttipalvelua
   }
