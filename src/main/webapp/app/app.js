@@ -297,6 +297,11 @@ app.factory('Koekutsukirjeet', function($resource) {
 		post:  {method:'POST', isArray:false}
 	});
 });
+app.factory('KoekutsukirjeetHakemuksille', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/koekutsukirjeet/hakemuksille/aktivoi", {}, {
+		post:  {method:'POST', isArray:false}
+	});
+});
 
 app.factory('Osoitetarrat', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/aktivoi", {}, {
