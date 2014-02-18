@@ -1,4 +1,4 @@
-﻿app.factory('ValintakoetulosModel', function(Valintakoetulokset) {
+﻿app.factory('ValintakoetulosModel', function(Valintakoetulokset, Valintakoe) {
 	var model;
 	model = new function() {
 
@@ -84,7 +84,19 @@
                                 entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 
                                 if (model.valintakokeet[entry.valintakoeOid] === undefined ) {
-                                	model.valintakokeet[entry.valintakoeOid] = {valittu: true, valintakoeOid: entry.valintakoeOid, valintakoeTunniste: entry.valintakoeTunniste, hakijat: [entry]};    
+                                	var valintakoeModel = {
+                                			aktiivinen: true, 
+                                			valittu: true, 
+                                			valintakoeOid: entry.valintakoeOid, 
+                                			valintakoeTunniste: entry.valintakoeTunniste, 
+                                			hakijat: [entry]};
+                                	model.valintakokeet[entry.valintakoeOid] = valintakoeModel;
+                                	Valintakoe.get({}, function(result) {
+                                		valintakoeModel.aktiivinen = result.aktiivinen;
+                                	},function() {
+                                		valintakoeModel.aktiivinen = false;
+                                		valintakoeModel.virheIlmoitus = "Valintakokeen tietoja ei saatu palvelimelta. Ota yhteys ylläpitoon.";
+                                	});
                                 } else {
                                 	model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
                                 }

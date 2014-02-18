@@ -110,7 +110,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
     return model;
   });
 
-  function HarkinnanvaraisetController($scope, $location, $routeParams, OsoitetarratHakemuksille, Dokumenttipalvelu, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
+  function HarkinnanvaraisetController($scope, $location, $routeParams, KoekutsukirjeetHakemuksille, OsoitetarratHakemuksille, Dokumenttipalvelu, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
       $scope.model = HarkinnanvaraisetModel;
       $scope.hakuOid =  $routeParams.hakuOid;;
@@ -142,6 +142,26 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
       	});
       };
       
+  	
+	  	$scope.tinymceOptions = {
+	  		handle_event_callback: function (e) {
+	  			
+	  		}
+	  	};
+      
+      $scope.muodostaKoekutsut = function() {
+    	  KoekutsukirjeetHakemuksille.post({
+  			hakukohdeOid:$routeParams.hakukohdeOid},
+  			{
+  				hakemusOids: $scope.model.filterValitut(),
+  				letterBodyText: $scope.tinymceModel
+  			},
+  			function() {
+  				Dokumenttipalvelu.paivita($scope.update);
+	      	},function() {
+	      		Dokumenttipalvelu.paivita($scope.update);
+	      	});
+      };
       // kayttaa dokumenttipalvelua
 		$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 		$scope.dokumenttiLimit = 5;
