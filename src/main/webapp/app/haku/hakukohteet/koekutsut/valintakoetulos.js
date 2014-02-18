@@ -1,4 +1,4 @@
-﻿app.factory('ValintakoetulosModel', function(Valintakoetulokset) {
+﻿app.factory('ValintakoetulosModel', function(Valintakoetulokset, Valintakoe) {
 	var model;
 	model = new function() {
 
@@ -84,7 +84,19 @@
                                 entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 
                                 if (model.valintakokeet[entry.valintakoeOid] === undefined ) {
-                                	model.valintakokeet[entry.valintakoeOid] = {valittu: true, valintakoeOid: entry.valintakoeOid, valintakoeTunniste: entry.valintakoeTunniste, hakijat: [entry]};    
+                                	var valintakoeModel = {
+                                			aktiivinen: true, 
+                                			valittu: true, 
+                                			valintakoeOid: entry.valintakoeOid, 
+                                			valintakoeTunniste: entry.valintakoeTunniste, 
+                                			hakijat: [entry]};
+                                	model.valintakokeet[entry.valintakoeOid] = valintakoeModel;
+                                	Valintakoe.get({}, function(result) {
+                                		valintakoeModel.aktiivinen = result.aktiivinen;
+                                	},function() {
+                                		valintakoeModel.aktiivinen = false;
+                                		valintakoeModel.virheIlmoitus = "Valintakokeen tietoja ei saatu palvelimelta. Ota yhteys ylläpitoon.";
+                                	});
                                 } else {
                                 	model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
                                 }
@@ -122,8 +134,8 @@
 
 
 function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls, Dokumenttipalvelu) {
-	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	// kayttaa dokumenttipalvelua
+	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	$scope.dokumenttiLimit = 5;
 	$scope.dokumentit = [];
 	$scope.update = function(data) {
@@ -134,11 +146,10 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 	}
 	Dokumenttipalvelu.aloitaPollaus($scope.update);
 	$scope.$on('$destroy', function() {Dokumenttipalvelu.lopetaPollaus();});
-	// kayttaa dokumenttipalvelua
-	
 	$scope.showMoreDokumentit = function() {
 		$scope.dokumenttiLimit = $scope.dokumenttiLimit + 10;
 	};
+	// kayttaa dokumenttipalvelua
 	$scope.tinymceModel = {};
 	
 	$scope.tinymceOptions = {

@@ -12,43 +12,11 @@
 		<div class="tabsheets">
 
             <div ng-include="'../common/html/errors.html'"></div>
-            
-             <div>
+            <div>
              
-            <div class="form-row">
-				<div class="form-row-content">
-		            <table class="virkailija-table-1" style="width: 800px;">
-				        <thead>
-				        <tr>
-				            <th>Dokumentit</th>
-				            <th>Luotu</th>
-				            <th>Koko</th>
-				        </tr>
-				        </thead>
-				        <tbody ng-repeat="tiedosto in dokumentit  | limitTo:dokumenttiLimit">
-				        	<tr>
-                				<td class="align-center"><a href="{{DOKUMENTTIPALVELU_URL_BASE}}/dokumentit/lataa/{{tiedosto.documentId}}" ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</a><span ng-show="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</span></td>
-					            <td class="align-center">{{tiedosto.createdAt}}</td>
-					            <td class="align-center">{{tiedosto.size}}</td>
-				        	</tr>
-				        </tbody>
-				        <tfoot>
-				        	<tr ng-show="dokumentit.length > dokumenttiLimit">
-								<td class="align-center" colspan="4">
-									<a ng-click="showMoreDokumentit()" class="button small" style="">Näytä lisää +{{dokumentit.length - dokumenttiLimit}}</a>
-								</td>
-							</tr>
-							<tr ng-hide="dokumentit">
-								<td class="align-center" colspan="4">Ei luotuja dokumentteja</td>
-							</tr>
-						</tfoot>
-		            </table>
-		
-		        </div>
-		        <div class="clear"></div>
-		    </div>
+            <div ng-include="'../common/html/dokumenttipalvelu.html'"></div>
             
-                <div>
+            <div>
                     <span>Näytä</span>
                     <select ng-model="nakymanTila">
                         <option value="Hakijoittain">Hakijoittain</option>
@@ -60,9 +28,6 @@
                     <br/>
                  </div>
             </div>
-			
-			
-	        
 			
             <div ng-show="nakymanTila == 'Hakijoittain'">
                 <h2>Hakijoittain</h2>
@@ -101,25 +66,34 @@
             <div ng-show="nakymanTila == 'Kokeittain'">
                 <div ng-repeat="valintakoe in model.valintakokeet" class="margin-vertical-2">
                     <h2>{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></h2>
-					<form method="post">
-						  <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel[valintakoe.valintakoeOid]"></textarea>
-					</form>
-					<hr>
-                    <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small excel">Vie taulukkolaskentaan</a>
-                    <a ng-click="tulostaKoekutsukirjeet(valintakoe); $event.stopPropagation()" class="button small pdf">Muodosta koekutsut</a>
-                    <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()" class="button small pdf">Muodosta osoitetarrat</a>
+					<div ng-show="valintakoe.aktiivinen">
+						<form method="post">
+							  <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel[valintakoe.valintakoeOid]"></textarea>
+						</form>
+						<hr>
+	                    <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small excel">Vie taulukkolaskentaan</a>
+	                    <a ng-click="tulostaKoekutsukirjeet(valintakoe); $event.stopPropagation()" class="button small pdf">Muodosta koekutsut</a>
+	                    <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()" class="button small pdf">Muodosta osoitetarrat</a>
+                    </div>
+                    <div ng-hide="valintakoe.aktiivinen">
+                    	<p>Tälle valintakokeelle ei voi muodostaa osoitetarroja tai koekutsuja. Asetus on muokattavissa valintaperusteiden mallinnuksessa.</p>
+                    	<div ng-show="valintakoe.virheIlmoitus" class="notification warning">
+						    <h3>{{valintakoe.virheIlmoitus}}</h3>
+						</div>
+                    </div>
 					<table class="virkailija-table-1">
                         <thead>
                         <tr>
-                            <th><input type="checkbox" ng-model="valintakoe.valittu" ng-change="model.checkAll(valintakoe);"/><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Nimi</a></th>
+                        	<th><input type="checkbox" ng-model="valintakoe.valittu" ng-change="model.checkAll(valintakoe);"/></th>
+                            <th><a href="" ng-click="predicate = 'hakemusOid'; reverse=!reverse">Nimi</a></th>
                             <th><a href="" ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a></th>
                             <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">Laskettu pvm</a></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter">
+                            <td><input type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);"></td>
                             <td>
-                            	<input type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
                                 <show-person-information sukunimi="{{koe.sukunimi}}"
                                                          etunimi="{{koe.etunimi}}"
                                                          hakemus-oid="{{koe.hakemusOid}}"

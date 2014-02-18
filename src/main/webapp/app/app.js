@@ -297,9 +297,19 @@ app.factory('Koekutsukirjeet', function($resource) {
 		post:  {method:'POST', isArray:false}
 	});
 });
+app.factory('KoekutsukirjeetHakemuksille', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/koekutsukirjeet/hakemuksille/aktivoi", {}, {
+		post:  {method:'POST', isArray:false}
+	});
+});
 
 app.factory('Osoitetarrat', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/aktivoi", {}, {
+		post:  {method:'POST', isArray:false}
+	});
+});
+app.factory('OsoitetarratHakemuksille', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/hakemuksille/aktivoi", {}, {
 		post:  {method:'POST', isArray:false}
 	});
 });
@@ -426,6 +436,12 @@ app.factory('Valintatulos', function($resource) {
 // Valintakoetulokset
 app.factory('Valintakoetulokset', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintakoe/hakutoive/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
+
+app.factory('Valintakoe', function($resource) {
+    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/valintakoe/:valintakoeOid", {valintakoeOid: "@valintakoeOid"}, {
         get: {method: "GET", isArray: true}
     });
 });
