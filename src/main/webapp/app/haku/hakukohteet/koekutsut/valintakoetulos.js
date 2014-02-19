@@ -170,10 +170,12 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 		}
 		
 		Koekutsukirjeet.post({
-			hakemusOids: hakemusOids,
 			hakukohdeOid:$routeParams.hakukohdeOid, 
-			valintakoeOids: [valintakoe.valintakoeOid]},
-			$scope.tinymceModel[valintakoe.valintakoeOid],
+			valintakoeOids: [valintakoe.valintakoeOid]},{
+				tag: "valintakoetulos",
+				hakemusOids: hakemusOids,
+				letterBodyText: $scope.tinymceModel[valintakoe.valintakoeOid]
+			},
 			function() {
 			Dokumenttipalvelu.paivita($scope.update);
     	},function() {
@@ -191,10 +193,12 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 				return; // ei tehda tyhjalle joukolle
 			}
 		}
-    	Osoitetarrat.post({
-    		hakemusOids: hakemusOids, 
+    	Osoitetarrat.post({ 
     		hakukohdeOid:$routeParams.hakukohdeOid, 
-    		valintakoeOid:[valintakoe.valintakoeOid]},function(resurssi) {
+    		valintakoeOid:[valintakoe.valintakoeOid]},{
+    			tag: "valintakoetulos",
+    			hakemusOids: hakemusOids
+    		},function(resurssi) {
     			Dokumenttipalvelu.paivita($scope.update);
     	});
     };
@@ -204,9 +208,11 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     	    kokeet.push(key);
     	}
     	Osoitetarrat.post({
-    		hakemusOids: null,
     		hakukohdeOid:$routeParams.hakukohdeOid, 
-    		valintakoeOid:kokeet}, function(resurssi) {
+    		valintakoeOid:kokeet},{
+    			tag: "valintakoetulos",
+        		hakemusOids: null
+        		}, function(resurssi) {
     		$window.location.href = resurssi.latausUrl;
     	}, function(response) {
     		Dokumenttipalvelu.paivita($scope.update);

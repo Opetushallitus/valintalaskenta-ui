@@ -137,7 +137,13 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
       
       $scope.muodostaOsoitetarrat = function() {
     	  OsoitetarratHakemuksille.post({
-      		hakemusOids: $scope.model.filterValitut()},function(resurssi) {
+    		  
+    	  },
+    	  {
+    		  tag: "harkinnanvaraiset",
+      		hakemusOids: $scope.model.filterValitut()
+      		},
+      		function(resurssi) {
       			Dokumenttipalvelu.paivita($scope.update);
       	});
       };
@@ -153,6 +159,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
     	  KoekutsukirjeetHakemuksille.post({
   			hakukohdeOid:$routeParams.hakukohdeOid},
   			{
+  				tag: "harkinnanvaraiset",
   				hakemusOids: $scope.model.filterValitut(),
   				letterBodyText: $scope.tinymceModel
   			},
