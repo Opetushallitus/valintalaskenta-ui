@@ -2,6 +2,8 @@
     "name": "valintalaskenta-ui",
     "version": "0.0.1",
     "dependencies": {
-        "gulp": "~3.5.2"
+        "gulp": "~3.5.2",
+        "gulp-util": "~2.2.14",
+        "gulp-concat": "~2.1.7"
     }
 }
