@@ -5,7 +5,13 @@ var gulp = require('gulp'),
 
 //preinstalled assets not found from npm-packages
 var staticLibs = [
-	"common/jslib/jquery-1.8.3/jquery.nestable.js",
+	"common/jslib/jquery-2.1.0/jquery-2.1.0.js",
+	"common/jslib/angular-1.2.10/angular.js",
+	"common/jslib/angular-1.2.10/angular-route.js",
+	"common/jslib/angular-1.2.10/angular-animate.js",
+	"common/jslib/angular-1.2.10/angular-resource.js",
+    "common/jslib/jquery-1.8.3/jquery.nestable.js",
+    "common/jslib/underscore/underscore-min.js",
 	"common/jslib/tinymce-4.0.12/tinymce.min.js",
 	"common/jslib/tinymce-4.0.12/ui-tinymce.js"
 ];
