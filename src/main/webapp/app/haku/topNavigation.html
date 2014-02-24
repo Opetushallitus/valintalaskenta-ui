@@ -1,10 +1,8 @@
 
 
-<div ng-controller="HakuController" class="width-16-8 margin-vertical-2">
+<div ng-controller="HakuController" class="col-md-12">
 	<div ng-include="'haku/hakulista.html'"></div>
 </div>
-
-<div class="clear"></div>
 
 <div class="tabs" ng-controller="navigationController">
     <a ng-if="hakuModel.hakuOid.lisahaku" ng-class="navClass('hakukohde', 3)" href="#/lisahaku/{{hakuOid}}/hakukohde" class="tab"><span>Hakukohteittain</span></a>

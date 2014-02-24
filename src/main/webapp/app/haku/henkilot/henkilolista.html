@@ -12,7 +12,7 @@
 			    <li ng-class="hakemusOid === hakemus.oid ? 'selected' : ''" ng-repeat="hakemus in model.hakemukset">
 			        <a ng-click="showHakemus(hakemus)" id="id_{{hakemus.oid}}">
 			            <span class="icon file"></span>
-			            <span class="label">
+			            <span class="node">
 			                {{model.getName(hakemus)}}
 			            </span>
 			        </a>
