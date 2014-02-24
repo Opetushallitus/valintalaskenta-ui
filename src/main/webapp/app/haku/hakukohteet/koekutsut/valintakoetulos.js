@@ -91,7 +91,7 @@
                                 			valintakoeTunniste: entry.valintakoeTunniste, 
                                 			hakijat: [entry]};
                                 	model.valintakokeet[entry.valintakoeOid] = valintakoeModel;
-                                	Valintakoe.get({}, function(result) {
+                                	Valintakoe.get({valintakoeOid: entry.valintakoeOid}, function(result) {
                                 		valintakoeModel.aktiivinen = result.aktiivinen;
                                 	},function() {
                                 		valintakoeModel.aktiivinen = false;
