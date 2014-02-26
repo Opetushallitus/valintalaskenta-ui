@@ -60,7 +60,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="hakemus in jono.hakemukset | orderBy:jarjesta | limitTo:limit | filter:hakijaFilter">
+                        <tr ng-repeat="hakemus in jono.hakemukset | orderBy:jarjesta | filter:hakijaFilter | limitTo:limit ">
                             <td><input type="checkbox" ng-model="hakemus.valittu" ng-change="model.check(jono);"></td>
 
                             <td>{{hakemus.sija}}</td>
@@ -100,8 +100,8 @@
                                             </tr>
                                             </thead>
                                             <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true">
-                                                <td>{{entry.luotu | date:'dd.MM.yyyy HH:mm'}}</td>
-                                                <td>{{entry.tila}}</td>
+                                                <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
+                                                <td fast-bind-once="henkiloOid">{{entry.tila}}</td>
                                             </tr>
                                         </table>
 
@@ -168,8 +168,8 @@
                                             </tr>
                                             </thead>
                                             <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true">
-                                                <td>{{entry.luotu | date:'dd.MM.yyyy HH:mm'}}</td>
-                                                <td>{{entry.muokkaaja}}</td>
+                                                <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
+                                                <td fast-bind-once="entry.muokkaaja"></td>
                                                 <td><span
                                                         ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
                                                     <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
@@ -177,7 +177,7 @@
                                                     <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
                                                     <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span></td>
                                                 <span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span></td>
-                                                <td>{{entry.selite}}</td>
+                                                <td fast-bind-once="entry.selite"></td>
                                             </tr>
                                         </table>
 
@@ -196,7 +196,7 @@
                         </tbody>
                     </table>
                     <a ng-click="submit(jono.oid)" class="button small primary margin-top-2">Tallenna</a>
-                    <span ng-show="limit < jono.hakemukset.length">Näytetty: {{limit}} / {{jono.hakemukset.length}}</span>
+                    <!--<span ng-show="limit < jono.hakemukset.length">Näytetty: {{limit}} / {{jono.hakemukset.length}}</span>-->
                 </div>
             </div>
         </div>
