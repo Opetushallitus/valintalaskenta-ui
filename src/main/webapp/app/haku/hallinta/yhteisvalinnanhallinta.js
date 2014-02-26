@@ -49,22 +49,23 @@ function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance
 	$scope.lisaa = false;
 	
 	ValintalaskentaMuistissa.aktivoi({hakuOid: $routeParams.hakuOid}, [], function(uuid) {
-		console.log("aktivoi");
-		console.log(uuid);
+		$scope.uuid = uuid.latausUrl;
+		update();
 	}, function() {
 		ValintalaskentaKaynnissa.hae(function(uuid) {
-			console.log("virhe");
-			console.log(uuid);
+			$scope.uuid = uuid.latausUrl;
+			update();
 		});
 	});
 	
 	var update = function () {
-		ValintalaskentaStatus.get({uuid:"eda4c132-c51e-4886-b0e5-bf2ca8b81ca3"}, function(r) {
-			console.log('wup');
-			$scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
-		});
+		if($scope.uuid != null) {
+			ValintalaskentaStatus.get({uuid:$scope.uuid}, function(r) {
+				$scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
+			});
+		}
     };
-    update();
+    
 	var timer = $interval(function () {
         update();
     }, 10000);
