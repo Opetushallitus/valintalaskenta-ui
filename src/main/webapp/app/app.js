@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce', 'valvomo'], function($rootScopeProvider) {
+var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce', 'valvomo','ui.bootstrap'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel){
     MyRolesModel;
@@ -215,6 +215,27 @@ app.factory('Dokumenttipalvelu', function($http, $rootScope, $resource, $window,
 app.factory('ValintakoelaskentaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHakukohteenValintakoelaskenta", {}, {
         aktivoi: {method: "GET"}
+    })
+});
+
+app.factory('ValintalaskentaKaynnissa', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktiivinenValintalaskenta", {}, {
+        hae: {method: "GET"}
+    })
+});
+app.factory('ValintalaskentaKeskeyta', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/keskeytaAktiivinenValintalaskenta", {}, {
+        keskeyta: {method: "POST"}
+    })
+});
+app.factory('ValintalaskentaStatus', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/status/:uuid", {uuid: "@uuid"}, {
+        aktivoi: {method: "GET"}
+    })
+});
+app.factory('ValintalaskentaMuistissa', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktivoi", {}, {
+        aktivoi: {method: "POST"}
     })
 });
 
