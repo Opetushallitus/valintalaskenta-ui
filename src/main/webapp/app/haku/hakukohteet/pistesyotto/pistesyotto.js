@@ -62,6 +62,7 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                                     }
 
                                     hakija.originalData = {};
+                                    hakija.filterData = {};
                                     hakija.osallistuu = {};
 
                                     if (!hakija.additionalData) {
@@ -88,9 +89,12 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                                             hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
                                         }
 
-                                        if(hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
+                                        if (hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
                                             hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
                                             hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+
+                                            hakija.filterData[avain.tunniste] = hakija.additionalData[avain.tunniste];
+                                            hakija.filterData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
                                         }
                                     });
                                 });
@@ -118,78 +122,95 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
             model.errors.length = 0;
             model.hakeneet.forEach(function (hakija) {
                 model.avaimet.forEach(function (avain) {
-                    var deferred = $q.defer();
-                    promises.push(deferred);
-                    var min = parseFloat(avain.min);
-                    var max = parseFloat(avain.max);
-                    var value = hakija.additionalData[avain.tunniste];
-                    var valueFloat = parseFloat(value);
-                    var tallenna = false;
-                    if (!isNaN(min) && !isNaN(max)) {
-                        // arvovali on kaytossa
-                        if (isNaN(valueFloat)) {
-                            // tallenna jos null?
-                            if (!value) {
-                                value = "";
+                    if (hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
+
+                        var deferred = $q.defer();
+                        promises.push(deferred);
+                        var min = parseFloat(avain.min);
+                        var max = parseFloat(avain.max);
+                        var value = hakija.additionalData[avain.tunniste];
+                        var valueFloat = parseFloat(value);
+                        var tallenna = false;
+                        if (!isNaN(min) && !isNaN(max)) {
+                            // arvovali on kaytossa
+                            if (isNaN(valueFloat)) {
+                                // tallenna jos null?
+                                if (!value) {
+                                    value = "";
+                                    tallenna = true;
+                                    //hakija.errorField[avain.tunniste] = "";
+                                } else {
+                                    // virhe roskaa
+                                    //hakija.errorField[avain.tunniste] = "Arvo on virheellinen!";
+                                }
+                            } else if (min <= valueFloat && max >= valueFloat) {
                                 tallenna = true;
                                 //hakija.errorField[avain.tunniste] = "";
                             } else {
-                                // virhe roskaa
-                                //hakija.errorField[avain.tunniste] = "Arvo on virheellinen!";
+                                // virhe ei alueella
+                                //hakija.errorField[avain.tunniste] = "Arvo ei ole arvoalueella!";
                             }
-                        } else if (min <= valueFloat && max >= valueFloat) {
+
+                        } else {
+                            // ei arvovalia. tallennetaan mita vaan?
                             tallenna = true;
                             //hakija.errorField[avain.tunniste] = "";
-                        } else {
-                            // virhe ei alueella
-                            //hakija.errorField[avain.tunniste] = "Arvo ei ole arvoalueella!";
                         }
 
-                    } else {
-                        // ei arvovalia. tallennetaan mita vaan?
-                        tallenna = true;
-                        //hakija.errorField[avain.tunniste] = "";
-                    }
+                        if (tallenna && hakija.originalData[avain.tunniste] !== value) {
+                            console.log("tallenna");
+                            console.log(tallenna);
+                            console.log(hakija.originalData[avain.tunniste]);
+                            HakemusKey.put({
+                                    "oid": hakija.oid,
+                                    "key": avain.tunniste,
+                                    "value": value
+                                }
+                                , function () {
+                                    hakija.originalData[avain.tunniste] = value;
+                                }, function (error) {
+                                    model.errors.push(error);
+                                });
+                        }
 
-                    if (tallenna && hakija.originalData[avain.tunniste] !== value) {
-                        HakemusKey.put({
-                                "oid": hakija.oid,
-                                "key": avain.tunniste,
-                                "value": value
-                            }
-                            , function () {
-                                hakija.originalData[avain.tunniste] = value;
-                            }, function(error) {
-                                model.errors.push(error);
-                            });
-                    }
+                        if (hakija.originalData[avain.osallistuminenTunniste] !== hakija.additionalData[avain.osallistuminenTunniste]) {
+                            console.log("osallistuminen");
+                            console.log(hakija.originalData[avain.osallistuminenTunniste]);
+                            console.log(hakija.additionalData[avain.osallistuminenTunniste]);
 
-                    if (hakija.originalData[avain.osallistuminenTunniste] !== hakija.additionalData[avain.osallistuminenTunniste]) {
-
-                        HakemusKey.put({
-                                "oid": hakija.oid,
-                                "key": avain.osallistuminenTunniste,
-                                "value": hakija.additionalData[avain.osallistuminenTunniste]
-                            }
-                            , function () {
-                                deferred.resolve();
-                                hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
-                            }, function(error) {
-                                deferred.reject();
-                                model.errors.push(error);
-                            });
+                            HakemusKey.put({
+                                    "oid": hakija.oid,
+                                    "key": avain.osallistuminenTunniste,
+                                    "value": hakija.additionalData[avain.osallistuminenTunniste]
+                                }
+                                , function () {
+                                    deferred.resolve();
+                                    hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+                                }, function (error) {
+                                    deferred.reject();
+                                    model.errors.push(error);
+                                });
+                        }
                     }
                 });
             });
             var promise = $q.all(promises);
 
-            promise.then(function(){
+            promise.then(function () {
                 toastr.success('Tallennus onnistui');
-            }, function() {
+            }, function () {
                 toastr.error('Tallennus epäonnistui');
             })
-            
+
         };
+
+        this.updateFilterData = function () {
+            console.log("updateFilterData");
+            model.hakeneet.forEach(function (hakija) {
+
+                angular.copy(hakija.originalData, hakija.filterData);
+            });
+        }
 
     };
 
@@ -197,16 +218,16 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
 });
 
 
-function PistesyottoController($scope, $timeout, $location, $routeParams, PistesyottoModel, HakukohdeModel) {
+function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = PistesyottoModel;
     $scope.hakuOid = $routeParams.hakuOid;
 
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.hakukohdeModel = HakukohdeModel;
-    $scope.arvoFilter = null;
-    $scope.tila = "";
-    $scope.vainOsallistuvat = true;
+    $scope.koeFilter = null;
+    $scope.osallistuminenFilter = "";
+//    $scope.vainOsallistuvat = true;
     $scope.muutettu = false;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
@@ -240,46 +261,49 @@ function PistesyottoController($scope, $timeout, $location, $routeParams, Pistes
 
     }
 
-    $scope.osallistuvatFilter = function(actual) {
+    $scope.osallistuvatFilter = function (actual) {
         var show = false;
 
-        if(!$scope.vainOsallistuvat) {
-            show = true;
-        } else if($scope.arvoFilter == null) {
-            if(actual.osallistuu) {
-                for(var osallistuu in actual.osallistuu) {
-                    if(actual.osallistuu[osallistuu] == 'OSALLISTUU') {
+        if ($scope.koeFilter == null) {
+            if (actual.osallistuu) {
+                for (var osallistuu in actual.osallistuu) {
+                    if (actual.osallistuu[osallistuu] == 'OSALLISTUU') {
                         show = true;
                     }
                 }
             }
-        } else if($scope.arvoFilter
-            && $scope.vainOsallistuvat
+        } else if ($scope.koeFilter
             && actual.osallistuu
-            && actual.osallistuu[$scope.arvoFilter.tunniste] == 'OSALLISTUU') {
+            && actual.osallistuu[$scope.koeFilter.tunniste] == 'OSALLISTUU') {
 
             show = true;
         }
 
-        if(show && $scope.tila != "") {
-            if($scope.arvoFilter == null) {
-                if(actual.originalData) {
-                    for(var tila in actual.originalData) {
-                        if(tila.indexOf('-OSALLISTUMINEN') > -1) {
-                            if(actual.originalData[tila] != $scope.tila) {
+        if (show && $scope.osallistuminenFilter != "") {
+            if ($scope.koeFilter == null) {
+                // koe filterointi ei ole päällä, joten tarkistetaan onko missään kokeessa
+                if (actual.filterData) {
+                    for (var tila in actual.filterData) {
+                        if (tila.indexOf('-OSALLISTUMINEN') > -1) {
+                            if (actual.filterData[tila] != $scope.osallistuminenFilter) {
                                 show = false;
                             }
                         }
                     }
                 }
-            } else if( actual.originalData
-                && actual.originalData[$scope.arvoFilter.tunniste + '-OSALLISTUMINEN'] != $scope.tila ) {
+            } else if (actual.filterData
+                && actual.filterData[$scope.koeFilter.tunniste + '-OSALLISTUMINEN']
+                != $scope.osallistuminenFilter) {
                 show = false;
             }
         }
 
         return show;
 
+    }
+
+    $scope.updateFilterData = function () {
+        PistesyottoModel.updateFilterData();
     }
 
     $scope.limit = 20;
