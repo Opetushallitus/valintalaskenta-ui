@@ -29,6 +29,9 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
   			});
   			this.valittu = this.isAllValittu();
   		};
+  		this.valitutHakemusOids = function() {
+			return _.map(this.filterValitut(), function(hakija){ return hakija.hakemusOid; });
+		};
   		
           
       this.refresh = function(hakukohdeOid, hakuOid) {	
@@ -83,7 +86,6 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
           this.submit = function() {
               for (var i=0; i<model.hakeneet.length; i++) {
                   var hakemus = model.hakeneet[i];
-                  //console.debug(hakemus.muokattuHarkinnanvaraisuusTila + " vs. " + hakemus.harkinnanvaraisuusTila);
                   if(hakemus.muokattuHarkinnanvaraisuusTila != hakemus.harkinnanvaraisuusTila)  {
                       var updateParams = {
                           hakuOid: model.hakuOid,
@@ -141,7 +143,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
     	  },
     	  {
     		  tag: "harkinnanvaraiset",
-      		hakemusOids: $scope.model.filterValitut()
+      		hakemusOids: $scope.model.valitutHakemusOids()
       		},
       		function(resurssi) {
       			Dokumenttipalvelu.paivita($scope.update);
@@ -160,7 +162,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
   			hakukohdeOid:$routeParams.hakukohdeOid},
   			{
   				tag: "harkinnanvaraiset",
-  				hakemusOids: $scope.model.filterValitut(),
+  				hakemusOids: $scope.model.valitutHakemusOids(),
   				letterBodyText: $scope.tinymceModel
   			},
   			function() {
