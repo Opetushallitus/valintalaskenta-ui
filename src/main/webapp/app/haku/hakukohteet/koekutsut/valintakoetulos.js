@@ -93,6 +93,7 @@
                                 	model.valintakokeet[entry.valintakoeOid] = valintakoeModel;
                                 	Valintakoe.get({valintakoeOid: entry.valintakoeOid}, function(result) {
                                 		valintakoeModel.aktiivinen = result.aktiivinen;
+                                		
                                 	},function() {
                                 		valintakoeModel.aktiivinen = false;
                                 		valintakoeModel.virheIlmoitus = "Valintakokeen tietoja ei saatu palvelimelta. Ota yhteys ylläpitoon.";
@@ -217,7 +218,6 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     	}, function(response) {
     		Dokumenttipalvelu.paivita($scope.update);
     	});
-    	//console.log(kokeet);
     };
     
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -231,7 +231,7 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 
     $scope.model.refresh($scope.hakukohdeOid);
 
-    $scope.nakymanTila = "Hakijoittain"; // Hakijoittain
+    $scope.nakymanTila = "Kokeittain"; // Hakijoittain
 
     $scope.predicate = 'hakijaOid';
 
