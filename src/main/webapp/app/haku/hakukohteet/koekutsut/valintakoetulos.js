@@ -231,7 +231,7 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 
     $scope.model.refresh($scope.hakukohdeOid);
 
-    $scope.nakymanTila = "Hakijoittain"; // Hakijoittain
+    $scope.nakymanTila = "Kokeittain"; // Hakijoittain
 
     $scope.predicate = 'hakijaOid';
 
