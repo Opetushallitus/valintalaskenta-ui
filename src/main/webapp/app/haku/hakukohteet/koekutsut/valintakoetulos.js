@@ -80,7 +80,12 @@
                                 entry.valittu = true;
                                 
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
-                                entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
+                                // OVT-6961
+                                if(valintakoe.nimi != undefined) {
+                                	entry.valintakoeTunniste = valintakoe.nimi;	
+                                } else {
+                                	entry.valintakoeTunniste = valintakoe.valintakoeTunniste;	
+                                }
                                 entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 
                                 if (model.valintakokeet[entry.valintakoeOid] === undefined ) {
