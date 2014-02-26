@@ -1638,7 +1638,7 @@ table.dropmenu-table {
   display: block; }
 
 /*
-	Taulukko tyyli perustietojen näyttämiselle, esim. hakijan henkilötietot
+	Taulukko tyyli perustietojen nï¿½yttï¿½miselle, esim. hakijan henkilï¿½tietot
 */
 .perustieto-table {
   width: 100%; }
@@ -2029,9 +2029,9 @@ button.edit-link {
   .spinner #toolbartoggle-btn-container #toolbartoggle-btn {
     cursor: progress !important; }
 
-/*** Modal
+/*** old-modal
 ************************************************/
-.modal-backdrop {
+.old-modal-backdrop {
   position: fixed;
   left: 0;
   top: 0;
@@ -2041,7 +2041,7 @@ button.edit-link {
   width: 100%;
   height: 100%; }
 
-.modal {
+.old-modal {
   position: absolute;
   line-height: 20px;
   background: white;
@@ -2054,7 +2054,7 @@ button.edit-link {
   -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   z-index: 10050; }
-  .modal .modal-header {
+  .old-modal .old-modal-header {
     border-bottom: 1px solid #ccc;
     height: 30px;
     background-image: url(../img/texture-45dg-lines-eeeeee.gif);
@@ -2064,7 +2064,7 @@ button.edit-link {
     font-weight: bold;
     text-align: left;
     padding-left: 10px; }
-    .modal .modal-header .close {
+    .old-modal .old-modal-header .close {
       background-image: url(../img/popup-close-icon.png);
       cursor: pointer;
       width: 16px;
@@ -2072,7 +2072,7 @@ button.edit-link {
       position: absolute;
       right: 7px;
       top: 7px; }
-  .modal .modal-content {
+  .old-modal .old-modal-content {
     padding: 10px 20px 10px 10px; }
 
 /*** Pagination

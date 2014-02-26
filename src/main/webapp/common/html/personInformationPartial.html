@@ -2,13 +2,13 @@
     <span title="Etunimi" fast-bind-once="sukunimi"></span>,
     <span title="Sukunimi" fast-bind-once="etunimi"></span>
 </a>
-<div class="modal-backdrop" ng-click="show()" ng-if="showInfo"></div>
-<div centralize  class="modal henkiloPartial"  ng-if="showInfo">
-    <div class="modal-header">
+<div class="old-modal-backdrop" ng-click="show()" ng-if="showInfo"></div>
+<div centralize  class="old-modal henkiloPartial"  ng-if="showInfo">
+    <div class="old-modal-header">
         Nimi: <span fast-bind-once="sukunimi + ', ' + etunimi"></span>
         <a ng-click="show()" class="close"></a>
     </div>
-    <div class="modal-content">
+    <div class="old-modal-content">
         <dl>
 
             <dt>Hakemuksen tekninen tunniste (OID)</dt>
