@@ -10,7 +10,8 @@ var staticLibs = [
 	"common/jslib/angular-1.2.10/angular-route.js",
 	"common/jslib/angular-1.2.10/angular-animate.js",
 	"common/jslib/angular-1.2.10/angular-resource.js",
-    "common/jslib/jquery-1.8.3/jquery.nestable.js",
+	"common/jslib/angular-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.min.js",
+	"common/jslib/jquery-1.8.3/jquery.nestable.js",
     "common/jslib/underscore/underscore-min.js",
 	"common/jslib/tinymce-4.0.12/tinymce.min.js",
 	"common/jslib/tinymce-4.0.12/ui-tinymce.js"

@@ -207,7 +207,6 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
         this.updateFilterData = function () {
             console.log("updateFilterData");
             model.hakeneet.forEach(function (hakija) {
-
                 angular.copy(hakija.originalData, hakija.filterData);
             });
         }
@@ -281,15 +280,17 @@ function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel,
 
         if (show && $scope.osallistuminenFilter != "") {
             if ($scope.koeFilter == null) {
-                // koe filterointi ei ole päällä, joten tarkistetaan onko missään kokeessa
+
                 if (actual.filterData) {
+                    var tempShow = false;
                     for (var tila in actual.filterData) {
                         if (tila.indexOf('-OSALLISTUMINEN') > -1) {
-                            if (actual.filterData[tila] != $scope.osallistuminenFilter) {
-                                show = false;
+                            if (actual.filterData[tila] == $scope.osallistuminenFilter) {
+                                tempShow = true;
                             }
                         }
                     }
+                    show = tempShow;
                 }
             } else if (actual.filterData
                 && actual.filterData[$scope.koeFilter.tunniste + '-OSALLISTUMINEN']

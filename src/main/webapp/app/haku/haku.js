@@ -4,13 +4,23 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
         this.hakuOid;
         this.haut = [];
         this.lisahaku = false;
-
+        this.getNimi = function() {
+        	if(this.hakuOid.nimi.kieli_fi != undefined) {
+        		return this.hakuOid.nimi.kieli_fi; 
+        	}
+        	if(this.hakuOid.nimi.kieli_sv != undefined) {
+        		return this.hakuOid.nimi.kieli_sv; 
+        	}
+        	if(this.hakuOid.nimi.kieli_en != undefined) {
+        		return this.hakuOid.nimi.kieli_en; 
+        	}
+        	return "Nimetön hakukohde";
+        };
         this.init = function(oid) {
             
             if(model.haut.length <= 0) {
                 Haku.get({}, function(result) {
                     var HakuOidObjects = result;
-                    
                     var promises = [];
 
                     //iterate hakuoids and fetch corresponding hakuobjects

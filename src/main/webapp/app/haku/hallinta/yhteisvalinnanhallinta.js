@@ -42,7 +42,54 @@ app.factory('Poller', function($http,$q){
 
      }
  });
-function YhteisvalinnanHallintaController($scope, $timeout, $q, $location, Poller, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, AktivoiKelaFtp, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
+function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance, HakuModel, ValintalaskentaKeskeyta, ValintalaskentaKaynnissa, ValintalaskentaMuistissa, ValintalaskentaStatus) {
+	$scope.uuid = null;
+	$scope.tyot = [];
+	$scope.nimi = HakuModel.getNimi();
+	$scope.lisaa = false;
+	
+	ValintalaskentaMuistissa.aktivoi({hakuOid: $routeParams.hakuOid}, [], function(uuid) {
+		$scope.uuid = uuid.latausUrl;
+		update();
+	}, function() {
+		ValintalaskentaKaynnissa.hae(function(uuid) {
+			$scope.uuid = uuid.latausUrl;
+			update();
+		});
+	});
+	
+	var update = function () {
+		if($scope.uuid != null) {
+			ValintalaskentaStatus.get({uuid:$scope.uuid}, function(r) {
+				$scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
+			});
+		}
+    };
+    
+	var timer = $interval(function () {
+        update();
+    }, 10000);
+
+	$scope.peruuta = function() {
+    	ValintalaskentaKeskeyta.keskeyta();
+    };
+
+    $scope.naytaLisaa = function() {
+    	$scope.lisaa = !$scope.lisaa;
+    };
+
+	  $scope.ok = function () {
+		  $interval.cancel(timer);
+	    $modalInstance.close(); //$scope.selected.item);
+	  };
+
+	  $scope.cancel = function () {
+		  $interval.cancel(timer);
+	    $modalInstance.dismiss('cancel');
+	  };
+	};
+
+function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, Poller, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, AktivoiKelaFtp, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	$scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -54,6 +101,25 @@ function YhteisvalinnanHallintaController($scope, $timeout, $q, $location, Polle
 	$scope.jalkiohjausLimit = 5;
 	$scope.kelaLimit = 5;
 	
+	///////////////////
+	$scope.aktivoiMuistinvarainenValintalaskenta = function () {
+		
+	    var valintalaskentaInstance = $modal.open({
+	      backdrop: 'static',
+	      templateUrl: 'valintalaskentaModaalinenIkkuna.html',
+	      controller: ModalInstanceCtrl,
+	      resolve: {
+	      }
+	    });
+
+	    valintalaskentaInstance.result.then(function () { // selectedItem
+	    	
+	    }, function () {
+	    	
+	    });
+	};
+	///////////////////
+	  
 	$scope.showMoreJalkiohjaus = function() {
 		$scope.jalkiohjausLimit = $scope.jalkiohjausLimit + 10;
 	};
