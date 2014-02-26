@@ -1,12 +1,12 @@
 <a ng-disabled="!enabled" ng-if="!harkinnanvarainen" ng-click="show()" class="button small">Tila</a>
-<div class="modal-backdrop" ng-click="show()" ng-if="showForm"></div>
+<div class="old-modal-backdrop" ng-click="show()" ng-if="showForm"></div>
 
-<div centralize class="modal" ng-if="showForm">
-    <div class="modal-header">
+<div centralize class="old-modal" ng-if="showForm">
+    <div class="old-modal-header">
         <span>Järjestyskriteeri</span>
         <a ng-click="show()" class="close"></a>
     </div>
-    <div class="modal-content">
+    <div class="old-modal-content">
         <div ng-include="'../common/html/errors.html'"></div>
         <dl class="dl-horizontal">
             <dt class="margin-top-0">Nimi</dt>

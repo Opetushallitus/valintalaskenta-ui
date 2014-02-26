@@ -82,16 +82,16 @@
                                 <a href="" ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria">{{(hakemus.tilaHistoria
                                     | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}</a>
 
-                                <div class="modal-backdrop"
+                                <div class="old-modal-backdrop"
                                      ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria"
                                      ng-if="hakemus.showTilaHistoria"></div>
-                                <div centralize class="modal" ng-if="hakemus.showTilaHistoria">
-                                    <div class="modal-header">
+                                <div centralize class="old-modal" ng-if="hakemus.showTilaHistoria">
+                                    <div class="old-modal-header">
                                         <span>Muutokset</span>
                                         <a ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria"
                                            class="close"></a>
                                     </div>
-                                    <div class="modal-content">
+                                    <div class="old-modal-content">
                                         <table class="virkailija-table-1">
                                             <thead>
                                             <tr>
@@ -150,14 +150,14 @@
                                 <a href="" ng-click="hakemus.showLog = !hakemus.showLog">{{hakemus.logEntries[hakemus.logEntries.length-1].luotu
                                     | date:'dd.MM.yyyy HH:mm'}}</a>
 
-                                <div class="modal-backdrop" ng-click="hakemus.showLog = !hakemus.showLog"
+                                <div class="old-modal-backdrop" ng-click="hakemus.showLog = !hakemus.showLog"
                                      ng-if="hakemus.showLog"></div>
-                                <div centralize class="modal" ng-if="hakemus.showLog">
-                                    <div class="modal-header">
+                                <div centralize class="old-modal" ng-if="hakemus.showLog">
+                                    <div class="old-modal-header">
                                         <span>Muutokset</span>
                                         <a ng-click="hakemus.showLog = !hakemus.showLog" class="close"></a>
                                     </div>
-                                    <div class="modal-content">
+                                    <div class="old-modal-content">
                                         <table class="virkailija-table-1">
                                             <thead>
                                             <tr>
