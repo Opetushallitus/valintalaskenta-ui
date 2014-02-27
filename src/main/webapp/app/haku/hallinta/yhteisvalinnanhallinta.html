@@ -14,7 +14,7 @@
 			<div class="row" ng-repeat="t in tyot">
 				<div class="col-sm-4">{{t.nimi}}</div>
 				<div class="col-sm-4">{{t.tehty}} / {{t.kokonaismaara}}</div>
-				<div class="col-sm-4"><progressbar class="progress-striped active" value="{{t.prosentteina * 100}}" type="info">{{t.prosentteina * 100}}%</progressbar></div>				
+				<div class="col-sm-4"><progressbar class="progress-striped active" value="getProsentit(t)" type="info">{{getProsentit(t)}}%</progressbar></div>				
 			</div>           
 			<ul>
                 <li ng-repeat="item in items">
