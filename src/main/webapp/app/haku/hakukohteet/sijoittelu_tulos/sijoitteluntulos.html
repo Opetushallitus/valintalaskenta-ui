@@ -1,5 +1,5 @@
 <h1>Valintojen toteuttaminen</h1>
-<div ng-include="'haku/topNavigation.html'"/>
+<div ng-include="'haku/topNavigation.html'"></div>
 
 <div class="tabsheets">
 
@@ -8,7 +8,7 @@
     <div class="toggle-content-container overflow-x-scroll">
 
         <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
-        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"></div>
 
         <div class="tabsheets">
 
@@ -23,15 +23,14 @@
                     Sijoittelu suoritetaan kerran vuorokaudessa.
                 </div>
 
-                <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="button small excel">Vie
-                    exceliin</a>
-                <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Luo
-                    hyväksymiskirjeet</a>
-                <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="button small pdf">Luo
-                    hyväksytyille osoitetarrat</a>
                 <br/>
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
                        ng-model="hakijaFilter"/>
+                       
+                <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="button small excel">Vie taulukkolaskentaan</a>
+                <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Muodosta hyväksymiskirjeet</a>
+                <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="button small pdf">Muodosta hyväksytyille osoitetarrat</a>
+                
             </div>
 
             <div class="margin-vertical-2 overflow-x-scroll">
@@ -170,13 +169,14 @@
                                             <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true">
                                                 <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
                                                 <td fast-bind-once="entry.muokkaaja"></td>
-                                                <td><span
-                                                        ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
+                                                <td>
+                                                	<span ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
                                                     <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
                                                     <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
                                                     <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
-                                                    <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span></td>
-                                                <span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span></td>
+                                                    <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span>
+                                                	<span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span>
+                                               	</td>
                                                 <td fast-bind-once="entry.selite"></td>
                                             </tr>
                                         </table>

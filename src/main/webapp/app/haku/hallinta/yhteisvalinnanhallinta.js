@@ -47,7 +47,9 @@ function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance
 	$scope.tyot = [];
 	$scope.nimi = HakuModel.getNimi();
 	$scope.lisaa = false;
-	
+	$scope.getProsentit = function(t) {
+		return t.prosentteina * 100;
+	};
 	ValintalaskentaMuistissa.aktivoi({hakuOid: $routeParams.hakuOid}, [], function(uuid) {
 		$scope.uuid = uuid.latausUrl;
 		update();
