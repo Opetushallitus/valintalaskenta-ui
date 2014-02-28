@@ -1457,6 +1457,7 @@ label, .label {
     background-position: 0.8em center;
     background-size: 1em; }
   .virkailija-table-1 input, .virkailija-table-1 select {
+    line-height: normal;
     position: relative;
     bottom: 2px; }
   .virkailija-table-1 td.leftorientedcolumn {
