@@ -179,24 +179,27 @@ app.directive('smoothToggle', function($animate) {
 });
 
 
-app.directive('auth', function($animate, $timeout, AuthService) {
+app.directive('auth', function($animate, $timeout, AuthService, ParametriService) {
     return {
       link : function($scope, element, attrs) {
 
           $animate.addClass(element, 'ng-hide');
 
           var success = function() {
-              if(additionalCheck()) {
+              if(attrs.authAdditionalCheck) {
+
+                  ParametriService.promise().then(function(data){
+                      if(data[attrs.authAdditionalCheck]) {
+                        $animate.removeClass(element, 'ng-hide');
+                      } else {
+                          alert("Parametri ei loytynyt : " + attrs.authAauthAdditionalCheck);
+                      }
+                  });
+              } else {
                   $animate.removeClass(element, 'ng-hide');
               }
           }
-          var additionalCheck = function() {
-              if(attrs.authAdditionalCheck) {
-                  var temp = $scope.$eval(attrs.authAdditionalCheck);
-                  return temp;
-              }
-              return true;
-          }
+
           $timeout(function() {
             switch(attrs.auth) {
 

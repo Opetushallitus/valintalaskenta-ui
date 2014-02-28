@@ -65,9 +65,12 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
     return model;
 });
 
-function HakuController($scope, $location, $routeParams, HakuModel) {
+function HakuController($scope, $location, $routeParams, HakuModel, ParametriService) {
     $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
+
+    ParametriService.refresh($routeParams.hakuOid);
+
     $scope.$watch('hakumodel.hakuOid', function() {
 
         if($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid != $routeParams.hakuOid) {
