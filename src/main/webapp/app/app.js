@@ -164,19 +164,37 @@ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/
   });
 });
 
-
-
-
-
 //valintaperusteet
 app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {
         get: {method: "GET", isArray: true}
     });
 });
-
+// d
+app.factory('DokumenttiProsessiResurssi', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/dokumenttiprosessi/:id", {id: "@id"}, {
+        hae: {method: "GET"}
+    });
+});
 //dokumenttipalvelu
-app.factory('Dokumenttipalvelu', function($http, $rootScope, $resource, $window, Poller) {
+app.factory('Dokumenttiprosessi', function($http, $log, $rootScope, $resource, $window, $interval) {
+	return {
+		_timer: undefined,
+		aloitaPollaus: function(callback) {
+			this.lopetaPollaus();
+			this._timer = $interval(function () {
+				callback();
+		    }, 10000);
+		},
+		lopetaPollaus: function() {
+			if(this._timer != undefined) {
+				$interval.cancel(this._timer);
+			}
+		}
+	};
+});
+
+app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $window, Poller) {
 	
     return {
     	_filter: "",
@@ -202,11 +220,11 @@ app.factory('Dokumenttipalvelu', function($http, $rootScope, $resource, $window,
     		this._filter = filter;
     		this.paivita(callback);
     		this._timer = $window.setInterval(this._repeater, 5000);
-    		console.log('start polling start' + this._timer);
+    		$log.info('start polling start' + this._timer);
     	},
     	lopetaPollaus: function() {
     		$window.clearInterval(this._timer);
-    		console.log('end polling end'+ this._timer);
+    		$log.info('end polling end'+ this._timer);
     	}
     };
 });
@@ -387,7 +405,7 @@ app.factory('VastaanottoTilat', function($resource) {
      return $resource(SIJOITTELU_URL_BASE + "resources/tila/hakukohde/:hakukohdeOid/:valintatapajonoOid",
          {
              hakukohdeOid: "@hakukohdeoid",
-             valintatapajonoOid: "@valintatapajonoOid",
+             valintatapajonoOid: "@valintatapajonoOid"
          }, {
          get: {method: "GET", isArray:true}
      });
@@ -546,14 +564,12 @@ app.factory('ParametriService', function($routeParams, Parametrit) {
 })
 
 
-app.constant('Pohjakuolutukset',
-    {
-        0: "Ulkomailla suoritettu koulutus",
-        1: "Perusopetuksen oppimäärä",
-        2: "Perusopetuksen osittain yksilöllistetty oppimäärä",
-        3: "Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
-        6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
-        7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
-        9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti",
-    }
-);
+app.constant('Pohjakuolutukset', {
+	0: "Ulkomailla suoritettu koulutus",
+	1: "Perusopetuksen oppimäärä",
+	2: "Perusopetuksen osittain yksilöllistetty oppimäärä",
+	3: "Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
+	6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
+	7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
+	9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti"
+});
