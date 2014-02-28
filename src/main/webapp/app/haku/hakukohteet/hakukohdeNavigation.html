@@ -7,31 +7,31 @@
     	<span>Hakukohteen perustiedot</span>
     </a>
 
-    <a ng-hide="true" auth-additional-check="displaytabs.showHakeneet()" auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hakeneet', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet" class="tab">
+    <a ng-hide="true" auth-additional-check="hakeneet" auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hakeneet', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet" class="tab">
     	<span>Hakeneet</span>
     </a>
 
-    <a ng-hide="true" auth-additional-check="displaytabs.showValintalaskenta()" auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
+    <a ng-hide="true" auth-additional-check="valintalaskenta" auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
         <span>Valinnan hallinta</span>
     </a>
 
-    <a ng-hide="true" auth-additional-check="displaytabs.showValintakoekutsut()" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
+    <a ng-hide="true" auth-additional-check="valintakoekutsut" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
         <span>Valintakoekutsut</span>
     </a>
 
-    <a ng-hide="true" auth-additional-check="displaytabs.showPistesyotto()" auth="LISATIETORU LISATIETOCRUD READ_UPDATE CRUD" auth-service="APP_HAKEMUS" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('pistesyotto', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/pistesyotto" class="tab">
+    <a ng-hide="true" auth-additional-check="pistesyotto" auth="LISATIETORU LISATIETOCRUD READ_UPDATE CRUD" auth-service="APP_HAKEMUS" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('pistesyotto', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/pistesyotto" class="tab">
         <span>Pistesyöttö</span>
     </a>
 
-    <a ng-hide="true" auth-additional-check="displaytabs.showHarkinnanvaraiset()" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
+    <a ng-hide="true" auth-additional-check="harkinnanvaraiset" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
         <span>Harkinnanvaraiset</span>
     </a>
 
-    <a ng-hide="true" auth-additional-check="displaytabs.showValinnanhallinta()" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintalaskentatulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintalaskentatulos" class="tab">
+    <a ng-hide="true" auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintalaskentatulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintalaskentatulos" class="tab">
     	<span>Valintalaskennan tulos</span>
     </a>
 
-    <a ng-hide="true" auth-additional-check="displaytabs.showValinnanhallinta()" auth="read" auth-service="APP_SIJOITTELU" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('sijoitteluntulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/sijoitteluntulos" class="tab">
+    <a ng-hide="true" auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_SIJOITTELU" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('sijoitteluntulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/sijoitteluntulos" class="tab">
     	<span>Sijoittelun tulokset</span>
     </a>
 

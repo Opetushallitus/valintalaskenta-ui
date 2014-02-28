@@ -34,6 +34,37 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
     return deferred.promise;
 });
 
+app.factory('ParametriService', function($q, Parametrit) {
+
+
+    var parametrit = function(){
+        var instance = {};
+        var oldHakuOid;
+        instance.deferred = $q.defer();
+
+        instance.refresh = function(hakuOid) {
+
+            instance.deferred = $q.defer();
+
+            if(hakuOid != oldHakuOid) {
+                Parametrit.list({hakuOid: hakuOid}, function(data) {
+                    instance.deferred.resolve(data);
+                }, function(error){
+                    alert("parametri service ei vastaa: " + error);
+                });
+            }
+        }
+
+        instance.promise = function() {
+            return instance.deferred.promise;
+        }
+
+        return instance;
+    }();
+
+    return parametrit;
+})
+
 
 app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
 
