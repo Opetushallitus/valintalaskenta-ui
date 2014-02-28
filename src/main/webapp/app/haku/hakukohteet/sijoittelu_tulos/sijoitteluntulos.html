@@ -35,7 +35,7 @@
 
             <div class="margin-vertical-2 overflow-x-scroll">
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot | orderBy:'index':true">
-
+					<a ng-click="submit(jono.oid)" class="button small primary margin-top-2">Tallenna</a>
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
                         <tr>
