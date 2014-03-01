@@ -13,8 +13,6 @@
 
             <div ng-include="'../common/html/errors.html'"></div>
             <div>
-             
-            <div ng-include="'../common/html/dokumenttipalvelu.html'"></div>
             
             <div>
                     <span>Näytä</span>
@@ -70,10 +68,11 @@
 						<form method="post">
 							  <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel[valintakoe.valintakoeOid]"></textarea>
 						</form>
-						<hr>
-	                    <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="button small excel">Vie taulukkolaskentaan</a>
-	                    <a ng-click="tulostaKoekutsukirjeet(valintakoe); $event.stopPropagation()" class="button small pdf">Muodosta koekutsut</a>
-	                    <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()" class="button small pdf">Muodosta osoitetarrat</a>
+						<div class="btn-toolbar" role="toolbar">
+	                    <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie taulukkolaskentaan</a>
+	                    <a ng-click="tulostaKoekutsukirjeet(valintakoe); $event.stopPropagation()" class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta koekutsut</span></a>
+	                    <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()" class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta osoitetarrat</a>
+						</div>                    
                     </div>
                     <div ng-hide="valintakoe.aktiivinen">
                     	<p>Tälle valintakokeelle ei voi muodostaa osoitetarroja tai koekutsuja. Asetus on muokattavissa valintaperusteiden mallinnuksessa.</p>

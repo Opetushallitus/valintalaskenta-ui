@@ -3944,3 +3944,29 @@ body {
 
 .selectlist li a:hover {
   text-decoration: none; }
+
+.btn-default {
+	color: black;
+	background-color: #9fdbf0;
+	border-color: #9fdbf0;
+}
+.btn-default:hover {
+	background-color: #92cce0;
+	border-color: #92cce0;
+}
+.btn-primary {
+	color: black;
+	background-color: #feba00;
+	border-color: #feba00;
+}
+.btn-primary:hover {
+	color: black;
+	background-color: #dea300;
+	border-color: #dea300;
+}
+.btn-primary.disabled {
+	color: black;
+	background-color: #dea300;
+	border-color: #dea300;
+}
+  

@@ -2,6 +2,8 @@
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce', 'valvomo','ui.bootstrap'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel){
+	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
+  	tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/tinymce-4.0.12';
     MyRolesModel;
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
 });
@@ -56,7 +58,78 @@ app.config(function($routeProvider) {
 
 
 });
-
+//MODAALISET IKKUNAT
+app.factory('Latausikkuna', function($modal) {
+	return {
+		avaa: function(id, otsikko, lisatiedot) {
+			var timer = null;
+			var cancelTimerWhenClosing = function() {};
+			$modal.open({
+		      backdrop: 'static',
+		      templateUrl: 'modaalinen/latausikkuna.html',
+		      controller: function($scope, $window, $modalInstance, $interval, DokumenttiProsessinTila) {
+		    	  cancelTimerWhenClosing = function() {
+				  	$interval.cancel(timer);
+				  };
+				  $scope.lisatiedot = lisatiedot;
+		    	  $scope.otsikko = otsikko;
+		    	  $scope.prosessi = {};
+		    	  $scope.update = function() {
+		    	  		
+		    	  		DokumenttiProsessinTila.lue({id: id.id}, function(data) {
+		    	  			if(data.keskeytetty == true) {
+		    	  				cancelTimerWhenClosing();
+		    	  			}
+		    	  		$scope.prosessi = data;
+		    	  		});
+		    	  };
+		    	  $scope.onVirheita = function() {
+		    	  	if($scope.prosessi == null) {
+		    	  		return false;
+		    	  	} else {
+		    	  		return $scope.prosessi.keskeytetty; 
+		    	  	}
+		    	  };
+		    	  $scope.onKesken = function() {
+		    	  	if($scope.prosessi == null) {
+		    	  		return true;
+		    	  	} else {
+		    	  		return !$scope.prosessi.valmis; 
+		    	  	}
+		    	  };
+		    	  $scope.getProsentit = function(t) {
+		    	  	if(t == null) {
+		    	  		return 0;
+		    	  	}
+					return t.prosentteina * 100;
+				  };
+		    	  $scope.sulje = function() {
+		    	  		$modalInstance.dismiss('cancel');
+		    	  };
+		    	  timer = $interval(function () {
+				        $scope.update();
+				  }, 2000);
+				  
+				  $scope.ok = function() {
+				  	if($scope.onKesken()) {
+				  		return;
+				  	} else {
+				  		$window.location.href = "/dokumenttipalvelu-service/resources/dokumentit/lataa/" + $scope.prosessi.dokumenttiId;
+				  	}
+				  }
+		      },
+		      resolve: {
+		    	  
+		      }
+		    }).result.then(function() {
+		    	cancelTimerWhenClosing();
+		    }, function() {
+		    	cancelTimerWhenClosing();
+		    });
+		    
+		}
+	};
+});
 
 //TARJONTA RESOURCES
 app.factory('Haku', function($resource) {
@@ -171,9 +244,9 @@ app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
     });
 });
 // d
-app.factory('DokumenttiProsessiResurssi', function($resource) {
+app.factory('DokumenttiProsessinTila', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/dokumenttiprosessi/:id", {id: "@id"}, {
-        hae: {method: "GET"}
+        lue: {method: "GET"}
     });
 });
 //dokumenttipalvelu
@@ -333,11 +406,6 @@ app.factory('AktivoiKelaVienti', function($resource) {
 
 app.factory('Koekutsukirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/koekutsukirjeet/aktivoi", {}, {
-		post:  {method:'POST', isArray:false}
-	});
-});
-app.factory('KoekutsukirjeetHakemuksille', function($resource) {
-	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/koekutsukirjeet/hakemuksille/aktivoi", {}, {
 		post:  {method:'POST', isArray:false}
 	});
 });

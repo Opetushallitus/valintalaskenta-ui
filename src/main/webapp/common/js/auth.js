@@ -53,11 +53,32 @@ app.factory('ParametriService', function($q, Parametrit) {
                     alert("parametri service ei vastaa: " + error);
                 });
             }
-        }
-
+        };
+        /**
+         * Kaikki oikeudet kaikille
+         */
+        instance.showHakeneet = function() {
+        	return true;
+        };
+		instance.showHarkinnanvaraiset = function() {
+        	return true;
+        };
+        instance.showPistesyotto = function() {
+        	return true;
+        };
+        instance.showValinnanhallinta = function() {
+        	return true;
+        };
+        instance.showValintalaskenta = function() {
+        	return true;
+        };
+        /**
+         * Kaikki oikeudet kaikille
+         */
+        
         instance.promise = function() {
             return instance.deferred.promise;
-        }
+        };
 
         return instance;
     }();

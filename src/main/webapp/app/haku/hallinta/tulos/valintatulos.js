@@ -1,8 +1,8 @@
 
 app.factory('ValintatulosModel', function(Valintatulos) {
-	var model;
+	var model = null;
 
-	model = new function() {
+	model = function() {
 
         this.filter = { 
             type: "KAIKKI",
@@ -49,7 +49,7 @@ app.factory('ValintatulosModel', function(Valintatulos) {
                 model.hakemusCount = result.totalCount;
             });
         };
-	}
+	};
 	return model;
 });
 
