@@ -2,6 +2,8 @@
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce', 'valvomo','ui.bootstrap'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel){
+	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
+  	tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/tinymce-4.0.12';
     MyRolesModel;
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
 });
@@ -56,7 +58,78 @@ app.config(function($routeProvider) {
 
 
 });
-
+//MODAALISET IKKUNAT
+app.factory('Latausikkuna', function($modal) {
+	return {
+		avaa: function(id, otsikko, lisatiedot) {
+			var timer = null;
+			var cancelTimerWhenClosing = function() {};
+			$modal.open({
+		      backdrop: 'static',
+		      templateUrl: 'modaalinen/latausikkuna.html',
+		      controller: function($scope, $window, $modalInstance, $interval, DokumenttiProsessinTila) {
+		    	  cancelTimerWhenClosing = function() {
+				  	$interval.cancel(timer);
+				  };
+				  $scope.lisatiedot = lisatiedot;
+		    	  $scope.otsikko = otsikko;
+		    	  $scope.prosessi = {};
+		    	  $scope.update = function() {
+		    	  		
+		    	  		DokumenttiProsessinTila.lue({id: id.id}, function(data) {
+		    	  			if(data.keskeytetty == true) {
+		    	  				cancelTimerWhenClosing();
+		    	  			}
+		    	  		$scope.prosessi = data;
+		    	  		});
+		    	  };
+		    	  $scope.onVirheita = function() {
+		    	  	if($scope.prosessi == null) {
+		    	  		return false;
+		    	  	} else {
+		    	  		return $scope.prosessi.keskeytetty; 
+		    	  	}
+		    	  };
+		    	  $scope.onKesken = function() {
+		    	  	if($scope.prosessi == null) {
+		    	  		return true;
+		    	  	} else {
+		    	  		return !$scope.prosessi.valmis; 
+		    	  	}
+		    	  };
+		    	  $scope.getProsentit = function(t) {
+		    	  	if(t == null) {
+		    	  		return 0;
+		    	  	}
+					return t.prosentteina * 100;
+				  };
+		    	  $scope.sulje = function() {
+		    	  		$modalInstance.dismiss('cancel');
+		    	  };
+		    	  timer = $interval(function () {
+				        $scope.update();
+				  }, 2000);
+				  
+				  $scope.ok = function() {
+				  	if($scope.onKesken()) {
+				  		return;
+				  	} else {
+				  		$window.location.href = "/dokumenttipalvelu-service/resources/dokumentit/lataa/" + $scope.prosessi.dokumenttiId;
+				  	}
+				  }
+		      },
+		      resolve: {
+		    	  
+		      }
+		    }).result.then(function() {
+		    	cancelTimerWhenClosing();
+		    }, function() {
+		    	cancelTimerWhenClosing();
+		    });
+		    
+		}
+	};
+});
 
 //TARJONTA RESOURCES
 app.factory('Haku', function($resource) {
@@ -164,19 +237,37 @@ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/
   });
 });
 
-
-
-
-
 //valintaperusteet
 app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {
         get: {method: "GET", isArray: true}
     });
 });
-
+// d
+app.factory('DokumenttiProsessinTila', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/dokumenttiprosessi/:id", {id: "@id"}, {
+        lue: {method: "GET"}
+    });
+});
 //dokumenttipalvelu
-app.factory('Dokumenttipalvelu', function($http, $rootScope, $resource, $window, Poller) {
+app.factory('Dokumenttiprosessi', function($http, $log, $rootScope, $resource, $window, $interval) {
+	return {
+		_timer: undefined,
+		aloitaPollaus: function(callback) {
+			this.lopetaPollaus();
+			this._timer = $interval(function () {
+				callback();
+		    }, 10000);
+		},
+		lopetaPollaus: function() {
+			if(this._timer != undefined) {
+				$interval.cancel(this._timer);
+			}
+		}
+	};
+});
+
+app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $window, Poller) {
 	
     return {
     	_filter: "",
@@ -202,11 +293,11 @@ app.factory('Dokumenttipalvelu', function($http, $rootScope, $resource, $window,
     		this._filter = filter;
     		this.paivita(callback);
     		this._timer = $window.setInterval(this._repeater, 5000);
-    		console.log('start polling start' + this._timer);
+    		$log.info('start polling start' + this._timer);
     	},
     	lopetaPollaus: function() {
     		$window.clearInterval(this._timer);
-    		console.log('end polling end'+ this._timer);
+    		$log.info('end polling end'+ this._timer);
     	}
     };
 });
@@ -318,11 +409,6 @@ app.factory('Koekutsukirjeet', function($resource) {
 		post:  {method:'POST', isArray:false}
 	});
 });
-app.factory('KoekutsukirjeetHakemuksille', function($resource) {
-	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/koekutsukirjeet/hakemuksille/aktivoi", {}, {
-		post:  {method:'POST', isArray:false}
-	});
-});
 
 app.factory('Osoitetarrat', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/aktivoi", {}, {
@@ -387,7 +473,7 @@ app.factory('VastaanottoTilat', function($resource) {
      return $resource(SIJOITTELU_URL_BASE + "resources/tila/hakukohde/:hakukohdeOid/:valintatapajonoOid",
          {
              hakukohdeOid: "@hakukohdeoid",
-             valintatapajonoOid: "@valintatapajonoOid",
+             valintatapajonoOid: "@valintatapajonoOid"
          }, {
          get: {method: "GET", isArray:true}
      });
@@ -515,45 +601,13 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
     });
 });
 
-app.factory('ParametriService', function($routeParams, Parametrit) {
-    var loaded = false, privilegesMap = {};
-    if(!loaded) {
-        Parametrit.list({hakuOid: $routeParams.hakuOid}, function(data) {
-            $.extend(privilegesMap, data);
-            loaded = true;
-        });
-    }
-    return {
-        showHakeneet: function() {
-            return privilegesMap.hakeneet;
-        },
-        showValintalaskenta: function() {
-            return privilegesMap.valintalaskenta;
-        },
-        showValintakoekutsut: function() {
-            return privilegesMap.valintakoekutsut;
-        },
-        showPistesyotto: function() {
-            return privilegesMap.pistesyotto;
-        },
-        showHarkinnanvaraiset: function() {
-            return privilegesMap.harkinnanvaraiset;
-        },
-        showValinnanhallinta: function() {
-            return privilegesMap.valinnanhallinta;
-        }
-    };
-})
 
-
-app.constant('Pohjakuolutukset',
-    {
-        0: "Ulkomailla suoritettu koulutus",
-        1: "Perusopetuksen oppimäärä",
-        2: "Perusopetuksen osittain yksilöllistetty oppimäärä",
-        3: "Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
-        6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
-        7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
-        9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti",
-    }
-);
+app.constant('Pohjakuolutukset', {
+	0: "Ulkomailla suoritettu koulutus",
+	1: "Perusopetuksen oppimäärä",
+	2: "Perusopetuksen osittain yksilöllistetty oppimäärä",
+	3: "Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
+	6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
+	7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
+	9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti"
+});

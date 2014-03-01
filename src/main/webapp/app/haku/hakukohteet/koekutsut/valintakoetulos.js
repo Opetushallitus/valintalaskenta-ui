@@ -78,7 +78,7 @@
                                 entry.etunimi = koetulos.etunimi;
                                 entry.sukunimi = koetulos.sukunimi;
                                 entry.valittu = true;
-                                
+                                entry.aktiivinen = valintakoe.aktiivinen != false;
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 // OVT-6961
                                 if(valintakoe.nimi != undefined) {
@@ -96,13 +96,7 @@
                                 			valintakoeTunniste: entry.valintakoeTunniste, 
                                 			hakijat: [entry]};
                                 	model.valintakokeet[entry.valintakoeOid] = valintakoeModel;
-                                	Valintakoe.get({valintakoeOid: entry.valintakoeOid}, function(result) {
-                                		valintakoeModel.aktiivinen = result.aktiivinen;
-                                		
-                                	},function() {
-                                		valintakoeModel.aktiivinen = false;
-                                		valintakoeModel.virheIlmoitus = "Valintakokeen tietoja ei saatu palvelimelta. Ota yhteys ylläpitoon.";
-                                	});
+                                	
                                 } else {
                                 	model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
                                 }
@@ -139,22 +133,10 @@
 });
 
 
-function ValintakoetulosController($scope, $window, $routeParams, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls, Dokumenttipalvelu) {
+function ValintakoetulosController($scope, $window, $routeParams, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls) {
 	// kayttaa dokumenttipalvelua
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
-	$scope.dokumenttiLimit = 5;
-	$scope.dokumentit = [];
-	$scope.update = function(data) {
-		// paivitetaan ainoastaan tarpeen vaatiessa
-		if(data.length != $scope.dokumentit.length) {
-			$scope.dokumentit = data;
-		}
-	}
-	Dokumenttipalvelu.aloitaPollaus($scope.update);
-	$scope.$on('$destroy', function() {Dokumenttipalvelu.lopetaPollaus();});
-	$scope.showMoreDokumentit = function() {
-		$scope.dokumenttiLimit = $scope.dokumenttiLimit + 10;
-	};
+	
 	// kayttaa dokumenttipalvelua
 	$scope.tinymceModel = {};
 	
@@ -166,15 +148,17 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 	
 	$scope.tulostaKoekutsukirjeet = function(valintakoe) {
 		var hakemusOids = null;
+		var otsikko = null;
 		if($scope.model.isAllValittu(valintakoe)) {
 			// luodaan uusimmasta kannan datasta. kayttoliittama voi olla epasynkassa
+			otsikko = "Muodostetaan koekutsukirjeet valintakokeelle";
 		} else {
 			hakemusOids =  $scope.model.valitutHakemusOids(valintakoe);
 			if(hakemusOids.length == 0) {
 				return; // ei tehda tyhjalle joukolle
 			}
+			otsikko = "Muodostetaan koekutsukirjeet valituille hakemuksille";
 		}
-		
 		Koekutsukirjeet.post({
 			hakukohdeOid:$routeParams.hakukohdeOid, 
 			valintakoeOids: [valintakoe.valintakoeOid]},{
@@ -182,30 +166,35 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
 				hakemusOids: hakemusOids,
 				letterBodyText: $scope.tinymceModel[valintakoe.valintakoeOid]
 			},
-			function() {
-			Dokumenttipalvelu.paivita($scope.update);
+			function(id) {
+			//Dokumenttipalvelu.paivita($scope.update);
+				Latausikkuna.avaa(id, otsikko, valintakoe.valintakoeTunniste);
     	},function() {
-    		Dokumenttipalvelu.paivita($scope.update);
+    		//Dokumenttipalvelu.paivita($scope.update);
     	});
     	
 	};
 	$scope.addressLabelPDF = function(valintakoe) {
+		var otsikko = null;
 		var hakemusOids = null;
 		if($scope.model.isAllValittu(valintakoe)) {
 			// luodaan uusimmasta kannan datasta. kayttoliittama voi olla epasynkassa
+			otsikko = "Muodostetaan osoitetarrat valintakokeelle";
 		} else {
 			hakemusOids =  $scope.model.valitutHakemusOids(valintakoe);
 			if(hakemusOids.length == 0) {
 				return; // ei tehda tyhjalle joukolle
 			}
+			otsikko = "Muodostetaan osoitetarrat valituille hakemuksille";
 		}
     	Osoitetarrat.post({ 
     		hakukohdeOid:$routeParams.hakukohdeOid, 
     		valintakoeOid:[valintakoe.valintakoeOid]},{
     			tag: "valintakoetulos",
     			hakemusOids: hakemusOids
-    		},function(resurssi) {
-    			Dokumenttipalvelu.paivita($scope.update);
+    		},function(id) {
+    			//Dokumenttipalvelu.paivita($scope.update);
+    			Latausikkuna.avaa(id, otsikko, valintakoe.valintakoeTunniste);
     	});
     };
     $scope.allAddressLabelPDF = function() {
@@ -218,10 +207,11 @@ function ValintakoetulosController($scope, $window, $routeParams, Valintakoetulo
     		valintakoeOid:kokeet},{
     			tag: "valintakoetulos",
         		hakemusOids: null
-        		}, function(resurssi) {
-    		$window.location.href = resurssi.latausUrl;
-    	}, function(response) {
-    		Dokumenttipalvelu.paivita($scope.update);
+        		}, function(id) {
+    		Latausikkuna.avaa(id, "Osoitetarrat hakukohteen valintakokeille", valintakoe.valintakoeTunniste);
+    	}, function() {
+    		//Dokumenttipalvelu.paivita($scope.update);
+    		
     	});
     };
     

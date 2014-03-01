@@ -82,38 +82,39 @@
 
 <div class="col-md-12">
     <h2>Valintalaskenta</h2>
-    <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiHaunValintakoelaskenta()"
-       class="button primary small">Suorita
+    <a ng-show="privileges.valintalaskenta" ng-click="aktivoiHaunValintakoelaskenta()"
+       class="btn btn-primary btn-sm">Suorita
         valintakoelaskenta haulle</a>
-    <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiMuistinvarainenValintalaskenta()" class="button primary small">Suorita
+    <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiMuistinvarainenValintalaskenta()" class="btn btn-primary btn-sm">Suorita
         valintalaskenta</a>
 </div>
 <div class="col-md-12">
     <h2>Sijoittelu</h2>
-    <a ng-show="privileges.showValintalaskenta()" ng-click="kaynnistaSijoittelu()" class="button primary small">Suorita
+    <a ng-show="privileges.showValintalaskenta()" ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">Suorita
         sijoittelu</a>
     <a ng-hide="jatkuva.ajossa && privileges.showValintalaskenta()" ng-click="kaynnistaJatkuvaSijoittelu()"
-       class="button small">Käynnistä jatkuva sijoittelu</a>
+       class="btn btn-default btn-sm">Ota käyttöön ajastettu sijoittelu</a>
     <a ng-hide="!jatkuva.ajossa && privileges.showValintalaskenta()" ng-click="pysaytaJatkuvaSijoittelu()"
-       class="button small">Pysäytä jatkuva sijoittelu</a>
+       class="btn btn-default btn-sm">Poista käytöstä ajastettu sijoittelu</a>
 </div>
 <div class="col-md-12">
 
     <h2>Jälkiohjaus</h2>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()"
-       class="button primary small excel">Vie jälkiohjaustulokset exceliin</a>
+       class="btn btn-primary btn-sm excel">Vie jälkiohjaustulokset taulukkolaskentaan</a>
+    <!-- 
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetPdf()"
        class="button primary small pdf">Vie jälkiohjauskirjeiksi</a>
+    -->
+    <a ng-show="privileges.showValintalaskenta()" ng-click="muodostaJalkiohjauskirjeet()"
+       class="btn btn-primary btn-sm pdf">Muodosta jälkiohjauskirjeet</a>
     <a ng-show="privileges.showValintalaskenta()"
-       href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos" class="button small">Valinnan
+       href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos" class="btn btn-default btn-sm">Valinnan
         tulokset</a>
 </div>
-
+<!-- 
 <div class="col-md-12">
-
     <h2>Viestintäpalvelun tiedostot</h2>
-
-
     <table class="virkailija-table-1">
         <thead>
         <tr>
@@ -142,13 +143,14 @@
         </tr>
         </tfoot>
     </table>
-
 </div>
+ -->
 <div class="col-md-12">
     <h2>Kela</h2>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiKelaVienti();$event.preventDefault();"
-       class="button primary small">Vie vastaanottaneet Kela-formaattiin</a>
+       class="btn btn-primary btn-sm">Vie vastaanottaneet Kela-formaattiin</a>
 </div>
+<!--
 <div class="col-md-12">
     <h3 class="form-row-label">Kela-tiedostot</h3>
 
@@ -188,6 +190,7 @@
         </tfoot>
     </table>
 </div>
+-->
 <!--
 
 <div class="float-left margin-top-2">
@@ -196,9 +199,10 @@ TODO: Odottaa sijoittelun rajapintaa!
 </div>
  -->
 
-<div class="col-md-12">
 
-    <a ng-show="privileges.showValintalaskenta()" ng-click="showErrors()" class="button small">Hae virheet</a>
+<div class="col-md-12">
+	<h2>Ilmoitukset</h2>
+    <a ng-show="privileges.showValintalaskenta()" ng-click="showErrors()" class="btn btn-default btn-sm">Hae virheet</a>
 </div>
 
 
@@ -278,7 +282,7 @@ TODO: Odottaa sijoittelun rajapintaa!
                 </div>
 
                 <a ng-show="virheet.valintakoe.length > 0 && virheet.valintakoe.length > naytaKokeita"
-                   ng-click="naytaKokeita = naytaKokeita + 5" class="button small">Näytä lisää hakemuksia</a>
+                   ng-click="naytaKokeita = naytaKokeita + 5" class="btn btn-default btn-sm">Näytä lisää hakemuksia</a>
             </div>
             <div ng-show="valintalaskentavirheet">
                 <h2 ng-show="virheet.eiLaskentaVirheita">Ei virheitä laskennassa</h2>
@@ -343,11 +347,8 @@ TODO: Odottaa sijoittelun rajapintaa!
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
-
 </div>
 
 <div class="clear"></div>

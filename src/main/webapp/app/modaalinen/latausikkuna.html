@@ -1,0 +1,32 @@
+<div class="modal-header">
+	<h3>{{otsikko}}</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<h3>{{lisatiedot}}</h3>
+		<br>
+		<div ng-hide="onVirheita()">
+			<div class="col-sm-9"><progressbar ng-class="{progressBarDanger: onVirheita()}" class="progress-striped active" value="getProsentit(prosessi.kokonaistyo)" type="info">{{getProsentit(prosessi.kokonaistyo)}}%</progressbar></div>				
+			<div class="col-sm-3" ng-show="prosessi.kokonaistyo.kokonaismaara">{{prosessi.kokonaistyo.tehty}} / {{prosessi.kokonaistyo.kokonaismaara}}</div>
+			<br>
+			<div class="col-sm-12">
+			Suoritus etenee virheettömästi ja varoituksetta
+			</div>
+		</div>
+		<div ng-show="onVirheita()">
+			Koekutsukirjeiden luonti epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.
+			<div class="bs-callout bs-callout-danger" ng-repeat="poikkeus in prosessi.poikkeukset">
+		    	<h4>{{poikkeus.palvelu}}</h4>
+		    	<p ng-repeat="oid in poikkeus.oidit">{{oid.tyyppi}} {{oid.oid}}</p>
+		    	<p>{{poikkeus.palvelukutsu}} {{poikkeus.viesti}}</p>
+		  	</div>
+		</div>
+	</div>
+	
+</div>
+<div class="modal-footer">
+	<div class="row">
+		<a class="btn btn-primary btn-sm" ng-click="sulje();"  role="button">Keskeytä muodostus</a>
+		<a ng-class="{disabled: onKesken()}" class="btn btn-primary btn-sm" ng-click="ok()"  role="button">Lataa PDF</a>
+	</div>
+</div>
