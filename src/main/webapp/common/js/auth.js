@@ -79,9 +79,7 @@ app.factory('ParametriService', function($q, Parametrit) {
 
         instance.promise = function() {
             return instance.deferred.promise;
-        }
-
-
+        };
 
         return instance;
     }();
