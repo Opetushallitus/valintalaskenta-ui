@@ -14,7 +14,7 @@
 			</div>
 		</div>
 		<div ng-show="onVirheita()">
-			Koekutsukirjeiden luonti epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.
+			Dokumentin luonti epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.
 			<div class="bs-callout bs-callout-danger" ng-repeat="poikkeus in prosessi.poikkeukset">
 		    	<h4>{{poikkeus.palvelu}}</h4>
 		    	<p ng-repeat="oid in poikkeus.oidit">{{oid.tyyppi}} {{oid.oid}}</p>
