@@ -215,7 +215,7 @@ function ValintakoetulosController($scope, $window, $routeParams, Ilmoitus, Lata
     			tag: "valintakoetulos",
         		hakemusOids: null
         		}, function(id) {
-    		Latausikkuna.avaa(id, "Osoitetarrat hakukohteen valintakokeille", valintakoe.valintakoeTunniste);
+    		Latausikkuna.avaa(id, "Osoitetarrat hakukohteen valintakokeille", "Kaikille hakukohteen valintakokeille");
     	}, function() {
     		//Dokumenttipalvelu.paivita($scope.update);
     		
