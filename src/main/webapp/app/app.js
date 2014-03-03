@@ -448,10 +448,10 @@ app.factory('OsoitetarratHakemuksille', function($resource) {
 	});
 });
 
-app.factory('Hyvaksymisosoitteet', function($resource) {
-	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksyttyjenosoitetarrat/aktivoi", {}, {
+app.factory('OsoitetarratSijoittelussaHyvaksytyille', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/sijoittelussahyvaksytyille/aktivoi", {}, {
 		post:  {method:'POST', isArray:false}
-	});
+	});//
 });
 
 app.factory('Hyvaksymiskirjeet', function($resource) {
