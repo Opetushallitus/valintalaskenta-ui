@@ -40,6 +40,7 @@ app.factory('ParametriService', function($q, Parametrit) {
     var parametrit = function(){
         var instance = {};
         var oldHakuOid;
+        var privileges = {};
         instance.deferred = $q.defer();
 
         instance.refresh = function(hakuOid) {
@@ -48,34 +49,34 @@ app.factory('ParametriService', function($q, Parametrit) {
 
             if(hakuOid != oldHakuOid) {
                 Parametrit.list({hakuOid: hakuOid}, function(data) {
+                    privileges = data;
                     instance.deferred.resolve(data);
                 }, function(error){
                     alert("parametri service ei vastaa: " + error);
                 });
             }
+
         };
-        /**
-         * Kaikki oikeudet kaikille
-         */
+
         instance.showHakeneet = function() {
-        	return true;
+        	return privileges.hakeneet;
         };
 		instance.showHarkinnanvaraiset = function() {
-        	return true;
+            return privileges.harkinnanvaraiset;
         };
         instance.showPistesyotto = function() {
-        	return true;
+            return privileges.pistesyotto;
         };
         instance.showValinnanhallinta = function() {
-        	return true;
+            return privileges.valinnanhallinta;
         };
         instance.showValintalaskenta = function() {
-        	return true;
+            return privileges.valintalaskenta;
         };
-        /**
-         * Kaikki oikeudet kaikille
-         */
-        
+        instance.showValintakoekutsut = function() {
+            return privileges.valintakoekutsut;
+        };
+
         instance.promise = function() {
             return instance.deferred.promise;
         };
