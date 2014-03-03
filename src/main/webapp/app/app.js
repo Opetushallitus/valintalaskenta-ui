@@ -96,7 +96,7 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 		    	  	if($scope.prosessi == null) {
 		    	  		return true;
 		    	  	} else {
-		    	  		return !$scope.prosessi.valmis; 
+		    	  		return $scope.prosessi.dokumenttiId == null; 
 		    	  	}
 		    	  };
 		    	  $scope.getProsentit = function(t) {
