@@ -93,7 +93,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
                           hakemusOid: hakemus.oid
                       }
                       var postParams = {
-                          harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila,
+                          harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila
                       };
                       HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function(result) {
 
@@ -112,7 +112,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
     return model;
   });
 
-  function HarkinnanvaraisetController($scope, $location, $routeParams, KoekutsukirjeetHakemuksille, OsoitetarratHakemuksille, Dokumenttipalvelu, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
+  function HarkinnanvaraisetController($scope, $location, $routeParams, Latausikkuna, Koekutsukirjeet, OsoitetarratHakemuksille, Dokumenttipalvelu, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
       $scope.model = HarkinnanvaraisetModel;
       $scope.hakuOid =  $routeParams.hakuOid;;
@@ -145,8 +145,8 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
     		  tag: "harkinnanvaraiset",
       		hakemusOids: $scope.model.valitutHakemusOids()
       		},
-      		function(resurssi) {
-      			Dokumenttipalvelu.paivita($scope.update);
+      		function(id) {
+      			Latausikkuna.avaa(id, "Osoitetarrat valituille harkinnanvaraisille", "");
       	});
       };
       
@@ -158,18 +158,19 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
 	  	};
       
       $scope.muodostaKoekutsut = function() {
-    	  KoekutsukirjeetHakemuksille.post({
-  			hakukohdeOid:$routeParams.hakukohdeOid},
-  			{
-  				tag: "harkinnanvaraiset",
-  				hakemusOids: $scope.model.valitutHakemusOids(),
-  				letterBodyText: $scope.tinymceModel
-  			},
-  			function() {
-  				Dokumenttipalvelu.paivita($scope.update);
-	      	},function() {
-	      		Dokumenttipalvelu.paivita($scope.update);
-	      	});
+    	  Koekutsukirjeet.post({
+			hakukohdeOid:$routeParams.hakukohdeOid, 
+			valintakoeOids: null},{
+				tag: "harkinnanvaraiset",
+				hakemusOids: $scope.model.valitutHakemusOids(),
+				letterBodyText: $scope.tinymceModel
+			},
+			function(id) {
+			//Dokumenttipalvelu.paivita($scope.update);
+				Latausikkuna.avaa(id, "Koekutsukirjeet valituille harkinnanvaraisille", "");
+	    	},function() {
+	    		//Dokumenttipalvelu.paivita($scope.update);
+	    	});
       };
       // kayttaa dokumenttipalvelua
 		$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
