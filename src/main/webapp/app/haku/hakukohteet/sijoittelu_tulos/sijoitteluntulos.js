@@ -240,10 +240,13 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilm
         });
     }
     $scope.createHyvaksymiskirjeetPDF = function () {
-        Hyvaksymiskirjeet.post({sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
-            $window.location.href = resurssi.latausUrl;
-        }, function (response) {
-            alert(response.data.viesti);
+        Hyvaksymiskirjeet.post({
+        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
+        	hakuOid: $routeParams.hakuOid, 
+        	hakukohdeOid: $routeParams.hakukohdeOid},{}, function (id) {
+            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
+        }, function () {
+            
         });
 
     }
