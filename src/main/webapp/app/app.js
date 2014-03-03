@@ -59,7 +59,7 @@ app.config(function($routeProvider) {
 
 });
 //MODAALISET IKKUNAT
-app.factory('Latausikkuna', function($modal) {
+app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 	return {
 		avaa: function(id, otsikko, lisatiedot) {
 			var timer = null;
