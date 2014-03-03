@@ -45,7 +45,15 @@ app.factory('ParametriService', function($q, Parametrit) {
         instance.refresh = function(hakuOid) {
 
             instance.deferred = $q.defer();
-
+			instance.deferred.resolve({
+				hakeneet: true,
+				harkinnanvaraiset: true,
+				pistesyotto: true,
+				valinnanhallinta: true,
+				valintakoekutsut: true,
+				valintalaskenta: true
+			});
+			/*
             if(hakuOid != oldHakuOid) {
                 Parametrit.list({hakuOid: hakuOid}, function(data) {
                     instance.deferred.resolve(data);
@@ -53,6 +61,7 @@ app.factory('ParametriService', function($q, Parametrit) {
                     alert("parametri service ei vastaa: " + error);
                 });
             }
+            */
         };
         /**
          * Kaikki oikeudet kaikille
