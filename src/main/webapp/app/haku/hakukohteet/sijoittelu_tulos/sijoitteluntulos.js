@@ -210,7 +210,7 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
 });
 
 
-function SijoitteluntulosController($scope, $timeout, $routeParams, $window, HakukohdeModel, SijoitteluntulosModel, Hyvaksymisosoitteet, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
+function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilmoitus, Latausikkuna, HakukohdeModel, SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
@@ -230,13 +230,13 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Hak
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     }
     $scope.createHyvaksymisosoitteetPDF = function () {
-        Hyvaksymisosoitteet.post({
+        OsoitetarratSijoittelussaHyvaksytyille.post({
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
         	hakuOid: $routeParams.hakuOid, 
-        	hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
-            $window.location.href = resurssi.latausUrl;
-        }, function (response) {
-            alert(response.data.viesti);
+        	hakukohdeOid: $routeParams.hakukohdeOid},{}, function (id) {
+            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille osoitetarrat", "");
+        }, function () {
+            
         });
     }
     $scope.createHyvaksymiskirjeetPDF = function () {
