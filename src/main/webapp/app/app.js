@@ -63,7 +63,9 @@ app.factory('Latausikkuna', function($modal) {
 	return {
 		avaa: function(id, otsikko, lisatiedot) {
 			var timer = null;
-			var cancelTimerWhenClosing = function() {};
+			var cancelTimerWhenClosing = function() {
+				DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
+			};
 			$modal.open({
 		      backdrop: 'static',
 		      templateUrl: 'modaalinen/latausikkuna.html',
@@ -124,6 +126,7 @@ app.factory('Latausikkuna', function($modal) {
 		    }).result.then(function() {
 		    	cancelTimerWhenClosing();
 		    }, function() {
+		    	DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
 		    	cancelTimerWhenClosing();
 		    });
 		    
@@ -246,7 +249,8 @@ app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
 // d
 app.factory('DokumenttiProsessinTila', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/dokumenttiprosessi/:id", {id: "@id"}, {
-        lue: {method: "GET"}
+        lue: {method: "GET"},
+        ilmoita: {method: "POST"}
     });
 });
 //dokumenttipalvelu
