@@ -30,7 +30,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
   			this.valittu = this.isAllValittu();
   		};
   		this.valitutHakemusOids = function() {
-			return _.map(this.filterValitut(), function(hakija){ return hakija.hakemusOid; });
+			return _.map(this.filterValitut(), function(hakija){ return hakija.oid; });
 		};
   		
           
@@ -93,7 +93,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
                           hakemusOid: hakemus.oid
                       }
                       var postParams = {
-                          harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila,
+                          harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila
                       };
                       HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function(result) {
 
@@ -112,7 +112,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
     return model;
   });
 
-  function HarkinnanvaraisetController($scope, $location, $routeParams, KoekutsukirjeetHakemuksille, OsoitetarratHakemuksille, Dokumenttipalvelu, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
+  function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmoitus, Latausikkuna, Koekutsukirjeet, OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
       $scope.model = HarkinnanvaraisetModel;
       $scope.hakuOid =  $routeParams.hakuOid;;
@@ -138,6 +138,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
       };
       
       $scope.muodostaOsoitetarrat = function() {
+      	$log.info($scope.model.valitutHakemusOids());
     	  OsoitetarratHakemuksille.post({
     		  
     	  },
@@ -145,8 +146,8 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
     		  tag: "harkinnanvaraiset",
       		hakemusOids: $scope.model.valitutHakemusOids()
       		},
-      		function(resurssi) {
-      			Dokumenttipalvelu.paivita($scope.update);
+      		function(id) {
+      			Latausikkuna.avaa(id, "Osoitetarrat valituille harkinnanvaraisille", "");
       	});
       };
       
@@ -157,34 +158,28 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
 	  		}
 	  	};
       
+      function isBlank(str) {
+	    return (!str || /^\s*$/.test(str));
+	  };
+	  
       $scope.muodostaKoekutsut = function() {
-    	  KoekutsukirjeetHakemuksille.post({
-  			hakukohdeOid:$routeParams.hakukohdeOid},
-  			{
-  				tag: "harkinnanvaraiset",
-  				hakemusOids: $scope.model.valitutHakemusOids(),
-  				letterBodyText: $scope.tinymceModel
-  			},
-  			function() {
-  				Dokumenttipalvelu.paivita($scope.update);
-	      	},function() {
-	      		Dokumenttipalvelu.paivita($scope.update);
-	      	});
-      };
-      // kayttaa dokumenttipalvelua
-		$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
-		$scope.dokumenttiLimit = 5;
-		$scope.dokumentit = [];
-		$scope.update = function(data) {
-			// paivitetaan ainoastaan tarpeen vaatiessa
-			if(data.length != $scope.dokumentit.length) {
-				$scope.dokumentit = data;
-			}
+      	var letterBodyText = $scope.tinymceModel;
+		if(!isBlank(letterBodyText)) {
+			Koekutsukirjeet.post({
+			hakukohdeOid:$routeParams.hakukohdeOid, 
+			valintakoeOids: null},{
+				tag: "harkinnanvaraiset",
+				hakemusOids: $scope.model.valitutHakemusOids(),
+				letterBodyText: letterBodyText
+			},
+			function(id) {
+				Latausikkuna.avaa(id, "Koekutsukirjeet valituille harkinnanvaraisille", "");
+	    	},function() {
+	    	
+	    	});
+		} else {
+			Ilmoitus.avaa("Koekutsuja ei voida muodostaa!","Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.");
 		}
-		Dokumenttipalvelu.aloitaPollaus($scope.update);
-		$scope.$on('$destroy', function() {Dokumenttipalvelu.lopetaPollaus();});
-		$scope.showMoreDokumentit = function() {
-			$scope.dokumenttiLimit = $scope.dokumenttiLimit + 10;
-		};
-		// kayttaa dokumenttipalvelua
+      };
+
   }

@@ -59,6 +59,29 @@ app.config(function($routeProvider) {
 
 });
 //MODAALISET IKKUNAT
+app.factory('Ilmoitus', function($modal) {
+	return {
+		avaa: function(otsikko, ilmoitus) {
+			$modal.open({
+		      backdrop: 'static',
+		      templateUrl: 'modaalinen/ilmoitus.html',
+		      controller: function($scope, $window, $modalInstance) {
+				  $scope.ilmoitus = ilmoitus;
+		    	  $scope.otsikko = otsikko;
+		    	  $scope.sulje = function() {
+		    	  		$modalInstance.dismiss('cancel');
+		    	  };
+		      },
+		      resolve: {
+		    	  
+		      }
+		    }).result.then(function() {
+		    }, function() {
+		    });
+		    
+		}
+	};
+});
 app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 	return {
 		avaa: function(id, otsikko, lisatiedot) {
@@ -455,6 +478,12 @@ app.factory('HakemusKey', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid/:key?value=:value", {oid: "@oid", key: "@key", value:"@value"}, {
         get: {method: "GET"},
         put: {method: "PUT"}
+    });
+});
+app.factory('HakemusAdditionalData', function($resource) {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/additionalData/:hakuOid/:hakukohdeOid", {hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
+        get: {method: "GET", isArray: true},
+        put: {method: "PUT", isArray: true}
     });
 });
 app.factory('HakukohdeHenkilot', function($resource) {
