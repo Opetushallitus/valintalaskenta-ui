@@ -1,5 +1,5 @@
 "use strict";
-app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenkilot, HakemusKey, Valintakoetulokset, Hakemus, $q) {
+app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset) {
     var model;
     model = new function () {
 
@@ -9,10 +9,12 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
         this.filter = "OSALLISTUU";
 
         this.refresh = function (hakukohdeOid, hakuOid) {
+
             model.hakeneet.length = 0;
             model.avaimet.length = 0;
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
+            model.hakuOid = hakuOid;
 
             Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function (tulos) {
                 var tulokset = {};
@@ -39,8 +41,9 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                 });
 
 
-                HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
-                    model.hakeneet = result.results;
+                HakemusAdditionalData.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, function (result) {
+
+                    model.hakeneet = result;
                     HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}, function (result) {
                         model.avaimet = result;
 
@@ -56,47 +59,38 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
                         if (model.hakeneet) {
                             model.hakeneet.forEach(function (hakija) {
 
-                                Hakemus.get({oid: hakija.oid}, function (result) {
-                                    if (result.additionalInfo) {
-                                        hakija.additionalData = result.additionalInfo;
+                                hakija.filterData = {};
+                                hakija.osallistuu = {};
+
+                                if (!hakija.additionalData) {
+                                    hakija.additionalData = [];
+                                }
+
+                                model.avaimet.forEach(function (avain) {
+
+                                    hakija.osallistuu[avain.tunniste] = false;
+
+                                    if (tulokset[hakija.oid] &&
+                                        tulokset[hakija.oid][hakukohdeOid] &&
+                                        tulokset[hakija.oid][hakukohdeOid][avain.tunniste]
+
+                                        ) {
+                                        hakija.osallistuu[avain.tunniste] = tulokset[hakija.oid][hakukohdeOid][avain.tunniste];
                                     }
 
-                                    hakija.originalData = {};
-                                    hakija.filterData = {};
-                                    hakija.osallistuu = {};
-
-                                    if (!hakija.additionalData) {
-                                        hakija.additionalData = [];
+                                    if (!hakija.additionalData[avain.tunniste]) {
+                                        hakija.additionalData[avain.tunniste] = "";
                                     }
 
-                                    model.avaimet.forEach(function (avain) {
+                                    if (!hakija.additionalData[avain.osallistuminenTunniste]) {
+                                        hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+                                    }
 
-                                        hakija.osallistuu[avain.tunniste] = false;
+                                    if (hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
 
-                                        if (tulokset[hakija.oid] &&
-                                            tulokset[hakija.oid][hakukohdeOid] &&
-                                            tulokset[hakija.oid][hakukohdeOid][avain.tunniste]
-
-                                            ) {
-                                            hakija.osallistuu[avain.tunniste] = tulokset[hakija.oid][hakukohdeOid][avain.tunniste];
-                                        }
-
-                                        if (!hakija.additionalData[avain.tunniste]) {
-                                            hakija.additionalData[avain.tunniste] = "";
-                                        }
-
-                                        if (!hakija.additionalData[avain.osallistuminenTunniste]) {
-                                            hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-                                        }
-
-                                        if (hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
-                                            hakija.originalData[avain.tunniste] = hakija.additionalData[avain.tunniste];
-                                            hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
-
-                                            hakija.filterData[avain.tunniste] = hakija.additionalData[avain.tunniste];
-                                            hakija.filterData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
-                                        }
-                                    });
+                                        hakija.filterData[avain.tunniste] = hakija.additionalData[avain.tunniste];
+                                        hakija.filterData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
+                                    }
                                 });
                             });
                         }
@@ -118,96 +112,25 @@ app.factory('PistesyottoModel', function ($http, HakukohdeAvaimet, HakukohdeHenk
 
 
         this.submit = function () {
-            var promises = [];
-            model.errors.length = 0;
-            model.hakeneet.forEach(function (hakija) {
-                model.avaimet.forEach(function (avain) {
-                    if (hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
 
-                        var deferred = $q.defer();
-                        promises.push(deferred);
-                        var min = parseFloat(avain.min);
-                        var max = parseFloat(avain.max);
-                        var value = hakija.additionalData[avain.tunniste];
-                        var valueFloat = parseFloat(value);
-                        var tallenna = false;
-                        if (!isNaN(min) && !isNaN(max)) {
-                            // arvovali on kaytossa
-                            if (isNaN(valueFloat)) {
-                                // tallenna jos null?
-                                if (!value) {
-                                    value = "";
-                                    tallenna = true;
-                                    //hakija.errorField[avain.tunniste] = "";
-                                } else {
-                                    // virhe roskaa
-                                    //hakija.errorField[avain.tunniste] = "Arvo on virheellinen!";
-                                }
-                            } else if (min <= valueFloat && max >= valueFloat) {
-                                tallenna = true;
-                                //hakija.errorField[avain.tunniste] = "";
-                            } else {
-                                // virhe ei alueella
-                                //hakija.errorField[avain.tunniste] = "Arvo ei ole arvoalueella!";
-                            }
-
-                        } else {
-                            // ei arvovalia. tallennetaan mita vaan?
-                            tallenna = true;
-                            //hakija.errorField[avain.tunniste] = "";
-                        }
-
-                        if (tallenna && hakija.originalData[avain.tunniste] !== value) {
-                            console.log("tallenna");
-                            console.log(tallenna);
-                            console.log(hakija.originalData[avain.tunniste]);
-                            HakemusKey.put({
-                                    "oid": hakija.oid,
-                                    "key": avain.tunniste,
-                                    "value": value
-                                }
-                                , function () {
-                                    hakija.originalData[avain.tunniste] = value;
-                                }, function (error) {
-                                    model.errors.push(error);
-                                });
-                        }
-
-                        if (hakija.originalData[avain.osallistuminenTunniste] !== hakija.additionalData[avain.osallistuminenTunniste]) {
-                            console.log("osallistuminen");
-                            console.log(hakija.originalData[avain.osallistuminenTunniste]);
-                            console.log(hakija.additionalData[avain.osallistuminenTunniste]);
-
-                            HakemusKey.put({
-                                    "oid": hakija.oid,
-                                    "key": avain.osallistuminenTunniste,
-                                    "value": hakija.additionalData[avain.osallistuminenTunniste]
-                                }
-                                , function () {
-                                    deferred.resolve();
-                                    hakija.originalData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
-                                }, function (error) {
-                                    deferred.reject();
-                                    model.errors.push(error);
-                                });
-                        }
-                    }
-                });
+            // haku-app ei halua ylimääräistä tietoa
+            var hakeneet = angular.copy(model.hakeneet);
+            hakeneet.forEach(function(hakija){
+                hakija.filterData = undefined;
+                hakija.osallistuu = undefined;
             });
-            var promise = $q.all(promises);
-
-            promise.then(function () {
+            HakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success){
                 toastr.success('Tallennus onnistui');
-            }, function () {
+            },function(error){
                 toastr.error('Tallennus epäonnistui');
-            })
+                console.log(error);
+            });
 
         };
 
         this.updateFilterData = function () {
-            console.log("updateFilterData");
             model.hakeneet.forEach(function (hakija) {
-                angular.copy(hakija.originalData, hakija.filterData);
+                angular.copy(hakija.additionalData, hakija.filterData);
             });
         }
 
@@ -230,7 +153,6 @@ function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel,
     $scope.muutettu = false;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
-
     PistesyottoModel.refreshIfNeeded($scope.hakukohdeOid, $routeParams.hakuOid);
 
     $scope.predicate = 'lastName';

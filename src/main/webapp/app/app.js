@@ -457,6 +457,12 @@ app.factory('HakemusKey', function($resource) {
         put: {method: "PUT"}
     });
 });
+app.factory('HakemusAdditionalData', function($resource) {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/additionalData/:hakuOid/:hakukohdeOid", {hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
+        get: {method: "GET", isArray: true},
+        put: {method: "PUT", isArray: true}
+    });
+});
 app.factory('HakukohdeHenkilot', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications",{aoOid: "@aoOid", appState:["ACTIVE","INCOMPLETE"]}, {
         get: {method: "GET", isArray: false}

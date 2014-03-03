@@ -16,7 +16,7 @@
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
                 <!--<input type="text" class="search margin-vertical-2" placeholder="Suodata kenttiä" ng-model="arvoFilter" />-->
-                <select ng-model="koeFilter" ng-options="avain.tunniste for avain in model.avaimet" ng-change="updateFilterData()">
+                <select ng-model="koeFilter" ng-options="avain.kuvaus for avain in model.avaimet" ng-change="updateFilterData()">
                     <option value="">Kaikki kokeet</option>
                 </select>
                 <select ng-model="osallistuminenFilter" ng-change="updateFilterData()">
@@ -29,9 +29,9 @@
                 <!--<label for="osallistuu">Vain osallistuvat</label>-->
 
                 <form name="form" ng-submit="submit()">
+                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" class="button small primary margin-top-2" type="submit">Tallenna</button>
                     <div>
                         <div class="notification warning" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista virheet!</div>
-                        <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" class="button small primary margin-top-2" type="submit">Tallenna</button>
                     </div>
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
