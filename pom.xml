@@ -122,10 +122,6 @@
                 <!-- NB! Set <version> to the latest released version of frontend-maven-plugin, like in README.md -->
                 <version>0.0.14</version>
 
-                <configuration>
-                    <workingDirectory>src/main/webapp/</workingDirectory>
-                </configuration>
-
                 <executions>
 
                     <execution>
