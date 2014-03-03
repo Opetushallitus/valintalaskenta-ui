@@ -16,7 +16,7 @@
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
                 <!--<input type="text" class="search margin-vertical-2" placeholder="Suodata kenttiä" ng-model="arvoFilter" />-->
-                <select ng-model="koeFilter" ng-options="avain.tunniste for avain in model.avaimet" ng-change="updateFilterData()">
+                <select ng-model="koeFilter" ng-options="avain.kuvaus for avain in model.avaimet" ng-change="updateFilterData()">
                     <option value="">Kaikki kokeet</option>
                 </select>
                 <select ng-model="osallistuminenFilter" ng-change="updateFilterData()">
