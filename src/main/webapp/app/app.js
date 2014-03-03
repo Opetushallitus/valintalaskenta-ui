@@ -61,12 +61,12 @@ app.config(function($routeProvider) {
 //MODAALISET IKKUNAT
 app.factory('Ilmoitus', function($modal) {
 	return {
-		avaa: function(otsikko, lisatiedot) {
+		avaa: function(otsikko, ilmoitus) {
 			$modal.open({
 		      backdrop: 'static',
 		      templateUrl: 'modaalinen/ilmoitus.html',
 		      controller: function($scope, $window, $modalInstance) {
-				  $scope.lisatiedot = lisatiedot;
+				  $scope.ilmoitus = ilmoitus;
 		    	  $scope.otsikko = otsikko;
 		    	  $scope.sulje = function() {
 		    	  		$modalInstance.dismiss('cancel');
