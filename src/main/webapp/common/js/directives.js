@@ -191,8 +191,6 @@ app.directive('auth', function($animate, $timeout, AuthService, ParametriService
                   ParametriService.promise().then(function(data){
                       if(data[attrs.authAdditionalCheck]) {
                         $animate.removeClass(element, 'ng-hide');
-                      } else {
-                          alert("Parametri ei loytynyt : " + attrs.authAauthAdditionalCheck);
                       }
                   });
               } else {
