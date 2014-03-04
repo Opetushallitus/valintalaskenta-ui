@@ -110,8 +110,9 @@
                                 }
 
                                 //add identifier to list
-                               if(model.koetyypit.indexOf(valintakoe.valintakoeTunniste) == -1) {
-                                    model.koetyypit.push(valintakoe.valintakoeTunniste);
+                               if(model.koetyypit.indexOf(entry.valintakoeTunniste) == -1) {
+                                   //console.log(valintakoe);
+                                   model.koetyypit.push(entry.valintakoeTunniste);
                                }
 
                             });
