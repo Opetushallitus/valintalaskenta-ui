@@ -1,0 +1,19 @@
+{
+	"name": "valintalaskenta-ui",
+	"version": "0.0.1",
+	"dependencies": {
+		"angular": "~1.2.10",
+		"angular-animate": "~1.2.10",
+		"angular-route": "~1.2.10",
+		"angular-resource": "~1.2.10",
+		"jquery": "2.1.0",
+		"jquery-ui": "latest",
+		"underscore": "1.6.0"
+	},
+	"devDependencies": {
+		"angular-mocks": "~1.2.10",
+		"angular-scenario": "~1.2.10",
+		"angular-animate": "~1.2.10",
+		"angular-route": "~1.2.10"
+	}
+}
