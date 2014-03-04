@@ -19,18 +19,16 @@ var paths = {
 		'bower_components/jquery-ui/ui/minified/jquery-ui.min.js'
 	],
 	staticLibs: [
+		"src/main/webapp/common/jslib/jquery-2.1.0/jquery-2.1.0.js",
+		"src/main/webapp/common/jslib/angular-1.2.10/angular.js",
+		"src/main/webapp/common/jslib/angular-1.2.10/angular-route.js",
+		"src/main/webapp/common/jslib/angular-1.2.10/angular-animate.js",
+		"src/main/webapp/common/jslib/angular-1.2.10/angular-resource.js",
+		"src/main/webapp/common/jslib/underscore/underscore-min.js",
 		"src/main/webapp/common/jslib/angular-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.min.js",
 		"src/main/webapp/common/jslib/jquery-1.8.3/jqu9ery.nestable.js",
 		"src/main/webapp/common/jslib/tinymce-4.0.12/tinymce.min.js",
 		"src/main/webapp/common/jslib/tinymce-4.0.12/ui-tinymce.js"
-		/*
-		 "src/main/webapp/common/jslib/jquery-2.1.0/jquery-2.1.0.js",
-		 "src/main/webapp/common/jslib/angular-1.2.10/angular.js",
-		 "src/main/webapp/common/jslib/angular-1.2.10/angular-route.js",
-		 "src/main/webapp/common/jslib/angular-1.2.10/angular-animate.js",
-		 "src/main/webapp/common/jslib/angular-1.2.10/angular-resource.js",
-		 "src/main/webapp/common/jslib/underscore/underscore-min.js",
-		 */
 	],
 	dist: 'src/main/webapp/dist/'
 }
@@ -40,10 +38,11 @@ gulp.task('bower-install', function() {
 });
 
 gulp.task('bowerScripts', function() {
+	console.log('bowerscripts - start');
 	return gulp
 		.src(paths.bowerScripts)
 		.pipe(concat('libs.js'))
-		.pipe(gulp.dest('src/main/webapp/dist/js/'));
+		.pipe(gulp.dest('src/main/webapp/dist/js'));
 });
 
 gulp.task('staticScripts', function() {
@@ -58,7 +57,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('default', function(callback) {
-	runSequence('clean','bower-install', ["bowerScripts", "staticScripts"], callback);
+	runSequence('clean', ["staticScripts"], callback);
 });
 
 
