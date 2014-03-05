@@ -107,7 +107,10 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 		    	  			if(data.keskeytetty == true) {
 		    	  				cancelTimerWhenClosing();
 		    	  			}
-		    	  		$scope.prosessi = data;
+		    	  			$scope.prosessi = data;
+		    	  			if(data.valmis == true) {
+		    	  				$interval.cancel(timer);
+		    	  			}
 		    	  		});
 		    	  };
 		    	  $scope.onVirheita = function() {
