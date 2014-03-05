@@ -10,23 +10,23 @@ var gulp = require('gulp'),
 var paths = {
 	bower_base: 'bower_components/',
 	bowerScripts: [
-		'bower_components/angular/angular.min.js',
-		'bower_components/angular-resource/angular-resource.min.js',
-		'bower_components/angular-route/angular-route.min.js',
-		'bower_components/angular-animate/angular-animate.min.js',
+		//'bower_components/angular/angular.min.js',
+		//'bower_components/angular-resource/angular-resource.min.js',
+		//'bower_components/angular-route/angular-route.min.js',
+		//'bower_components/angular-animate/angular-animate.min.js',
 		//'bower_components/angular-scenario/angular-scenario.min.js',
 		//'bower_components/angular-mocks/angular-mocks.js',
-		'bower_components/jquery/dist/jquery.min.js',
-		'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
-		'bower_components/underscore/underscore.js'
+		//'bower_components/jquery/dist/jquery.min.js',
+		//'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
+		//'bower_components/underscore/underscore.js'
 	],
 	staticLibs: [
-		//"src/main/webapp/common/jslib/jquery-2.1.0/jquery-2.1.0.js",
-		//"src/main/webapp/common/jslib/angular-1.2.10/angular.js",
-		//"src/main/webapp/common/jslib/angular-1.2.10/angular-route.js",
-		//"src/main/webapp/common/jslib/angular-1.2.10/angular-animate.js",
-		//"src/main/webapp/common/jslib/angular-1.2.10/angular-resource.js",
-		//"src/main/webapp/common/jslib/underscore/underscore-min.js",
+		"src/main/webapp/common/jslib/jquery-2.1.0/jquery-2.1.0.js",
+		"src/main/webapp/common/jslib/angular-1.2.10/angular.js",
+		"src/main/webapp/common/jslib/angular-1.2.10/angular-route.js",
+		"src/main/webapp/common/jslib/angular-1.2.10/angular-animate.js",
+		"src/main/webapp/common/jslib/angular-1.2.10/angular-resource.js",
+		"src/main/webapp/common/jslib/underscore/underscore-min.js",
 		"src/main/webapp/common/jslib/angular-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.min.js",
 		"src/main/webapp/common/jslib/jquery-1.8.3/jquery.nestable.js",
 		"src/main/webapp/common/jslib/tinymce-4.0.12/tinymce.min.js",
@@ -73,7 +73,7 @@ gulp.task('bowerScripts', function() {
 
 // Update libs & run tests
 gulp.task('build', function(callback) {
-	runSequence(['bowerScripts','staticScripts'], 'test', callback);
+	runSequence([/*'bowerScripts',*/'staticScripts'], 'test', callback);
 });
 
 // Run tests
