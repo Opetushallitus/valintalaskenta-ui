@@ -274,11 +274,22 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
     return model;
 });
 
-function HenkiloTiedotController($q, $scope, $route, $routeParams, HenkiloTiedotModel, AuthService, Pohjakuolutukset, HenkiloModel) {
+function HenkiloTiedotController($q, $scope, $route, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, HenkiloModel) {
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
+    $scope.muodostaJalkiohjauskirje = function() {
+    	Jalkiohjauskirjeet.post({ 
+        	hakuOid: $routeParams.hakuOid},
+        		{hakemusOids: [$scope.model.hakemus.oid]}, 
+        		function (id) {
+            Latausikkuna.avaa(id, "Jälkiohjauskirje yksittäiselle hakijalle", "");
+        }, function () {
+            
+        });
+    };
+    
     $scope.pohjakoulutukset = Pohjakuolutukset;
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
@@ -292,12 +303,12 @@ function HenkiloTiedotController($q, $scope, $route, $routeParams, HenkiloTiedot
         }, function() {
             toastr.error('Tallennus epäonnistui');
         });
-    }
+    };
     $scope.changeOsallistuminen = function (hakija, tunniste, value) {
         if (value) {
             hakija.additionalData[tunniste] = "OSALLISTUI";
         }
-    }
+    };
     $scope.changeArvo = function (hakija, tunniste, value, tyyppi) {
         hakija.additionalData[tunniste] = "";
         if (value == "OSALLISTUI") {
@@ -308,5 +319,7 @@ function HenkiloTiedotController($q, $scope, $route, $routeParams, HenkiloTiedot
             }
         }
 
-    }
+    };
+    
+    $scope.privileges = ParametriService;
 }
