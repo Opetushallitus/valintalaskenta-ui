@@ -3,7 +3,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
 	bower = require('gulp-bower'),
 	runSequence = require('run-sequence'),
-	clean = require('gulp-clean');
+	clean = require('gulp-clean'),
+	karma = require('gulp-karma');
 
 var paths = {
 	bower_base: 'bower_components/',
@@ -30,7 +31,14 @@ var paths = {
 		"src/main/webapp/common/jslib/tinymce-4.0.12/tinymce.min.js",
 		"src/main/webapp/common/jslib/tinymce-4.0.12/ui-tinymce.js"
 	],
-	dist: 'src/main/webapp/dist/'
+	dist: 'src/main/webapp/dist/',
+	testBase: 'src/test/',
+	cleanBuildFiles: [
+		'src/main/webapp/dist/',
+		'node/',
+		'node_modules/',
+		'bower_components'
+	]
 }
 
 gulp.task('bower-install', function() {
@@ -38,7 +46,6 @@ gulp.task('bower-install', function() {
 });
 
 gulp.task('bowerScripts', function() {
-	console.log('bowerscripts - start');
 	return gulp
 		.src(paths.bowerScripts)
 		.pipe(concat('libs.js'))
@@ -60,4 +67,8 @@ gulp.task('default', function(callback) {
 	runSequence('clean', ["staticScripts"], callback);
 });
 
-
+gulp.task('cleanBuild', function() {
+	return gulp
+		.src(paths.cleanBuildFiles)
+		.pipe(clean());
+});
