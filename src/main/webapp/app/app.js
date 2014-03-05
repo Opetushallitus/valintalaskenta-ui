@@ -64,7 +64,7 @@ app.factory('Ilmoitus', function($modal) {
 		avaa: function(otsikko, ilmoitus) {
 			$modal.open({
 		      backdrop: 'static',
-		      templateUrl: 'modaalinen/ilmoitus.html',
+		      templateUrl: '../common/modaalinen/ilmoitus.html',
 		      controller: function($scope, $window, $modalInstance) {
 				  $scope.ilmoitus = ilmoitus;
 		    	  $scope.otsikko = otsikko;
@@ -157,7 +157,7 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 		    
 		},
 		avaa: function(id, otsikko, lisatiedot) {
-			this.avaaKustomoitu(id,otsikko,lisatiedot,'modaalinen/latausikkuna.html',{});
+			this.avaaKustomoitu(id,otsikko,lisatiedot,'../common/modaalinen/latausikkuna.html',{});
 		}
 	};
 });

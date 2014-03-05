@@ -124,7 +124,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
         	hakuOid: $routeParams.hakuOid},
         		{}, 
         		function (id) {
-            Latausikkuna.avaa(id, "Kela-dokumentin luonti", "", "modaalinen/kelaikkuna.html", {
+            Latausikkuna.avaa(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html", {
             	ftpVienti: function() {
             		console.log('tehaan vienti!');
             	}
@@ -140,7 +140,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
 		
 	    var valintalaskentaInstance = $modal.open({
 	      backdrop: 'static',
-	      templateUrl: 'valintalaskentaModaalinenIkkuna.html',
+	      templateUrl: 'haku/hallinta/modaalinen/valintalaskentaikkuna.html',
 	      controller: ModalInstanceCtrl,
 	      resolve: {
 	      }
