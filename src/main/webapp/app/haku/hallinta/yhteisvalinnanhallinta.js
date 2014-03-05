@@ -124,7 +124,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
         	hakuOid: $routeParams.hakuOid},
         		{}, 
         		function (id) {
-            Latausikkuna.avaa(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html", {
+            Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html", {
             	ftpVienti: function() {
             		console.log('tehaan vienti!');
             	}
