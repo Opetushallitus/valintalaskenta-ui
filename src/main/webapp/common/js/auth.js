@@ -13,6 +13,7 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
 
     // retrytetään niin kauan, että oikeuksia saadaan.
     var refresh = function() {
+
         $http.get(CAS_URL).success(function (result) {
             // kyllä nyt jotain oikeuksia pitäis olla, jos tänne on tultu
             if(result.length > 0) {
@@ -178,8 +179,7 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
                     // TODO: refaktor..
                     targetRoles.forEach(function (targetRole) {
                         var org;
-
-                        if (role.indexOf(service + targetRole) > -1) {
+                        if (role.indexOf(service + "_" + targetRole) > -1) {
                             var split = role.split("_");
                             org = split[split.length - 1];
                         }

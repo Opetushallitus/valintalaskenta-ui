@@ -22,7 +22,7 @@
                     instance.eiKoeVirheita = true;
                 }
             });
-        }
+        };
 
         return instance;
     })();
@@ -30,18 +30,7 @@
     return factory;
 
 });
-app.factory('Poller', function($http,$q){
-    return {
-         poll : function(api){
-             var deferred = $q.defer();
-             $http.get(api).then(function (response) {
-                     deferred.resolve(response.data);
-             });
-             return deferred.promise;
-         }
 
-     }
- });
 function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance, HakuModel, ValintalaskentaKeskeyta, ValintalaskentaKaynnissa, ValintalaskentaMuistissa, ValintalaskentaStatus) {
 	$scope.uuid = null;
 	$scope.tyot = [];
@@ -89,36 +78,69 @@ function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance
 		  $interval.cancel(timer);
 	    $modalInstance.dismiss('cancel');
 	  };
-	};
+};
 
-function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, AktivoiKelaFtp, AktivoiKelaVienti,Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
+function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	$scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
 	$scope.hakumodel = HakuModel;
 	$scope.virheet = VirheModel;
 	$scope.naytaKokeita = 50;
-//	$scope.viestintapalveluntiedostot = [];
-//	$scope.kelatiedostot = [];
-//	$scope.jalkiohjausLimit = 5;
-//	$scope.kelaLimit = 5;
-	
-	$scope.muodostaJalkiohjauskirjeet = function() {
-		Latausikkuna.avaa("Muodostetaan jälkiohjauskirjeet", function() {
-			// onnistuminen
-			console.log('onnistuminen');
-		}, function() {
-			// hylkays
-			console.log('hylkays');
+	// KELA TAULUKON CHECKBOXIT ALKAA
+	$scope.naytetaanHaut = false;
+	$scope.naytaHaut = function() {
+		$scope.naytetaanHaut =true;
+	};
+	$scope.kaikkiHautValittu = false;
+	$scope.notThisHaku = function(haku) {
+		return haku != $scope.hakumodel.hakuOid;
+	};
+	$scope.filterNotThisHaku = function() {
+		return _.filter($scope.hakumodel.haut,function(haku) {
+			return $scope.notThisHaku(haku);
 		});
 	};
+	$scope.filterValitut = function() {
+		return _.filter($scope.filterNotThisHaku(),function(haku) {
+			return haku.valittu;
+		});
+	};
+	$scope.isAllValittu = function() {
+		return $scope.filterNotThisHaku().length == $scope.filterValitut().length;
+	};
+	$scope.check = function(oid) {
+		$scope.kaikkiHautValittu = $scope.isAllValittu();
+	};
+	$scope.checkAll = function() {
+		var kaikkienTila = $scope.kaikkiHautValittu;
+		_.each($scope.hakumodel.haut, function(haku) {
+			haku.valittu = kaikkienTila;
+		});
+		$scope.kaikkiHautValittu = $scope.isAllValittu();
+	};
+	$scope.muodostaKelaDokumentti = function() {
+		KelaDokumentti.post({ 
+        	hakuOid: $routeParams.hakuOid},
+        		{}, 
+        		function (id) {
+            Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html", {
+            	ftpVienti: function() {
+            		console.log('tehaan vienti!');
+            	}
+            });
+        }, function () {
+            
+        });
+	};
+	// KELA TAULUKON CHECKBOXIT LOPPUU
 	
 	///////////////////
 	$scope.aktivoiMuistinvarainenValintalaskenta = function () {
 		
 	    var valintalaskentaInstance = $modal.open({
 	      backdrop: 'static',
-	      templateUrl: 'valintalaskentaModaalinenIkkuna.html',
+	      templateUrl: 'haku/hallinta/modaalinen/valintalaskentaikkuna.html',
 	      controller: ModalInstanceCtrl,
 	      resolve: {
 	      }
@@ -130,79 +152,25 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
 	    	
 	    });
 	};
-	///////////////////
-	  
-//	$scope.showMoreJalkiohjaus = function() {
-//		$scope.jalkiohjausLimit = $scope.jalkiohjausLimit + 10;
-//	};
-//	$scope.showMoreKela = function() {
-//		$scope.kelaLimit = $scope.kelaLimit + 10;
-//	};
-	
-//	var Repeater = function () {
-//        $scope.$apply(function () {
-//            $scope.p1 = Poller.poll(VIESTINTAPALVELU_URL_BASE + "/api/v1/download");
-//            $scope.p1.then(function(data){
-//            	if(data.length != $scope.viestintapalveluntiedostot.length) {
-//    				$scope.viestintapalveluntiedostot = data;
-//    			}
-//            });
-//            $scope.p2 = Poller.poll(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/listaus");
-//            $scope.p2.then(function(data){
-//            	if(data.length != $scope.kelatiedostot.length) {
-//    				$scope.kelatiedostot = data;
-//    			}
-//            });
-//        });
-//    };
-    
-//    var timer = $window.setInterval(Repeater, 5000);
-//    $scope.$on('$destroy', function cleanup() {
-//    	$window.clearInterval(timer);
-//	});
-    
-//	$scope.ftpVienti = function(tiedosto) {
-//		AktivoiKelaFtp.put({
-//			documentId:tiedosto.documentId
-//		}, function() {
-//			//$scope.paivitaKelaListaus();
-//		}, function() {
-//			//$scope.paivitaKelaListaus();
-//		});
-//	}
-//	
-//	$scope.lataa = function(tiedosto) {
-//		$window.location.href = VIESTINTAPALVELU_URL_BASE + "/api/v1/download/" + tiedosto.documentId;
-//	}
-	
+
 	SijoitteluAjo.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function(result){
 	    $scope.sijoitteluModel = result;
 	});
 	
-	$scope.aktivoiJalkiohjaustuloksetPdf = function() {
-		Jalkiohjauskirjeet.post({hakuOid: $routeParams.hakuOid}, function(resurssi) {
-			alert("Jälkiohjauskirjeen luonti on käynnistetty! Luonti kestää noin 20minuuttia.");
-    	}, function(response) {
-    		alert("Jälkiohjauskirjeen luonti epäonnistui.");
-    	});
+	$scope.muodostaJalkiohjauskirjeet = function() {
+		Jalkiohjauskirjeet.post({ 
+        	hakuOid: $routeParams.hakuOid},
+        		{}, 
+        		function (id) {
+            Latausikkuna.avaa(id, "Jälkiohjauskirjeiden luonti", "");
+        }, function () {
+            
+        });
 	};
 	
 	$scope.aktivoiJalkiohjaustuloksetXls = function() {
 		JalkiohjausXls.query({hakuOid:$routeParams.hakuOid});
 	};
-	
-//	$scope.aktivoiKelaVienti = function() {
-//		AktivoiKelaVienti.query({
-//			hakuOid:$routeParams.hakuOid,
-//			hakukohdeOid:"1.2.246.562.5.02371_01_610_1410",
-//			lukuvuosi:"22.11.1983",
-//			poimintapaivamaara:"22.11.1983"
-//		}, function() {
-//			$scope.paivitaKelaListaus();
-//		}, function() {
-//			$scope.paivitaKelaListaus();
-//		});
-//	}
 	
     $scope.kaynnistaSijoittelu = function() {
         var hakuoid = $routeParams.hakuOid;

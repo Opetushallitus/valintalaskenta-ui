@@ -14,10 +14,13 @@
         <div class="tabsheets">
 
             <div ng-include="'../common/html/errors.html'"></div>
-
+			
             <h1 ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.Sukunimi}},
                 {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
-
+			
+			<a ng-show="privileges.showValintalaskenta()" ng-click="muodostaJalkiohjauskirje()"
+       			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirje</a>
+			
             <dl class="margin-top-6">
 
                 <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">Henkilötunnus</dt>

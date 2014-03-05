@@ -64,7 +64,7 @@ app.factory('Ilmoitus', function($modal) {
 		avaa: function(otsikko, ilmoitus) {
 			$modal.open({
 		      backdrop: 'static',
-		      templateUrl: 'modaalinen/ilmoitus.html',
+		      templateUrl: '../common/modaalinen/ilmoitus.html',
 		      controller: function($scope, $window, $modalInstance) {
 				  $scope.ilmoitus = ilmoitus;
 		    	  $scope.otsikko = otsikko;
@@ -84,20 +84,22 @@ app.factory('Ilmoitus', function($modal) {
 });
 app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 	return {
-		avaa: function(id, otsikko, lisatiedot) {
+		
+		avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli) {
 			var timer = null;
 			var cancelTimerWhenClosing = function() {
 				DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
 			};
 			$modal.open({
 		      backdrop: 'static',
-		      templateUrl: 'modaalinen/latausikkuna.html',
-		      controller: function($scope, $window, $modalInstance, $interval, DokumenttiProsessinTila) {
+		      templateUrl: ikkunaHtml,
+		      controller: function($scope, $window, $modalInstance, $interval, laajennettuMalli, DokumenttiProsessinTila) {
 		    	  cancelTimerWhenClosing = function() {
 				  	$interval.cancel(timer);
 				  };
 				  $scope.lisatiedot = lisatiedot;
 		    	  $scope.otsikko = otsikko;
+		    	  $scope.laajennettuMalli = laajennettuMalli;
 		    	  $scope.prosessi = {};
 		    	  $scope.update = function() {
 		    	  		
@@ -105,7 +107,10 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 		    	  			if(data.keskeytetty == true) {
 		    	  				cancelTimerWhenClosing();
 		    	  			}
-		    	  		$scope.prosessi = data;
+		    	  			$scope.prosessi = data;
+		    	  			if(data.valmis == true) {
+		    	  				$interval.cancel(timer);
+		    	  			}
 		    	  		});
 		    	  };
 		    	  $scope.onVirheita = function() {
@@ -141,10 +146,10 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 				  	} else {
 				  		$window.location.href = "/dokumenttipalvelu-service/resources/dokumentit/lataa/" + $scope.prosessi.dokumenttiId;
 				  	}
-				  }
+				  };
 		      },
 		      resolve: {
-		    	  
+		    	  laajennettuMalli: laajennettuMalli
 		      }
 		    }).result.then(function() {
 		    	cancelTimerWhenClosing();
@@ -153,6 +158,9 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 		    	cancelTimerWhenClosing();
 		    });
 		    
+		},
+		avaa: function(id, otsikko, lisatiedot) {
+			this.avaaKustomoitu(id,otsikko,lisatiedot,'../common/modaalinen/latausikkuna.html',{});
 		}
 	};
 });
@@ -425,9 +433,9 @@ app.factory('AktivoiKelaFtp', function($resource) {
 	});
 });
 
-app.factory('AktivoiKelaVienti', function($resource) {
+app.factory('KelaDokumentti', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/aktivoi", {}, {
-		query:  {method:'GET', isArray:false}
+		post:  {method:'POST', isArray:false}
 	});
 });
 

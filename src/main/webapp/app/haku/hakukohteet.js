@@ -77,7 +77,7 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 					if(model.readyToQueryForNextPage) {
 		    			model.readyToQueryForNextPage = false;
 						AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN", ['READ','READ_UPDATE','CRUD']).then(function(roleModel){
-	
+
 						    var searchParams = {
 						        hakuOid:hakuOid,
 						        startIndex:startIndex,
