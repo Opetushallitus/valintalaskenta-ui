@@ -224,11 +224,11 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilm
     $scope.updateVastaanottoTila = function (hakemus, valintatapajonoOid) {
         $scope.model.updateVastaanottoTila(hakemus, valintatapajonoOid);
         hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
-    }
+    };
 
     $scope.submit = function (valintatapajonoOid) {
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
-    }
+    };
     $scope.createHyvaksymisosoitteetPDF = function () {
         OsoitetarratSijoittelussaHyvaksytyille.post({
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
@@ -238,7 +238,7 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilm
         }, function () {
             
         });
-    }
+    };
     $scope.createHyvaksymiskirjeetPDF = function () {
         Hyvaksymiskirjeet.post({
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
@@ -249,18 +249,18 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilm
             
         });
 
-    }
+    };
     $scope.createJalkiohjauskirjeetPDF = function () {
         Jalkiohjauskirjeet.post({sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
             $window.location.href = resurssi.latausUrl;
         }, function (response) {
             alert(response.data.viesti);
         });
-    }
+    };
 
     $scope.sijoittelunTulosXLS = function () {
         SijoitteluXls.query({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid, sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId});
-    }
+    };
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
@@ -280,7 +280,7 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilm
             $scope.limit += 50;
             $scope.showLoading = false;
         }, 10);
-    }
+    };
 
     var order = {
         "HYVAKSYTTY": 1,
@@ -290,7 +290,7 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilm
         "PERUUNTUNUT": 5,
         "HYLATTY": 6
 
-    }
+    };
 
     $scope.jarjesta = function(value) {
         var i = order[value.tila];
