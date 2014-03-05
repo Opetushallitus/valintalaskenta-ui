@@ -84,10 +84,8 @@ app.factory('Ilmoitus', function($modal) {
 });
 app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 	return {
-		avaa: function(id, otsikko, lisatiedot) {
-			this.avaa(id,otsikko,lisatiedot,'modaalinen/latausikkuna.html',{});
-		},
-		avaa: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli) {
+		
+		avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli) {
 			var timer = null;
 			var cancelTimerWhenClosing = function() {
 				DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
@@ -157,6 +155,9 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 		    	cancelTimerWhenClosing();
 		    });
 		    
+		},
+		avaa: function(id, otsikko, lisatiedot) {
+			this.avaaKustomoitu(id,otsikko,lisatiedot,'modaalinen/latausikkuna.html',{});
 		}
 	};
 });
