@@ -60,7 +60,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="hakemus in jono.hakemukset | orderBy:jarjesta | filter:hakijaFilter | limitTo:limit ">
-                            <td><input type="checkbox" ng-model="hakemus.valittu" ng-change="model.check(jono);"></td>
+                            <td><input ng-if="hakemus.tila == 'HYVAKSYTTY'" type="checkbox" ng-model="hakemus.valittu" ng-change="model.check(jono);"></td>
 
                             <td>{{hakemus.sija}}</td>
                             <td>

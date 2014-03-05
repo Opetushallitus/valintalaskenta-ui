@@ -17,16 +17,25 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
 				return hakemus.valittu;
 			});
 		};
+
+        this.filterHyvaksytty = function(hakemukset) {
+			return _.filter(hakemukset,function(hakemus) {
+				return hakemus.tila === "HYVAKSYTTY";
+			});
+		};
+
 		this.isAllValittu = function(valintatapajono) {
-			return valintatapajono.hakemukset.length == this.filterValitut(valintatapajono.hakemukset).length;
+			return this.filterHyvaksytty(valintatapajono.hakemukset).length == this.filterValitut(valintatapajono.hakemukset).length;
 		};
 		this.check = function(valintatapajono) {
 			valintatapajono.valittu = this.isAllValittu(valintatapajono);
 		};
 		this.checkAll = function(valintatapajono) {
 			var kaikkienUusiTila = valintatapajono.valittu;
-			_.each(this.filterOsallistujat(valintatapajono.hakemukset), function(hakemus) {
-				hakemus.valittu = kaikkienUusiTila;
+			_.each(valintatapajono.hakemukset, function(hakemus) {
+                if(hakemus.tila === "HYVAKSYTTY") {
+				    hakemus.valittu = kaikkienUusiTila;
+                }
 			});
 			valintatapajono.valittu = this.isAllValittu(valintatapajono);
 		};
@@ -76,6 +85,7 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
                             }
 
                             if (hakemus.tila === "HYVAKSYTTY") {
+                                hakemus.valittu = true;
                                 hakemuserittely.hyvaksytyt.push(hakemus);
                             }
 
@@ -86,7 +96,7 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
                             if (hakemus.tila === "VARALLA") {
                                 hakemuserittely.varasijoilla.push(hakemus);
                             }
-                            hakemus.valittu = true;
+
                             hakemus.sija = sija;
                             lastTasaSija = hakemus.tasasijaJonosija;
                         });
@@ -203,6 +213,20 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
             });
         }
 
+        this.valitutOidit = function(){
+            var oidit = [];
+            if(model.sijoitteluTulokset.valintatapajonot) {
+                model.sijoitteluTulokset.valintatapajonot.forEach(function(valintatapajono){
+                    if(valintatapajono.hakemukset) {
+                        console.log(valintatapajono.hakemukset);
+                        model.filterValitut(valintatapajono.hakemukset).forEach(function(hakemus){
+                            oidit.push(hakemus.hakemusOid);
+                        });
+                    }
+                });
+            }
+            return oidit;
+        };
     };
 
     return model;
@@ -230,10 +254,13 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilm
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     };
     $scope.createHyvaksymisosoitteetPDF = function () {
+
+
+
         OsoitetarratSijoittelussaHyvaksytyille.post({
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
         	hakuOid: $routeParams.hakuOid, 
-        	hakukohdeOid: $routeParams.hakukohdeOid},{}, function (id) {
+        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: SijoitteluntulosModel.valitutOidit() }, function (id) {
             Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille osoitetarrat", "");
         }, function () {
             
@@ -243,7 +270,7 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilm
         Hyvaksymiskirjeet.post({
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
         	hakuOid: $routeParams.hakuOid, 
-        	hakukohdeOid: $routeParams.hakukohdeOid},{}, function (id) {
+        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: SijoitteluntulosModel.valitutOidit() } , function (id) {
             Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
         }, function () {
             
