@@ -1,12 +1,11 @@
 
 app.factory('ValintatulosModel', function(Valintatulos) {
-	var model = null;
 
-	model = function() {
+	var model = new function() {
 
-        this.filter = { 
+        this.filter = {
             type: "KAIKKI",
-            hakukohteet : [],
+            hakukohteet : []
         };
 
         this.hakemukset = [];

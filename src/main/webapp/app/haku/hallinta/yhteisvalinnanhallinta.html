@@ -5,34 +5,7 @@
 <div class="tabsheets">
 
 <script type="text/ng-template" id="valintalaskentaModaalinenIkkuna.html">
-        <div class="modal-header">
-            <h2 style="margin-top: -12px;">Valintalaskenta</h2>
-        </div>
-        <div class="modal-body">
-			<h3 style="margin-top: -12px;">{{nimi}}</h3>
-			<br>
-			<div class="row" ng-repeat="t in tyot">
-				<div class="col-sm-4">{{t.nimi}}</div>
-				<div class="col-sm-4">{{t.tehty}} / {{t.kokonaismaara}}</div>
-				<div class="col-sm-4"><progressbar class="progress-striped active" value="getProsentit(t)" type="info">{{getProsentit(t)}}%</progressbar></div>				
-			</div>           
-			<ul>
-                <li ng-repeat="item in items">
-                    <a ng-click="selected.item = item">{{ item }}</a>
-                </li>
-            </ul>
-            Suoritus etenee virheettömästi ja varoituksetta
-        </div>
-        <div class="modal-footer">
-			<div class="row">
-				<a class="btn btn-default" ng-click="ok()"  role="button">Sulje ikkuna</a>
-            	<a class="btn btn-default" ng-click="naytaLisaa()"  role="button"><span ng-hide="lisaa">Lisää &raquo;</span><span ng-show="lisaa">Vähemmän &laquo;</span></a>
-			</div>
-			<br>
-			<div class="row" ng-show="lisaa">			
-				<a class="button" ng-click="peruuta()">Keskeytä valintalaskenta</a>
-			</div>
-        </div>
+        
 </script>
 
 <div class="col-md-12">
@@ -101,104 +74,57 @@
 
     <h2>Jälkiohjaus</h2>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()"
-       class="btn btn-primary btn-sm excel">Vie jälkiohjaustulokset taulukkolaskentaan</a>
+       class="btn btn-primary btn-sm"><i class="fa fa-table"></i>&nbsp;Vie jälkiohjaustulokset taulukkolaskentaan</a>
     <!-- 
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetPdf()"
        class="button primary small pdf">Vie jälkiohjauskirjeiksi</a>
     -->
     <a ng-show="privileges.showValintalaskenta()" ng-click="muodostaJalkiohjauskirjeet()"
-       class="btn btn-primary btn-sm pdf">Muodosta jälkiohjauskirjeet</a>
+       class="btn btn-primary btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet</a>
     <a ng-show="privileges.showValintalaskenta()"
        href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos" class="btn btn-default btn-sm">Valinnan
         tulokset</a>
 </div>
-<!-- 
-<div class="col-md-12">
-    <h2>Viestintäpalvelun tiedostot</h2>
-    <table class="virkailija-table-1">
-        <thead>
-        <tr>
-            <th>Tiedosto</th>
-            <th>Luotu</th>
-            <th>Koko</th>
-        </tr>
-        </thead>
-        <tbody ng-repeat="tiedosto in viestintapalveluntiedostot | limitTo:jalkiohjausLimit">
-        <tr>
-            <td class="align-center"><span ng-show="tiedosto.contentType=='text/plain'">{{tiedosto.filename}}</span><a
-                    ng-hide="tiedosto.contentType=='text/plain'" href="#"
-                    ng-click="lataa(tiedosto);$event.preventDefault();">{{tiedosto.filename}}</a></td>
-            <td class="align-center">{{tiedosto.createdAt}}</td>
-            <td class="align-center">{{tiedosto.size}}</td>
-        </tr>
-        <tfoot>
-        <tr ng-show="viestintapalveluntiedostot.length > jalkiohjausLimit">
-            <td class="align-center" colspan="4">
-                <a ng-click="showMoreJalkiohjaus()" class="button small" style="">Näytä lisää
-                    +{{viestintapalveluntiedostot.length - jalkiohjausLimit}}</a>
-            </td>
-        </tr>
-        <tr ng-hide="viestintapalveluntiedostot">
-            <td class="align-center" colspan="4">Ei tiedostoja</td>
-        </tr>
-        </tfoot>
-    </table>
-</div>
- -->
-<div class="col-md-12">
+<div class="col-md-6">
     <h2>Kela</h2>
-    <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiKelaVienti();$event.preventDefault();"
-       class="btn btn-primary btn-sm">Vie vastaanottaneet Kela-formaattiin</a>
+    <a ng-show="privileges.showValintalaskenta()" ng-click="muodostaKelaDokumentti();$event.preventDefault();"
+       class="btn btn-primary btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti</a>
+    <h3>Muodostetaan haulle</h3>
+    <table class="table">
+		<tbody>
+			
+		</tbody>
+	</table>
+    <h3>Kela-dokumentti muodostetaan valituista hauista</h3> 
+    <table class="table">
+		<thead>
+			<tr>
+				<th class="col-sm-1"><input type="checkbox" ng-model="kaikkiHautValittu" ng-change="checkAll();"></th>
+				<th>Haku</th>
+				<th>Oid</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="info">
+				<td><input disabled="disabled" type="checkbox" checked="checked"></td>
+				<td>{{hakumodel.hakuOid.nimi.kieli_fi}}<span ng-hide="hakumodel.hakuOid.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span></td>
+				<td>{{hakumodel.hakuOid.oid}}</td>
+			</tr>
+			<tr ng-hide="naytetaanHaut">
+				<td colspan="3">
+					<div class="row">
+					    <a class="col-md-2 col-md-offset-5 btn btn-default btn-sm" ng-click="naytaHaut();$event.preventDefault();"><i class="fa fa-plus"></i>&nbsp;Näytä haut</a>
+					</div>
+				</td>
+			</tr>
+			<tr ng-show="naytetaanHaut" ng-repeat="haku in hakumodel.haut | filter:notThisHaku">
+				<td><input type="checkbox" ng-model="haku.valittu" ng-change="check();"></td>
+				<td>{{haku.nimi.kieli_fi}}<span ng-hide="haku.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span></td>
+				<td>{{haku.oid}}</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
-<!--
-<div class="col-md-12">
-    <h3 class="form-row-label">Kela-tiedostot</h3>
-
-    <table class="virkailija-table-1">
-        <thead>
-        <tr>
-            <th>Otsikko</th>
-            <th>Luotu</th>
-            <th>Koko</th>
-            <th>Toiminto</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="tiedosto in kelatiedostot  | limitTo:kelaLimit">
-            <td class="align-center"><a
-                    href="{{DOKUMENTTIPALVELU_URL_BASE}}/dokumentit/lataa/{{tiedosto.documentId}}"
-                    ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</a><span
-                    ng-show="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</span></td>
-            <td class="align-center">{{tiedosto.createdAt}}</td>
-            <td class="align-center"><span ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.size}}</span>
-            </td>
-            <td class="align-center"><a ng-show="{{tiedosto.mimeType==''}}" class="button small"
-                                        ng-click="ftpVienti(tiedosto);$event.preventDefault();">FTP vienti</a></td>
-        </tr>
-
-        </tbody>
-        <tfoot>
-        <tr ng-show="kelatiedostot.length > kelaLimit">
-            <td class="align-center" colspan="4">
-                <a ng-click="showMoreKela()" class="button small" style="">Näytä lisää +{{kelatiedostot.length -
-                    kelaLimit}}</a>
-            </td>
-        </tr>
-        <tr ng-hide="kelatiedostot">
-            <td class="align-center" colspan="4">Ei tiedostoja</td>
-        </tr>
-        </tfoot>
-    </table>
-</div>
--->
-<!--
-
-<div class="float-left margin-top-2">
-TODO: Odottaa sijoittelun rajapintaa!
-<a ng-show="privileges.valintalaskenta" ng-click="aktivoiKelaVienti()" class="button primary small">Vie Kelan formaattiin</a>
-</div>
- -->
-
 
 <div class="col-md-12">
 	<h2>Ilmoitukset</h2>
