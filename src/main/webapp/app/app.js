@@ -481,12 +481,6 @@ app.factory('Hakemus', function($resource) {
         get: {method: "GET"}
     });
 });
-app.factory('HakemusKey', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid/:key?value=:value", {oid: "@oid", key: "@key", value:"@value"}, {
-        get: {method: "GET"},
-        put: {method: "PUT"}
-    });
-});
 app.factory('HakemusAdditionalData', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/additionalData/:hakuOid/:hakukohdeOid", {hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
         get: {method: "GET", isArray: true},

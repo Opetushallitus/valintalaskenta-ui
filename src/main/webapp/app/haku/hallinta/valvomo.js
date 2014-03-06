@@ -17,6 +17,7 @@ angular.module('valvomo').controller('ValvomoController',
     $scope.valintalaskenta = [];
     $scope.valintakoelaskenta = [];
     $scope.hakuimport = [];
+    $scope.valintalaskentamuistissa = [];
     $scope.valittu = $routeParams.selectedTab || 'valintalaskenta';
 
             console.log($routeParams.selectedTab || 'valintalaskenta');
@@ -26,6 +27,7 @@ angular.module('valvomo').controller('ValvomoController',
 
                 result.forEach(function (prosessi, index) {
                     if (!angular.equals(prosessi, $scope[valittu][index])) {
+                        $scope[valittu][index] = undefined;
                         $scope[valittu][index] = prosessi;
                     }
                 });

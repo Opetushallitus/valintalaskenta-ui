@@ -1,4 +1,4 @@
-﻿app.factory('HakeneetModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
+﻿app.factory('HakeneetModel', function(HakukohdeHenkilot) {
 	var model;
 	model = new function() {
 
