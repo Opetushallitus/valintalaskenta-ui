@@ -1,5 +1,5 @@
 "use strict";
-app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, LatestSijoittelunTilat, ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty, HakukohdeAvaimet, HakemusKey) {
+app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, LatestSijoittelunTilat, ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty, HakukohdeAvaimet, HakemusAdditionalData) {
     var model = new function () {
         this.hakemus = {};
         this.hakutoiveetMap = {};
@@ -51,7 +51,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         model.hakutoiveet.push(hakutoive);
                     }
 
-                    if(hakutoive.hakenutHarkinnanvaraisesti) {
+                    if (hakutoive.hakenutHarkinnanvaraisesti) {
                         model.hakenutHarkinnanvaraisesti = true;
                     }
                 }
@@ -81,8 +81,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                     sijoittelu.hakemusOid = model.hakemus.oid;
                                 });
                                 model.hakutoiveetMap[hakutoive.hakukohdeOid].sijoittelu = hakutoive.hakutoiveenValintatapajonot;
-                                if(hakutoive.hakutoiveenValintatapajonot) {
-                                    hakutoive.hakutoiveenValintatapajonot.forEach(function(valintatapajono){
+                                if (hakutoive.hakutoiveenValintatapajonot) {
+                                    hakutoive.hakutoiveenValintatapajonot.forEach(function (valintatapajono) {
                                         model.sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
                                     });
                                 }
@@ -125,6 +125,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         if (hakukohde) {
 
                             hakukohde.valintakokeet = {};
+                            hakukohde.osallistuminen = false;
                             hakutoive.valinnanVaiheet.forEach(function (valinnanVaihe) {
 
                                 valinnanVaihe.valintakokeet.forEach(function (valintakoe) {
@@ -136,60 +137,61 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                         osallistuminen: valintakoe.osallistuminenTulos.osallistuminen
                                     };
                                     hakukohde.valintakokeet[valintakoe.valintakoeTunniste] = valintakoe;
-                                    //hakukohde.valintakokeet.push(valintakoe);
+
+                                    if(valintakoe.osallistuminen === 'OSALLISTUU') {
+                                        hakukohde.osallistuminen = true;
+                                    }
                                 });
 
                             });
 
-                            HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (result) {
+                            if (hakukohde.osallistuminen) {
+                                HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (result) {
 
-                                hakukohde.avaimet = result;
+                                    hakukohde.avaimet = result;
 
-                                hakukohde.avaimet.forEach(function (avain) {
-                                    avain.tyyppi = function () {
-                                        if (avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
-                                            return "boolean";
+                                    hakukohde.avaimet.forEach(function (avain) {
+                                        avain.tyyppi = function () {
+                                            if (avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
+                                                return "boolean";
+                                            }
+                                            return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
+                                        };
+                                    });
+
+                                    hakukohde.osallistuu = {};
+
+                                    if (!hakukohde.additionalData) {
+                                        hakukohde.additionalData = {};
+                                    }
+
+                                    model.naytaPistetsyotto = false;
+                                    hakukohde.avaimet.forEach(function (avain) {
+                                        hakukohde.osallistuu[avain.tunniste] = false;
+
+                                        if (hakukohde.valintakokeet &&
+                                            hakukohde.valintakokeet[avain.tunniste]) {
+                                            hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
+                                            if (hakukohde.osallistuu[avain.tunniste] == 'OSALLISTUU') {
+                                                hakukohde.naytaPistesyotto = true;
+                                                model.naytaPistesyotto = true;
+                                            }
                                         }
-                                        return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
-                                    };
-                                });
 
-                                hakukohde.originalData = {};
-                                hakukohde.osallistuu = {};
-
-                                if (!hakukohde.additionalData) {
-                                    hakukohde.additionalData = {};
-                                }
-
-                                model.naytaPistetsyotto = false;
-                                hakukohde.avaimet.forEach(function (avain) {
-                                    hakukohde.osallistuu[avain.tunniste] = false;
-
-                                    if (hakukohde.valintakokeet &&
-                                        hakukohde.valintakokeet[avain.tunniste]) {
-                                        hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
-                                        if(hakukohde.osallistuu[avain.tunniste] == 'OSALLISTUU') {
-                                            hakukohde.naytaPistesyotto = true;
-                                            model.naytaPistesyotto = true;
+                                        if (!hakukohde.additionalData[avain.tunniste]) {
+                                            hakukohde.additionalData[avain.tunniste] = "";
                                         }
-                                    }
 
-                                    if (!hakukohde.additionalData[avain.tunniste]) {
-                                        hakukohde.additionalData[avain.tunniste] = "";
-                                    }
+                                        if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
+                                            hakukohde.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+                                        }
 
-                                    if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
-                                        hakukohde.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-                                    }
+                                    });
 
-                                    hakukohde.originalData[avain.tunniste] = hakukohde.additionalData[avain.tunniste];
-                                    hakukohde.originalData[avain.osallistuminenTunniste] = hakukohde.additionalData[avain.osallistuminenTunniste];
-
+                                }, function (error) {
+                                    model.errors.push(error);
                                 });
-
-                            }, function (error) {
-                                model.errors.push(error);
-                            });
+                            }
                         }
                     });
 
@@ -223,87 +225,70 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
         }
 
 
-        this.submit = function (hakutoive) {
+        this.tallennaPisteet = function () {
             model.errors.length = 0;
             var promises = [];
-            hakutoive.avaimet.forEach(function (avain) {
-                var value = hakutoive.additionalData[avain.tunniste];
+            model.hakutoiveet.forEach(function(hakutoive){
+                if (hakutoive.osallistuminen) {
 
-                if (hakutoive.originalData[avain.tunniste] !== value) {
-                    var promise = function () {
-                        var deferred = $q.defer();
-                        HakemusKey.put({
-                                "oid": hakutoive.hakemusOid,
-                                "key": avain.tunniste,
-                                "value": value
-                            }
-                            , function () {
-                                hakutoive.originalData[avain.tunniste] = value;
-                                deferred.resolve();
-                            }, function(error) {
-                                model.errors.push(error);
-                                deferred.reject();
-                            });
-                        return deferred.promise;
-                    }();
-                }   promises.push(promise);
-
-                if (hakutoive.originalData[avain.osallistuminenTunniste] !== hakutoive.additionalData[avain.osallistuminenTunniste]) {
                     promises.push(function () {
                         var deferred = $q.defer();
-                        HakemusKey.put({
-                                "oid": hakutoive.hakemusOid,
-                                "key": avain.osallistuminenTunniste,
-                                "value": hakutoive.additionalData[avain.osallistuminenTunniste]
-                            }
-                            , function () {
-                                hakutoive.originalData[avain.osallistuminenTunniste] = hakutoive.additionalData[avain.osallistuminenTunniste];
-                                deferred.resolve();
-                            }, function(error) {
+                        var hakeneet = [{
+                            oid: model.hakemus.oid,
+                            additionalData: hakutoive.additionalData
+                        }];
 
-                                model.errors.push(error);
-                                deferred.reject();
-                            });
-                        return deferred.promise;
+
+                        HakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: hakutoive.hakukohdeOid}, hakeneet, function(success){
+                            deferred.resolve(success);
+                        }, function(error) {
+                            deferred.reject(error);
+                            console.log(error);
+                        });
+
+                        return deferred;
                     }());
                 }
+
             });
+
             return promises;
         };
     }
     return model;
 });
 
-function HenkiloTiedotController($q, $scope, $route, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, HenkiloModel) {
+function HenkiloTiedotController($q, $scope, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset) {
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
-    $scope.muodostaJalkiohjauskirje = function() {
-    	Jalkiohjauskirjeet.post({ 
-        	hakuOid: $routeParams.hakuOid},
-        		{hakemusOids: [$scope.model.hakemus.oid]}, 
-        		function (id) {
-            Latausikkuna.avaa(id, "Jälkiohjauskirje yksittäiselle hakijalle", "");
-        }, function () {
-            
-        });
+    $scope.muodostaJalkiohjauskirje = function () {
+        Jalkiohjauskirjeet.post({
+                hakuOid: $routeParams.hakuOid},
+            {hakemusOids: [$scope.model.hakemus.oid]},
+            function (id) {
+                Latausikkuna.avaa(id, "Jälkiohjauskirje yksittäiselle hakijalle", "");
+            }, function () {
+
+            });
     };
-    
+
     $scope.pohjakoulutukset = Pohjakuolutukset;
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
     });
 
-    $scope.submit = function (hakutoive) {
-        var promises = $scope.model.submit(hakutoive)
-        $q.all(promises).then(function(){
+    $scope.tallennaPisteet = function () {
+        var promises = $scope.model.tallennaPisteet()
+        $q.all(promises).then(function () {
             toastr.success('Tallennus onnistui');
-        }, function() {
+        }, function () {
             toastr.error('Tallennus epäonnistui');
         });
     };
+
     $scope.changeOsallistuminen = function (hakija, tunniste, value) {
         if (value) {
             hakija.additionalData[tunniste] = "OSALLISTUI";
@@ -320,6 +305,6 @@ function HenkiloTiedotController($q, $scope, $route, $routeParams, ParametriServ
         }
 
     };
-    
+
     $scope.privileges = ParametriService;
 }
