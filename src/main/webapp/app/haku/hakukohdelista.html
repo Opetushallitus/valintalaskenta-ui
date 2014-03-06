@@ -16,12 +16,10 @@
 			        		href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}"
 			        	-->
 			            <span class="icon file"></span>
-			            <span class="node">
-			                {{model.getTarjoajaNimi(hakukohde)}}
+			            <span class="node" fast-bind-once="model.getTarjoajaNimi(hakukohde)">
 			            </span>
 			            <br>
-		                <span class="node">
-			                {{model.getHakukohdeNimi(hakukohde)}}
+		                <span class="node" fast-bind-once="model.getHakukohdeNimi(hakukohde)">
 			            </span>
 			        </a>
 			    </li>
