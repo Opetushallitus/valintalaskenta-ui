@@ -1,33 +1,32 @@
-
 <div ng-if="model.naytaPistesyotto" class="henkilotiedot">
     <h2>Pistesyöttö</h2>
 
-    <div ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
-        <div>
-            <form name="form" ng-submit="submit(hakutoive)" ng-if="hakutoive.naytaPistesyotto">
+    <form name="form" ng-submit="tallennaPisteet()">
+        <div ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
+            <div ng-if="hakutoive.naytaPistesyotto">
+                <h3>
+                    {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
+                    <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                        {{hakutoive.oppilaitos}}
+                    </a>
+                </h3>
                 <table class="virkailija-table-1">
                     <thead>
                     <tr>
-                        <th ng-click="hakutoive.jorma = !hakutoive.jorma" colspan="{{hakutoive.avaimet.length+1}}">
-                            {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
-                            {{hakutoive.oppilaitos}}
-                        </th>
-                    </tr>
-                    <tr>
-                        <th ng-repeat="avain in hakutoive.avaimet | filter:{'lahde': arvoFilter}">
+                        <th ng-repeat="avain in hakutoive.avaimet | filter:{'lahde': arvoFilter} | orderBy:'kuvaus'">
                             {{avain.kuvaus}}
                             <span ng-if="avain.min !== undefined && avain.min !== null|| avain.max !== null && avain.max !== undefined">
                                 ({{avain.min}} - {{avain.max}})
                             </span>
                         </th>
-                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td ng-repeat="avain in hakutoive.avaimet | filter:{'lahde': arvoFilter}">
+                        <td ng-repeat="avain in hakutoive.avaimet | filter:{'lahde': arvoFilter} | orderBy:'kuvaus'">
 
-                            <div ng-show="hakutoive.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch on="avain.lahde">
+                            <div ng-show="hakutoive.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch
+                                 on="avain.lahde">
                                 <div ng-switch-when="SYOTETTAVA_ARVO">
                                     <div ng-switch on="avain.tyyppi()">
                                         <div ng-switch-when="input">
@@ -83,23 +82,22 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                                    class="button small primary margin-top-2" type="submit">Tallenna
-                            </button>
-                        </td>
-
                     </tr>
 
                     </tbody>
                 </table>
-
-                <div>
-                    <div class="notification warning" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista virheet!
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+
+
+        <div>
+            <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
+                    class="button small primary margin-top-2" type="submit">Tallenna
+            </button>
+            <div class="notification warning" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista virheet!
+            </div>
+        </div>
+
+    </form>
 </div>
 <div class="clear"></div>
