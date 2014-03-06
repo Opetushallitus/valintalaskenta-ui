@@ -108,7 +108,7 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 		    	  				cancelTimerWhenClosing();
 		    	  			}
 		    	  			$scope.prosessi = data;
-		    	  			if(data.valmis == true) {
+		    	  			if(data.dokumenttiId != null) {
 		    	  				$interval.cancel(timer);
 		    	  			}
 		    	  		});
@@ -206,7 +206,7 @@ app.factory('Parametrit', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/parametrit/:hakuOid", {}, {
         list: {method: "GET"}
     });
-})
+});
 
 
 //Valintalaskenta
@@ -321,7 +321,6 @@ app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $w
     		$http({method: "GET", url: DOKUMENTTIPALVELU_URL_BASE + "/dokumentit/hae"}).
     		  success(function(data) {
     			  callback(data);
-    			  console.log(data);
     		  });
     	},
     	aloitaPollaus: function(callback, filter) {
@@ -341,52 +340,52 @@ app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $w
 app.factory('ValintakoelaskentaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHakukohteenValintakoelaskenta", {}, {
         aktivoi: {method: "GET"}
-    })
+    });
 });
 
 app.factory('ValintalaskentaKaynnissa', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktiivinenValintalaskenta", {}, {
         hae: {method: "GET"}
-    })
+    });
 });
 app.factory('ValintalaskentaKeskeyta', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/keskeytaAktiivinenValintalaskenta", {}, {
         keskeyta: {method: "POST"}
-    })
+    });
 });
 app.factory('ValintalaskentaStatus', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/status/:uuid", {uuid: "@uuid"}, {
         aktivoi: {method: "GET"}
-    })
+    });
 });
 app.factory('ValintalaskentaMuistissa', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktivoi", {}, {
         aktivoi: {method: "POST"}
-    })
+    });
 });
 
 app.factory('ValintalaskentaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoi", {}, {
         aktivoi: {method: "GET"}
-    })
+    });
 });
 
 app.factory('Sijoitteluktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/aktivoi", {}, {
         aktivoi: {method: "GET"}
-    })
+    });
 });
 
 
 app.factory('AktivoiHaunValintalaskenta', function($resource) {
   return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoiHaunValintalaskenta", {}, {
       aktivoi: {method: "GET"}
-  })
+  });
 });
 app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
   return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHaunValintakoelaskenta", {}, {
       aktivoi: {method: "GET"}
-  })
+  });
 });
 
 
