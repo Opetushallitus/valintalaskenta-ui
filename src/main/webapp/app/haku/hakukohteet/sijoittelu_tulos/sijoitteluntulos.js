@@ -1,5 +1,5 @@
 "use strict";
-app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, $timeout, SijoitteluAjo, VastaanottoTilat) {
+app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, $timeout, SijoitteluAjo, VastaanottoTilat) {
 
     var model = new function () {
 
@@ -156,17 +156,17 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
         };
 
         this.setVastaanottoTila = function (hakemus, tilaParams) {
-            VastaanottoTila.get(tilaParams, function (result) {
-                if (!result.tila) {
-                    hakemus.vastaanottoTila = "";
-                    hakemus.muokattuVastaanottoTila = "";
-                } else {
-                    hakemus.vastaanottoTila = result.tila;
-                    hakemus.muokattuVastaanottoTila = result.tila;
-                }
-            }, function (error) {
-                model.errors.push(error);
-            });
+//            VastaanottoTila.get(tilaParams, function (result) {
+//                if (!result.tila) {
+//                    hakemus.vastaanottoTila = "";
+//                    hakemus.muokattuVastaanottoTila = "";
+//                } else {
+//                    hakemus.vastaanottoTila = result.tila;
+//                    hakemus.muokattuVastaanottoTila = result.tila;
+//                }
+//            }, function (error) {
+//                model.errors.push(error);
+//            });
         }
 
         //refresh if haku or hakukohde has changed
@@ -188,26 +188,31 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
         	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid);
         };
 
-        this.updateVastaanottoTila = function (selite, hakemus, valintatapajonoOid) {
+        this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid) {
             model.errors.length = 0;
             var tilaParams = {
                 hakuoid: model.hakuOid,
                 hakukohdeOid: model.hakukohdeOid,
-                valintatapajonoOid: valintatapajonoOid,
-                hakemusOid: hakemus.hakemusOid,
+                //valintatapajonoOid: valintatapajonoOid,
+                //hakemusOid: hakemus.hakemusOid,
                 selite: selite
-            }
-            hakemus.selite = "";
-            if (hakemus.muokattuVastaanottoTila == "") {
-                hakemus.muokattuVastaanottoTila = null;
-            }
-            var tilaObj = {tila: hakemus.muokattuVastaanottoTila};
+            };
+            
+            var tilaObj = _.map(muokatutHakemukset, function(hakemus) {
+            	return {
+            		tila: hakemus.muokattuVastaanottoTila,
+            		valintatapajonoOid: valintatapajonoOid,
+                	hakemusOid: hakemus.hakemusOid
+            	};
+            });
 
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
                 //model.refresh(model.hakuOid, model.hakukohdeOid);
-                model.setVastaanottoTila(hakemus, tilaParams);
+                //model.setVastaanottoTila(hakemus, tilaParams);
+            	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function (error) {
-                model.errors.push(error);
+            	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon..");
+                //model.errors.push(error);
             });
         }
 
