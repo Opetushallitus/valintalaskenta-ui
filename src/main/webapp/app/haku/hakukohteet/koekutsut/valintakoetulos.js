@@ -146,7 +146,8 @@ function ValintakoetulosController($scope, $window, $routeParams, Ilmoitus, Lata
 			
 		}
 	};
-	function isBlank(str) {
+
+    $scope.isBlank = function (str) {
 	    return (!str || /^\s*$/.test(str));
 	  };
 	  
@@ -154,7 +155,7 @@ function ValintakoetulosController($scope, $window, $routeParams, Ilmoitus, Lata
 		var hakemusOids = null;
 		var otsikko = null;
 		var letterBodyText = $scope.tinymceModel[valintakoe.valintakoeOid];
-		if(!isBlank(letterBodyText)) {
+		if(!$scope.isBlank(letterBodyText)) {
 			if($scope.model.isAllValittu(valintakoe)) {
 				// luodaan uusimmasta kannan datasta. kayttoliittama voi olla epasynkassa
 				otsikko = "Muodostetaan koekutsukirjeet valintakokeelle";

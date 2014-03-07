@@ -70,7 +70,14 @@
 						</form>
 						<div class="btn-toolbar" role="toolbar">
 	                    <a ng-click="valintakoeTulosXLS(valintakoe.valintakoeOid); $event.stopPropagation()" class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie taulukkolaskentaan</a>
-	                    <a ng-click="tulostaKoekutsukirjeet(valintakoe); $event.stopPropagation()" class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta koekutsut</span></a>
+	                        <span ng-if="isBlank(tinymceModel[valintakoe.valintakoeOid])" popover="Kirjoita viesti ylläolevaan kenttään." popover-trigger="mouseenter" >
+                                <a ng-disabled="true" ng-click="tulostaKoekutsukirjeet(valintakoe);" class="btn btn-default btn-sm">
+                                    <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
+                                </a>
+                            </span>
+                            <a ng-if="!isBlank(tinymceModel[valintakoe.valintakoeOid])" ng-click="tulostaKoekutsukirjeet(valintakoe);" class="btn btn-default btn-sm">
+                                <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
+                            </a>
 	                    <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()" class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta osoitetarrat</a>
 						</div>
                     </div>
