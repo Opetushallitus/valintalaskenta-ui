@@ -77,19 +77,33 @@
                                                     <option value="OSALLISTUI">Osallistui</option>
                                                     <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
                                                 </select>
-                                                <br />
+                                                <br/>
                                                 <span style="color: red;"></span>
                                             </div>
 
                                             <div ng-switch-when="boolean">
                                                 <!-- input -->
-                                                <select ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
-                                                       ng-model="hakija.additionalData[avain.tunniste]"
-                                                       ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])" >
-                                                    <option value="">Tyhjä</option>
-                                                    <option value="true">Kyllä</option>
-                                                    <option value="false">Ei</option>
-                                                </select>
+                                                <div ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
+                                                    <select ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                            ng-model="hakija.additionalData[avain.tunniste]"
+                                                            ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
+
+                                                        <option value="">Tyhjä</option>
+                                                        <option value="true">Kyllä</option>
+                                                        <option value="false">Ei</option>
+
+                                                    </select>
+                                                </div>
+
+                                                <div ng-if="(avain.tunniste.indexOf('kielikoe') > -1)">
+                                                    <select ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                            ng-model="hakija.additionalData[avain.tunniste]"
+                                                            ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
+                                                        <option value="">Tyhjä</option>
+                                                        <option value="true">Hyväksytty</option>
+                                                        <option value="false">Hylätty</option>
+                                                    </select>
+                                                </div>
 
 
                                                 <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
