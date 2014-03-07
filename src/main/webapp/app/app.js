@@ -513,7 +513,7 @@ app.factory('VastaanottoTilat', function($resource) {
 });
 
  app.factory('VastaanottoTila', function($resource) {
-     return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakekohde/:hakukohdeOid?selite=:selite",
+     return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakukohde/:hakukohdeOid?selite=:selite",
          {
              hakuoid: "@hakuoid",
              hakukohdeOid: "@hakukohdeoid",
