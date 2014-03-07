@@ -1,4 +1,4 @@
-app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt) {
+app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt) {
     var model;
     model = new function() {
       this.valittu = true;
@@ -96,7 +96,9 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
                           harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila
                       };
                       HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function(result) {
-
+							Ilmoitus.avaa("Harkinnanvaraisesti hyväksyttyjen tallennus", "Muutokset on tallennettu.");
+                      }, function() {
+                      		Ilmoitus.avaa("Harkinnanvaraisesti hyväksyttyjen tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.");
                       });
                   }
               }
@@ -130,10 +132,6 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Hakemus, Harki
       $scope.predicate = 'sukunimi';
 
       $scope.submit = function() {
-          HakeneetModel.submit();
-      };
-
-      $scope.submit = function(hakemusOid) {
           $scope.model.submit();
       };
       

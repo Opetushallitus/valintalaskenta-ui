@@ -74,13 +74,13 @@
 
     <h2>Jälkiohjaus</h2>
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()"
-       class="btn btn-primary btn-sm"><i class="fa fa-table"></i>&nbsp;Vie jälkiohjaustulokset taulukkolaskentaan</a>
+       class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie jälkiohjaustulokset taulukkolaskentaan</a>
     <!-- 
     <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetPdf()"
        class="button primary small pdf">Vie jälkiohjauskirjeiksi</a>
     -->
     <a ng-show="privileges.showValintalaskenta()" ng-click="muodostaJalkiohjauskirjeet()"
-       class="btn btn-primary btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet</a>
+       class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet</a>
     <a ng-show="privileges.showValintalaskenta()"
        href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos" class="btn btn-default btn-sm">Valinnan
         tulokset</a>
@@ -88,7 +88,7 @@
 <div class="col-md-6">
     <h2>Kela</h2>
     <a ng-show="privileges.showValintalaskenta()" ng-click="muodostaKelaDokumentti();$event.preventDefault();"
-       class="btn btn-primary btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti</a>
+       class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti</a>
     <h3>Kela-dokumentti muodostetaan valituista hauista</h3> 
     <table class="table">
 		<thead>
