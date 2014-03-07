@@ -177,27 +177,25 @@ app.factory('SijoitteluntulosModel', function ($q, Sijoittelu, LatestSijoittelua
         };
 
         this.updateHakemuksienTila = function (valintatapajonoOid) {
-            for (var j = 0; j < model.sijoitteluTulokset.valintatapajonot.length; ++j) {
-                if (model.sijoitteluTulokset.valintatapajonot[j].oid === valintatapajonoOid) {
-                    for (var k = 0; k < model.sijoitteluTulokset.valintatapajonot[j].hakemukset.length; ++k) {
-                        var hakemus = model.sijoitteluTulokset.valintatapajonot[j].hakemukset[k];
-                        if (hakemus.vastaanottoTila != hakemus.muokattuVastaanottoTila) {
-                            hakemus.selite = "Massamuokkaus";
-                            model.updateVastaanottoTila(hakemus, valintatapajonoOid);
-                        }
-                    }
-                }
-            }
+        	var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
+        		return valintatapajono.oid === valintatapajonoOid;
+        	});
+        	var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
+        		return valintatapajono.hakemukset;
+        	})), function(hakemus) {
+        		return hakemus.vastaanottoTila != hakemus.muokattuVastaanottoTila;
+        	});
+        	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid);
         };
 
-        this.updateVastaanottoTila = function (hakemus, valintatapajonoOid) {
+        this.updateVastaanottoTila = function (selite, hakemus, valintatapajonoOid) {
             model.errors.length = 0;
             var tilaParams = {
                 hakuoid: model.hakuOid,
                 hakukohdeOid: model.hakukohdeOid,
                 valintatapajonoOid: valintatapajonoOid,
                 hakemusOid: hakemus.hakemusOid,
-                selite: hakemus.selite
+                selite: selite
             }
             hakemus.selite = "";
             if (hakemus.muokattuVastaanottoTila == "") {

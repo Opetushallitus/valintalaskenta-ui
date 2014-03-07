@@ -81,33 +81,34 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Ilmoitus, Hake
               });
 
 
-      }
+      };
 
           this.submit = function() {
-              for (var i=0; i<model.hakeneet.length; i++) {
-                  var hakemus = model.hakeneet[i];
-                  if(hakemus.muokattuHarkinnanvaraisuusTila != hakemus.harkinnanvaraisuusTila)  {
-                      var updateParams = {
-                          hakuOid: model.hakuOid,
-                          hakukohdeOid: model.hakukohdeOid,
-                          hakemusOid: hakemus.oid
-                      }
-                      var postParams = {
-                          harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila
-                      };
-                      HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function(result) {
-							Ilmoitus.avaa("Harkinnanvaraisesti hyväksyttyjen tallennus", "Muutokset on tallennettu.");
-                      }, function() {
-                      		Ilmoitus.avaa("Harkinnanvaraisesti hyväksyttyjen tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.");
-                      });
-                  }
-              }
-          }
+          	
+          	var muokatutHakemukset = _.filter(model.hakeneet, function(hakemus) {
+          		return hakemus.muokattuHarkinnanvaraisuusTila != hakemus.harkinnanvaraisuusTila;
+          	});
+          	var postParams = _.map(muokatutHakemukset, function(hakemus) {
+          		return {
+          			hakemusOid: hakemus.oid,
+          			harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila
+          		};
+          	});
+          	var updateParams = {
+              hakuOid: model.hakuOid,
+              hakukohdeOid: model.hakukohdeOid
+          	};
+          	HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function(result) {
+				Ilmoitus.avaa("Harkinnanvaraisesti hyväksyttyjen tallennus", "Muutokset on tallennettu.");
+          	}, function() {
+          		Ilmoitus.avaa("Harkinnanvaraisesti hyväksyttyjen tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.");
+          	});
+          };
       this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
               if(hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
                   model.refresh(hakukohdeOid, hakuOid);
               }
-          }
+          };
 
     };
 
