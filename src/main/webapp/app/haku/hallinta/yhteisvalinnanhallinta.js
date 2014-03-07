@@ -52,7 +52,9 @@ function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance
 	var update = function () {
 		if($scope.uuid != null) {
 			ValintalaskentaStatus.get({uuid:$scope.uuid}, function(r) {
-				$scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
+				    $scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
+                    $scope.virheet = r.prosessi.exceptions;
+                    $scope.varoitukset = r.prosessi.varoitukset;
 			});
 		}
     };
