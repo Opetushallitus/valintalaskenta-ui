@@ -513,15 +513,12 @@ app.factory('VastaanottoTilat', function($resource) {
 });
 
  app.factory('VastaanottoTila', function($resource) {
-     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid?selite=:selite",
+     return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakekohde/:hakukohdeOid?selite=:selite",
          {
              hakuoid: "@hakuoid",
              hakukohdeOid: "@hakukohdeoid",
-             valintatapajonoOid: "@valintatapajonoOid",
-             hakemusOid: "@hakemusOid",
              selite: "@selite"
          }, {
-         get: {method: "GET"},
          post: {method: "POST"}
      });
  });
