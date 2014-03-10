@@ -44,7 +44,7 @@
                     </thead>
 
                     <tr ng-repeat="hakemus in (model.valintakokeetHakijoittainArray | filter:model.filter)">
-                        <td>
+                        <td class="leftorientedcolumn">
                             <show-person-information sukunimi="{{hakemus.sukunimi}}"
                                                      etunimi="{{hakemus.etunimi}}"
                                                      hakemus-oid="{{hakemus.hakemusOid}}"
@@ -99,7 +99,7 @@
                         <tbody>
                         <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter">
                             <td><input type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);"></td>
-                            <td>
+                            <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{koe.sukunimi}}"
                                                          etunimi="{{koe.etunimi}}"
                                                          hakemus-oid="{{koe.hakemusOid}}"

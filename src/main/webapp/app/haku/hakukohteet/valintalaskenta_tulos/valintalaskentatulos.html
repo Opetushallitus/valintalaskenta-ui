@@ -47,7 +47,7 @@
                             <tbody>
                             <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit">
                                 <td>{{tulos.jonosija}}</td>
-                                <td>
+                                <td class="leftorientedcolumn">
                                     <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                              etunimi="{{tulos.etunimi}}"
                                                              hakemus-oid="{{tulos.hakemusOid}}"
