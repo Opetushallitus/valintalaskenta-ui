@@ -1,5 +1,5 @@
 "use strict";
-app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, $timeout, SijoitteluAjo, VastaanottoTilat) {
+app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila) {
 
     var model = new function () {
 
@@ -185,7 +185,11 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	})), function(hakemus) {
         		return hakemus.vastaanottoTila != hakemus.muokattuVastaanottoTila;
         	});
-        	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid);
+        	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
+                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+            }, function(error){
+                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+            });
         };
 
         this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid) {
@@ -211,7 +215,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                 //model.setVastaanottoTila(hakemus, tilaParams);
             	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function (error) {
-            	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon..");
+            	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
                 //model.errors.push(error);
             });
         }
@@ -237,7 +241,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 });
 
 
-function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilmoitus, Latausikkuna, HakukohdeModel, SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
+function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Latausikkuna, HakukohdeModel, SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
@@ -257,8 +261,6 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Ilm
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     };
     $scope.createHyvaksymisosoitteetPDF = function () {
-
-
 
         OsoitetarratSijoittelussaHyvaksytyille.post({
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 

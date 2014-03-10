@@ -1,5 +1,5 @@
 "use strict";
-app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset) {
+app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus, IlmoitusTila) {
     var model;
     model = new function () {
 
@@ -120,9 +120,9 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                 hakija.osallistuu = undefined;
             });
             HakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success){
-                toastr.success('Tallennus onnistui');
+                Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
             },function(error){
-                toastr.error('Tallennus epäonnistui');
+                Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
                 console.log(error);
             });
 

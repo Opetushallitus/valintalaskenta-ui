@@ -59,15 +59,19 @@ app.config(function($routeProvider) {
 
 });
 //MODAALISET IKKUNAT
-app.factory('Ilmoitus', function($modal) {
+app.factory('Ilmoitus', function($modal, IlmoitusTila) {
 	return {
-		avaa: function(otsikko, ilmoitus) {
+		avaa: function(otsikko, ilmoitus, tila) {
 			$modal.open({
 		      backdrop: 'static',
 		      templateUrl: '../common/modaalinen/ilmoitus.html',
 		      controller: function($scope, $window, $modalInstance) {
 				  $scope.ilmoitus = ilmoitus;
 		    	  $scope.otsikko = otsikko;
+                  if(!tila) {
+                      tila = IlmoitusTila.INFO;
+                  }
+                  $scope.tila = tila;
 		    	  $scope.sulje = function() {
 		    	  		$modalInstance.dismiss('cancel');
 		    	  };
@@ -640,4 +644,10 @@ app.constant('Pohjakuolutukset', {
 	6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
 	7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
 	9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti"
+});
+
+app.constant('IlmoitusTila', {
+	INFO: 'success',
+	WARNING: 'warning',
+	ERROR: 'danger'
 });
