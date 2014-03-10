@@ -432,9 +432,12 @@ app.directive('jarjestyskriteeriMuokkaus', function() {
             jonosija: '='
         },
         templateUrl: '../common/html/muutaJarjestyskriteeri.html',
-        controller: function($scope, $route, JarjestyskriteeriMuokattuJonosija){
-            // Errors.html haluaa errorit modeliin
-            $scope.model = {errors: []};
+        controller: function($scope, $route, JarjestyskriteeriMuokattuJonosija, $modal){
+
+            var valintatapajonoOid = $scope.valintatapajonoOid;
+            var hakemusOid = $scope.hakemusOid;
+            var enabled = $scope.enabled;
+            var jonosija = $scope.jonosija;
 
             if($scope.jonosija.tuloksenTila == 'HYVAKSYTTY_HARKINNANVARAISESTI') {
                 $scope.harkinnanvarainen = true;
@@ -442,50 +445,71 @@ app.directive('jarjestyskriteeriMuokkaus', function() {
 
             $scope.show = function() {
                 if($scope.enabled) {
-                    $scope.jonosija.muokkaus = {};
-                    $scope.jonosija.muokkaus.prioriteetit = [];
-                    for(var i in $scope.jonosija.jarjestyskriteerit) {
-                        if(i == 0) {
-                            var obj = {name: "Yhteispisteet", value: i};
-                            $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti = obj;
-                            $scope.jonosija.muokkaus.prioriteetit.push(obj);
+                $modal.open({
+                    templateUrl: '../common/html/muutaJarjestyskriteeriModal.html',
+                    controller: function($scope, $window, $modalInstance, Ilmoitus) {
+
+                        $scope.valintatapajonoOid = valintatapajonoOid;
+                        $scope.hakemusOid = hakemusOid;
+                        $scope.enabled = enabled;
+                        $scope.jonosija = jonosija;
+
+                        $scope.jonosija.muokkaus = {};
+                        $scope.jonosija.muokkaus.prioriteetit = [];
+                        for(var i in $scope.jonosija.jarjestyskriteerit) {
+                            if(i == 0) {
+                                var obj = {name: "Yhteispisteet", value: i};
+                                $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti = obj;
+                                $scope.jonosija.muokkaus.prioriteetit.push(obj);
+                            }
+                            else {
+                                var obj = {name: i, value: i};
+                                $scope.jonosija.muokkaus.prioriteetit.push(obj);
+                            }
                         }
-                        else {
-                            var obj = {name: i, value: i};
-                            $scope.jonosija.muokkaus.prioriteetit.push(obj);
+
+                        $scope.jonosija.muokkaus.tila = $scope.jonosija.tuloksenTila;
+                        $scope.jonosija.muokkaus.arvo = $scope.jonosija.jarjestyskriteerit[0].arvo;
+
+                        $scope.update = function() {
+
+                            var updateParams = {
+                                valintatapajonoOid: $scope.valintatapajonoOid,
+                                hakemusOid: $scope.hakemusOid,
+                                jarjestyskriteeriprioriteetti: $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti.value
+                            }
+
+                            var postParams = {
+                                tila: $scope.jonosija.muokkaus.tila,
+                                arvo: $scope.jonosija.muokkaus.arvo,
+                                selite: $scope.jonosija.muokkaus.selite
+                            };
+
+                            JarjestyskriteeriMuokattuJonosija.post(updateParams, postParams, function(result) {
+                                // resurssi palauttaa hakemukset muutoksen jälkeen todennäköisesti eri järjestyksessä
+                                $modalInstance.close(result)
+                                Ilmoitus.avaa("Tallennus onnistui", "Järjestyskriteerin tila muutettu.");
+                                $route.reload();
+                            }, function (error) {
+                                $scope.error = error;
+                            });
                         }
+
+                        $scope.sulje = function() {
+                            $modalInstance.dismiss('cancel');
+                        };
+                    },
+                    resolve: {
+
                     }
-
-                    $scope.jonosija.muokkaus.tila = $scope.jonosija.tuloksenTila;
-                    $scope.jonosija.muokkaus.arvo = $scope.jonosija.jarjestyskriteerit[0].arvo;
-
-                    $scope.showForm = !$scope.showForm;
-                }
-            }
-
-            $scope.update = function() {
-
-                var updateParams = {
-                    valintatapajonoOid: $scope.valintatapajonoOid,
-                    hakemusOid: $scope.hakemusOid,
-                    jarjestyskriteeriprioriteetti: $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti.value
+                }).result.then(function() {
+                    }, function() {
+                    });
                 }
 
-                var postParams = {
-                    tila: $scope.jonosija.muokkaus.tila,
-                    arvo: $scope.jonosija.muokkaus.arvo,
-                    selite: $scope.jonosija.muokkaus.selite
-                };
-
-                JarjestyskriteeriMuokattuJonosija.post(updateParams, postParams, function() {
-                    // resurssi palauttaa hakemukset muutoksen jälkeen todennäköisesti eri järjestyksessä
-                    $route.reload();
-                }, function (error) {
-                    $scope.model.errors.push(error);
-                });
-
-
             }
+
+
         }
     };
 });
@@ -501,11 +525,36 @@ app.directive('showPersonInformation', function() {
             henkiloOid: '@'
         },
         templateUrl: '../common/html/personInformationPartial.html',
-        controller: function($scope){
+        controller: function($modal, $scope){
             $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
+            var sukunimi = $scope.sukunimi;
+            var etunimi = $scope.etunimi;
+            var hakemusOid = $scope.hakemusOid;
+            var hakuOid = $scope.hakuOid;
+            var henkiloOid = $scope.henkiloOid;
+
             $scope.show = function() {
-                $scope.showInfo = !$scope.showInfo;
+                $modal.open({
+                    templateUrl: '../common/html/personInformationModal.html',
+                    controller: function($scope, $window, $modalInstance) {
+
+                        $scope.sukunimi = sukunimi;
+                        $scope.etunimi = etunimi;
+                        $scope.hakemusOid = hakemusOid;
+                        $scope.hakuOid = hakuOid;
+                        $scope.henkiloOid = henkiloOid;
+
+                        $scope.sulje = function() {
+                            $modalInstance.dismiss('cancel');
+                        };
+                    },
+                    resolve: {
+
+                    }
+                }).result.then(function() {
+                    }, function() {
+                });
             }
 
         }
