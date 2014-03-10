@@ -104,12 +104,17 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
 		});
 	};
 	$scope.filterValitut = function() {
+		return _.filter($scope.hakumodel.haut,function(haku) {
+			return haku.valittu;
+		});
+	};
+	$scope.filterValitutExcludingThisHaku = function() {
 		return _.filter($scope.filterNotThisHaku(),function(haku) {
 			return haku.valittu;
 		});
 	};
 	$scope.isAllValittu = function() {
-		return $scope.filterNotThisHaku().length == $scope.filterValitut().length;
+		return $scope.filterNotThisHaku().length == $scope.filterValitutExcludingThisHaku().length;
 	};
 	$scope.check = function(oid) {
 		$scope.kaikkiHautValittu = $scope.isAllValittu();
@@ -124,7 +129,9 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
 	$scope.muodostaKelaDokumentti = function() {
 		KelaDokumentti.post({ 
         	hakuOid: $routeParams.hakuOid},
-        		{}, 
+        		{
+        		hakuOids: $scope.filterValitut()
+        		}, 
         		function (id) {
             Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html", {
             	ftpVienti: function() {
