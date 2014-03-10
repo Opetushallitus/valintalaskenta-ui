@@ -10,23 +10,21 @@
         <table class="table table-condensed table-hover table-striped">
             <thead>
             <tr>
-                <th class="jarjestyskriteeri">Järjestyskriteeri</th>
-                <th class="pistemaara">Pistemaara</th>
-                <th class="tila">Tila</th>
-                <th class="tilaKuvaus">Tilan kuvaus</th>
+                <th></th>
+                <th>Nimi</th>
+                <th>Pistemaara</th>
+                <th>Tila</th>
+                <th>Tilan kuvaus</th>
             </tr>
             </thead>
 
             <tbody>
             <tr ng-repeat="jarjestyskriteeri in tulos.jarjestyskriteerit">
-                <td class="jarjestyskriteeri">
-                    {{jarjestyskriteeri.prioriteetti + 1}}.
-                    {{jarjestyskriteeri.nimi}}
-                </td>
-                <td class="pistemaara">{{jarjestyskriteeri.arvo}}</td>
-                <td class="tila">{{jarjestyskriteeri.tila}}</td>
-                <td class="tilaKuvaus">{{jarjestyskriteeri.kuvaus.FI}}
-                </td>
+                <td fast-bind-once="'' + (jarjestyskriteeri.prioriteetti + 1) + '.'"></td>
+                <td fast-bind-once="jarjestyskriteeri.nimi"></td>
+                <td fast-bind-once="jarjestyskriteeri.arvo"></td>
+                <td fast-bind-once="jarjestyskriteeri.tila"></td>
+                <td fast-bind-once="jarjestyskriteeri.kuvaus.FI"></td>
             </tr>
             </tbody>
         </table>
