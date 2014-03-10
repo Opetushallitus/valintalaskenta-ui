@@ -1692,6 +1692,25 @@ table.dropmenu-table {
       margin: 0px;
       border-width: 0px; }
 
+.btn.print {
+  padding-left: 30px;
+  background-image: url(../img/print-icon.png);
+  background-repeat: no-repeat;
+  background-position: 5px center; }
+.btn.excel {
+  padding-left: 30px;
+  background-image: url("../img/excel-icon.png");
+  background-repeat: no-repeat;
+  background-position: 5px center; }
+.btn.pdf {
+  padding-left: 30px;
+  background-image: url("../img/pdf-icon.png");
+  background-repeat: no-repeat;
+  background-position: 5px center; }
+.btn.disabled {
+  background-color: #dea300;
+  border-color: #dea300; }
+
 .btn-default {
   color: black;
   background-color: #9fdbf0;
@@ -1699,18 +1718,12 @@ table.dropmenu-table {
   .btn-default:hover {
     background-color: #92cce0;
     border-color: #92cce0; }
-  .btn-default.disabled {
-    background-color: #dea300;
-    border-color: #dea300; }
 
 .btn-primary {
   color: black;
   background-color: #feba00;
   border-color: #feba00; }
   .btn-primary:hover {
-    background-color: #dea300;
-    border-color: #dea300; }
-  .btn-primary.disabled {
     background-color: #dea300;
     border-color: #dea300; }
 
