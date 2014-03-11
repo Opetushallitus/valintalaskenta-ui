@@ -247,10 +247,7 @@ return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:valinnanvaiheoid/v
 });
 
 app.factory('HarkinnanvarainenHyvaksynta', function($resource) {
- return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/:hakuOid/hakukohde/:hakukohdeOid", {
-    hakuOid: "@hakuOid",
-    hakukohdeOid: "@hakukohdeOid"
-    }, {
+ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/", { }, {
      post:{method: "POST"}
    });
 });

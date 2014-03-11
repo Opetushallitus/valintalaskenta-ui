@@ -1,93 +1,4 @@
 "use strict";
-/**
- * JQuery Nestable drag'n'drop tree.
- */
-app.directive('jqNestable', function($timeout) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var options = scope.$eval(attrs.jqNestable) || {}
-            $(element[0]).nestable({
-                group: 1,
-                listNodeName: 'ul',
-                rootClass: 'gradingformula',
-                handleClass: 'icon',
-                dragClass: 'gradingformula-dragged',
-                placeClass: 'placeholder',
-                emptyClass: 'empty',
-                listClass: 'list',
-                itemClass: 'item',
-                maxDepth: 25,
-                canDrop: function(pointEl) {
-                    return true;
-                }
-            })
-
-            if(typeof options.onChange === 'function') {
-                $(element[0]).on('change', function(e, dragged) {
-                    // TODO: Voisi innostuessaan tehdä jotain geneerisempää
-                    // Haetaan pudotetun elementin scope ja sieltä paikallinen muuttuja 'funktio', asetettu laskentakaavalomake.html:ssä.
-                    var draggedFunction = dragged.scope().funktio
-                    // Haetaan edellinen parent model
-                    var oldParentFunktio = dragged.scope().parent
-                    // Haetaan uuden parentin scopesta muuttuja funktio
-                    var newParentEl = dragged.parent().parent()
-                    var newParentFunktio = newParentEl.scope().funktio
-                    var index = dragged.index()
-                    options.onChange(draggedFunction, oldParentFunktio, newParentFunktio, index)
-
-                    // Korjataan haamuelementti
-                    dragged.remove()
-
-                    $(newParentEl).scope().$apply()
-                })
-            }
-        }
-    }
-});
-
-app.directive('uiSortable', function() {
-    var options;
-    options = {};
-    return {
-      require: '?ngModel',
-      link: function(scope, element, attrs, ngModel) {
-        var onStart, onUpdate, opts, _start, _update;
-        opts = angular.extend({}, options, scope.$eval(attrs.uiOptions));
-        if (ngModel != null) {
-          onStart = function(e, ui) {
-            return ui.item.data('ui-sortable-start', ui.item.index());
-          };
-          onUpdate = function(e, ui) {
-            var end, start;
-            start = ui.item.data('ui-sortable-start');
-            end = ui.item.index();
-            ngModel.$modelValue.splice(end, 0, ngModel.$modelValue.splice(start, 1)[0]);
-
-            return scope.$apply();
-          };
-          _start = opts.start;
-          opts.start = function(e, ui) {
-            onStart(e, ui);
-            if (typeof _start === "function") {
-              _start(e, ui);
-            }
-            return scope.$apply();
-          };
-          _update = opts.update;
-          opts.update = function(e, ui) {
-            onUpdate(e, ui);
-            if (typeof _update === "function") {
-              _update(e, ui);
-            }
-            return scope.$apply();
-          };
-        }
-        return element.sortable(opts);
-      }
-    };
-  }
-);
 app.directive('lazyLoading', function () {
     return {
         scope: true,
@@ -164,18 +75,6 @@ app.directive('centralize', function() {
             
         }
     }
-});
-
-app.directive('smoothToggle', function($animate) {
-  return function(scope, element, attrs) { 
-    scope.$watch(attrs.smoothToggle, function(newVal) {
-      if(newVal) {
-        element.addClass('ng-show');
-      } else {
-        element.removeClass('ng-show');
-      }
-    });
-  }
 });
 
 
@@ -375,51 +274,58 @@ app.directive('harkinnanvarainenTila', function() {
             hakemus: '='
         },
         templateUrl: '../common/html/harkinnanvarainenTila.html',
-        controller: function($scope, HarkinnanvaraisestiHyvaksytty, HarkinnanvarainenHyvaksynta){
-            // Errors.html haluaa errorit modeliin
-            $scope.model = {errors: []};
+        controller: function($scope, $modal, HarkinnanvaraisestiHyvaksytty, HarkinnanvarainenHyvaksynta){
 
             $scope.show = function() {
-                if($scope.enabled) {
-                    $scope.showForm = !$scope.showForm;
-                }
-            }
+                $modal.open({
+                    scope: $scope,
+                    templateUrl: '../common/html/harkinnanvarainenTilaModal.html',
+                    controller: function($scope, $window, $modalInstance) {
+                        $scope.update = function() {
 
-            $scope.update = function() {
+                            var postParams = {
+                                hakuOid: $scope.hakuOid,
+                                hakukohdeOid: $scope.hakukohdeOid,
+                                hakemusOid: $scope.hakemus.hakemusOid,
+                                harkinnanvaraisuusTila: $scope.hakemus.muokattuHarkinnanvaraisuusTila
+                            }
 
-                var updateParams = {
-                    hakuOid: $scope.hakuOid,
-                    hakukohdeOid: $scope.hakukohdeOid,
-                    hakemusOid: $scope.hakemus.hakemusOid
-                }
+                            HarkinnanvarainenHyvaksynta.post({}, [postParams], function() {
 
-                var postParams = {
-                    harkinnanvaraisuusTila: $scope.hakemus.muokattuHarkinnanvaraisuusTila
-                };
-
-                HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function() {
-                    setTila(updateParams);
-                }, function(error) {
-                    $scope.model.errors.push(error);
-                });
-            }
-
-            var setTila = function(updateParams) {
-
-                HarkinnanvaraisestiHyvaksytty.get(updateParams, function (result) {
-
-                    result.forEach(function(harkinnanvarainen){
-                        if ($scope.hakukohdeOid == harkinnanvarainen.hakukohdeOid) {
-                            $scope.hakemus.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
-                            $scope.hakemus.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                                setTila(postParams);
+                            }, function(error) {
+                                $scope.error = error;
+                            });
                         }
+
+                        var setTila = function(params) {
+
+                            HarkinnanvaraisestiHyvaksytty.get(params, function (result) {
+
+                                result.forEach(function(harkinnanvarainen){
+                                    if ($scope.hakukohdeOid == harkinnanvarainen.hakukohdeOid) {
+                                        $scope.hakemus.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                                        $scope.hakemus.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
+                                    }
+                                });
+
+                                $modalInstance.close(result)
+                                Ilmoitus.avaa("Tallennus onnistui", "Harkinnavaraisuuden tila muutettu.");
+                            }, function (error) {
+                                $scope.error = error;
+                            });
+                        }
+
+                        $scope.sulje = function() {
+                            $modalInstance.dismiss('cancel');
+                        };
+                    },
+                    resolve: {
+
+                    }
+                }).result.then(function() {
+                    }, function() {
                     });
-
-                    $scope.show();
-
-                }, function (error) {
-                    model.errors.push(error);
-                });
             }
 
         }
@@ -438,11 +344,6 @@ app.directive('jarjestyskriteeriMuokkaus', function() {
         templateUrl: '../common/html/muutaJarjestyskriteeri.html',
         controller: function($scope, $route, JarjestyskriteeriMuokattuJonosija, $modal){
 
-            var valintatapajonoOid = $scope.valintatapajonoOid;
-            var hakemusOid = $scope.hakemusOid;
-            var enabled = $scope.enabled;
-            var jonosija = $scope.jonosija;
-
             if($scope.jonosija.tuloksenTila == 'HYVAKSYTTY_HARKINNANVARAISESTI') {
                 $scope.harkinnanvarainen = true;
             }
@@ -450,13 +351,9 @@ app.directive('jarjestyskriteeriMuokkaus', function() {
             $scope.show = function() {
                 if($scope.enabled) {
                 $modal.open({
+                    scope: $scope,
                     templateUrl: '../common/html/muutaJarjestyskriteeriModal.html',
                     controller: function($scope, $window, $modalInstance, Ilmoitus) {
-
-                        $scope.valintatapajonoOid = valintatapajonoOid;
-                        $scope.hakemusOid = hakemusOid;
-                        $scope.enabled = enabled;
-                        $scope.jonosija = jonosija;
 
                         $scope.jonosija.muokkaus = {};
                         $scope.jonosija.muokkaus.prioriteetit = [];
@@ -490,9 +387,9 @@ app.directive('jarjestyskriteeriMuokkaus', function() {
                             };
 
                             JarjestyskriteeriMuokattuJonosija.post(updateParams, postParams, function(result) {
-                                // resurssi palauttaa hakemukset muutoksen jälkeen todennäköisesti eri järjestyksessä
                                 $modalInstance.close(result)
                                 Ilmoitus.avaa("Tallennus onnistui", "Järjestyskriteerin tila muutettu.");
+                                // resurssi palauttaa hakemukset muutoksen jälkeen todennäköisesti eri järjestyksessä
                                 $route.reload();
                             }, function (error) {
                                 $scope.error = error;
@@ -532,22 +429,11 @@ app.directive('showPersonInformation', function() {
         controller: function($modal, $scope){
             $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
-            var sukunimi = $scope.sukunimi;
-            var etunimi = $scope.etunimi;
-            var hakemusOid = $scope.hakemusOid;
-            var hakuOid = $scope.hakuOid;
-            var henkiloOid = $scope.henkiloOid;
-
             $scope.show = function() {
                 $modal.open({
+                    scope: $scope,
                     templateUrl: '../common/html/personInformationModal.html',
                     controller: function($scope, $window, $modalInstance) {
-
-                        $scope.sukunimi = sukunimi;
-                        $scope.etunimi = etunimi;
-                        $scope.hakemusOid = hakemusOid;
-                        $scope.hakuOid = hakuOid;
-                        $scope.henkiloOid = henkiloOid;
 
                         $scope.sulje = function() {
                             $modalInstance.dismiss('cancel');

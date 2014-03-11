@@ -90,15 +90,13 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Ilmoitus, Hake
           	});
           	var postParams = _.map(muokatutHakemukset, function(hakemus) {
           		return {
+                    hakuOid: model.hakuOid,
+                    hakukohdeOid: model.hakukohdeOid,
           			hakemusOid: hakemus.oid,
           			harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila
           		};
           	});
-          	var updateParams = {
-              hakuOid: model.hakuOid,
-              hakukohdeOid: model.hakukohdeOid
-          	};
-          	HarkinnanvarainenHyvaksynta.post(updateParams, postParams, function(result) {
+          	HarkinnanvarainenHyvaksynta.post({}, postParams, function(result) {
 				Ilmoitus.avaa("Harkinnanvaraisesti hyväksyttyjen tallennus", "Muutokset on tallennettu.");
           	}, function() {
           		Ilmoitus.avaa("Harkinnanvaraisesti hyväksyttyjen tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);

@@ -43,15 +43,14 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         koulutuksenNimi: koulutus,
                         oppilaitos: oppilaitos,
                         hakemusOid: model.hakemus.oid,
-                        hakenutHarkinnanvaraisesti: harkinnanvarainen || discretionary,
+                        hakenutHarkinnanvaraisesti: (harkinnanvarainen || discretionary),
                         additionalData: model.hakemus.additionalInfo
                     }
                     if (oid) {
                         model.hakutoiveetMap[oid] = hakutoive;
                         model.hakutoiveet.push(hakutoive);
                     }
-
-                    if (hakutoive.hakenutHarkinnanvaraisesti) {
+                    if (hakutoive.hakenutHarkinnanvaraisesti == 'true') {
                         model.hakenutHarkinnanvaraisesti = true;
                     }
                 }
