@@ -242,4 +242,21 @@ function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel,
             $scope.showLoading = false;
         }, 10);
     }
+
+    $scope.arvonta = $routeParams.arvonta;
+    $scope.arvoPisteet = function() {
+        PistesyottoModel.hakeneet.forEach(function(hakija){
+            PistesyottoModel.avaimet.forEach(function(avain){
+                if(hakija.osallistuu[avain.tunniste] == 'OSALLISTUU') {
+                    var min = parseFloat(avain.min, 0);
+                    var max = parseFloat(avain.max, 0);
+                    var random = (Math.random() * (max - min) + min);
+                    random = random.toFixed(1);
+                    console.log(random);
+                    hakija.additionalData[avain.tunniste] = "" + random;
+                    hakija.additionalData[avain.tunniste + '-OSALLISTUMINEN'] = 'OSALLISTUI';
+                }
+            });
+        });
+    }
 }

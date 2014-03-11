@@ -15,6 +15,9 @@
             <div ng-include="'../common/html/errors.html'"></div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
+
+                <a ng-if="arvonta" href="" ng-click="arvoPisteet()">Arvo pisteet</a>
+
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
                        ng-model="hakijaFilter"/>
                 <!--<input type="text" class="search margin-vertical-2" placeholder="Suodata kenttiä" ng-model="arvoFilter" />-->
@@ -31,16 +34,16 @@
                 <!--<input id="osallistuu" type="checkbox"  ng-model="vainOsallistuvat" />-->
                 <!--<label for="osallistuu">Vain osallistuvat</label>-->
 
-                <form name="form" ng-submit="submit()">
+                <form name="form" ng-submit="submit()" ng-if="model.avaimet">
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                            class="button small primary margin-top-2" type="submit">Tallenna
+                            class="btn btn-primary btn-sm margin-bottom-2" type="submit">Tallenna
                     </button>
                     <div>
                         <div class="notification warning" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista
                             virheet!
                         </div>
                     </div>
-                    <table class="virkailija-table-1" item-on-screen>
+                    <table class="virkailija-table-1" item-on-screen >
                         <thead>
                         <tr>
                             <th><a href="" ng-click="predicate = 'lastName'; reverse=!reverse">Tiedot</a></th>
@@ -142,7 +145,7 @@
                         </tbody>
                     </table>
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                            class="button small primary margin-top-2" type="submit">Tallenna
+                            class="btn btn-primary btn-sm margin-top-2" type="submit">Tallenna
                     </button>
                     <div>
                         <div class="notification warning" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista
