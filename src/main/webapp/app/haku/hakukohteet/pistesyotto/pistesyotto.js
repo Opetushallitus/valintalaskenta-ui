@@ -111,21 +111,25 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
         }
 
 
+        var blockSubmit = false;
         this.submit = function () {
-
-            // haku-app ei halua ylimääräistä tietoa
-            var hakeneet = angular.copy(model.hakeneet);
-            hakeneet.forEach(function(hakija){
-                hakija.filterData = undefined;
-                hakija.osallistuu = undefined;
-            });
-            HakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success){
-                Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
-            },function(error){
-                Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
-                console.log(error);
-            });
-
+            if(!blockSubmit) {
+                blockSubmit = true;
+                // haku-app ei halua ylimääräistä tietoa
+                var hakeneet = angular.copy(model.hakeneet);
+                hakeneet.forEach(function(hakija){
+                    hakija.filterData = undefined;
+                    hakija.osallistuu = undefined;
+                });
+                HakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success){
+                    Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
+                    blockSubmit = false;
+                },function(error){
+                    Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                    console.log(error);
+                    blockSubmit = false;
+                });
+            }
         };
 
         this.updateFilterData = function () {
