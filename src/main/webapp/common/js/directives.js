@@ -538,8 +538,14 @@ app.directive('stayOnFocus', ['$parse', function () {
                         max = selectedInput.length - 1;
                         var startPos = index;
 
-                        var selectNext = function(){
-                            index += select;
+                        var selectNext = function() {
+                            var mult = 1;
+                            if(evt.shiftKey) {
+                                mult = 10;
+                            } else if(evt.altKey) {
+                                mult = 50;
+                            }
+                            index += select * mult;
 
                             if(index < 0) {
                                 index = max;
