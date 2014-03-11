@@ -1731,7 +1731,7 @@ table.dropmenu-table {
   .btn.btn-sm {
     height: 22px;
     line-height: 22px; }
-  .btn.disabled {
+  .btn.disabled, .btn:disabled {
     color: rgba(0, 0, 0, 0.5);
     border-color: #d5d5d5;
     background-color: #e3e3e3;
