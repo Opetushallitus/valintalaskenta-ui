@@ -214,50 +214,65 @@ app.directive('sijoitteluVastaanottoTila', function() {
             hakemus: '='
         },
         templateUrl: '../common/html/sijoitteluVastaanottoTila.html',
-        controller: function($scope, VastaanottoTila){
-            // Errors.html haluaa errorit modeliin
-            $scope.model = {errors: []};
+        controller: function($scope, VastaanottoTila, HakemuksenVastaanottoTila, $modal){
 
             $scope.show = function() {
-                if($scope.enabled) {
-                    $scope.showForm = !$scope.showForm;
-                }
-            }
+                $modal.open({
+                    scope: $scope,
+                    templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
+                    controller: function($scope, $window, $modalInstance, Ilmoitus) {
+                        $scope.update = function() {
+                            var tilaParams = {
+                                hakuoid: $scope.hakuOid,
+                                hakukohdeOid: $scope.hakukohdeOid,
+                                valintatapajonoOid: $scope.valintatapajonoOid,
+                                hakemusOid: $scope.hakemus.hakemusOid,
+                                selite: $scope.hakemus.selite
+                            }
+                            $scope.selite = "";
+                            if($scope.hakemus.muokattuVastaanottoTila == "") {
+                                $scope.hakemus.muokattuVastaanottoTila = null;
+                            }
+                            var tilaObj = {
+                                valintatapajonoOid: $scope.valintatapajonoOid,
+                                hakemusOid: $scope.hakemus.hakemusOid,
+                                tila: $scope.hakemus.muokattuVastaanottoTila
+                            };
 
-            $scope.update = function() {
-                var tilaParams = {
-                    hakuoid: $scope.hakuOid,
-                    hakukohdeOid: $scope.hakukohdeOid,
-                    valintatapajonoOid: $scope.valintatapajonoOid,
-                    hakemusOid: $scope.hakemus.hakemusOid,
-                    selite: $scope.hakemus.selite
-                }
-                $scope.selite = "";
-                if($scope.hakemus.muokattuVastaanottoTila == "") {
-                    $scope.hakemus.muokattuVastaanottoTila = null;
-                }
-                var tilaObj = {tila: $scope.hakemus.muokattuVastaanottoTila};
+                            VastaanottoTila.post(tilaParams, [tilaObj], function(result) {
 
-                VastaanottoTila.post(tilaParams, tilaObj, function() {
-                    setVastaanottoTila($scope.hakemus,tilaParams);
-                }, function(error) {
-                    $scope.model.errors.push(error);
-                });
-            }
+                                setVastaanottoTila($scope.hakemus,tilaParams);
+                            }, function(error) {
+                                $scope.error = error;
+                            });
+                        }
 
-            var setVastaanottoTila = function(hakemus, tilaParams) {
-                VastaanottoTila.get(tilaParams, function(result) {
-                    if(!result.tila) {
-                        hakemus.vastaanottoTila = "";
-                        hakemus.muokattuVastaanottoTila ="";
-                    } else {
-                        hakemus.vastaanottoTila = result.tila;
-                        hakemus.muokattuVastaanottoTila =   result.tila;
+                        var setVastaanottoTila = function(hakemus, tilaParams) {
+                            HakemuksenVastaanottoTila.get(tilaParams, function(result) {
+                                if(!result.tila) {
+                                    hakemus.vastaanottoTila = "";
+                                    hakemus.muokattuVastaanottoTila ="";
+                                } else {
+                                    hakemus.vastaanottoTila = result.tila;
+                                    hakemus.muokattuVastaanottoTila =   result.tila;
+                                }
+                                $modalInstance.close(result)
+                                Ilmoitus.avaa("Tallennus onnistui", "Sijoittelun vastaanottotila muutettu.");
+                            }, function(error) {
+                                $scope.error = error;
+                            });
+                        }
+
+                        $scope.sulje = function() {
+                            $modalInstance.dismiss('cancel');
+                        };
+                    },
+                    resolve: {
+
                     }
-                    $scope.show();
-                }, function(error) {
-                    $scope.model.errors.push(error);
-                });
+                }).result.then(function() {
+                    }, function() {
+                    });
             }
 
         }
@@ -280,7 +295,7 @@ app.directive('harkinnanvarainenTila', function() {
                 $modal.open({
                     scope: $scope,
                     templateUrl: '../common/html/harkinnanvarainenTilaModal.html',
-                    controller: function($scope, $window, $modalInstance) {
+                    controller: function($scope, $window, $modalInstance, Ilmoitus) {
                         $scope.update = function() {
 
                             var postParams = {

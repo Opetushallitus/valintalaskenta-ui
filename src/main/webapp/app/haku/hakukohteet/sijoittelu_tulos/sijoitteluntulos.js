@@ -155,20 +155,6 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             });
         };
 
-        this.setVastaanottoTila = function (hakemus, tilaParams) {
-//            VastaanottoTila.get(tilaParams, function (result) {
-//                if (!result.tila) {
-//                    hakemus.vastaanottoTila = "";
-//                    hakemus.muokattuVastaanottoTila = "";
-//                } else {
-//                    hakemus.vastaanottoTila = result.tila;
-//                    hakemus.muokattuVastaanottoTila = result.tila;
-//                }
-//            }, function (error) {
-//                model.errors.push(error);
-//            });
-        }
-
         //refresh if haku or hakukohde has changed
         this.refreshIfNeeded = function (hakuOid, hakukohdeOid, isHakukohdeChanged) {
             if (model.sijoittelu.hakuOid !== hakuOid || isHakukohdeChanged) {
@@ -211,12 +197,9 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             });
 
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
-                //model.refresh(model.hakuOid, model.hakukohdeOid);
-                //model.setVastaanottoTila(hakemus, tilaParams);
             	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function (error) {
             	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-                //model.errors.push(error);
             });
         }
 
