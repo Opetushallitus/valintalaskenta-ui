@@ -167,8 +167,11 @@ function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel,
 
     $scope.changeOsallistuminen = function (hakija, tunniste, value, avain) {
         if (value) {
-            hakija.additionalData[tunniste] = "OSALLISTUI";
+            $timeout(function(){
+                hakija.additionalData[tunniste] = "OSALLISTUI";
+            });
         }
+
     }
     $scope.changeArvo = function (hakija, tunniste, value, tyyppi) {
         hakija.additionalData[tunniste] = "";
