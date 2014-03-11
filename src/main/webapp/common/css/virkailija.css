@@ -1694,7 +1694,7 @@ table.dropmenu-table {
 
 .btn-default {
   color: black;
-  background-color: #9fdbf0;
+  background-color: #d2ecf5;
   border-color: #59aeca;
   box-shadow: -1px 1px 1px 0px #dff2f8 inset; }
   .btn-default:hover {
@@ -1703,6 +1703,7 @@ table.dropmenu-table {
     background-color: #9fdbf0;
     color: black; }
   .btn-default:focus, .btn-default:active {
+    box-shadow: -1px 1px 1px 0px #3a220b inset, 0px 4px 4px 0px #11627c inset;
     box-shadow: -1px 1px 4px 0px rgba(58, 34, 11, 0.2) inset, 0px 4px 4px 0px rgba(17, 98, 124, 0.5) inset;
     border-color: #22a4ce;
     background-color: #24b0dd; }
