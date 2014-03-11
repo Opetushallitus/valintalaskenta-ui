@@ -496,8 +496,11 @@ app.directive('stayOnFocus', ['$parse', function () {
                 }
 
                 var checkKeys = function (evt) {
-                    var focused = $(':focus');
-
+                    var focused = selectedElement.find(':focus');
+                    if(!focused.is('input')) {
+                        console.log("return");
+                        return;
+                    }
                     selectedInput.each(function(i){
                         if(focused[0] == selectedInput[i]) {
                             index = i;
