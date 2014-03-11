@@ -1370,6 +1370,12 @@ label, .label {
   font-size: 0.813em;
   color: red; }
 
+.mandatory:after {
+  content: " *";
+  color: red;
+  font-size: 18px;
+  text-align: sup; }
+
 /*** form-layout-table
 ************************************************/
 .form-layout-table td {
@@ -2163,12 +2169,6 @@ ul.dropmenu-list {
 
 .application-option-info {
   padding-bottom: 20px; }
-
-/*** Mandatory
-************************************************/
-.mandatory:after {
-  content: " *";
-  color: red; }
 
 /*** Theme
 ************************************************/
