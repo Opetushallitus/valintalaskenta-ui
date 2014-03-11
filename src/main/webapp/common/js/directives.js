@@ -253,9 +253,10 @@ app.directive('arvovalidaattori', function(){
               if(viewValue) {
                 viewValue = viewValue.replace(",", ".");
               }
-              var osallistui = $(elm.next()[0]).val() == 'OSALLISTUI';
+              //var osallistui = $(elm.next()[0]).val() == 'OSALLISTUI';
 
-              if (osallistui && FLOAT_REGEXP.test(viewValue)) {
+              //if (osallistui && FLOAT_REGEXP.test(viewValue)) {
+              if (FLOAT_REGEXP.test(viewValue)) {
                   var min = parseFloat($(elm).attr("min"));
                   var max = parseFloat($(elm).attr("max"));
                   var floatVal = parseFloat(viewValue);
@@ -277,18 +278,22 @@ app.directive('arvovalidaattori', function(){
                   return viewValue;
 
               } else {
+                  $(elm).siblings("span").text("Arvo ei ole laillinen!");
+                  ctrl.$setValidity('arvovalidaattori', false);
+
+                  return undefined;
                   // it is invalid, return undefined (no model update)
-                  if(osallistui) {
-                    $(elm).siblings("span").text("Arvo ei ole laillinen!");
-                    ctrl.$setValidity('arvovalidaattori', false);
-
-                    return undefined;
-                  } else {
-                    $(elm).siblings("span").empty();
-                    ctrl.$setValidity('arvovalidaattori', true);
-
-                    return viewValue;
-                  }
+//                  if(osallistui) {
+//                    $(elm).siblings("span").text("Arvo ei ole laillinen!");
+//                    ctrl.$setValidity('arvovalidaattori', false);
+//
+//                    return undefined;
+//                  } else {
+//                    $(elm).siblings("span").empty();
+//                    ctrl.$setValidity('arvovalidaattori', true);
+//
+//                    return viewValue;
+//                  }
               }
             };
 
