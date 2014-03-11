@@ -1,11 +1,8 @@
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
-	bower = require('gulp-bower'),
 	runSequence = require('run-sequence'),
-	clean = require('gulp-clean'),
-	karma = require('gulp-karma');
-
+	clean = require('gulp-clean');
 
 var paths = {
 	bower_base: 'bower_components/',
@@ -32,7 +29,6 @@ var paths = {
 		"src/main/webapp/common/jslib/tinymce-4.0.12/tinymce.min.js",
 		"src/main/webapp/common/jslib/tinymce-4.0.12/ui-tinymce.js"
 	],
-	testBase: 'src/test/ui/',
 	cleanBuildFiles: [
 		'src/main/webapp/dist/',
 		'node/',
@@ -73,7 +69,7 @@ gulp.task('bowerScripts', function() {
 
 // Update libs & run tests
 gulp.task('build', function(callback) {
-	runSequence([/*'bowerScripts',*/'staticScripts'], 'test', callback);
+	runSequence([/*'bowerScripts',*/'staticScripts'], callback);
 });
 
 // Run tests
@@ -89,7 +85,7 @@ gulp.task('test', function() {
 
 // DEFAULT
 gulp.task('default', function(callback) {
-	runSequence('test', callback);
+	runSequence('staticScripts', callback);
 });
 
 
