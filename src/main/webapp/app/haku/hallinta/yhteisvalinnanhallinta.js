@@ -31,7 +31,7 @@
 
 });
 
-function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance, HakuModel, ValintakoelaskentaAktivointi, ValintalaskentaKeskeyta, ValintalaskentaKaynnissa, ValintalaskentaMuistissa, ValintalaskentaStatus) {
+function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance, HakuModel, ValintalaskentaKeskeyta, ValintalaskentaKaynnissa, ValintalaskentaMuistissa, ValintalaskentaStatus) {
 	$scope.uuid = null;
 	$scope.tyot = [];
 	$scope.nimi = HakuModel.getNimi();
@@ -82,7 +82,7 @@ function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance
 	  };
 };
 
-function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, ParametriService, JatkuvaSijoittelu) {
+function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, ParametriService, JatkuvaSijoittelu) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	$scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
