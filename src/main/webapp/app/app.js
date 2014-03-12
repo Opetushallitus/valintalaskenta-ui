@@ -336,7 +336,7 @@ app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $w
     };
 });
 
-//koostepalvelu
+//koostepalvelus
 app.factory('ValintakoelaskentaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiValintakoelaskenta", {}, {
         aktivoi: {method: "POST"}

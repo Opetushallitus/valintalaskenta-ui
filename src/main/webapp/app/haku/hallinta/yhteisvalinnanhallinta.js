@@ -31,7 +31,7 @@
 
 });
 
-function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance, HakuModel, ValintalaskentaKeskeyta, ValintalaskentaKaynnissa, ValintalaskentaMuistissa, ValintalaskentaStatus) {
+function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance, HakuModel, ValintakoelaskentaAktivointi, ValintalaskentaKeskeyta, ValintalaskentaKaynnissa, ValintalaskentaMuistissa, ValintalaskentaStatus) {
 	$scope.uuid = null;
 	$scope.tyot = [];
 	$scope.nimi = HakuModel.getNimi();
@@ -192,7 +192,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
 
     $scope.aktivoiHaunValintakoelaskenta = function() {
        var hakuoid = $routeParams.hakuOid;
-       AktivoiValintakoelaskenta.aktivoi({hakuOid: hakuoid}, function(id) {
+       ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuoid}, function(id) {
        		Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {
             });
        },function() {
