@@ -341,8 +341,8 @@ app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $w
 
 //koostepalvelu
 app.factory('ValintakoelaskentaAktivointi', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHakukohteenValintakoelaskenta", {}, {
-        aktivoi: {method: "GET"}
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiValintakoelaskenta", {}, {
+        aktivoi: {method: "POST"}
     });
 });
 
@@ -382,11 +382,6 @@ app.factory('Sijoitteluktivointi', function($resource) {
 
 app.factory('AktivoiHaunValintalaskenta', function($resource) {
   return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoiHaunValintalaskenta", {}, {
-      aktivoi: {method: "GET"}
-  });
-});
-app.factory('AktivoiHaunValintakoelaskenta', function($resource) {
-  return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiHaunValintakoelaskenta", {}, {
       aktivoi: {method: "GET"}
   });
 });

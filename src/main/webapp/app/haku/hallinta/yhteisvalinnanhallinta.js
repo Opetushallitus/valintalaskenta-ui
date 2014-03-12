@@ -82,7 +82,7 @@ function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance
 	  };
 };
 
-function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
+function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, ParametriService, JatkuvaSijoittelu) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	$scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -139,7 +139,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
             	}
             });
         }, function () {
-            
+            Ilmoitus.avaa("Kela-dokumentin luonnin aloitus epäonnistui", "Kela-dokumentin luonnin aloitus epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
 	};
 	// KELA TAULUKON CHECKBOXIT LOPPUU
@@ -184,21 +184,19 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
     $scope.kaynnistaSijoittelu = function() {
         var hakuoid = $routeParams.hakuOid;
         Sijoitteluktivointi.aktivoi({hakuOid: hakuoid}, function(d) {
-
+        	Ilmoitus.avaa("Sijoittelu on käynnissä", "Sijoittelu on nyt käynnissä.");
         }, function() {
-        	$window.alert("Sinulla ei ole tarvittavia käyttöoikeuksia!");
+        	Ilmoitus.avaa("Sijoittelun aktivointi epäonnistui", "Sijoittelun aktivointi epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
-    };
-
-    $scope.aktivoiHaunValintalaskenta = function() {
-      var hakuoid = $routeParams.hakuOid;
-          AktivoiHaunValintalaskenta.aktivoi({hakuOid: hakuoid}, function() {
-      });
     };
 
     $scope.aktivoiHaunValintakoelaskenta = function() {
        var hakuoid = $routeParams.hakuOid;
-           AktivoiHaunValintakoelaskenta.aktivoi({hakuOid: hakuoid}, function() {
+       AktivoiValintakoelaskenta.aktivoi({hakuOid: hakuoid}, function(id) {
+       		Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {
+            });
+       },function() {
+       		Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
        });
     };
 
