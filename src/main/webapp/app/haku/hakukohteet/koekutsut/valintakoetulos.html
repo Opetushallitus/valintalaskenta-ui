@@ -56,7 +56,6 @@
                                                      henkilo-oid="{{hakemus.hakijaOid}}"/>
                         </td>
                         <td ng-repeat="koetyyppi in model.koetyypit | orderBy:koetyyppi">
-                            {{koetyyppi}}
                             <div ng-switch="hakemus.kokeet[koetyyppi].osallistuminen">
                                 <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
                                 <span ng-switch-default></span>
