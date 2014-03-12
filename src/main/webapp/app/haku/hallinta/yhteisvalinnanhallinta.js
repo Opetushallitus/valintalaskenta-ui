@@ -192,9 +192,8 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
 
     $scope.aktivoiHaunValintakoelaskenta = function() {
        var hakuoid = $routeParams.hakuOid;
-       ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuoid}, function(id) {
-       		Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {
-            });
+       ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuoid}, {}, function(id) {
+       		Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
        },function() {
        		Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
        });
