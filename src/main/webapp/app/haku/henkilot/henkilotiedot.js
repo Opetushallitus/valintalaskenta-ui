@@ -43,15 +43,14 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         koulutuksenNimi: koulutus,
                         oppilaitos: oppilaitos,
                         hakemusOid: model.hakemus.oid,
-                        hakenutHarkinnanvaraisesti: harkinnanvarainen || discretionary,
+                        hakenutHarkinnanvaraisesti: (harkinnanvarainen || discretionary),
                         additionalData: model.hakemus.additionalInfo
                     }
                     if (oid) {
                         model.hakutoiveetMap[oid] = hakutoive;
                         model.hakutoiveet.push(hakutoive);
                     }
-
-                    if (hakutoive.hakenutHarkinnanvaraisesti) {
+                    if (hakutoive.hakenutHarkinnanvaraisesti == 'true') {
                         model.hakenutHarkinnanvaraisesti = true;
                     }
                 }
@@ -258,7 +257,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
     return model;
 });
 
-function HenkiloTiedotController($q, $scope, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset) {
+function HenkiloTiedotController($q, $scope, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, Ilmoitus, IlmoitusTila) {
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -283,9 +282,9 @@ function HenkiloTiedotController($q, $scope, $routeParams, ParametriService, Lat
     $scope.tallennaPisteet = function () {
         var promises = $scope.model.tallennaPisteet()
         $q.all(promises).then(function () {
-            toastr.success('Tallennus onnistui');
+            Ilmoitus.avaa("Tallennus onnistui", "Pisteet tallennettu onnistuneesti.");
         }, function () {
-            toastr.error('Tallennus epäonnistui');
+            Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
         });
     };
 

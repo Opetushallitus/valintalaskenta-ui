@@ -1,0 +1,65 @@
+
+<div class="modal-header">
+    <span>Järjestyskriteeri</span>
+</div>
+
+<div class="modal-body">
+    <div ng-if="error">
+        <alert type="'danger'" >Tallennus epäonnistui. Ole hyvä ja yritä uudelleen hetken päästä.</alert>
+        <pre ng-show="false">
+            {{error}}
+        </pre>
+    </div>
+
+    <form class="form-horizontal" role="form">
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Nimi</label>
+            <div class="col-sm-9">
+                <p class="form-control-static">{{jonosija.sukunimi}}, {{jonosija.etunimi}}</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Järjestyskriteeri</label>
+            <div class="col-sm-9">
+                <select ng-model="jonosija.muokkaus.jarjestyskriteeriPrioriteetti" ng-options="p.name for p in jonosija.muokkaus.prioriteetit">
+                    <!--<option ng-repeat="jarjestyskriteeri in jonosija.muokkaus.jarjestyskriteerit" value="{{$index}}">{{$index > 0 ? $index : "Vakio"}}</option>-->
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Tila</label>
+            <div class="col-sm-9">
+                <select ng-model="jonosija.muokkaus.tila">
+                    <option value="HYVAKSYTTAVISSA">Hyväksyttävissä</option>
+                    <option value="HYLATTY">Hylätty</option>
+                    <option value="MAARITTELEMATON">Määrittelemätön</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Arvo</label>
+            <div class="col-sm-9">
+                <input min="0" size="2" ng-model="jonosija.muokkaus.arvo" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Muokkaajan kommentti</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" rows="6" ng-model="jonosija.muokkaus.selite" ></textarea>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <div class="row">
+        <a class="btn btn-default btn-sm" ng-click="sulje();"  role="button">Peruuta</a>
+        <a class="btn btn-primary btn-sm" ng-click="update();"  role="button">Tallenna</a>
+    </div>
+</div>

@@ -30,8 +30,8 @@
 						</td>
 						<td>
                             <div ng-show="valinnanvaihe.aktiivinen">
-                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN' && privileges.showValinnanhallinta()" ng-click="kaynnistaValintalaskenta($index)" class="button small">Käynnistä laskenta</a>
-                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE' && privileges.showValintakoekutsut()" ng-click="kaynnistaValintakoelaskenta($index)" class="button small">Käynnistä valintakoelaskenta</a>
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN' && privileges.showValinnanhallinta()" ng-click="kaynnistaValintalaskenta($index)" class="btn btn-primary btn-sm">Käynnistä laskenta</a>
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE' && privileges.showValintakoekutsut()" ng-click="kaynnistaValintakoelaskenta($index)" class="btn btn-primary btn-sm">Käynnistä valintakoelaskenta</a>
                             </div>
                             <div ng-show="!valinnanvaihe.aktiivinen">
                                 Valinnanvaihe ei ole aktiivinen

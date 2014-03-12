@@ -16,7 +16,7 @@
         <div class="hakukohdeSuodatin">
             <span>Hakukohde Oid</span>
             <input type="text" ng-model="hakukohdeToAdd">
-            <span class="button small primary" ng-click="addHakukohde()">Lisää</span>
+            <span class="btn btn-primary btn-sm" ng-click="addHakukohde()">Lisää</span>
             <span ng-repeat="hakukohde in model.filter.hakukohteet">
                 {{hakukohde}} <span ng-click="deleteHakukohde($index)">(X)</span>
             </span>
@@ -24,14 +24,14 @@
         <div class="tarjoajaSuodatin">
             <span>Tarjoaja Oid</span>
             <input type="text" ng-model="tarjoajaToAdd">
-            <span class="button small primary" ng-click="addTarjoaja()">Lisää</span>
+            <span class="btn btn-primary btn-sm" ng-click="addTarjoaja()">Lisää</span>
             <span ng-repeat="tarjoaja in model.filter.tarjoajat">
                 {{tarjoaja}} <span ng-click="deleteTarjoaja($index)">(X)</span>
             </span>
         </div>
         <div>
-            <span class="button large primary" ng-click="search()">Hae</span>
-            <a class="button large primary" href="#/haku/{{hakuOid}}/yhteisvalinnanhallinta/" >Takaisin</a>
+            <span class="btn btn-primary btn-sm" ng-click="search()">Hae</span>
+            <a class="btn btn-primary btn-sm" href="#/haku/{{hakuOid}}/yhteisvalinnanhallinta/" >Takaisin</a>
         </div>
 
     </div>

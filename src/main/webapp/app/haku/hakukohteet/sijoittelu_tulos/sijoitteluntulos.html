@@ -26,16 +26,19 @@
                 <br/>
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
                        ng-model="hakijaFilter"/>
-                       
-                <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="button small excel">Vie taulukkolaskentaan</a>
-                <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="button small pdf">Muodosta hyväksymiskirjeet</a>
-                <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="button small pdf">Muodosta hyväksytyille osoitetarrat</a>
-                
+
+                <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">Vie
+                    taulukkolaskentaan</a>
+                <a ng-click="createHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">Muodosta
+                    hyväksymiskirjeet</a>
+                <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">Muodosta
+                    hyväksytyille osoitetarrat</a>
+
             </div>
 
             <div class="margin-vertical-2 overflow-x-scroll">
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot | orderBy:'index':true">
-					<a ng-click="submit(jono.oid)" class="button small primary margin-top-2">Tallenna</a>
+                    <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">Tallenna</a>
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
                         <tr>
@@ -60,10 +63,11 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="hakemus in jono.hakemukset | orderBy:jarjesta | filter:hakijaFilter | limitTo:limit ">
-                            <td><input ng-if="hakemus.tila == 'HYVAKSYTTY'" type="checkbox" ng-model="hakemus.valittu" ng-change="model.check(jono);"></td>
+                            <td><input ng-if="hakemus.tila == 'HYVAKSYTTY'" type="checkbox" ng-model="hakemus.valittu"
+                                       ng-change="model.check(jono);"></td>
 
                             <td>{{hakemus.sija}}</td>
-                            <td>
+                            <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakemus.sukunimi}}"
                                                          etunimi="{{hakemus.etunimi}}"
                                                          hakemus-oid="{{hakemus.hakemusOid}}"
@@ -76,37 +80,13 @@
                                 <span>{{hakemus.tila}}</span>
                                 <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>
                                 <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
-                                <span></span>
-                                <!-- TODO: directiivi olis kiva -->
-                                <a href="" ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria">{{(hakemus.tilaHistoria
-                                    | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}</a>
+                                <modal modal-template="sijoitteluTilaHistoriModal.html">
+                                    <modal-open>
+                                        {{(hakemus.tilaHistoria
+                                        | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
+                                    </modal-open>
 
-                                <div class="old-modal-backdrop"
-                                     ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria"
-                                     ng-if="hakemus.showTilaHistoria"></div>
-                                <div centralize class="old-modal" ng-if="hakemus.showTilaHistoria">
-                                    <div class="old-modal-header">
-                                        <span>Muutokset</span>
-                                        <a ng-click="hakemus.showTilaHistoria = !hakemus.showTilaHistoria"
-                                           class="close"></a>
-                                    </div>
-                                    <div class="old-modal-content">
-                                        <table class="virkailija-table-1">
-                                            <thead>
-                                            <tr>
-                                                <th>Luotu</th>
-                                                <th>Tila</th>
-                                            </tr>
-                                            </thead>
-                                            <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true">
-                                                <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
-                                                <td fast-bind-once="henkiloOid">{{entry.tila}}</td>
-                                            </tr>
-                                        </table>
-
-                                        <div class="clear"></div>
-                                    </div>
-                                </div>
+                                </modal>
                             </td>
 
 
@@ -145,45 +125,13 @@
                                 </div>
                             </td>
                             <td>
-                                <!-- TODO: directiivi olis kiva -->
-                                <a href="" ng-click="hakemus.showLog = !hakemus.showLog">{{hakemus.logEntries[hakemus.logEntries.length-1].luotu
-                                    | date:'dd.MM.yyyy HH:mm'}}</a>
+                                <modal modal-template="sijoitteluLogModal.html">
+                                    <modal-open>
+                                        {{hakemus.logEntries[hakemus.logEntries.length-1].luotu
+                                        | date:'dd.MM.yyyy HH:mm'}}
+                                    </modal-open>
 
-                                <div class="old-modal-backdrop" ng-click="hakemus.showLog = !hakemus.showLog"
-                                     ng-if="hakemus.showLog"></div>
-                                <div centralize class="old-modal" ng-if="hakemus.showLog">
-                                    <div class="old-modal-header">
-                                        <span>Muutokset</span>
-                                        <a ng-click="hakemus.showLog = !hakemus.showLog" class="close"></a>
-                                    </div>
-                                    <div class="old-modal-content">
-                                        <table class="virkailija-table-1">
-                                            <thead>
-                                            <tr>
-                                                <th>Luotu</th>
-                                                <th>Muokkaaja</th>
-                                                <th>Muutos</th>
-                                                <th>Selite</th>
-                                            </tr>
-                                            </thead>
-                                            <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true">
-                                                <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
-                                                <td fast-bind-once="entry.muokkaaja"></td>
-                                                <td>
-                                                	<span ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
-                                                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
-                                                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
-                                                    <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
-                                                    <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span>
-                                                	<span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span>
-                                               	</td>
-                                                <td fast-bind-once="entry.selite"></td>
-                                            </tr>
-                                        </table>
-
-                                        <div class="clear"></div>
-                                    </div>
-                                </div>
+                                </modal>
                             </td>
                             <td>
                                 <sijoittelu-vastaanotto-tila hakemus="hakemus"
@@ -195,8 +143,8 @@
                         </tr>
                         </tbody>
                     </table>
-                    <a ng-click="submit(jono.oid)" class="button small primary margin-top-2">Tallenna</a>
-                    <!--<span ng-show="limit < jono.hakemukset.length">Näytetty: {{limit}} / {{jono.hakemukset.length}}</span>-->
+                    <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-top-2">Tallenna</a>
+                    <span ng-show="limit < jono.hakemukset.length">Näytetty: {{limit}} / {{jono.hakemukset.length}}</span>
                 </div>
             </div>
         </div>
@@ -206,3 +154,73 @@
          style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...
     </div>
 </div>
+
+
+<script type="text/ng-template" id="sijoitteluLogModal.html">
+    <div class="modal-header">
+        Muutokset
+    </div>
+
+    <div class="modal-body">
+        <table class="table table-condensed table-hover table-striped">
+            <thead>
+            <tr>
+                <th>Luotu</th>
+                <th>Muokkaaja</th>
+                <th>Muutos</th>
+                <th>Selite</th>
+            </tr>
+            </thead>
+            <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true">
+                <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
+                <td fast-bind-once="entry.muokkaaja"></td>
+                <td>
+                    <span ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
+                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
+                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
+                    <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
+                    <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span>
+                    <span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span>
+                </td>
+                <td fast-bind-once="entry.selite"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="modal-footer">
+        <div class="row">
+            <a class="btn btn-default btn-sm" ng-click="sulje();"
+               role="button">Sulje</a>
+        </div>
+    </div>
+
+</script>
+
+<script type="text/ng-template" id="sijoitteluTilaHistoriModal.html">
+    <div class="modal-header">
+        Muutokset
+    </div>
+
+    <div class="modal-body">
+        <table class="table table-condensed table-hover table-striped">
+            <thead>
+            <tr>
+                <th>Luotu</th>
+                <th>Tila</th>
+            </tr>
+            </thead>
+            <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true">
+                <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
+                <td fast-bind-once="henkiloOid">{{entry.tila}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="modal-footer">
+        <div class="row">
+            <a class="btn btn-default btn-sm" ng-click="sulje();"
+               role="button">Sulje</a>
+        </div>
+    </div>
+
+</script>

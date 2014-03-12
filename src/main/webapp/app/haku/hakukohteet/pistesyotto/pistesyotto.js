@@ -1,5 +1,5 @@
 "use strict";
-app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset) {
+app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus, IlmoitusTila) {
     var model;
     model = new function () {
 
@@ -111,21 +111,25 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
         }
 
 
+        var blockSubmit = false;
         this.submit = function () {
-
-            // haku-app ei halua ylimääräistä tietoa
-            var hakeneet = angular.copy(model.hakeneet);
-            hakeneet.forEach(function(hakija){
-                hakija.filterData = undefined;
-                hakija.osallistuu = undefined;
-            });
-            HakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success){
-                toastr.success('Tallennus onnistui');
-            },function(error){
-                toastr.error('Tallennus epäonnistui');
-                console.log(error);
-            });
-
+            if(!blockSubmit) {
+                blockSubmit = true;
+                // haku-app ei halua ylimääräistä tietoa
+                var hakeneet = angular.copy(model.hakeneet);
+                hakeneet.forEach(function(hakija){
+                    hakija.filterData = undefined;
+                    hakija.osallistuu = undefined;
+                });
+                HakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success){
+                    Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
+                    blockSubmit = false;
+                },function(error){
+                    Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                    console.log(error);
+                    blockSubmit = false;
+                });
+            }
         };
 
         this.updateFilterData = function () {
@@ -167,8 +171,11 @@ function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel,
 
     $scope.changeOsallistuminen = function (hakija, tunniste, value, avain) {
         if (value) {
-            hakija.additionalData[tunniste] = "OSALLISTUI";
+            $timeout(function(){
+                hakija.additionalData[tunniste] = "OSALLISTUI";
+            });
         }
+
     }
     $scope.changeArvo = function (hakija, tunniste, value, tyyppi) {
         hakija.additionalData[tunniste] = "";
@@ -241,5 +248,22 @@ function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel,
             $scope.limit += 50;
             $scope.showLoading = false;
         }, 10);
+    }
+
+    $scope.arvonta = $routeParams.arvonta;
+    $scope.arvoPisteet = function() {
+        PistesyottoModel.hakeneet.forEach(function(hakija){
+            PistesyottoModel.avaimet.forEach(function(avain){
+                if(hakija.osallistuu[avain.tunniste] == 'OSALLISTUU') {
+                    var min = parseFloat(avain.min, 0);
+                    var max = parseFloat(avain.max, 0);
+                    var random = (Math.random() * (max - min) + min);
+                    random = random.toFixed(1);
+                    console.log(random);
+                    hakija.additionalData[avain.tunniste] = "" + random;
+                    hakija.additionalData[avain.tunniste + '-OSALLISTUMINEN'] = 'OSALLISTUI';
+                }
+            });
+        });
     }
 }

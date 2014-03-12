@@ -59,15 +59,19 @@ app.config(function($routeProvider) {
 
 });
 //MODAALISET IKKUNAT
-app.factory('Ilmoitus', function($modal) {
+app.factory('Ilmoitus', function($modal, IlmoitusTila) {
 	return {
-		avaa: function(otsikko, ilmoitus) {
+		avaa: function(otsikko, ilmoitus, tila) {
 			$modal.open({
 		      backdrop: 'static',
 		      templateUrl: '../common/modaalinen/ilmoitus.html',
 		      controller: function($scope, $window, $modalInstance) {
 				  $scope.ilmoitus = ilmoitus;
 		    	  $scope.otsikko = otsikko;
+                  if(!tila) {
+                      tila = IlmoitusTila.INFO;
+                  }
+                  $scope.tila = tila;
 		    	  $scope.sulje = function() {
 		    	  		$modalInstance.dismiss('cancel');
 		    	  };
@@ -243,10 +247,7 @@ return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:valinnanvaiheoid/v
 });
 
 app.factory('HarkinnanvarainenHyvaksynta', function($resource) {
- return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/:hakuOid/hakukohde/:hakukohdeOid", {
-    hakuOid: "@hakuOid",
-    hakukohdeOid: "@hakukohdeOid"
-    }, {
+ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/", { }, {
      post:{method: "POST"}
    });
 });
@@ -512,16 +513,28 @@ app.factory('VastaanottoTilat', function($resource) {
      });
 });
 
- app.factory('VastaanottoTila', function($resource) {
-     return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakukohde/:hakukohdeOid?selite=:selite",
-         {
-             hakuoid: "@hakuoid",
-             hakukohdeOid: "@hakukohdeoid",
-             selite: "@selite"
-         }, {
-         post: {method: "POST"}
-     });
+app.factory('VastaanottoTila', function($resource) {
+ return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakukohde/:hakukohdeOid?selite=:selite",
+     {
+         hakuoid: "@hakuoid",
+         hakukohdeOid: "@hakukohdeoid",
+         selite: "@selite"
+     }, {
+     post: {method: "POST"}
  });
+});
+
+app.factory('HakemuksenVastaanottoTila', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid",
+        {
+            hakuoid: "@hakuoid",
+            hakukohdeOid: "@hakukohdeoid",
+            valintatapajonoOid: "@valintatapajonoOid",
+            hakemusOid: "@hakemusOid"
+        }, {
+            get: {method: "GET"}
+        });
+});
 
 app.factory('SijoittelunVastaanottotilat', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/", {hakemusOid: "@hakemusOid"}, {
@@ -640,4 +653,10 @@ app.constant('Pohjakuolutukset', {
 	6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
 	7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
 	9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti"
+});
+
+app.constant('IlmoitusTila', {
+	INFO: 'success',
+	WARNING: 'warning',
+	ERROR: 'danger'
 });

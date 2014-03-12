@@ -134,7 +134,7 @@
 });
 
 
-function ValintakoetulosController($scope, $window, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls) {
+function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls, IlmoitusTila) {
 	// kayttaa dokumenttipalvelua
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	
@@ -180,7 +180,7 @@ function ValintakoetulosController($scope, $window, $routeParams, Ilmoitus, Lata
 	    		//Dokumenttipalvelu.paivita($scope.update);
 	    	});
 		} else {
-			Ilmoitus.avaa("Koekutsuja ei voida muodostaa!","Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.");
+			Ilmoitus.avaa("Koekutsuja ei voida muodostaa!","Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.", IlmoitusTila.WARNING);
 		}
 	};
 	$scope.addressLabelPDF = function(valintakoe) {
@@ -237,7 +237,7 @@ function ValintakoetulosController($scope, $window, $routeParams, Ilmoitus, Lata
 
     $scope.nakymanTila = "Kokeittain"; // Hakijoittain
 
-    $scope.predicate = 'hakijaOid';
+    $scope.predicate = ['sukunimi','etunimi'];
 
     $scope.allValintakoeTulosXLS = function() {
     	var kokeet = [];

@@ -23,8 +23,8 @@
                 
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
                 <br>
-                <a ng-click="muodostaKoekutsut();" class="button small pdf">Muodosta koekutsut</a>
-                <a ng-click="muodostaOsoitetarrat();" class="button small pdf">Muodosta osoitetarrat</a>
+                <a ng-click="muodostaKoekutsut();" class="btn btn-default btn-sm pdf">Muodosta koekutsut</a>
+                <a ng-click="muodostaOsoitetarrat();" class="btn btn-default btn-sm pdf">Muodosta osoitetarrat</a>
                 <br>
                 <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" >Tallenna</a>
                 <form name="form" ng-submit="submit()">
@@ -40,7 +40,7 @@
                         <tbody>
                             <tr ng-repeat="hakija in model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true} | filter:hakijaFilter">
                                 <td><input type="checkbox" ng-change="model.check();" ng-model="hakija.valittu"></td>
-                                <td>
+                                <td class="leftorientedcolumn">
                                     <show-person-information sukunimi="{{hakija.lastName}}"
                                                              etunimi="{{hakija.firstNames}}"
                                                              hakemus-oid="{{hakija.oid}}"
@@ -53,7 +53,6 @@
                                 <td>
 
                                     <select ng-model="hakija.muokattuHarkinnanvaraisuusTila">
-                                        <option value="KESKEN">Kesken</option>
                                         <option value="HYVAKSYTTY">Hyväksytty</option>
                                         <option value="EI_HYVAKSYTTY">Ei Hyväksytty</option>
                                     </select>

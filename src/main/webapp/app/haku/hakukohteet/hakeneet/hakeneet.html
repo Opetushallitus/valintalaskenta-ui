@@ -28,7 +28,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="hakija in model.hakeneet | orderBy:'lastName' | filter:hakijaFilter">
-                                <td>
+                                <td class="leftorientedcolumn">
                                     <show-person-information sukunimi="{{hakija.lastName}}"
                                                              etunimi="{{hakija.firstNames}}"
                                                              hakemus-oid="{{hakija.oid}}"
