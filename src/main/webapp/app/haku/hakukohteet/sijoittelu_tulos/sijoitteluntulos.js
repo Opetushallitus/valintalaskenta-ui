@@ -115,9 +115,10 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                     result.some(function (vastaanottotila) {
                                         if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid) {
                                             currentHakemus.logEntries = vastaanottotila.logEntries;
-                                            if (vastaanottotila.tila != null) {
-                                                currentHakemus.vastaanottoTila = vastaanottotila.tila;
+                                            if (vastaanottotila.tila == null) {
+                                                vastaanottotila.tila = "";
                                             }
+                                            currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
                                             if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT_POISSAOLEVA" || currentHakemus.vastaanottoTila === "VASTAANOTTANUT_LASNA") {
                                                 hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
@@ -125,6 +126,9 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             return true;
                                         }
                                     });
+
+                                    console.log(""+currentHakemus.vastaanottoTila);
+                                    console.log(""+currentHakemus.muokattuVastaanottoTila);
                                 });
                             }
 
@@ -189,6 +193,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             };
             
             var tilaObj = _.map(muokatutHakemukset, function(hakemus) {
+
             	return {
             		tila: hakemus.muokattuVastaanottoTila,
             		valintatapajonoOid: valintatapajonoOid,

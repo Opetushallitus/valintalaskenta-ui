@@ -89,7 +89,6 @@
                                 </modal>
                             </td>
 
-
                             <td>
                                 <div ng-show="((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))">
                                         <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == ''">
@@ -175,6 +174,7 @@
                 <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
                 <td fast-bind-once="entry.muokkaaja"></td>
                 <td>
+                    <span ng-if="entry.muutos == ''">Kesken</span>
                     <span ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
                     <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
                     <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
