@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
+                <tr ng-repeat="hakutoive in model.hakutoiveet | filter:{hakenutHarkinnanvaraisesti:true} | orderBy:'hakutoiveNumero'">
                     <td>
                         {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                         <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">

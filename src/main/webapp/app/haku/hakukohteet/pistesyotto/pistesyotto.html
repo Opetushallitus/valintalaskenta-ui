@@ -1,5 +1,5 @@
 ﻿<h1>Valintojen toteuttaminen</h1>
-<div ng-include="'haku/topNavigation.html'" />
+<div ng-include="'haku/topNavigation.html'"/>
 
 <div class="tabsheets">
 
@@ -7,16 +7,22 @@
 
     <div class="toggle-content-container overflow-x-scroll">
         <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
-        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'" />
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
 
-        <div auth="LISATIETORU LISATIETOCRUD READ_UPDATE CRUD" auth-service="APP_HAKEMUS" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" class="tabsheets">
+        <div auth="LISATIETORU LISATIETOCRUD READ_UPDATE CRUD" auth-service="APP_HAKEMUS"
+             auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" class="tabsheets">
 
             <div ng-include="'../common/html/errors.html'"></div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
-                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+
+                <a ng-if="arvonta" href="" ng-click="arvoPisteet()">Arvo pisteet</a>
+
+                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
+                       ng-model="hakijaFilter"/>
                 <!--<input type="text" class="search margin-vertical-2" placeholder="Suodata kenttiä" ng-model="arvoFilter" />-->
-                <select ng-model="koeFilter" ng-options="avain.kuvaus for avain in model.avaimet" ng-change="updateFilterData()">
+                <select ng-model="koeFilter" ng-options="avain.kuvaus for avain in model.avaimet"
+                        ng-change="updateFilterData()">
                     <option value="">Kaikki kokeet</option>
                 </select>
                 <select ng-model="osallistuminenFilter" ng-change="updateFilterData()">
@@ -28,16 +34,21 @@
                 <!--<input id="osallistuu" type="checkbox"  ng-model="vainOsallistuvat" />-->
                 <!--<label for="osallistuu">Vain osallistuvat</label>-->
 
-                <form name="form" ng-submit="submit()">
-                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" class="button small primary margin-top-2" type="submit">Tallenna</button>
+                <form name="form" ng-submit="submit()" ng-if="model.avaimet">
+                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
+                            class="btn btn-primary btn-sm margin-bottom-2" type="submit">Tallenna
+                    </button>
                     <div>
-                        <div class="notification warning" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista virheet!</div>
+                        <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista
+                            virheet!
+                        </div>
                     </div>
-                    <table class="virkailija-table-1" item-on-screen>
+                    <table class="virkailija-table-1" item-on-screen stay-on-focus>
                         <thead>
                         <tr>
                             <th><a href="" ng-click="predicate = 'lastName'; reverse=!reverse">Tiedot</a></th>
-                            <th ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">{{avain.kuvaus}}
+                            <th ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
+                                {{avain.kuvaus}}
                                 <span ng-if="avain.min !== undefined && avain.min !== null|| avain.max !== null && avain.max !== undefined">
                                 ({{avain.min}} - {{avain.max}})
                             </span>
@@ -47,15 +58,16 @@
                         <tbody>
 
                         <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter | limitTo:limit">
-                            <td>
+                            <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakija.lastName}}"
                                                          etunimi="{{hakija.firstNames}}"
                                                          hakemus-oid="{{hakija.oid}}"
                                                          haku-oid="{{hakuOid}}"
-                                                         henkilo-oid="{{hakemus.personOid}}" />
+                                                         henkilo-oid="{{hakemus.personOid}}"/>
                             </td>
-                            <td ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
-                                <div ng-show="hakija.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch on="avain.lahde">
+                            <td class="rightorientedcolumn" ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
+                                <div ng-if="hakija.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch
+                                     on="avain.lahde">
                                     <div ng-switch-when="SYOTETTAVA_ARVO">
                                         <div ng-switch on="avain.tyyppi()">
                                             <div ng-switch-when="input">
@@ -65,35 +77,50 @@
                                                        max="{{avain.max}}"
                                                        size="2"
                                                        ng-model="hakija.additionalData[avain.tunniste]"
+                                                       osallistuminen="hakija.additionalData[avain.osallistuminenTunniste]"
                                                        arvovalidaattori
-                                                       ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste)" />
+                                                       ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste)"/>
 
 
                                                 <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
-                                                        ng-show="avain.osallistuminenTunniste"
+                                                        ng-if="avain.osallistuminenTunniste"
                                                         ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                                                         >
                                                     <option value="MERKITSEMATTA">Merkitsemättä</option>
                                                     <option value="OSALLISTUI">Osallistui</option>
                                                     <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
                                                 </select>
-                                                <br />
+                                                <br/>
                                                 <span style="color: red;"></span>
                                             </div>
 
-                                            <div ng-switch-when="boolean">
+                                            <div ng-switch-when="boolean" class="input-group">
                                                 <!-- input -->
-                                                <select ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
-                                                       ng-model="hakija.additionalData[avain.tunniste]"
-                                                       ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])" >
-                                                    <option value="">Tyhjä</option>
-                                                    <option value="true">Kyllä</option>
-                                                    <option value="false">Ei</option>
-                                                </select>
+                                                <span ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
+                                                    <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                            ng-model="hakija.additionalData[avain.tunniste]"
+                                                            ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
+
+                                                        <option value="">Tyhjä</option>
+                                                        <option value="true">Kyllä</option>
+                                                        <option value="false">Ei</option>
+
+                                                    </select>
+                                                </span>
+
+                                                <span ng-if="(avain.tunniste.indexOf('kielikoe') > -1)">
+                                                    <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                            ng-model="hakija.additionalData[avain.tunniste]"
+                                                            ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
+                                                        <option value="">Tyhjä</option>
+                                                        <option value="true">Hyväksytty</option>
+                                                        <option value="false">Hylätty</option>
+                                                    </select>
+                                                </span>
 
 
                                                 <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
-                                                        ng-show="avain.osallistuminenTunniste"
+                                                        ng-if="avain.osallistuminenTunniste"
                                                         ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                                                         >
                                                     <option value="MERKITSEMATTA">Merkitsemättä</option>
@@ -118,10 +145,15 @@
 
                         </tbody>
                     </table>
-                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" class="button small primary margin-top-2" type="submit">Tallenna</button>
+                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
+                            class="btn btn-primary btn-sm margin-top-2" type="submit">Tallenna
+                    </button>
                     <div>
-                        <div class="notification warning" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista virheet!</div>
+                        <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista
+                            virheet!
+                        </div>
                     </div>
+
                 </form>
             </div>
         </div>

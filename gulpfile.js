@@ -1,14 +1,10 @@
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
-	bower = require('gulp-bower'),
 	runSequence = require('run-sequence'),
-	clean = require('gulp-clean'),
-	karma = require('gulp-karma');
-
+	clean = require('gulp-clean');
 
 var paths = {
-	bower_base: 'bower_components/',
 	bowerScripts: [
 		//'bower_components/angular/angular.min.js',
 		//'bower_components/angular-resource/angular-resource.min.js',
@@ -32,28 +28,19 @@ var paths = {
 		"src/main/webapp/common/jslib/tinymce-4.0.12/tinymce.min.js",
 		"src/main/webapp/common/jslib/tinymce-4.0.12/ui-tinymce.js"
 	],
-	testBase: 'src/test/ui/',
 	cleanBuildFiles: [
-		'src/main/webapp/dist/',
 		'node/',
 		'node_modules/',
 		'bower_components'
 	],
 	unitTests: [
 		'src/test/ui/unit/test.js'
-		//'src/test/ui/unit/controllersSpec.js',
-		//'src/test/ui/unit/directivesSpec.js'
 	],
 	jslib: 'src/main/webapp/common/jslib'
 }
 
 
 
-// Run 'bower install'
-gulp.task('bower-install', function() {
-	bower()
-		.pipe(gulp.dest('bower_components'));
-});
 
 // Concatenate manually downloaded scripts and move to tmp
 gulp.task('staticScripts', function() {
@@ -73,7 +60,7 @@ gulp.task('bowerScripts', function() {
 
 // Update libs & run tests
 gulp.task('build', function(callback) {
-	runSequence([/*'bowerScripts',*/'staticScripts'], 'test', callback);
+	runSequence([/*'bowerScripts',*/'staticScripts'], callback);
 });
 
 // Run tests
@@ -89,7 +76,7 @@ gulp.task('test', function() {
 
 // DEFAULT
 gulp.task('default', function(callback) {
-	runSequence('test', callback);
+	runSequence('staticScripts', callback);
 });
 
 

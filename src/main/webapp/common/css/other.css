@@ -103,3 +103,8 @@
 .tableEven {
     background: #F8F8F7;
 }
+
+
+.wide .modal-dialog {
+    width: 90%;
+}

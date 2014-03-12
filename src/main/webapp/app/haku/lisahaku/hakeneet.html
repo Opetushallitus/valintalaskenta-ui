@@ -18,7 +18,7 @@
         <div class="tabsheets">
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
             
-            <div ng-show="model.errors.length > 0" class="notification warning">
+            <div ng-show="model.errors.length > 0" class="alert alert-danger">
                 <h3>Tietoja haettaessa tapahtui virhe</h3>
                 <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
@@ -35,7 +35,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="hakija in model.hakeneet | orderBy:'lastName' | filter:hakijaFilter">
-                            <td>
+                            <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakija.lastName}}"
                                                          etunimi="{{hakija.firstNames}}"
                                                          hakemus-oid="{{hakija.oid}}"

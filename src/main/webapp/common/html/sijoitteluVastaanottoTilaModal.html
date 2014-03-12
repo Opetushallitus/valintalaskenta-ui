@@ -1,0 +1,55 @@
+<div class="modal-header">
+    <span>Vastaanottotila</span>
+</div>
+
+<div class="modal-body">
+    <div ng-if="error">
+        <alert type="'danger'">Tallennus epäonnistui. Ole hyvä ja yritä uudelleen hetken päästä.</alert>
+        <pre ng-show="false">
+            {{error}}
+        </pre>
+    </div>
+
+    <form class="form-horizontal" role="form">
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Hakemuksen tunniste</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static">{{hakemus.hakemusOid}}</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Vastaanottotieto</label>
+
+            <div class="col-sm-9">
+                <select ng-model="hakemus.muokattuVastaanottoTila">
+                    <option value="">Kesken</option>
+                    <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
+                    <option value="VASTAANOTTANUT_LASNA">Vastaanottanut läsnäolevana</option>
+                    <option value="VASTAANOTTANUT_POISSAOLEVA">Vastaanottanut poissaolevana</option>
+                    <option value="EI_VASTAANOTETTU_MAARA_AIKANA">Ei vastaanotettu määräaikana</option>
+                    <option value="PERUNUT">Perunut</option>
+                    <option value="PERUUTETTU">Peruutettu</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Muokkaajan kommentti</label>
+
+            <div class="col-sm-9">
+                <textarea class="form-control" rows="6" ng-model="hakemus.selite"></textarea>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <div class="row">
+        <a class="btn btn-default btn-sm" ng-click="sulje();" role="button">Peruuta</a>
+        <a class="btn btn-primary btn-sm" ng-click="update();" role="button">Tallenna</a>
+    </div>
+</div>

@@ -82,7 +82,7 @@ function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance
 	  };
 };
 
-function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, AktivoiHaunValintalaskenta, ParametriService, AktivoiHaunValintakoelaskenta, JatkuvaSijoittelu) {
+function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, ParametriService, JatkuvaSijoittelu, IlmoitusTila) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	$scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -104,12 +104,17 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
 		});
 	};
 	$scope.filterValitut = function() {
+		return _.filter($scope.hakumodel.haut,function(haku) {
+			return haku.valittu;
+		});
+	};
+	$scope.filterValitutExcludingThisHaku = function() {
 		return _.filter($scope.filterNotThisHaku(),function(haku) {
 			return haku.valittu;
 		});
 	};
 	$scope.isAllValittu = function() {
-		return $scope.filterNotThisHaku().length == $scope.filterValitut().length;
+		return $scope.filterNotThisHaku().length == $scope.filterValitutExcludingThisHaku().length;
 	};
 	$scope.check = function(oid) {
 		$scope.kaikkiHautValittu = $scope.isAllValittu();
@@ -124,7 +129,9 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
 	$scope.muodostaKelaDokumentti = function() {
 		KelaDokumentti.post({ 
         	hakuOid: $routeParams.hakuOid},
-        		{}, 
+        		{
+        		hakuOids: $scope.filterValitut()
+        		}, 
         		function (id) {
             Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html", {
             	ftpVienti: function() {
@@ -132,7 +139,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
             	}
             });
         }, function () {
-            
+            Ilmoitus.avaa("Kela-dokumentin luonnin aloitus epäonnistui", "Kela-dokumentin luonnin aloitus epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
 	};
 	// KELA TAULUKON CHECKBOXIT LOPPUU
@@ -177,21 +184,18 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
     $scope.kaynnistaSijoittelu = function() {
         var hakuoid = $routeParams.hakuOid;
         Sijoitteluktivointi.aktivoi({hakuOid: hakuoid}, function(d) {
-
+        	Ilmoitus.avaa("Sijoittelu on käynnissä", "Sijoittelu on nyt käynnissä.");
         }, function() {
-        	$window.alert("Sinulla ei ole tarvittavia käyttöoikeuksia!");
+        	Ilmoitus.avaa("Sijoittelun aktivointi epäonnistui", "Sijoittelun aktivointi epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
-    };
-
-    $scope.aktivoiHaunValintalaskenta = function() {
-      var hakuoid = $routeParams.hakuOid;
-          AktivoiHaunValintalaskenta.aktivoi({hakuOid: hakuoid}, function() {
-      });
     };
 
     $scope.aktivoiHaunValintakoelaskenta = function() {
        var hakuoid = $routeParams.hakuOid;
-           AktivoiHaunValintakoelaskenta.aktivoi({hakuOid: hakuoid}, function() {
+       ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuoid}, {}, function(id) {
+       		Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
+       },function() {
+       		Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
        });
     };
 

@@ -30,8 +30,8 @@
 						</td>
 						<td>
                             <div ng-show="valinnanvaihe.aktiivinen">
-                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN' && privileges.showValinnanhallinta()" ng-click="kaynnistaValintalaskenta($index)" class="button small">Käynnistä laskenta</a>
-                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE' && privileges.showValintakoekutsut()" ng-click="kaynnistaValintakoelaskenta($index)" class="button small">Käynnistä valintakoelaskenta</a>
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN' && privileges.showValinnanhallinta()" ng-click="kaynnistaValintalaskenta($index)" class="btn btn-primary btn-sm">Käynnistä laskenta</a>
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE' && privileges.showValintakoekutsut()" ng-click="kaynnistaValintakoelaskenta($index)" class="btn btn-primary btn-sm">Käynnistä valintakoelaskenta</a>
                             </div>
                             <div ng-show="!valinnanvaihe.aktiivinen">
                                 Valinnanvaihe ei ole aktiivinen
@@ -43,7 +43,7 @@
 			
 
 			<div ng-show="!model.tulosValinnanvaiheet" class="offset-left-16-4 grid16-8">
-				<p class="notification warning">Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa</p>
+				<p class="alert alert-danger">Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa</p>
 			</div>
 			<!--
 			<div>
