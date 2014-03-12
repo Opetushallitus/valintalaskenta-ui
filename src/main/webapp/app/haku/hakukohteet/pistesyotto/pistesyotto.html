@@ -72,7 +72,7 @@
                                         <div ng-switch on="avain.tyyppi()">
                                             <div ng-switch-when="input">
                                                 <!-- input -->
-                                                <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                <input ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                                        min="{{avain.min}}"
                                                        max="{{avain.max}}"
                                                        size="2"
@@ -83,7 +83,7 @@
 
 
                                                 <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
-                                                        ng-show="avain.osallistuminenTunniste"
+                                                        ng-if="avain.osallistuminenTunniste"
                                                         ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                                                         >
                                                     <option value="MERKITSEMATTA">Merkitsemättä</option>
@@ -94,10 +94,10 @@
                                                 <span style="color: red;"></span>
                                             </div>
 
-                                            <div ng-switch-when="boolean">
+                                            <div ng-switch-when="boolean" class="input-group">
                                                 <!-- input -->
-                                                <div ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
-                                                    <select ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                <span ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
+                                                    <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                                             ng-model="hakija.additionalData[avain.tunniste]"
                                                             ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
 
@@ -106,21 +106,21 @@
                                                         <option value="false">Ei</option>
 
                                                     </select>
-                                                </div>
+                                                </span>
 
-                                                <div ng-if="(avain.tunniste.indexOf('kielikoe') > -1)">
-                                                    <select ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                <span ng-if="(avain.tunniste.indexOf('kielikoe') > -1)">
+                                                    <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                                             ng-model="hakija.additionalData[avain.tunniste]"
                                                             ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
                                                         <option value="">Tyhjä</option>
                                                         <option value="true">Hyväksytty</option>
                                                         <option value="false">Hylätty</option>
                                                     </select>
-                                                </div>
+                                                </span>
 
 
                                                 <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
-                                                        ng-show="avain.osallistuminenTunniste"
+                                                        ng-if="avain.osallistuminenTunniste"
                                                         ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                                                         >
                                                     <option value="MERKITSEMATTA">Merkitsemättä</option>

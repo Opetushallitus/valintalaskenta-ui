@@ -169,7 +169,7 @@ function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel,
         hakija.showTiedotPartial = !hakija.showTiedotPartial;
     };
 
-    $scope.changeOsallistuminen = function (hakija, tunniste, value, avain) {
+    $scope.changeOsallistuminen = function (hakija, tunniste, value) {
         if (value) {
             $timeout(function(){
                 hakija.additionalData[tunniste] = "OSALLISTUI";
