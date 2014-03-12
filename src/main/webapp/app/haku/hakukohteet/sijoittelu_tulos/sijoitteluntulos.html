@@ -46,7 +46,8 @@
                                 {{jono.nimi}}: {{jono.prioriteetti}} /
                                 <!---Valintatapajono OID: {{jono.oid}}-->
                                 Aloituspaikat: {{jono.aloituspaikat}} /
-                                Tasasijasaanto: {{jono.tasasijasaanto}}
+                                Tasasijasaanto: {{jono.tasasijasaanto}} /
+                                {{jono.eiVarasijatayttoa ? 'Ei varasijatäyttöä' : 'Varasijatäyttö'}}
                             </th>
                         </tr>
                         <tr>
@@ -90,15 +91,20 @@
                             </td>
 
                             <td>
-                                <div ng-show="((updateOrg && hakemus.tila == 'HYVAKSYTTY') || (updateOph))">
-                                        <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == ''">
+                                <div ng-show="(
+                                        (
+                                            updateOrg && (hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA') )
+                                        )
+                                        || (updateOph)
+                                    )">
+                                        <span ng-if="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')) && hakemus.vastaanottoTila == ''">
                                           <select ng-model="hakemus.muokattuVastaanottoTila">
                                               <option value="">Kesken</option>
                                               <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
                                               <option value="PERUUTETTU">Peruutettu</option>
                                           </select>
                                         </span>
-                                        <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == 'ILMOITETTU'">
+                                        <span ng-if="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')) && hakemus.vastaanottoTila == 'ILMOITETTU'">
                                             <select ng-model="hakemus.muokattuVastaanottoTila">
                                                 <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
                                                 <option value="VASTAANOTTANUT_LASNA">Vastaanottanut läsnäolevana
@@ -113,7 +119,7 @@
                                                 <option value="PERUUTETTU">Peruutettu</option>
                                             </select>
                                         </span>
-                                        <span ng-if="!(hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == 'ILMOITETTU') && !(hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == '')">
+                                        <span ng-if="!((hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')) && hakemus.vastaanottoTila == 'ILMOITETTU') && !(hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == '')">
                                             <span ng-if="hakemus.vastaanottoTila == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
                                             <span ng-if="hakemus.vastaanottoTila == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
                                             <span ng-if="hakemus.vastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>

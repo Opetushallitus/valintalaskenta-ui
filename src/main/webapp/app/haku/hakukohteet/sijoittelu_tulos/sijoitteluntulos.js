@@ -1,5 +1,5 @@
 "use strict";
-app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila) {
+app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila, Valintatapajono) {
 
     var model = new function () {
 
@@ -61,6 +61,9 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                     var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
 
                     valintatapajonot.forEach(function (valintatapajono, index) {
+                        Valintatapajono.get({valintatapajonoOid: valintatapajono.oid}, {}, function(result){
+                            valintatapajono.eiVarasijatayttoa = result.eiVarasijatayttoa;
+                        });
                         valintatapajono.index = index;
                         valintatapajono.valittu = true;
                         var valintatapajonoOid = valintatapajono.oid;
@@ -126,9 +129,6 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             return true;
                                         }
                                     });
-
-                                    console.log(""+currentHakemus.vastaanottoTila);
-                                    console.log(""+currentHakemus.muokattuVastaanottoTila);
                                 });
                             }
 

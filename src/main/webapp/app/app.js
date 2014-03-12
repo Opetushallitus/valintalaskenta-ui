@@ -277,6 +277,12 @@ app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
         get: {method: "GET", isArray: true}
     });
 });
+app.factory('Valintatapajono', function($resource) {
+    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/valintatapajono/:valintatapajonoOid", {valintatapajonoOid: "@valintatapajonoOid"}, {
+        get: {method: "GET"}
+    });
+});
+
 // d
 app.factory('DokumenttiProsessinTila', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/dokumenttiprosessi/:id", {id: "@id"}, {
