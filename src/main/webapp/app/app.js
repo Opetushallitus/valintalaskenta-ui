@@ -247,10 +247,7 @@ return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:valinnanvaiheoid/v
 });
 
 app.factory('HarkinnanvarainenHyvaksynta', function($resource) {
- return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/:hakuOid/hakukohde/:hakukohdeOid", {
-    hakuOid: "@hakuOid",
-    hakukohdeOid: "@hakukohdeOid"
-    }, {
+ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/", { }, {
      post:{method: "POST"}
    });
 });
@@ -511,16 +508,28 @@ app.factory('VastaanottoTilat', function($resource) {
      });
 });
 
- app.factory('VastaanottoTila', function($resource) {
-     return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakukohde/:hakukohdeOid?selite=:selite",
-         {
-             hakuoid: "@hakuoid",
-             hakukohdeOid: "@hakukohdeoid",
-             selite: "@selite"
-         }, {
-         post: {method: "POST"}
-     });
+app.factory('VastaanottoTila', function($resource) {
+ return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakukohde/:hakukohdeOid?selite=:selite",
+     {
+         hakuoid: "@hakuoid",
+         hakukohdeOid: "@hakukohdeoid",
+         selite: "@selite"
+     }, {
+     post: {method: "POST"}
  });
+});
+
+app.factory('HakemuksenVastaanottoTila', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid",
+        {
+            hakuoid: "@hakuoid",
+            hakukohdeOid: "@hakukohdeoid",
+            valintatapajonoOid: "@valintatapajonoOid",
+            hakemusOid: "@hakemusOid"
+        }, {
+            get: {method: "GET"}
+        });
+});
 
 app.factory('SijoittelunVastaanottotilat', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/", {hakemusOid: "@hakemusOid"}, {

@@ -5,7 +5,6 @@ var gulp = require('gulp'),
 	clean = require('gulp-clean');
 
 var paths = {
-	bower_base: 'bower_components/',
 	bowerScripts: [
 		//'bower_components/angular/angular.min.js',
 		//'bower_components/angular-resource/angular-resource.min.js',
@@ -30,26 +29,18 @@ var paths = {
 		"src/main/webapp/common/jslib/tinymce-4.0.12/ui-tinymce.js"
 	],
 	cleanBuildFiles: [
-		'src/main/webapp/dist/',
 		'node/',
 		'node_modules/',
 		'bower_components'
 	],
 	unitTests: [
 		'src/test/ui/unit/test.js'
-		//'src/test/ui/unit/controllersSpec.js',
-		//'src/test/ui/unit/directivesSpec.js'
 	],
 	jslib: 'src/main/webapp/common/jslib'
 }
 
 
 
-// Run 'bower install'
-gulp.task('bower-install', function() {
-	bower()
-		.pipe(gulp.dest('bower_components'));
-});
 
 // Concatenate manually downloaded scripts and move to tmp
 gulp.task('staticScripts', function() {

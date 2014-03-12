@@ -237,7 +237,7 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 
     $scope.nakymanTila = "Kokeittain"; // Hakijoittain
 
-    $scope.predicate = 'hakijaOid';
+    $scope.predicate = ['sukunimi','etunimi'];
 
     $scope.allValintakoeTulosXLS = function() {
     	var kokeet = [];
