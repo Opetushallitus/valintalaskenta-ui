@@ -1374,7 +1374,7 @@ label, .label {
   content: " *";
   color: red;
   font-size: 18px;
-  text-align: sup; }
+  text-align: super; }
 
 /*** form-layout-table
 ************************************************/
@@ -2670,41 +2670,17 @@ ul.orgmenu {
 
 /*** Notifications
 ************************************************/
-.notification {
-  display: inline-block;
-  padding: 15px 30px 15px 60px;
-  background-size: 30px;
+.alert {
+  padding-left: 60px;
   background-repeat: no-repeat;
-  background-position: 15px center;
-  -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-  -o-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-  -ms-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -o-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-text-shadow: 1px 1px 1px white;
-  -moz-text-shadow: 1px 1px 1px white;
-  -o-text-shadow: 1px 1px 1px white;
-  -ms-text-shadow: 1px 1px 1px white;
-  text-shadow: 1px 1px 1px white; }
-  .notification h1, .notification h2, .notification h3, .notification h4, .notification h5, .notification h6 {
-    margin-top: 0; }
-  .notification.warning {
-    background-image: url(../img/icon-notification.png);
-    background-color: #fee7a5;
-    color: #730d02; }
-  .notification.info {
-    color: #333;
-    background-color: #c2e6f1;
-    background-image: url(../img/icon-information.png); }
-  .notification.confirmation {
-    color: #333;
-    background-color: #c6f1cb;
+  background-size: 30px;
+  background-position: 15px center; }
+  .alert.alert-success {
     background-image: url(../img/icon-accepted.png); }
+  .alert.alert-info {
+    background-image: url(../img/icon-information.png); }
+  .alert.alert-danger {
+    background-image: url(../img/icon-notification.png); }
 
 /*** Acceptance preference table
 ************************************************/
