@@ -65,14 +65,14 @@
                                                          haku-oid="{{hakuOid}}"
                                                          henkilo-oid="{{hakemus.personOid}}"/>
                             </td>
-                            <td ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
+                            <td class="rightorientedcolumn" ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
                                 <div ng-if="hakija.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch
                                      on="avain.lahde">
                                     <div ng-switch-when="SYOTETTAVA_ARVO">
                                         <div ng-switch on="avain.tyyppi()">
                                             <div ng-switch-when="input">
                                                 <!-- input -->
-                                                <input ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
+                                                <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                                        min="{{avain.min}}"
                                                        max="{{avain.max}}"
                                                        size="2"
