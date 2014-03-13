@@ -77,6 +77,19 @@ app.directive('centralize', function () {
     }
 });
 
+app.directive('privileges', function ($animate, ParametriService) {
+	return {
+        link: function ($scope, element, attrs) {
+			$animate.addClass(element, 'ng-hide');
+            ParametriService.promise().then(function (data) {
+            	if(data[attrs.privileges]) {
+            		$animate.removeClass(element, 'ng-hide');
+            	}
+            });
+			
+        }
+	};
+});
 
 app.directive('auth', function ($animate, $timeout, AuthService, ParametriService) {
     return {

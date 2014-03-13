@@ -86,7 +86,7 @@ app.factory('ParametriService', function($q, Parametrit) {
     }();
 
     return parametrit;
-})
+});
 
 
 app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
