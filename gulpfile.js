@@ -30,7 +30,12 @@ var paths = {
 
 		'bower_components/underscore/underscore.js',
 
-		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
+		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+
+		'bower_components/angular-ui-tinymce/src/tinymce.js'
+	],
+	css: [
+		'src/main/webapp/common/css/'
 	],
 	cleanBuildFiles: [
 		'node/',
@@ -43,6 +48,17 @@ var paths = {
 	jslib: 'src/main/webapp/common/jslib'
 }
 
+// DEFAULT
+gulp.task('default', function(callback) {
+	runSequence(callback);
+});
+
+
+gulp.task('tinymce', function() {
+    return gulp
+		.src('bower_components/tinymce-release/**/*.*', {base: './bower_components/'})
+		.pipe(gulp.dest(paths.jslib));
+});
 
 gulp.task('scripts', function() {
 	return gulp
@@ -52,7 +68,7 @@ gulp.task('scripts', function() {
 
 // Update libs & run tests
 gulp.task('build', function(callback) {
-	runSequence(['scripts'], callback);
+	runSequence(['scripts', 'tinymce'], callback);
 });
 
 // Run tests
@@ -66,10 +82,6 @@ gulp.task('test', function() {
 });
 
 
-// DEFAULT
-gulp.task('default', function(callback) {
-	runSequence('scripts', callback);
-});
 
 
 // CLEAN NODE & BOWER DEPENDENCIES should only be used in development - removes node, node_modules and bower_components -directories
