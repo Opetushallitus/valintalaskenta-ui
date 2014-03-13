@@ -50,7 +50,7 @@ var paths = {
 
 // DEFAULT
 gulp.task('default', function(callback) {
-	runSequence(callback);
+	runSequence('scripts', callback);
 });
 
 
