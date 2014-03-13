@@ -45,7 +45,7 @@ app.factory('ParametriService', function($q, Parametrit) {
         instance.deferred = $q.defer();
 
         instance.refresh = function(hakuOid) {
-
+			console.log('dasf');
             instance.deferred = $q.defer();
 
             if(hakuOid != oldHakuOid) {

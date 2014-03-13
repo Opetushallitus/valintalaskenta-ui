@@ -81,12 +81,18 @@ app.directive('privileges', function ($animate, ParametriService) {
 	return {
         link: function ($scope, element, attrs) {
 			$animate.addClass(element, 'ng-hide');
-            ParametriService.promise().then(function (data) {
-            	if(data[attrs.privileges]) {
-            		$animate.removeClass(element, 'ng-hide');
-            	}
-            });
 			
+            ParametriService.promise().then(function (data) {
+            	// kutsutaan vaan ensimmaiselle onnekkaalle
+            	if(data[attrs.privileges]) {
+            	$animate.removeClass(element, 'ng-hide');
+            	}
+            	
+            }, function(error){
+			    // ei ikina kutsuta
+			}, function(percentComplete){
+			    // ei ikina kutsuta
+			});
         }
 	};
 });
