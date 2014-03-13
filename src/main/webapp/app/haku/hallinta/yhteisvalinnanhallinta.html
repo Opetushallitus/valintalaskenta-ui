@@ -61,14 +61,14 @@
     <a privileges="valintalaskenta" ng-click="aktivoiMuistinvarainenValintalaskenta()" class="btn btn-primary btn-sm">Suorita
         valintalaskenta</a>
 </div>
-<div class="col-md-12">
+<div privileges="valintalaskenta" class="col-md-12">
     <h2>Sijoittelu</h2>
-    <a privileges="valintalaskenta" ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">Suorita
+    <a ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">Suorita
         sijoittelu</a>
-    <a ng-hide="jatkuva.ajossa && privileges.showValintalaskenta()" ng-click="kaynnistaJatkuvaSijoittelu()"
+    <a ng-hide="jatkuva.ajossa" ng-click="kaynnistaJatkuvaSijoittelu()"
        class="btn btn-primary btn-sm">Ota käyttöön ajastettu sijoittelu</a>
-    <a ng-hide="!jatkuva.ajossa && privileges.showValintalaskenta()" ng-click="pysaytaJatkuvaSijoittelu()"
-       class="btn btn-default btn-sm">Poista käytöstä ajastettu sijoittelu</a>
+    <a ng-hide="!jatkuva.ajossa" ng-click="pysaytaJatkuvaSijoittelu()"
+       class="btn btn-primary btn-sm">Poista käytöstä ajastettu sijoittelu</a>
 </div>
 <div class="col-md-12">
 
