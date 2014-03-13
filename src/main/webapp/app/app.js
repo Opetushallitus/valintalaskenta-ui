@@ -370,11 +370,6 @@ app.factory('ValintalaskentaMuistissa', function($resource) {
     });
 });
 
-app.factory('ValintalaskentaAktivointi', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoi", {}, {
-        aktivoi: {method: "GET"}
-    });
-});
 
 app.factory('Sijoitteluktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/aktivoi", {}, {
