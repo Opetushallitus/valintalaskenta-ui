@@ -5,28 +5,32 @@ var gulp = require('gulp'),
 	clean = require('gulp-clean');
 
 var paths = {
-	bowerScripts: [
-		//'bower_components/angular/angular.min.js',
-		//'bower_components/angular-resource/angular-resource.min.js',
-		//'bower_components/angular-route/angular-route.min.js',
-		//'bower_components/angular-animate/angular-animate.min.js',
-		//'bower_components/angular-scenario/angular-scenario.min.js',
-		//'bower_components/angular-mocks/angular-mocks.js',
-		//'bower_components/jquery/dist/jquery.min.js',
-		//'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
-		//'bower_components/underscore/underscore.js'
-	],
-	staticLibs: [
-		"src/main/webapp/common/jslib/jquery-2.1.0/jquery-2.1.0.js",
-		"src/main/webapp/common/jslib/angular-1.2.10/angular.js",
-		"src/main/webapp/common/jslib/angular-1.2.10/angular-route.js",
-		"src/main/webapp/common/jslib/angular-1.2.10/angular-animate.js",
-		"src/main/webapp/common/jslib/angular-1.2.10/angular-resource.js",
-		"src/main/webapp/common/jslib/underscore/underscore-min.js",
-		"src/main/webapp/common/jslib/angular-bootstrap-0.10.0/ui-bootstrap-tpls-0.10.0.min.js",
-		"src/main/webapp/common/jslib/jquery-1.8.3/jquery.nestable.js",
-		"src/main/webapp/common/jslib/tinymce-4.0.12/tinymce.min.js",
-		"src/main/webapp/common/jslib/tinymce-4.0.12/ui-tinymce.js"
+	bower_components: [
+		'bower_components/angular/angular.js',
+		'bower_components/angular/angular.min.js',
+		'bower_components/angular/angular.min.js.map',
+
+		'bower_components/angular-resource/angular-resource.js',
+		'bower_components/angular-resource/angular-resource.min.js',
+		'bower_components/angular-resource/angular-resource.min.js.map',
+
+		'bower_components/angular-route/angular-route.js',
+		'bower_components/angular-route/angular-route.min.js',
+		'bower_components/angular-route/angular-route.min.js.map',
+
+		'bower_components/angular-animate/angular-animate.js',
+		'bower_components/angular-animate/angular-animate.min.js',
+		'bower_components/angular-animate/angular-animate.min.js.map',
+
+		'bower_components/jquery/dist/jquery.js',
+		'bower_components/jquery/dist/jquery.min.js',
+		'bower_components/jquery/dist/jquery.min.js.map',
+
+		'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
+
+		'bower_components/underscore/underscore.js',
+
+		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
 	],
 	cleanBuildFiles: [
 		'node/',
@@ -40,27 +44,15 @@ var paths = {
 }
 
 
-
-
-// Concatenate manually downloaded scripts and move to tmp
-gulp.task('staticScripts', function() {
-    return gulp
-        .src(paths.staticLibs)
-        .pipe(concat('staticLibs.js'))
-        .pipe(gulp.dest(paths.jslib));
-});
-
-// Concatenate scripts fetched with bower and move to tmp
-gulp.task('bowerScripts', function() {
+gulp.task('scripts', function() {
 	return gulp
-		.src(paths.bowerScripts)
-		.pipe(concat('bowerLibs.js'))
+		.src(paths.bower_components)
 		.pipe(gulp.dest(paths.jslib));
 });
 
 // Update libs & run tests
 gulp.task('build', function(callback) {
-	runSequence([/*'bowerScripts',*/'staticScripts'], callback);
+	runSequence(['scripts'], callback);
 });
 
 // Run tests
@@ -76,7 +68,7 @@ gulp.task('test', function() {
 
 // DEFAULT
 gulp.task('default', function(callback) {
-	runSequence('staticScripts', callback);
+	runSequence('scripts', callback);
 });
 
 
