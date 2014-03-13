@@ -55,15 +55,15 @@
 
 <div class="col-md-12">
     <h2>Valintalaskenta</h2>
-    <a ng-show="privileges.showValintakoekutsut()" ng-click="aktivoiHaunValintakoelaskenta()"
+    <a privileges="valintakoekutsut" ng-click="aktivoiHaunValintakoelaskenta()"
        class="btn btn-primary btn-sm">Suorita
         valintakoelaskenta haulle</a>
-    <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiMuistinvarainenValintalaskenta()" class="btn btn-primary btn-sm">Suorita
+    <a privileges="valintalaskenta" ng-click="aktivoiMuistinvarainenValintalaskenta()" class="btn btn-primary btn-sm">Suorita
         valintalaskenta</a>
 </div>
 <div class="col-md-12">
     <h2>Sijoittelu</h2>
-    <a ng-show="privileges.showValintalaskenta()" ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">Suorita
+    <a privileges="valintalaskenta" ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">Suorita
         sijoittelu</a>
     <a ng-hide="jatkuva.ajossa && privileges.showValintalaskenta()" ng-click="kaynnistaJatkuvaSijoittelu()"
        class="btn btn-primary btn-sm">Ota käyttöön ajastettu sijoittelu</a>
@@ -73,21 +73,17 @@
 <div class="col-md-12">
 
     <h2>Jälkiohjaus</h2>
-    <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetXls()"
+    <a privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
        class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie jälkiohjaustulokset taulukkolaskentaan</a>
-    <!-- 
-    <a ng-show="privileges.showValintalaskenta()" ng-click="aktivoiJalkiohjaustuloksetPdf()"
-       class="button primary small pdf">Vie jälkiohjauskirjeiksi</a>
-    -->
-    <a ng-show="privileges.showValintalaskenta()" ng-click="muodostaJalkiohjauskirjeet()"
+    <a privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet()"
        class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet</a>
-    <a ng-show="privileges.showValintalaskenta()"
+    <a privileges="valintalaskenta"
        href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos" class="btn btn-default btn-sm">Valinnan
         tulokset</a>
 </div>
 <div class="col-md-6">
     <h2>Kela</h2>
-    <a ng-show="privileges.showValintalaskenta()" ng-click="muodostaKelaDokumentti();$event.preventDefault();"
+    <a privileges="valintalaskenta" ng-click="muodostaKelaDokumentti();$event.preventDefault();"
        class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti</a>
     <h3>Kela-dokumentti muodostetaan valituista hauista</h3> 
     <table class="table">
@@ -122,7 +118,7 @@
 
 <div class="col-md-12">
 	<h2>Ilmoitukset</h2>
-    <a ng-show="privileges.showValintalaskenta()" ng-click="showErrors()" class="btn btn-default btn-sm">Hae virheet</a>
+    <a privileges="valintalaskenta" ng-click="showErrors()" class="btn btn-default btn-sm">Hae virheet</a>
 </div>
 
 

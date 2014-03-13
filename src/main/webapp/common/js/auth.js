@@ -45,7 +45,6 @@ app.factory('ParametriService', function($q, Parametrit) {
         instance.deferred = $q.defer();
 
         instance.refresh = function(hakuOid) {
-
             instance.deferred = $q.defer();
 
             if(hakuOid != oldHakuOid) {
@@ -78,6 +77,12 @@ app.factory('ParametriService', function($q, Parametrit) {
             return privileges.valintakoekutsut;
         };
 
+        instance.value = function(callback) {
+        	return instance.deferred.promise.then(function(result) {
+			    callback(result);
+			});
+        };
+        
         instance.promise = function() {
             return instance.deferred.promise;
         };
@@ -86,7 +91,7 @@ app.factory('ParametriService', function($q, Parametrit) {
     }();
 
     return parametrit;
-})
+});
 
 
 app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
