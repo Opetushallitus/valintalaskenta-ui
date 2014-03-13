@@ -77,22 +77,21 @@ app.directive('centralize', function () {
     }
 });
 
-app.directive('privileges', function ($animate, ParametriService) {
+app.directive('privileges', function ($q, $rootScope, $animate, ParametriService) {
 	return {
         link: function ($scope, element, attrs) {
 			$animate.addClass(element, 'ng-hide');
-			
-            ParametriService.promise().then(function (data) {
-            	// kutsutaan vaan ensimmaiselle onnekkaalle
-            	if(data[attrs.privileges]) {
-            	$animate.removeClass(element, 'ng-hide');
-            	}
-            	
-            }, function(error){
-			    // ei ikina kutsuta
-			}, function(percentComplete){
-			    // ei ikina kutsuta
+			ParametriService.value(function(data) {
+				$rootScope.privileges = data;
 			});
+			$rootScope.$watch('privileges', function(newValue, oldValue) {
+            	if(newValue) {
+	            	if(newValue[attrs.privileges]) {
+	            		$animate.removeClass(element, 'ng-hide');
+	            	}
+            	}
+           	});
+            
         }
 	};
 });
