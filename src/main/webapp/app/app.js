@@ -406,18 +406,10 @@ app.factory('JalkiohjausXls', function($window) {
 		}
 	};
 });
-app.factory('ValintakoeXls', function($window) {
-	return {
-		query: function(data) {
-			// {hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:[kokeet]}
-			var postfix = "";
-			data.valintakoeOid.forEach(function(oid) {
-				postfix = postfix + "&valintakoeOid=" + oid;
-
-			});
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/valintakoekutsut/aktivoi?hakukohdeOid="+ data.hakukohdeOid + postfix;
-		}
-	};
+app.factory('ValintakoeXls', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentaexcel/valintakoekutsut/aktivoi", {}, {
+        lataa: {method: "POST"}
+    });
 });
 
 app.factory('AktivoiKelaFtp', function($resource) {

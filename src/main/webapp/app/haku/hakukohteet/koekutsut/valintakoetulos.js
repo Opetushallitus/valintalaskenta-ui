@@ -183,6 +183,17 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 			Ilmoitus.avaa("Koekutsuja ei voida muodostaa!","Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.", IlmoitusTila.WARNING);
 		}
 	};
+	$scope.valintakoeTulosXLS = function(valintakoe) {
+		var hakemusOids = null;
+		if($scope.model.isAllValittu(valintakoe)) {
+			
+		} else {
+    		hakemusOids = $scope.model.valitutHakemusOids(valintakoe);
+		}
+    	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOids:[valintakoe.valintakoeOid]},{hakemusOids: hakemusOids}, function(id) {
+    		Latausikkuna.avaa(id, "Muodostetaan valintakoetuloksille taulukkolaskentatiedosto", valintakoe.valintakoeTunniste);
+    	});
+    };
 	$scope.addressLabelPDF = function(valintakoe) {
 		var otsikko = null;
 		var hakemusOids = null;
@@ -246,9 +257,7 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
     	}
     	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet});
     };
-    $scope.valintakoeTulosXLS = function(valintakoeOid) {
-    	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:[valintakoeOid]});
-    };
+    
     
     
 }   
