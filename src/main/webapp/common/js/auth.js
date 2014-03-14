@@ -12,19 +12,19 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
     var deferred = $q.defer();
 
     // retrytetään niin kauan, että oikeuksia saadaan.
-    var refresh = function() {
+    var refresh = function () {
 
         $http.get(CAS_URL).success(function (result) {
             // kyllä nyt jotain oikeuksia pitäis olla, jos tänne on tultu
-            if(result.length > 0) {
+            if (result.length > 0) {
                 deferred.resolve(result);
             } else {
-                $timeout(function(){
+                $timeout(function () {
                     refresh();
                 }, 1000);
             }
-        }).error(function(){
-            $timeout(function(){
+        }).error(function () {
+            $timeout(function () {
                 refresh();
             }, 1000);
         });
@@ -35,55 +35,50 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
     return deferred.promise;
 });
 
-app.factory('ParametriService', function($q, Parametrit) {
+app.factory('ParametriService', function ($q, Parametrit) {
 
-
-    var parametrit = function(){
+    var parametrit = function () {
         var instance = {};
         var oldHakuOid;
         var privileges = {};
         instance.deferred = $q.defer();
 
-        instance.refresh = function(hakuOid) {
-            instance.deferred = $q.defer();
+        instance.refresh = function (hakuOid) {
 
-            if(hakuOid != oldHakuOid) {
-                Parametrit.list({hakuOid: hakuOid}, function(data) {
+            if (hakuOid != oldHakuOid) {
+
+                Parametrit.list({hakuOid: hakuOid}, function (data) {
                     privileges = data;
                     instance.deferred.resolve(data);
-                }, function(error){
+                    console.log("resolved");
+                }, function (error) {
                     alert("parametri service ei vastaa: " + error);
                 });
+
             }
 
         };
 
-        instance.showHakeneet = function() {
-        	return privileges.hakeneet;
+        instance.showHakeneet = function () {
+            return privileges.hakeneet;
         };
-		instance.showHarkinnanvaraiset = function() {
+        instance.showHarkinnanvaraiset = function () {
             return privileges.harkinnanvaraiset;
         };
-        instance.showPistesyotto = function() {
+        instance.showPistesyotto = function () {
             return privileges.pistesyotto;
         };
-        instance.showValinnanhallinta = function() {
+        instance.showValinnanhallinta = function () {
             return privileges.valinnanhallinta;
         };
-        instance.showValintalaskenta = function() {
+        instance.showValintalaskenta = function () {
             return privileges.valintalaskenta;
         };
-        instance.showValintakoekutsut = function() {
+        instance.showValintakoekutsut = function () {
             return privileges.valintakoekutsut;
         };
 
-        instance.value = function(callback) {
-        	return instance.deferred.promise.then(function(result) {
-			    callback(result);
-			});
-        };
-        
-        instance.promise = function() {
+        instance.promise = function () {
             return instance.deferred.promise;
         };
 

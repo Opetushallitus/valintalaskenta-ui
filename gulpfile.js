@@ -30,9 +30,9 @@ var paths = {
 
 		'bower_components/underscore/underscore.js',
 
-		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
 
-		'bower_components/angular-ui-tinymce/src/tinymce.js'
+
 	],
 	css: [
 		'src/main/webapp/common/css/'
@@ -68,7 +68,7 @@ gulp.task('scripts', function() {
 
 // Update libs & run tests
 gulp.task('build', function(callback) {
-	runSequence(['scripts', 'tinymce'], callback);
+	runSequence(['scripts'], callback);
 });
 
 // Run tests
