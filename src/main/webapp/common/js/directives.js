@@ -77,23 +77,22 @@ app.directive('centralize', function () {
     }
 });
 
-app.directive('privileges', function ($q, $rootScope, $animate, ParametriService) {
-	return {
+app.directive('privileges', function ($animate, $timeout, ParametriService) {
+    return {
         link: function ($scope, element, attrs) {
-			$animate.addClass(element, 'ng-hide');
-			ParametriService.value(function(data) {
-				$rootScope.privileges = data;
-			});
-			$rootScope.$watch('privileges', function(newValue, oldValue) {
-            	if(newValue) {
-	            	if(newValue[attrs.privileges]) {
-	            		$animate.removeClass(element, 'ng-hide');
-	            	}
-            	}
-           	});
-            
+            $animate.addClass(element, 'ng-hide');
+
+            $timeout(function(){
+                ParametriService.promise().then(function (data) {
+                    if(data[attrs.privileges]) {
+
+                        $animate.removeClass(element, 'ng-hide');
+                    }
+                });
+            });
+
         }
-	};
+    };
 });
 
 app.directive('auth', function ($animate, $timeout, AuthService, ParametriService) {
