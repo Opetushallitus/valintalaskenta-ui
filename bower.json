@@ -8,9 +8,8 @@
 		"angular-bootstrap": "0.10.0",
 		"jquery": "2.1.0",
 		"jquery-ui": "latest",
-		"underscore": "1.6.0",
-		"tinymce": "4.0.12",
-		"angular-ui-tinymce": "0.0.3"
+		"underscore": "1.6.0"
+
 
 	},
 	"devDependencies": {

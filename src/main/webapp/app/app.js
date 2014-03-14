@@ -3,7 +3,7 @@ var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute',
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
-  	tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/tinymce-4.0.12';
+  	tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12';
     MyRolesModel;
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
 });
