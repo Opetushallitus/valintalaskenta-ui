@@ -45,6 +45,7 @@ function ValinnanhallintaController($scope, $routeParams, Ilmoitus, Valinnanhall
     	var hakuOid = $routeParams.hakuOid;
         var hakukohdeOid = $routeParams.hakukohdeOid;
         ValintalaskentaMuistissa.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid, valinnanvaihe: valinnanvaihe},{}, function (success) {
+        	Ilmoitus.avaa("Valintalaskenta hakukohteelle käynnistetty", "Valintalaskenta on nyt käynnissä.");
         }, function (error) {
         	Ilmoitus.avaa("Valintalaskenta epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. Valintalaskenta epäonnistui palvelin virheeseen:" + error.data, IlmoitusTila.ERROR);
         });
@@ -53,7 +54,8 @@ function ValinnanhallintaController($scope, $routeParams, Ilmoitus, Valinnanhall
     $scope.kaynnistaValintakoelaskenta = function () {
     	var hakuOid = $routeParams.hakuOid;
         var hakukohdeOid = $routeParams.hakukohdeOid;
-        ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},{}, function (success) {
+        ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},{}, function (id) {
+        	Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta hakukohteelle " + hakukohdeOid, "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
         }, function (error) {
 			Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. Valintakoelaskenta epäonnistui palvelin virheeseen:" + error.data, IlmoitusTila.ERROR);            
         });
