@@ -1,4 +1,4 @@
-app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperusteet, ValintalaskentaAktivointi, HakukohdeValinnanvaihe) {
+app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperusteet) {
 
     var model;
     model = new function () {
@@ -35,7 +35,7 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
     return model;
 });
 
-function ValinnanhallintaController($scope, $location, $routeParams, Ilmoitus, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService) {
+function ValinnanhallintaController($scope, $routeParams, Ilmoitus, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
     $scope.model = ValinnanhallintaModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
