@@ -44,7 +44,7 @@ function ValinnanhallintaController($scope, $routeParams, Ilmoitus, Valinnanhall
     $scope.kaynnistaValintalaskenta = function (valinnanvaihe) {
     	var hakuOid = $routeParams.hakuOid;
         var hakukohdeOid = $routeParams.hakukohdeOid;
-        ValintalaskentaMuistissa.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid, valinnanvaihe: valinnanvaihe},{}, function (success) {
+        ValintalaskentaMuistissa.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid, valinnanvaihe: valinnanvaihe},[], function (success) {
         	Ilmoitus.avaa("Valintalaskenta hakukohteelle käynnistetty", "Valintalaskenta on nyt käynnissä.");
         }, function (error) {
         	Ilmoitus.avaa("Valintalaskenta epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. Valintalaskenta epäonnistui palvelin virheeseen:" + error.data, IlmoitusTila.ERROR);
