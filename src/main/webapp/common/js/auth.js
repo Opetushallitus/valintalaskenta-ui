@@ -50,7 +50,6 @@ app.factory('ParametriService', function ($q, Parametrit) {
                 Parametrit.list({hakuOid: hakuOid}, function (data) {
                     privileges = data;
                     instance.deferred.resolve(data);
-                    console.log("resolved");
                 }, function (error) {
                     alert("parametri service ei vastaa: " + error);
                 });

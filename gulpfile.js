@@ -1,8 +1,10 @@
 var gulp = require('gulp'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
+	concat = require('gulp-concat'),
+	uglify = require('gulp-uglify'),
 	runSequence = require('run-sequence'),
-	clean = require('gulp-clean');
+	clean = require('gulp-clean'),
+	watch = require('gulp-watch'),
+	livereload = require('gulp-livereload');
 
 var paths = {
 	bower_components: [
@@ -45,48 +47,66 @@ var paths = {
 	unitTests: [
 		'src/test/ui/unit/test.js'
 	],
-	jslib: 'src/main/webapp/common/jslib'
+	jslib: 'src/main/webapp/common/jslib',
+	sources: [
+		'src/main/webapp/app/**',
+		'src/main/webapp/common/css/other.css',
+		'src/main/webapp/common/css/virkailija.css',
+		'src/main/webapp/common/html/**',
+		'src/main/webapp/common/js/**',
+		'src/main/webapp/common/modaalinen/**'
+	]
 }
 
 // DEFAULT
-gulp.task('default', function(callback) {
+gulp.task('default', function (callback) {
 	runSequence('scripts', callback);
 });
 
 
-gulp.task('tinymce', function() {
-    return gulp
+gulp.task('tinymce', function () {
+	return gulp
 		.src('bower_components/tinymce-release/**/*.*', {base: './bower_components/'})
 		.pipe(gulp.dest(paths.jslib));
 });
 
-gulp.task('scripts', function() {
+gulp.task('scripts', function () {
 	return gulp
 		.src(paths.bower_components)
 		.pipe(gulp.dest(paths.jslib));
 });
 
 // Update libs & run tests
-gulp.task('build', function(callback) {
-	runSequence(['scripts'], callback);
-});
+gulp.task('build', function (callback) {
+		runSequence(['scripts'], callback);
+	});
 
 // Run tests
-gulp.task('test', function() {
+gulp.task('test', function () {
 	return gulp.src(paths.unitTests)
 		.pipe(karma({
 			configFile: 'src/test/ui/valintalaskenta-test.conf.js',
 			action: 'run'
 		})
-	);
+		);
 });
 
+
+// Livereload
+gulp.task('livereload', function() {
+	return gulp
+		.src(paths.sources)
+		.pipe(watch())
+		.pipe(livereload());
+});
 
 
 
 // CLEAN NODE & BOWER DEPENDENCIES should only be used in development - removes node, node_modules and bower_components -directories
-gulp.task('cleanBuild', function() {
+gulp.task('cleanBuild', function () {
 	return gulp
 		.src(paths.cleanBuildFiles)
 		.pipe(clean());
 });
+
+
