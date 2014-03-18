@@ -33,8 +33,6 @@ var paths = {
 		'bower_components/underscore/underscore.js',
 
 		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
-
-
 	],
 	css: [
 		'src/main/webapp/common/css/'
@@ -78,8 +76,8 @@ gulp.task('scripts', function () {
 
 // Update libs & run tests
 gulp.task('build', function (callback) {
-		runSequence(['scripts'], callback);
-	});
+	runSequence(['scripts'], callback);
+});
 
 // Run tests
 gulp.task('test', function () {
@@ -88,18 +86,17 @@ gulp.task('test', function () {
 			configFile: 'src/test/ui/valintalaskenta-test.conf.js',
 			action: 'run'
 		})
-		);
+	);
 });
 
 
 // Livereload
-gulp.task('livereload', function() {
+gulp.task('livereload', function () {
 	return gulp
 		.src(paths.sources)
 		.pipe(watch())
 		.pipe(livereload());
 });
-
 
 
 // CLEAN NODE & BOWER DEPENDENCIES should only be used in development - removes node, node_modules and bower_components -directories
