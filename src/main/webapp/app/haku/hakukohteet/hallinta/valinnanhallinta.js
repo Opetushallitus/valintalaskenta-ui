@@ -35,7 +35,7 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
     return model;
 });
 
-function ValinnanhallintaController($scope, $routeParams, Ilmoitus, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
+function ValinnanhallintaController($scope, $routeParams, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
     $scope.model = ValinnanhallintaModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
