@@ -1049,7 +1049,8 @@ body {
 
 a {
   text-decoration: none;
-  color: #149ecb; }
+  color: #149ecb;
+  cursor: pointer; }
 
 table {
   border-collapse: normal; }
