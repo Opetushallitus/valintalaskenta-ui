@@ -66,85 +66,87 @@
             </div>
 
             <div ng-if="nakymanTila == 'Kokeittain'">
-                <div ng-repeat="valintakoe in model.valintakokeet" class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="panel-title">{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></div>
-                    </div>
+                <div ng-repeat="valintakoe in model.valintakokeet">
+                	<div ng-if="model.filterOsallistujat(valintakoe.hakijat)" class="panel panel-default">
+	                    <div class="panel-heading">
+	                        <div class="panel-title">{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></div>
+	                    </div>
 
-                    <div class="panel-body">
-                        <div ng-show="valintakoe.aktiivinen">
-                            <form method="post">
-                                <textarea ui-tinymce="tinymceOptions"
-                                          ng-model="tinymceModel[valintakoe.valintakoeOid]"></textarea>
-                            </form>
-                            <div class="btn-toolbar margin-top-2 margin-bottom-2" role="toolbar">
-                                <a ng-click="valintakoeTulosXLS(valintakoe); $event.stopPropagation()"
-                                   class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie
-                                    taulukkolaskentaan</a>
-
-                                <div ng-if="isBlank(tinymceModel[valintakoe.valintakoeOid])" class="inline-block"
-                                     popover="Kirjoita viesti ylläolevaan kenttään." popover-trigger="mouseenter">
-                                    <a class="btn btn-default btn-sm disabled">
-                                        <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
-                                    </a>
-                                </div>
-
-                                <a ng-if="!isBlank(tinymceModel[valintakoe.valintakoeOid])"
-                                   ng-click="tulostaKoekutsukirjeet(valintakoe);$event.stopPropagation()"
-                                   class="btn btn-default btn-sm">
-                                    <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
-                                </a>
-
-                                <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()"
-                                   class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta osoitetarrat</a>
-                            </div>
-                        </div>
-                        <div ng-hide="valintakoe.aktiivinen">
-                            <p>Tälle valintakokeelle ei voi muodostaa osoitetarroja tai koekutsuja. Asetus on
-                                muokattavissa
-                                valintaperusteiden mallinnuksessa.</p>
-
-                            <div ng-show="valintakoe.virheIlmoitus" class="alert alert-danger">
-                                <h3>{{valintakoe.virheIlmoitus}}</h3>
-                            </div>
-                        </div>
-                        <table class="virkailija-table-1">
-                            <thead>
-                            <tr>
-                                <th><input type="checkbox" ng-model="valintakoe.valittu"
-                                           ng-change="model.checkAll(valintakoe);"/></th>
-                                <th><a href="" ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">Nimi</a>
-                                </th>
-                                <th><a href=""
-                                       ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a>
-                                </th>
-                                <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">Laskettu pvm</a>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter">
-                                <td><input type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
-                                </td>
-                                <td class="leftorientedcolumn">
-                                    <show-person-information sukunimi="{{koe.sukunimi}}"
-                                                             etunimi="{{koe.etunimi}}"
-                                                             hakemus-oid="{{koe.hakemusOid}}"
-                                                             haku-oid="{{hakuOid}}"
-                                                             henkilo-oid="{{koe.hakijaOid}}"/>
-                                </td>
-                                <td>
-                                    <div ng-switch="koe.osallistuminen">
-                                        <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
-                                        <span ng-switch-default></span>
-                                    </div>
-                                </td>
-                                <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
+	                    <div class="panel-body">
+	                        <div ng-show="valintakoe.aktiivinen">
+	                            <form method="post" >
+	                                <textarea ui-tinymce="tinymceOptions"
+	                                          ng-model="tinymceModel[valintakoe.valintakoeOid]"></textarea>
+	                            </form>
+	                            <div class="btn-toolbar margin-top-2 margin-bottom-2" role="toolbar">
+	                                <a ng-click="valintakoeTulosXLS(valintakoe); $event.stopPropagation()"
+	                                   class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie
+	                                    taulukkolaskentaan</a>
+	
+	                                <div ng-show="isBlank(tinymceModel[valintakoe.valintakoeOid])" class="inline-block"
+	                                     popover="Kirjoita viesti ylläolevaan kenttään." popover-trigger="mouseenter">
+	                                    <a class="btn btn-default btn-sm disabled">
+	                                        <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
+	                                    </a>
+	                                </div>
+	
+	                                <a ng-show="!isBlank(tinymceModel[valintakoe.valintakoeOid])"
+	                                   ng-click="tulostaKoekutsukirjeet(valintakoe);$event.stopPropagation()"
+	                                   class="btn btn-default btn-sm">
+	                                    <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
+	                                </a>
+	
+	                                <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()"
+	                                   class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta osoitetarrat</a>
+	                            </div>
+	                        </div>
+	                        <div ng-hide="valintakoe.aktiivinen">
+	                            <p>Tälle valintakokeelle ei voi muodostaa osoitetarroja tai koekutsuja. Asetus on
+	                                muokattavissa
+	                                valintaperusteiden mallinnuksessa.</p>
+	
+	                            <div ng-show="valintakoe.virheIlmoitus" class="alert alert-danger">
+	                                <h3>{{valintakoe.virheIlmoitus}}</h3>
+	                            </div>
+	                        </div>
+	                        <table class="virkailija-table-1">
+	                            <thead>
+	                            <tr>
+	                                <th><input type="checkbox" ng-model="valintakoe.valittu"
+	                                           ng-change="model.checkAll(valintakoe);"/></th>
+	                                <th><a href="" ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">Nimi</a>
+	                                </th>
+	                                <th><a href=""
+	                                       ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a>
+	                                </th>
+	                                <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">Laskettu pvm</a>
+	                                </th>
+	                            </tr>
+	                            </thead>
+	                            <tbody>
+	                            <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter">
+	                                <td><input type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
+	                                </td>
+	                                <td class="leftorientedcolumn">
+	                                    <show-person-information sukunimi="{{koe.sukunimi}}"
+	                                                             etunimi="{{koe.etunimi}}"
+	                                                             hakemus-oid="{{koe.hakemusOid}}"
+	                                                             haku-oid="{{hakuOid}}"
+	                                                             henkilo-oid="{{koe.hakijaOid}}"/>
+	                                </td>
+	                                <td>
+	                                    <div ng-switch="koe.osallistuminen">
+	                                        <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
+	                                        <span ng-switch-default></span>
+	                                    </div>
+	                                </td>
+	                                <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
+	                            </tr>
+	
+	                            </tbody>
+	                        </table>
+	                    </div>
+	                </div>
                 </div>
             </div>
         </div>
