@@ -33,10 +33,13 @@
 			});
 		};
 		this.filterOsallistujat = function(hakijat) {
-			var self = this;
-			return _.filter(hakijat,function(hakija) {
-				return hakija.osallistuminen == self.filter;
-			});
+			if(hakijat) {
+				var self = this;
+				return _.filter(hakijat,function(hakija) {
+					return hakija.osallistuminen == self.filter;
+				});
+			}
+			return [];
 		};
 		this.isAllValittu = function(valintakoe) {
 			var osallistujat = this.filterOsallistujat(valintakoe.hakijat);
@@ -71,6 +74,10 @@
                         hakutoive.valinnanVaiheet.forEach(function(valinnanvaihe) {
                             valinnanvaihe.valintakokeet.forEach(function(valintakoe) {
                                 var entry = {};
+                                entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
+                                if(entry.osallistuminen != "OSALLISTUU") {
+                                	return;
+                                }
                                 entry.hakuOid = koetulos.hakueOid;
                                 entry.hakemusOid = koetulos.hakemusOid;
                                 entry.hakijaOid = koetulos.hakijaOid;
@@ -86,7 +93,6 @@
                                 } else {
                                 	entry.valintakoeTunniste = valintakoe.valintakoeTunniste;	
                                 }
-                                entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 
                                 if (model.valintakokeet[entry.valintakoeOid] === undefined ) {
                                 	var valintakoeModel = {

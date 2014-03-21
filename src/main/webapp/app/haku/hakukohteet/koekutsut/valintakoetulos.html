@@ -67,7 +67,7 @@
 
             <div ng-if="nakymanTila == 'Kokeittain'">
                 <div ng-repeat="valintakoe in model.valintakokeet">
-                	<div ng-if="model.filterOsallistujat(valintakoe.hakijat)" class="panel panel-default">
+                	<div ng-if="valintakoe.hakijat" class="panel panel-default">
 	                    <div class="panel-heading">
 	                        <div class="panel-title">{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></div>
 	                    </div>
@@ -82,15 +82,15 @@
 	                                <a ng-click="valintakoeTulosXLS(valintakoe); $event.stopPropagation()"
 	                                   class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie
 	                                    taulukkolaskentaan</a>
-	
-	                                <div ng-show="isBlank(tinymceModel[valintakoe.valintakoeOid])" class="inline-block"
+									
+	                                <div ng-if="isBlank(tinymceModel[valintakoe.valintakoeOid])" class="inline-block"
 	                                     popover="Kirjoita viesti ylläolevaan kenttään." popover-trigger="mouseenter">
 	                                    <a class="btn btn-default btn-sm disabled">
 	                                        <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
 	                                    </a>
 	                                </div>
 	
-	                                <a ng-show="!isBlank(tinymceModel[valintakoe.valintakoeOid])"
+	                                <a ng-if="!isBlank(tinymceModel[valintakoe.valintakoeOid])"
 	                                   ng-click="tulostaKoekutsukirjeet(valintakoe);$event.stopPropagation()"
 	                                   class="btn btn-default btn-sm">
 	                                    <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
@@ -124,7 +124,7 @@
 	                            </tr>
 	                            </thead>
 	                            <tbody>
-	                            <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter">
+	                            <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse">
 	                                <td><input type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
 	                                </td>
 	                                <td class="leftorientedcolumn">
