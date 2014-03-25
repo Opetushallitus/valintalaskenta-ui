@@ -86,7 +86,7 @@ app.factory('Ilmoitus', function($modal, IlmoitusTila) {
 		}
 	};
 });
-app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
+app.factory('Latausikkuna', function($log, $modal, DokumenttiProsessinTila) {
 	return {
 		
 		avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli) {
@@ -97,16 +97,18 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 			$modal.open({
 		      backdrop: 'static',
 		      templateUrl: ikkunaHtml,
-		      controller: function($scope, $window, $modalInstance, $interval, laajennettuMalli, DokumenttiProsessinTila) {
+		      controller: function($log, $scope, $window, $modalInstance, $interval, laajennos, DokumenttiProsessinTila) {
 		    	  cancelTimerWhenClosing = function() {
 				  	$interval.cancel(timer);
 				  };
 				  $scope.lisatiedot = lisatiedot;
 		    	  $scope.otsikko = otsikko;
-		    	  $scope.laajennettuMalli = laajennettuMalli;
 		    	  $scope.prosessi = {};
+		    	  $scope.kutsuLaajennettuaMallia = function() {
+		    	  	$log.error($scope.prosessi.dokumenttiId);
+		    	  	laajennos($scope.prosessi.dokumenttiId);
+		    	  };
 		    	  $scope.update = function() {
-		    	  		
 		    	  		DokumenttiProsessinTila.lue({id: id.id}, function(data) {
 		    	  			if(data.keskeytetty == true) {
 		    	  				cancelTimerWhenClosing();
@@ -153,7 +155,9 @@ app.factory('Latausikkuna', function($modal, DokumenttiProsessinTila) {
 				  };
 		      },
 		      resolve: {
-		    	  laajennettuMalli: laajennettuMalli
+		    	  laajennos: function() {
+		    	  	return laajennettuMalli;
+		    	  }
 		      }
 		    }).result.then(function() {
 		    	cancelTimerWhenClosing();

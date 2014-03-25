@@ -84,7 +84,7 @@ function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance
 	  };
 };
 
-function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
+function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKelaFtp, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	$scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -135,11 +135,17 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, $log, $time
         		hakuOids: $scope.filterValitut()
         		}, 
         		function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html", {
-            	ftpVienti: function() {
-            		console.log('tehaan vienti!');
-            	}
-            });
+            Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html",
+            function(dokumenttiId) {
+            		
+            		AktivoiKelaFtp.put(dokumenttiId, function(success) {
+            			Ilmoitus.avaa("Kela-dokumentin ftp-siirto onnistui", "Ftp-siirto onnistui");
+            		}, function() {
+            			Ilmoitus.avaa("Kela-dokumentin ftp-siirto onnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+            		});
+            	
+            }
+            );
         }, function () {
             Ilmoitus.avaa("Kela-dokumentin luonnin aloitus epäonnistui", "Kela-dokumentin luonnin aloitus epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
