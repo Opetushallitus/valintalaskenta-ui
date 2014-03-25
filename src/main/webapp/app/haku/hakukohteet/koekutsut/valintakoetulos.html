@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <div ng-if="nakymanTila == 'Hakijoittain'">
+            <div ng-if="nakymanTila == 'Hakijoittain' && model.koetyypit.length > 0">
                 <h2>Hakijoittain</h2>
                 <a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">Vie
                     taulukkolaskentaan</a>
@@ -67,7 +67,8 @@
 
             <div ng-if="nakymanTila == 'Kokeittain'">
                 <div ng-repeat="valintakoe in model.valintakokeet">
-                	<div ng-if="valintakoe.hakijat" class="panel panel-default">
+                	<div ng-if="valintakoe.hakijat && valintakoe.lahetetaankoKoekutsut" class="panel panel-default">
+
 	                    <div class="panel-heading">
 	                        <div class="panel-title">{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></div>
 	                    </div>

@@ -87,6 +87,7 @@
                                 entry.valittu = true;
                                 entry.aktiivinen = valintakoe.aktiivinen != false;
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
+                                entry.lahetaankoKoekutsut = valintakoe.lahetaankoKoekutsut;
                                 // OVT-6961
                                 if(valintakoe.nimi != undefined) {
                                 	entry.valintakoeTunniste = valintakoe.nimi;	
@@ -99,7 +100,8 @@
                                 			aktiivinen: true, 
                                 			valittu: true, 
                                 			valintakoeOid: entry.valintakoeOid, 
-                                			valintakoeTunniste: entry.valintakoeTunniste, 
+                                			valintakoeTunniste: entry.valintakoeTunniste,
+                                            lahetetaankoKoekutsut: valintakoe.lahetetaankoKoekutsut,
                                 			hakijat: [entry]};
                                 	model.valintakokeet[entry.valintakoeOid] = valintakoeModel;
                                 	
@@ -116,7 +118,7 @@
                                 }
 
                                 //add identifier to list
-                               if(model.koetyypit.indexOf(entry.valintakoeTunniste) == -1) {
+                               if(model.koetyypit.indexOf(entry.valintakoeTunniste) == -1 && entry.lahetetaankoKoekutsut) {
                                    //console.log(valintakoe);
                                    model.koetyypit.push(entry.valintakoeTunniste);
                                }
