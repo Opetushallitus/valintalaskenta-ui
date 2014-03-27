@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <div ng-if="nakymanTila == 'Hakijoittain' && model.koetyypit.length > 0">
+            <div ng-if="nakymanTila == 'Hakijoittain'">
                 <h2>Hakijoittain</h2>
                 <a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">Vie
                     taulukkolaskentaan</a>
@@ -57,8 +57,13 @@
                         </td>
                         <td ng-repeat="koetyyppi in model.koetyypit | orderBy:koetyyppi">
                             <div ng-switch="hakemus.kokeet[koetyyppi].osallistuminen">
-                                <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
-                                <span ng-switch-default></span>
+                                <div ng-if="hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut">
+                                    <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
+                                    <span ng-switch-default></span>
+                                </div>
+                                <div ng-if="!hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut">
+                                    <span></span>
+                                </div>
                             </div>
                         </td>
                     </tr>
