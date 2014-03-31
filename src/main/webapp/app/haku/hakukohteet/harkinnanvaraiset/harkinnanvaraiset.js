@@ -8,7 +8,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Ilmoitus, Hake
           this.errors = [];
         this.filterHarkinnanvaraiset = function() {
         	return _.filter(this.hakeneet,function(hakija) {
-  				return hakija.hakenutHarkinnanvaraisesti != "false";
+        		return hakija.hakenutHarkinnanvaraisesti;
   			});
         };
         this.filterValitut = function() {
