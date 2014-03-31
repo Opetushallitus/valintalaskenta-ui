@@ -141,7 +141,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
             		AktivoiKelaFtp.put(dokumenttiId, function(success) {
             			Ilmoitus.avaa("Kela-dokumentin ftp-siirto onnistui", "Ftp-siirto onnistui");
             		}, function() {
-            			Ilmoitus.avaa("Kela-dokumentin ftp-siirto onnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+            			Ilmoitus.avaa("Kela-dokumentin ftp-siirto epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
             		});
             	
             }
