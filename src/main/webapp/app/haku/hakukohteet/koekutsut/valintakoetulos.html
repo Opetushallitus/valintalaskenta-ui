@@ -130,8 +130,8 @@
 	                            </tr>
 	                            </thead>
 	                            <tbody>
-	                            <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse">
-	                                <td><input type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
+	                            <tr ng-repeat="koe in valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter">
+	                                <td><input ng-if="koe.osallistuminen == 'OSALLISTUU'" type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
 	                                </td>
 	                                <td class="leftorientedcolumn">
 	                                    <show-person-information sukunimi="{{koe.sukunimi}}"
