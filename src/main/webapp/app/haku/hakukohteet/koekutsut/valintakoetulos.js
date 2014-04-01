@@ -34,16 +34,19 @@
 		};
 		this.filterOsallistujat = function(hakijat) {
 			if(hakijat) {
-				var self = this;
 				return _.filter(hakijat,function(hakija) {
-					return hakija.osallistuminen == self.filter;
+					return hakija.osallistuminen == "OSALLISTUU";
 				});
 			}
 			return [];
 		};
 		this.isAllValittu = function(valintakoe) {
-			var osallistujat = this.filterOsallistujat(valintakoe.hakijat);
-			return osallistujat.length == this.filterValitut(osallistujat).length;
+			return _.reduce(valintakoe.hakijat, function(memo, hakija){
+				if(hakija.osallistuminen != "OSALLISTUU") {
+					return memo;
+				}
+				return memo && hakija.valittu;
+			}, true);
 		};
 		this.check = function(valintakoe) {
 			valintakoe.valittu = this.isAllValittu(valintakoe);
@@ -75,9 +78,6 @@
                             valinnanvaihe.valintakokeet.forEach(function(valintakoe) {
                                 var entry = {};
                                 entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
-                                if(entry.osallistuminen != "OSALLISTUU") {
-                                	return;
-                                }
                                 entry.hakuOid = koetulos.hakueOid;
                                 entry.hakemusOid = koetulos.hakemusOid;
                                 entry.hakijaOid = koetulos.hakijaOid;
@@ -102,7 +102,8 @@
                                 			valintakoeOid: entry.valintakoeOid, 
                                 			valintakoeTunniste: entry.valintakoeTunniste,
                                             lahetetaankoKoekutsut: valintakoe.lahetetaankoKoekutsut,
-                                			hakijat: [entry]};
+                                			hakijat: [entry]
+                                			};
                                 	model.valintakokeet[entry.valintakoeOid] = valintakoeModel;
                                 	
                                 } else {
