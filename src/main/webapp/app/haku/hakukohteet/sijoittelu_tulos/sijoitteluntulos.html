@@ -51,7 +51,6 @@
                             </th>
                         </tr>
                         <tr>
-                            <th><input type="checkbox" ng-model="jono.valittu" ng-change="model.checkAll(jono);"></th>
                             <th>Jonosija ({{jono.hakemukset.length}})</th>
                             <th>Hakija</th>
                             <th>Hakutoive</th>
@@ -60,13 +59,11 @@
                             <th>Vastaanottotieto</th>
                             <th>Muokattu</th>
                             <th>Muokkaa</th>
+                            <th>Toiminto</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="hakemus in jono.hakemukset | orderBy:jarjesta | filter:hakijaFilter | limitTo:limit ">
-                            <td><input ng-if="hakemus.tila == 'HYVAKSYTTY'" type="checkbox" ng-model="hakemus.valittu"
-                                       ng-change="model.check(jono);"></td>
-
                             <td>{{hakemus.sija}}</td>
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakemus.sukunimi}}"
@@ -145,6 +142,9 @@
                                                              hakukohde-oid="model.hakukohdeOid"
                                                              enabled="updateOph"/>
                             </td>
+                            <td>
+								<a ng-if="hakemus.tila == 'HYVAKSYTTY'" ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">Hyväksymiskirje</a>
+							</td>
                         </tr>
                         </tbody>
                     </table>

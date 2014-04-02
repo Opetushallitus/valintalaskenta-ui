@@ -11,7 +11,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         this.errors = [];
 
         this.hakemusErittelyt = []; //dataa perustietonäkymälle
-        
+
         this.filterValitut = function(hakemukset) {
 			return _.filter(hakemukset,function(hakemus) {
 				return hakemus.valittu;
@@ -23,9 +23,13 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 				return hakemus.tila === "HYVAKSYTTY";
 			});
 		};
-
 		this.isAllValittu = function(valintatapajono) {
-			return this.filterHyvaksytty(valintatapajono.hakemukset).length == this.filterValitut(valintatapajono.hakemukset).length;
+			return _.reduce(valintatapajono.hakemukset, function(memo, hakemus){
+				if(hakemus.tila === "HYVAKSYTTY") {
+					return memo && hakemus.valittu;
+				}
+				return memo;
+			}, true);
 		};
 		this.check = function(valintatapajono) {
 			valintatapajono.valittu = this.isAllValittu(valintatapajono);
@@ -76,7 +80,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                             paikanVastaanottaneet: [],
                             hyvaksyttyHarkinnanvaraisesti: [],
                             varasijoilla: []
-                        }
+                        };
 
                         model.hakemusErittelyt.push(hakemuserittely);
 
@@ -213,7 +217,6 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             if(model.sijoitteluTulokset.valintatapajonot) {
                 model.sijoitteluTulokset.valintatapajonot.forEach(function(valintatapajono){
                     if(valintatapajono.hakemukset) {
-                        console.log(valintatapajono.hakemukset);
                         model.filterValitut(valintatapajono.hakemukset).forEach(function(hakemus){
                             oidit.push(hakemus.hakemusOid);
                         });
@@ -248,22 +251,21 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Lat
     $scope.submit = function (valintatapajonoOid) {
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     };
-    $scope.createHyvaksymisosoitteetPDF = function () {
-
+    $scope.createHyvaksymisosoitteetPDF = function (oidit) {
         OsoitetarratSijoittelussaHyvaksytyille.post({
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
         	hakuOid: $routeParams.hakuOid, 
-        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: SijoitteluntulosModel.valitutOidit() }, function (id) {
+        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit }, function (id) {
             Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille osoitetarrat", "");
         }, function () {
             
         });
     };
-    $scope.createHyvaksymiskirjeetPDF = function () {
+    $scope.createHyvaksymiskirjeetPDF = function (oidit) {
         Hyvaksymiskirjeet.post({
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
         	hakuOid: $routeParams.hakuOid, 
-        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: SijoitteluntulosModel.valitutOidit() } , function (id) {
+        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit } , function (id) {
             Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
         }, function () {
             
