@@ -203,7 +203,7 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 		} else {
     		hakemusOids = $scope.model.valitutHakemusOids(valintakoe);
 		}
-    	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOids:[valintakoe.valintakoeOid]},{hakemusOids: hakemusOids}, function(id) {
+    	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid},{hakemusOids: hakemusOids, valintakoeOids:[valintakoe.valintakoeOid]}, function(id) {
     		Latausikkuna.avaa(id, "Muodostetaan valintakoetuloksille taulukkolaskentatiedosto", valintakoe.valintakoeTunniste);
     	});
     };
@@ -271,7 +271,7 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
     	}
     	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet});
     	*/
-    	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOids:[$scope.model.valintakoeOids()]},{hakemusOids: []}, function(id) {
+    	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid},{valintakoeOids:$scope.model.valintakoeOids(),hakemusOids: []}, function(id) {
     		Latausikkuna.avaa(id, "Muodostetaan valintakoetuloksille taulukkolaskentatiedosto", "");
     	});
     };
