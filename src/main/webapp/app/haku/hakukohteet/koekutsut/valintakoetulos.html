@@ -78,9 +78,14 @@
 	                        <div class="panel-title">{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></div>
 	                    </div>
 
-	                    <div class="panel-body">
-	                        <div ng-show="valintakoe.aktiivinen">
-	                            <form method="post" >
+						<div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length==0">
+	                    		Valintakokeeseen ei ole osallistujia
+	                    </div>
+
+	                    <div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length>0">
+	                    	
+	                        <div ng-if="(valintakoe.hakijat|filter:model.filterImmutable).length>0" ng-show="valintakoe.aktiivinen">
+	                            <form method="post">
 	                                <textarea ui-tinymce="tinymceOptions"
 	                                          ng-model="tinymceModel[valintakoe.valintakoeOid]"></textarea>
 	                            </form>
@@ -118,7 +123,7 @@
 	                        <table class="virkailija-table-1">
 	                            <thead>
 	                            <tr>
-	                                <th><input type="checkbox" ng-model="valintakoe.valittu"
+	                                <th><input ng-if="(valintakoe.hakijat|filter:model.filterImmutable).length>0" type="checkbox" ng-model="valintakoe.valittu"
 	                                           ng-change="model.checkAll(valintakoe);"/></th>
 	                                <th><a href="" ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">Nimi</a>
 	                                </th>
