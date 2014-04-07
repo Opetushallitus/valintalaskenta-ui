@@ -144,7 +144,7 @@ app.factory('Latausikkuna', function($log, $modal, DokumenttiProsessinTila) {
 		    	  };
 		    	  timer = $interval(function () {
 				        $scope.update();
-				  }, 2000);
+				  }, 10000);
 				  
 				  $scope.ok = function() {
 				  	if($scope.onKesken()) {
