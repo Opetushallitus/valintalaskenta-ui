@@ -93,46 +93,56 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 	$scope.naytaKokeita = 50;
 	// KELA TAULUKON CHECKBOXIT ALKAA
 	$scope.naytetaanHaut = false;
+	$scope.kaikkiHautValittu = false;
+	$scope.isValittu = function(haku) {
+		if(haku.oid == $routeParams.hakuOid) {
+			return true;
+		}
+		else {
+			return haku.valittu;
+		}
+		
+	}
+	$scope.isAllValittu = function() {
+		return _.reduce($scope.hakumodel.haut, function(memo, haku){
+				if($scope.isValittu(haku)) {
+					return memo;
+				}
+				return memo && haku.valittu;
+			}, true);
+	};
+	$scope.checkAllWith = function(kaikkienTila) {
+		_.each($scope.hakumodel.haut, function(haku) {
+			haku.valittu = kaikkienTila;
+		});
+		$scope.kaikkiHautValittu = kaikkienTila;//$scope.isAllValittu();
+	};
+	$scope.checkAllWith(false);
+	
 	$scope.naytaHaut = function() {
 		$scope.naytetaanHaut =true;
 	};
-	$scope.kaikkiHautValittu = false;
-	$scope.notThisHaku = function(haku) {
-		return haku != $scope.hakumodel.hakuOid;
-	};
-	$scope.filterNotThisHaku = function() {
-		return _.filter($scope.hakumodel.haut,function(haku) {
-			return $scope.notThisHaku(haku);
-		});
-	};
 	$scope.filterValitut = function() {
 		return _.filter($scope.hakumodel.haut,function(haku) {
-			return haku.valittu;
+			return $scope.isValittu(haku);
 		});
-	};
-	$scope.filterValitutExcludingThisHaku = function() {
-		return _.filter($scope.filterNotThisHaku(),function(haku) {
-			return haku.valittu;
-		});
-	};
-	$scope.isAllValittu = function() {
-		return $scope.filterNotThisHaku().length == $scope.filterValitutExcludingThisHaku().length;
 	};
 	$scope.check = function(oid) {
 		$scope.kaikkiHautValittu = $scope.isAllValittu();
 	};
+	
 	$scope.checkAll = function() {
-		var kaikkienTila = $scope.kaikkiHautValittu;
-		_.each($scope.hakumodel.haut, function(haku) {
-			haku.valittu = kaikkienTila;
-		});
-		$scope.kaikkiHautValittu = $scope.isAllValittu();
+		$scope.checkAllWith($scope.kaikkiHautValittu);
 	};
 	$scope.muodostaKelaDokumentti = function() {
-		KelaDokumentti.post({ 
-        	hakuOid: $routeParams.hakuOid},
+		var hakuOids = _.map($scope.filterValitut(), function(haku){
+				return haku.oid;
+		});
+		$log.info(hakuOids);
+		KelaDokumentti.post({},
         		{
-        		hakuOids: $scope.filterValitut()
+        		hakuOids: hakuOids,
+        		aineisto: "Aineistonnimi"
         		}, 
         		function (id) {
             Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html",

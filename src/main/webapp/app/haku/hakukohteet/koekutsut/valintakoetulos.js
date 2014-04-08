@@ -9,6 +9,7 @@
 		this.valintakokeetHakijoittainArray = [];
         this.errors = [];
         this.filter = "OSALLISTUU";
+        this.filterImmutable = "OSALLISTUU";
 		
 		this.refresh = function(hakukohdeOid) {
 		    model.hakukohdeOid = {};
