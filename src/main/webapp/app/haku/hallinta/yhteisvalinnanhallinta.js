@@ -92,6 +92,14 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 	$scope.virheet = VirheModel;
 	$scope.naytaKokeita = 50;
 	// KELA TAULUKON CHECKBOXIT ALKAA
+	$scope.aineistonnimi = "";
+	$scope.isNotBlank = function(str) {
+	   if (!str || str.length === 0 || str === "" || typeof str == 'undefined' || !/[^\s]/.test(str) || /^\s*$/.test(str) || str.replace(/\s/g,"") == ""){
+		    return false;
+	   } else {
+	   		return true;
+	   }
+	};
 	$scope.naytetaanHaut = false;
 	$scope.kaikkiHautValittu = false;
 	$scope.isValittu = function(haku) {
@@ -142,7 +150,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 		KelaDokumentti.post({},
         		{
         		hakuOids: hakuOids,
-        		aineisto: "Aineistonnimi"
+        		aineisto: $scope.aineistonnimi
         		}, 
         		function (id) {
             Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html",
