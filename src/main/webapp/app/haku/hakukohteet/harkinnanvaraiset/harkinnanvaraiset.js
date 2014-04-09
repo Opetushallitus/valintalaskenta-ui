@@ -113,7 +113,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Ilmoitus, Hake
     return model;
   });
 
-  function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmoitus, Latausikkuna, Koekutsukirjeet, OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
+  function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet, OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
       $scope.model = HarkinnanvaraisetModel;
       $scope.hakuOid =  $routeParams.hakuOid;;
