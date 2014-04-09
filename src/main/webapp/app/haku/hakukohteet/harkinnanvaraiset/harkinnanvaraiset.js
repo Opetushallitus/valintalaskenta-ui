@@ -1,4 +1,4 @@
-app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
+app.factory('HarkinnanvaraisetModel', function($log, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
     var model;
     model = new function() {
       this.valittu = true;
@@ -8,7 +8,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Ilmoitus, Hake
           this.errors = [];
         this.filterHarkinnanvaraiset = function() {
         	return _.filter(this.hakeneet,function(hakija) {
-        		return hakija.hakenutHarkinnanvaraisesti;
+        		return "true" === hakija.hakenutHarkinnanvaraisesti;
   			});
         };
         this.filterValitut = function() {
@@ -135,8 +135,7 @@ app.factory('HarkinnanvaraisetModel', function(HakukohdeHenkilot, Ilmoitus, Hake
       };
       
       $scope.muodostaOsoitetarrat = function() {
-      	$log.info($scope.model.valitutHakemusOids());
-    	  OsoitetarratHakemuksille.post({
+      	  OsoitetarratHakemuksille.post({
     		  
     	  },
     	  {
