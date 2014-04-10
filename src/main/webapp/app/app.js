@@ -359,7 +359,7 @@ app.factory('ValintalaskentaKaynnissa', function($resource) {
     });
 });
 app.factory('ValintalaskentaKeskeyta', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/keskeytaAktiivinenValintalaskenta", {}, {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/keskeytaAktiivinenValintalaskenta", {uuid: "@uuid"}, {
         keskeyta: {method: "POST"}
     });
 });

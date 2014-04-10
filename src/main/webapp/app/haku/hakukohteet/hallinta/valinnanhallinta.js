@@ -35,20 +35,28 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
     return model;
 });
 
-function ValinnanhallintaController($scope, $routeParams, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
+function ValinnanhallintaController($scope, $routeParams, $modal, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
     $scope.model = ValinnanhallintaModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
 
     $scope.kaynnistaValintalaskenta = function (valinnanvaihe) {
-    	var hakuOid = $routeParams.hakuOid;
-        var hakukohdeOid = $routeParams.hakukohdeOid;
-        ValintalaskentaMuistissa.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid, valinnanvaihe: valinnanvaihe},[], function (success) {
-        	Ilmoitus.avaa("Valintalaskenta hakukohteelle käynnistetty", "Valintalaskenta on nyt käynnissä.");
-        }, function (error) {
-        	Ilmoitus.avaa("Valintalaskenta epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. Valintalaskenta epäonnistui palvelin virheeseen:" + error.data, IlmoitusTila.ERROR);
-        });
+        var valintalaskentaInstance = $modal.open({
+	      backdrop: 'static',
+	      templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
+	      controller: ValintalaskentaIkkunaCtrl,
+	      resolve: {
+	      	oids: function () {
+	      		return {
+		      		hakuOid: $routeParams.hakuOid,
+		      		hakukohdeOid: $routeParams.hakukohdeOid,
+		      		valinnanvaihe: valinnanvaihe
+	      		}
+	      	}
+	      }
+	    });
+        
     }
 
     $scope.kaynnistaValintakoelaskenta = function () {

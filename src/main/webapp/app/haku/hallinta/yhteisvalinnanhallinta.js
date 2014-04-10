@@ -31,58 +31,7 @@
 
 });
 
-function ModalInstanceCtrl($scope, $log, $interval, $routeParams, $modalInstance, HakuModel, ValintalaskentaKeskeyta, ValintalaskentaKaynnissa, ValintalaskentaMuistissa, ValintalaskentaStatus) {
-	$scope.uuid = null;
-	$scope.tyot = [];
-	$scope.nimi = HakuModel.getNimi();
-	$scope.lisaa = false;
-	$scope.getProsentit = function(t) {
-		return t.prosentteina * 100;
-	};
-	ValintalaskentaMuistissa.aktivoi({hakuOid: $routeParams.hakuOid}, [], function(uuid) {
-		$scope.uuid = uuid.latausUrl;
-		update();
-	}, function() {
-		ValintalaskentaKaynnissa.hae(function(uuid) {
-			$scope.uuid = uuid.latausUrl;
-			update();
-		});
-	});
-	
-	var update = function () {
-		if($scope.uuid != null) {
-			ValintalaskentaStatus.get({uuid:$scope.uuid}, function(r) {
-				if(r.prosessi) {
-				    $scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
-                    $scope.virheet = r.prosessi.exceptions;
-                    $scope.varoitukset = r.prosessi.varoitukset;
-				}
-			});
-		}
-    };
-    
-	var timer = $interval(function () {
-        update();
-    }, 10000);
 
-	$scope.peruuta = function() {
-    	ValintalaskentaKeskeyta.keskeyta();
-    };
-
-    $scope.naytaLisaa = function() {
-    	$scope.lisaa = !$scope.lisaa;
-    };
-
-	  $scope.ok = function () {
-		  $interval.cancel(timer);
-	    $modalInstance.close(); //$scope.selected.item);
-	  };
-
-	  $scope.cancel = function () {
-		  $interval.cancel(timer);
-	    $modalInstance.dismiss('cancel');
-	  };
-};
 
 function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKelaFtp, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
 	$scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -146,7 +95,6 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 		var hakuOids = _.map($scope.filterValitut(), function(haku){
 				return haku.oid;
 		});
-		$log.info(hakuOids);
 		KelaDokumentti.post({},
         		{
         		hakuOids: hakuOids,
@@ -172,19 +120,19 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 	
 	///////////////////
 	$scope.aktivoiMuistinvarainenValintalaskenta = function () {
-		
 	    var valintalaskentaInstance = $modal.open({
 	      backdrop: 'static',
-	      templateUrl: 'haku/hallinta/modaalinen/valintalaskentaikkuna.html',
-	      controller: ModalInstanceCtrl,
+	      templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
+	      controller: ValintalaskentaIkkunaCtrl,
 	      resolve: {
+	      	oids: function () {
+	      		return {
+		      		hakuOid: $routeParams.hakuOid,
+		      		hakukohdeOid: null,
+		      		valinnanvaihe: null
+	      		}
+	      	}
 	      }
-	    });
-
-	    valintalaskentaInstance.result.then(function () { // selectedItem
-	    	
-	    }, function () {
-	    	
 	    });
 	};
 
