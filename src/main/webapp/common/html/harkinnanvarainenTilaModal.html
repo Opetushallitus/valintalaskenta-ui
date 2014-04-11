@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <span>Harkinnanvarainen</span>
+    <span>{{ 'discretionary.modal.title' | i18n }}</span>
 </div>
 
 <div class="modal-body">
@@ -13,15 +13,15 @@
     <form class="form-horizontal" role="form">
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">Hakemuksen tunniste</label>
-            <div class="col-sm-9">
+            <label class="col-sm-4 control-label">{{ 'discretionary.modal.oid' | i18n }}</label>
+            <div class="col-sm-8">
                 <p class="form-control-static">{{hakemus.hakemusOid}}</p>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">Vastaanottotieto</label>
-            <div class="col-sm-9">
+            <label class="col-sm-4 control-label">{{ 'discretionary.modal.state' | i18n }}</label>
+            <div class="col-sm-8">
                 <select ng-model="hakemus.muokattuHarkinnanvaraisuusTila">
                     <option value="HYVAKSYTTY">Hyväksytty</option>
                     <option value="EI_HYVAKSYTTY">Ei Hyväksytty</option>

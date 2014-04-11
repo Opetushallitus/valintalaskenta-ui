@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate','ui.tinymce', 'valvomo','ui.bootstrap'], function($rootScopeProvider) {
+var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'localization', 'ui.tinymce', 'valvomo','ui.bootstrap'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
@@ -359,7 +359,7 @@ app.factory('ValintalaskentaKaynnissa', function($resource) {
     });
 });
 app.factory('ValintalaskentaKeskeyta', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/keskeytaAktiivinenValintalaskenta", {}, {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/keskeytaAktiivinenValintalaskenta", {uuid: "@uuid"}, {
         keskeyta: {method: "POST"}
     });
 });
