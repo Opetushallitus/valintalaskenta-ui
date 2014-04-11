@@ -24,14 +24,14 @@
                                     hakija.lisahakuHyvaksytty = "Kyllä";
                                 }
                             });
-                        })
+                        });
                     });    
                 }
                 
             }, function(error) {
                 model.errors.push(error);
             });
-		}
+		};
 
        this.updateHakemus = function(hakemusOid) {
             HakemusKey.put({
@@ -40,11 +40,11 @@
                "value": model.hakukohdeOid
            });
            model.hakeneet.forEach(function(hakija) {
-               if(hakija.oid == hakemusOid) {
+               if(hakija.oid === hakemusOid) {
                    hakija.lisahakuHyvaksytty = "Kyllä";
                }
            });
-       }
+       };
 
         this.removeHakemusFromHyvaksytyt = function(hakemusOid) {
             HakemusKey.put({
@@ -53,17 +53,17 @@
                 "value": ""
             });
             model.hakeneet.forEach(function(hakija) {
-                if(hakija.oid == hakemusOid) {
+                if(hakija.oid === hakemusOid) {
                     hakija.lisahakuHyvaksytty = null;
                 }
             });
-        }
+        };
 
 		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
-            if(hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
+            if(hakukohdeOid && hakukohdeOid !== model.hakukohdeOid) {
                 model.refresh(hakukohdeOid, hakuOid);
             }
-        }
+        };
 
 	};
 
@@ -87,7 +87,7 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
 
     $scope.submit = function() {
         //HakeneetModel.submit();
-    }
+    };
 
     $scope.lisahakuValitse = function(hakemusOid) {
         $scope.model.updateHakemus(hakemusOid);
