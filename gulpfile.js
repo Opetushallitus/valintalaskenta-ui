@@ -4,7 +4,8 @@ var gulp = require('gulp'),
 	runSequence = require('run-sequence'),
 	clean = require('gulp-clean'),
 	watch = require('gulp-watch'),
-	livereload = require('gulp-livereload');
+	livereload = require('gulp-livereload'),
+    karma = require('gulp-karma');
 
 var paths = {
 	bower_components: [
@@ -61,6 +62,11 @@ gulp.task('default', function (callback) {
 	runSequence('scripts', callback);
 });
 
+// Development
+gulp.task('dev', function (callback) {
+    runSequence(['test', 'livereload'], callback);
+});
+
 
 gulp.task('tinymce', function () {
 	return gulp
@@ -84,11 +90,12 @@ gulp.task('test', function () {
 	return gulp.src(paths.unitTests)
 		.pipe(karma({
 			configFile: 'src/test/ui/valintalaskenta-test.conf.js',
-			action: 'run'
-		})
-	);
+			action: 'watch'
+		}).on('error', function (err) {
+            // Make sure failed tests cause gulp to exit non-zero
+            throw err;
+        }));
 });
-
 
 // Livereload
 gulp.task('livereload', function () {

@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: '../../..',
+    basePath: '../..',
 
 
     // frameworks to use
@@ -14,7 +14,14 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'unit/*.js'
+        'main/webapp/common/jslib/angular.js',
+        'main/webapp/common/jslib/jquery.js',
+        'main/webapp/common/jslib/*.js',
+        'main/webapp/app/app.js',
+        'main/webapp/app/**/*.js',
+        'main/webapp/common/js/**/*.js',
+        'test/ui/angular-mocks.js',
+        'test/ui/unit/**/*.js'
     ],
 
 
@@ -54,7 +61,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome', 'Firefox'],
+    browsers: ['Chrome'],
 
 
     // If browser does not capture in given timeout [ms], kill it
