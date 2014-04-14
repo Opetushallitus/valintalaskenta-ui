@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 describe('navigationController', function(){
@@ -82,3 +83,5 @@ describe('ValintaesitysController', function(){
     });
 
 });
+
+    */

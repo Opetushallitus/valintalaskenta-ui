@@ -489,7 +489,12 @@ app.factory('Henkilot', function($resource) {
 		query:  {method:'GET', isArray:false}
     });
 });
-
+app.factory('HakemusKey', function($resource) {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid/:key", {oid: "@oid", key: "@key"}, {
+        get: {method: "GET", isArray: true},
+        put: {method: "PUT", isArray: false}
+    });
+});
 
 
 
