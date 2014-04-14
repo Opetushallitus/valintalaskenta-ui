@@ -377,10 +377,9 @@ app.factory('ValintalaskentaMuistissa', function($resource) {
 
 app.factory('Sijoitteluktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/aktivoi", {}, {
-        aktivoi: {method: "GET"}
+        aktivoi: {method: "POST"}
     });
 });
-
 
 app.factory('AktivoiHaunValintalaskenta', function($resource) {
   return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoiHaunValintalaskenta", {}, {

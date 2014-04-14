@@ -157,11 +157,12 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 	
     $scope.kaynnistaSijoittelu = function() {
         var hakuoid = $routeParams.hakuOid;
-        Sijoitteluktivointi.aktivoi({hakuOid: hakuoid}, function(d) {
-        	Ilmoitus.avaa("Sijoittelu on käynnissä", "Sijoittelu on nyt käynnissä.");
+        Sijoitteluktivointi.aktivoi({hakuOid: hakuoid}, {}, function(id) {
+       		Latausikkuna.avaaKustomoitu(id, "Suoritetaan sijoittelua haulle", "", "haku/hallinta/modaalinen/sijoitteluikkuna.html", {});
         }, function() {
         	Ilmoitus.avaa("Sijoittelun aktivointi epäonnistui", "Sijoittelun aktivointi epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
+        
     };
 
     $scope.aktivoiHaunValintakoelaskenta = function() {
