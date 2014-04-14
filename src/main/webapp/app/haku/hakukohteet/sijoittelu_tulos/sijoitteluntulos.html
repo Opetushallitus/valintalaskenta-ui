@@ -42,7 +42,7 @@
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
                         <tr>
-                            <th colspan="9">
+                            <th colspan="10">
                                 {{jono.nimi}}: {{jono.prioriteetti}} /
                                 <!---Valintatapajono OID: {{jono.oid}}-->
                                 Aloituspaikat: {{jono.aloituspaikat}} /
@@ -57,6 +57,7 @@
                             <th>Pisteet</th>
                             <th>Sijoittelun tila</th>
                             <th>Vastaanottotieto</th>
+                            <th>{{ 'sijoitteluntulos.header.enrollmentinfo' | i18n }}</th>
                             <th>Muokattu</th>
                             <th>Muokkaa</th>
                             <th>Toiminto</th>
@@ -126,6 +127,26 @@
                                         </span>
                                 </div>
                             </td>
+
+                            <td>
+                                <div ng-show="
+                                    (
+                                        (updateOph || updateOrg) && (hakemus.vastaanottoTila == 'VASTAANOTTANUT_LASNA' ||
+                                        hakemus.vastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA')
+                                    )">
+                                      <select ng-model="hakemus.muokattuIlmoittautumisTila">
+                                          <option value="EI_TEHTY">{{ 'sijoitteluntulos.enrollmentinfo.notdone' | i18n }}</option>
+                                          <option value="LASNA_KOKO_LUKUVUOSI">{{ 'sijoitteluntulos.enrollmentinfo.present' | i18n }}</option>
+                                          <option value="POISSA_KOKO_LUKUVUOSI">{{ 'sijoitteluntulos.enrollmentinfo.notpresent' | i18n }}</option>
+                                          <option value="EI_ILMOITTAUTUNUT">{{ 'sijoitteluntulos.enrollmentinfo.noenrollment' | i18n }}</option>
+                                          <option value="LASNA_SYKSY">{{ 'sijoitteluntulos.enrollmentinfo.presentfall' | i18n }}</option>
+                                          <option value="POISSA_SYKSY">{{ 'sijoitteluntulos.enrollmentinfo.notpresentfall' | i18n }}</option>
+                                          <option value="LASNA">{{ 'sijoitteluntulos.enrollmentinfo.presentspring' | i18n }}</option>
+                                          <option value="POISSA">{{ 'sijoitteluntulos.enrollmentinfo.notpresentspring' | i18n }}</option>
+                                      </select>
+                                 </div>
+                            </td>
+
                             <td>
                                 <modal modal-template="sijoitteluLogModal.html">
                                     <modal-open>
