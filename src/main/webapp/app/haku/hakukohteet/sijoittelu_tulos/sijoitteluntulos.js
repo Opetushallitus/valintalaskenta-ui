@@ -118,11 +118,12 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                     //make rest calls in separate scope to prevent hakemusOid to be overridden during rest call
                                     currentHakemus.vastaanottoTila = "";
                                     currentHakemus.muokattuVastaanottoTila = "";
+                                    currentHakemus.muokattuIlmoittautumisTila = "";
 
                                     result.some(function (vastaanottotila) {
                                         if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid) {
                                             currentHakemus.logEntries = vastaanottotila.logEntries;
-                                            if (vastaanottotila.tila == null) {
+                                            if (vastaanottotila.tila === null) {
                                                 vastaanottotila.tila = "";
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
@@ -130,6 +131,12 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT_POISSAOLEVA" || currentHakemus.vastaanottoTila === "VASTAANOTTANUT_LASNA") {
                                                 hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
                                             }
+
+                                            if (vastaanottotila.ilmoittautumisTila === null) {
+                                                vastaanottotila.ilmoittautumisTila = "EI_TEHTY";
+                                            }
+                                            currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
+                                            currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             return true;
                                         }
                                     });
@@ -139,6 +146,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                         }, function (error) {
                             model.errors.push(error);
                         });
+
 
 
                     });
@@ -177,7 +185,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
         		return valintatapajono.hakemukset;
         	})), function(hakemus) {
-        		return hakemus.vastaanottoTila != hakemus.muokattuVastaanottoTila;
+        		return (hakemus.vastaanottoTila !== hakemus.muokattuVastaanottoTila || hakemus.ilmoittautumisTila !== hakemus.muokattuIlmoittautumisTila);
         	});
         	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
@@ -191,8 +199,6 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             var tilaParams = {
                 hakuoid: model.hakuOid,
                 hakukohdeOid: model.hakukohdeOid,
-                //valintatapajonoOid: valintatapajonoOid,
-                //hakemusOid: hakemus.hakemusOid,
                 selite: selite
             };
             
@@ -200,6 +206,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
             	return {
             		tila: hakemus.muokattuVastaanottoTila,
+                    ilmoittautumisTila: hakemus.muokattuIlmoittautumisTila,
             		valintatapajonoOid: valintatapajonoOid,
                 	hakemusOid: hakemus.hakemusOid
             	};
