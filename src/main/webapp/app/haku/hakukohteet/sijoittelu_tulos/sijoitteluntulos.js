@@ -203,9 +203,14 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                 hakukohdeOid: model.hakukohdeOid,
                 selite: selite
             };
-            
-            var tilaObj = _.map(muokatutHakemukset, function(hakemus) {
 
+            var tilaObj = _.map(muokatutHakemukset, function(hakemus) {
+                if (hakemus.muokattuVastaanottoTila === '') {
+                    hakemus.muokattuVastaanottoTila = null;
+                }
+                if (hakemus.muokattuIlmoittautumisTila === '') {
+                    hakemus.muokattuIlmoittautumisTila = null;
+                }
             	return {
             		tila: hakemus.muokattuVastaanottoTila,
                     ilmoittautumisTila: hakemus.muokattuIlmoittautumisTila,
