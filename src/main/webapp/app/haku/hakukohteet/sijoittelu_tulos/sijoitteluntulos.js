@@ -173,9 +173,11 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
         //refresh if haku or hakukohde has changed
         this.refreshIfNeeded = function (hakuOid, hakukohdeOid, isHakukohdeChanged) {
-            if (model.sijoittelu.hakuOid !== hakuOid || isHakukohdeChanged) {
-                model.refresh(hakuOid, hakukohdeOid);
-            }
+        	if(hakukohdeOid && hakuOid) {
+	            if (model.sijoittelu.hakuOid !== hakuOid || isHakukohdeChanged) {
+	                model.refresh(hakuOid, hakukohdeOid);
+	            }
+        	}
         };
 
         this.updateHakemuksienTila = function (valintatapajonoOid) {
