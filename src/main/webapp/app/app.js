@@ -140,6 +140,7 @@ app.factory('Latausikkuna', function($log, $modal, DokumenttiProsessinTila) {
 					return t.prosentteina * 100;
 				  };
 		    	  $scope.sulje = function() {
+		    	  		DokumenttiProsessinTila.ilmoita({id: id.id, poikkeus:"Käyttäjän sulkema"});
 		    	  		$modalInstance.dismiss('cancel');
 		    	  };
 		    	  timer = $interval(function () {
