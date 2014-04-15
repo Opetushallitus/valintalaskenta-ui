@@ -9,12 +9,12 @@
 			<div class="col-sm-9"><progressbar ng-class="{progressBarDanger: onVirheita()}" class="progress-striped active" value="getProsentit(prosessi.kokonaistyo)" type="info">{{getProsentit(prosessi.kokonaistyo)}}%</progressbar></div>				
 			<div class="col-sm-3" ng-show="prosessi.kokonaistyo.kokonaismaara">{{prosessi.kokonaistyo.tehty}} / {{prosessi.kokonaistyo.kokonaismaara}}</div>
 			<br>
-			<div class="col-sm-12">
+			<div ng-show="onKesken()" class="col-sm-12">
 			Suoritus etenee virheettömästi ja varoituksetta
 			</div>
-		</div>
-		<div ng-hide="onKesken()">
+			<div ng-hide="onKesken()" class="col-sm-12">
 			Sijoittelu on suoritettu onnistuneesti!
+			</div>
 		</div>
 		<div ng-show="onVirheita()">
 			Yritä uudelleen tai ota yhteyttä ylläpitoon.
