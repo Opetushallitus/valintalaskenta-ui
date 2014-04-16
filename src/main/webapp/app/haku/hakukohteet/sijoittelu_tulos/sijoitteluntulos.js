@@ -1,5 +1,7 @@
 "use strict";
-app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila, Valintatapajono) {
+app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
+                                               $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila, Valintatapajono,
+                                               HaunTiedot) {
 
     var model = new function () {
 
@@ -53,6 +55,11 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             model.latestSijoitteluajo = {};
             model.sijoitteluTulokset = {};
             model.hakemusErittelyt.length = 0;
+            model.haku = {};
+
+            HaunTiedot.get({hakuOid: hakuOid}, function(result) {
+                model.haku = result;
+            });
 
             LatestSijoitteluajoHakukohde.get({
                 hakukohdeOid: hakukohdeOid,
@@ -334,5 +341,13 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Lat
             i = 0;
         }
         return i;
+    };
+
+    $scope.isKorkeakoulu = function() {
+        var returnValue = false;
+        if ($scope.model.haku.kohdejoukkoUri) {
+            returnValue = $scope.model.haku.kohdejoukkoUri.indexOf('_12') !== -1;
+        }
+        return returnValue;
     };
 }
