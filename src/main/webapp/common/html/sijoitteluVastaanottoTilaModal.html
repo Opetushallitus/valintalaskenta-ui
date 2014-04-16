@@ -26,6 +26,7 @@
             <div class="col-sm-9">
                 <select ng-model="hakemus.muokattuVastaanottoTila">
                     <option value="">Kesken</option>
+                    <option ng-if="isKorkeakoulu()" value="EHDOLLISESTI_VASTAANOTTANUT">Ehdollisesti vastaanottanut</option>
                     <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
                     <option value="VASTAANOTTANUT_LASNA">Vastaanottanut läsnäolevana</option>
                     <option value="VASTAANOTTANUT_POISSAOLEVA">Vastaanottanut poissaolevana</option>

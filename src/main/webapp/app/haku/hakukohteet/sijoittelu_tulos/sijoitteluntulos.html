@@ -104,6 +104,7 @@
                                         </span>
                                         <span ng-if="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')) && hakemus.vastaanottoTila == 'ILMOITETTU'">
                                             <select ng-model="hakemus.muokattuVastaanottoTila">
+                                                <option ng-if="isKorkeakoulu()" value="EHDOLLISESTI_VASTAANOTTANUT">Ehdollisesti vastaanottanut</option>
                                                 <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
                                                 <option value="VASTAANOTTANUT_LASNA">Vastaanottanut läsnäolevana
                                                 </option>
@@ -118,6 +119,7 @@
                                             </select>
                                         </span>
                                         <span ng-if="!((hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')) && hakemus.vastaanottoTila == 'ILMOITETTU') && !(hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == '')">
+                                            <span ng-if="hakemus.vastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT'">Ehdollisesti vastaanottanut</span>
                                             <span ng-if="hakemus.vastaanottoTila == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
                                             <span ng-if="hakemus.vastaanottoTila == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
                                             <span ng-if="hakemus.vastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
@@ -132,7 +134,8 @@
                                 <div ng-show="
                                     (
                                         (updateOph || updateOrg) && (hakemus.vastaanottoTila == 'VASTAANOTTANUT_LASNA' ||
-                                        hakemus.vastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA')
+                                        hakemus.vastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA' ||
+                                        hakemus.vastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')
                                     )">
                                       <select ng-model="hakemus.muokattuIlmoittautumisTila">
                                           <option value="EI_TEHTY">{{ 'sijoitteluntulos.enrollmentinfo.notdone' | i18n }}</option>
@@ -161,6 +164,7 @@
                                                              valintatapajono-oid="jono.oid"
                                                              haku-oid="model.hakuOid"
                                                              hakukohde-oid="model.hakukohdeOid"
+                                                             haku="model.haku"
                                                              enabled="updateOph"/>
                             </td>
                             <td>
@@ -208,6 +212,7 @@
                     <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
                     <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span>
                     <span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span>
+                    <span ng-if="entry.muutos == 'EHDOLLISESTI_VASTAANOTTANUT'">Ehdollisesti vastaanottanut</span>
                 </td>
                 <td fast-bind-once="entry.selite"></td>
             </tr>

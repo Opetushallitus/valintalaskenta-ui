@@ -228,7 +228,8 @@ app.directive('sijoitteluVastaanottoTila', function () {
             hakukohdeOid: '=',
             valintatapajonoOid: '=',
             enabled: '=',
-            hakemus: '='
+            hakemus: '=',
+            haku: '='
         },
         templateUrl: '../common/html/sijoitteluVastaanottoTila.html',
         controller: function ($scope, VastaanottoTila, HakemuksenVastaanottoTila, $modal) {
@@ -282,6 +283,14 @@ app.directive('sijoitteluVastaanottoTila', function () {
 
                         $scope.sulje = function () {
                             $modalInstance.dismiss('cancel');
+                        };
+
+                        $scope.isKorkeakoulu = function() {
+                            var returnValue = false;
+                            if ($scope.haku.kohdejoukkoUri) {
+                                returnValue = $scope.haku.kohdejoukkoUri.indexOf('_12') !== -1;
+                            }
+                            return returnValue;
                         };
                     },
                     resolve: {

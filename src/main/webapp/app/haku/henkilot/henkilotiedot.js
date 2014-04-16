@@ -1,10 +1,14 @@
 "use strict";
-app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, LatestSijoittelunTilat, ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty, HakukohdeAvaimet, HakemusAdditionalData) {
+app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus, HakukohdeNimi,
+                                            ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe,
+                                            SijoittelunVastaanottotilat, LatestSijoittelunTilat,
+                                            ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
+                                            HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot) {
     var model = new function () {
         this.hakemus = {};
         this.hakutoiveetMap = {};
         this.hakutoiveet = [];
-
+        this.haku = {};
         this.errors = [];
 
         this.refresh = function (hakuOid, hakemusOid) {
@@ -13,7 +17,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             model.hakutoiveetMap = {};
             model.hakutoiveet.length = 0;
             model.errors.length = 0;
+            model.haku = {};
 
+            HaunTiedot.get({hakuOid: hakuOid}, function(result) {
+                model.haku = result;
+            });
 
             Hakemus.get({oid: hakemusOid}, function (result) {
                 model.hakemus = result;
