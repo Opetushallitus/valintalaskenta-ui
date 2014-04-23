@@ -34,9 +34,15 @@
                 <!--<input id="osallistuu" type="checkbox"  ng-model="vainOsallistuvat" />-->
                 <!--<label for="osallistuu">Vain osallistuvat</label>-->
 
-                <form name="form" ng-submit="submit()" ng-if="model.avaimet">
+                <form name="form" ng-if="model.avaimet">
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                            class="btn btn-primary btn-sm margin-bottom-2" type="submit">Tallenna
+                            class="btn btn-primary btn-sm margin-bottom-2" ng-click="submit()">Tallenna
+                    </button>
+                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" ng-click="pistesyottoVientiXlsx()"
+                            class="btn btn-default btn-sm margin-bottom-2">Vie taulukkolaskentaan
+                    </button>
+                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
+                            class="btn btn-default btn-sm margin-bottom-2 disabled">Tuo taulukkolaskennasta
                     </button>
                     <div>
                         <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista
@@ -146,7 +152,7 @@
                         </tbody>
                     </table>
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                            class="btn btn-primary btn-sm margin-top-2" type="submit">Tallenna
+                            class="btn btn-primary btn-sm margin-top-2" ng-click="submit()">Tallenna
                     </button>
                     <div>
                         <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista

@@ -430,6 +430,12 @@ app.factory('KelaDokumentti', function($resource) {
 	});
 });
 
+app.factory('PistesyottoVienti', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/pistesyotto/vienti", {}, {
+		vie: {method:'POST', isArray:false}
+	});
+});
+
 app.factory('Koekutsukirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/koekutsukirjeet/aktivoi", {}, {
 		post:  {method:'POST', isArray:false}

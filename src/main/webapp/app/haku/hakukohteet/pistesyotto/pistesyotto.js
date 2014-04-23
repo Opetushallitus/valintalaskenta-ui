@@ -144,7 +144,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
 });
 
 
-function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel, HakukohdeModel) {
+function PistesyottoController($scope, $log, $timeout, $routeParams, PistesyottoVienti, PistesyottoModel, Ilmoitus, IlmoitusTila, Latausikkuna, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = PistesyottoModel;
     $scope.hakuOid = $routeParams.hakuOid;
@@ -164,7 +164,18 @@ function PistesyottoController($scope, $timeout, $routeParams, PistesyottoModel,
     $scope.submit = function () {
         PistesyottoModel.submit();
     }
-
+	
+    $scope.pistesyottoVientiXlsx = function() {
+    	PistesyottoVienti.vie({
+    		hakukohdeOid: $scope.hakukohdeOid,
+    		hakuOid: $routeParams.hakuOid},
+    		{}, function (id) {
+            Latausikkuna.avaa(id, "Pistesyöttötietojen vienti taulukkolaskentaan", "");
+        }, function () {
+            Ilmoitus.avaa("Pistesyöttötietojen vienti epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+        });
+    };
+    
     $scope.showTiedotPartial = function (hakija) {
         hakija.showTiedotPartial = !hakija.showTiedotPartial;
     };
