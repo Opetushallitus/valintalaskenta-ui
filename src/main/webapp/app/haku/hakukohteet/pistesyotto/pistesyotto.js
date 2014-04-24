@@ -144,7 +144,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
 });
 
 
-function PistesyottoController($scope, $log, $timeout, $routeParams, PistesyottoVienti, PistesyottoModel, Ilmoitus, IlmoitusTila, Latausikkuna, HakukohdeModel) {
+function PistesyottoController($scope, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus, IlmoitusTila, Latausikkuna, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = PistesyottoModel;
     $scope.hakuOid = $routeParams.hakuOid;
