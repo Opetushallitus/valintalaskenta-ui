@@ -164,7 +164,32 @@ function PistesyottoController($scope, $log, $timeout, $routeParams, $upload, Pi
     $scope.submit = function () {
         PistesyottoModel.submit();
     }
-	
+	$scope.pistesyottoTuontiXlsx = function($files) {
+		var file = $files[0];
+		var fileReader = new FileReader();
+	    fileReader.readAsArrayBuffer(file);
+	    var hakukohdeOid = $scope.hakukohdeOid;
+	    var hakuOid = $routeParams.hakuOid;
+	    fileReader.onload = function(e) {
+			$scope.upload = $upload.http({
+	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/pistesyotto/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid, //upload.php script, node.js route, or servlet url
+				method: "POST",
+				headers: {'Content-Type': 'application/octet-stream'},
+				data: e.target.result
+			}).progress(function(evt) {
+				//console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+			}).success(function(id, status, headers, config) {
+				Latausikkuna.avaaKustomoitu(id, "Pistesyöttötietojen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
+	            function(dokumenttiId) {
+	            	// tee paivitys
+	            	$scope.model.refresh(hakukohdeOid, hakuOid);
+	            }
+	            );
+			}).error(function(data) {
+			    //error
+			});
+	    };
+	};
     $scope.pistesyottoVientiXlsx = function() {
     	PistesyottoVienti.vie({
     		hakukohdeOid: $scope.hakukohdeOid,

@@ -1,6 +1,26 @@
 ﻿<h1>Valintojen toteuttaminen</h1>
 <div ng-include="'haku/topNavigation.html'"/>
-
+<style>
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 999px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+</style>
 <div class="tabsheets">
 
     <div ng-include="'haku/hakukohdelista.html'"></div>
@@ -38,12 +58,14 @@
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                             class="btn btn-primary btn-sm margin-bottom-2" ng-click="submit()">Tallenna
                     </button>
-                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" ng-click="pistesyottoVientiXlsx()"
+                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
+                    		ng-click="pistesyottoVientiXlsx()"
                             class="btn btn-default btn-sm margin-bottom-2">Vie taulukkolaskentaan
                     </button>
-                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                            class="btn btn-default btn-sm margin-bottom-2 disabled">Tuo taulukkolaskennasta
-                    </button>
+                    <span	ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
+                    		class="btn btn-primary btn-sm margin-bottom-2 btn-file">
+					    Tuo taulukkolaskennasta <input type="file" ng-file-select="pistesyottoTuontiXlsx($files)" >
+					</span>
                     <div>
                         <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista
                             virheet!
