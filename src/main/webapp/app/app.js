@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'localization', 'ui.tinymce', 'valvomo','ui.bootstrap'], function($rootScopeProvider) {
+var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'localization', 'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
@@ -427,6 +427,12 @@ app.factory('AktivoiKelaFtp', function($resource) {
 app.factory('KelaDokumentti', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/aktivoi", {}, {
 		post:  {method:'POST', isArray:false}
+	});
+});
+
+app.factory('PistesyottoVienti', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/pistesyotto/vienti", {}, {
+		vie: {method:'POST', isArray:false}
 	});
 });
 
