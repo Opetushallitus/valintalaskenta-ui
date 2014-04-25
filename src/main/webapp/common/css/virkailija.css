@@ -2249,43 +2249,32 @@ dl.dl-horizontal {
 .kaavaeditor-blue {
   color: #147fa2; }
 
-.gradingformula,
-.gradingformula-dragged {
+.gradingformula {
   padding: 1em; }
-  .gradingformula ul,
-  .gradingformula-dragged ul {
+  .gradingformula ul {
     background-image: url(../img/logictree-line-vertical.gif);
     background-repeat: no-repeat;
     background-position: 10px 0px;
     padding: 13px 0px 0px 10px;
     margin: 0px; }
-    .gradingformula ul > li,
-    .gradingformula-dragged ul > li {
+    .gradingformula ul > li {
       display: block;
       list-style-type: none;
       padding: 0px 0px 13px 18px;
       background-image: url(../img/logictree-line-vertical.gif), url(../img/logictree-line-horizontal.gif);
       background-repeat: repeat-y, no-repeat;
       background-position: 0px -13px, 2px 9px; }
-    .gradingformula ul > li:last-child,
-    .gradingformula-dragged ul > li:last-child {
+    .gradingformula ul > li:last-child {
       background-repeat: no-repeat, no-repeat;
       padding-bottom: 0px; }
-  .gradingformula ul.function-pair,
-  .gradingformula-dragged ul.function-pair {
+  .gradingformula ul.function-pair {
     background-repeat: repeat-y; }
-  .gradingformula .frame, .gradingformula .function, .gradingformula .parameter,
-  .gradingformula-dragged .frame,
-  .gradingformula-dragged .function,
-  .gradingformula-dragged .parameter {
+  .gradingformula .frame, .gradingformula .function, .gradingformula .parameter {
     display: inline-block;
     position: relative;
     height: 18px;
     line-height: 18px; }
-    .gradingformula .frame .icon, .gradingformula .function .icon, .gradingformula .parameter .icon,
-    .gradingformula-dragged .frame .icon,
-    .gradingformula-dragged .function .icon,
-    .gradingformula-dragged .parameter .icon {
+    .gradingformula .frame .icon, .gradingformula .function .icon, .gradingformula .parameter .icon {
       display: inline-block;
       margin-right: 0.5em;
       width: 18px;
@@ -2295,39 +2284,24 @@ dl.dl-horizontal {
       background-image: url("../img/18x18-ui-icons.png");
       background-repeat: no-repeat;
       cursor: move; }
-      .gradingformula .frame .icon.dropmenu, .gradingformula .function .icon.dropmenu, .gradingformula .parameter .icon.dropmenu,
-      .gradingformula-dragged .frame .icon.dropmenu,
-      .gradingformula-dragged .function .icon.dropmenu,
-      .gradingformula-dragged .parameter .icon.dropmenu {
+      .gradingformula .frame .icon.dropmenu, .gradingformula .function .icon.dropmenu, .gradingformula .parameter .icon.dropmenu {
         position: relative;
         background-image: none;
         width: auto; }
-        .gradingformula .frame .icon.dropmenu > .dropmenu-list, .gradingformula .function .icon.dropmenu > .dropmenu-list, .gradingformula .parameter .icon.dropmenu > .dropmenu-list,
-        .gradingformula-dragged .frame .icon.dropmenu > .dropmenu-list,
-        .gradingformula-dragged .function .icon.dropmenu > .dropmenu-list,
-        .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list {
+        .gradingformula .frame .icon.dropmenu > .dropmenu-list, .gradingformula .function .icon.dropmenu > .dropmenu-list, .gradingformula .parameter .icon.dropmenu > .dropmenu-list {
           position: absolute;
           top: 16px;
           left: 0px;
           background-image: none;
           background-color: #eeeeee; }
-          .gradingformula .frame .icon.dropmenu > .dropmenu-list > li, .gradingformula .function .icon.dropmenu > .dropmenu-list > li, .gradingformula .parameter .icon.dropmenu > .dropmenu-list > li,
-          .gradingformula-dragged .frame .icon.dropmenu > .dropmenu-list > li,
-          .gradingformula-dragged .function .icon.dropmenu > .dropmenu-list > li,
-          .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list > li {
+          .gradingformula .frame .icon.dropmenu > .dropmenu-list > li, .gradingformula .function .icon.dropmenu > .dropmenu-list > li, .gradingformula .parameter .icon.dropmenu > .dropmenu-list > li {
             background-image: none; }
-    .gradingformula .frame .label, .gradingformula .function .label, .gradingformula .parameter .label,
-    .gradingformula-dragged .frame .label,
-    .gradingformula-dragged .function .label,
-    .gradingformula-dragged .parameter .label {
+    .gradingformula .frame .label, .gradingformula .function .label, .gradingformula .parameter .label {
       display: inline-block;
       height: 18px;
       line-height: 18px;
       color: #000000; }
-    .gradingformula .frame .dropmenu-list, .gradingformula .function .dropmenu-list, .gradingformula .parameter .dropmenu-list,
-    .gradingformula-dragged .frame .dropmenu-list,
-    .gradingformula-dragged .function .dropmenu-list,
-    .gradingformula-dragged .parameter .dropmenu-list {
+    .gradingformula .frame .dropmenu-list, .gradingformula .function .dropmenu-list, .gradingformula .parameter .dropmenu-list {
       position: absolute;
       left: 0px;
       top: 18px;
@@ -2335,35 +2309,17 @@ dl.dl-horizontal {
       background-image: none;
       background-color: #eeeeee;
       padding-left: 0px; }
-      .gradingformula .frame .dropmenu-list > li, .gradingformula .function .dropmenu-list > li, .gradingformula .parameter .dropmenu-list > li,
-      .gradingformula-dragged .frame .dropmenu-list > li,
-      .gradingformula-dragged .function .dropmenu-list > li,
-      .gradingformula-dragged .parameter .dropmenu-list > li {
+      .gradingformula .frame .dropmenu-list > li, .gradingformula .function .dropmenu-list > li, .gradingformula .parameter .dropmenu-list > li {
         background-image: none;
         padding-left: 0px; }
-    .gradingformula .frame:hover .dropmenu-list, .gradingformula .function:hover .dropmenu-list, .gradingformula .parameter:hover .dropmenu-list,
-    .gradingformula-dragged .frame:hover .dropmenu-list,
-    .gradingformula-dragged .function:hover .dropmenu-list,
-    .gradingformula-dragged .parameter:hover .dropmenu-list {
+    .gradingformula .frame:hover .dropmenu-list, .gradingformula .function:hover .dropmenu-list, .gradingformula .parameter:hover .dropmenu-list {
       display: block; }
-    .gradingformula .frame:active .node, .gradingformula .frame.active .node, .gradingformula .function:active .node, .gradingformula .function.active .node, .gradingformula .parameter:active .node, .gradingformula .parameter.active .node,
-    .gradingformula-dragged .frame:active .node,
-    .gradingformula-dragged .frame.active .node,
-    .gradingformula-dragged .function:active .node,
-    .gradingformula-dragged .function.active .node,
-    .gradingformula-dragged .parameter:active .node,
-    .gradingformula-dragged .parameter.active .node {
+    .gradingformula .frame:active .node, .gradingformula .frame.active .node, .gradingformula .function:active .node, .gradingformula .function.active .node, .gradingformula .parameter:active .node, .gradingformula .parameter.active .node {
       background-color: #e6f8fe;
       cursor: pointer; }
-    .gradingformula .frame .node, .gradingformula .function .node, .gradingformula .parameter .node,
-    .gradingformula-dragged .frame .node,
-    .gradingformula-dragged .function .node,
-    .gradingformula-dragged .parameter .node {
+    .gradingformula .frame .node, .gradingformula .function .node, .gradingformula .parameter .node {
       cursor: pointer; }
-    .gradingformula .frame .dropzone, .gradingformula .function .dropzone, .gradingformula .parameter .dropzone,
-    .gradingformula-dragged .frame .dropzone,
-    .gradingformula-dragged .function .dropzone,
-    .gradingformula-dragged .parameter .dropzone {
+    .gradingformula .frame .dropzone, .gradingformula .function .dropzone, .gradingformula .parameter .dropzone {
       display: inline-block;
       margin-right: 0.5em;
       width: 150px;
@@ -2372,26 +2328,20 @@ dl.dl-horizontal {
       background-color: transparent;
       background-repeat: no-repeat; }
   .gradingformula .frame .icon,
-  .gradingformula .frame .staticicon,
-  .gradingformula-dragged .frame .icon,
-  .gradingformula-dragged .frame .staticicon {
+  .gradingformula .frame .staticicon {
     background-position: -126px 0px; }
-  .gradingformula > .frame,
-  .gradingformula-dragged > .frame {
+  .gradingformula .frame.open .icon {
+    background-position: -108px 0px; }
+  .gradingformula > .frame {
     padding-top: 18px; }
-  .gradingformula .function .icon,
-  .gradingformula-dragged .function .icon {
+  .gradingformula .function .icon {
     background-position: -90px 0px; }
-    .gradingformula .function .icon.sum,
-    .gradingformula-dragged .function .icon.sum {
+    .gradingformula .function .icon.sum {
       background-position: -36px 0px; }
   .gradingformula .parameter .icon,
-  .gradingformula .parameter .staticicon,
-  .gradingformula-dragged .parameter .icon,
-  .gradingformula-dragged .parameter .staticicon {
+  .gradingformula .parameter .staticicon {
     background-position: -72px 0px; }
-  .gradingformula .placeholder,
-  .gradingformula-dragged .placeholder {
+  .gradingformula .placeholder {
     position: relative;
     margin: 0 0 18px 0;
     padding: 0;
@@ -2400,8 +2350,7 @@ dl.dl-horizontal {
     border: 1px dashed #bbbbbb;
     box-sizing: border-box;
     -moz-box-sizing: border-box; }
-    .gradingformula .placeholder:before,
-    .gradingformula-dragged .placeholder:before {
+    .gradingformula .placeholder:before {
       content: '';
       display: block;
       position: absolute;
@@ -2414,8 +2363,7 @@ dl.dl-horizontal {
       background-image: url(../img/logictree-line-vertical.gif);
       background-repeat: repeat-y;
       background-position: 0px -13px; }
-    .gradingformula .placeholder:last-child:before,
-    .gradingformula-dragged .placeholder:last-child:before {
+    .gradingformula .placeholder:last-child:before {
       display: none; }
 
 .alikaava {
