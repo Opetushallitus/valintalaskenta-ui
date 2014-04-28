@@ -1599,6 +1599,8 @@ table.dropmenu-table {
 
 .gradingformula {
   padding: 1em; }
+  .gradingformula .alikaava {
+    color: #B0B0B0 !important; }
   .gradingformula ul {
     background-image: url(../img/logictree-line-vertical.gif);
     background-repeat: no-repeat;
@@ -1713,24 +1715,6 @@ table.dropmenu-table {
       background-position: 0px -13px; }
     .gradingformula .placeholder:last-child:before {
       display: none; }
-
-.alikaava {
-  color: #B0B0B0 !important;
-  /*
-  list-style-type:none;
-    padding:0px 0px 0px 18px;
-
-    border: 1px dashed #666;
-    background-color: #f8f8f8;
-    */ }
-
-.gradingformula .frame .node, .gradingformula .function .node, .gradingformula .parameter .node {
-  display: inline-block;
-  height: 18px;
-  line-height: 18px;
-  color: #000000; }
-.gradingformula .frame:active .label, .gradingformula .frame.active .label, .gradingformula .function:active .label, .gradingformula .function.active .label, .gradingformula .parameter:active .label, .gradingformula .parameter.active .label {
-  background-color: #e6f8fe; }
 
 .valintalaskentaHistoria {
   list-style-type: none;
