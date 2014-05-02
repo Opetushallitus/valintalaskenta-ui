@@ -36,7 +36,7 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
             for(var lang in model.hakukohde.tarjoajaNimi) {
                 return model.hakukohde.tarjoajaNimi[lang];
             }
-        }
+        };
 
         this.getHakukohdeNimi = function() {
 
@@ -47,7 +47,7 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
             for(var lang in model.hakukohde.tarjoajaNimi) {
                 return model.hakukohde.hakukohdeNimi[lang];
             }
-        }
+        };
 
         this.refresh = function(hakukohdeOid) {
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
@@ -57,14 +57,14 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
                 });
 
             });
-        }
+        };
 
         this.refreshIfNeeded = function(hakukohdeOid) {
             
             if(model.isHakukohdeChanged(hakukohdeOid) && (hakukohdeOid !== undefined)) {
                 model.refresh(hakukohdeOid);
             }
-        }
+        };
 
         //helper method needed in other controllers
         this.isHakukohdeChanged = function(hakukohdeOid) {
@@ -73,11 +73,11 @@ app.factory('HakukohdeModel', function(TarjontaHakukohde, HakukohdeNimi) {
             } else {
                 return false;
             }
-        }
+        };
 
         this.getHakukohdeOid = function() {
             return model.hakukohde.oid;
-        }
+        };
 
     };
 

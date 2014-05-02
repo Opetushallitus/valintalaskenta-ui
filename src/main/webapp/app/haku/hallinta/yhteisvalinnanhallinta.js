@@ -43,7 +43,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 	// KELA TAULUKON CHECKBOXIT ALKAA
 	$scope.aineistonnimi = "";
 	$scope.isNotBlank = function(str) {
-	   if (!str || str.length === 0 || str === "" || typeof str == 'undefined' || !/[^\s]/.test(str) || /^\s*$/.test(str) || str.replace(/\s/g,"") == ""){
+	   if (!str || str.length === 0 || str === "" || typeof str === 'undefined' || !/[^\s]/.test(str) || /^\s*$/.test(str) || str.replace(/\s/g,"") === ""){
 		    return false;
 	   } else {
 	   		return true;
@@ -52,7 +52,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 	$scope.naytetaanHaut = false;
 	$scope.kaikkiHautValittu = false;
 	$scope.isValittu = function(haku) {
-		if(haku.oid == $routeParams.hakuOid) {
+		if(haku.oid === $routeParams.hakuOid) {
 			return true;
 		}
 		else {
@@ -72,7 +72,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 		_.each($scope.hakumodel.haut, function(haku) {
 			haku.valittu = kaikkienTila;
 		});
-		$scope.kaikkiHautValittu = kaikkienTila;//$scope.isAllValittu();
+		$scope.kaikkiHautValittu = kaikkienTila;
 	};
 	$scope.checkAllWith(false);
 	
@@ -130,7 +130,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
 		      		hakuOid: $routeParams.hakuOid,
 		      		hakukohdeOid: null,
 		      		valinnanvaihe: null
-	      		}
+	      		};
 	      	}
 	      }
 	    });

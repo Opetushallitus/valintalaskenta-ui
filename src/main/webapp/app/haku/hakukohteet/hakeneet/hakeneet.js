@@ -14,15 +14,6 @@
 
             HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows: 100000}, function(result) {
                 model.hakeneet = result.results;
-                
-                /*
-                    model.hakeneet.forEach(function(hakija){
-                        Hakemus.get({oid: hakija.applicationOid}, function(result) {
-                         hakija.hakemus=result;
-                        });
-                    });
-                */
-
             }, function(error) {
                 model.errors.push(error);
             });
@@ -30,10 +21,10 @@
 
 
 		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
-            if(hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
+            if(hakukohdeOid && hakukohdeOid !== model.hakukohdeOid) {
                 model.refresh(hakukohdeOid, hakuOid);
             }
-        }
+        };
 	};
 
 	return model;
@@ -53,5 +44,5 @@ function HakeneetController($scope, $location, $routeParams, HakeneetModel, Haku
     $scope.tila = {
         "ACTIVE": "Aktiivinen",
         "INCOMPLETE": "Puutteellinen"
-    }
+    };
 }

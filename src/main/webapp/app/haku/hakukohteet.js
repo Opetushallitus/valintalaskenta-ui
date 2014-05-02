@@ -35,7 +35,7 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
             for(var lang in hakukohde.tarjoajaNimi) {
                 return hakukohde.tarjoajaNimi[lang];
             }
-        }
+        };
 
         this.getHakukohdeNimi = function(hakukohde) {
 
@@ -53,13 +53,13 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 				return 0;
 			}
 			return this.hakukohteet.length;
-		}
+		};
 		this.getTotalCount = function() {
 	    	return this.totalCount;
-	    }
+	    };
 		this.getHakukohteet = function(){
 			return this.hakukohteet;
-		}
+		};
     	this.getNextPage = function(restart) {
     		
 	    		var hakuOid = $routeParams.hakuOid;
@@ -97,7 +97,7 @@ app.factory('HakukohteetModel', function($q, $routeParams, Haku, HakuHakukohdeCh
 	                                self.hakukohteet = result.tulokset;
 	                                self.totalCount = result.kokonaismaara;
 	                            } else { // seuraava sivu
-	                                if(startIndex != self.getCount()) {
+	                                if(startIndex !== self.getCount()) {
 	                                    //
 	                                    // Ei tehda mitaan
 	                                    //

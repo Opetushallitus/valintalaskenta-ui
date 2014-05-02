@@ -28,7 +28,7 @@
                 </a>
             </td>
         </tr>
-        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta"  ng-show="hakutoive.valintalaskenta && isValinnanvaiheVisible(hakutoive.valintalaskenta,$index,filter,$last)">
+        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta" ng-show="hakutoive.valintalaskenta && isValinnanvaiheVisible(hakutoive.valintalaskenta,$index,filter,$last)">
             <td>
                 <div ng-if="isValinnanvaiheNameVisible(hakutoive.valintalaskenta,$index,filter,$last,$first)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -

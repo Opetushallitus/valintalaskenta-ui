@@ -5,13 +5,13 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
         this.haut = [];
         this.lisahaku = false;
         this.getNimi = function() {
-        	if(this.hakuOid.nimi.kieli_fi != undefined) {
+        	if(this.hakuOid.nimi.kieli_fi !== undefined) {
         		return this.hakuOid.nimi.kieli_fi; 
         	}
-        	if(this.hakuOid.nimi.kieli_sv != undefined) {
+        	if(this.hakuOid.nimi.kieli_sv !== undefined) {
         		return this.hakuOid.nimi.kieli_sv; 
         	}
-        	if(this.hakuOid.nimi.kieli_en != undefined) {
+        	if(this.hakuOid.nimi.kieli_en !== undefined) {
         		return this.hakuOid.nimi.kieli_en; 
         	}
         	return "Nimetön hakukohde";
@@ -28,7 +28,7 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
                         promises[index] = (function() {
                             var deferred = $q.defer();
                             HaunTiedot.get({hakuOid: element.oid}, function(result) {
-                            	if(result.tila=="JULKAISTU") {
+                            	if(result.tila === "JULKAISTU") {
                             		model.haut.push(result);
                             	}
                                 deferred.resolve();    
@@ -44,7 +44,7 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
                         //set the previously selected haku or first in list
 //                        model.hakuOid = model.haut[0];
                         model.haut.forEach(function(haku){
-                            if(haku.oid == oid) {
+                            if(haku.oid === oid) {
                                 model.hakuOid = haku;
                             }
 
@@ -73,7 +73,7 @@ function HakuController($scope, $location, $routeParams, HakuModel, ParametriSer
 
     $scope.$watch('hakumodel.hakuOid', function() {
 
-        if($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid != $routeParams.hakuOid) {
+        if($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid !== $routeParams.hakuOid) {
             if($scope.hakumodel.hakuOid.lisahaku) {
                 $location.path('/lisahaku/' + HakuModel.hakuOid.oid + '/hakukohde/');
             } else {

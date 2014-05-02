@@ -36,14 +36,14 @@
 		this.filterOsallistujat = function(hakijat) {
 			if(hakijat) {
 				return _.filter(hakijat,function(hakija) {
-					return hakija.osallistuminen == "OSALLISTUU";
+					return hakija.osallistuminen === "OSALLISTUU";
 				});
 			}
 			return [];
 		};
 		this.isAllValittu = function(valintakoe) {
 			return _.reduce(valintakoe.hakijat, function(memo, hakija){
-				if(hakija.osallistuminen != "OSALLISTUU") {
+				if(hakija.osallistuminen !== "OSALLISTUU") {
 					return memo;
 				}
 				return memo && hakija.valittu;
@@ -101,7 +101,7 @@
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
                                 // OVT-6961
-                                if(valintakoe.nimi != undefined) {
+                                if(valintakoe.nimi !== undefined) {
                                 	entry.valintakoeTunniste = valintakoe.nimi;	
                                 } else {
                                 	entry.valintakoeTunniste = valintakoe.valintakoeTunniste;	
@@ -131,7 +131,7 @@
                                 }
 
                                 //add identifier to list
-                               if(model.koetyypit.indexOf(entry.valintakoeTunniste) == -1) {
+                               if(model.koetyypit.indexOf(entry.valintakoeTunniste) === -1) {
                                    //console.log(valintakoe);
                                    model.koetyypit.push(entry.valintakoeTunniste);
                                }
@@ -223,7 +223,7 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 			otsikko = "Muodostetaan osoitetarrat valintakokeelle";
 		} else {
 			hakemusOids =  $scope.model.valitutHakemusOids(valintakoe);
-			if(hakemusOids.length == 0) {
+			if(hakemusOids.length === 0) {
 				return; // ei tehda tyhjalle joukolle
 			}
 			otsikko = "Muodostetaan osoitetarrat valituille hakemuksille";

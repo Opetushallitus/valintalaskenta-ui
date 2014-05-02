@@ -17,7 +17,7 @@ app.factory('HarkinnanvaraisetModel', function($log, HakukohdeHenkilot, Ilmoitus
   			});
   		};
   		this.isAllValittu = function() {
-  			return this.filterHarkinnanvaraiset().length == this.filterValitut().length;
+  			return this.filterHarkinnanvaraiset().length === this.filterValitut().length;
   		};
   		this.check = function() {
   			this.valittu = this.isAllValittu();
@@ -60,7 +60,7 @@ app.factory('HarkinnanvaraisetModel', function($log, HakukohdeHenkilot, Ilmoitus
                                       }
                                   }
                               }
-                          })
+                          });
                       });
                      HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function(result) {
                           model.hakeneet.forEach(function(hakija){
@@ -86,7 +86,7 @@ app.factory('HarkinnanvaraisetModel', function($log, HakukohdeHenkilot, Ilmoitus
           this.submit = function() {
           	
           	var muokatutHakemukset = _.filter(model.hakeneet, function(hakemus) {
-          		return hakemus.muokattuHarkinnanvaraisuusTila != hakemus.harkinnanvaraisuusTila;
+          		return hakemus.muokattuHarkinnanvaraisuusTila !== hakemus.harkinnanvaraisuusTila;
           	});
           	var postParams = _.map(muokatutHakemukset, function(hakemus) {
           		return {

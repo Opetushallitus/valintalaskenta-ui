@@ -17,24 +17,24 @@ app.factory('ValintatulosModel', function(Valintatulos) {
         this.search = function(hakuOid, index, count) {
             model.hakuOid =hakuOid;
             model.refresh(index,count);
-        }
+        };
         this.getTotalResults = function(){
                    return this.hakemusCount;
-        }
+        };
         this.refresh = function(index, count) {
 
             var searchParams = {
               hakuOid: model.hakuOid
             };
 
-            if(model.filter.type == "HYVAKSYTYT"){
-               searchParams.hyvaksytyt=true
+            if(model.filter.type === "HYVAKSYTYT"){
+               searchParams.hyvaksytyt=true;
             }
-            if(model.filter.type == "ILMANHYVAKSYNTAA"){
-                 searchParams.ilmanHyvaksyntaa=true
+            if(model.filter.type === "ILMANHYVAKSYNTAA"){
+                 searchParams.ilmanHyvaksyntaa=true;
             }
-            if(model.filter.type == "VASTAANOTTANEET"){
-                 searchParams.vastaanottaneet=true
+            if(model.filter.type === "VASTAANOTTANEET"){
+                 searchParams.vastaanottaneet=true;
             }
             if(model.filter.hakukohteet.length > 0 ){
                 searchParams.hakukohdeOid=model.filter.hakukohteet;
@@ -53,7 +53,7 @@ app.factory('ValintatulosModel', function(Valintatulos) {
 });
 
 function ValintatulosController($scope,ValintatulosModel, $routeParams) {
-    $scope.hakuOid = $routeParams.hakuOid
+    $scope.hakuOid = $routeParams.hakuOid;
     $scope.model = ValintatulosModel;
 
     $scope.lazyLoading = function() {
@@ -71,28 +71,28 @@ function ValintatulosController($scope,ValintatulosModel, $routeParams) {
         var style="";
 
          hakukohde.hakutoiveenValintatapajonot.forEach(function(valintatapajono) {
-            if(valintatapajono.tila == "HYVAKSYTTY") {
+            if(valintatapajono.tila === "HYVAKSYTTY") {
                 style = valintatapajono.tila;
-            } else if(valintatapajono.tila == "VARALLA") {
-                if(style != "HYVAKSYTTY") {
+            } else if(valintatapajono.tila === "VARALLA") {
+                if(style !== "HYVAKSYTTY") {
                     style = valintatapajono.tila;
                 }
-            } else if(valintatapajono.tila == "PERUUNTUNUT") {
-                if(style != "HYVAKSYTTY" || style != "VARALLA") {
+            } else if(valintatapajono.tila === "PERUUNTUNUT") {
+                if(style !== "HYVAKSYTTY" || style !== "VARALLA") {
                     style = valintatapajono.tila;
                 }
-            } else if(valintatapajono.tila == "PERUNUT") {
-               if(style != "HYVAKSYTTY" || style != "VARALLA" || style != "PERUUNTUNUT") {
+            } else if(valintatapajono.tila === "PERUNUT") {
+               if(style !== "HYVAKSYTTY" || style !== "VARALLA" || style !== "PERUUNTUNUT") {
                    style = valintatapajono.tila;
                }
-            } else if(valintatapajono.tila == "HYLATTY") {
-              if(style != "HYVAKSYTTY" || style != "VARALLA" || style != "PERUUNTUNUT" || style != "PERUNUT") {
+            } else if(valintatapajono.tila === "HYLATTY") {
+              if(style !== "HYVAKSYTTY" || style !== "VARALLA" || style !== "PERUUNTUNUT" || style !== "PERUNUT") {
                   style = valintatapajono.tila;
               }
             }
         } );
         return style;
-    }
+    };
 
 
     $scope.search=function() {

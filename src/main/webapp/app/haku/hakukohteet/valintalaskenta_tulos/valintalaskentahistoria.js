@@ -78,7 +78,6 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 	};
     modelInterface.refresh();
 
-    //return deferred.promise;
     return modelInterface;
 });
 
@@ -92,17 +91,18 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 	
 	$scope.changeTab = function(index) {
 		$scope.historyTabIndex = index;
-	}
+	};
+
 	$scope.isUndefined = function(v) {
 		if(v === undefined) {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	$scope.openTree = function(tree) {
 		tree.show = !tree.show;
-	}
+	};
 
 
 }

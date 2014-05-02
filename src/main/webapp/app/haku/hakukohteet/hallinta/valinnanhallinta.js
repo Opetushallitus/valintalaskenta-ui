@@ -5,7 +5,6 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
 
         this.hakukohde = {};
         this.hakukohdeOid = '';
-        //this.valintaperusteValinnanvaiheet = [];
         this.tulosValinnanvaiheet = [];
         this.errors = [];
 
@@ -28,7 +27,7 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
             if (model.hakukohde.oid !== hakukohdeOid) {
                 model.refresh(hakukohdeOid);
             }
-        }
+        };
 
     };
 
@@ -52,7 +51,7 @@ function ValinnanhallintaController($scope, $routeParams, $modal, Latausikkuna, 
 		      		hakuOid: $routeParams.hakuOid,
 		      		hakukohdeOid: $routeParams.hakukohdeOid,
 		      		valinnanvaihe: valinnanvaihe
-	      		}
+	      		};
 	      	}
 	      }
 	    });
@@ -67,7 +66,7 @@ function ValinnanhallintaController($scope, $routeParams, $modal, Latausikkuna, 
         }, function (error) {
 			Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. Valintakoelaskenta epäonnistui palvelin virheeseen:" + error.data, IlmoitusTila.ERROR);            
         });
-    }
+    };
 
     $scope.privileges = ParametriService;
 }
