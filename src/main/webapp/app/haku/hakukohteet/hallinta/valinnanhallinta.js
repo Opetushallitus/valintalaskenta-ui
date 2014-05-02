@@ -20,7 +20,7 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
                     model.errors.push(error);
                 });
             }
-        }
+        };
 
         this.refreshIfNeeded = function (hakukohdeOid) {
             this.hakukohdeOid = hakukohdeOid;
@@ -29,7 +29,7 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
             }
         };
 
-    };
+    }();
 
     return model;
 });
@@ -42,29 +42,29 @@ function ValinnanhallintaController($scope, $routeParams, $modal, Latausikkuna, 
 
     $scope.kaynnistaValintalaskenta = function (valinnanvaihe) {
         var valintalaskentaInstance = $modal.open({
-	      backdrop: 'static',
-	      templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
-	      controller: ValintalaskentaIkkunaCtrl,
-	      resolve: {
-	      	oids: function () {
-	      		return {
-		      		hakuOid: $routeParams.hakuOid,
-		      		hakukohdeOid: $routeParams.hakukohdeOid,
-		      		valinnanvaihe: valinnanvaihe
-	      		};
-	      	}
-	      }
-	    });
-        
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
+            controller: ValintalaskentaIkkunaCtrl,
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        hakukohdeOid: $routeParams.hakukohdeOid,
+                        valinnanvaihe: valinnanvaihe
+                    };
+                }
+            }
+        });
+
     }
 
     $scope.kaynnistaValintakoelaskenta = function () {
-    	var hakuOid = $routeParams.hakuOid;
+        var hakuOid = $routeParams.hakuOid;
         var hakukohdeOid = $routeParams.hakukohdeOid;
-        ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},{}, function (id) {
-        	Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta hakukohteelle " + hakukohdeOid, "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
+        ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, {}, function (id) {
+            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta hakukohteelle " + hakukohdeOid, "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
         }, function (error) {
-			Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. Valintakoelaskenta epäonnistui palvelin virheeseen:" + error.data, IlmoitusTila.ERROR);            
+            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. Valintakoelaskenta epäonnistui palvelin virheeseen:" + error.data, IlmoitusTila.ERROR);
         });
     };
 
