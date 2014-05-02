@@ -287,6 +287,13 @@ function HenkiloTiedotController($q, $scope, $routeParams, ParametriService, Lat
         $scope.updateOph = true;
     });
 
+    $scope.isValinnanvaiheVisible = function (valintalaskenta,index,filter,last) {
+       return ((last && !filter && valintalaskenta[index].valintatapajono) || (index+1 < valintalaskenta.length && valintalaskenta[index+1].valintatapajono.length === 0) || filter);
+    };
+    $scope.isValinnanvaiheNameVisible = function (valintalaskenta,index,filter,last,first) {
+        return ((last && !filter && valintalaskenta[index].valintatapajono) || (!filter && index+1 < valintalaskenta.length && valintalaskenta[index+1].valintatapajono.length === 0) || first && filter);
+    };
+
     $scope.tallennaPisteet = function () {
         var promises = $scope.model.tallennaPisteet()
         $q.all(promises).then(function () {
