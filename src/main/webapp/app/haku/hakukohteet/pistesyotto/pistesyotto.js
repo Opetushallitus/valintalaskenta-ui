@@ -63,7 +63,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                                 hakija.osallistuu = {};
 
                                 if (!hakija.additionalData) {
-                                    hakija.additionalData = [];
+                                    hakija.additionalData = {};
                                 }
 
                                 model.avaimet.forEach(function (avain) {
