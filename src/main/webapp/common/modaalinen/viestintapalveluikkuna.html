@@ -1,0 +1,18 @@
+<div class="modal-header">
+	<h2>{{oids.otsikko}}</h2>
+</div>
+<div class="modal-body">
+	<h3 style="margin-top: -12px;">{{oids.hakukohdeNimi}}</h3>
+	<br>
+	Valmispohjan valinta:
+	<select ng-model="pohja" ng-options="p.name for p in pohjat" ng-change="pohjaVaihtui(pohja)"></select>
+	<br>
+	<br>
+	<textarea ui-tinymce ng-model="letterbody"></textarea>
+</div>
+<div class="modal-footer">
+	<div class="row">
+		<a class="btn btn-default" ng-click="oids.toiminto(letterbody)"  role="button">{{oids.toimintoNimi}}</a>
+	    <a class="btn btn-default" ng-click="ok()"  role="button">Peruuta</a>
+	</div>
+</div>

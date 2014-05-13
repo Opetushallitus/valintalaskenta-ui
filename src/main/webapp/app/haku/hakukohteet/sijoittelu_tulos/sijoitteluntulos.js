@@ -253,7 +253,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 });
 
 
-function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Latausikkuna, HakukohdeModel, SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
+function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel, SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
@@ -272,6 +272,49 @@ function SijoitteluntulosController($scope, $timeout, $routeParams, $window, Lat
     $scope.submit = function (valintatapajonoOid) {
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     };
+    
+    $scope.luoHyvaksymiskirjeetPDF = function() {
+    	var hakukohde = $scope.hakukohdeModel.hakukohde;
+    	//var pohjat = ;
+    	
+    	var viestintapalveluInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+            controller: ViestintapalveluIkkunaCtrl,
+            resolve: {
+                oids: function () {
+                	console.log(hakukohde);
+                    return {
+                    	otsikko: "Hyväksymiskirjeet",
+                    	toimintoNimi: "Muodosta hyväksymiskirjeet",
+                    	toiminto: function(sisalto) {
+                    		Hyvaksymiskirjeet.post({
+					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
+					        	hakuOid: $routeParams.hakuOid, 
+					        	tarjoajaOid: hakukohde.tarjoajaOid,
+					        	sisalto: sisalto,
+					        	templateName: "Organisaation viimeisin",
+					        	tag: "",
+					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null } , function (id) {
+					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
+					        }, function () {
+					            
+					        });
+                    	},
+                        hakuOid: $routeParams.hakuOid,
+                        hakukohdeOid: $routeParams.hakukohdeOid,
+                        tarjoajaOid: hakukohde.tarjoajaOid,
+                        pohjat: function() {
+                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: "FI"});
+                        },
+                        hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
+                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                    };
+                }
+            }
+        });
+    };
+    
     $scope.createHyvaksymisosoitteetPDF = function (oidit) {
         OsoitetarratSijoittelussaHyvaksytyille.post({
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
