@@ -74,7 +74,7 @@
                     <table class="virkailija-table-1" item-on-screen stay-on-focus>
                         <thead>
                         <tr>
-                            <th><a href="" ng-click="predicate = 'lastName'; reverse=!reverse">Tiedot</a></th>
+                            <th><a href="" ng-click="predicate = ['lastName','firstName']; reverse=!reverse">Tiedot</a></th>
                             <th ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
                                 {{avain.kuvaus}}
                                 <span ng-if="avain.min !== undefined && avain.min !== null|| avain.max !== null && avain.max !== undefined">
