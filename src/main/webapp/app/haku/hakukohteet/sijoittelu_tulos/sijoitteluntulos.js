@@ -326,15 +326,46 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         });
     };
     $scope.createHyvaksymiskirjeetPDF = function (oidit) {
-        Hyvaksymiskirjeet.post({
-        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
-        	hakuOid: $routeParams.hakuOid, 
-        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit } , function (id) {
-            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
-        }, function () {
-            
+        
+		var hakukohde = $scope.hakukohdeModel.hakukohde;
+    	//var pohjat = ;
+    	
+    	var viestintapalveluInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+            controller: ViestintapalveluIkkunaCtrl,
+            resolve: {
+                oids: function () {
+                	console.log(hakukohde);
+                    return {
+                    	otsikko: "Hyväksymiskirjeet",
+                    	toimintoNimi: "Muodosta hyväksymiskirjeet",
+                    	toiminto: function(sisalto) {
+                    		Hyvaksymiskirjeet.post({
+					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
+					        	hakuOid: $routeParams.hakuOid, 
+					        	tarjoajaOid: hakukohde.tarjoajaOid,
+					        	sisalto: sisalto,
+					        	templateName: "Organisaation viimeisin",
+					        	tag: "",
+					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit } , function (id) {
+					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
+					        }, function () {
+					            
+					        });
+                    	},
+                        hakuOid: $routeParams.hakuOid,
+                        hakukohdeOid: $routeParams.hakukohdeOid,
+                        tarjoajaOid: hakukohde.tarjoajaOid,
+                        pohjat: function() {
+                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: "FI"});
+                        },
+                        hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
+                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                    };
+                }
+            }
         });
-
     };
     $scope.createJalkiohjauskirjeetPDF = function () {
         Jalkiohjauskirjeet.post({sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
