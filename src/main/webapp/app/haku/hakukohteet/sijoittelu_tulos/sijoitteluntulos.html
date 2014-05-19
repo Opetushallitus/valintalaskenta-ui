@@ -57,7 +57,7 @@
                             <th>Pisteet</th>
                             <th>Sijoittelun tila</th>
                             <th>Vastaanottotieto</th>
-                            <th>{{ 'sijoitteluntulos.header.enrollmentinfo' | i18n }}</th>
+                            <th>{{ 'sijoitteluntulos.header.enrollmentinfo' | translate }}</th>
                             <th>Muokattu</th>
                             <th>Muokkaa</th>
                             <th>Toiminto</th>
@@ -84,68 +84,24 @@
                                         {{(hakemus.tilaHistoria
                                         | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
                                     </modal-open>
-
                                 </modal>
                             </td>
 
                             <td>
-                                <div ng-show="(
-                                        (
-                                            updateOrg && (hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA') )
-                                        )
-                                        || (updateOph)
-                                    )">
-                                        <span ng-if="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')) && hakemus.vastaanottoTila == ''">
-                                          <select ng-model="hakemus.muokattuVastaanottoTila">
-                                              <option value="">Kesken</option>
-                                              <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
-                                              <option value="PERUUTETTU">Peruutettu</option>
-                                          </select>
-                                        </span>
-                                        <span ng-if="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')) && hakemus.vastaanottoTila == 'ILMOITETTU'">
-                                            <select ng-model="hakemus.muokattuVastaanottoTila">
-                                                <option ng-if="isKorkeakoulu()" value="EHDOLLISESTI_VASTAANOTTANUT">Ehdollisesti vastaanottanut</option>
-                                                <option value="ILMOITETTU">Hakijalle ilmoitettu</option>
-                                                <option value="VASTAANOTTANUT_LASNA">Vastaanottanut läsnäolevana
-                                                </option>
-                                                <option value="VASTAANOTTANUT_POISSAOLEVA">Vastaanottanut
-                                                    poissaolevana
-                                                </option>
-                                                <option value="EI_VASTAANOTETTU_MAARA_AIKANA">Ei vastaanotettu
-                                                    määräaikana
-                                                </option>
-                                                <option value="PERUNUT">Perunut</option>
-                                                <option value="PERUUTETTU">Peruutettu</option>
-                                            </select>
-                                        </span>
-                                        <span ng-if="!((hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')) && hakemus.vastaanottoTila == 'ILMOITETTU') && !(hakemus.tila == 'HYVAKSYTTY' && hakemus.vastaanottoTila == '')">
-                                            <span ng-if="hakemus.vastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT'">Ehdollisesti vastaanottanut</span>
-                                            <span ng-if="hakemus.vastaanottoTila == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
-                                            <span ng-if="hakemus.vastaanottoTila == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
-                                            <span ng-if="hakemus.vastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
-                                            <span ng-if="hakemus.vastaanottoTila == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
-                                            <span ng-if="hakemus.vastaanottoTila == 'PERUNUT'">Perunut</span>
-                                            <span ng-if="hakemus.vastaanottoTila == 'PERUUTETTU'">Peruutettu</span>
-                                        </span>
+                                <div ng-show="(updateOrg && (hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || updateOph">
+                                    <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
+                                        <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
+                                            <option value="">Kesken</option>
+                                        </select>
+                                    </span>
                                 </div>
                             </td>
 
                             <td>
-                                <div ng-show="
-                                    (
-                                        (updateOph || updateOrg) && (hakemus.vastaanottoTila == 'VASTAANOTTANUT_LASNA' ||
-                                        hakemus.vastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA' ||
-                                        hakemus.vastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')
-                                    )">
-                                      <select ng-model="hakemus.muokattuIlmoittautumisTila">
-                                          <option value="EI_TEHTY">{{ 'sijoitteluntulos.enrollmentinfo.notdone' | i18n }}</option>
-                                          <option value="LASNA_KOKO_LUKUVUOSI">{{ 'sijoitteluntulos.enrollmentinfo.present' | i18n }}</option>
-                                          <option value="POISSA_KOKO_LUKUVUOSI">{{ 'sijoitteluntulos.enrollmentinfo.notpresent' | i18n }}</option>
-                                          <option value="EI_ILMOITTAUTUNUT">{{ 'sijoitteluntulos.enrollmentinfo.noenrollment' | i18n }}</option>
-                                          <option value="LASNA_SYKSY">{{ 'sijoitteluntulos.enrollmentinfo.presentfall' | i18n }}</option>
-                                          <option value="POISSA_SYKSY">{{ 'sijoitteluntulos.enrollmentinfo.notpresentfall' | i18n }}</option>
-                                          <option value="LASNA">{{ 'sijoitteluntulos.enrollmentinfo.presentspring' | i18n }}</option>
-                                          <option value="POISSA">{{ 'sijoitteluntulos.enrollmentinfo.notpresentspring' | i18n }}</option>
+                                <div ng-show="hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT'">
+                                      <select ng-disabled="!(updateOrg || updateOph)"
+                                              ng-model="hakemus.muokattuIlmoittautumisTila"
+                                              ng-options="tila.value as tila.text | translate for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                       </select>
                                  </div>
                             </td>
