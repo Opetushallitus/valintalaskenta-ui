@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <span>{{ 'discretionary.modal.title' | i18n }}</span>
+    <span>{{ 'discretionary.modal.title' | translate }}</span>
 </div>
 
 <div class="modal-body">
@@ -13,14 +13,14 @@
     <form class="form-horizontal" role="form">
 
         <div class="form-group">
-            <label class="col-sm-4 control-label">{{ 'discretionary.modal.oid' | i18n }}</label>
+            <label class="col-sm-4 control-label">{{ 'discretionary.modal.oid' | translate }}</label>
             <div class="col-sm-8">
                 <p class="form-control-static">{{hakemus.hakemusOid}}</p>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-4 control-label">{{ 'discretionary.modal.state' | i18n }}</label>
+            <label class="col-sm-4 control-label">{{ 'discretionary.modal.state' | translate }}</label>
             <div class="col-sm-8">
                 <select ng-model="hakemus.muokattuHarkinnanvaraisuusTila">
                     <option value="HYVAKSYTTY">Hyväksytty</option>
