@@ -135,7 +135,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
-                                            if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT_POISSAOLEVA" || currentHakemus.vastaanottoTila === "VASTAANOTTANUT_LASNA") {
+                                            if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT") {
                                                 hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
                                             }
 
@@ -261,6 +261,29 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
 
+    $scope.hakemuksenMuokattuIlmoittautumisTilat = [
+        {value: "EI_TEHTY", text: "sijoitteluntulos.enrollmentinfo.notdone"},
+        {value: "LASNA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.present"},
+        {value: "POISSA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.notpresent"},
+        {value: "EI_ILMOITTAUTUNUT", text: "sijoitteluntulos.enrollmentinfo.noenrollment"},
+        {value: "LASNA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.presentfall"},
+        {value: "POISSA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.notpresentfall"},
+        {value: "LASNA", text: "sijoitteluntulos.enrollmentinfo.presentspring"},
+        {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring"}
+    ];
+
+    //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
+    $scope.hakemuksenMuokattuVastaanottoTilat = [
+        {value: "ILMOITETTU", text: "Hakijalle ilmoitettu"},
+        {value: "VASTAANOTTANUT", text: "Vastaanottanut"},
+        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text: "Ei vastaanotettu määräaikana"},
+        {value: "PERUNUT", text: "Perunut"},
+        {value: "PERUUTETTU", text: "Peruutettu"}
+    ];
+
+
+
+
 
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
@@ -283,7 +306,6 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
             controller: ViestintapalveluIkkunaCtrl,
             resolve: {
                 oids: function () {
-                	console.log(hakukohde);
                     return {
                     	otsikko: "Hyväksymiskirjeet",
                     	toimintoNimi: "Muodosta hyväksymiskirjeet",
@@ -406,7 +428,6 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         "PERUUTETTU": 4,
         "PERUUNTUNUT": 5,
         "HYLATTY": 6
-
     };
 
     $scope.jarjesta = function(value) {
@@ -422,6 +443,18 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         if ($scope.model.haku.kohdejoukkoUri) {
             returnValue = $scope.model.haku.kohdejoukkoUri.indexOf('_12') !== -1;
         }
-        return returnValue;
+        if(returnValue) {
+            $scope.hakemuksenMuokattuVastaanottoTilat.push({value: "EHDOLLISESTI_VASTAANOTTANUT", text: "Ehdollisesti vastaanottanut"})
+        }
     };
+
+    $scope.resetIlmoittautumisTila = function(hakemus) {
+        if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT' && hakemus.muokattuVastaanottoTila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
+            hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
+        }
+    };
+
+    $scope.isKorkeakoulu();
+
+
 }
