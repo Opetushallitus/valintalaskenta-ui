@@ -1,4 +1,4 @@
-﻿app.factory('ValintakoetulosModel', function(Valintakoetulokset, Valintakoe) {
+﻿app.factory('ValintakoetulosModel', function($routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe, HakukohdeHenkilot) {
 	var model;
 	model = new function() {
 
@@ -17,16 +17,63 @@
             model.valintakokeet = {};
             model.valintakokeetHakijoittain = {};
             model.valintakokeetHakijoittainArray = [];
+            model.koetyypit = [];
             model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
-            
-			Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(result) {
-			    model.koetulokset = result;
-                flatKoetulokset();
-			}, function(error) {
+            HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid}, function(hakukohteenValintakokeet) {
+            	Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(result) {
+				    model.koetulokset = result;
+	                _.each(hakukohteenValintakokeet, function(entry) {
+	            		
+	            		model.valintakokeet[entry.oid] = {
+	            			aktiivinen: entry.aktiivinen != false,
+	            			valittu: true, 
+	            			valintakoeOid: entry.oid, 
+	            			valintakoeTunniste: entry.nimi,
+	            			kutsutaankoKaikki: entry.kutsutaankoKaikki,
+	                        lahetetaankoKoekutsut: entry.lahetetaankoKoekutsut,
+	            			hakijat: []
+	            		};
+	            		if(entry.kutsutaankoKaikki) {
+	            			HakukohdeHenkilot.get({aoOid: hakukohdeOid}, function(hakuResult) {
+	            				_.each(hakuResult.results, function(hakija) {
+	            					var e = {};
+		            				e.osallistuminen = "OSALLISTUU";
+		            				e.hakuOid = $routeParams.hakuOid;
+	                                e.hakemusOid = hakija.oid;
+	                                e.hakijaOid = hakija.personOid;
+	                                e.etunimi = hakija.firstNames;
+	                                e.sukunimi = hakija.lastName;
+	                                e.valittu = true;
+	                                e.aktiivinen = entry.aktiivinen != false;
+	                                e.valintakoeOid = entry.oid;
+	                                e.lahetetaankoKoekutsut = true;
+	                                e.valintakoeTunniste = entry.nimi; // OVT-6961?
+									model.valintakokeet[entry.oid].hakijat.push(e);
+									if (model.valintakokeetHakijoittain[e.hakemusOid] === undefined ) {
+	                                    model.valintakokeetHakijoittain[e.hakemusOid] = {hakemusOid: e.hakemusOid, etunimi: e.etunimi, sukunimi: e.sukunimi};
+	                                    model.valintakokeetHakijoittain[e.hakemusOid].kokeet = [];
+	                                    model.valintakokeetHakijoittain[e.hakemusOid].kokeet[e.valintakoeTunniste] = e;
+	                                } else {
+	                                    model.valintakokeetHakijoittain[e.hakemusOid].kokeet[e.valintakoeTunniste] = e;
+	                                }
+	                                if(model.koetyypit.indexOf(e.valintakoeTunniste) === -1) {
+	                                   model.koetyypit.push(e.valintakoeTunniste);
+	                                }
+	            				});
+	            				
+	            			});
+	            		}
+	            	});
+	                flatKoetulokset();
+				}, function(error) {
+	                model.errors.push(error);
+	            });
+            }, function(error) {
                 model.errors.push(error);
             });
+			
 		};
 		this.filterValitut = function(hakijat) {
 			return _.filter(hakijat,function(hakija) {
@@ -78,16 +125,20 @@
 		// helpommin käsiteltävään muotoon tulokset. samoin privaattina
 		// funktiona, niin ei turhaan pysty kutsumaan tätä suoraan ulkopuolelta.
 		function flatKoetulokset() {
-		    model.valintakokeet = {};
-            model.koetyypit = [];
-            model.valintakokeetHakijoittain = {};
-            model.valintakokeetHakijoittainArray = [];
-
+            
             model.koetulokset.forEach(function(koetulos){
                 koetulos.hakutoiveet.forEach(function(hakutoive) {
                     if(hakutoive.hakukohdeOid === model.hakukohdeOid) {
                         hakutoive.valinnanVaiheet.forEach(function(valinnanvaihe) {
                             valinnanvaihe.valintakokeet.forEach(function(valintakoe) {
+                            	if (model.valintakokeet[valintakoe.valintakoeOid] === undefined ) {
+                                	model.errors.push("tunnistamaton valintakoe " + entry.valintakoeTunniste);
+                                	return;
+                                }
+                                if(model.valintakokeet[valintakoe.valintakoeOid].kutsutaankoKaikki) {
+                                	return;
+                                }
+                                
                                 var entry = {};
                                 entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 entry.hakuOid = koetulos.hakueOid;
@@ -107,21 +158,7 @@
                                 	entry.valintakoeTunniste = valintakoe.valintakoeTunniste;	
                                 }
                                 
-                                if (model.valintakokeet[entry.valintakoeOid] === undefined ) {
-                                	var valintakoeModel = {
-                                			aktiivinen: true, 
-                                			valittu: true, 
-                                			valintakoeOid: entry.valintakoeOid, 
-                                			valintakoeTunniste: entry.valintakoeTunniste,
-                                            lahetetaankoKoekutsut: valintakoe.lahetetaankoKoekutsut,
-                                			hakijat: [entry]
-                                			};
-                                	model.valintakokeet[entry.valintakoeOid] = valintakoeModel;
-                                	
-                                } else {
-                                	model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
-                                }
-
+								model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
                                 if (model.valintakokeetHakijoittain[entry.hakemusOid] === undefined ) {
                                     model.valintakokeetHakijoittain[entry.hakemusOid] = {hakemusOid: entry.hakemusOid, etunimi: entry.etunimi, sukunimi: entry.sukunimi};
                                     model.valintakokeetHakijoittain[entry.hakemusOid].kokeet = [];
@@ -132,7 +169,6 @@
 
                                 //add identifier to list
                                if(model.koetyypit.indexOf(entry.valintakoeTunniste) === -1) {
-                                   //console.log(valintakoe);
                                    model.koetyypit.push(entry.valintakoeTunniste);
                                }
 
