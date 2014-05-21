@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'localization', 'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload'], function($rootScopeProvider) {
+var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate', 'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
@@ -54,10 +54,11 @@ app.config(function($routeProvider) {
 
     otherwise({redirectTo:'/haku/'});
 
-
-
-
 });
+
+
+
+
 //MODAALISET IKKUNAT
 app.factory('Ilmoitus', function($modal, IlmoitusTila) {
 	return {
@@ -464,7 +465,7 @@ app.factory('OsoitetarratSijoittelussaHyvaksytyille', function($resource) {
 		post:  {method:'POST', isArray:false}
 	});//
 });
-
+//
 app.factory('Hyvaksymiskirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksymiskirjeet/aktivoi", {}, {
 		post:  {method:'POST', isArray:false}
@@ -605,6 +606,11 @@ app.factory('Valintakoetulokset', function($resource) {
 
 app.factory('Valintakoe', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/valintakoe/:valintakoeOid", {valintakoeOid: "@valintakoeOid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
+app.factory('HakukohdeValintakoe', function($resource) {
+    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeOid/valintakoe", {hakukohdeOid: "@hakukohdeOid"}, {
         get: {method: "GET", isArray: true}
     });
 });

@@ -6,7 +6,8 @@
 		"angular-route": "~1.2.10",
 		"angular-resource": "~1.2.10",
 		"angular-bootstrap": "0.10.0",
-		"jquery": "2.1.0",
+        "angular-translate": "2.1.0",
+        "jquery": "2.1.0",
 		"jquery-ui": "latest",
 		"underscore": "1.6.0"
 	},
