@@ -61,76 +61,160 @@
             <!--
             <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
              -->
-            <accordion close-others="true">
-                <accordion-group
-                        ng-repeat="valinnanvaihe in model.valinnanvaiheet | orderBy:['createdAt','jarjestysnumero']:true"
-                        is-open="$first">
+            <div ng-if="model.ilmanlaskentaa.length > 0">
+                <h2>Valinnanvaiheet, jossa ei käytetä laskentaa</h2>
+                <accordion close-others="true">
+                    <accordion-group
+                            ng-repeat="valinnanvaihe in model.ilmanlaskentaa | orderBy:['nimi']:false"
+                            is-open="$first">
 
-                    <accordion-heading>
-                        <h3>Valinnanvaihe: <span ng-bind="valinnanvaihe.nimi">-</span> (<span
-                                ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span>)</h3>
+                        <accordion-heading>
+                            <h3>Valinnanvaihe: <span ng-bind="valinnanvaihe.nimi">-</span></h3>
 
-                    </accordion-heading>
+                        </accordion-heading>
 
-                    <div>
-                        <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajono">
-                            <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
-                            <table class="virkailija-table-1" item-on-screen>
-                                <thead>
-                                <tr>
-                                    <th>{{valintatapajono.jonosijat.length}}</th>
-                                    <th>Hakija</th>
-                                    <th>Yhteispisteet</th>
-                                    <th>Hakutoive</th>
-                                    <th>Valintatieto</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit">
-                                    <td>{{tulos.jonosija}}</td>
-                                    <td class="leftorientedcolumn">
-                                        <show-person-information sukunimi="{{tulos.sukunimi}}"
-                                                                 etunimi="{{tulos.etunimi}}"
-                                                                 hakemus-oid="{{tulos.hakemusOid}}"
-                                                                 haku-oid="{{hakuOid}}"
-                                                                 henkilo-oid="{{tulos.hakijaOid}}"/>
-                                    </td>
-                                    <td>
-                                        {{tulos.jarjestyskriteerit[0].arvo}}
-                                        <a href="#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria"
-                                           target="_blank" class="historylink">
-                                            Lisätietoja
-                                        </a>
-                                    </td>
-                                    <td>
-                                        {{tulos.prioriteetti}}
-                                    </td>
-                                    <td>
-
-                                        <modal modal-template="modal.html" window-class="wide">
-                                            <modal-open>
-                                                {{tulos.tuloksenTila}}
-                                            </modal-open>
-
-                                        </modal>
-
-                                        <!--<div ng-include="'haku/hakukohteet/valintalaskenta_tulos/tilaPartial.html'"/>-->
-                                    </td>
-                                    <td>
-                                        <jarjestyskriteeri-muokkaus jonosija="tulos"
-                                                                    valintatapajono-oid="valintatapajono.valintatapajonooid"
-                                                                    hakemus-oid="tulos.hakemusOid"
-                                                                    enabled="updateOph"/>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <span ng-show="limit < valintatapajono.jonosijat.length">Näytetty: {{limit}} / {{valintatapajono.jonosijat.length}}</span>
+                        <div>
+                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot">
+                                <form name="form">
+                                    <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
+                                    <button ng-disabled="!form.$valid"
+                                            class="btn btn-primary btn-sm margin-bottom-2" ng-click="submit(vaihe.oid, valintatapajono.oid)">Tallenna
+                                    </button>
+                                    <table class="virkailija-table-1" item-on-screen>
+                                        <thead>
+                                        <tr>
+                                            <th>Jonosija ({{valintatapajono.jonosijat.length}})</th>
+                                            <th>Hakija</th>
+                                            <th>Valintatieto</th>
+                                            <th>Kuvaus (FI)</th>
+                                            <th>Kuvaus (SV)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit | orderBy:['jonosija', 'sukunimi']:false">
+                                            <td><input ng-model="tulos.jonosija"
+                                                       min="0"
+                                                       max="valintatapajono.jonosijat.length"
+                                                       size="2"
+                                                       ng-change="changeTila(tulos, tulos.jonosija)"/></td>
+                                            <td class="leftorientedcolumn">
+                                                <show-person-information sukunimi="{{tulos.sukunimi}}"
+                                                                         etunimi="{{tulos.etunimi}}"
+                                                                         hakemus-oid="{{tulos.hakemusOid}}"
+                                                                         haku-oid="{{hakuOid}}"
+                                                                         henkilo-oid="{{tulos.hakijaOid}}"/>
+                                            </td>
+                                            <!--<td>-->
+                                            <!--{{tulos.jarjestyskriteerit[0].arvo}}-->
+                                            <!--<a href="#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria"-->
+                                            <!--target="_blank" class="historylink">-->
+                                            <!--Lisätietoja-->
+                                            <!--</a>-->
+                                            <!--</td>-->
+                                            <!--<td>-->
+                                            <!--{{tulos.prioriteetti}}-->
+                                            <!--</td>-->
+                                            <td>
+                                                <select ng-model="tulos.tuloksenTila">
+                                                    <option value="HYVAKSYTTAVISSA">Hyväksyttävissä</option>
+                                                    <option value="HYLATTY">Hylätty</option>
+                                                    <option value="MAARITTELEMATON">Määrittelemätön</option>
+                                                </select>
+                                            </td>
+                                            <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.FI"
+                                                       size="10"/></td>
+                                            <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.SV"
+                                                       size="10"/></td>
+                                            <!--<td>-->
+                                                <!--<jarjestyskriteeri-muokkaus jonosija="tulos"-->
+                                                                            <!--valintatapajono-oid="valintatapajono.valintatapajonooid"-->
+                                                                            <!--hakemus-oid="tulos.hakemusOid"-->
+                                                                            <!--enabled="updateOph"/>-->
+                                            <!--</td>-->
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <span ng-show="limit < valintatapajono.jonosijat.length">Näytetty: {{limit}} / {{valintatapajono.jonosijat.length}}</span>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                </accordion-group>
-            </accordion>
+                    </accordion-group>
+                </accordion>
+            </div>
+
+            <div ng-if="model.valinnanvaiheet.length > 0">
+                <h2>Lasketut valinnanvaiheet</h2>
+                <accordion close-others="true">
+                    <accordion-group
+                            ng-repeat="valinnanvaihe in model.valinnanvaiheet | orderBy:['createdAt','jarjestysnumero']:true"
+                            is-open="$first">
+
+                        <accordion-heading>
+                            <h3>Valinnanvaihe: <span ng-bind="valinnanvaihe.nimi">-</span> (<span
+                                    ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span>)</h3>
+
+                        </accordion-heading>
+
+                        <div>
+                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot">
+                                <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
+                                <table class="virkailija-table-1" item-on-screen>
+                                    <thead>
+                                    <tr>
+                                        <th>{{valintatapajono.jonosijat.length}}</th>
+                                        <th>Hakija</th>
+                                        <th>Yhteispisteet</th>
+                                        <th>Hakutoive</th>
+                                        <th>Valintatieto</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit">
+                                        <td>{{tulos.jonosija}}</td>
+                                        <td class="leftorientedcolumn">
+                                            <show-person-information sukunimi="{{tulos.sukunimi}}"
+                                                                     etunimi="{{tulos.etunimi}}"
+                                                                     hakemus-oid="{{tulos.hakemusOid}}"
+                                                                     haku-oid="{{hakuOid}}"
+                                                                     henkilo-oid="{{tulos.hakijaOid}}"/>
+                                        </td>
+                                        <td>
+                                            {{tulos.jarjestyskriteerit[0].arvo}}
+                                            <a href="#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria"
+                                               target="_blank" class="historylink">
+                                                Lisätietoja
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{tulos.prioriteetti}}
+                                        </td>
+                                        <td>
+
+                                            <modal modal-template="modal.html" window-class="wide">
+                                                <modal-open>
+                                                    {{tulos.tuloksenTila}}
+                                                </modal-open>
+
+                                            </modal>
+
+                                            <!--<div ng-include="'haku/hakukohteet/valintalaskenta_tulos/tilaPartial.html'"/>-->
+                                        </td>
+                                        <td>
+                                            <jarjestyskriteeri-muokkaus jonosija="tulos"
+                                                                        valintatapajono-oid="valintatapajono.valintatapajonooid"
+                                                                        hakemus-oid="tulos.hakemusOid"
+                                                                        enabled="updateOph"/>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <span ng-show="limit < valintatapajono.jonosijat.length">Näytetty: {{limit}} / {{valintatapajono.jonosijat.length}}</span>
+                            </div>
+                        </div>
+                    </accordion-group>
+                </accordion>
+            </div>
         </div>
 
     </div>
