@@ -58,7 +58,6 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
 
                         if (model.hakeneet) {
                             model.hakeneet.forEach(function (hakija) {
-
                                 hakija.filterData = {};
                                 hakija.osallistuu = {};
 
@@ -159,7 +158,7 @@ function PistesyottoController($scope, $log, $timeout, $routeParams, $upload, Pi
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
     PistesyottoModel.refreshIfNeeded($scope.hakukohdeOid, $routeParams.hakuOid);
 
-    $scope.predicate = 'lastName';
+    $scope.predicate = ['lastName','firstNames'];
 
     $scope.submit = function () {
         PistesyottoModel.submit();
