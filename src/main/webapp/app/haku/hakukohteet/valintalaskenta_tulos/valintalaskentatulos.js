@@ -1,4 +1,10 @@
-﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija) {
+﻿app.factory('ValintalaskentatulosModel', function(
+    ValinnanvaiheListByHakukohde,
+    JarjestyskriteeriMuokattuJonosija,
+    ValinnanVaiheetIlmanLaskentaa,
+    HakukohdeHenkilot,
+    Ilmoitus,
+    IlmoitusTila) {
 	var model;
 	model = new function() {
 
@@ -9,15 +15,134 @@
 		this.refresh = function(hakukohdeOid) {
 		    model.hakukohdeOid = {};
             model.valinnanvaiheet = [];
+            model.ilmanlaskentaa = [];
             model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
+            model.hakeneet = [];
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
-			     model.valinnanvaiheet = result;
+			    model.valinnanvaiheet = result;
+                ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
+                    model.ilmanlaskentaa = result;
+                    HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
+                        model.hakeneet = result.results;
+
+                        model.ilmanlaskentaa.forEach(function (vaihe) {
+                            vaihe.valintatapajonot = [];
+                            vaihe.jonot.forEach(function(jono) {
+                                var tulosjono = {};
+                                tulosjono.oid = jono.oid;
+                                tulosjono.valintatapajonooid = jono.oid;
+                                tulosjono.prioriteetti = jono.prioriteetti;
+                                tulosjono.aloituspaikat = jono.aloituspaikat;
+
+                                tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
+                                tulosjono.tasasijasaanto = jono.tasasijasaanto;
+                                tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
+                                tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
+                                tulosjono.poissaOlevaTaytto = jono.poissaOlevaTaytto;
+                                tulosjono.kaytetaanValintalaskentaa = jono.kaytetaanValintalaskentaa;
+
+                                tulosjono.nimi = jono.nimi;
+                                tulosjono.jonosijat = [];
+                                model.hakeneet.forEach(function(hakija) {
+
+                                    var vaiheet = angular.copy(model.valinnanvaiheet);
+                                    var jonosijat = _.chain(vaiheet)
+                                        .filter(function(current) {return current.valinnanvaiheoid == vaihe.oid})
+                                        .map(function(current) {return current.valintatapajonot}).first()
+                                        .filter(function(tulosjono) {return tulosjono.oid == jono.oid})
+                                        .map(function(tulosjono) {return tulosjono.jonosijat}).first().value();
+
+                                    var jonosija = _.findWhere(jonosijat, {hakemusOid : hakija.oid});
+
+                                    if(jonosija) {
+                                        tulosjono.jonosijat.push(jonosija);
+                                    } else {
+                                        jonosija = {};
+                                        jonosija.hakemusOid = hakija.oid;
+                                        jonosija.hakijaOid = null;
+                                        jonosija.prioriteetti = 0;
+                                        jonosija.harkinnanvarainen = false;
+                                        jonosija.historiat = null;
+                                        jonosija.syotetytArvot = [];
+                                        jonosija.funktioTulokset = [];
+                                        jonosija.muokattu = false;
+                                        jonosija.sukunimi = hakija.lastName;
+                                        jonosija.etunimi = hakija.firstNames;
+                                        jonosija.jarjestyskriteerit = [
+                                            {
+                                                arvo: null,
+                                                tila: "",
+                                                kuvaus: { },
+                                                prioriteetti: 0,
+                                                nimi: ""
+                                            }
+                                        ];
+                                        tulosjono.jonosijat.push(jonosija);
+                                    }
+
+                                });
+                                vaihe.valintatapajonot.push(tulosjono);
+
+                            });
+                        });
+                        model.valinnanvaiheet.forEach(function(vaihe, index) {
+                            vaihe.valintatapajonot.forEach(function(jono, i) {
+                                if(jono.kaytetaanValintalaskentaa == false) {
+                                    vaihe.valintatapajonot.splice(i, 1);
+                                }
+                            });
+                            if(vaihe.valintatapajonot.length <= 0) {
+                                model.valinnanvaiheet.splice(index, 1);
+                            }
+                        });
+                    }, function (error) {
+                        model.errors.push(error);
+                    });
+                }, function(error) {
+                    model.errors.push(error);
+                })
 			}, function(error) {
                 model.errors.push(error);
             });
+
 		};
+
+        this.submit = function (vaiheoid, jonooid) {
+            var vv = _.findWhere(model.ilmanlaskentaa, {valinnanvaiheoid:vaiheoid});
+            if(vv) {
+                var vaihe = {};
+                angular.copy(vv, vaihe);
+                angular.copy(vv.valintatapajonot, vaihe.valintatapajonot);
+                vaihe.valinnanvaiheoid = vaihe.oid;
+                var yksijono = _.findWhere(vaihe.valintatapajonot, {valintatapajonooid:jonooid});
+
+                vaihe.valintatapajonot = [yksijono];
+                // Suodatetaan pois hakemukset joille ei ole merkitty jonosijaa ja asetetaan pisteiksi jonosijan negaatio
+                var suodatetutSijat = _.chain(yksijono.jonosijat)
+                    .filter(function(sija) {
+                        return (!_.isUndefined(sija.jonosija) && _.isNumber(Number(sija.jonosija)))
+                    }).map(function(sija) {
+                        if(_.isUndefined(sija.tuloksenTila) || sija.tuloksenTila === '') {
+                            sija.tuloksenTila = 'MAARITTELEMATON';
+                        }
+                        sija.jonosija = Number(sija.jonosija);
+                        sija.jarjestyskriteerit[0].tila = sija.tuloksenTila;
+                        sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
+                        return sija;
+                    }).value();
+
+                vaihe.valintatapajonot[0].jonosijat = suodatetutSijat;
+
+                ValinnanvaiheListByHakukohde.post({hakukohdeoid: model.hakukohdeOid}, vaihe, function(result) {
+                    Ilmoitus.avaa("Tallennus onnistui", "Valintatulosten tallennus onnistui.");
+                }, function(error) {
+                    Ilmoitus.avaa("Tallennus epäonnistui", "Valintatulosten tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                });
+
+            }
+        };
 
 	};
 
@@ -60,6 +185,24 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
         $scope.updateOph = true;
     });
+
+    $scope.submit = function (vaiheoid, jonooid) {
+        ValintalaskentatulosModel.submit(vaiheoid, jonooid);
+    };
+
+    $scope.changeTila = function (jonosija, value) {
+        if (value) {
+            $timeout(function(){
+                jonosija.tuloksenTila = "HYVAKSYTTAVISSA";
+            });
+        } else {
+            $timeout(function(){
+                jonosija.tuloksenTila = "";
+                delete jonosija.jonosija;
+            });
+        }
+
+    };
 
     $scope.limit = 20;
     $scope.lazyLoading = function() {
