@@ -1,4 +1,10 @@
-﻿app.factory('ValintalaskentatulosModel', function(ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija, ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilot) {
+﻿app.factory('ValintalaskentatulosModel', function(
+    ValinnanvaiheListByHakukohde,
+    JarjestyskriteeriMuokattuJonosija,
+    ValinnanVaiheetIlmanLaskentaa,
+    HakukohdeHenkilot,
+    Ilmoitus,
+    IlmoitusTila) {
 	var model;
 	model = new function() {
 
@@ -129,7 +135,11 @@
 
                 vaihe.valintatapajonot[0].jonosijat = suodatetutSijat;
 
-                ValinnanvaiheListByHakukohde.post({hakukohdeoid: model.hakukohdeOid}, vaihe, function(result) {}, function(error) {});
+                ValinnanvaiheListByHakukohde.post({hakukohdeoid: model.hakukohdeOid}, vaihe, function(result) {
+                    Ilmoitus.avaa("Tallennus onnistui", "Valintatulosten tallennus onnistui.");
+                }, function(error) {
+                    Ilmoitus.avaa("Tallennus epäonnistui", "Valintatulosten tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                });
 
             }
         };
