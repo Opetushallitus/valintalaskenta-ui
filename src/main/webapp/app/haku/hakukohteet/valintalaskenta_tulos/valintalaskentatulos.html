@@ -104,16 +104,6 @@
                                                                          haku-oid="{{hakuOid}}"
                                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
                                             </td>
-                                            <!--<td>-->
-                                            <!--{{tulos.jarjestyskriteerit[0].arvo}}-->
-                                            <!--<a href="#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria"-->
-                                            <!--target="_blank" class="historylink">-->
-                                            <!--Lisätietoja-->
-                                            <!--</a>-->
-                                            <!--</td>-->
-                                            <!--<td>-->
-                                            <!--{{tulos.prioriteetti}}-->
-                                            <!--</td>-->
                                             <td>
                                                 <select ng-model="tulos.tuloksenTila">
                                                     <option value="HYVAKSYTTAVISSA">Hyväksyttävissä</option>
@@ -122,15 +112,9 @@
                                                 </select>
                                             </td>
                                             <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.FI"
-                                                       size="10"/></td>
+                                                       size="20"/></td>
                                             <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.SV"
-                                                       size="10"/></td>
-                                            <!--<td>-->
-                                                <!--<jarjestyskriteeri-muokkaus jonosija="tulos"-->
-                                                                            <!--valintatapajono-oid="valintatapajono.valintatapajonooid"-->
-                                                                            <!--hakemus-oid="tulos.hakemusOid"-->
-                                                                            <!--enabled="updateOph"/>-->
-                                            <!--</td>-->
+                                                       size="20"/></td>
                                         </tr>
                                         </tbody>
                                     </table>
