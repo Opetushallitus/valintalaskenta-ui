@@ -83,7 +83,7 @@
                                     <table class="virkailija-table-1" item-on-screen>
                                         <thead>
                                         <tr>
-                                            <th>Jonosija ({{valintatapajono.jonosijat.length}})</th>
+                                            <th><a href="" ng-click="reverse=!reverse">Jonosija ({{valintatapajono.jonosijat.length}})</a></th>
                                             <th>Hakija</th>
                                             <th>Valintatieto</th>
                                             <th>Kuvaus (FI)</th>
@@ -91,12 +91,12 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit | orderBy:['jonosija', 'sukunimi']:false">
-                                            <td><input ng-model="tulos.jonosija"
+                                        <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit | orderBy:['jonosija', 'sukunimi']:reverse">
+                                            <td><input type="number"
+                                                       ng-model="tulos.jonosija"
                                                        min="0"
-                                                       max="valintatapajono.jonosijat.length"
-                                                       size="2"
-                                                       ng-change="changeTila(tulos, tulos.jonosija)"/></td>
+                                                       max="{{valintatapajono.jonosijat.length}}"
+                                                       ng-change="changeTila(tulos, tulos.jonosija)" ng-debounce="1000"></td>
                                             <td class="leftorientedcolumn">
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"
@@ -105,7 +105,7 @@
                                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
                                             </td>
                                             <td>
-                                                <select ng-model="tulos.tuloksenTila">
+                                                <select ng-model="tulos.tuloksenTila" ng-change="changeSija(tulos, tulos.tuloksenTila)">
                                                     <option value="HYVAKSYTTAVISSA">Hyväksyttävissä</option>
                                                     <option value="HYLATTY">Hylätty</option>
                                                     <option value="MAARITTELEMATON">Määrittelemätön</option>

@@ -122,14 +122,14 @@
                 // Suodatetaan pois hakemukset joille ei ole merkitty jonosijaa ja asetetaan pisteiksi jonosijan negaatio
                 var suodatetutSijat = _.chain(yksijono.jonosijat)
                     .filter(function(sija) {
-                        return (!_.isUndefined(sija.jonosija) && _.isNumber(Number(sija.jonosija)))
+                        return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila != '')
                     }).map(function(sija) {
-                        if(_.isUndefined(sija.tuloksenTila) || sija.tuloksenTila === '') {
-                            sija.tuloksenTila = 'MAARITTELEMATON';
+                        if(_.isUndefined(sija.jonoSija && _.isNumber(sija.jonosija))) {
+                            sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
+                        } else {
+                            delete sija.jarjestyskriteerit[0].arvo;
                         }
-                        sija.jonosija = Number(sija.jonosija);
                         sija.jarjestyskriteerit[0].tila = sija.tuloksenTila;
-                        sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                         return sija;
                     }).value();
 
@@ -191,13 +191,22 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     };
 
     $scope.changeTila = function (jonosija, value) {
-        if (value) {
+        if (_.isNumber(value)) {
             $timeout(function(){
                 jonosija.tuloksenTila = "HYVAKSYTTAVISSA";
             });
         } else {
             $timeout(function(){
                 jonosija.tuloksenTila = "";
+                delete jonosija.jonosija;
+            });
+        }
+
+    };
+
+    $scope.changeSija = function (jonosija, value) {
+        if (value != 'HYVAKSYTTAVISSA') {
+            $timeout(function(){
                 delete jonosija.jonosija;
             });
         }
