@@ -74,7 +74,7 @@
                                                          henkilo-oid="{{hakemus.hakijaOid}}"/>
                             </td>
                             <td>{{hakemus.prioriteetti}}</td>
-                            <td>{{hakemus.pisteet}}</td>
+                            <td><span ng-if="hakemus.pisteet >= 0">{{hakemus.pisteet}}</span></td>
                             <td>
                                 <span>{{hakemus.tila}}</span>
                                 <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>

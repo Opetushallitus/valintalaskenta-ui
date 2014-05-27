@@ -96,7 +96,8 @@
                                                        ng-model="tulos.jonosija"
                                                        min="0"
                                                        max="{{valintatapajono.jonosijat.length}}"
-                                                       ng-change="changeTila(tulos, tulos.jonosija)" ng-debounce="1000"></td>
+                                                       ng-change="changeTila(tulos, tulos.jonosija)" ng-debounce="1000"
+                                                       ng-disabled="tulos.tuloksenTila == 'HYLATTY'"></td>
                                             <td class="leftorientedcolumn">
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"
@@ -140,7 +141,7 @@
                         </accordion-heading>
 
                         <div>
-                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot">
+                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot"  ng-if="!valintatapajono.ilmanLaskentaa">
                                 <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
                                 <table class="virkailija-table-1" item-on-screen>
                                     <thead>

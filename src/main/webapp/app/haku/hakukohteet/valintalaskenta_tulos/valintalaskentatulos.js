@@ -2,7 +2,7 @@
     ValinnanvaiheListByHakukohde,
     JarjestyskriteeriMuokattuJonosija,
     ValinnanVaiheetIlmanLaskentaa,
-    HakukohdeHenkilot,
+    HakukohdeHenkilotFull,
     Ilmoitus,
     IlmoitusTila) {
 	var model;
@@ -11,6 +11,20 @@
 		this.hakukohdeOid = {};
 		this.valinnanvaiheet = [];
         this.errors = [];
+
+        this.hakutoivePrioriteetti = function(hakemusoid) {
+            var hakija = _.findWhere(model.hakeneet, {oid:hakemusoid});
+            if (!hakija) {
+                return -1;
+            }
+            var toive = (_.invert(hakija.answers.hakutoiveet))[model.hakukohdeOid];
+
+            if(toive) {
+                return parseInt(toive.substring(10,11));
+            } else {
+                return -1;
+            }
+        };
 		
 		this.refresh = function(hakukohdeOid) {
 		    model.hakukohdeOid = {};
@@ -24,8 +38,8 @@
 			    model.valinnanvaiheet = result;
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
-                    HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
-                        model.hakeneet = result.results;
+                    HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
+                        model.hakeneet = result;
 
                         model.ilmanlaskentaa.forEach(function (vaihe) {
                             vaihe.valintatapajonot = [];
@@ -62,14 +76,14 @@
                                         jonosija = {};
                                         jonosija.hakemusOid = hakija.oid;
                                         jonosija.hakijaOid = null;
-                                        jonosija.prioriteetti = 0;
+                                        jonosija.prioriteetti = model.hakutoivePrioriteetti(hakija.oid);
                                         jonosija.harkinnanvarainen = false;
                                         jonosija.historiat = null;
                                         jonosija.syotetytArvot = [];
                                         jonosija.funktioTulokset = [];
                                         jonosija.muokattu = false;
-                                        jonosija.sukunimi = hakija.lastName;
-                                        jonosija.etunimi = hakija.firstNames;
+                                        jonosija.sukunimi = hakija.answers.henkilotiedot.Sukunimi;
+                                        jonosija.etunimi = hakija.answers.henkilotiedot.Etunimet;
                                         jonosija.jarjestyskriteerit = [
                                             {
                                                 arvo: null,
@@ -128,6 +142,9 @@
                             sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                         } else {
                             delete sija.jarjestyskriteerit[0].arvo;
+                        }
+                        if(_.isUndefined(sija.prioriteetti) || sija.prioriteetti == 0) {
+                            sija.prioriteetti = model.hakutoivePrioriteetti(sija.hakemusOid);
                         }
                         sija.jarjestyskriteerit[0].tila = sija.tuloksenTila;
                         return sija;
