@@ -501,6 +501,13 @@ app.factory('HakukohdeHenkilot', function($resource) {
         get: {method: "GET", isArray: false}
     });
 });
+
+app.factory('HakukohdeHenkilotFull', function($resource) {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/listfull",{aoOid: "@aoOid", appState:["ACTIVE","INCOMPLETE"]}, {
+        get: {method: "GET", isArray: true}
+    });
+});
+
 app.factory('Henkilot', function($resource) {
 	return $resource(HAKEMUS_URL_BASE + "haku-app/applications", {appState:["ACTIVE","INCOMPLETE"]},{
 		query:  {method:'GET', isArray:false}

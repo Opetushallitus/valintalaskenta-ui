@@ -47,7 +47,7 @@
                         <td>{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>
                         <td>{{erittely.varasijoilla.length}}</td>
                         <td>{{erittely.paikanVastaanottaneet.length}}</td>
-                        <td>{{erittely.hyvaksytyt[erittely.hyvaksytyt.length-1].pisteet}}</td>
+                        <td><span ng-if="erittely.hyvaksytyt[erittely.hyvaksytyt.length-1].pisteet >= 0">{{erittely.hyvaksytyt[erittely.hyvaksytyt.length-1].pisteet}}</span></td>
                     </tr>
                     </tbody>
                 </table>
