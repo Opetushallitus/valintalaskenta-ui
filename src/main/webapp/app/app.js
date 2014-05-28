@@ -479,7 +479,7 @@ app.factory('Jalkiohjauskirjeet', function($resource) {
 });
 
 app.factory('Kirjepohjat', function($resource) {
-    return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=:templateName&languageCode=:languageCode", {templateName: "@templateName", languageCode:"@languageCode"}, {
+    return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=:templateName&languageCode=:languageCode&oid=:tarjoajaOid&tag=:tag", {templateName: "@templateName", languageCode:"@languageCode", tarjoajaOid: "@tarjoajaOid", tag:"@tag"}, {
         get: {method: "GET", isArray:true}
     });
 });
