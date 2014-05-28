@@ -437,6 +437,15 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         return i;
     };
 
+    $scope.selectIlmoitettuToAll = function() {
+        $scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset.forEach(function(hakemus){
+            if (hakemus.tila === "HYVAKSYTTY") {
+                hakemus.muokattuVastaanottoTila = "ILMOITETTU";
+                hakemus.vastaanottoTila = "ILMOITETTU";
+            }
+        });
+    }
+
     $scope.isKorkeakoulu = function() {
         var returnValue = false;
         if ($scope.model.haku.kohdejoukkoUri) {
