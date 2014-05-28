@@ -246,9 +246,10 @@ app.directive('sijoitteluVastaanottoTila', function () {
                                 valintatapajonoOid: $scope.valintatapajonoOid,
                                 hakemusOid: $scope.hakemus.hakemusOid,
                                 selite: $scope.hakemus.selite
-                            }
+                            };
+
                             $scope.selite = "";
-                            if ($scope.hakemus.muokattuVastaanottoTila == "") {
+                            if ($scope.hakemus.muokattuVastaanottoTila === "") {
                                 $scope.hakemus.muokattuVastaanottoTila = null;
                             }
                             var tilaObj = {
@@ -263,7 +264,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                             }, function (error) {
                                 $scope.error = error;
                             });
-                        }
+                        };
 
                         var setVastaanottoTila = function (hakemus, tilaParams) {
                             HakemuksenVastaanottoTila.get(tilaParams, function (result) {
@@ -279,10 +280,28 @@ app.directive('sijoitteluVastaanottoTila', function () {
                             }, function (error) {
                                 $scope.error = error;
                             });
-                        }
+                        };
 
                         $scope.sulje = function () {
                             $modalInstance.dismiss('cancel');
+                        };
+
+                        $scope.showEhdollisesti = function() {
+                            var returnValue = false;
+
+                            if ($scope.hakemus.showEhdollisesti) {
+                                returnValue = $scope.hakemus.showEhdollisesti;
+                            }
+                            return returnValue;
+                        };
+
+                        $scope.showSitovasti = function() {
+                            var returnValue = false;
+
+                            if ($scope.hakemus.showSitovasti) {
+                                returnValue = $scope.hakemus.showSitovasti;
+                            }
+                            return returnValue;
                         };
 
                         $scope.isKorkeakoulu = function() {
@@ -299,7 +318,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                 }).result.then(function () {
                     }, function () {
                     });
-            }
+            };
 
         }
     };
