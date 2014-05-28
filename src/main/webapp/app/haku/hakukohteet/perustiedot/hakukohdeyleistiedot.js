@@ -6,12 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
-app.factory('HakukohdeModel', function (TarjontaHakukohde, HakukohdeNimi) {
+app.factory('HakukohdeModel', function (TarjontaHakukohde, HakukohdeNimi, HakukohdeHenkilotFull) {
     var model;
 
     model = new function () {
 
         this.hakukohde = {};
+        this.ensisijaiset = [];
 
 
         // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
@@ -49,6 +50,21 @@ app.factory('HakukohdeModel', function (TarjontaHakukohde, HakukohdeNimi) {
             }
         };
 
+        this.haeEnsisijaiset = function(hakemukset, hakukohdeOid) {
+
+            var result = [];
+            _.each(hakemukset, function(hakemus) {
+                var toive = (_.invert(hakemus.answers.hakutoiveet))[hakukohdeOid];
+
+                console.log(parseInt(toive.substring(10,11)));
+
+                if(toive && parseInt(toive.substring(10,11)) == 1) {
+                    result.push(hakemus);
+                }
+            });
+            return result;
+        };
+
         this.refresh = function (hakukohdeOid) {
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (result) {
                 model.hakukohde = result;
@@ -57,6 +73,11 @@ app.factory('HakukohdeModel', function (TarjontaHakukohde, HakukohdeNimi) {
                 });
 
             });
+
+            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
+                model.ensisijaiset = model.haeEnsisijaiset(result, hakukohdeOid);
+            });
+
         };
 
         this.refreshIfNeeded = function (hakukohdeOid) {
