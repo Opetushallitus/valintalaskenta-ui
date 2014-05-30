@@ -18,6 +18,9 @@ app.config(function ($translateProvider) {
                 notpresentfall: "Poissa syksy, läsnä kevät",
                 presentspring: "Läsnä, keväällä alkava koulutus",
                 notpresentspring: "Poissa, keväällä alkava koulutus"
+            },
+            buttons: {
+                acceptall: "Hyväksy valintaesitys"
             }
         },
 
@@ -46,6 +49,9 @@ app.config(function ($translateProvider) {
                 notpresentfall: "Poissa syksy, läsnä kevät",
                 presentspring: "Läsnä, keväällä alkava koulutus",
                 notpresentspring: "Poissa, keväällä alkava koulutus"
+            },
+            buttons: {
+                acceptall: "Hyväksy valintaesitys"
             }
         },
 
