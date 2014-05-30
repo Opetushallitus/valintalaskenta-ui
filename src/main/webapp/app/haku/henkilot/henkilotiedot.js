@@ -290,20 +290,42 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
     return model;
 });
 
-function HenkiloTiedotController($q, $scope, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, Ilmoitus, IlmoitusTila) {
+function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, Ilmoitus, IlmoitusTila) {
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.muodostaJalkiohjauskirje = function () {
-        Jalkiohjauskirjeet.post({
-                hakuOid: $routeParams.hakuOid},
-            {hakemusOids: [$scope.model.hakemus.oid]},
-            function (id) {
-                Latausikkuna.avaa(id, "Jälkiohjauskirje yksittäiselle hakijalle", "");
-            }, function () {
-
-            });
+        
+        var tag = $routeParams.hakuOid;
+        var hakemusOid = $scope.model.hakemus.oid;
+        var viestintapalveluInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+            controller: ViestintapalveluIkkunaCtrl,
+            resolve: {
+                oids: function () {
+                    return {
+                    	otsikko: "Jälkiohjauskirjeet",
+                    	toimintoNimi: "Muodosta jälkiohjauskirjeet",
+                    	toiminto: function(sisalto) {
+                    		Jalkiohjauskirjeet.post({
+					        	hakuOid: $routeParams.hakuOid,
+					        	sisalto: sisalto,
+					        	tag: tag}, {hakemusOids: [hakemusOid] } , function (id) {
+					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
+					        }, function () {
+					            
+					        });
+                    	},
+                        hakuOid: $routeParams.hakuOid,
+                        pohjat: function() {
+                        	return Jalkiohjauskirjepohjat.get({languageCode: "FI", tag: tag});
+                        }
+                    };
+                }
+            }
+        });
     };
 
     $scope.pohjakoulutukset = Pohjakuolutukset;
