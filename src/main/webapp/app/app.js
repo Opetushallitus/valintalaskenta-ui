@@ -479,11 +479,15 @@ app.factory('Jalkiohjauskirjeet', function($resource) {
 });
 
 app.factory('Kirjepohjat', function($resource) {
-    return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=:templateName&languageCode=:languageCode", {templateName: "@templateName", languageCode:"@languageCode"}, {
+    return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=:templateName&languageCode=:languageCode&oid=:tarjoajaOid&tag=:tag", {templateName: "@templateName", languageCode:"@languageCode", tarjoajaOid: "@tarjoajaOid", tag:"@tag"}, {
         get: {method: "GET", isArray:true}
     });
 });
-
+app.factory('Jalkiohjauskirjepohjat', function($resource) {
+    return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=jalkiohjauskirje&languageCode=:languageCode&tag=:tag", {languageCode:"@languageCode", tag:"@tag"}, {
+        get: {method: "GET", isArray:true}
+    });
+});
 //hakuapp related
 app.factory('Hakemus', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid", {oid: "@oid", appState:["ACTIVE","INCOMPLETE"]}, {

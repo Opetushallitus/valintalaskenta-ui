@@ -32,7 +32,7 @@
 });
 
 
-function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKelaFtp, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
+function YhteisvalinnanHallintaController($scope, $modal, $interval, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
     $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -140,14 +140,34 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, AktivoiKela
     });
 
     $scope.muodostaJalkiohjauskirjeet = function () {
-        Jalkiohjauskirjeet.post({
-                hakuOid: $routeParams.hakuOid},
-            {},
-            function (id) {
-                Latausikkuna.avaa(id, "Jälkiohjauskirjeiden luonti", "");
-            }, function () {
-
-            });
+    	var tag = $routeParams.hakuOid;
+        var viestintapalveluInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+            controller: ViestintapalveluIkkunaCtrl,
+            resolve: {
+                oids: function () {
+                    return {
+                    	otsikko: "Jälkiohjauskirjeet",
+                    	toimintoNimi: "Muodosta jälkiohjauskirjeet",
+                    	toiminto: function(sisalto) {
+                    		Jalkiohjauskirjeet.post({
+					        	hakuOid: $routeParams.hakuOid,
+					        	sisalto: sisalto,
+					        	tag: tag}, {hakemusOids: null } , function (id) {
+					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
+					        }, function () {
+					            
+					        });
+                    	},
+                        hakuOid: $routeParams.hakuOid,
+                        pohjat: function() {
+                        	return Jalkiohjauskirjepohjat.get({languageCode: "FI", tag: tag});
+                        }
+                    };
+                }
+            }
+        });
     };
 
     $scope.aktivoiJalkiohjaustuloksetXls = function () {

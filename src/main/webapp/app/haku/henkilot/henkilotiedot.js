@@ -81,16 +81,19 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     if (latest.hakutoiveet) {
                         latest.hakutoiveet.forEach(function (hakutoive) {
                             if (model.hakutoiveetMap[hakutoive.hakukohdeOid]) {
+
                                 // Sijoittelun tilan muutosta varten
                                 hakutoive.hakutoiveenValintatapajonot.forEach(function (sijoittelu) {
                                     sijoittelu.hakemusOid = model.hakemus.oid;
                                 });
                                 model.hakutoiveetMap[hakutoive.hakukohdeOid].sijoittelu = hakutoive.hakutoiveenValintatapajonot;
+
                                 if (hakutoive.hakutoiveenValintatapajonot) {
                                     hakutoive.hakutoiveenValintatapajonot.forEach(function (valintatapajono) {
                                         model.sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
                                     });
                                 }
+                                model.vastaanottoTilaOptionsToShow(hakutoive);
                             }
                         });
 
@@ -229,6 +232,27 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             }
         };
 
+        this.vastaanottoTilaOptionsToShow = function(hakutoive) {
+            var showSitovasti = false;
+            if (hakutoive.hakutoiveenValintatapajonot) {
+                hakutoive.hakutoiveenValintatapajonot.forEach(function (valintatapajono, index) {
+                    // mitä vaihtoehtoja näytetään vastaanottotila-dialogissa
+                    if (valintatapajono.tila === 'HYVAKSYTTY') {
+                        if (valintatapajono.valintatapajonoPrioriteetti === index+1) {
+                            showSitovasti = true;
+                        }
+                        if (valintatapajono.valintatapajonoPrioriteetti === 1) {
+                            model.sijoittelu[valintatapajono.valintatapajonoOid].showSitovasti = true;
+                            model.sijoittelu[valintatapajono.valintatapajonoOid].showEhdollisesti = false;
+                        }
+                        if (valintatapajono.valintatapajonoPrioriteetti > 1) {
+                            model.sijoittelu[valintatapajono.valintatapajonoOid].showSitovasti = showSitovasti;
+                            model.sijoittelu[valintatapajono.valintatapajonoOid].showEhdollisesti = true;
+                        }
+                    }
+                });
+            }
+        };
 
         this.tallennaPisteet = function () {
             model.errors.length = 0;
@@ -266,20 +290,42 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
     return model;
 });
 
-function HenkiloTiedotController($q, $scope, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, Ilmoitus, IlmoitusTila) {
+function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, Ilmoitus, IlmoitusTila) {
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.muodostaJalkiohjauskirje = function () {
-        Jalkiohjauskirjeet.post({
-                hakuOid: $routeParams.hakuOid},
-            {hakemusOids: [$scope.model.hakemus.oid]},
-            function (id) {
-                Latausikkuna.avaa(id, "Jälkiohjauskirje yksittäiselle hakijalle", "");
-            }, function () {
-
-            });
+        
+        var tag = $routeParams.hakuOid;
+        var hakemusOid = $scope.model.hakemus.oid;
+        var viestintapalveluInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+            controller: ViestintapalveluIkkunaCtrl,
+            resolve: {
+                oids: function () {
+                    return {
+                    	otsikko: "Jälkiohjauskirjeet",
+                    	toimintoNimi: "Muodosta jälkiohjauskirjeet",
+                    	toiminto: function(sisalto) {
+                    		Jalkiohjauskirjeet.post({
+					        	hakuOid: $routeParams.hakuOid,
+					        	sisalto: sisalto,
+					        	tag: tag}, {hakemusOids: [hakemusOid] } , function (id) {
+					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
+					        }, function () {
+					            
+					        });
+                    	},
+                        hakuOid: $routeParams.hakuOid,
+                        pohjat: function() {
+                        	return Jalkiohjauskirjepohjat.get({languageCode: "FI", tag: tag});
+                        }
+                    };
+                }
+            }
+        });
     };
 
     $scope.pohjakoulutukset = Pohjakuolutukset;
