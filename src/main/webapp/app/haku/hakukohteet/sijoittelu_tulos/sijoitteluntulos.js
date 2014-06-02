@@ -441,7 +441,6 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         $scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset.forEach(function(hakemus){
             if (hakemus.tila === "HYVAKSYTTY") {
                 hakemus.muokattuVastaanottoTila = "ILMOITETTU";
-                hakemus.vastaanottoTila = "ILMOITETTU";
             }
         });
     }
