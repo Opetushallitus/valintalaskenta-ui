@@ -132,13 +132,13 @@
                         hakutoive.valinnanVaiheet.forEach(function(valinnanvaihe) {
                             valinnanvaihe.valintakokeet.forEach(function(valintakoe) {
                             	if (model.valintakokeet[valintakoe.valintakoeOid] === undefined ) {
-                                	model.errors.push("tunnistamaton valintakoe " + entry.valintakoeTunniste);
+                                	model.errors.push("tunnistamaton valintakoe " + valintakoe.valintakoeTunniste);
                                 	return;
                                 }
                                 if(model.valintakokeet[valintakoe.valintakoeOid].kutsutaankoKaikki) {
                                 	return;
                                 }
-                                
+
                                 var entry = {};
                                 entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 entry.hakuOid = koetulos.hakueOid;
@@ -153,11 +153,11 @@
                                 entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
                                 // OVT-6961
                                 if(valintakoe.nimi !== undefined) {
-                                	entry.valintakoeTunniste = valintakoe.nimi;	
+                                	entry.valintakoeTunniste = valintakoe.nimi;
                                 } else {
-                                	entry.valintakoeTunniste = valintakoe.valintakoeTunniste;	
+                                	entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
                                 }
-                                
+
 								model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
                                 if (model.valintakokeetHakijoittain[entry.hakemusOid] === undefined ) {
                                     model.valintakokeetHakijoittain[entry.hakemusOid] = {hakemusOid: entry.hakemusOid, etunimi: entry.etunimi, sukunimi: entry.sukunimi};
