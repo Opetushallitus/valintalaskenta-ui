@@ -56,8 +56,6 @@ app.factory('HakukohdeModel', function (TarjontaHakukohde, HakukohdeNimi, Hakuko
             _.each(hakemukset, function(hakemus) {
                 var toive = (_.invert(hakemus.answers.hakutoiveet))[hakukohdeOid];
 
-                console.log(parseInt(toive.substring(10,11)));
-
                 if(toive && parseInt(toive.substring(10,11)) == 1) {
                     result.push(hakemus);
                 }
