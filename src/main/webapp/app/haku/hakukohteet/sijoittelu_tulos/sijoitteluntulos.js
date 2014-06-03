@@ -94,13 +94,12 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                         var lastTasaSija = 1;
                         var sija = 0;
                         hakemukset.forEach(function (hakemus, index) {
-                            if (lastTasaSija >= hakemus.tasasijaJonosija) {
-                                sija = index + 1;
-                            }
 
                             if (hakemus.tila === "HYVAKSYTTY") {
+                                sija++;
                                 hakemus.valittu = true;
                                 hakemuserittely.hyvaksytyt.push(hakemus);
+                                hakemus.sija = sija;
                             }
 
                             if (hakemus.tila === "HYVAKSYTTY" && hakemus.hyvaksyttyHarkinnanvaraisesti) {
@@ -111,7 +110,6 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                 hakemuserittely.varasijoilla.push(hakemus);
                             }
 
-                            hakemus.sija = sija;
                             lastTasaSija = hakemus.tasasijaJonosija;
                         });
 
