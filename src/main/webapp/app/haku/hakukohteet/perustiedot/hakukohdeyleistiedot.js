@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-app.factory('HakukohdeModel', function (TarjontaHakukohde, HakukohdeNimi, HakukohdeHenkilotFull) {
+app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNimi, HakukohdeHenkilotFull) {
     var model;
 
     model = new function () {
@@ -64,26 +64,40 @@ app.factory('HakukohdeModel', function (TarjontaHakukohde, HakukohdeNimi, Hakuko
         };
 
         this.refresh = function (hakukohdeOid) {
+
+            var defer = $q.defer();
+
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (result) {
                 model.hakukohde = result;
                 HakukohdeNimi.get({hakukohdeoid: hakukohdeOid}, function (hakukohdeObject) {
                     model.hakukohde.tarjoajaOid = hakukohdeObject.tarjoajaOid;
                 });
-
             });
 
             HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
                 model.ensisijaiset = model.haeEnsisijaiset(result, hakukohdeOid);
+                defer.resolve();
+            }, function(error) {
+                defer.reject();
             });
+
+            return defer.promise;
 
         };
 
         this.refreshIfNeeded = function (hakukohdeOid) {
-
-            if (model.isHakukohdeChanged(hakukohdeOid) && (hakukohdeOid !== undefined)) {
-                model.refresh(hakukohdeOid);
+            if (model.isHakukohdeChanged(hakukohdeOid) && (hakukohdeOid !== undefined) && !model.refreshing) {
+                model.refreshing = true;
+                var promise = model.refresh(hakukohdeOid);
+                promise.then(function() {
+                    model.refreshin = false;
+                }, function(error) {
+                    $log.error("Error fetching applications");
+                });
             }
         };
+
+        this.refreshing = false;
 
         //helper method needed in other controllers
         this.isHakukohdeChanged = function (hakukohdeOid) {
