@@ -442,6 +442,11 @@ app.factory('PistesyottoVienti', function($resource) {
 		vie: {method:'POST', isArray:false}
 	});
 });
+app.factory('ValintatapajonoVienti', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/vienti", {}, {
+		vie: {method:'POST', isArray:false}
+	});
+});
 
 app.factory('Koekutsukirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/koekutsukirjeet/aktivoi", {}, {
