@@ -65,8 +65,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="hakemus in jono.hakemukset | orderBy:jarjesta | filter:hakijaFilter | limitTo:limit ">
-                            <td>{{hakemus.sija}}</td>
+                        <tr ng-repeat="hakemus in jono.hakemukset | orderBy:['sija'] | filter:hakijaFilter | limitTo:limit ">
+                            <td><span ng-if="hakemus.sija > 0">{{hakemus.sija}}</span></td>
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakemus.sukunimi}}"
                                                          etunimi="{{hakemus.etunimi}}"

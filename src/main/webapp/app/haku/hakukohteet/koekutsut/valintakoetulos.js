@@ -132,13 +132,13 @@
                         hakutoive.valinnanVaiheet.forEach(function(valinnanvaihe) {
                             valinnanvaihe.valintakokeet.forEach(function(valintakoe) {
                             	if (model.valintakokeet[valintakoe.valintakoeOid] === undefined ) {
-                                	model.errors.push("tunnistamaton valintakoe " + entry.valintakoeTunniste);
+                                	model.errors.push("tunnistamaton valintakoe " + valintakoe.valintakoeTunniste);
                                 	return;
                                 }
                                 if(model.valintakokeet[valintakoe.valintakoeOid].kutsutaankoKaikki) {
                                 	return;
                                 }
-                                
+
                                 var entry = {};
                                 entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 entry.hakuOid = koetulos.hakueOid;
@@ -153,11 +153,11 @@
                                 entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
                                 // OVT-6961
                                 if(valintakoe.nimi !== undefined) {
-                                	entry.valintakoeTunniste = valintakoe.nimi;	
+                                	entry.valintakoeTunniste = valintakoe.nimi;
                                 } else {
-                                	entry.valintakoeTunniste = valintakoe.valintakoeTunniste;	
+                                	entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
                                 }
-                                
+
 								model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
                                 if (model.valintakokeetHakijoittain[entry.hakemusOid] === undefined ) {
                                     model.valintakokeetHakijoittain[entry.hakemusOid] = {hakemusOid: entry.hakemusOid, etunimi: entry.etunimi, sukunimi: entry.sukunimi};
@@ -203,6 +203,10 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 			
 		}
 	};
+
+    $scope.currentPage = 0;
+    $scope.pageSize = 20;
+
 
     $scope.isBlank = function (str) {
 	    return (!str || /^\s*$/.test(str));
@@ -305,18 +309,14 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
     $scope.predicate = ['sukunimi','etunimi'];
 
     $scope.allValintakoeTulosXLS = function() {
-    	/*
-    	var kokeet = [];
-    	for (var key in $scope.model.valintakokeet) {
-    	    kokeet.push(key);
-    	}
-    	ValintakoeXls.query({hakukohdeOid:$routeParams.hakukohdeOid, valintakoeOid:kokeet});
-    	*/
     	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid},{valintakoeOids:$scope.model.valintakoeOids(),hakemusOids: []}, function(id) {
     		Latausikkuna.avaa(id, "Muodostetaan valintakoetuloksille taulukkolaskentatiedosto", "");
     	});
     };
-    
+
+    $scope.updateNakymanTila = function() {
+        $scope.currentPage = 0;
+    }
     
     
 }   
