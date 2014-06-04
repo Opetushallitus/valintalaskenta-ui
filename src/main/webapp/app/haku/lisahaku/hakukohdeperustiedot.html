@@ -12,9 +12,10 @@
         <div ng-include="'haku/lisahaku/lisahakuHakukohdeNavigation.html'"></div>
         <div class="tabsheets">
             <!--<h1 class="margin-horizontal-1 margin-bottom-3">{{model.hakukohde.hakukohdeKoodistoNimi}}</h1>-->
-          
-            <div class="grid16-8">
-                <dl class="dl-horizontal">
+
+            <div class="col-md-9">
+
+                <dl>
                     <dt>HakukohdeOid</dt>
                     <dd>{{model.hakukohde.oid}}</dd>
                     
@@ -25,27 +26,27 @@
                     <dd>{{hakeneetModel.hakeneet.length}}</dd>
                     
                     <dt class="margin-bottom-5">Valintatapajonokohtaiset tiedot</dt>
-
-                    <table  class="virkailija-table-1 margin-top-5">
-                        <thead>
-                            <tr>
-                                <th>Valintatapajono</th>
-                                <th>Hyväksytyt yhteensä</th>
-                                <th>Harkinnanvaraisesti hyväksytyt yhteensä</th>
-                                <th>Varasijoilla yhteensä</th>
-                                <th>Paikan vastaanottaneet yhteensä</th>
-                            </tr>
-                        </thead>
-                        <tbody >
-                            <tr ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt">
-                                <td>{{$index}}</td>
-                                <td>{{erittely.hyvaksytyt.length}}</td>
-                                <td>{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>
-                                <td>{{erittely.varasijoilla.length}}</td>
-                                <td>{{erittely.paikanVastaanottaneet.length}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                </dl>
+                <table  class="virkailija-table-1 margin-top-5">
+                    <thead>
+                        <tr>
+                            <th>Valintatapajono</th>
+                            <th>Hyväksytyt yhteensä</th>
+                            <th>Harkinnanvaraisesti hyväksytyt yhteensä</th>
+                            <th>Varasijoilla yhteensä</th>
+                            <th>Paikan vastaanottaneet yhteensä</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt">
+                            <td>{{$index}}</td>
+                            <td>{{erittely.hyvaksytyt.length}}</td>
+                            <td>{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>
+                            <td>{{erittely.varasijoilla.length}}</td>
+                            <td>{{erittely.paikanVastaanottaneet.length}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
             </div>
             
