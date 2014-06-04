@@ -13,7 +13,7 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
 
         this.hakukohde = {};
         this.ensisijaiset = [];
-
+        this.refreshingModel = false;
 
         // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
         this.getKieli = function () {
@@ -87,17 +87,17 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
 
         this.refreshIfNeeded = function (hakukohdeOid) {
             if (model.isHakukohdeChanged(hakukohdeOid) && (hakukohdeOid !== undefined) && !model.refreshing) {
-                model.refreshing = true;
+                model.refreshingModel = true;
                 var promise = model.refresh(hakukohdeOid);
                 promise.then(function() {
-                    model.refreshin = false;
+                    model.refreshingModel = false;
                 }, function(error) {
                     $log.error("Error fetching applications");
                 });
             }
         };
 
-        this.refreshing = false;
+
 
         //helper method needed in other controllers
         this.isHakukohdeChanged = function (hakukohdeOid) {
