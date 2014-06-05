@@ -72,7 +72,7 @@
             </div>
 
             <div ng-if="nakymanTila == 'Kokeittain'">
-                <div ng-repeat="valintakoe in (model.valintakokeet | startFrom:(currentPage)*koePageSize | limitTo:koePageSize)">
+                <div ng-repeat="valintakoe in model.valintakokeet | startFrom:(currentPage)*koePageSize | limitTo:koePageSize">
                 	<div ng-if="valintakoe.hakijat && valintakoe.lahetetaankoKoekutsut" class="panel panel-default">
 
 	                    <div class="panel-heading">
@@ -136,7 +136,7 @@
 	                            </tr>
 	                            </thead>
 	                            <tbody>
-	                            <tr ng-repeat="koe in (valintakoe.hakijat  | orderBy:predicate:reverse | filter:model.filter)">
+	                            <tr ng-repeat="koe in valintakoe.hakijat  | orderBy:predicate:reverse | filter:model.filter">
 	                                <td><input ng-if="koe.osallistuminen == 'OSALLISTUU'" type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
 	                                </td>
 	                                <td class="leftorientedcolumn">
