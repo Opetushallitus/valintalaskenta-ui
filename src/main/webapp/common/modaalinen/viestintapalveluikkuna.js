@@ -20,9 +20,9 @@ function ViestintapalveluIkkunaCtrl($scope, $modalInstance, oids, $log,
 		if(name === "default") {
 			return "OPH:n oletuspohja";
 		} else if(name === "organizationLatest") {
-			return "organisaation viimeisin";
-		} else if(name === "organizationLatestbyTag") {
-			return "hakukohteen viimeisin";
+			return "Organisaation viimeisin";
+		} else if(name === "organizationLatestByTag") {
+			return "Hakukohteen viimeisin";
 		} else {
 			return name;
 		}
