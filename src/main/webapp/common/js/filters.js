@@ -12,6 +12,12 @@ app.filter('duration', function() {
 app.filter('startFrom', function() {
     return function(input, start) {
         start = +start; //parse to int
-        return input.slice(start);
+        var returnValue = 0;
+
+        if( input && Object.prototype.toString.call( input ) === '[object Array]' ) {
+            returnValue = input.slice(start);
+        }
+
+        return returnValue;
     }
 });
