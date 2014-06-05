@@ -38,82 +38,84 @@
 			    model.valinnanvaiheet = result;
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
-                    HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
-                        model.hakeneet = result;
+                    if(result.length > 0) {
+                        HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
+                            model.hakeneet = result;
 
-                        model.ilmanlaskentaa.forEach(function (vaihe) {
-                            vaihe.valintatapajonot = [];
-                            vaihe.jonot.forEach(function(jono) {
-                                var tulosjono = {};
-                                tulosjono.oid = jono.oid;
-                                tulosjono.valintatapajonooid = jono.oid;
-                                tulosjono.prioriteetti = jono.prioriteetti;
-                                tulosjono.aloituspaikat = jono.aloituspaikat;
+                            model.ilmanlaskentaa.forEach(function (vaihe) {
+                                vaihe.valintatapajonot = [];
+                                vaihe.jonot.forEach(function(jono) {
+                                    var tulosjono = {};
+                                    tulosjono.oid = jono.oid;
+                                    tulosjono.valintatapajonooid = jono.oid;
+                                    tulosjono.prioriteetti = jono.prioriteetti;
+                                    tulosjono.aloituspaikat = jono.aloituspaikat;
 
-                                tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
-                                tulosjono.tasasijasaanto = jono.tasasijasaanto;
-                                tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
-                                tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
-                                tulosjono.poissaOlevaTaytto = jono.poissaOlevaTaytto;
-                                tulosjono.kaytetaanValintalaskentaa = jono.kaytetaanValintalaskentaa;
+                                    tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
+                                    tulosjono.tasasijasaanto = jono.tasasijasaanto;
+                                    tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
+                                    tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
+                                    tulosjono.poissaOlevaTaytto = jono.poissaOlevaTaytto;
+                                    tulosjono.kaytetaanValintalaskentaa = jono.kaytetaanValintalaskentaa;
 
-                                tulosjono.nimi = jono.nimi;
-                                tulosjono.jonosijat = [];
-                                model.hakeneet.forEach(function(hakija) {
+                                    tulosjono.nimi = jono.nimi;
+                                    tulosjono.jonosijat = [];
+                                    model.hakeneet.forEach(function(hakija) {
 
-                                    var vaiheet = angular.copy(model.valinnanvaiheet);
-                                    var jonosijat = _.chain(vaiheet)
-                                        .filter(function(current) {return current.valinnanvaiheoid == vaihe.oid})
-                                        .map(function(current) {return current.valintatapajonot}).first()
-                                        .filter(function(tulosjono) {return tulosjono.oid == jono.oid})
-                                        .map(function(tulosjono) {return tulosjono.jonosijat}).first().value();
+                                        var vaiheet = angular.copy(model.valinnanvaiheet);
+                                        var jonosijat = _.chain(vaiheet)
+                                            .filter(function(current) {return current.valinnanvaiheoid == vaihe.oid})
+                                            .map(function(current) {return current.valintatapajonot}).first()
+                                            .filter(function(tulosjono) {return tulosjono.oid == jono.oid})
+                                            .map(function(tulosjono) {return tulosjono.jonosijat}).first().value();
 
-                                    var jonosija = _.findWhere(jonosijat, {hakemusOid : hakija.oid});
+                                        var jonosija = _.findWhere(jonosijat, {hakemusOid : hakija.oid});
 
-                                    if(jonosija) {
-                                        tulosjono.jonosijat.push(jonosija);
-                                    } else {
-                                        jonosija = {};
-                                        jonosija.hakemusOid = hakija.oid;
-                                        jonosija.hakijaOid = null;
-                                        jonosija.prioriteetti = model.hakutoivePrioriteetti(hakija.oid);
-                                        jonosija.harkinnanvarainen = false;
-                                        jonosija.historiat = null;
-                                        jonosija.syotetytArvot = [];
-                                        jonosija.funktioTulokset = [];
-                                        jonosija.muokattu = false;
-                                        jonosija.sukunimi = hakija.answers.henkilotiedot.Sukunimi;
-                                        jonosija.etunimi = hakija.answers.henkilotiedot.Etunimet;
-                                        jonosija.jarjestyskriteerit = [
-                                            {
-                                                arvo: null,
-                                                tila: "",
-                                                kuvaus: { },
-                                                prioriteetti: 0,
-                                                nimi: ""
-                                            }
-                                        ];
-                                        tulosjono.jonosijat.push(jonosija);
-                                    }
+                                        if(jonosija) {
+                                            tulosjono.jonosijat.push(jonosija);
+                                        } else {
+                                            jonosija = {};
+                                            jonosija.hakemusOid = hakija.oid;
+                                            jonosija.hakijaOid = null;
+                                            jonosija.prioriteetti = model.hakutoivePrioriteetti(hakija.oid);
+                                            jonosija.harkinnanvarainen = false;
+                                            jonosija.historiat = null;
+                                            jonosija.syotetytArvot = [];
+                                            jonosija.funktioTulokset = [];
+                                            jonosija.muokattu = false;
+                                            jonosija.sukunimi = hakija.answers.henkilotiedot.Sukunimi;
+                                            jonosija.etunimi = hakija.answers.henkilotiedot.Etunimet;
+                                            jonosija.jarjestyskriteerit = [
+                                                {
+                                                    arvo: null,
+                                                    tila: "",
+                                                    kuvaus: { },
+                                                    prioriteetti: 0,
+                                                    nimi: ""
+                                                }
+                                            ];
+                                            tulosjono.jonosijat.push(jonosija);
+                                        }
+
+                                    });
+                                    vaihe.valintatapajonot.push(tulosjono);
 
                                 });
-                                vaihe.valintatapajonot.push(tulosjono);
-
                             });
-                        });
-                        model.valinnanvaiheet.forEach(function(vaihe, index) {
-                            vaihe.valintatapajonot.forEach(function(jono, i) {
-                                if(jono.kaytetaanValintalaskentaa == false) {
-                                    vaihe.valintatapajonot.splice(i, 1);
+                            model.valinnanvaiheet.forEach(function(vaihe, index) {
+                                vaihe.valintatapajonot.forEach(function(jono, i) {
+                                    if(jono.kaytetaanValintalaskentaa == false) {
+                                        vaihe.valintatapajonot.splice(i, 1);
+                                    }
+                                });
+                                if(vaihe.valintatapajonot.length <= 0) {
+                                    model.valinnanvaiheet.splice(index, 1);
                                 }
                             });
-                            if(vaihe.valintatapajonot.length <= 0) {
-                                model.valinnanvaiheet.splice(index, 1);
-                            }
+                        }, function (error) {
+                            model.errors.push(error);
                         });
-                    }, function (error) {
-                        model.errors.push(error);
-                    });
+                    }
                 }, function(error) {
                     model.errors.push(error);
                 })

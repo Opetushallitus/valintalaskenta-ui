@@ -71,16 +71,22 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
                 model.hakukohde = result;
                 HakukohdeNimi.get({hakukohdeoid: hakukohdeOid}, function (hakukohdeObject) {
                     model.hakukohde.tarjoajaOid = hakukohdeObject.tarjoajaOid;
+                    defer.resolve();
+                }, function(error) {
+                    defer.reject("hakukohteen nimen hakeminen epäonnistui");
                 });
+            }, function(error) {
+                defer.reject("hakukohteen tietojen hakeminen epäonnistui")
             });
 
+            /*
             HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
                 model.ensisijaiset = model.haeEnsisijaiset(result, hakukohdeOid);
                 defer.resolve();
             }, function(error) {
                 defer.reject();
             });
-
+            */
             return defer.promise;
 
         };
@@ -92,6 +98,7 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
                 promise.then(function() {
                     model.refreshingModel = false;
                 }, function(error) {
+                    model.refreshingModel = false;
                     $log.error("Error fetching applications");
                 });
             }
@@ -117,13 +124,13 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
     return model;
 });
 
-function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, HakuModel, HakeneetModel, SijoitteluntulosModel) {
+function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, HakuModel, /*HakeneetModel,*/ SijoitteluntulosModel) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
-    $scope.hakeneetModel = HakeneetModel;
-    $scope.hakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
+//    $scope.hakeneetModel = HakeneetModel;
+//    $scope.hakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
 
     $scope.model.refreshIfNeeded($scope.hakukohdeOid);
 
