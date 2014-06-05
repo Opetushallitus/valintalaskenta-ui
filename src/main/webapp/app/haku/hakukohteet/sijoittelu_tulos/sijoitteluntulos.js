@@ -355,7 +355,6 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
             controller: ViestintapalveluIkkunaCtrl,
             resolve: {
                 oids: function () {
-                	console.log(hakukohde);
                     return {
                     	otsikko: "Hyväksymiskirjeet",
                     	toimintoNimi: "Muodosta hyväksymiskirjeet",
