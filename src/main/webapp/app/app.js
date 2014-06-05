@@ -395,14 +395,17 @@ app.factory('AktivoiHaunValintalaskenta', function($resource) {
   });
 });
 
-
-app.factory('SijoitteluXls', function($window) {
-	return {
-		query: function(data) {
-			$window.location.href = VALINTALASKENTAKOOSTE_URL_BASE +"resources/valintalaskentaexcel/sijoitteluntulos/aktivoi?hakukohdeOid=" + data.hakukohdeOid + "&sijoitteluajoId="+ data.sijoitteluajoId + "&hakuOid=" + data.hakuOid;
-		}
-	};
+app.factory('OsoitetarratSijoittelussaHyvaksytyille', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/sijoittelussahyvaksytyille/aktivoi", {}, {
+		post:  {method:'POST', isArray:false}
+	});//
 });
+app.factory('SijoitteluXls', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentaexcel/sijoitteluntulos/aktivoi", {}, {
+		post:  {method:'POST', isArray:false}
+	});//
+});
+
 app.factory('TulosXls', function($window) {
 	return {
 		query: function(data) {
@@ -465,11 +468,7 @@ app.factory('OsoitetarratHakemuksille', function($resource) {
 	});
 });
 
-app.factory('OsoitetarratSijoittelussaHyvaksytyille', function($resource) {
-	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/sijoittelussahyvaksytyille/aktivoi", {}, {
-		post:  {method:'POST', isArray:false}
-	});//
-});
+
 //
 app.factory('Hyvaksymiskirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksymiskirjeet/aktivoi", {}, {

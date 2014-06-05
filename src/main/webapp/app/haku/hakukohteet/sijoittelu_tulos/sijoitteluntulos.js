@@ -346,6 +346,18 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
             
         });
     };
+    
+     $scope.sijoittelunTulosXLS = function () {
+        SijoitteluXls.post({
+        	hakuOid: $routeParams.hakuOid, 
+        	hakukohdeOid: $routeParams.hakukohdeOid, 
+        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId}, {}, function (id) {
+            Latausikkuna.avaa(id, "Sijoittelun tulokset taulukkolaskentaan", "");
+        }, function () {
+            
+        });
+    };
+    
     $scope.createHyvaksymiskirjeetPDF = function (oidit) {
         
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
@@ -395,9 +407,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         });
     };
 
-    $scope.sijoittelunTulosXLS = function () {
-        SijoitteluXls.query({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid, sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId});
-    };
+   
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
