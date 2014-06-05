@@ -178,8 +178,9 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model.refresh($scope.hakukohdeOid);
     
-    $scope.valintatapajonoVientiXlsx = function() {
+    $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
     	ValintatapajonoVienti.vie({
+    		valintatapajonoOid: valintatapajonoOid,
     		hakukohdeOid: $scope.hakukohdeOid,
     		hakuOid: $routeParams.hakuOid},
     		{}, function (id) {
