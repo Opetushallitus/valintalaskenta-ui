@@ -169,7 +169,7 @@
 });
 
 
-function ValintalaskentatulosController($scope, $location, $routeParams, $timeout, ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService) {
+function ValintalaskentatulosController($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna, ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -177,6 +177,24 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model.refresh($scope.hakukohdeOid);
+    
+    $scope.valintatapajonoVientiXlsx = function() {
+    	ValintatapajonoVienti.vie({
+    		hakukohdeOid: $scope.hakukohdeOid,
+    		hakuOid: $routeParams.hakuOid},
+    		{}, function (id) {
+            Latausikkuna.avaa(id, "Valintatapajonon vienti taulukkolaskentaan", "");
+        }, function () {
+            Ilmoitus.avaa("Valintatapajonon vienti epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+        });
+    };
+    $scope.valintatapajonoTuontiXlsx = function($files) {
+		var file = $files[0];
+		var fileReader = new FileReader();
+	    fileReader.readAsArrayBuffer(file);
+	    var hakukohdeOid = $scope.hakukohdeOid;
+	    var hakuOid = $routeParams.hakuOid;
+    };
     
     $scope.valintalaskentaTulosXLS = function() {
     	TulosXls.query({hakukohdeOid:$routeParams.hakukohdeOid});
