@@ -124,13 +124,13 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
     return model;
 });
 
-function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, HakuModel, HakeneetModel, SijoitteluntulosModel) {
+function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, HakuModel, /*HakeneetModel,*/ SijoitteluntulosModel) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
-    $scope.hakeneetModel = HakeneetModel;
-    $scope.hakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
+//    $scope.hakeneetModel = HakeneetModel;
+//    $scope.hakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
 
     $scope.model.refreshIfNeeded($scope.hakukohdeOid);
 
