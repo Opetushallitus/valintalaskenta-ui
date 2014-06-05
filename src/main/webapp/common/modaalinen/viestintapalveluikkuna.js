@@ -16,6 +16,18 @@ function ViestintapalveluIkkunaCtrl($scope, $modalInstance, oids, $log,
 		}
 	};
 	
+	$scope.translate = function(name) {
+		if(name === "default") {
+			return "OPH:n oletuspohja";
+		} else if(name === "organizationLatest") {
+			return "organisaation viimeisin";
+		} else if(name === "organizationLatestbyTag") {
+			return "hakukohteen viimeisin";
+		} else {
+			return name;
+		}
+	}
+	
 	var update = function() {
 
 	};
