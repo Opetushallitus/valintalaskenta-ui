@@ -312,7 +312,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOid,
 					        	sisalto: sisalto,
-					        	templateName: "Organisaation viimeisin",
+					        	templateName: "hyvaksymiskirje",
 					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null } , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
