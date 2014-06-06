@@ -476,6 +476,17 @@ app.factory('Hyvaksymiskirjeet', function($resource) {
 	});
 });
 
+
+app.factory('SijoittelunTulosTaulukkolaskenta', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/sijoitteluntuloshaulle/taulukkolaskennat", {}, {
+		aktivoi:  {method:'POST', isArray:false}
+	});
+});
+app.factory('SijoittelunTulosHyvaksymiskirjeet', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/sijoitteluntuloshaulle/hyvaksymiskirjeet", {}, {
+		aktivoi:  {method:'POST', isArray:false}
+	});
+});
 app.factory('Jalkiohjauskirjeet', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/jalkiohjauskirjeet/aktivoi", {}, {
 		post:  {method:'POST', isArray:false}
