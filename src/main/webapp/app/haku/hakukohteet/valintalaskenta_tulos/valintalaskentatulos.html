@@ -105,7 +105,7 @@
                                         <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit | orderBy:['jonosija', 'sukunimi']:reverse">
                                             <td><input type="number"
                                                        ng-model="tulos.jonosija"
-                                                       min="0"
+                                                       min="1"
                                                        max="{{valintatapajono.jonosijat.length}}"
                                                        ng-change="changeTila(tulos, tulos.jonosija)" ng-debounce="1000"
                                                        ng-disabled="tulos.tuloksenTila == 'HYLATTY'"></td>
