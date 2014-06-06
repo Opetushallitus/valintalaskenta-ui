@@ -1,3 +1,4 @@
 
 <h1 class="inline-block">Haku: </h1>
-<select ng-model="hakumodel.hakuOid" ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | orderBy:'nimi.kieli_fi'"></select>
+<select ng-model="hakumodel.hakuOid" ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | filter: haku.tila === 'JULKAISTU' | orderBy:'nimi.kieli_fi'"></select>
+

@@ -209,6 +209,10 @@ app.factory('HakukohdeNimi', function($resource) {
     });
 });
 
+app.factory('TarjontaHaut', function($resource) {
+    return $resource(TARJONTA_URL_BASE + "haku/findAll");
+});
+
 
 
 // Hakuparametrit
