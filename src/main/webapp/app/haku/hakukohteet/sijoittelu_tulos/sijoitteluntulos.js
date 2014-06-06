@@ -192,9 +192,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
         		return valintatapajono.hakemukset;
         	})), function(hakemus) {
-        		return (hakemus.vastaanottoTila === "" && hakemus.muokattuVastaanottoTila !== "" || hakemus.vastaanottoTila !== "" &&  hakemus.muokattuVastaanottoTila !== "" &&
-                    hakemus.vastaanottoTila !== hakemus.muokattuVastaanottoTila ||
-                    hakemus.ilmoittautumisTila && hakemus.muokattuIlmoittautumisTila && hakemus.ilmoittautumisTila !== "" &&  hakemus.muokattuIlmoittautumisTila !== "" && hakemus.ilmoittautumisTila !== hakemus.muokattuIlmoittautumisTila);
+        		return (hakemus.muokattuVastaanottoTila !== "" && hakemus.vastaanottoTila !== hakemus.muokattuVastaanottoTila ||
+                    hakemus.muokattuIlmoittautumisTila !== "" && hakemus.ilmoittautumisTila !== hakemus.muokattuIlmoittautumisTila);
         	});
         	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
