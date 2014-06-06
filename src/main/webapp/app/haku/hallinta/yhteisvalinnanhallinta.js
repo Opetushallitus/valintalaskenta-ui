@@ -32,7 +32,7 @@
 });
 
 
-function YhteisvalinnanHallintaController($scope, $modal, $interval, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
+function YhteisvalinnanHallintaController($scope, $modal, $interval, SijoittelunTulosTaulukkolaskenta, SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
     $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -173,7 +173,24 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Jalkiohjaus
     $scope.aktivoiJalkiohjaustuloksetXls = function () {
         JalkiohjausXls.query({hakuOid: $routeParams.hakuOid});
     };
-
+	$scope.sijoittelunTuloksetTaulukkolaskentaan = function() {
+		var hakuoid = $routeParams.hakuOid;
+        SijoittelunTulosTaulukkolaskenta.aktivoi({hakuOid: hakuoid}, {}, function (id) {
+            Latausikkuna.avaa(id, "Sijoittelun tulokset taulukkolaskentaan", "", {});
+        }, function () {
+            Ilmoitus.avaa("Sijoittelun tulokset taulukkolaskentaan epäonnistui", "Sijoittelun tulokset taulukkolaskentaan epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+        });
+	};
+    $scope.sijoittelunTuloksetTaulukkolaskentaan = function() {
+		var hakuoid = $routeParams.hakuOid;
+        SijoittelunTulosHyvaksymiskirjeet.aktivoi({hakuOid: hakuoid}, {}, function (id) {
+            Latausikkuna.avaa(id, "Sijoitteluntulokset hyväksymiskirjeiksi", "", {});
+        }, function () {
+            Ilmoitus.avaa("Sijoittelun tulokset hyväksymiskirjeiksi epäonnistui", "Sijoittelun tulokset hyväksymiskirjeiksi epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+        });
+	};
+	
+	
     $scope.kaynnistaSijoittelu = function () {
         var hakuoid = $routeParams.hakuOid;
         Sijoitteluktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {
