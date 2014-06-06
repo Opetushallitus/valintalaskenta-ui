@@ -192,7 +192,9 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
         		return valintatapajono.hakemukset;
         	})), function(hakemus) {
-        		return (hakemus.vastaanottoTila !== hakemus.muokattuVastaanottoTila || hakemus.ilmoittautumisTila !== hakemus.muokattuIlmoittautumisTila);
+        		return (hakemus.vastaanottoTila === "" && hakemus.muokattuVastaanottoTila !== "" || hakemus.vastaanottoTila !== "" &&  hakemus.muokattuVastaanottoTila !== "" &&
+                    hakemus.vastaanottoTila !== hakemus.muokattuVastaanottoTila ||
+                    hakemus.ilmoittautumisTila && hakemus.muokattuIlmoittautumisTila && hakemus.ilmoittautumisTila !== "" &&  hakemus.muokattuIlmoittautumisTila !== "" && hakemus.ilmoittautumisTila !== hakemus.muokattuIlmoittautumisTila);
         	});
         	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
@@ -312,7 +314,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOid,
 					        	sisalto: sisalto,
-					        	templateName: "Organisaation viimeisin",
+					        	templateName: "hyvaksymiskirje",
 					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null } , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
@@ -344,6 +346,18 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
             
         });
     };
+    
+     $scope.sijoittelunTulosXLS = function () {
+        SijoitteluXls.post({
+        	hakuOid: $routeParams.hakuOid, 
+        	hakukohdeOid: $routeParams.hakukohdeOid, 
+        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId}, {}, function (id) {
+            Latausikkuna.avaa(id, "Sijoittelun tulokset taulukkolaskentaan", "");
+        }, function () {
+            
+        });
+    };
+    
     $scope.createHyvaksymiskirjeetPDF = function (oidit) {
         
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
@@ -355,7 +369,6 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
             controller: ViestintapalveluIkkunaCtrl,
             resolve: {
                 oids: function () {
-                	console.log(hakukohde);
                     return {
                     	otsikko: "Hyväksymiskirjeet",
                     	toimintoNimi: "Muodosta hyväksymiskirjeet",
@@ -394,9 +407,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         });
     };
 
-    $scope.sijoittelunTulosXLS = function () {
-        SijoitteluXls.query({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid, sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId});
-    };
+   
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
@@ -437,7 +448,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
 
     $scope.selectIlmoitettuToAll = function() {
         $scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset.forEach(function(hakemus){
-            if (hakemus.tila === "HYVAKSYTTY") {
+            if (hakemus.tila === "HYVAKSYTTY" && hakemus.vastaanottoTila !== "ILMOITETTU" && hakemus.muokattuVastaanottoTila !== "ILMOITETTU") {
                 hakemus.muokattuVastaanottoTila = "ILMOITETTU";
             }
         });

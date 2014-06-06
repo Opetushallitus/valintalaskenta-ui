@@ -205,7 +205,8 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 	};
 
     $scope.currentPage = 0;
-    $scope.pageSize = 20;
+    $scope.pageSize = 35;
+    $scope.koePageSize = 5;
 
 
     $scope.isBlank = function (str) {
