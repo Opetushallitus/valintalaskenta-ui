@@ -26,7 +26,7 @@
             }
         };
 		
-		this.refresh = function(hakukohdeOid) {
+		this.refresh = function(hakukohdeOid, hakuOid) {
 		    model.hakukohdeOid = {};
             model.valinnanvaiheet = [];
             model.ilmanlaskentaa = [];
@@ -44,6 +44,7 @@
 
                             model.ilmanlaskentaa.forEach(function (vaihe) {
                                 vaihe.valintatapajonot = [];
+                                vaihe.hakuOid = hakuOid;
                                 vaihe.jonot.forEach(function(jono) {
                                     var tulosjono = {};
                                     tulosjono.oid = jono.oid;
@@ -176,7 +177,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     $scope.model = ValintalaskentatulosModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-    $scope.model.refresh($scope.hakukohdeOid);
+    $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
     
     $scope.valintatapajonoVientiXlsx = function() {
     	ValintatapajonoVienti.vie({
