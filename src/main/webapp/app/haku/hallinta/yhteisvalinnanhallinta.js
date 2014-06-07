@@ -153,8 +153,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
-					        	sisalto: sisalto,
-					        	tag: tag}, {hakemusOids: null } , function (id) {
+					        	tag: tag}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
 					        }, function () {
 					            
@@ -181,7 +180,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
             Ilmoitus.avaa("Sijoittelun tulokset taulukkolaskentaan epäonnistui", "Sijoittelun tulokset taulukkolaskentaan epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
 	};
-    $scope.sijoittelunTuloksetTaulukkolaskentaan = function() {
+    $scope.sijoittelunTuloksetHyvaksymiskirjeiksi = function() {
 		var hakuoid = $routeParams.hakuOid;
         SijoittelunTulosHyvaksymiskirjeet.aktivoi({hakuOid: hakuoid}, {}, function (id) {
             Latausikkuna.avaa(id, "Sijoitteluntulokset hyväksymiskirjeiksi", "", {});

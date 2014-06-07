@@ -21,3 +21,15 @@ app.filter('startFrom', function() {
         return returnValue;
     }
 });
+
+app.filter('julkaistuHaku', function() {
+    return function(input) {
+        var result = [];
+        for(var i = 0; i < input.length ; i++) {
+            if(input[i].tila === 'JULKAISTU') {
+                result.push(input[i]);
+            }
+        }
+        return result;
+    }
+});
