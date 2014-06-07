@@ -21,6 +21,23 @@
 		    	<p>{{poikkeus.palvelukutsu}} {{poikkeus.viesti}}</p>
 		  	</div>
 		</div>
+		<div ng-if="prosessi.varoitukset">
+	    <h3 class="text-warning">Varoitukset</h3>
+	    <table class="table">
+	        <thead>
+	        <tr>
+	            <th>OID</th>
+	            <th>Selite</th>
+	        </tr>
+	        </thead>
+	        <tbody>
+	        <tr ng-repeat="varoitus in prosessi.varoitukset" class="warning">
+	            <td>{{varoitus.oid}}</td>
+	            <td>{{varoitus.selite}}</td>
+	        </tr>
+	        </tbody>
+	    </table>
+	    </div>
 	</div>
 	
 </div>

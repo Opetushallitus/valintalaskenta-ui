@@ -192,9 +192,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
         		return valintatapajono.hakemukset;
         	})), function(hakemus) {
-        		return (hakemus.vastaanottoTila === "" && hakemus.muokattuVastaanottoTila !== "" || hakemus.vastaanottoTila !== "" &&  hakemus.muokattuVastaanottoTila !== "" &&
-                    hakemus.vastaanottoTila !== hakemus.muokattuVastaanottoTila ||
-                    hakemus.ilmoittautumisTila && hakemus.muokattuIlmoittautumisTila && hakemus.ilmoittautumisTila !== "" &&  hakemus.muokattuIlmoittautumisTila !== "" && hakemus.ilmoittautumisTila !== hakemus.muokattuIlmoittautumisTila);
+        		return (hakemus.muokattuVastaanottoTila !== "" && hakemus.vastaanottoTila !== hakemus.muokattuVastaanottoTila ||
+                    hakemus.muokattuIlmoittautumisTila !== "" && hakemus.ilmoittautumisTila !== hakemus.muokattuIlmoittautumisTila);
         	});
         	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
@@ -313,10 +312,9 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOid,
-					        	sisalto: sisalto,
 					        	templateName: "hyvaksymiskirje",
 					        	tag: tag,
-					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null } , function (id) {
+					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
 					        }, function () {
 					            
@@ -377,10 +375,9 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOid,
-					        	sisalto: sisalto,
 					        	templateName: "Organisaation viimeisin",
 					        	tag: "",
-					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit } , function (id) {
+					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
 					        }, function () {
 					            
