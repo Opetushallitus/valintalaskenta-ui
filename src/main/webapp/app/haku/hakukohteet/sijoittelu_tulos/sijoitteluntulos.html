@@ -15,13 +15,14 @@
             <div ng-include="'../common/html/errors.html'"></div>
 
             <div ng-show="model.sijoitteluTulokset.sijoitteluajoId">
-                <div class="margin-vertical-2">
-                    Viimeisimmät sijoittelun tulokset. Sijoitteluajo on alkanut <strong>{{model.latestSijoitteluajo.startMils
-                    | date:'dd.MM.yyyy HH:mm'}}</strong>
-                    ja loppunut <strong>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</strong>.
-                    Sijoitteluajon tunniste on <strong>{{model.latestSijoitteluajo.sijoitteluajoId}}</strong>.
-                    Sijoittelu suoritetaan kerran vuorokaudessa.
-                </div>
+                <!--Väliaikaisesti pois suorituskyvyn parantamiseksi-->
+                <!--<div class="margin-vertical-2">-->
+                    <!--Viimeisimmät sijoittelun tulokset. Sijoitteluajo on alkanut <strong>{{model.latestSijoitteluajo.startMils-->
+                    <!--| date:'dd.MM.yyyy HH:mm'}}</strong>-->
+                    <!--ja loppunut <strong>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</strong>.-->
+                    <!--Sijoitteluajon tunniste on <strong>{{model.latestSijoitteluajo.sijoitteluajoId}}</strong>.-->
+                    <!--Sijoittelu suoritetaan kerran vuorokaudessa.-->
+                <!--</div>-->
 
                 <br/>
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
