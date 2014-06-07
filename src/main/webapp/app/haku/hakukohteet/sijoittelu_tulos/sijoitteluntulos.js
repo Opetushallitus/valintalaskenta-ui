@@ -66,6 +66,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                 hakuOid: hakuOid
             }, function (result) {
                 if (result.sijoitteluajoId) {
+                    model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
 
                     model.sijoitteluTulokset = result;
 
