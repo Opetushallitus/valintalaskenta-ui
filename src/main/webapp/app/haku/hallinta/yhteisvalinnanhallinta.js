@@ -153,8 +153,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
-					        	sisalto: sisalto,
-					        	tag: tag}, {hakemusOids: null } , function (id) {
+					        	tag: tag}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
 					        }, function () {
 					            

@@ -312,10 +312,9 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOid,
-					        	sisalto: sisalto,
 					        	templateName: "hyvaksymiskirje",
 					        	tag: tag,
-					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null } , function (id) {
+					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
 					        }, function () {
 					            
@@ -376,10 +375,9 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOid,
-					        	sisalto: sisalto,
 					        	templateName: "Organisaation viimeisin",
 					        	tag: "",
-					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit } , function (id) {
+					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
 					        }, function () {
 					            

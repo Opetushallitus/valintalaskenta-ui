@@ -311,8 +311,8 @@ function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriServ
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
-					        	sisalto: sisalto,
-					        	tag: tag}, {hakemusOids: [hakemusOid] } , function (id) {
+					        	tag: tag}, {hakemusOids: [hakemusOid],
+					        	letterBodyText: sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
 					        }, function () {
 					            
