@@ -177,7 +177,7 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
         $rootScope.selectedHakukohdeNimi = hakukohde.hakukohdeNimi.fi;
         $scope.hakukohteetVisible = false;
         GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
-        $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + '/perustiedot');
+        $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + '/sijoitteluntulos');
     }
 
     // uuden sivun lataus
