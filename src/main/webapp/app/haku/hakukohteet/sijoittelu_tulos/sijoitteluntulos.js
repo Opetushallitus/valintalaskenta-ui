@@ -66,6 +66,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                 hakuOid: hakuOid
             }, function (result) {
                 if (result.sijoitteluajoId) {
+                    model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
 
                     model.sijoitteluTulokset = result;
 
@@ -156,18 +157,18 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
                     });
 
-
-                    SijoitteluAjo.get({
-                            hakuOid: hakuOid,
-                            sijoitteluajoOid: result.sijoitteluajoId
-                        }, function (result) {
-                            model.latestSijoitteluajo.startMils = result.startMils;
-                            model.latestSijoitteluajo.endMils = result.endMils;
-                            model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
-                        }, function (error) {
-                            model.errors.push(error);
-                        }
-                    );
+                      // Väliaikaisesti pois
+//                    SijoitteluAjo.get({
+//                            hakuOid: hakuOid,
+//                            sijoitteluajoOid: result.sijoitteluajoId
+//                        }, function (result) {
+//                            model.latestSijoitteluajo.startMils = result.startMils;
+//                            model.latestSijoitteluajo.endMils = result.endMils;
+//                            model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
+//                        }, function (error) {
+//                            model.errors.push(error);
+//                        }
+//                    );
 
                 }
 
