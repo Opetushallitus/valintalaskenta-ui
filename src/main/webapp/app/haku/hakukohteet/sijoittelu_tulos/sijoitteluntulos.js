@@ -108,7 +108,9 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                             }
 
                             if (hakemus.tila === "VARALLA") {
+                                sija++;
                                 hakemuserittely.varasijoilla.push(hakemus);
+                                hakemus.sija = sija;
                             }
 
                             lastTasaSija = hakemus.tasasijaJonosija;
