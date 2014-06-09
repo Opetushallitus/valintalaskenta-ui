@@ -32,7 +32,7 @@
 });
 
 
-function YhteisvalinnanHallintaController($scope, $modal, $interval, SijoittelunTulosTaulukkolaskenta, SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
+function YhteisvalinnanHallintaController($scope, $modal, $interval, SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
     $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -189,6 +189,14 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
         });
 	};
 	
+	$scope.sijoittelunTuloksetOsoitetarrat = function() {
+		var hakuoid = $routeParams.hakuOid;
+        SijoittelunTulosOsoitetarrat.aktivoi({hakuOid: hakuoid}, {}, function (id) {
+            Latausikkuna.avaa(id, "Sijoitteluntulokset osoitetarroiksi", "", {});
+        }, function () {
+            Ilmoitus.avaa("Sijoittelun tulokset osoitetarrat epäonnistui", "Sijoittelun tulokset osoitetarrat epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+        });
+	};
 	
     $scope.kaynnistaSijoittelu = function () {
         var hakuoid = $routeParams.hakuOid;
