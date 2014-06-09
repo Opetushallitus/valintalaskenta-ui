@@ -481,6 +481,11 @@ app.factory('Hyvaksymiskirjeet', function($resource) {
 });
 
 
+app.factory('SijoittelunTulosOsoitetarrat', function($resource) {
+	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/sijoitteluntuloshaulle/osoitetarrat", {}, {
+		aktivoi:  {method:'POST', isArray:false}
+	});
+});
 app.factory('SijoittelunTulosTaulukkolaskenta', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/sijoitteluntuloshaulle/taulukkolaskennat", {}, {
 		aktivoi:  {method:'POST', isArray:false}
