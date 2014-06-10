@@ -70,14 +70,36 @@
 	return model;
 });
 
-function LisahakuhyvaksytytController($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel) {
+function LisahakuhyvaksytytController($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HyvaksytytModel;
-    $scope.hakuOid =  $routeParams.hakuOid;;
+    $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
     $scope.muutettu = false;
+
+    $scope.hakemuksenMuokattuIlmoittautumisTilat = [
+        {value: "EI_TEHTY", text: "sijoitteluntulos.enrollmentinfo.notdone"},
+        {value: "LASNA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.present"},
+        {value: "POISSA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.notpresent"},
+        {value: "EI_ILMOITTAUTUNUT", text: "sijoitteluntulos.enrollmentinfo.noenrollment"},
+        {value: "LASNA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.presentfall"},
+        {value: "POISSA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.notpresentfall"},
+        {value: "LASNA", text: "sijoitteluntulos.enrollmentinfo.presentspring"},
+        {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring"}
+    ];
+
+    //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
+    $scope.hakemuksenMuokattuVastaanottoTilat = [
+        {value: "ILMOITETTU", text: "Hakijalle ilmoitettu"},
+        {value: "VASTAANOTTANUT", text: "Vastaanottanut"},
+        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text: "Ei vastaanotettu määräaikana"},
+        {value: "PERUNUT", text: "Perunut"},
+        {value: "PERUUTETTU", text: "Peruutettu"}
+    ];
+
+
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 
@@ -86,7 +108,7 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
     $scope.predicate = 'sukunimi';
 
     $scope.submit = function() {
-        //HakeneetModel.submit();
+        HyvaksytytModel.submit();
     };
 
     $scope.lisahakuValitse = function(hakemusOid) {
@@ -95,5 +117,24 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
 
     $scope.lisahakuPoistavalinta = function(hakemusOid) {
         $scope.model.removeHakemusFromHyvaksytyt(hakemusOid);
+    };
+
+    $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
+        AuthService.updateOrg("APP_SIJOITTELU", $scope.hakukohdeOid).then(function () {
+            $scope.updateOrg = true;
+        });
+
+    });
+
+    AuthService.crudOph("APP_SIJOITTELU").then(function () {
+        $scope.updateOph = true;
+    });
+
+    $scope.resetIlmoittautumisTila = function(hakemus) {
+        if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT' && hakemus.muokattuVastaanottoTila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
+            hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
+        } else if (!hakemus.muokattuIlmoittautumisTila) {
+            hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
+        }
     };
 }
