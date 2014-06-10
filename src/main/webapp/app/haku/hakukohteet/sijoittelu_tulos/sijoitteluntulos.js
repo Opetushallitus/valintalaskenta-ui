@@ -362,6 +362,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
     $scope.createHyvaksymiskirjeetPDF = function (oidit) {
         
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
+    	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
     	//var pohjat = ;
     	
     	var viestintapalveluInstance = $modal.open({
@@ -379,7 +380,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOid,
 					        	templateName: "Organisaation viimeisin",
-					        	tag: "",
+					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
 					        }, function () {
@@ -390,7 +391,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOid,
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: "FI"});
+                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: "FI", tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
