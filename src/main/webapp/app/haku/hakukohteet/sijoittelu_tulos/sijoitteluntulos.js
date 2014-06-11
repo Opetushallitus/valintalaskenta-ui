@@ -301,6 +301,8 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
     $scope.luoHyvaksymiskirjeetPDF = function() {
     	var hakukohde = $scope.hakukohdeModel.hakukohde;
     	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+    	var langcode = $scope.hakukohdeModel.getKieliCode();
+    	
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -327,7 +329,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOid,
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: "FI", tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
+                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
@@ -363,7 +365,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
     	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
-    	//var pohjat = ;
+    	var langcode = $scope.hakukohdeModel.getKieliCode();
     	
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -391,7 +393,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOid,
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: "FI", tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
+                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()

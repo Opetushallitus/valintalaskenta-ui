@@ -27,7 +27,17 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
             }
             return kielet[0];
         };
-
+		this.getKieliCode = function () {
+			var kieli = this.getKieli();
+			if(kieli === "kieli_fi") {
+				return "FI";
+			} else if(kieli === "kieli_sv") {
+				return "SV";
+			} else if(kieli === "kieli_ev") {
+				return "EN";
+			}
+			return "FI";
+		};
         this.getTarjoajaNimi = function () {
 
             if (model.hakukohde.tarjoajaNimi && model.hakukohde.tarjoajaNimi[this.getKieli()]) {
