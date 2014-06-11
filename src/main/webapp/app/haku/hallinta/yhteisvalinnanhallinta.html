@@ -75,8 +75,10 @@
     <h2>Jälkiohjaus</h2>
     <a privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
        class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie jälkiohjaustulokset taulukkolaskentaan</a>
-    <a privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet()"
-       class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet</a>
+    <a privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('FI')"
+       class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet suomeksi</a>
+    <a privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('SV')"
+       class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet ruotsiksi</a>
     <a privileges="valintalaskenta"
        href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos" class="btn btn-default btn-sm">Valinnan
         tulokset</a>

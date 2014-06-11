@@ -26,6 +26,10 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
             return kielet[0];
         }
 
+        this.getKieliCode = function() {
+        	console.log(this.hakukohde);
+        }
+        
         this.getTarjoajaNimi = function (hakukohde) {
 
             if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[this.getKieli(hakukohde)]) {

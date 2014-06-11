@@ -29,7 +29,9 @@
                                 <th>Nimi</th>
                                 <th>Hakemus</th>
                                 <th>Hyväksymisen tila</th>
-                                <th>Valittu</th>
+                                <th></th>
+                                <th>Vastaanottotieto</th>
+                                <th>Ilmoittautumistieto</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,23 +47,37 @@
 	                                    </a>
                                     </span>
                                 </td>
+
+
                                 <td>
                                     {{hakija.lisahakuHyvaksytty}}
-                                    <!--
-                                    <ul>
-                                        <li ng-repeat="(key, value) in hakija.hakemus.answers.hakutoiveet track by $index">
-                                            {{key}} {{value}}
-                                        </li>
-                                    </ul>
-                                    -->
                                 </td>
                                 <td>
                                     <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuValitse(hakija.oid)" class="btn btn-primary btn-sm">Hyväksy</a>
                                     <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuPoistavalinta(hakija.oid)" class="btn btn-default btn-sm ">Hylkää</a>
                                 </td>
+
+                                <td>
+                                    <div ng-show="hakija.lisahakuHyvaksytty">
+                                        <select ng-disabled="!(updateOrg || updateOph)"
+                                                ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
+                                            <option value="">Kesken</option>
+                                        </select>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div ng-show="hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT'">
+                                        <select ng-disabled="!(updateOrg || updateOph)"
+                                                ng-model="hakemus.muokattuIlmoittautumisTila"
+                                                ng-options="tila.value as tila.text | translate for tila in hakemuksenMuokattuIlmoittautumisTilat">
+                                        </select>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+                    <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2">Tallenna</a>
                 </form>
             </div>
         </div>

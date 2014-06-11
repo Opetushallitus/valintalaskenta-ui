@@ -8,12 +8,8 @@
         <span>Hakukohteen perustiedot</span>
     </a>
 
-    <a auth-additional-check="displaytabs.showHakeneet()" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hakeneet', 5)" href="#/lisahaku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet" class="tab">
-        <span>Hakeneet</span>
-    </a>
-
     <a auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hyvaksytyt', 5)" href="#/lisahaku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hyvaksytyt" class="tab">
-        <span>Valitut</span>
+        <span>Hakeneet</span>
     </a>
 
 </div>
