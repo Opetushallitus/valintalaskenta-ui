@@ -14,7 +14,7 @@ app.filter('startFrom', function() {
         start = +start; //parse to int
         var returnValue = 0;
 
-        if( input && Object.prototype.toString.call( input ) === '[object Array]' ) {
+        if(start > -1 && input && Object.prototype.toString.call( input ) === '[object Array]' ) {
             returnValue = input.slice(start);
         }
 
