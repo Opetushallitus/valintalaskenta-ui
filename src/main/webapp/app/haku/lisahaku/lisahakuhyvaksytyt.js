@@ -16,13 +16,26 @@
 
                         Hakemus.get({oid: hakija.oid}, function(result) {
                             hakija.hakemus=result;
+
                             HakemusKey.get({
-                                oid: hakija.oid,
-                                "key": "lisahaku-hyvaksytty"
-                            }, function(res) {
-                                if(res["lisahaku-hyvaksytty"] === model.hakukohdeOid) {
+                                oid: hakija.hakemus.oid,
+                                key: "lisahaku-hyvaksytty"
+                            }, function (res) {
+                                if (res["lisahaku-hyvaksytty"] === model.hakukohdeOid) {
                                     hakija.lisahakuHyvaksytty = "Kyllä";
                                 }
+                            });
+                            HakemusKey.get({
+                                oid: hakija.hakemus.oid,
+                                key: "lisahaku-vastaanottotieto"
+                            }, function (res) {
+                                hakija.hakemus.muokattuVastaanottoTila = res["lisahaku-vastaanottotieto"];
+                            });
+                            HakemusKey.get({
+                                oid: hakija.hakemus.oid,
+                                key: "lisahaku-ilmoittautumistieto"
+                            }, function (res) {
+                                hakija.hakemus.muokattuIlmoittautumisTila = res["lisahaku-ilmoittautumistieto"];
                             });
                         });
                     });    
@@ -35,9 +48,13 @@
 
        this.updateHakemus = function(hakemusOid) {
             HakemusKey.put({
-               "oid": hakemusOid,
-               "key": "lisahaku-hyvaksytty",
-               "value": model.hakukohdeOid
+               oid: hakemusOid,
+               key: "lisahaku-hyvaksytty",
+               value: model.hakukohdeOid
+           }, function (res) {
+
+           }, function (error) {
+                error = error;
            });
            model.hakeneet.forEach(function(hakija) {
                if(hakija.oid === hakemusOid) {
@@ -48,9 +65,9 @@
 
         this.removeHakemusFromHyvaksytyt = function(hakemusOid) {
             HakemusKey.put({
-                "oid": hakemusOid,
-                "key": "lisahaku-hyvaksytty",
-                "value": ""
+                oid: hakemusOid,
+                key: "lisahaku-hyvaksytty",
+                value: ""
             });
             model.hakeneet.forEach(function(hakija) {
                 if(hakija.oid === hakemusOid) {
@@ -65,12 +82,14 @@
             }
         };
 
+
 	};
 
 	return model;
 });
 
-function LisahakuhyvaksytytController($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService) {
+function LisahakuhyvaksytytController($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService,
+                                      HakemusKey) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HyvaksytytModel;
     $scope.hakuOid =  $routeParams.hakuOid;
@@ -107,9 +126,6 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
 
     $scope.predicate = 'sukunimi';
 
-    $scope.submit = function() {
-        HyvaksytytModel.submit();
-    };
 
     $scope.lisahakuValitse = function(hakemusOid) {
         $scope.model.updateHakemus(hakemusOid);
@@ -136,5 +152,24 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
         } else if (!hakemus.muokattuIlmoittautumisTila) {
             hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
         }
+
+        HakemusKey.put({
+            oid: hakemus.oid,
+            key: "lisahaku-vastaanottotieto",
+            value: hakemus.muokattuVastaanottoTila
+        });
+        HakemusKey.put({
+            oid: hakemus.oid,
+            key: "lisahaku-ilmoittautumistieto",
+            value: hakemus.muokattuIlmoittautumisTila
+        });
+    };
+
+    $scope.setIlmoittautumisTila = function(hakemus) {
+        HakemusKey.put({
+            oid: hakemus.oid,
+            key: "lisahaku-ilmoittautumistieto",
+            value: hakemus.muokattuIlmoittautumisTila
+        });
     };
 }

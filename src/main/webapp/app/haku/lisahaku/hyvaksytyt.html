@@ -53,23 +53,24 @@
                                     {{hakija.lisahakuHyvaksytty}}
                                 </td>
                                 <td>
-                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuValitse(hakija.oid)" class="btn btn-primary btn-sm">Hyväksy</a>
-                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuPoistavalinta(hakija.oid)" class="btn btn-default btn-sm ">Hylkää</a>
+                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuValitse(hakija.hakemus.oid)" class="btn btn-primary btn-sm">Hyväksy</a>
+                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuPoistavalinta(hakija.hakemus.oid)" class="btn btn-default btn-sm ">Hylkää</a>
                                 </td>
 
                                 <td>
                                     <div ng-show="hakija.lisahakuHyvaksytty">
                                         <select ng-disabled="!(updateOrg || updateOph)"
-                                                ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
+                                                ng-change="resetIlmoittautumisTila(hakija.hakemus)" ng-model="hakija.hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
                                             <option value="">Kesken</option>
                                         </select>
                                     </div>
                                 </td>
 
                                 <td>
-                                    <div ng-show="hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT'">
+                                    <div ng-show="hakija.lisahakuHyvaksytty && (hakija.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakija.hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')">
                                         <select ng-disabled="!(updateOrg || updateOph)"
-                                                ng-model="hakemus.muokattuIlmoittautumisTila"
+                                                ng-model="hakija.hakemus.muokattuIlmoittautumisTila"
+                                                ng-change="setIlmoittautumisTila(hakija.hakemus)"
                                                 ng-options="tila.value as tila.text | translate for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                         </select>
                                     </div>
@@ -77,7 +78,6 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2">Tallenna</a>
                 </form>
             </div>
         </div>

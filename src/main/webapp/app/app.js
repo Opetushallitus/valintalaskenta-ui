@@ -542,13 +542,11 @@ app.factory('Henkilot', function($resource) {
     });
 });
 app.factory('HakemusKey', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid/:key", {oid: "@oid", key: "@key"}, {
-        get: {method: "GET", isArray: true},
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid/:key", {oid: "@oid", key: "@key", value: "@value"}, {
+        get: {method: "GET", isArray: false},
         put: {method: "PUT", isArray: false}
     });
 });
-
-
 
 
  //Sijoittelu
