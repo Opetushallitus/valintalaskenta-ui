@@ -47,7 +47,7 @@
                     </tr>
                     </thead>
 
-                    <tr ng-repeat="hakemus in (filteredResults = (model.valintakokeetHakijoittainArray | filter:model.filter) | orderBy:predicate:reverse | startFrom:(currentPage)*pageSize | limitTo:pageSize )">
+                    <tr ng-repeat="hakemus in filteredResults[0] = (model.valintakokeetHakijoittainArray | filter:model.filter | orderBy:predicate:reverse) | startFrom:(currentPage[0]-1)*pageSize | limitTo:pageSize">
                         <td class="leftorientedcolumn">
                             <show-person-information sukunimi="{{hakemus.sukunimi}}"
                                                      etunimi="{{hakemus.etunimi}}"
@@ -68,11 +68,11 @@
                         </td>
                     </tr>
                 </table>
-                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults.length" page="currentPage" items-per-page="pageSize"></pagination>
+                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[0].length" page="currentPage[0]" items-per-page="pageSize"></pagination>
             </div>
 
             <div ng-if="nakymanTila == 'Kokeittain'">
-                <div ng-repeat="valintakoe in model.valintakokeet | startFrom:(currentPage)*koePageSize | limitTo:koePageSize">
+                <div ng-repeat="valintakoe in model.valintakokeet track by $index">
                 	<div ng-if="valintakoe.hakijat && valintakoe.lahetetaankoKoekutsut" class="panel panel-default">
 
 	                    <div class="panel-heading">
@@ -80,7 +80,7 @@
 	                    </div>
 
 						<div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length==0">
-	                    		kokeeseen ei ole kutsuttavia
+                            Valintakokeeseen ei ole osallistujia
 	                    </div>
 
 	                    <div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length>0">
@@ -136,8 +136,9 @@
 	                            </tr>
 	                            </thead>
 	                            <tbody>
-	                            <tr ng-repeat="koe in valintakoe.hakijat  | orderBy:predicate:reverse | filter:model.filter">
-	                                <td><input ng-if="koe.osallistuminen == 'OSALLISTUU'" type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
+
+	                            <tr ng-repeat="koe in filteredResults[$index] = (valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter) | startFrom:(currentPage[$index]-1)*pageSize | limitTo:pageSize">
+	                                 <td><input ng-if="koe.osallistuminen == 'OSALLISTUU'" type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
 	                                </td>
 	                                <td class="leftorientedcolumn">
 	                                    <show-person-information sukunimi="{{koe.sukunimi}}"
@@ -157,10 +158,10 @@
 	
 	                            </tbody>
 	                        </table>
+                            <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$index].length" page="currentPage[$index]" items-per-page="pageSize"></pagination>
 	                    </div>
 	                </div>
                 </div>
-                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="model.valintakokeet.length" page="currentPage" items-per-page="koePageSize"></pagination>
 
             </div>
         </div>

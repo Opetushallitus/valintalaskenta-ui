@@ -21,6 +21,7 @@
             model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
+
             HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid}, function(hakukohteenValintakokeet) {
             	Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(result) {
 				    model.koetulokset = result;
@@ -204,10 +205,14 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 		}
 	};
 
-    $scope.currentPage = 0;
-    $scope.pageSize = 35;
-    $scope.koePageSize = 5;
+    $scope.currentPage = [];
+    $scope.filteredResults = [];
+    for (var i = 0; i < 1000; i++) {
+        $scope.currentPage[i] = 1;
+        $scope.filteredResults[i] = 0;
+    }
 
+    $scope.pageSize = 50;
 
     $scope.isBlank = function (str) {
 	    return (!str || /^\s*$/.test(str));
@@ -305,6 +310,7 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 
     $scope.model.refresh($scope.hakukohdeOid);
 
+
     $scope.nakymanTila = "Kokeittain"; // Hakijoittain
 
     $scope.predicate = ['sukunimi','etunimi'];
@@ -316,7 +322,9 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
     };
 
     $scope.updateNakymanTila = function() {
-        $scope.currentPage = 0;
+        $scope.currentPage.forEach(function(page){
+            page = 1;
+        });
     }
     
     

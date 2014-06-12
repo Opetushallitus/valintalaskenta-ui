@@ -22,6 +22,20 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
             if(model.haut.length === 0) {
                 TarjontaHaut.query({}, function(result) {
                     model.haut = result;
+
+                    model.haut.forEach(function (haku) {
+                        if (haku.oid === oid) {
+                            model.hakuOid = haku;
+                        }
+
+                        var hakutyyppi = haku.hakutyyppiUri;
+                        var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
+                        var match = lisahakutyyppiRegExp.exec(hakutyyppi);
+                        match ? showLisahakuView = true : showLisahakuView = false;
+
+                        haku.lisahaku = showLisahakuView;
+                    });
+
                 }, function(error) {    
                     $log.error(error);
                 });
