@@ -299,6 +299,16 @@ function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriServ
         
         var tag = $routeParams.hakuOid;
         var hakemusOid = $scope.model.hakemus.oid;
+        var asiointikieli = $scope.model.hakemus.answers.lisatiedot.asiointikieli;
+        var langcode = "FI";
+        if(asiointikieli === undefined) {
+        	
+        } else {
+        	if(asiointikieli.toUpperCase() === "RUOTSI") {
+				langcode = "SV";        		
+        	}
+        }
+        console.log();
         var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -320,7 +330,7 @@ function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriServ
                     	},
                         hakuOid: $routeParams.hakuOid,
                         pohjat: function() {
-                        	return Jalkiohjauskirjepohjat.get({languageCode: "FI", tag: tag});
+                        	return Jalkiohjauskirjepohjat.get({languageCode: langcode, tag: tag});
                         }
                     };
                 }
