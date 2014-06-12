@@ -139,7 +139,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
         $scope.sijoitteluModel = result;
     });
 
-    $scope.muodostaJalkiohjauskirjeet = function () {
+    $scope.muodostaJalkiohjauskirjeet = function (langcode) {
     	var tag = $routeParams.hakuOid;
         var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -153,7 +153,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
-					        	tag: tag}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
+					        	tag: tag}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
 					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
 					        }, function () {
 					            
@@ -161,7 +161,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
                     	},
                         hakuOid: $routeParams.hakuOid,
                         pohjat: function() {
-                        	return Jalkiohjauskirjepohjat.get({languageCode: "FI", tag: tag});
+                        	return Jalkiohjauskirjepohjat.get({languageCode: langcode, tag: tag});
                         }
                     };
                 }
