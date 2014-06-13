@@ -23,7 +23,7 @@
         <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'">
         <tr ng-hide="hakutoive.valintalaskenta">
             <td colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
-                <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                 {{hakutoive.oppilaitos}}
                 </a>
             </td>
@@ -32,7 +32,7 @@
             <td>
                 <div ng-if="isValinnanvaiheNameVisible(hakutoive.valintalaskenta,$index,filter,$last,$first)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
-                    <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                    <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                         {{hakutoive.oppilaitos}}
                     </a>
                 </div>
