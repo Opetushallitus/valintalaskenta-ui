@@ -35,6 +35,12 @@
                 <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">Muodosta
                     hyväksytyille osoitetarrat</a>
 
+                <br/>
+
+                <a href="/dokumentti-service/resources/sijoitteluntulokset/{{model.hakukohdeOid}}" class="btn btn-default btn-sm pdf">Lataa tulokset</a>
+                <a href="/dokumentti-service/resources/hyvaksymiskirjeet/{{model.hakukohdeOid}}" class="btn btn-default btn-sm pdf">Lataa hyväksymiskirjeet</a>
+                <a href="/dokumentti-service/resources/osoitetarrat/{{model.hakukohdeOid}}" class="btn btn-default btn-sm pdf">Lataa osoitetarrat</a>
+
             </div>
 
             <div class="margin-vertical-2 overflow-x-scroll">
