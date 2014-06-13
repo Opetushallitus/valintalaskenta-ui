@@ -82,6 +82,8 @@
             model.hakeneet.forEach(function(hakija) {
                 if(hakija.oid === hakemusOid) {
                     hakija.lisahakuHyvaksytty = null;
+                    hakija.hakemus.muokattuVastaanottoTila = null;
+                    hakija.hakemus.muokattuIlmoittautumisTila = null;
                 }
             });
         };
