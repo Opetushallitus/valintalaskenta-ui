@@ -30,7 +30,13 @@ app.config(function ($translateProvider) {
                 oid: "Hakemuksen tunniste",
                 state: "Harkinnanvarainen tila"
             }
-        }
+        },
+        ILMOITETTU: "Hakijalle ilmoitettu",
+        VASTAANOTTANUT: "Vastaanottanut",
+        EI_VASTAANOTETTU_MAARA_AIKANA: "Ei vastaanotettu määräaikana",
+        PERUNUT: "Perunut",
+        PERUUTETTU: "Peruutettu",
+        EHDOLLISESTI_VASTAANOTTANUT: "Ehdollisesti vastaanottanut"
     });
 
 
@@ -61,7 +67,13 @@ app.config(function ($translateProvider) {
                 oid: "Hakemuksen tunniste",
                 state: "Harkinnanvarainen tila"
             }
-        }
+        },
+        ILMOITETTU: "Hakijalle ilmoitettu",
+        VASTAANOTTANUT: "Vastaanottanut",
+        EI_VASTAANOTETTU_MAARA_AIKANA: "Ei vastaanotettu määräaikana",
+        PERUNUT: "Perunut",
+        PERUUTETTU: "Peruutettu",
+        EHDOLLISESTI_VASTAANOTTANUT: "Ehdollisesti vastaanottanut"
     });
 
     $translateProvider.preferredLanguage('fi');

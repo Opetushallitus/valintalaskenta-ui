@@ -273,16 +273,12 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
 
     //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
     $scope.hakemuksenMuokattuVastaanottoTilat = [
-        {value: "ILMOITETTU", text: "Hakijalle ilmoitettu"},
-        {value: "VASTAANOTTANUT", text: "Vastaanottanut"},
-        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text: "Ei vastaanotettu määräaikana"},
-        {value: "PERUNUT", text: "Perunut"},
-        {value: "PERUUTETTU", text: "Peruutettu"}
+        {value: "ILMOITETTU"},
+        {value: "VASTAANOTTANUT"},
+        {value: "EI_VASTAANOTETTU_MAARA_AIKANA"},
+        {value: "PERUNUT"},
+        {value: "PERUUTETTU"}
     ];
-
-
-
-
 
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
@@ -460,7 +456,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
             returnValue = $scope.model.haku.kohdejoukkoUri.indexOf('_12') !== -1;
         }
         if(returnValue) {
-            $scope.hakemuksenMuokattuVastaanottoTilat.push({value: "EHDOLLISESTI_VASTAANOTTANUT", text: "Ehdollisesti vastaanottanut"})
+            $scope.hakemuksenMuokattuVastaanottoTilat.push({value: "EHDOLLISESTI_VASTAANOTTANUT"})
         }
     };
 

@@ -35,6 +35,12 @@
                 <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">Muodosta
                     hyväksytyille osoitetarrat</a>
 
+                <br/>
+
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/sijoitteluntulokset/{{model.hakukohdeOid}}" class="btn btn-default btn-sm pdf">Lataa tulokset</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/hyvaksymiskirjeet/{{model.hakukohdeOid}}" class="btn btn-default btn-sm pdf">Lataa hyväksymiskirjeet</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/osoitetarrat/{{model.hakukohdeOid}}" class="btn btn-default btn-sm pdf">Lataa osoitetarrat</a>
+
             </div>
 
             <div class="margin-vertical-2 overflow-x-scroll">
@@ -92,10 +98,13 @@
                             <td>
                                 <div ng-show="(updateOrg && (hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || updateOph">
                                     <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
-                                        <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
+                                        <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as (tila.value | translate) for tila in hakemuksenMuokattuVastaanottoTilat">
                                             <option value="">Kesken</option>
                                         </select>
                                     </span>
+                                </div>
+                                <div ng-if="(!jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')">
+                                    {{ hakemus.vastaanottoTila | translate }}
                                 </div>
                             </td>
 
