@@ -31,9 +31,7 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
                         var hakutyyppi = haku.hakutyyppiUri;
                         var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
                         var match = lisahakutyyppiRegExp.exec(hakutyyppi);
-                        match ? showLisahakuView = true : showLisahakuView = false;
-
-                        haku.lisahaku = showLisahakuView;
+                        match ? haku.lisahaku = true : haku.lisahaku = false;
                     });
 
                 }, function(error) {    
