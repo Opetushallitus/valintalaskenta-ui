@@ -92,10 +92,13 @@
                             <td>
                                 <div ng-show="(updateOrg && (hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || updateOph">
                                     <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
-                                        <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
+                                        <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as (tila.value | translate) for tila in hakemuksenMuokattuVastaanottoTilat">
                                             <option value="">Kesken</option>
                                         </select>
                                     </span>
+                                </div>
+                                <div ng-if="(!jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')">
+                                    {{ hakemus.vastaanottoTila | translate }}
                                 </div>
                             </td>
 
