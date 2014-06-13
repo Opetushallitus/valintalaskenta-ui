@@ -69,6 +69,16 @@
                 key: "lisahaku-hyvaksytty",
                 value: ""
             });
+            HakemusKey.put({
+                oid: hakemusOid,
+                key: "lisahaku-vastaanottotieto",
+                value: ""
+            });
+            HakemusKey.put({
+                oid: hakemusOid,
+                key: "lisahaku-ilmoittautumistieto",
+                value: ""
+            });
             model.hakeneet.forEach(function(hakija) {
                 if(hakija.oid === hakemusOid) {
                     hakija.lisahakuHyvaksytty = null;
