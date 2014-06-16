@@ -665,3 +665,17 @@ app.directive('ngDebounce', function($timeout) {
 
     }
 });
+
+app.directive('paginationPagesize', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            pageSize: '='
+        },
+        templateUrl: '../common/html/items-dropdown.html',
+        controller: function ($scope) {
+            $scope.itemsInDropdown = [{value:20}, {value:50}, {value:100}, {value:200}, {value:500}];
+        }
+
+    };
+});
