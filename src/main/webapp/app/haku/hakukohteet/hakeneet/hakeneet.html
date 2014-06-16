@@ -18,6 +18,7 @@
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
+                <pagination-pagesize page-size="pageSize"></pagination-pagesize>
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
                         <thead>
@@ -27,7 +28,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="hakija in model.hakeneet | orderBy:'lastName' | filter:hakijaFilter">
+                            <tr ng-repeat="hakija in filteredResult=(model.hakeneet | orderBy:'lastName' | filter:hakijaFilter)| startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                                 <td class="leftorientedcolumn">
                                     <show-person-information sukunimi="{{hakija.lastName}}"
                                                              etunimi="{{hakija.firstNames}}"
@@ -42,6 +43,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResult.length" page="currentPage" items-per-page="pageSize"></pagination>
                 </form>
             </div>
         </div>

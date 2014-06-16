@@ -442,11 +442,17 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         return i;
     };
 
-    $scope.selectIlmoitettuToAll = function() {
-        $scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset.forEach(function(hakemus){
-            if (hakemus.tila === "HYVAKSYTTY" && hakemus.vastaanottoTila !== "ILMOITETTU" && hakemus.muokattuVastaanottoTila !== "ILMOITETTU") {
-                hakemus.muokattuVastaanottoTila = "ILMOITETTU";
-            }
+    $scope.selectIlmoitettuToAll = function(valintatapajonoOid) {
+        var jonoonLiittyvat = _.filter($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
+            return valintatapajono.oid === valintatapajonoOid;
+        });
+        var muokattavatHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
+            return valintatapajono.hakemukset;
+        })), function(hakemus) {
+            return (hakemus.vastaanottoTila === "");
+        });
+        muokattavatHakemukset.forEach(function (hakemus) {
+            hakemus.muokattuVastaanottoTila = "ILMOITETTU";
         });
     }
 

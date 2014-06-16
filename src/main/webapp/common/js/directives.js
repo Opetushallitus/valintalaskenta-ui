@@ -674,7 +674,8 @@ app.directive('paginationPagesize', function () {
         },
         templateUrl: '../common/html/items-dropdown.html',
         controller: function ($scope) {
-            $scope.itemsInDropdown = [{value:20}, {value:50}, {value:100}, {value:200}, {value:500}];
+            $scope.itemsInDropdown = [{value:100000, text:"Kaikki"}, {value:20, text:"20 kpl"}, {value:50, text:"50 kpl"},
+                {value:100,text:"100 kpl"},{value:200, text:"200 kpl"}, {value:500, text:"500 kpl"}];
         }
 
     };
