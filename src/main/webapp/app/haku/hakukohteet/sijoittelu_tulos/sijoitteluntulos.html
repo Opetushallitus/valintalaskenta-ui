@@ -46,7 +46,7 @@
             <div class="margin-vertical-2 overflow-x-scroll">
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot | orderBy:'index':true">
                     <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">Tallenna</a>
-                    <a ng-click="selectIlmoitettuToAll()" class="btn btn-default btn-sm margin-bottom-2">{{ 'sijoitteluntulos.buttons.acceptall' | translate }}</a>
+                    <a ng-click="selectIlmoitettuToAll(jono.oid)" class="btn btn-default btn-sm margin-bottom-2">{{ 'sijoitteluntulos.buttons.acceptall' | translate }}</a>
                     <table class="virkailija-table-1" item-on-screen>
                         <thead>
                         <tr>
