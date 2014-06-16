@@ -21,10 +21,12 @@
                         <option value="Hakijoittain">Hakijoittain</option>
                     </select>
 
+                    <pagination-pagesize page-size="pageSize"></pagination-pagesize>
+
                     <input id="osallistuu" type="checkbox" ng-model="model.filter" ng-true-value="OSALLISTUU"
                            ng-false-value="" ng-change="updateNakymanTila()"/>
                     <label for="osallistuu">Vain kutsuttavat</label>
-                    <br/>
+
                 </div>
             </div>
 
