@@ -109,6 +109,8 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
     $scope.muutettu = false;
+    $scope.pageSize = 50;
+    $scope.currentPage = 1;
 
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
         {value: "EI_TEHTY", text: "sijoitteluntulos.enrollmentinfo.notdone"},

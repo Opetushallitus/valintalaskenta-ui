@@ -40,6 +40,8 @@ function HakeneetController($scope, $location, $routeParams, HakeneetModel, Haku
 
     HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
     $scope.model = HakeneetModel;
+    $scope.pageSize = 50;
+    $scope.currentPage = 1;
     // Kielistys joskus
     $scope.tila = {
         "ACTIVE": "Aktiivinen",

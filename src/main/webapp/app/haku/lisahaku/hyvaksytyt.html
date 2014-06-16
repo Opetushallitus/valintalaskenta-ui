@@ -22,6 +22,7 @@
             </div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
+                <pagination-pagesize page-size="pageSize"></pagination-pagesize>
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
                         <thead>
@@ -35,7 +36,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="hakija in model.hakeneet">
+                            <tr ng-repeat="hakija in model.hakeneet | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                                 <td>
                                     <span title="Sukunimi">{{hakija.lastName}}</span>,
                                 	<span title="Etunimi">{{hakija.firstNames}}</span>
@@ -78,6 +79,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="model.hakeneet.length" page="currentPage" items-per-page="pageSize"></pagination>
                 </form>
             </div>
         </div>
