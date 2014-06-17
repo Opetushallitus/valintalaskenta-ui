@@ -152,7 +152,8 @@ function PistesyottoController($scope, $log, $timeout, $routeParams, $upload, Pi
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.koeFilter = null;
     $scope.osallistuminenFilter = "";
-//    $scope.vainOsallistuvat = true;
+    $scope.pageSize = 50;
+    $scope.currentPage = 1;
     $scope.muutettu = false;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
@@ -273,16 +274,6 @@ function PistesyottoController($scope, $log, $timeout, $routeParams, $upload, Pi
 
     $scope.updateFilterData = function () {
         PistesyottoModel.updateFilterData();
-    }
-
-    $scope.limit = 20;
-    $scope.lazyLoading = function () {
-
-        $scope.showLoading = true;
-        $timeout(function () {
-            $scope.limit += 50;
-            $scope.showLoading = false;
-        }, 10);
     }
 
     $scope.arvonta = $routeParams.arvonta;
