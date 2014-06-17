@@ -27,6 +27,7 @@
                 <a ng-click="muodostaOsoitetarrat();" class="btn btn-default btn-sm pdf">Muodosta osoitetarrat</a>
                 <br>
                 <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" >Tallenna</a>
+                <pagination-pagesize page-size="pageSize"></pagination-pagesize>
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
                         <thead>
@@ -38,7 +39,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="hakija in model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true} | filter:hakijaFilter">
+                            <tr ng-repeat="hakija in filteredResult = (model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true} | filter:hakijaFilter) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                                 <td><input type="checkbox" ng-change="model.check();" ng-model="hakija.valittu"></td>
                                 <td class="leftorientedcolumn">
                                     <show-person-information sukunimi="{{hakija.lastName}}"
@@ -61,6 +62,7 @@
                         </tbody>
                     </table>
                 </form>
+                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResult.length" page="currentPage" items-per-page="pageSize"></pagination>
                 <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" >Tallenna</a>
             </div>
         </div>

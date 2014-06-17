@@ -40,7 +40,7 @@
 
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
                        ng-model="hakijaFilter"/>
-                <!--<input type="text" class="search margin-vertical-2" placeholder="Suodata kenttiä" ng-model="arvoFilter" />-->
+
                 <select ng-model="koeFilter" ng-options="avain.kuvaus for avain in model.avaimet"
                         ng-change="updateFilterData()">
                     <option value="">Kaikki kokeet</option>
@@ -51,9 +51,7 @@
                     <option value="OSALLISTUI">Osallistui</option>
                     <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
                 </select>
-                <!--<input id="osallistuu" type="checkbox"  ng-model="vainOsallistuvat" />-->
-                <!--<label for="osallistuu">Vain osallistuvat</label>-->
-
+                <pagination-pagesize page-size="pageSize"></pagination-pagesize>
                 <form name="form" ng-if="model.avaimet">
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                             class="btn btn-primary btn-sm margin-bottom-2" ng-click="submit()">Tallenna
@@ -71,7 +69,7 @@
                             virheet!
                         </div>
                     </div>
-                    <table class="virkailija-table-1" item-on-screen stay-on-focus>
+                    <table class="virkailija-table-1" stay-on-focus>
                         <thead>
                         <tr>
                             <th><a href="" ng-click="reverse=!reverse">Tiedot</a></th>
@@ -85,7 +83,7 @@
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="hakija in model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter | limitTo:limit">
+                        <tr ng-repeat="hakija in filteredResult = (model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakija.lastName}}"
                                                          etunimi="{{hakija.firstNames}}"
@@ -173,6 +171,9 @@
 
                         </tbody>
                     </table>
+
+                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResult.length" page="currentPage" items-per-page="pageSize"></pagination>
+                    <br/>
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                             class="btn btn-primary btn-sm margin-top-2" ng-click="submit()">Tallenna
                     </button>
@@ -181,7 +182,6 @@
                             virheet!
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>

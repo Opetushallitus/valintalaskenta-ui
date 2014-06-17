@@ -132,6 +132,8 @@ function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmo
     HarkinnanvaraisetModel.refreshIfNeeded($scope.hakukohdeOid, $routeParams.hakuOid);
 
     $scope.predicate = 'sukunimi';
+    $scope.pageSize = 50;
+    $scope.currentPage = 1;
 
     $scope.submit = function () {
         $scope.model.submit();

@@ -4,7 +4,7 @@
     ValinnanVaiheetIlmanLaskentaa,
     HakukohdeHenkilotFull,
     Ilmoitus,
-    IlmoitusTila) {
+    IlmoitusTila, $q) {
 	var model;
 	model = new function() {
 
@@ -27,6 +27,8 @@
         };
 		
 		this.refresh = function(hakukohdeOid, hakuOid) {
+            var defer = $q.defer();
+
 		    model.hakukohdeOid = {};
             model.valinnanvaiheet = [];
             model.ilmanlaskentaa = [];
@@ -113,17 +115,22 @@
                                     model.valinnanvaiheet.splice(index, 1);
                                 }
                             });
+                            defer.resolve();
                         }, function (error) {
                             model.errors.push(error);
+                            defer.reject("hakukohteen tietojen hakeminen epäonnistui");
                         });
                     }
                 }, function(error) {
                     model.errors.push(error);
+                    defer.reject("hakukohteen tietojen hakeminen epäonnistui");
                 })
 			}, function(error) {
                 model.errors.push(error);
+                defer.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
 
+            return defer.promise;
 		};
 
         this.submit = function (vaiheoid, jonooid) {
@@ -177,8 +184,21 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     $scope.model = ValintalaskentatulosModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-    $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
-    
+
+    $scope.pageSize = 50;
+    $scope.currentPage = [];
+    $scope.filteredResults = [];
+
+    var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
+
+    for (var i = 0; i < 1000; i++) {
+        $scope.currentPage[i] = [];
+        $scope.filteredResults[i] = [];
+        for (var j = 0; j < 1000; j++) {
+            $scope.currentPage[i][j] = 1;
+        }
+    }
+
     $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
     	ValintatapajonoVienti.vie({
     		valintatapajonoOid: valintatapajonoOid,
@@ -250,15 +270,6 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
             });
         }
 
-    };
-
-    $scope.limit = 20;
-    $scope.lazyLoading = function() {
-        $scope.showLoading = true;
-        $timeout(function(){
-            $scope.limit += 50;
-            $scope.showLoading = false;
-        }, 10);
     };
 
 }

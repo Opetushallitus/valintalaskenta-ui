@@ -58,14 +58,13 @@
             <br/>
             <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
                    ng-model="hakijaFilter"/>
-            <!--
-            <a href="#" class="button small disabled">Hyväksy valintaesitys</a>
-             -->
+
+            <pagination-pagesize page-size="pageSize"></pagination-pagesize>
             <div ng-if="model.ilmanlaskentaa.length > 0">
                 <h2>Valinnanvaiheet, jossa ei käytetä laskentaa</h2>
                 <accordion close-others="true">
                     <accordion-group
-                            ng-repeat="valinnanvaihe in model.ilmanlaskentaa | orderBy:['nimi']:false"
+                            ng-repeat="valinnanvaihe in model.ilmanlaskentaa | orderBy:['nimi']:false track by $index"
                             is-open="$first">
 
                         <accordion-heading>
@@ -74,7 +73,7 @@
                         </accordion-heading>
 
                         <div>
-                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot">
+                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index">
                                 <form name="form">
                                     <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
                                     <button ng-disabled="!form.$valid"
@@ -90,7 +89,7 @@
 				                    		class="btn btn-primary btn-sm margin-bottom-2 btn-file">
 									    Tuo taulukkolaskennasta <input type="file" ng-file-select="valintatapajonoTuontiXlsx($files)" >
 									</span>
-                                    <table class="virkailija-table-1" item-on-screen>
+                                    <table class="virkailija-table-1">
                                         <thead>
                                         <tr>
                                             <th><a href="" ng-click="reverse=!reverse">Jonosija ({{valintatapajono.jonosijat.length}})</a></th>
@@ -102,7 +101,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit | orderBy:['jonosija', 'sukunimi']:reverse">
+                                        <tr ng-repeat="tulos in filteredResults[$parent.$index][$index] = (valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:(currentPage[$parent.$index][$index]-1)*pageSize | limitTo:pageSize">
                                             <td><input type="number"
                                                        ng-model="tulos.jonosija"
                                                        min="1"
@@ -132,7 +131,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <span ng-show="limit < valintatapajono.jonosijat.length">Näytetty: {{limit}} / {{valintatapajono.jonosijat.length}}</span>
+                                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$parent.$index][$index].length" page="currentPage[$parent.$index][$index]" items-per-page="pageSize"></pagination>
                                 </form>
                             </div>
                         </div>
@@ -144,7 +143,7 @@
                 <h2>Lasketut valinnanvaiheet</h2>
                 <accordion close-others="true">
                     <accordion-group
-                            ng-repeat="valinnanvaihe in model.valinnanvaiheet | orderBy:['createdAt','jarjestysnumero']:true"
+                            ng-repeat="valinnanvaihe in model.valinnanvaiheet | orderBy:['createdAt','jarjestysnumero']:true track by $index"
                             is-open="$first">
 
                         <accordion-heading>
@@ -154,9 +153,9 @@
                         </accordion-heading>
 
                         <div>
-                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot"  ng-if="!valintatapajono.ilmanLaskentaa">
+                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index"  ng-if="!valintatapajono.ilmanLaskentaa">
                                 <h3>Valintatapajono: {{valintatapajono.nimi}}</h3>
-                                <table class="virkailija-table-1" item-on-screen>
+                                <table class="virkailija-table-1">
                                     <thead>
                                     <tr>
                                         <th>{{valintatapajono.jonosijat.length}}</th>
@@ -168,7 +167,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="tulos in valintatapajono.jonosijat  | filter:hakijaFilter | limitTo:limit">
+                                    <tr ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
                                         <td>{{tulos.jonosija}}</td>
                                         <td class="leftorientedcolumn">
                                             <show-person-information sukunimi="{{tulos.sukunimi}}"
@@ -196,7 +195,6 @@
 
                                             </modal>
 
-                                            <!--<div ng-include="'haku/hakukohteet/valintalaskenta_tulos/tilaPartial.html'"/>-->
                                         </td>
                                         <td>
                                             <jarjestyskriteeri-muokkaus jonosija="tulos"
@@ -207,8 +205,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <span ng-show="limit < valintatapajono.jonosijat.length">Näytetty: {{limit}} / {{valintatapajono.jonosijat.length}}</span>
-                            </div>
+                                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$parent.$parent.$index][$parent.$index].length" page="currentPage[$parent.$parent.$index][$parent.$index]" items-per-page="pageSize"></pagination>                            </div>
                         </div>
                     </accordion-group>
                 </accordion>
