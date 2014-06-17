@@ -449,7 +449,7 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         var muokattavatHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
             return valintatapajono.hakemukset;
         })), function(hakemus) {
-            return (hakemus.vastaanottoTila === "");
+            return (hakemus.vastaanottoTila === "" && hakemus.tila == 'HYVAKSYTTY');
         });
         muokattavatHakemukset.forEach(function (hakemus) {
             hakemus.muokattuVastaanottoTila = "ILMOITETTU";
