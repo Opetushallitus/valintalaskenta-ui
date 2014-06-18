@@ -101,7 +101,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="tulos in filteredResults[$parent.$index][$index] = (valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:(currentPage[$parent.$index][$index]-1)*pageSize | limitTo:pageSize">
+                                        <tr ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
                                             <td><input type="number"
                                                        ng-model="tulos.jonosija"
                                                        min="1"
@@ -131,7 +131,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$parent.$index][$index].length" page="currentPage[$parent.$index][$index]" items-per-page="pageSize"></pagination>
+                                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$parent.$parent.$index][$parent.$index].length" page="currentPage[$parent.$parent.$index][$parent.$index]" items-per-page="pageSize"></pagination>
                                 </form>
                             </div>
                         </div>

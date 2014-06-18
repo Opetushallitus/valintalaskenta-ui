@@ -280,6 +280,14 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
         {value: "PERUUTETTU"}
     ];
 
+    $scope.pageSize = 50;
+    $scope.currentPage = [];
+    $scope.filteredResults = [];
+
+    for (var i = 0; i < 1000; i++) {
+        $scope.currentPage[i] = 1;
+    }
+
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
     $scope.updateVastaanottoTila = function (hakemus, valintatapajonoOid) {
@@ -415,15 +423,6 @@ function SijoitteluntulosController($scope, $timeout, $modal, $routeParams, $win
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
     });
-
-    $scope.limit = 20;
-    $scope.lazyLoading = function () {
-        $scope.showLoading = true;
-        $timeout(function () {
-            $scope.limit += 50;
-            $scope.showLoading = false;
-        }, 10);
-    };
 
     var order = {
         "HYVAKSYTTY": 1,
