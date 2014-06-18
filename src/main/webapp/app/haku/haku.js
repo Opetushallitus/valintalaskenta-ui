@@ -50,9 +50,8 @@ function HakuController($scope, $location, $routeParams, HakuModel, ParametriSer
     $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
 
-    ParametriService.refresh($routeParams.hakuOid);
-
-    $scope.$watch('hakumodel.hakuOid', function () {
+    $scope.changeHaku = function() {
+        ParametriService.refresh($routeParams.hakuOid);
 
         if ($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid !== $routeParams.hakuOid) {
             if ($scope.hakumodel.hakuOid.lisahaku) {
@@ -61,6 +60,6 @@ function HakuController($scope, $location, $routeParams, HakuModel, ParametriSer
                 $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
             }
         }
-    });
+    }
 
 }

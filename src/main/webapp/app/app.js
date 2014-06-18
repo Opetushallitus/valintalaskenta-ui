@@ -28,8 +28,6 @@ var CAS_URL = CAS_URL || "/cas/myroles";
 
 
 
-
-
 //TARJONTA RESOURCES
 app.factory('Haku', function($resource) {
   return $resource(TARJONTA_URL_BASE + "haku", {}, {
@@ -552,8 +550,8 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
 });
 
 //Valintaryhma
-app.factory('ValintaperusteetPuu', function($resource) {
-    return $resource(SERVICE_URL_BASE + "resources/puu", {
+app.factory('ValintaryhmatJaHakukohteet', function($resource) {
+    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/puu", {
         q: "@q",
         hakuOid: "@hakuOid",
         tila: "@tila",
@@ -580,3 +578,4 @@ app.constant('IlmoitusTila', {
 	WARNING: 'warning',
 	ERROR: 'danger'
 });
+

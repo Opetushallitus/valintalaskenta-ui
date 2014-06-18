@@ -1,17 +1,55 @@
 <h1>Valintojen toteuttaminen</h1>
-<div ng-include="'../common/js/tabs/topNavigation.html'"></div>
+<div ng-include="'../common/js/topnavigation/topNavigation.html'"></div>
 
 
 <div class="clear"></div>
 
 <div class="tabsheets">
 
-    <div ng-include="'haku/hakukohdelista.html'"></div>
-    <div class="toggle-content-container overflow-x-scroll">
-        Valitse hakukohde.
+    <div class="col-sm-6">
+        <div class="results">
+            <div>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää ja {{domain.tilasto.hakukohteita}} hakukohdetta </div>
+            <ol ng-if="!domain.search.vainHakukohteet" id="valintaryhmapuu" class="sortable collapsible">
+                <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
+                    data-oid="{{data.oid}}"
+                    ng-model="data"
+                    ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
+                    class="{{addClass('noNesting',domain.isHakukohde(data))}}"
+                    ng-include="domain.getTemplate(data)">
+                </li>
+            </ol>
+
+            <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">Näytetty: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
+            <table ng-if="domain.search.vainHakukohteet" class="virkailija-table-1 hakukohde-table"  item-on-screen>
+                <thead>
+                <tr>
+                    <th>Hakukohde</th>
+                    <th>Valintaryhmä</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="data in domain.hakukohteet | limitTo:hakukohteetListingLimit">
+                    <td>
+                        <span class="float-left">
+                             <i class="fa fa-building-o"></i>
+                             <a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="float-left">
+                            <a href="#/valintaryhma/{{parent.oid}}" ng-repeat="parent in data.getParents()" >{{parent.nimi}} / </a>
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">Näytetty: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
+        </div>
     </div>
-    <div class="clear"></div>
 
 
 </div>
+
+
+
 
