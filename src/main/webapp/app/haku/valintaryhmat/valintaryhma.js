@@ -1,4 +1,4 @@
-app.factory('Valintaryhmat', function ($q, _) {
+app.factory('Valintaryhmat', function ($q, _, ValintaryhmatJaHakukohteet) {
 
 
     var model = new function () {
@@ -31,7 +31,7 @@ app.factory('Valintaryhmat', function ($q, _) {
 
             ValintaryhmatJaHakukohteet.get({
                 q: this.hakuasetukset.q,
-                hakuOid: hakuoid,
+                hakuOid: model.hakuOid,
                 tila: tila,
                 kohdejoukko: kohdejoukko
             }, function (result) {
@@ -56,18 +56,22 @@ app.factory('Valintaryhmat', function ($q, _) {
 
 
     return model;
-     s
+
+
 });
 
+app.factory('abc', function () {
+    return {a: 'foo'}
+})
 
-function ValintaryhmaController($scope, HakuModel, Valintaryhmat) {
+function ValintaryhmaController($scope, HakuModel, Valintaryhmat, abc) {
     $scope.hakumodel = HakuModel;
 
-//    $scope.valintaryhmat = Valintaryhmat;
-//    var promise = $scope.valintaryhmaLista.refreshIfNeeded($scope.hakumodel);
+    $scope.valintaryhmat = Valintaryhmat;
+    var promise = $scope.valintaryhmat.refreshIfNeeded($scope.hakumodel);
 //    promise.then(function() {
 //        console.log('fetched');
-//    })
+//    });
 
     /*
      function update() {
@@ -135,3 +139,5 @@ function ValintaryhmaController($scope, HakuModel, Valintaryhmat) {
      }
      */
 }
+
+
