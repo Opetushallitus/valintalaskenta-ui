@@ -1,53 +1,55 @@
+<!-- Node template -->
+<script type="text/ng-template" id="valintaryhma_node.html">
+    {{data.nimi}}
+    <span  class="node">
+            <i class="fa fa-users"  ng-click="expandNode(data)"></i>
+        {{data.nimi}}
+    </span>
+
+    <ol ng-if="data.alavalintaryhmat || data.hakukohdeviitteet">
+        <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
+            data-oid="{{data.oid}}"
+            ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
+            ng-include="domain.getTemplate(data)">
+        </li>
+        <li ng-repeat="data in data.hakukohdeViitteet | orderBy:predicate"
+            data-oid="{{data.oid}}"
+            ng-include="domain.getTemplate(data)">
+        </li>
+    </ol>
+
+</script>
+
+<!--Leaf template -->
+<script type="text/ng-template" id="hakukohde_leaf.html">
+    <div class="node"><i class="fa fa-building-o"></i><a href="#/hakukohde/{{data.oid}}">{{data.nimi}} ({{data.tila}})</a></div>
+</script>
+
+
+
 <h1>Valintojen toteuttaminen</h1>
 <div ng-include="'../common/js/topnavigation/topNavigation.html'"></div>
-
 
 <div class="clear"></div>
 
 <div class="tabsheets">
-
-    <div class="col-sm-6">
-        <div class="results">
-            <div>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää ja {{domain.tilasto.hakukohteita}} hakukohdetta </div>
-            <ol ng-if="!domain.search.vainHakukohteet" id="valintaryhmapuu" class="sortable collapsible">
-                <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
-                    data-oid="{{data.oid}}"
-                    ng-model="data"
-                    ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
-                    class="{{addClass('noNesting',domain.isHakukohde(data))}}"
-                    ng-include="domain.getTemplate(data)">
-                </li>
-            </ol>
-
-            <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">Näytetty: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
-            <table ng-if="domain.search.vainHakukohteet" class="virkailija-table-1 hakukohde-table"  item-on-screen>
-                <thead>
-                <tr>
-                    <th>Hakukohde</th>
-                    <th>Valintaryhmä</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="data in domain.hakukohteet | limitTo:hakukohteetListingLimit">
-                    <td>
-                        <span class="float-left">
-                             <i class="fa fa-building-o"></i>
-                             <a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a>
-                        </span>
-                    </td>
-                    <td>
-                        <span class="float-left">
-                            <a href="#/valintaryhma/{{parent.oid}}" ng-repeat="parent in data.getParents()" >{{parent.nimi}} / </a>
-                        </span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">Näytetty: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
-        </div>
+    <div class="col-sm-12">
+        <h3></h3>
     </div>
+    <div class="col-sm-12">
+        <ol id="valintaryhmapuu" class="sortable collapsible">
+            <li ng-repeat="data in valintaryhmaModel.valintaryhmat | orderBy:predicate"
+                data-oid="{{data.oid}}"
+                ng-model="data"
+                ng-include="getTemplate(data.tyyppi)"
+                ng-class="data.tyyppi === 'HAKUKOHDE' ? 'noNesting' : ''">
+                <!--ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"-->
+                <!--class="{{addClass('noNesting',domain.isHakukohde(data))}}"-->
 
-
+            </li>
+        </ol>
+    </div>
+    <div class="clear"></div>
 </div>
 
 

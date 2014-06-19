@@ -1,10 +1,10 @@
-app.factory('Valintaryhmat', function ($q, _, ValintaryhmatJaHakukohteet) {
+app.factory('ValintaryhmaModel', function ($q, _, ValintaryhmatJaHakukohteet) {
 
 
     var model = new function () {
 
         this.hakuOid = undefined;
-        this.valintaryhmat = {};
+        this.valintaryhmat = [];
         this.hakuasetukset = {
             q: null,
             haku: null,
@@ -19,60 +19,87 @@ app.factory('Valintaryhmat', function ($q, _, ValintaryhmatJaHakukohteet) {
             var kohdejoukko = "";
             var tila = null;
             var deferred = $q.defer();
-
             if (this.hakuasetukset.haku) {
                 hakuoid = this.hakuasetukset.haku.oid;
                 kohdejoukko = this.hakuasetukset.haku.kohdejoukkoUri.split("#")[0];
             }
 
-            if (this.hakuasetukset.vainValmiitJaJulkaistut) {
+            if (model.hakuasetukset.vainValmiitJaJulkaistut) {
                 tila = ["VALMIS", "JULKAISTU"];
             }
 
             ValintaryhmatJaHakukohteet.get({
-                q: this.hakuasetukset.q,
-                hakuOid: model.hakuOid,
+                q: model.hakuasetukset.q,
+                hakuOid: null, //model.hakuOid,
                 tila: tila,
                 kohdejoukko: kohdejoukko
             }, function (result) {
-                this.valintaryhmat = result;
-                console.log(result);
+                model.valintaryhmat = result;
                 deferred.resolve();
-                //update();
-            }, function (error) {
-                deferred.reject('Valintaryhmien hakeminen epäonnistui:', error);
-            });
 
-            return deferred.promise;
+                //update();
+               }, function() {
+                   deferred.reject();
+               });
+            return deferred.promise;;
         };
 
         this.refreshIfNeeded = function (hakuOid) {
             if (_.isEmpty(hakuOid) || hakuOid === model.hakuOid !== hakuOid) {
-                model.refresh(hakuOid);
+                return model.refresh(hakuOid);
             }
         }
 
     };
 
-
     return model;
-
-
 });
 
-app.factory('abc', function () {
-    return {a: 'foo'}
-})
-
-function ValintaryhmaController($scope, HakuModel, Valintaryhmat, abc) {
+function ValintaryhmaController($scope, HakuModel, ValintaryhmaModel) {
     $scope.hakumodel = HakuModel;
 
-    $scope.valintaryhmat = Valintaryhmat;
-    var promise = $scope.valintaryhmat.refreshIfNeeded($scope.hakumodel);
-//    promise.then(function() {
-//        console.log('fetched');
-//    });
+    $scope.valintaryhmaModel = ValintaryhmaModel;
+    var promise = $scope.valintaryhmaModel.refreshIfNeeded($scope.hakumodel);
 
+    $scope.getTemplate = function(tyyppi) {
+        if(tyyppi) {
+            if(tyyppi == 'VALINTARYHMA') {
+                return "valintaryhma_node.html";
+            } else {
+                return "hakukohde_leaf.html";
+            }
+        }
+        return "";
+    }
+
+    $scope.expandNode = function(node) {
+        console.log(node);
+        if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)  ||
+            (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )  ) {
+            if(node.isVisible != true) {
+                node.isVisible = true;
+
+                // aukaisee alitason, jos ei ole liikaa tavaraa
+                var iter = function(ala) {
+                    ala.forEach(function(ala){
+                        "use strict";
+                        if(!ala.alavalintaryhmat || ala.alavalintaryhmat.length < 4) {
+                            ala.isVisible = true;
+                            iter(ala.alavalintaryhmat);
+                        }
+                    });
+                }
+                if(node.alavalintaryhmat.length < 4) {
+                    iter(node.alavalintaryhmat);
+                }
+
+
+            } else {
+                node.isVisible = false;
+            }
+        }
+    }
+    
     /*
      function update() {
      var list = modelInterface.valintaperusteList;
