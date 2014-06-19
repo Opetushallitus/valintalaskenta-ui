@@ -24,7 +24,7 @@ app.factory('Ylavalintaryhma', function($resource, ValintaryhmatJaHakukohteet, A
 
             ValintaryhmatJaHakukohteet.get({
                 q: this.search.q,
-                hakukohteet: false
+                hakukohteet: true
             },function(result) {
                 modelInterface.valintaperusteList = result;
                 modelInterface.update();
@@ -61,7 +61,7 @@ app.factory('Ylavalintaryhma', function($resource, ValintaryhmatJaHakukohteet, A
                 if(item.tyyppi == 'VALINTARYHMA') {
                     modelInterface.tilasto.valintaryhmia++;
                 }
-
+/*
                 AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
                     "use strict";
                     item.access = false;
@@ -80,7 +80,7 @@ app.factory('Ylavalintaryhma', function($resource, ValintaryhmatJaHakukohteet, A
                         }
                     });
                 });
-
+*/
                 if(item.alavalintaryhmat) {
                     for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i]);
                 }
@@ -129,19 +129,18 @@ app.factory('UusiHakukohdeModel', function() {
     return model;
 });
 
-function ValintaryhmaController($scope, HakuModel, UusiHakukohdeModel, Ylavalintaryhma) {
+function ValintaryhmaController($scope, $log, _, HakuModel, UusiHakukohdeModel, Ylavalintaryhma, ValintaryhmaLaskenta) {
     $scope.predicate = 'nimi';
     $scope.model = UusiHakukohdeModel;
-
+    
     $scope.domain = Ylavalintaryhma;
     UusiHakukohdeModel.refresh();
     Ylavalintaryhma.refresh();
-
+    $scope.hakukohteet = [];
 
     $scope.hakumodel = HakuModel;
 
     $scope.expandNode = function(node) {
-        console.log(node);
         if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)  ||
             (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )  ) {
             if(node.isVisible != true) {
@@ -150,7 +149,6 @@ function ValintaryhmaController($scope, HakuModel, UusiHakukohdeModel, Ylavalint
                 // aukaisee alitason, jos ei ole liikaa tavaraa
                 var iter = function(ala) {
                     ala.forEach(function(ala){
-                        "use strict";
                         if(!ala.alavalintaryhmat || ala.alavalintaryhmat.length < 4) {
                             ala.isVisible = true;
                             iter(ala.alavalintaryhmat);
@@ -166,7 +164,37 @@ function ValintaryhmaController($scope, HakuModel, UusiHakukohdeModel, Ylavalint
                 node.isVisible = false;
             }
         }
+    };
+    
+    $scope.changeValintaryhma = function(valintaryhma) {
+        $scope.selectedValintaryhma = valintaryhma;
+        $scope.hakukohteet.length = 0;
+        $scope.findHakukohteet(valintaryhma);
+    };
+    
+    $scope.findHakukohteet = function(valintaryhma) {
+        _.forEach(valintaryhma.hakukohdeViitteet, function(hakukohde) {
+            $scope.hakukohteet.push(hakukohde);
+        });
+
+        _.forEach(valintaryhma.alavalintaryhmat, function(valintaryhma) {
+            $scope.findHakukohteet(valintaryhma);
+        });
+    };
+
+    $scope.valintaryhmaLaskenta = function() {
+        var hakukohdeOids = [];
+        _.forEach($scope.hakukohteet, function(hakukohde) {
+            hakukohdeOids.push(hakukohde.oid);
+        });
+
+        ValintaryhmaLaskenta.save({hakuOid: $scope.hakumodel.hakuOid.oid}, hakukohdeOids, function(result) {
+            console.log('asöldkfjöalsd');
+        }, function(error) {
+            $log.error("Valintalaskennan suorittaminen valintaryhmän hakukohteille epäonnistui", error);
+        });
     }
+
     
 
 }

@@ -1,18 +1,20 @@
 <!-- Node template -->
 <script type="text/ng-template" id="node.html">
-
-    <span class="node" ng-if="data.nimi | filter:domain.search.q">
-        <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: !(data.alavalintaryhmat.length > 0), auki: domain.isExpanded(data)}" ng-click="domain.expandNode(data)"></i>
-        <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
+    <span class="node" ng-if="data.nimi && data.tyyppi !== 'HAKUKOHDE' | filter:domain.search.q">
+        <i class="fa fa-users valintaryhma"
+           ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: !(data.alavalintaryhmat.length > 0), auki: domain.isExpanded(data)}"
+           ng-click="domain.expandNode(data)"></i>
+        <input ng-change="changeValintaryhma(data)" name="valintaryhmaOid" type="radio" ng-model="model.parentOid"
+               value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
     </span>
 
     <ol ng-if="data.isVisible">
-        <li ng-repeat="data in data.alavalintaryhmat | filter:domain.search.q | orderBy:'nimi'" ng-include="'node.html'">
+        <li  ng-repeat="data in data.alavalintaryhmat | filter:domain.search.q | orderBy:'nimi'"
+            ng-include="'node.html'">
         </li>
     </ol>
 
 </script>
-
 
 
 <h1>Valintojen toteuttaminen</h1>
@@ -20,31 +22,60 @@
 
 <div class="clear"></div>
 
-<div class="tabsheets">
+<div class="tabsheets" style="clear: both">
 
 
-    <input type="text" class="search" placeholder="Suodata valintaryhmiä" id="text" ng-model="domain.search.q">
-    <a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
-    <br />
-    <div class="valintaryhmaSelector">
-        <ol class="treelist collapsible">
-            <li>
+
+    <div class="col-sm-8">
+
+        <h2>Valintaryhmähierarkia</h2>
+        <a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
+        <br/>
+
+        <div class="valintaryhmaSelector">
+            <ol class="treelist collapsible">
+                <li>
             <span class="node">
             <i class="fa fa-users valintaryhma auki"></i>
-            <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="" id="root"/> <label for="root">Juuri</label>
+            <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="" id="root"/> <label
+                    for="root">Juuri</label>
             </span>
-            </li>
-            <ol>
-                <li ng-repeat="data in domain.valintaperusteList | filter:domain.search.q | orderBy:'nimi'"
-                    ng-model="data"
-                    ng-if="!domain.isHakukohde(data)"
-                    class="{{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
-                    ng-include="'node.html'">
                 </li>
+                <ol>
+                    <li ng-repeat="data in domain.valintaperusteList | filter:domain.search.q | orderBy:'nimi'"
+                        ng-model="data"
+                        ng-if="!domain.isHakukohde(data)"
+                        class="{{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
+                        ng-include="'node.html'">
+                    </li>
+                </ol>
             </ol>
-        </ol>
+        </div>
     </div>
-    <span>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää</span>
+
+    <div class="col-sm-4">
+
+        <h2>Valintaryhmä: {{selectedValintaryhma.nimi}}</h2>
+        <button ng-click="valintaryhmaLaskenta()" class="btn btn-sm btn-primary">Suorita laskenta valintaryhmälle</button>
+
+        <table collapse="!hakukohteet.length" class="virkailija-table-1">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Hakukohde</th>
+            </tr>
+            </thead>
+            <tbody">
+            <tr ng-animate="'animate'" ng-repeat="hakukohde in hakukohteet">
+                <td>{{$index + 1}}</td>
+                <td>{{hakukohde.nimi}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="clear"></div>
+
 </div>
 
 
