@@ -1,53 +1,127 @@
-app.factory('ValintaryhmaModel', function ($q, _, ValintaryhmatJaHakukohteet) {
 
+//domain .. this is both, service & domain layer
+app.factory('Ylavalintaryhma', function($resource, ValintaryhmatJaHakukohteet, AuthService) {
 
-    var model = new function () {
-
-        this.hakuOid = undefined;
-        this.valintaryhmat = [];
-        this.hakuasetukset = {
-            q: null,
-            haku: null,
-            vainValmiitJaJulkaistut: true,
-            vainHakukohteitaSisaltavatRyhmat: true,
-            vainHakukohteet: null,
+    //and return interface for manipulating the model
+    var modelInterface =  {
+        //models
+        valintaperusteList: [],
+        search : {   q: null,
             valintaryhmatAuki: null
-        };
+        },
+        tilasto: {
+            valintaryhmia: 0,
+            valintaryhmiaNakyvissa: 0
+        },
 
-        this.refresh = function (hakuOid) {
-            model.hakuOid = hakuOid;
-            var kohdejoukko = "";
-            var tila = null;
-            var deferred = $q.defer();
-            if (this.hakuasetukset.haku) {
-                hakuoid = this.hakuasetukset.haku.oid;
-                kohdejoukko = this.hakuasetukset.haku.kohdejoukkoUri.split("#")[0];
-            }
-
-            if (model.hakuasetukset.vainValmiitJaJulkaistut) {
-                tila = ["VALMIS", "JULKAISTU"];
-            }
+        isExpanded: function(data) {
+            return data.isVisible;
+        },
+        isCollapsed: function(data) {
+            return !this.isExpanded(data);
+        },
+        refresh:function() {
 
             ValintaryhmatJaHakukohteet.get({
-                q: model.hakuasetukset.q,
-                hakuOid: null, //model.hakuOid,
-                tila: tila,
-                kohdejoukko: kohdejoukko
-            }, function (result) {
-                model.valintaryhmat = result;
-                deferred.resolve();
-
-                //update();
-               }, function() {
-                   deferred.reject();
-               });
-            return deferred.promise;;
-        };
-
-        this.refreshIfNeeded = function (hakuOid) {
-            if (_.isEmpty(hakuOid) || hakuOid === model.hakuOid !== hakuOid) {
-                return model.refresh(hakuOid);
+                q: this.search.q,
+                hakukohteet: false
+            },function(result) {
+                modelInterface.valintaperusteList = result;
+                modelInterface.update();
+            });
+        },
+        expandTree:function() {
+            modelInterface.forEachValintaryhma(function(item) {
+                item.isVisible = true;
+            });
+        },
+        forEachValintaryhma:function(f) {
+            var recursion = function(item, f) {
+                f(item);
+                if(item.alavalintaryhmat) for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  f);
             }
+            for(var i=0; i<modelInterface.valintaperusteList.length;i++) recursion(modelInterface.valintaperusteList[i],  f);
+        },
+        getValintaryhma:function(oid) {
+            var valintaryhma = null;
+            modelInterface.forEachValintaryhma(function(item) {
+                if(item.oid == oid) valintaryhma = item;
+            });
+            return valintaryhma;
+        },
+        update:function() {
+            var list = modelInterface.valintaperusteList;
+            modelInterface.valintaperusteList = [];
+            modelInterface.tilasto.valintaryhmia = 0;
+            modelInterface.tilasto.valintaryhmiaNakyvissa = 0;
+
+
+            var recursion = function(item) {
+
+                if(item.tyyppi == 'VALINTARYHMA') {
+                    modelInterface.tilasto.valintaryhmia++;
+                }
+
+                AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
+                    "use strict";
+                    item.access = false;
+                    organisations.forEach(function(org){
+
+                        if(item.organisaatiot.length > 0) {
+                            item.organisaatiot.forEach(function(org2) {
+                                if(org2.parentOidPath.indexOf(org) > -1) {
+                                    item.access = true;
+                                }
+                            });
+                        } else {
+                            AuthService.updateOph("APP_VALINTAPERUSTEET").then(function(){
+                                item.access = true;
+                            });
+                        }
+                    });
+                });
+
+                if(item.alavalintaryhmat) {
+                    for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i]);
+                }
+            }
+            for(var i=0; i<list.length;i++) {
+                recursion(list[i]);
+            }
+
+            modelInterface.valintaperusteList = list;
+        },
+        expandNode:function(node) {
+            if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)) {
+
+                if(node.isVisible != true) {
+                    node.isVisible = true;
+                } else {
+                    node.isVisible = false;
+                }
+            }
+        }
+    };
+    modelInterface.refresh();
+    return modelInterface;
+});
+
+
+app.factory('UusiHakukohdeModel', function() {
+    var model = new function()  {
+
+        this.hakukohde = {};
+        this.tilat = [ 'LUONNOS',
+            'VALMIS',
+            'JULKAISTU',
+            'PERUTTU',
+            'KOPIOITU'];
+
+        this.refresh = function() {
+            model.hakukohde = {};
+            model.haku = "";
+            model.selectedHakukohde = "";
+            model.parentOid = "";
         }
 
     };
@@ -55,22 +129,16 @@ app.factory('ValintaryhmaModel', function ($q, _, ValintaryhmatJaHakukohteet) {
     return model;
 });
 
-function ValintaryhmaController($scope, HakuModel, ValintaryhmaModel) {
+function ValintaryhmaController($scope, HakuModel, UusiHakukohdeModel, Ylavalintaryhma) {
+    $scope.predicate = 'nimi';
+    $scope.model = UusiHakukohdeModel;
+
+    $scope.domain = Ylavalintaryhma;
+    UusiHakukohdeModel.refresh();
+    Ylavalintaryhma.refresh();
+
+
     $scope.hakumodel = HakuModel;
-
-    $scope.valintaryhmaModel = ValintaryhmaModel;
-    var promise = $scope.valintaryhmaModel.refreshIfNeeded($scope.hakumodel);
-
-    $scope.getTemplate = function(tyyppi) {
-        if(tyyppi) {
-            if(tyyppi == 'VALINTARYHMA') {
-                return "valintaryhma_node.html";
-            } else {
-                return "hakukohde_leaf.html";
-            }
-        }
-        return "";
-    }
 
     $scope.expandNode = function(node) {
         console.log(node);
@@ -100,71 +168,7 @@ function ValintaryhmaController($scope, HakuModel, ValintaryhmaModel) {
         }
     }
     
-    /*
-     function update() {
-     var list = modelInterface.valintaperusteList;
-     modelInterface.valintaperusteList = [];
-     modelInterface.hakukohteet = [];
-     modelInterface.tilasto.valintaryhmia = 0;
-     modelInterface.tilasto.hakukohteita = 0;
-     modelInterface.tilasto.valintaryhmiaNakyvissa = 0;
-     modelInterface.tilasto.hakukohteitaNakyvissa = 0;
 
-
-     var recursion = function (item, previousItem) {
-     if (previousItem != null) {
-     item.ylavalintaryhma = previousItem;
-     }
-     item.getParents = function () {
-     i = this.ylavalintaryhma;
-     arr = [];
-     while (i != null) {
-     arr.unshift(i);
-     i = i.ylavalintaryhma;
-     }
-     return arr;
-     };
-
-     if (item.tyyppi == 'VALINTARYHMA') {
-     modelInterface.tilasto.valintaryhmia++;
-     AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function (organisations) {
-     "use strict";
-     item.access = false;
-     organisations.forEach(function (org) {
-     if (item.organisaatiot.length > 0) {
-     item.organisaatiot.forEach(function (org2) {
-
-     if (org2.parentOidPath != null && org2.parentOidPath.indexOf(org) > -1) {
-     item.access = true;
-     }
-     });
-     } else {
-     item.access = true;
-     }
-     });
-     });
-     }
-     if (item.tyyppi == 'HAKUKOHDE') {
-     modelInterface.tilasto.hakukohteita++;
-     modelInterface.hakukohteet.push(item);
-     }
-     if (item.alavalintaryhmat)  for (var i = 0; i < item.alavalintaryhmat.length; i++)  recursion(item.alavalintaryhmat[i], item);
-     if (item.hakukohdeViitteet) for (var i = 0; i < item.hakukohdeViitteet.length; i++) recursion(item.hakukohdeViitteet[i], item);
-     }
-     for (var i = 0; i < list.length; i++) recursion(list[i]);
-
-     modelInterface.hakukohteet.forEach(function (hakukohde) {
-     hakukohde.sisaltaaHakukohteita = true;
-     var parent = hakukohde.ylavalintaryhma;
-     while (parent != null) {
-     parent.sisaltaaHakukohteita = true;
-     parent = parent.ylavalintaryhma;
-     }
-     });
-
-     modelInterface.valintaperusteList = list;
-     }
-     */
 }
 
 

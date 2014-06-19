@@ -1,28 +1,16 @@
 <!-- Node template -->
-<script type="text/ng-template" id="valintaryhma_node.html">
-    {{data.nimi}}
-    <span  class="node">
-            <i class="fa fa-users"  ng-click="expandNode(data)"></i>
-        {{data.nimi}}
+<script type="text/ng-template" id="node.html">
+
+    <span class="node" ng-if="data.nimi | filter:domain.search.q">
+        <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: !(data.alavalintaryhmat.length > 0), auki: domain.isExpanded(data)}" ng-click="domain.expandNode(data)"></i>
+        <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
     </span>
 
-    <ol ng-if="data.alavalintaryhmat || data.hakukohdeviitteet">
-        <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
-            data-oid="{{data.oid}}"
-            ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
-            ng-include="domain.getTemplate(data)">
-        </li>
-        <li ng-repeat="data in data.hakukohdeViitteet | orderBy:predicate"
-            data-oid="{{data.oid}}"
-            ng-include="domain.getTemplate(data)">
+    <ol ng-if="data.isVisible">
+        <li ng-repeat="data in data.alavalintaryhmat | filter:domain.search.q | orderBy:'nimi'" ng-include="'node.html'">
         </li>
     </ol>
 
-</script>
-
-<!--Leaf template -->
-<script type="text/ng-template" id="hakukohde_leaf.html">
-    <div class="node"><i class="fa fa-building-o"></i><a href="#/hakukohde/{{data.oid}}">{{data.nimi}} ({{data.tila}})</a></div>
 </script>
 
 
@@ -33,23 +21,30 @@
 <div class="clear"></div>
 
 <div class="tabsheets">
-    <div class="col-sm-12">
-        <h3></h3>
-    </div>
-    <div class="col-sm-12">
-        <ol id="valintaryhmapuu" class="sortable collapsible">
-            <li ng-repeat="data in valintaryhmaModel.valintaryhmat | orderBy:predicate"
-                data-oid="{{data.oid}}"
-                ng-model="data"
-                ng-include="getTemplate(data.tyyppi)"
-                ng-class="data.tyyppi === 'HAKUKOHDE' ? 'noNesting' : ''">
-                <!--ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"-->
-                <!--class="{{addClass('noNesting',domain.isHakukohde(data))}}"-->
 
+
+    <input type="text" class="search" placeholder="Suodata valintaryhmiä" id="text" ng-model="domain.search.q">
+    <a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
+    <br />
+    <div class="valintaryhmaSelector">
+        <ol class="treelist collapsible">
+            <li>
+            <span class="node">
+            <i class="fa fa-users valintaryhma auki"></i>
+            <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="" id="root"/> <label for="root">Juuri</label>
+            </span>
             </li>
+            <ol>
+                <li ng-repeat="data in domain.valintaperusteList | filter:domain.search.q | orderBy:'nimi'"
+                    ng-model="data"
+                    ng-if="!domain.isHakukohde(data)"
+                    class="{{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
+                    ng-include="'node.html'">
+                </li>
+            </ol>
         </ol>
     </div>
-    <div class="clear"></div>
+    <span>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää</span>
 </div>
 
 
