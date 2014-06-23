@@ -1,6 +1,6 @@
 
 //domain .. this is both, service & domain layer
-app.factory('Ylavalintaryhma', function($resource, ValintaryhmatJaHakukohteet, AuthService) {
+app.factory('ValintaryhmaLista', function($resource, $q, ValintaryhmatJaHakukohteet, AuthService) {
 
     //and return interface for manipulating the model
     var modelInterface =  {
@@ -21,14 +21,19 @@ app.factory('Ylavalintaryhma', function($resource, ValintaryhmatJaHakukohteet, A
             return !this.isExpanded(data);
         },
         refresh:function() {
-
+            var deferred = $q.defer();
             ValintaryhmatJaHakukohteet.get({
                 q: this.search.q,
                 hakukohteet: true
             },function(result) {
                 modelInterface.valintaperusteList = result;
                 modelInterface.update();
+                deferred.resolve();
+            }, function(error) {
+                deferred.reject('Valintaryhmapuun tietojen hakeminen epäonnistui', error);
             });
+
+            return deferred.promise;
         },
         expandTree:function() {
             modelInterface.forEachValintaryhma(function(item) {
@@ -55,12 +60,12 @@ app.factory('Ylavalintaryhma', function($resource, ValintaryhmatJaHakukohteet, A
             modelInterface.tilasto.valintaryhmia = 0;
             modelInterface.tilasto.valintaryhmiaNakyvissa = 0;
 
-
             var recursion = function(item) {
 
                 if(item.tyyppi == 'VALINTARYHMA') {
                     modelInterface.tilasto.valintaryhmia++;
                 }
+
 /*
                 AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
                     "use strict";
@@ -81,6 +86,8 @@ app.factory('Ylavalintaryhma', function($resource, ValintaryhmatJaHakukohteet, A
                     });
                 });
 */
+
+
                 if(item.alavalintaryhmat) {
                     for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i]);
                 }
@@ -102,40 +109,21 @@ app.factory('Ylavalintaryhma', function($resource, ValintaryhmatJaHakukohteet, A
             }
         }
     };
-    modelInterface.refresh();
     return modelInterface;
 });
 
-
-app.factory('UusiHakukohdeModel', function() {
-    var model = new function()  {
-
-        this.hakukohde = {};
-        this.tilat = [ 'LUONNOS',
-            'VALMIS',
-            'JULKAISTU',
-            'PERUTTU',
-            'KOPIOITU'];
-
-        this.refresh = function() {
-            model.hakukohde = {};
-            model.haku = "";
-            model.selectedHakukohde = "";
-            model.parentOid = "";
-        }
-
-    };
-
-    return model;
-});
-
-function ValintaryhmaController($scope, $log, _, HakuModel, UusiHakukohdeModel, Ylavalintaryhma, ValintaryhmaLaskenta) {
+function ValintaryhmaController($scope, $log, _, HakuModel, ValintaryhmaLista, ValintaryhmaLaskenta) {
     $scope.predicate = 'nimi';
-    $scope.model = UusiHakukohdeModel;
+    $scope.domain = ValintaryhmaLista;
+
+    var promise = ValintaryhmaLista.refresh();
+    promise.then(function(result) {
+        _.forEach($scope.domain.valintaperusteList, function(valintaperusteHierarkia) {
+            $scope.reverseSearch(valintaperusteHierarkia);
+        });
+
+    });
     
-    $scope.domain = Ylavalintaryhma;
-    UusiHakukohdeModel.refresh();
-    Ylavalintaryhma.refresh();
     $scope.hakukohteet = [];
 
     $scope.hakumodel = HakuModel;
@@ -159,7 +147,6 @@ function ValintaryhmaController($scope, $log, _, HakuModel, UusiHakukohdeModel, 
                     iter(node.alavalintaryhmat);
                 }
 
-
             } else {
                 node.isVisible = false;
             }
@@ -169,16 +156,12 @@ function ValintaryhmaController($scope, $log, _, HakuModel, UusiHakukohdeModel, 
     $scope.changeValintaryhma = function(valintaryhma) {
         $scope.selectedValintaryhma = valintaryhma;
         $scope.hakukohteet.length = 0;
-        $scope.findHakukohteet(valintaryhma);
+        $scope.recurseValintaryhmat(valintaryhma, [$scope.findHakukohteet]);
     };
     
     $scope.findHakukohteet = function(valintaryhma) {
         _.forEach(valintaryhma.hakukohdeViitteet, function(hakukohde) {
             $scope.hakukohteet.push(hakukohde);
-        });
-
-        _.forEach(valintaryhma.alavalintaryhmat, function(valintaryhma) {
-            $scope.findHakukohteet(valintaryhma);
         });
     };
 
@@ -189,12 +172,47 @@ function ValintaryhmaController($scope, $log, _, HakuModel, UusiHakukohdeModel, 
         });
 
         ValintaryhmaLaskenta.save({hakuOid: $scope.hakumodel.hakuOid.oid}, hakukohdeOids, function(result) {
-            console.log('asöldkfjöalsd');
+
         }, function(error) {
             $log.error("Valintalaskennan suorittaminen valintaryhmän hakukohteille epäonnistui", error);
         });
-    }
+    };
 
+    $scope.reverseSearch = function(valintaryhma) {
+        _.forEach(valintaryhma.alavalintaryhmat, function(alaValintaryhma) {
+            $scope.reverseSearch(alaValintaryhma);
+        });
+        
+        console.log(valintaryhma);
+        
+        if(valintaryhma.tyyppi === 'HAKUKOHDE') {
+            valintaryhma.showValintaryhma = true;
+        } else if($scope.hasHakukohdeViiteChild(valintaryhma.alavalintaryhmat) || valintaryhma.hakukohdeViitteet.length > 0) {
+            valintaryhma.showValintaryhma = true;
+        } else if(_.isEmpty(valintaryhma.alavalintaryhmat) && _.isEmpty(valintaryhma.hakukohdeViitteet) ) {
+            valintaryhma.showValintaryhma = false;
+        } else {
+            valintaryhma.showValintaryhma = false;
+        }
+    };
+
+    $scope.hasHakukohdeViiteChild = function(alavalintaryhmat) {
+        var result = _.some(alavalintaryhmat, function(alaValintaryhma) {
+            return alaValintaryhma.showValintaryhma;
+        });
+
+        return result;
+    };
+
+        //suorita funcList:n funktiot kaikilla valintaryhmille
+    $scope.recurseValintaryhmat = function(valintaryhma, funcList) {
+        _.forEach(funcList, function(func) {
+            func(valintaryhma);
+        });
+        _.forEach(valintaryhma.alavalintaryhmat, function(valintaryhma) {
+            $scope.recurseValintaryhmat(valintaryhma, funcList);
+        });
+    };
     
 
 }
