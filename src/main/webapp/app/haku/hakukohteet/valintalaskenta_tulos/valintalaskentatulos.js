@@ -36,9 +36,17 @@
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             model.hakeneet = [];
+            console.log('a');
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			    model.valinnanvaiheet = result;
-                ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
+            	console.log(result);    
+			}, function(error) {
+                model.errors.push(error);
+                defer.reject("hakukohteen tietojen hakeminen epäonnistui");
+            });
+            console.log('c');
+			ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
+					console.log(result);
                     model.ilmanlaskentaa = result;
                     if(result.length > 0) {
                         HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
@@ -124,12 +132,7 @@
                 }, function(error) {
                     model.errors.push(error);
                     defer.reject("hakukohteen tietojen hakeminen epäonnistui");
-                })
-			}, function(error) {
-                model.errors.push(error);
-                defer.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
-
             return defer.promise;
 		};
 
