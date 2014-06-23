@@ -36,17 +36,9 @@
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             model.hakeneet = [];
-            console.log('a');
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			    model.valinnanvaiheet = result;
-            	console.log(result);    
-			}, function(error) {
-                model.errors.push(error);
-                defer.reject("hakukohteen tietojen hakeminen epäonnistui");
-            });
-            console.log('c');
-			ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
-					console.log(result);
+            	ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
                     if(result.length > 0) {
                         HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
@@ -71,17 +63,18 @@
 
                                     tulosjono.nimi = jono.nimi;
                                     tulosjono.jonosijat = [];
-                                    model.hakeneet.forEach(function(hakija) {
-
-                                        var vaiheet = angular.copy(model.valinnanvaiheet);
-                                        var jonosijat = _.chain(vaiheet)
+                                    
+                                    var jonosijat = _.chain(model.valinnanvaiheet)
                                             .filter(function(current) {return current.valinnanvaiheoid == vaihe.oid})
-                                            .map(function(current) {return current.valintatapajonot}).first()
+                                            .map(function(current) {return current.valintatapajonot})
+                                            .first()
                                             .filter(function(tulosjono) {return tulosjono.oid == jono.oid})
-                                            .map(function(tulosjono) {return tulosjono.jonosijat}).first().value();
-
+                                            .map(function(tulosjono) {return tulosjono.jonosijat})
+                                            .first()
+                                            .value();
+                                    
+                                    model.hakeneet.forEach(function(hakija) {
                                         var jonosija = _.findWhere(jonosijat, {hakemusOid : hakija.oid});
-
                                         if(jonosija) {
                                             tulosjono.jonosijat.push(jonosija);
                                         } else {
@@ -132,7 +125,12 @@
                 }, function(error) {
                     model.errors.push(error);
                     defer.reject("hakukohteen tietojen hakeminen epäonnistui");
+            });    
+			}, function(error) {
+                model.errors.push(error);
+                defer.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
+			
             return defer.promise;
 		};
 
