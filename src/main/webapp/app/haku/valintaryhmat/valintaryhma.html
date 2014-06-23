@@ -27,7 +27,6 @@
 
 
     <div class="col-md-6">
-
         <h2>Valintaryhmähierarkia</h2>
         <a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
         <br/>
@@ -54,28 +53,31 @@
     </div>
 
     <div class="col-md-6">
-        <div ng-animate="'animate'" collapse="!selectedValintaryhma">
+        <div collapse="!selectedValintaryhma">
             <h2>Valintaryhmä: {{selectedValintaryhma.nimi}}</h2>
             <button ng-click="valintaryhmaLaskenta()" class="btn btn-sm btn-primary">Suorita laskenta valintaryhmälle
             </button>
-
-            <h3>Valintaryhmään kuuluvat hakukohteet:</h3>
+            <button ng-click="showHakukohteet(selectedValintaryhma)" class="btn btn-sm btn-default"><i ng-class="hakukohteetVisible ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> Näytä valintaryhmään liittyvät hakukohteet</button>
         </div>
 
-        <table ng-if="hakukohteet.length" class="virkailija-table-1">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Hakukohde</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr  ng-repeat="hakukohde in hakukohteet">
-                <td>{{$index + 1}}</td>
-                <td>{{hakukohde.nimi}}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div ng-if="hakukohteetVisible">
+            <h3>Valintaryhmään kuuluvat hakukohteet:</h3>
+            <table class="virkailija-table-1">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Hakukohde</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr  ng-repeat="hakukohde in hakukohteet">
+                    <td>{{$index + 1}}</td>
+                    <td>{{hakukohde.nimi}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <div class="clear"></div>

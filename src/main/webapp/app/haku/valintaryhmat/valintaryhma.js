@@ -154,15 +154,17 @@ function ValintaryhmaController($scope, $log, _, HakuModel, ValintaryhmaLista, V
     };
     
     $scope.changeValintaryhma = function(valintaryhma) {
+        $scope.hakukohteetVisible ? $scope.hakukohteetVisible = false : "";
         $scope.selectedValintaryhma = valintaryhma;
         $scope.hakukohteet.length = 0;
-        $scope.recurseValintaryhmat(valintaryhma, [$scope.findHakukohteet]);
     };
-    
-    $scope.findHakukohteet = function(valintaryhma) {
-        _.forEach(valintaryhma.hakukohdeViitteet, function(hakukohde) {
-            $scope.hakukohteet.push(hakukohde);
-        });
+
+    $scope.showHakukohteet = function(valintaryhma) {
+        if(_.isEmpty($scope.hakukohteet)) {
+            $scope.recurseValintaryhmat(valintaryhma, [$scope.findHakukohteet]);
+        }
+        $scope.hakukohteetVisible = !$scope.hakukohteetVisible;
+
     };
 
     $scope.valintaryhmaLaskenta = function() {
@@ -200,13 +202,20 @@ function ValintaryhmaController($scope, $log, _, HakuModel, ValintaryhmaLista, V
         });
     };
 
-        //suorita funcList:n funktiot kaikilla valintaryhmille
+    //suorita funcList:n funktiot kaikilla valintaryhmille
     $scope.recurseValintaryhmat = function(valintaryhma, funcList) {
         _.forEach(funcList, function(func) {
             func(valintaryhma);
         });
         _.forEach(valintaryhma.alavalintaryhmat, function(valintaryhma) {
             $scope.recurseValintaryhmat(valintaryhma, funcList);
+        });
+    };
+
+    $scope.findHakukohteet = function(valintaryhma) {
+
+        _.forEach(valintaryhma.hakukohdeViitteet, function(hakukohde) {
+            $scope.hakukohteet.push(hakukohde);
         });
     };
     
