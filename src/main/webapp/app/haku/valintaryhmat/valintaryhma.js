@@ -183,8 +183,6 @@ function ValintaryhmaController($scope, $log, _, HakuModel, ValintaryhmaLista, V
             $scope.reverseSearch(alaValintaryhma);
         });
         
-        console.log(valintaryhma);
-        
         if(valintaryhma.tyyppi === 'HAKUKOHDE') {
             valintaryhma.showValintaryhma = true;
         } else if($scope.hasHakukohdeViiteChild(valintaryhma.alavalintaryhmat) || valintaryhma.hakukohdeViitteet.length > 0) {
@@ -197,11 +195,9 @@ function ValintaryhmaController($scope, $log, _, HakuModel, ValintaryhmaLista, V
     };
 
     $scope.hasHakukohdeViiteChild = function(alavalintaryhmat) {
-        var result = _.some(alavalintaryhmat, function(alaValintaryhma) {
+        return _.some(alavalintaryhmat, function(alaValintaryhma) {
             return alaValintaryhma.showValintaryhma;
         });
-
-        return result;
     };
 
         //suorita funcList:n funktiot kaikilla valintaryhmille

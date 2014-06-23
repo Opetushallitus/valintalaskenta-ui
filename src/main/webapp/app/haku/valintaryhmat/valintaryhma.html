@@ -1,6 +1,7 @@
 <!-- Node template -->
 <script type="text/ng-template" id="node.html">
-    <span class="node" ng-if="data.nimi && data.tyyppi !== 'HAKUKOHDE' && data.showValintaryhma | filter:domain.search.q">
+    <span class="node"
+          ng-if="data.nimi && data.tyyppi !== 'HAKUKOHDE' && data.showValintaryhma | filter:domain.search.q">
         <i class="fa fa-users valintaryhma"
            ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: !(data.alavalintaryhmat.length > 0), auki: domain.isExpanded(data)}"
            ng-click="domain.expandNode(data)"></i>
@@ -25,7 +26,7 @@
 <div class="tabsheets" style="clear: both">
 
 
-    <div class="col-sm-6">
+    <div class="col-md-6">
 
         <h2>Valintaryhmähierarkia</h2>
         <a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
@@ -50,24 +51,26 @@
                 </ol>
             </ol>
         </div>
-
     </div>
 
-    <div class="col-sm-6">
-        <h2>Valintaryhmä: {{selectedValintaryhma.nimi}}</h2>
-        <button ng-click="valintaryhmaLaskenta()" class="btn btn-sm btn-primary">Suorita laskenta valintaryhmälle
-        </button>
+    <div class="col-md-6">
+        <div ng-animate="'animate'" collapse="!selectedValintaryhma">
+            <h2>Valintaryhmä: {{selectedValintaryhma.nimi}}</h2>
+            <button ng-click="valintaryhmaLaskenta()" class="btn btn-sm btn-primary">Suorita laskenta valintaryhmälle
+            </button>
 
-        <table collapse="!hakukohteet.length" class="virkailija-table-1">
+            <h3>Valintaryhmään kuuluvat hakukohteet:</h3>
+        </div>
+
+        <table ng-if="hakukohteet.length" class="virkailija-table-1">
             <thead>
             <tr>
                 <th>#</th>
                 <th>Hakukohde</th>
             </tr>
             </thead>
-            <tbody
-            ">
-            <tr ng-animate="'animate'" ng-repeat="hakukohde in hakukohteet">
+            <tbody>
+            <tr  ng-repeat="hakukohde in hakukohteet">
                 <td>{{$index + 1}}</td>
                 <td>{{hakukohde.nimi}}</td>
             </tr>
