@@ -17,6 +17,7 @@ module.exports = function(config) {
         'main/webapp/common/jslib/angular.js',
         'main/webapp/common/jslib/jquery.js',
         'main/webapp/common/jslib/*.js',
+        'main/webapp/common/jslib/static/tinymce-4.0.12/*.js',
         'main/webapp/app/app.js',
         'main/webapp/app/**/*.js',
         'main/webapp/common/js/**/*.js',
@@ -70,6 +71,18 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: false,
+
+      plugins : [
+          'karma-chrome-launcher',
+          'karma-firefox-launcher',
+          'karma-jasmine',
+          'karma-junit-reporter'
+      ],
+
+      junitReporter : {
+          outputFile: 'test_out/unit.xml',
+          suite: 'unit'
+      }
   });
 };

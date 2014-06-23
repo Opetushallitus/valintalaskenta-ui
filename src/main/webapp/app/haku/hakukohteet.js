@@ -148,7 +148,7 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
 });
 
 
-function HakukohteetController($rootScope, $scope, $location, $timeout, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
+function HakukohteetController($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
