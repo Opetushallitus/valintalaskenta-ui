@@ -220,7 +220,7 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
             resolve: {
                 oids: function () {
                     return {
-                        hakuOid: $routeParams.hakuOid,
+                        hakuOid: $scope.hakumodel.hakuOid.oid,
                         hakukohdeOids: hakukohdeOids
                     };
                 }

@@ -64,8 +64,7 @@ function ValintaryhmaValintalaskentaIkkunaCtrl($scope, $modalInstance, oids, $lo
         return t.prosentteina * 100;
     };
 
-    ValintaryhmaLaskenta.save({hakuOid: oids.hakuOid.oid}, oids.hakukohdeOids, function(uuid) {
-        console.log('valintaryhmalaskenta', uuid);
+    ValintaryhmaLaskenta.save({hakuOid: oids.hakuOid}, oids.hakukohdeOids, function(uuid) {
         $scope.uuid = uuid.latausUrl;
         update();
     }, function(error) {
