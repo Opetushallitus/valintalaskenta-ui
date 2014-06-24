@@ -54,7 +54,7 @@
     <div class="col-md-6">
         <div collapse="!selectedValintaryhma">
             <h2>Valintaryhmä: {{selectedValintaryhma.nimi}}</h2>
-            <button ng-click="valintaryhmaLaskenta()" class="btn btn-sm btn-primary">Suorita laskenta valintaryhmälle
+            <button ng-click="kaynnistaValintalaskenta(selectedValintaryhma)" class="btn btn-sm btn-primary">Suorita laskenta valintaryhmälle
             </button>
             <button ng-click="showHakukohteet(selectedValintaryhma)" class="btn btn-sm btn-default"><i ng-class="hakukohteetVisible ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> Näytä valintaryhmään liittyvät hakukohteet</button>
         </div>
@@ -69,7 +69,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr  ng-repeat="hakukohde in hakukohteet">
+                <tr ng-repeat="hakukohde in hakukohteet track by $index">
                     <td>{{$index + 1}}</td>
                     <td>{{hakukohde.nimi}}</td>
                 </tr>
