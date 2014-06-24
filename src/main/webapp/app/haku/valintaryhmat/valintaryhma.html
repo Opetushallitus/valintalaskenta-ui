@@ -3,7 +3,6 @@
     <span class="node"
           ng-if="data.nimi && data.tyyppi !== 'HAKUKOHDE' && data.showValintaryhma | filter:domain.search.q">
         <i class="fa fa-users valintaryhma"
-           ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: !(data.alavalintaryhmat.length > 0), auki: domain.isExpanded(data)}"
            ng-click="domain.expandNode(data)"></i>
         <input ng-change="changeValintaryhma(data)" name="valintaryhmaOid" type="radio" ng-model="model.parentOid"
                value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
@@ -44,8 +43,8 @@
                     <li ng-repeat="data in domain.valintaperusteList | filter:domain.search.q | orderBy:'nimi'"
                         ng-model="data"
                         ng-if="!domain.isHakukohde(data)"
-                        class="{{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
                         ng-include="'node.html'">
+
                     </li>
                 </ol>
             </ol>

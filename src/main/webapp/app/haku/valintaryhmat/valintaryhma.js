@@ -14,12 +14,6 @@ app.factory('ValintaryhmaLista', function($resource, $q, ValintaryhmatJaHakukoht
             valintaryhmiaNakyvissa: 0
         },
 
-        isExpanded: function(data) {
-            return data.isVisible;
-        },
-        isCollapsed: function(data) {
-            return !this.isExpanded(data);
-        },
         refresh:function() {
             var deferred = $q.defer();
             ValintaryhmatJaHakukohteet.get({
@@ -152,7 +146,7 @@ function ValintaryhmaController($scope, $log, _, HakuModel, ValintaryhmaLista, V
             }
         }
     };
-    
+
     $scope.changeValintaryhma = function(valintaryhma) {
         $scope.hakukohteetVisible ? $scope.hakukohteetVisible = false : "";
         $scope.selectedValintaryhma = valintaryhma;
