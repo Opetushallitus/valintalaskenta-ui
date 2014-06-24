@@ -1,9 +1,9 @@
 'use strict';
 
 describe('Testing HakukohteetController', function(){
-    var rootScope,$rootScope, $controller, $httpBackend, $location,
+    var rootScope,$rootScope, $controller, $httpBackend, $location, location,
         hakukohteetModel,globalStates,hakuModel,scope,ctrl,hakukohteetjson;
-
+    var routeParams = {"hakukohdeOid": "oid2"};
     beforeEach(module('valintalaskenta','testData'));
 
     beforeEach(inject(function($injector, hakukohteetJSON) {
@@ -21,14 +21,14 @@ describe('Testing HakukohteetController', function(){
     it('should get hakukohteet', function(GlobalStates) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
+        location = $location;
         globalStates = GlobalStates;
-        var routeParams = {"hakukohdeOid": "oid2"};
         globalStates = {
             hakukohteetVisible : true
         };
 
         ctrl = $controller(HakukohteetController, {'$rootScope' : rootScope, '$scope' : scope,
-            '$location': $location, '$routeParams': routeParams, 'HakukohteetModel': hakukohteetModel,
+            '$location': location, '$routeParams': routeParams, 'HakukohteetModel': hakukohteetModel,
             'GlobalStates': globalStates, 'HakuModel': hakuModel});
 
 
@@ -54,7 +54,7 @@ describe('Testing HakukohteetController', function(){
 
     });
 
-    it('showHakukohde', function() {
+    it('showHakukohde normaalihaku', function() {
         var hakukohde = {
             hakukohdeNimi : {
                 fi: 'koulu1'
@@ -66,8 +66,30 @@ describe('Testing HakukohteetController', function(){
         expect(scope.hakukohteetVisible).toBe(false);
         expect(globalStates.hakukohteetVisible).toBe(false);
         expect(rootScope.selectedHakukohdeNimi).toBe('koulu1');
+        expect(location.path()).toMatch('/haku/.*');
     });
 
+    it('showHakukohde lisähaku', function() {
+        var hakukohde = {
+            hakukohdeNimi : {
+                fi: 'koulu2'
+            },
+            hakukohdeOid: '1.2.246.562.5.39836447563'
+        };
+        var lisahaku = true;
+        scope.showHakukohde(hakukohde, lisahaku);
+        expect(scope.hakukohteetVisible).toBe(false);
+        expect(globalStates.hakukohteetVisible).toBe(false);
+        expect(rootScope.selectedHakukohdeNimi).toBe('koulu2');
+        expect(location.path()).toMatch('/lisahaku/.*');
+    });
+
+    it('toggleHakukohteetVisible', function() {
+        scope.toggleHakukohteetVisible();
+        expect(globalStates.hakukohteetVisible).toBe(true);
+        scope.toggleHakukohteetVisible();
+        expect(globalStates.hakukohteetVisible).toBe(false);
+    });
 
     afterEach(function() {
         $rootScope.$apply();
