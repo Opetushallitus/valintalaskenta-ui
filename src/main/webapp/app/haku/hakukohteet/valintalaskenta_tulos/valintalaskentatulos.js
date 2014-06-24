@@ -1,4 +1,5 @@
 ﻿app.factory('ValintalaskentatulosModel', function(
+	$routeParams,
     ValinnanvaiheListByHakukohde,
     JarjestyskriteeriMuokattuJonosija,
     ValinnanVaiheetIlmanLaskentaa,
@@ -164,6 +165,7 @@
                 vaihe.valintatapajonot[0].jonosijat = suodatetutSijat;
 
                 ValinnanvaiheListByHakukohde.post({hakukohdeoid: model.hakukohdeOid}, vaihe, function(result) {
+                	model.refresh($routeParams.hakukohdeOid, $routeParams.hakuOid);
                     Ilmoitus.avaa("Tallennus onnistui", "Valintatulosten tallennus onnistui.");
                 }, function(error) {
                     Ilmoitus.avaa("Tallennus epäonnistui", "Valintatulosten tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
@@ -211,12 +213,31 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
             Ilmoitus.avaa("Valintatapajonon vienti epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
         });
     };
-    $scope.valintatapajonoTuontiXlsx = function($files) {
+    $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files) {
 		var file = $files[0];
 		var fileReader = new FileReader();
 	    fileReader.readAsArrayBuffer(file);
 	    var hakukohdeOid = $scope.hakukohdeOid;
 	    var hakuOid = $routeParams.hakuOid;
+	    fileReader.onload = function(e) {
+			$scope.upload = $upload.http({
+	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid + "&valintatapajonoOid="+ valintatapajonoOid, //upload.php script, node.js route, or servlet url
+				method: "POST",
+				headers: {'Content-Type': 'application/octet-stream'},
+				data: e.target.result
+			}).progress(function(evt) {
+				//console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+			}).success(function(id, status, headers, config) {
+				Latausikkuna.avaaKustomoitu(id, "Valintatapajonon tuonti", "", "../common/modaalinen/tuontiikkuna.html",
+	            function(dokumenttiId) {
+	            	// tee paivitys
+	            	$scope.model.refresh(hakukohdeOid, hakuOid);
+	            }
+	            );
+			}).error(function(data) {
+			    //error
+			});
+	    };
     };
     
     $scope.valintalaskentaTulosXLS = function() {
