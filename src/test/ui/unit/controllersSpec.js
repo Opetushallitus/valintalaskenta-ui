@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Testing HakukohteetController', function(){
-    var $rootScope, $controller, $httpBackend, $location,
+    var rootScope,$rootScope, $controller, $httpBackend, $location,
         hakukohteetModel,globalStates,hakuModel,scope,ctrl,hakukohteetjson;
 
     beforeEach(module('valintalaskenta','testData'));
@@ -9,7 +9,7 @@ describe('Testing HakukohteetController', function(){
     beforeEach(inject(function($injector, hakukohteetJSON) {
         $httpBackend = $injector.get('$httpBackend');
         $rootScope = $injector.get('$rootScope');
-
+        $location = $injector.get('$location');
         $controller = $injector.get('$controller');
         hakukohteetjson = hakukohteetJSON.query.results;
         hakukohteetModel = $injector.get('HakukohteetModel');
@@ -18,14 +18,16 @@ describe('Testing HakukohteetController', function(){
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
     }));
 
-    it('should get hakukohteet', function() {
+    it('should get hakukohteet', function(GlobalStates) {
         scope = $rootScope.$new();
+        rootScope = $rootScope;
+        globalStates = GlobalStates;
         var routeParams = {"hakukohdeOid": "oid2"};
         globalStates = {
             hakukohteetVisible : true
         };
 
-        ctrl = $controller(HakukohteetController, {'$rootScope' : $rootScope, '$scope' : scope,
+        ctrl = $controller(HakukohteetController, {'$rootScope' : rootScope, '$scope' : scope,
             '$location': $location, '$routeParams': routeParams, 'HakukohteetModel': hakukohteetModel,
             'GlobalStates': globalStates, 'HakuModel': hakuModel});
 
@@ -35,6 +37,7 @@ describe('Testing HakukohteetController', function(){
         waits(500);
         $httpBackend.expectGET('haku/hakukohdeTulos?count=15&hakukohdeTilas=JULKAISTU&organisationOids=1.2.246.562.10.00000000001&searchTerms=&startIndex=0')
             .respond(201,hakukohteetjson);
+
     });
 
     it('check initialized variables', function() {
@@ -51,6 +54,19 @@ describe('Testing HakukohteetController', function(){
 
     });
 
+    it('showHakukohde', function() {
+        var hakukohde = {
+            hakukohdeNimi : {
+                fi: 'koulu1'
+            },
+            hakukohdeOid: '1.2.246.562.5.39836447563'
+        };
+        var lisahaku = false;
+        scope.showHakukohde(hakukohde, lisahaku);
+        expect(scope.hakukohteetVisible).toBe(false);
+        expect(globalStates.hakukohteetVisible).toBe(false);
+        expect(rootScope.selectedHakukohdeNimi).toBe('koulu1');
+    });
 
 
     afterEach(function() {
