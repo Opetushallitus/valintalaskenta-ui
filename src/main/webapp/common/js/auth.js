@@ -1,7 +1,4 @@
 "use strict";
-//var VALINTAPERUSTEET = "APP_VALINTAPERUSTEET";
-//var VALINTOJENTOTEUTTAMIEN = "APP_VALINTOJENTOTEUTTAMINEN";
-//var SIJOITTELU = "APP_SIJOITTELU";
 
 var READ = "READ";
 var UPDATE = "READ_UPDATE";
@@ -28,7 +25,28 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
                 refresh();
             }, 1000);
         });
-    }
+    };
+
+    /**
+     * Palauttaa käyttäjän käyttökielen ( fi | sv | en )cas/myroles:sta oletus kieli on fi
+     * @returns {promise}
+     */
+    var getUserLang = function(){
+        var deferred = $q.defer();
+        refresh().then(
+            function(data){
+                // oletus kieli fi, jos käyttäjällä ei kieltä asetettu cas/myroles:ssa
+                var userLang = 'fi';
+                for(var i=0 ; i < data.length; i++ ){
+                    if( data[i].match("LANG_") !== null){
+                        userLang = data[i].slice(5);
+                    }
+                }
+                deferred.resolve(userLang);
+            }
+        );
+        return deferred.promise;
+    };
 
     refresh();
 

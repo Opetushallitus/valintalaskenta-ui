@@ -1,5 +1,12 @@
 "use strict";
-var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate', 'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload'], function($rootScopeProvider) {
+
+var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
+    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload',
+    'valintalaskenta.directives',
+    'valintalaskenta.services.provider',
+    'valintalaskenta.services.service',
+    'valintalaskenta.services.factory',
+    'valintalaskenta.controllers'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
