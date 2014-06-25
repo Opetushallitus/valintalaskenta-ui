@@ -28,7 +28,6 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      
     ],
 
 
@@ -62,7 +61,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
 
     // If browser does not capture in given timeout [ms], kill it
@@ -71,18 +70,11 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false,
+    singleRun: true,
 
       plugins : [
-          'karma-chrome-launcher',
-          'karma-firefox-launcher',
           'karma-jasmine',
-          'karma-junit-reporter'
-      ],
-
-      junitReporter : {
-          outputFile: 'test_out/unit.xml',
-          suite: 'unit'
-      }
+          'karma-phantomjs-launcher'
+      ]
   });
 };
