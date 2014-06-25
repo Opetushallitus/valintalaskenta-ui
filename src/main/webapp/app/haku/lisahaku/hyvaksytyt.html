@@ -60,8 +60,7 @@
 
                                 <td>
                                     <div ng-show="hakija.lisahakuHyvaksytty">
-                                        <select ng-disabled="!(updateOrg || updateOph)"
-                                                ng-change="resetIlmoittautumisTila(hakija.hakemus)" ng-model="hakija.hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
+                                        <select ng-change="resetIlmoittautumisTila(hakija.hakemus)" ng-model="hakija.hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
                                             <option value="">Kesken</option>
                                         </select>
                                     </div>
@@ -69,8 +68,7 @@
 
                                 <td>
                                     <div ng-show="hakija.lisahakuHyvaksytty && (hakija.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakija.hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')">
-                                        <select ng-disabled="!(updateOrg || updateOph)"
-                                                ng-model="hakija.hakemus.muokattuIlmoittautumisTila"
+                                        <select ng-model="hakija.hakemus.muokattuIlmoittautumisTila"
                                                 ng-change="setIlmoittautumisTila(hakija.hakemus)"
                                                 ng-options="tila.value as tila.text | translate for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                         </select>
