@@ -5,141 +5,171 @@
 <div class="tabsheets">
 
 <script type="text/ng-template" id="valintalaskentaModaalinenIkkuna.html">
-        
+
 </script>
 
-<div class="col-md-12">
-<h1>Haun hallinta</h1>
-</div>
-<div class="col-md-12">
-    <dl>
-        <dt>Haku</dt>
-        <dd>{{hakumodel.hakuOid.nimi.kieli_fi}}</dd>
-        <dt>Haun tunniste</dt>
-        <dd>{{hakumodel.hakuOid.haunTunniste}}</dd>
-        <dt>Hakuvuosi</dt>
-        <dd>{{hakumodel.hakuOid.hakukausiVuosi}}</dd>
-        <dt>Sijoittelu</dt>
-        <dd>{{hakumodel.hakuOid.sijoittelu ? 'Kyllä' : 'Ei'}}</dd>
-        <dt>Hakuajat</dt>
-        <dd ng-repeat-start="hakuaika in hakumodel.hakuOid.hakuaikas">{{hakuaika.nimi}}</dd>
-        <dd ng-repeat-end>{{hakuaika.alkuPvm | date:'dd.MM.yyyy HH:mm'}} - {{hakuaika.loppuPvm | date:'dd.MM.yyyy
-            HH:mm'}}
-        </dd>
-    </dl>
-</div>
 
-<div class="col-md-12">
-    <h2>Sijoittelu</h2>
-    <dl>
-        <dt>Ajettu</dt>
-        <dd>{{sijoitteluModel.startMils | date:'dd.MM.yyyy HH:mm'}} - {{sijoitteluModel.endMils | date:'dd.MM.yyyy
-            HH:mm'}}
-        </dd>
-    </dl>
-</div>
+<accordion close-others="false">
+<accordion-group heading="Haun tiedot" is-open="true">
+    <div class="col-md-2"><strong class="pull-right">Haku</strong></div>
+    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.nimi.kieli_fi}}</div>
 
-<div class="col-md-12">
-    <h2>Ajastettu sijoittelu</h2>
-    <dl>
-        <dt>Ajossa</dt>
-        <dd>{{jatkuva.ajossa ? 'Kyllä' : 'Ei'}}</dd>
-        <dt>Viimeksi ajettu</dt>
-        <dd>{{jatkuva.viimeksiAjettu | date:'dd.MM.yyyy HH:mm'}}</dd>
-        <dt ng-show="jatkuva.virhe">Ajastettun sijoittelun virhe</dt>
-        <dd ng-show="jatkuva.virhe">{{jatkuva.virhe}}</dd>
+    <div class="col-md-2"><strong class="pull-right">Haun tunniste</strong></div>
+    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.haunTunniste}}</div>
 
-    </dl>
+    <div class="col-md-2"><strong class="pull-right">Hakuvuosi</strong></div>
+    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.hakukausiVuosi}}</div>
 
-</div>
+    <div class="col-md-2"><strong class="pull-right">Sijoittelu</strong></div>
+    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.sijoittelu ? 'Kyllä' : 'Ei'}}</div>
 
-<div class="col-md-12">
-    <h2>Valintalaskenta</h2>
-    <a privileges="valintakoekutsut" ng-click="aktivoiHaunValintakoelaskenta()"
-       class="btn btn-primary btn-sm">Suorita
-        valintakoelaskenta haulle</a>
-    <a privileges="valintalaskenta" ng-click="aktivoiMuistinvarainenValintalaskenta()" class="btn btn-primary btn-sm">Suorita
-        valintalaskenta</a>
-</div>
-<div privileges="valintalaskenta" class="col-md-12">
-    <h2>Sijoittelu</h2>
-    <a ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">Suorita
-        sijoittelu</a>
-    <a ng-hide="jatkuva.ajossa" ng-click="kaynnistaJatkuvaSijoittelu()"
-       class="btn btn-primary btn-sm">Ota käyttöön ajastettu sijoittelu</a>
-    <a ng-hide="!jatkuva.ajossa" ng-click="pysaytaJatkuvaSijoittelu()"
-       class="btn btn-primary btn-sm">Poista käytöstä ajastettu sijoittelu</a>
-</div>
-<div class="col-md-12">
-
-    <h2>Jälkiohjaus</h2>
-    <a privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
-       class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie jälkiohjaustulokset taulukkolaskentaan</a>
-    <a privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('FI')"
-       class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet suomeksi</a>
-    <a privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('SV')"
-       class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet ruotsiksi</a>
-    <a privileges="valintalaskenta"
-       href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos" class="btn btn-default btn-sm">Valinnan
-        tulokset</a>
-</div>
-<div class="col-md-12">
-
-    <h2>Sijoittelun tulokset</h2>
-    <a privileges="valintalaskenta" ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
-       class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie taulukkolaskentaan</a>
-    <a privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi()"
-       class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie hyväksymiskirjeiksi</a>
-    <a privileges="valintalaskenta" ng-click="sijoittelunTuloksetOsoitetarrat()"
-       class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie osoitetarroiksi</a>
-</div>
-
-<div class="col-md-6">
-    <h2>Kela</h2>
-    <input type="text" class="margin-vertical-2" placeholder="Aineistonnimi" ng-model="aineistonnimi"/>
-    <a ng-if="!isNotBlank(aineistonnimi)" privileges="valintalaskenta"
-    	popover="Kirjoita aineistolle nimi." popover-trigger="mouseenter"
-       class="btn btn-default btn-sm disabled"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti</a>
-    <a ng-if="isNotBlank(aineistonnimi)" privileges="valintalaskenta" ng-click="muodostaKelaDokumentti();$event.preventDefault();"
-       class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti</a>
-    <h3>Kela-dokumentti muodostetaan valituista hauista</h3>
-    <table class="table">
-		<thead>
-			<tr>
-				<th class="col-sm-1"><input type="checkbox" ng-model="kaikkiHautValittu" ng-change="checkAll();"></th>
-				<th>Haku</th>
-				<th>Oid</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr class="info">
-				<td><input disabled="disabled" type="checkbox" checked="checked"></td>
-				<td>{{hakumodel.hakuOid.nimi.kieli_fi}}<span ng-hide="hakumodel.hakuOid.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span></td>
-				<td>{{hakumodel.hakuOid.oid}}</td>
-			</tr>
-			<tr ng-hide="naytetaanHaut">
-				<td colspan="3">
-					<div class="row">
-					    <a class="col-md-2 col-md-offset-5 btn btn-default btn-sm" ng-click="naytaHaut();$event.preventDefault();"><i class="fa fa-plus"></i>&nbsp;Näytä haut</a>
-					</div>
-				</td>
-			</tr>
-			<tr ng-show="naytetaanHaut" ng-repeat="haku in hakumodel.haut | filter:notThisHaku">
-				<td><input type="checkbox" ng-model="haku.valittu" ng-change="check();"></td>
-				<td>{{haku.nimi.kieli_fi}}<span ng-hide="haku.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span></td>
-				<td>{{haku.oid}}</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-
-<div class="col-md-12">
-	<h2>Ilmoitukset</h2>
-    <a privileges="valintalaskenta" ng-click="showErrors()" class="btn btn-default btn-sm">Hae virheet</a>
-</div>
+    <div class="col-md-2"><strong class="pull-right">Hakuajat</strong></div>
+    <div class="col-md-10 margin-bottom-1">
+        <ul class="list-unstyled">
+            <li ng-repeat="hakuaika in hakumodel.hakuOid.hakuaikas">
+                <strong ng-if="hakumodel.hakuOid.hakuaikas.length > 1">{{hakuaika.nimi}}</strong>
+                <span>{{hakuaika.alkuPvm | date:'dd.MM.yyyy HH:mm'}} - {{hakuaika.loppuPvm | date:'dd.MM.yyyy HH:mm'}}</span>
+            </li>
+        </ul>
+    </div>
 
 
-<div class="col-md-12">
+</accordion-group>
+<accordion-group heading="Valintalaskenta ja sijoittelu" is-open="false">
+    <div class="col-md-2"><strong class="pull-right">Valintalaskenta</strong></div>
+    <div class="col-md-10 margin-bottom-2">
+        <button privileges="valintakoekutsut" ng-click="aktivoiHaunValintakoelaskenta()"
+                class="btn btn-primary btn-sm">Suorita
+            valintakoelaskenta haulle
+        </button>
+        <button privileges="valintalaskenta" ng-click="aktivoiMuistinvarainenValintalaskenta()"
+                class="btn btn-primary btn-sm">Suorita
+            valintalaskenta
+        </button>
+    </div>
+    <div class="col-md-2"><strong class="pull-right">Sijoittelu</strong></div>
+    <div class="col-md-10 margin-bottom-2">
+        <button ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">Suorita
+            sijoittelu
+        </button>
+        <button ng-hide="jatkuva.ajossa" ng-click="kaynnistaJatkuvaSijoittelu()"
+                class="btn btn-primary btn-sm">Ota käyttöön ajastettu sijoittelu
+        </button>
+        <button ng-hide="!jatkuva.ajossa" ng-click="pysaytaJatkuvaSijoittelu()"
+                class="btn btn-primary btn-sm">Poista käytöstä ajastettu sijoittelu
+        </button>
+    </div>
+    <div class="col-md-2"><strong class="pull-right">Sijoittelu ajettu</strong></div>
+    <div class="col-md-10 margin-bottom-1">{{sijoitteluModel.startMils | date:'dd.MM.yyyy HH:mm'}} -
+        {{sijoitteluModel.endMils |
+        date:'dd.MM.yyyy HH:mm'}}
+    </div>
+    <div class="col-md-2"><strong class="pull-right">Sijoittelu ajossa</strong></div>
+    <div class="col-md-10 margin-bottom-1">{{jatkuva.ajossa ? 'Kyllä' : 'Ei'}}</div>
+
+    <div class="col-md-2"><strong class="pull-right">Viimeksi ajettu</strong></div>
+    <div class="col-md-10 margin-bottom-1">{{jatkuva.viimeksiAjettu | date:'dd.MM.yyyy HH:mm'}}</div>
+
+    <div ng-if="jatkuva.virhe">
+        <div class="col-md-2"><strong>Ajastetun sijoittelun virhe</strong></div>
+        <div class="col-md-10">{{jatkuva.virhe}}</div>
+    </div>
+
+</accordion-group>
+
+<accordion-group heading="Sijoittelun tulokset">
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie taulukkolaskentaan
+    </button>
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi()"
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie hyväksymiskirjeiksi
+    </button>
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetOsoitetarrat()"
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie osoitetarroiksi
+    </button>
+
+</accordion-group>
+
+<accordion-group heading="Jälkiohjaus">
+
+    <button privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie jälkiohjaustulokset
+        taulukkolaskentaan
+    </button>
+
+    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('FI')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet suomeksi
+    </button>
+    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('SV')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet ruotsiksi
+    </button>
+    <button privileges="valintalaskenta"
+            href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
+            class="btn btn-default btn-sm">Valinnan
+        tulokset
+    </button>
+</accordion-group>
+
+<accordion-group heading="Kelan tiedonsiirto">
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="aineistonnimi">Kela-dokumentin muodostus</label>
+
+            <div class="col-md-2">
+                <input class="form-control" id="aineistonnimi" placeholder="Aineistonnimi"
+                       ng-model="aineistonnimi"/>
+
+            </div>
+
+            <div class="col-md-12">
+            </div>
+
+            <button style="margin-top: 5px" ng-if="!isNotBlank(aineistonnimi)" privileges="valintalaskenta"
+                    popover="Kirjoita aivneistolle nimi." popover-trigger="mouseenter"
+                    class="btn btn-default btn-sm disabled"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti
+            </button>
+
+            <button style="margin-top: 5px" ng-if="isNotBlank(aineistonnimi)" privileges="valintalaskenta"
+                    ng-click="muodostaKelaDokumentti();$event.preventDefault();"
+                    class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti
+            </button>
+        </div>
+    </div>
+    <div class="col-md-12 margin-bottom-2" ng-hide="naytetaanHaut">
+        <button class="btn btn-default btn-sm" ng-click="naytaHaut();$event.preventDefault();"><i class="fa fa-eye"></i>
+            Näytä haut
+        </button>
+    </div>
+    <div class="col-md-12">
+        <table class="virkailija-table-1">
+            <thead>
+            <tr>
+                <th colspan="3">Kela-dokumentti muodostetaan valituista hauista</th>
+            </tr>
+            <tr>
+                <th class="col-sm-1"><input type="checkbox" ng-model="kaikkiHautValittu" ng-change="checkAll();"></th>
+                <th>Haku</th>
+                <th>Oid</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="info">
+                <td><input disabled="disabled" type="checkbox" checked="checked"></td>
+                <td>{{hakumodel.hakuOid.nimi.kieli_fi}}<span ng-hide="hakumodel.hakuOid.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span>
+                </td>
+                <td>{{hakumodel.hakuOid.oid}}</td>
+            </tr>
+            <tr ng-show="naytetaanHaut" ng-repeat="haku in hakumodel.haut | filter:notThisHaku">
+                <td><input type="checkbox" ng-model="haku.valittu" ng-change="check();"></td>
+                <td>{{haku.nimi.kieli_fi}}<span ng-hide="haku.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span></td>
+                <td>{{haku.oid}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</accordion-group>
+<accordion-group heading="Virheet valintakokeissa ja laskennoissa" privileges="valintalaskenta" ng-click="showErrors()">
     <div ng-show="virheet.valintakoe.length > 0 || virheet.valintalaskenta.length > 0 || virheet.eiKoeVirheita || virheet.eiLaskentaVirheita">
         <div class="tabs">
             <a class="tab" ng-class="!valintalaskentavirheet ? 'current' : ''"
@@ -282,6 +312,12 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="clear"></div>
+
+</accordion-group>
+
+
+</accordion>
+
+
+</div>
