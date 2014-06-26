@@ -134,9 +134,8 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
 
         };
 
-        this.refreshIfNeeded = function () {
-            var hakuOid = $routeParams.hakuOid;
-            if (hakuOid != model.lastHakuOid) {
+        this.refreshIfNeeded = function (hakuOid) {
+            if (hakuOid !== model.lastHakuOid) {
                 model.searchWord = "";
                 model.lastHakuOid = hakuOid;
                 model.refresh();
@@ -155,7 +154,7 @@ function HakukohteetController($rootScope, $scope, $location, $routeParams, Haku
     $scope.hakuModel = HakuModel;
 
     $scope.model = HakukohteetModel;
-    $scope.model.refreshIfNeeded();
+    $scope.model.refreshIfNeeded($routeParams.hakuOid);
 
     $scope.$watch('model.searchWord', debounce(function () {
         HakukohteetModel.refresh();

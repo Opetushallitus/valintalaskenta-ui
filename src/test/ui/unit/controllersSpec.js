@@ -3,7 +3,7 @@
 describe('Testing HakukohteetController', function(){
     var rootScope,$rootScope, $controller, $httpBackend, $location, location,
         hakukohteetModel,globalStates,hakuModel,scope,ctrl,hakukohteetjson;
-    var routeParams = {"hakukohdeOid": "oid2"};
+    var routeParams = {"hakukohdeOid": "oid2", "hakuOid": "oid"};
     beforeEach(module('valintalaskenta','testData'));
 
     beforeEach(inject(function($injector, hakukohteetJSON) {
@@ -27,32 +27,26 @@ describe('Testing HakukohteetController', function(){
         globalStates = {
             hakukohteetVisible : true
         };
-
+        $httpBackend.expectGET('haku/hakukohdeTulos?count=15&hakukohdeTilas=JULKAISTU&organisationOids=1.2.246.562.10.00000000001&searchTerms=&startIndex=0')
+            .respond(201,hakukohteetjson);
 
         ctrl = $controller(HakukohteetController, {'$rootScope' : rootScope, '$scope' : scope,
             '$location': location, '$routeParams': routeParams, 'HakukohteetModel': hakukohteetModel,
             'GlobalStates': globalStates, 'HakuModel': hakuModel});
-
-        setTimeout(function() {
-
-            $httpBackend.expectGET('haku/hakukohdeTulos?count=15&hakukohdeTilas=JULKAISTU&organisationOids=1.2.246.562.10.00000000001&searchTerms=&startIndex=0')
-                .respond(201,hakukohteetjson);
-
-        }, 500);
+        $httpBackend.flush();
     });
     it('check initialized variables', function() {
-        /*
          expect(scope.model.hakukohteet.length).toBe(16);
          expect(scope.model.filtered.length).toBe(0);
          expect(scope.model.totalCount).toBe(100);
          expect(scope.model.pageSize).toBe(15);
          expect(scope.model.searchWord).toBe("");
          expect(scope.model.lastSearch).toBe("");
-         expect(scope.model.lastHakuOid).toBe(null);
+         expect(scope.model.lastHakuOid).toBe(routeParams.hakuOid);
          expect(scope.model.omatHakukohteet).toBe(true);
          expect(scope.model.valmiitHakukohteet).toBe("JULKAISTU");
          expect(scope.model.readyToQueryForNextPage).toBe(true);
-         */
+
     });
 
     it('showHakukohde normaalihaku', function() {
