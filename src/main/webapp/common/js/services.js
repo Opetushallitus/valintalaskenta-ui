@@ -8,7 +8,7 @@ angular.module('valintalaskenta.services.factory', [])
             query: {
                 method:'GET',
                 params:{
-                    category: 'hakulomakkeenhallinta'
+                    category: 'valintaperusteet'
                 },
                 isArray: true
             }
@@ -33,11 +33,35 @@ angular.module('valintalaskenta.services.factory', [])
  * Sovelluksen lokalisointi palvelu
  */
 angular.module('valintalaskenta.services.service', [])
-    .service('LocalisationService',  [ 'Localisations', '$q', 'MyRoles', '$cacheFactory',
-        function(Localisations, $q, MyRoles, $cacheFactory){
+    .service('LocalisationService',  [ 'Localisations', '$q', 'MyRolesModel', '$cacheFactory',
+        function(Localisations, $q, MyRolesModel, $cacheFactory){
 
             //välimuisti käännöksille
             var cache = $cacheFactory('locales');
+
+            /**
+             * Palauttaa käyttäjän käyttökielen ( fi | sv | en )cas/myroles:sta oletus kieli on fi
+             * @returns {promise}
+             */
+            this.getUserLang = function(){
+                var deferred = $q.defer();
+                MyRolesModel.then(
+                    function(data){
+                        var found = true;
+                        // oletus kieli fi, jos käyttäjällä ei kieltä asetettu cas/myroles:ssa
+                        var userLang = 'fi';
+                        for(var i=0 ; i < data.length && found ; i++ ){
+                            if( data[i].match("LANG_") !== null){
+                                userLang = data[i].slice(5);
+                                found = false;
+                            }
+                        }
+                        deferred.resolve(userLang);
+                    }
+                );
+                return deferred.promise;
+            };
+
             /**
              * Haetaan käännöspalvelusta käyttäjän käyttökielen mukaan
              * lokalisoidut käännökset ja laitetaan ne välimuistiin
@@ -48,7 +72,7 @@ angular.module('valintalaskenta.services.service', [])
             function getTranslations(userLang){
                 var deferred = $q.defer();
                 if(cache.info().size == 0){
-                    Localisations.getLocalisations().then(function(data){
+                     Localisations.getLocalisations().then(function(data){
                         for(var trl in data){
                             if(data[trl].id !== undefined && data[trl].locale === userLang){
                                 putCachedLocalisation(data[trl].key, data[trl].value );
@@ -67,7 +91,7 @@ angular.module('valintalaskenta.services.service', [])
             this.getTranslation = function(key){
                 var deferred = $q.defer();
                 if(!hasTranslation(key)){
-                    MyRoles.getUserLang().then(function(data){
+                    this.getUserLang().then(function(data){
                         getTranslations(data).then(function(){
                             var locale = cache.get(key);
                             deferred.resolve( locale ? cache.get(key) : undefined );

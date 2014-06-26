@@ -8,11 +8,13 @@ var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute',
     'valintalaskenta.services.factory',
     'valintalaskenta.controllers'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
-}).run(function($http, MyRolesModel){
+}).run(function($http, MyRolesModel, LocalisationService){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
   	tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12';
     MyRolesModel;
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
+    LocalisationService.getTranslation("");
+
 });
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";

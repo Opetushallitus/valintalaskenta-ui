@@ -1,4 +1,5 @@
 "use strict";
+
 app.directive('lazyLoading', function () {
     return {
         scope: true,

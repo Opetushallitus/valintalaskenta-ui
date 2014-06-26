@@ -16,6 +16,7 @@ describe('Testing HakukohteetController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));
 
@@ -115,6 +116,8 @@ describe('Testing HenkiloController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
     }));
 
     it('should get henkilöt', function() {
@@ -127,6 +130,7 @@ describe('Testing HenkiloController', function(){
 
         ctrl = $controller(HenkiloController, {'$scope' : scope,
             '$location': location, '$routeParams': routeParams, 'HenkiloModel': henkiloModel});
+        $httpBackend.flush();
     });
 
     it('check initialized variables', function() {
@@ -157,8 +161,6 @@ describe('Testing HenkiloController', function(){
     });
 
     afterEach(function() {
-        $rootScope.$apply();
-        $httpBackend.flush();
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
@@ -199,6 +201,9 @@ describe('Testing SijoitteluntulosController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+
+        $httpBackend.flush();
     }));
 
     it('should get sijoitteluntulokset', function() {
@@ -220,17 +225,18 @@ describe('Testing SijoitteluntulosController', function(){
             .respond(201,'1.2.246.562.10.00000000001/1.2.246.562.10.47941294986/1.2.246.562.10.98873174761/1.2.246.562.10.60222091211');
         $httpBackend.expectGET('resources/tila/hakukohde/'+routeParams.hakukohdeOid+'/1397647295344-8565235898154713515')
             .respond(201,hakukohdetilajson);
+
         ctrl = $controller(SijoitteluntulosController, {'$scope' : scope, '$modal' : $modal, '$routeParams': routeParams,
             '$window' : $window, 'Kirjepohjat': kirjepohjat, 'Latausikkuna': latausikkuna, 'HakukohdeModel': hakukohdeModel,
             'SijoitteluntulosModel': sijoitteluntulosModel, 'OsoitetarratSijoittelussaHyvaksytyille': osoitetarratSijoittelussaHyvaksytyille,
             'Hyvaksymiskirjeet': hyvaksymiskirjeet, 'Jalkiohjauskirjeet': jalkiohjauskirjeet, 'SijoitteluXls': sijoitteluXls,
             'AuthService': authService});
+
+        $httpBackend.flush();
     });
 
     afterEach(function() {
 
-        $rootScope.$apply();
-        $httpBackend.flush();
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
