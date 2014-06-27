@@ -1,4 +1,4 @@
-<h1>Valinnat</h1>
+<h1>{{ t('hakukohdeperustiedot.header') || 'Valinnat' }}</h1>
 
 <div ng-include="'haku/topNavigation.html'"></div>
 <div class="clear"></div>
@@ -16,25 +16,25 @@
             <div class="col-md-9">
 
                 <dl>
-                    <dt>HakukohdeOid</dt>
+                    <dt>{{ t('hakukohdeperustiedot.hakukohdeoid') || 'HakukohdeOid' }}</dt>
                     <dd>{{model.hakukohde.oid}}</dd>
                     
-                    <dt>Aloituspaikat</dt>
+                    <dt>{{ t('hakukohdeperustiedot.aloituspaikat') || 'Aloituspaikat' }}</dt>
                     <dd>{{model.hakukohde.aloituspaikatLkm}}</dd>
                     
-                    <dt>Hakijoita yhteensä</dt>
+                    <dt>{{ t('hakukohdeperustiedot.hakijoita') || 'Hakijoita yhteensä' }}</dt>
                     <dd>{{hakeneetModel.hakeneet.length}}</dd>
                     
-                    <dt class="margin-bottom-5">Valintatapajonokohtaiset tiedot</dt>
+                    <dt class="margin-bottom-5">{{ t('hakukohdeperustiedot.valintatapajonokohtaiset') || 'Valintatapajonokohtaiset tiedot' }}</dt>
                 </dl>
                 <table  class="virkailija-table-1 margin-top-5">
                     <thead>
                         <tr>
-                            <th>Valintatapajono</th>
-                            <th>Hyväksytyt yhteensä</th>
-                            <th>Harkinnanvaraisesti hyväksytyt yhteensä</th>
-                            <th>Varasijoilla yhteensä</th>
-                            <th>Paikan vastaanottaneet yhteensä</th>
+                            <th>{{ t('hakukohdeperustiedot.valintatapajono') || 'Valintatapajono' }}</th>
+                            <th>{{ t('hakukohdeperustiedot.hyvaksytyt') || 'Hyväksytyt yhteensä' }}</th>
+                            <th>{{ t('hakukohdeperustiedot.harkinnanvaraisesti') || 'Harkinnanvaraisesti hyväksytyt yhteensä' }}</th>
+                            <th>{{ t('hakukohdeperustiedot.varasijoilla') || 'Varasijoilla yhteensä' }}</th>
+                            <th>{{ t('hakukohdeperustiedot.vastaanottaneet') || 'Paikan vastaanottaneet yhteensä' }}</th>
                         </tr>
                     </thead>
                     <tbody >

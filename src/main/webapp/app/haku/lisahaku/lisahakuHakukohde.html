@@ -1,4 +1,4 @@
-﻿<h1>Valintojen toteuttaminen</h1>
+﻿<h1>{{ t('lisahakuhakukohde.header') || 'Valintojen toteuttaminen' }}</h1>
 <div ng-include="'haku/topNavigation.html'"></div>
 
 
@@ -8,7 +8,7 @@
 
     <div ng-include="'haku/hakukohdelista.html'"></div>
     <div class="toggle-content-container overflow-x-scroll">
-		Valitse hakukohde.
+        {{ t('lisahakuhakukohde.valitse') || 'Valitse hakukohde.' }}
 	</div>
 	<div class="clear"></div>
 

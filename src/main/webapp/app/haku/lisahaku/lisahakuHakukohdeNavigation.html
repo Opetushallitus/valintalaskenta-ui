@@ -5,11 +5,11 @@
 <div class="tabs hakukohdeNav" ng-controller="navigationController">
     
     <a  ng-class="navClass('perustiedot', 5)" href="#/lisahaku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/perustiedot" class="tab">
-        <span>Hakukohteen perustiedot</span>
+        <span>{{ t('lisahakuhakukohdenavigation.perustiedot') || 'Hakukohteen perustiedot' }}</span>
     </a>
 
     <a auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hyvaksytyt', 5)" href="#/lisahaku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hyvaksytyt" class="tab">
-        <span>Hakeneet</span>
+        <span>{{ t('lisahakuhakukohdenavigation.hakeneet') || 'Hakeneet' }}</span>
     </a>
 
 </div>
