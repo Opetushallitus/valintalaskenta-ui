@@ -332,7 +332,11 @@ app.factory('Dokumenttiprosessi', function($http, $log, $rootScope, $resource, $
 		}
 	};
 });
-
+app.factory('HaeDokumenttipalvelusta', function($resource) {
+    return $resource(DOKUMENTTIPALVELU_URL_BASE + "/dokumentit/:tyyppi/:hakukohdeoid", {tyyppi: "@tyyppi", hakukohdeoid: "@hakukohdeoid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
 app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $window, Poller) {
 	
     return {
