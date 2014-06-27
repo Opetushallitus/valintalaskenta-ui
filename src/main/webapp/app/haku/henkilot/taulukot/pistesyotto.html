@@ -1,5 +1,5 @@
 <div ng-if="model.naytaPistesyotto" class="henkilotiedot">
-    <h2>Pistesyöttö</h2>
+    <h2>{{ t('pistesyotto.header') || 'Pistesyöttö' }}</h2>
 
     <form name="form" ng-submit="tallennaPisteet()">
         <div ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
@@ -45,9 +45,9 @@
                                                     ng-show="avain.osallistuminenTunniste"
                                                     ng-change="changeArvo(hakutoive, avain.tunniste, hakutoive.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                                                     >
-                                                <option value="MERKITSEMATTA">Merkitsemättä</option>
-                                                <option value="OSALLISTUI">Osallistui</option>
-                                                <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                                                <option value="MERKITSEMATTA">{{ t('pistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
+                                                <option value="OSALLISTUI">{{ t('pistesyotto.osallistui') || 'Osallistui' }}</option>
+                                                <option value="EI_OSALLISTUNUT">{{ t('pistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
                                             </select>
                                             <br/>
                                             <span style="color: red;"></span>
@@ -58,9 +58,9 @@
                                             <select ng-show="hakutoive.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                                     ng-model="hakutoive.additionalData[avain.tunniste]"
                                                     ng-change="changeOsallistuminen(hakutoive, avain.osallistuminenTunniste, hakutoive.additionalData[avain.tunniste])">
-                                                <option value="">Tyhjä</option>
-                                                <option value="true">Kyllä</option>
-                                                <option value="false">Ei</option>
+                                                <option value="">{{ t('pistesyotto.tyhja') || 'Tyhjä' }}</option>
+                                                <option value="true">{{ t('pistesyotto.kylla') || 'Kyllä' }}</option>
+                                                <option value="false">{{ t('pistesyotto.ei') || 'Ei' }}</option>
                                             </select>
 
 
@@ -68,9 +68,9 @@
                                                     ng-show="avain.osallistuminenTunniste"
                                                     ng-change="changeArvo(hakutoive, avain.tunniste, hakutoive.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                                                     >
-                                                <option value="MERKITSEMATTA">Merkitsemättä</option>
-                                                <option value="OSALLISTUI">Osallistui</option>
-                                                <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                                                <option value="MERKITSEMATTA">{{ t('pistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
+                                                <option value="OSALLISTUI">{{ t('pistesyotto.osallistui') || 'Osallistui' }}</option>
+                                                <option value="EI_OSALLISTUNUT">{{ t('pistesyotto.eiosallistui') || 'Ei osallistunut' }}</option>
                                             </select>
                                             <span style="color: red;"></span>
                                         </div>
@@ -78,7 +78,7 @@
 
                                     </div>
                                     <div ng-switch-default>
-                                        Syötetty muualla: {{hakutoive.additionalData[avain.tunniste]}}
+                                        {{ t('pistesyotto.syotetty') || 'Syötetty muualla' }}: {{hakutoive.additionalData[avain.tunniste]}}
                                     </div>
                                 </div>
                             </div>
@@ -93,9 +93,9 @@
 
         <div>
             <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                    class="btn btn-primary btn-sm margin-top-2" type="submit">Tallenna
+                    class="btn btn-primary btn-sm margin-top-2" type="submit">{{ t('pistesyotto.tallenna') || 'Tallenna' }}
             </button>
-            <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista virheet!
+            <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">{{ t('pistesyotto.tarkista') || 'Tarkista virheet!' }}
             </div>
         </div>
 
