@@ -312,11 +312,11 @@ function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriServ
 				langcode = "SV";        		
         	}
         }
-        console.log();
         var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
             controller: ViestintapalveluIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
