@@ -1,7 +1,7 @@
 "use strict";
 
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
-    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload',
+    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash',
     'valintalaskenta.directives',
     'valintalaskenta.services.provider',
     'valintalaskenta.services.service',
@@ -14,7 +14,11 @@ var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute',
     MyRolesModel;
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
     LocalisationService.getTranslation("");
+});
 
+var underscore = angular.module('lodash', []);
+underscore.factory('_', function() {
+    return window._; // assumes lodash has already been loaded on the page
 });
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
