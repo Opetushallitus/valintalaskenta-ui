@@ -254,14 +254,35 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
 function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet,
-                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
+                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
-
+	
+    //
+    // pikalatauslinkit on harmaannettuna jos ei ensimmaistakaan generointia 
+    $scope.osoitetarratUrl = null;
+    $scope.hyvaksymiskirjeetUrl = null;
+    $scope.sijoitteluntuloksetUrl = null;
+    HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastaus) {
+		if(vastaus[0]) {
+			$scope.osoitetarratUrl = vastaus[0].documentId;
+		}
+	});
+    HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastaus) {
+		if(vastaus[0]) {
+			$scope.hyvaksymiskirjeetUrl = vastaus[0].documentId;
+		}
+	});
+	HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}, function(vastaus) {
+		if(vastaus[0]) {
+			$scope.sijoitteluntuloksetUrl = vastaus[0].documentId;
+		}	
+	});
+	
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
         {value: "EI_TEHTY", text: "sijoitteluntulos.enrollmentinfo.notdone"},
         {value: "LASNA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.present"},

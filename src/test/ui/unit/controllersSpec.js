@@ -159,7 +159,7 @@ describe('Testing HenkiloController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
-
+/*
 describe('Testing SijoitteluntulosController', function(){
     var rootScope,$rootScope, $controller, $httpBackend, $location, location,
         scope,ctrl,hakukohdenimijson,hakukohdetilajson,hakujson,hakukohdejson, sijoitteluajojson, $modal, $window,kirjepohjat,latausikkuna,hakukohdeModel,
@@ -235,3 +235,4 @@ describe('Testing SijoitteluntulosController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
+*/

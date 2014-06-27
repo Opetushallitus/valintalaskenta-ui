@@ -37,9 +37,9 @@
 
                 <br/>
 
-                <a href="/dokumenttipalvelu-service/resources/dokumentit/sijoitteluntulokset/{{model.hakukohdeOid}}" class="btn btn-default btn-sm pdf">Lataa tulokset</a>
-                <a href="/dokumenttipalvelu-service/resources/dokumentit/hyvaksymiskirjeet/{{model.hakukohdeOid}}" class="btn btn-default btn-sm pdf">Lataa hyväksymiskirjeet</a>
-                <a href="/dokumenttipalvelu-service/resources/dokumentit/osoitetarrat/{{model.hakukohdeOid}}" class="btn btn-default btn-sm pdf">Lataa osoitetarrat</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{sijoitteluntuloksetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !sijoitteluntuloksetUrl}">Lataa tulokset</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{hyvaksymiskirjeetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !hyvaksymiskirjeetUrl}">Lataa hyväksymiskirjeet</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{osoitetarratUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !osoitetarratUrl}">Lataa osoitetarrat</a>
 
             </div>
 
