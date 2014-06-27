@@ -310,6 +310,7 @@ function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirje
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
             controller: ViestintapalveluIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
@@ -374,6 +375,7 @@ function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirje
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
             controller: ViestintapalveluIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
