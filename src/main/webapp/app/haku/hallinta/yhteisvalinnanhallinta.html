@@ -1,4 +1,4 @@
-﻿<h1>Valintojen toteuttaminen</h1>
+﻿<h1>{{ t('yhteisvalinnanhallinta.header') || 'Valintojen toteuttaminen' }}</h1>
 
 <div ng-include="'haku/topNavigation.html'"/>
 
@@ -8,21 +8,22 @@
 
 </script>
 
+
 <accordion close-others="false">
-<accordion-group heading="Haun tiedot">
-    <div class="col-md-2"><strong class="pull-right">Haku</strong></div>
+<accordion-group heading="{{ t('yhteisvalinnanhallinta.tiedot') || 'Haun tiedot' }}" is-open="true">
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.nimi.kieli_fi}}</div>
 
-    <div class="col-md-2"><strong class="pull-right">Haun tunniste</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hauntunniste') || 'Haun tunniste' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.haunTunniste}}</div>
 
-    <div class="col-md-2"><strong class="pull-right">Hakuvuosi</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuvuosi') || 'Hakuvuosi' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.hakukausiVuosi}}</div>
 
-    <div class="col-md-2"><strong class="pull-right">Sijoittelu</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoittelu') || 'Sijoittelu' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.sijoittelu ? 'Kyllä' : 'Ei'}}</div>
 
-    <div class="col-md-2"><strong class="pull-right">Hakuajat</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuajat') || 'Hakuajat' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">
         <ul class="list-unstyled">
             <li ng-repeat="hakuaika in hakumodel.hakuOid.hakuaikas">
@@ -34,89 +35,84 @@
 
 
 </accordion-group>
-<accordion-group heading="Valintalaskenta ja sijoittelu">
-    <div class="col-md-2"><strong class="pull-right">Valintalaskenta</strong></div>
+<accordion-group heading="{{ t('yhteisvalinnanhallinta.valintalaskentajasijoittelu') || 'Valintalaskenta ja sijoittelu' }}" is-open="false">
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Valintalaskenta' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
         <button privileges="valintakoekutsut" ng-click="aktivoiHaunValintakoelaskenta()"
-                class="btn btn-primary btn-sm">Suorita
-            valintakoelaskenta haulle
+                class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritahaulle') || 'Suorita valintakoelaskenta haulle' }}
         </button>
         <button privileges="valintalaskenta" ng-click="aktivoiMuistinvarainenValintalaskenta()"
-                class="btn btn-primary btn-sm">Suorita
-            valintalaskenta
+                class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskenta') || 'Suorita valintalaskenta' }}
         </button>
     </div>
-    <div class="col-md-2"><strong class="pull-right">Sijoittelu</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoittelu') || 'Sijoittelu' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
-        <button ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">Suorita
-            sijoittelu
+        <button ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritasijoittelu') || 'Suorita sijoittelu' }}
         </button>
         <button ng-hide="jatkuva.ajossa" ng-click="kaynnistaJatkuvaSijoittelu()"
-                class="btn btn-primary btn-sm">Ota käyttöön ajastettu sijoittelu
+                class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.kayttoonajastettu') || 'Ota käyttöön ajastettu sijoittelu' }}
         </button>
         <button ng-hide="!jatkuva.ajossa" ng-click="pysaytaJatkuvaSijoittelu()"
-                class="btn btn-primary btn-sm">Poista käytöstä ajastettu sijoittelu
+                class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.poistaajastettu') || 'Poista käytöstä ajastettu sijoittelu' }}
         </button>
     </div>
-    <div class="col-md-2"><strong class="pull-right">Sijoittelu ajettu</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoitteluajettu') || 'Sijoittelu ajettu' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{sijoitteluModel.startMils | date:'dd.MM.yyyy HH:mm'}} -
         {{sijoitteluModel.endMils |
         date:'dd.MM.yyyy HH:mm'}}
     </div>
-    <div class="col-md-2"><strong class="pull-right">Sijoittelu ajossa</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoitteluajossa') || 'Sijoittelu ajossa' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{jatkuva.ajossa ? 'Kyllä' : 'Ei'}}</div>
 
-    <div class="col-md-2"><strong class="pull-right">Viimeksi ajettu</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.viimeksiajettu') || 'Viimeksi ajettu' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{jatkuva.viimeksiAjettu | date:'dd.MM.yyyy HH:mm'}}</div>
 
     <div ng-if="jatkuva.virhe">
-        <div class="col-md-2"><strong>Ajastetun sijoittelun virhe</strong></div>
+        <div class="col-md-2"><strong>{{ t('yhteisvalinnanhallinta.ajastettuvirhe') || 'Ajastetun sijoittelun virhe' }}</strong></div>
         <div class="col-md-10">{{jatkuva.virhe}}</div>
     </div>
 
 </accordion-group>
 
-<accordion-group heading="Sijoittelun tulokset">
+<accordion-group heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Sijoittelun tulokset' }}">
     <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie taulukkolaskentaan
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
     </button>
     <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie hyväksymiskirjeiksi
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viehyvaksymiskirjeiksi') || 'Vie hyväksymiskirjeiksi' }}
     </button>
     <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetOsoitetarrat()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie osoitetarroiksi
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieosoitetarroiksi') || 'Vie osoitetarroiksi' }}
     </button>
 
 </accordion-group>
 
-<accordion-group heading="Jälkiohjaus">
+<accordion-group heading="{{ t('yhteisvalinnanhallinta.jalkiohjaus') || 'Jälkiohjaus' }}">
 
     <button privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie jälkiohjaustulokset
-        taulukkolaskentaan
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viejalkiohjaustuloksettaulukkolaskentaan') || 'Vie jälkiohjaustulokset taulukkolaskentaan' }}
     </button>
 
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('FI')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet suomeksi
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostasuomeksi') || 'Muodosta jälkiohjauskirjeet suomeksi' }}
     </button>
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('SV')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirjeet ruotsiksi
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaruotsiksi') || 'Muodosta jälkiohjauskirjeet ruotsiksi' }}
     </button>
     <button privileges="valintalaskenta"
             href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
-            class="btn btn-default btn-sm">Valinnan
-        tulokset
+            class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
     </button>
 </accordion-group>
 
-<accordion-group heading="Kelan tiedonsiirto">
+<accordion-group heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}">
 
     <div class="form-horizontal">
         <div class="form-group">
-            <label class="col-md-2 control-label" for="aineistonnimi">Kela-dokumentin muodostus</label>
+            <label class="col-md-2 control-label" for="aineistonnimi">{{ t('yhteisvalinnanhallinta.keladokumentinmuodostus') || 'Kela-dokumentin muodostus' }}</label>
 
             <div class="col-md-2">
-                <input class="form-control" id="aineistonnimi" placeholder="Aineistonnimi"
+                <input class="form-control" id="aineistonnimi" placeholder="{{ t('yhteisvalinnanhallinta.aineistonnimi') || 'Aineistonnimi' }}"
                        ng-model="aineistonnimi"/>
 
             </div>
@@ -125,31 +121,31 @@
             </div>
 
             <button style="margin-top: 5px" ng-if="!isNotBlank(aineistonnimi)" privileges="valintalaskenta"
-                    popover="Kirjoita aivneistolle nimi." popover-trigger="mouseenter"
-                    class="btn btn-default btn-sm disabled"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti
+                    popover="{{ t('yhteisvalinnanhallinta.kirjoitanimi') || 'Kirjoita aineistolle nimi.' }}" popover-trigger="mouseenter"
+                    class="btn btn-default btn-sm disabled"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
             </button>
 
             <button style="margin-top: 5px" ng-if="isNotBlank(aineistonnimi)" privileges="valintalaskenta"
                     ng-click="muodostaKelaDokumentti();$event.preventDefault();"
-                    class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta Kela-dokumentti
+                    class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
             </button>
         </div>
     </div>
     <div class="col-md-12 margin-bottom-2" ng-hide="naytetaanHaut">
         <button class="btn btn-default btn-sm" ng-click="naytaHaut();$event.preventDefault();"><i class="fa fa-eye"></i>
-            Näytä haut
+            {{ t('yhteisvalinnanhallinta.naytahaut') || 'Näytä haut' }}
         </button>
     </div>
     <div class="col-md-12">
         <table class="virkailija-table-1">
             <thead>
             <tr>
-                <th colspan="3">Kela-dokumentti muodostetaan valituista hauista</th>
+                <th colspan="3">{{ t('yhteisvalinnanhallinta.muodostavalituista') || 'Kela-dokumentti muodostetaan valituista hauista' }}</th>
             </tr>
             <tr>
                 <th class="col-sm-1"><input type="checkbox" ng-model="kaikkiHautValittu" ng-change="checkAll();"></th>
-                <th>Haku</th>
-                <th>Oid</th>
+                <th>{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</th>
+                <th>{{ t('yhteisvalinnanhallinta.oid') || 'Oid' }}</th>
             </tr>
             </thead>
             <tbody>
@@ -173,52 +169,51 @@
         <div class="tabs">
             <a class="tab" ng-class="!valintalaskentavirheet ? 'current' : ''"
                ng-click="valintalaskentavirheet = false">
-                <span>Valintakoevirheet</span>
+                <span>{{ t('yhteisvalinnanhallinta.valintakoevirheet') || 'Valintakoevirheet' }}</span>
             </a>
             <a class="tab" ng-class="valintalaskentavirheet ? 'current' : ''" ng-click="valintalaskentavirheet = true">
-                <span>Valintalaskentavirheet</span>
+                <span>{{ t('yhteisvalinnanhallinta.valintalaskentavirheet') || 'Valintalaskentavirheet' }}</span>
             </a>
         </div>
         <div class="clear"></div>
 
         <div class="tabsheets hakuVirheet">
             <div ng-show="!valintalaskentavirheet">
-                <h2 ng-show="virheet.eiKoeVirheita">Ei virheitä valintakokeissa</h2>
+                <h2 ng-show="virheet.eiKoeVirheita">{{ t('yhteisvalinnanhallinta.eivirheita') || 'Ei virheitä valintakokeissa' }}</h2>
 
-                <h2 ng-show="virheet.valintakoe.length > 0">Valintakoevirheet ({{virheet.valintakoe.length}})</h2>
+                <h2 ng-show="virheet.valintakoe.length > 0">{{ t('yhteisvalinnanhallinta.valintakoevirheet') || 'Valintakoevirheet' }} ({{virheet.valintakoe.length}})</h2>
 
                 <input ng-show="virheet.valintakoe.length > 0" type="text" class="search margin-vertical-2"
-                       placeholder="Suodata hakemuksia" ng-model="hakemusFilter"/>
+                       placeholder="{{ t('yhteisvalinnanhallinta.suodatahakemuksia') || 'Suodata hakemuksia' }}" ng-model="hakemusFilter"/>
 
                 <div ng-repeat="virhe in (virheet.valintakoe | orderBy:'sukunimi' | filter:hakemusFilter | limitTo:naytaKokeita)"
                      class="valintakoe">
 
                     <div ng-click="show(virhe)">
-                        <h2><a>{{virhe.sukunimi}}, {{virhe.etunimi}} ({{ virhe.createdAt | date:'dd.MM.yyyy
-                            HH:mm:ss'}})</a>
+                        <h2><a>{{virhe.sukunimi}}, {{virhe.etunimi}} ({{ virhe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</a>
                         </h2>
                         <dl class="dl-horizontal" ng-show="virhe.show">
-                            <dt>Hakemus oid</dt>
+                            <dt>{{ t('yhteisvalinnanhallinta.hakemusoid') || 'Hakemus oid' }}</dt>
                             <dd>{{virhe.hakemusOid}}</dd>
 
-                            <dt>Hakija oid</dt>
+                            <dt>{{ t('yhteisvalinnanhallinta.hakijaoid') || 'Hakija oid' }}</dt>
                             <dd>{{virhe.hakijaOid}}</dd>
                         </dl>
                     </div>
                     <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakumodel.hakuOid.oid}}/esikatselu/{{virhe.hakemusOid}}"
-                       target="_blank">Hakemuspalvelu</a>
-                    <a href="" ng-click="henkilonakyma(virhe.hakemusOid)">Henkilönäkymä</a>
+                       target="_blank">{{ t('yhteisvalinnanhallinta.hakemuspalvelu') || 'Hakemuspalvelu' }}</a>
+                    <a href="" ng-click="henkilonakyma(virhe.hakemusOid)">{{ t('yhteisvalinnanhallinta.henkilonakyma') || 'Henkilönäkymä' }}</a>
 
                     <table class="virkailija-table-1">
                         <thead>
                         <tr>
-                            <th>Hakukohde</th>
-                            <th>Valinnanvaihe</th>
-                            <th>Järjestysluku</th>
-                            <th>Valintakoe</th>
-                            <th>Tunniste</th>
-                            <th>Osallistuminen</th>
-                            <th>Kuvaus</th>
+                            <th>{{ t('yhteisvalinnanhallinta.hakukohde') || 'Hakukohde' }}</th>
+                            <th>{{ t('yhteisvalinnanhallinta.valinnanvaihe') || 'Valinnanvaihe' }}</th>
+                            <th>{{ t('yhteisvalinnanhallinta.jarjestysluku') || 'Järjestysluku' }}</th>
+                            <th>{{ t('yhteisvalinnanhallinta.valintakoe') || 'Valintakoe' }}</th>
+                            <th>{{ t('yhteisvalinnanhallinta.tunniste') || 'Tunniste' }}</th>
+                            <th>{{ t('yhteisvalinnanhallinta.osallistuminen') || 'Osallistuminen' }}</th>
+                            <th>{{ t('yhteisvalinnanhallinta.kuvaus') || 'Kuvaus' }}</th>
                         </tr>
                         </thead>
 
@@ -244,22 +239,22 @@
                 </div>
 
                 <a ng-show="virheet.valintakoe.length > 0 && virheet.valintakoe.length > naytaKokeita"
-                   ng-click="naytaKokeita = naytaKokeita + 5" class="btn btn-default btn-sm">Näytä lisää hakemuksia</a>
+                   ng-click="naytaKokeita = naytaKokeita + 5" class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.naytalisaa') || 'Näytä lisää hakemuksia' }}</a>
             </div>
             <div ng-show="valintalaskentavirheet">
-                <h2 ng-show="virheet.eiLaskentaVirheita">Ei virheitä laskennassa</h2>
+                <h2 ng-show="virheet.eiLaskentaVirheita">{{ t('yhteisvalinnanhallinta.eivirheitalaskennassa') || 'Ei virheitä laskennassa' }}</h2>
 
-                <h2 ng-show="virheet.valintalaskenta.length > 0">Laskentavirheet
+                <h2 ng-show="virheet.valintalaskenta.length > 0">{{ t('yhteisvalinnanhallinta.laskentavirheet') || 'Laskentavirheet' }}
                     ({{virheet.valintalaskenta.length}})</h2>
 
                 <div ng-repeat="virhe in virheet.valintalaskenta" ng-click="show(virhe)">
-                    <h2><a>{{virhe.show ? '-' : '+'}} Hakukohde: {{ virhe.hakukohdeoid }} ({{ virhe.createdAt |
+                    <h2><a>{{virhe.show ? '-' : '+'}} {{ t('yhteisvalinnanhallinta.hakukohde') || 'Hakukohde' }}: {{ virhe.hakukohdeoid }} ({{ virhe.createdAt |
                         date:'dd.MM.yyyy HH:mm:ss'}})</a></h2>
 
                     <div ng-repeat="vaihe in virhe.valinnanvaihe" ng-show="virhe.show" class="valinnanvaihe">
-                        <h3>Vaihe: {{vaihe.valinnanvaiheoid}} ({{vaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h3>
+                        <h3>{{ t('yhteisvalinnanhallinta.vaihe') || 'Vaihe' }}: {{vaihe.valinnanvaiheoid}} ({{vaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'}})</h3>
 
-                        <h3>Järjestyskriteeri: {{vaihe.jarjestysnumero}}</h3>
+                        <h3>{{ t('yhteisvalinnanhallinta.jarjestyskriteeri') || 'Järjestyskriteeri' }}: {{vaihe.jarjestysnumero}}</h3>
 
                         <div ng-repeat="valintatapajono in vaihe.valintatapajonot" class="valintatapajono">
                             <h3>{{valintatapajono.nimi}}: {{valintatapajono.valintatapajonooid}}
@@ -270,30 +265,30 @@
                                 <div ng-click="jonosijat.lisatiedot =! jonosijat.lisatiedot">
                                     <h3><a>{{jonosijat.sukunimi}}, {{jonosijat.etunimi}}</a></h3>
                                     <dl class="dl-horizontal" ng-show="jonosijat.lisatiedot">
-                                        <dt>Hakemus oid</dt>
+                                        <dt>{{ t('yhteisvalinnanhallinta.hakemusoid') || 'Hakemus oid' }}</dt>
                                         <dd>{{jonosijat.hakemusOid}}</dd>
 
-                                        <dt>Hakija oid</dt>
+                                        <dt>{{ t('yhteisvalinnanhallinta.hakijaoid') || 'Hakija oid' }}</dt>
                                         <dd>{{jonosijat.hakijaOid}}</dd>
 
-                                        <dt>Prioriteetti</dt>
+                                        <dt>{{ t('yhteisvalinnanhallinta.prioriteetti') || 'Prioriteetti' }}</dt>
                                         <dd>{{jonosijat.prioriteetti}}</dd>
 
-                                        <dt>Harkinnanvarainen</dt>
+                                        <dt>{{ t('yhteisvalinnanhallinta.harkinnanvarainen') || 'Harkinnanvarainen' }}</dt>
                                         <dd>{{jonosijat.harkinnanvarainen ? 'Kyllä' : 'Ei'}}</dd>
                                     </dl>
                                 </div>
                                 <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakumodel.hakuOid.oid}}/esikatselu/{{jonosijat.hakemusOid}}"
-                                   target="_blank">Hakemuspalvelu</a>
-                                <a href="" ng-click="henkilonakyma(jonosijat.hakemusOid)">Henkilönäkymä</a>
-                                <a href="" ng-click="hakukohdenakyma(virhe.hakukohdeoid)">Hakukohdenäkymä</a>
+                                   target="_blank">{{ t('yhteisvalinnanhallinta.hakemuspalvelu') || 'Hakemuspalvelu' }}</a>
+                                <a href="" ng-click="henkilonakyma(jonosijat.hakemusOid)">{{ t('yhteisvalinnanhallinta.henkilonakyma') || 'Henkilönäkymä' }}</a>
+                                <a href="" ng-click="hakukohdenakyma(virhe.hakukohdeoid)">{{ t('yhteisvalinnanhallinta.hakukohdenakyma') || 'Hakukohdenäkymä' }}</a>
 
                                 <table class="virkailija-table-1">
                                     <thead>
                                     <tr>
-                                        <th>Prioriteetti</th>
-                                        <th>Arvo</th>
-                                        <th>Kuvaus</th>
+                                        <th>{{ t('yhteisvalinnanhallinta.prioriteetti') || 'Prioriteetti' }}</th>
+                                        <th>{{ t('yhteisvalinnanhallinta.arvo') || 'Arvo' }}</th>
+                                        <th>{{ t('yhteisvalinnanhallinta.kuvaus') || 'Kuvaus' }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
