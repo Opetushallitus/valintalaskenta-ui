@@ -4,35 +4,35 @@
 <div class="tabs hakukohdeNav" ng-controller="navigationController">
 
     <a  ng-class="navClass('perustiedot', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/perustiedot" class="tab">
-    	<span>Hakukohteen perustiedot</span>
+    	<span>{{ t('hakukohdenavigation.perustiedot') || 'Hakukohteen perustiedot' }}</span>
     </a>
 
     <a auth-additional-check="hakeneet" auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hakeneet', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet" class="tab">
-    	<span>Hakeneet</span>
+    	<span>{{ t('hakukohdenavigation.hakeneet') || 'Hakeneet' }}</span>
     </a>
 
     <a auth-additional-check="valintalaskenta" auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
-        <span>Valinnan hallinta</span>
+        <span>{{ t('hakukohdenavigation.valinnanhallinta') || 'Valinnan hallinta' }}</span>
     </a>
 
     <a auth-additional-check="valintakoekutsut" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
-        <span>Valintakoekutsut</span>
+        <span>{{ t('hakukohdenavigation.valintakoekutsut') || 'Valintakoekutsut' }}</span>
     </a>
 
     <a auth-additional-check="pistesyotto" auth="LISATIETORU LISATIETOCRUD READ_UPDATE CRUD" auth-service="APP_HAKEMUS" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('pistesyotto', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/pistesyotto" class="tab">
-        <span>Pistesyöttö</span>
+        <span>{{ t('hakukohdenavigation.pistesyotto') || 'Pistesyöttö' }}</span>
     </a>
 
     <a auth-additional-check="harkinnanvaraiset" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
-        <span>Harkinnanvaraiset</span>
+        <span>{{ t('hakukohdenavigation.harkinnanvaraiset') || 'Harkinnanvaraiset' }}</span>
     </a>
 
     <a auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintalaskentatulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintalaskentatulos" class="tab">
-    	<span>Valintalaskennan tulos</span>
+    	<span>{{ t('hakukohdenavigation.valintalaskennantulos') || 'Valintalaskennan tulos' }}</span>
     </a>
 
     <a auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_SIJOITTELU" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('sijoitteluntulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/sijoitteluntulos" class="tab">
-    	<span>Sijoittelun tulokset</span>
+    	<span>{{ t('hakukohdenavigation.sijoitteluntulokset') || 'Sijoittelun tulokset' }}</span>
     </a>
 
 </div>
