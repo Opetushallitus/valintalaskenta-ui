@@ -70,7 +70,7 @@
                         </td>
                     </tr>
                 </table>
-                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[0].length" page="currentPage[0]" items-per-page="pageSize"></pagination>
+                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[0].length" ng-model="currentPage[0]" items-per-page="pageSize"></pagination>
             </div>
 
             <div ng-if="nakymanTila == 'Kokeittain'">
@@ -160,7 +160,7 @@
 	
 	                            </tbody>
 	                        </table>
-                            <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$index].length" page="currentPage[$index]" items-per-page="pageSize"></pagination>
+                            <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$index].length" ng-model="currentPage[$index]" items-per-page="pageSize"></pagination>
 	                    </div>
 	                </div>
                 </div>

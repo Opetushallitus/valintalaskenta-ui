@@ -135,7 +135,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$parent.$parent.$index][$parent.$index].length" page="currentPage[$parent.$parent.$index][$parent.$index]" items-per-page="pageSize"></pagination>
+                                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$parent.$parent.$index][$parent.$index].length" ng-model="currentPage[$parent.$parent.$index][$parent.$index]" items-per-page="pageSize"></pagination>
                                 </form>
                             </div>
                         </div>
@@ -209,7 +209,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$parent.$parent.$index][$parent.$index].length" page="currentPage[$parent.$parent.$index][$parent.$index]" items-per-page="pageSize"></pagination>                            </div>
+                                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$parent.$parent.$index][$parent.$index].length" ng-model="currentPage[$parent.$parent.$index][$parent.$index]" items-per-page="pageSize"></pagination>                            </div>
                         </div>
                     </accordion-group>
                 </accordion>

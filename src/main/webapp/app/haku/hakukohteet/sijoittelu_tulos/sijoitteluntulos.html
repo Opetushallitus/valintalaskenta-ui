@@ -141,7 +141,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$index].length" page="currentPage[$index]" items-per-page="pageSize"></pagination>
+                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$index].length" ng-model="currentPage[$index]" items-per-page="pageSize"></pagination>
                     <br/>
                     <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-top-2">Tallenna</a>
                 </div>

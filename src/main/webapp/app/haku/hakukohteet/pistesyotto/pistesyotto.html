@@ -172,7 +172,7 @@
                         </tbody>
                     </table>
 
-                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResult.length" page="currentPage" items-per-page="pageSize"></pagination>
+                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResult.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
                     <br/>
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                             class="btn btn-primary btn-sm margin-top-2" ng-click="submit()">Tallenna
