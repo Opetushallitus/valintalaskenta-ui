@@ -1,42 +1,42 @@
 
-<h1>Valvomo</h1>
+<h1>{{ t('valvomo.header') || 'Valvomo' }}</h1>
 
 <div class="tabs hakukohdeNav" ng-controller="navigationController">
 
     <a href="#/valvomo/valintalaskenta" ng-class="{current: (valittu=='valintalaskenta')}" class="tab">
-        <span>Valintalaskenta</span>
+        <span>{{ t('valvomo.valintalaskenta') || 'Valintalaskenta' }}</span>
     </a>
 
     <a href="#/valvomo/valintakoelaskenta" ng-class="{current: (valittu=='valintakoelaskenta')}" class="tab">
-        <span>Valintakoelaskenta</span>
+        <span>{{ t('valvomo.valintakoelaskenta') || 'Valintakoelaskenta' }}</span>
     </a>
 
     <a href="#/valvomo/sijoittelu" ng-class="{current: (valittu=='sijoittelu')}" class="tab">
-        <span>Sijoittelu</span>
+        <span>{{ t('valvomo.sijoittelu') || 'Sijoittelu' }}</span>
     </a>
 
     <a href="#/valvomo/hakuimport" ng-class="{current: (valittu=='hakuimport')}" class="tab">
-        <span>Hakuimport</span>
+        <span>{{ t('valvomo.hakuimport') || 'Hakuimport' }}</span>
     </a>
 
     <a href="#/valvomo/valintalaskentamuistissa" ng-class="{current: (valittu=='valintalaskentamuistissa')}" class="tab">
-        <span>valintalaskentamuistissa</span>
+        <span>{{ t('valvomo.valintalaskentamuistissa') || 'valintalaskentamuistissa' }}</span>
     </a>
 
 </div>
 <div class="tabsheets">
 
     <div ng-repeat="prosessi in valintalaskenta" ng-if="valittu == 'valintalaskenta'">
-        Viesti: <span>{{prosessi.message}}</span><br/>
-        Status: <span>{{prosessi.status}}</span><br/>
-        Kesto: <span>{{prosessi.duration | duration}}</span><br/>
+        {{ t('valvomo.viesti') || 'Viesti' }}: <span>{{prosessi.message}}</span><br/>
+        {{ t('valvomo.status') || 'Status' }}: <span>{{prosessi.status}}</span><br/>
+        {{ t('valvomo.kesto') || 'Kesto' }}: <span>{{prosessi.duration | duration}}</span><br/>
         <br/>
-        Toiminto: <span>{{prosessi.prosessi.toiminto}}</span><br/>
-        Käyttäjä: <span>{{prosessi.prosessi.createdBy}}</span><br/>
-        Aika: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
+        {{ t('valvomo.toiminto') || 'Toiminto' }}: <span>{{prosessi.prosessi.toiminto}}</span><br/>
+        {{ t('valvomo.kayttaja') || 'Käyttäjä' }}: <span>{{prosessi.prosessi.createdBy}}</span><br/>
+        {{ t('valvomo.aika') || 'Aika' }}: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
         <br/>
-        Hakukohteita: <span>{{prosessi.prosessi.kasitellytHakukohteet.length}} / {{prosessi.prosessi.hakukohteitaYhteensa}}</span><br/>
-        <div ng-if="prosessi.prosessi.valinnanvaihe">Valinnan vaihe: <span>{{prosessi.prosessi.valinnanvaihe}}</span><br/></div>
+        {{ t('valvomo.hakukohteita') || 'Hakukohteita' }}: <span>{{prosessi.prosessi.kasitellytHakukohteet.length}} / {{prosessi.prosessi.hakukohteitaYhteensa}}</span><br/>
+        <div ng-if="prosessi.prosessi.valinnanvaihe">{{ t('valvomo.valinnanvaihe') || 'Valinnan vaihe' }}: <span>{{prosessi.prosessi.valinnanvaihe}}</span><br/></div>
 
         <div ng-repeat="virhe in prosessi.prosessi.exceptions">{{virhe}}<br /></div>
 
@@ -53,15 +53,15 @@
     </div>
 
     <div ng-repeat="prosessi in valintalaskentamuistissa" ng-if="valittu == 'valintalaskentamuistissa'">
-        Viesti: <span>{{prosessi.message}}</span><br/>
-        Status: <span>{{prosessi.status}}</span><br/>
-        Kesto: <span>{{prosessi.duration | duration}}</span><br/>
-        Kesto aloituksesta: <span>{{prosessi.durationSinceStarted | duration}}</span><br/>
+        {{ t('valvomo.viesti') || 'Viesti' }}: <span>{{prosessi.message}}</span><br/>
+        {{ t('valvomo.status') || 'Status' }}: <span>{{prosessi.status}}</span><br/>
+        {{ t('valvomo.kesto') || 'Kesto' }}: <span>{{prosessi.duration | duration}}</span><br/>
+        {{ t('valvomo.kestoaloituksesta') || 'Kesto aloituksesta' }}: <span>{{prosessi.durationSinceStarted | duration}}</span><br/>
         <br/>
-        Resurssi: <span>{{prosessi.prosessi.resurssi}}</span><br/>
-        Toiminto: <span>{{prosessi.prosessi.toiminto}}</span><br/>
-        Käyttäjä: <span>{{prosessi.prosessi.createdBy}}</span><br/>
-        Aika: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
+        {{ t('valvomo.resurssi') || 'Resurssi' }}: <span>{{prosessi.prosessi.resurssi}}</span><br/>
+        {{ t('valvomo.toiminto') || 'Toiminto' }}: <span>{{prosessi.prosessi.toiminto}}</span><br/>
+        {{ t('valvomo.kayttaja') || 'Käyttäjä' }}: <span>{{prosessi.prosessi.createdBy}}</span><br/>
+        {{ t('valvomo.aika') || 'Aika' }}: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
         <br/>
 
         <div ng-repeat="virhe in prosessi.prosessi.exceptions">{{virhe}}<br /></div>
@@ -79,15 +79,15 @@
     </div>
 
     <div ng-repeat="prosessi in valintakoelaskenta" ng-if="valittu == 'valintakoelaskenta'">
-        Viesti: <span>{{prosessi.message}}</span><br/>
-        Status: <span>{{prosessi.status}}</span><br/>
-        Kesto: <span>{{prosessi .duration | duration}}</span><br/>
+        {{ t('valvomo.viesti') || 'Viesti' }}: <span>{{prosessi.message}}</span><br/>
+        {{ t('valvomo.status') || 'Status' }}: <span>{{prosessi.status}}</span><br/>
+        {{ t('valvomo.kesto') || 'Kesto' }}: <span>{{prosessi .duration | duration}}</span><br/>
         <br/>
-        Toiminto: <span>{{prosessi.prosessi.toiminto}}</span><br/>
-        Käyttäjä: <span>{{prosessi.prosessi.createdBy}}</span><br/>
-        Aika: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
+        {{ t('valvomo.toiminto') || 'Toiminto' }}: <span>{{prosessi.prosessi.toiminto}}</span><br/>
+        {{ t('valvomo.kayttaja') || 'Käyttäjä' }}: <span>{{prosessi.prosessi.createdBy}}</span><br/>
+        {{ t('valvomo.aika') || 'Aika' }}: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
         <br/>
-        HakuOId: <span>{{prosessi.prosessi.hakuOid}}</span><br/>
+        {{ t('valvomo.hakuoid') || 'HakuOId' }}: <span>{{prosessi.prosessi.hakuOid}}</span><br/>
 
         <div ng-repeat="virhe in prosessi.prosessi.exceptions">{{virhe}}<br /></div>
         <hr/>
@@ -95,28 +95,28 @@
 
     <div ng-repeat="prosessi in sijoittelu" ng-if="valittu == 'sijoittelu'">
         <pre>{{prosessi | json}}</pre>
-        Viesti: <span>{{prosessi.message}}</span><br/>
-        Status: <span>{{prosessi.status}}</span><br/>
-        Kesto: <span>{{prosessi .duration | duration}}</span><br/>
+        {{ t('valvomo.viesti') || 'Viesti' }}: <span>{{prosessi.message}}</span><br/>
+        {{ t('valvomo.status') || 'Status' }}: <span>{{prosessi.status}}</span><br/>
+        {{ t('valvomo.kesto') || 'Kesto' }}: <span>{{prosessi .duration | duration}}</span><br/>
         <br/>
-        Toiminto: <span>{{prosessi.prosessi.toiminto}}</span><br/>
-        Käyttäjä: <span>{{prosessi.prosessi.createdBy}}</span><br/>
-        Aika: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
+        {{ t('valvomo.toiminto') || 'Toiminto' }}: <span>{{prosessi.prosessi.toiminto}}</span><br/>
+        {{ t('valvomo.kayttaja') || 'Käyttäjä' }}: <span>{{prosessi.prosessi.createdBy}}</span><br/>
+        {{ t('valvomo.aika') || 'Aika' }}: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
         <br/>
         <hr/>
     </div>
 
     <div ng-repeat="prosessi in hakuimport" ng-if="valittu == 'hakuimport'">
-        Viesti: <span>{{prosessi.message}}</span><br/>
-        Status: <span>{{prosessi.status}}</span><br/>
-        Kesto: <span>{{prosessi.duration | duration}}</span><br/>
+        {{ t('valvomo.viesti') || 'Viesti' }}: <span>{{prosessi.message}}</span><br/>
+        {{ t('valvomo.status') || 'Status' }}: <span>{{prosessi.status}}</span><br/>
+        {{ t('valvomo.kesto') || 'Kesto' }}: <span>{{prosessi.duration | duration}}</span><br/>
         <br/>
-        Toiminto: <span>{{prosessi.prosessi.toiminto}}</span><br/>
-        Käyttäjä: <span>{{prosessi.prosessi.createdBy}}</span><br/>
-        Aika: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
+        {{ t('valvomo.toiminto') || 'Toiminto' }}: <span>{{prosessi.prosessi.toiminto}}</span><br/>
+        {{ t('valvomo.kayttaja') || 'Käyttäjä' }}: <span>{{prosessi.prosessi.createdBy}}</span><br/>
+        {{ t('valvomo.aika') || 'Aika' }}: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
         <br/>
-        Hakukohteita importoitu: <span>{{prosessi.prosessi.importoitu}} / {{prosessi.prosessi.hakukohteita}}</span><br/>
-        Hakukohteita tuotu: <span>{{prosessi.prosessi.tuonti}} / {{prosessi.prosessi.hakukohteita}}</span><br/>
+        {{ t('valvomo.hakukohteitaimportoitu') || 'Hakukohteita importoitu' }}: <span>{{prosessi.prosessi.importoitu}} / {{prosessi.prosessi.hakukohteita}}</span><br/>
+        {{ t('valvomo.hakukohteitatuotu') || 'Hakukohteita tuotu' }}: <span>{{prosessi.prosessi.tuonti}} / {{prosessi.prosessi.hakukohteita}}</span><br/>
 
         <div ng-repeat="virhe in prosessi.prosessi.exceptions">{{virhe}}</div>
 
