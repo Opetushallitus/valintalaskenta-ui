@@ -35,9 +35,7 @@ var paths = {
 
         'bower_components/lodash/dist/lodash.underscore.min.js',
 
-		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-
-        'bower_components/angular-ui-tinymce/src/tinymce.js'
+		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
 	],
 	css: [
 		'src/main/webapp/common/css/'
