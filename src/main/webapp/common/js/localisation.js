@@ -1,7 +1,7 @@
 /**
  * Hakee käännöspalvelusta resurssit sovelluksen lokalisointiin
  */
-angular.module('valintalaskenta.services.factory', [])
+angular.module('oph.localisation', [])
     .factory('Localisations',[ '$resource', 'Props','$q', function ($resource, Props, $q) {
         var localisations ={};
         var locals = $resource(Props.localizationUrl+'/localisation',{},{
@@ -26,13 +26,12 @@ angular.module('valintalaskenta.services.factory', [])
             return deferred.promise;
         };
         return localisations;
-    }]);
+    }])
 
 
 /**
  * Sovelluksen lokalisointi palvelu
  */
-angular.module('valintalaskenta.services.service', [])
     .service('LocalisationService',  [ 'Localisations', '$q', 'MyRolesModel', '$cacheFactory',
         function(Localisations, $q, MyRolesModel, $cacheFactory){
 
@@ -133,4 +132,23 @@ angular.module('valintalaskenta.services.service', [])
                 }
             };
 
-        }]);
+        }])
+/**
+ * UI-directive käännösten käyttämiseen
+ */
+    .directive('tl', ['LocalisationService', function(LocalisationService) {
+
+        return {
+            restrict: 'A',
+            replace: true,
+            scope: false,
+            compile: function(element, attrs) {
+                var key = attrs["tl"];
+                LocalisationService.getTranslation(key).then(function(data){
+                    element.html(data);
+                });
+
+            }
+
+        };
+    }]);

@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('valintalaskenta.services.provider',[])
-    .provider('Props', function () {
+angular.module('valintalaskenta').provider('Props', function () {
         this.$get = [function() {
             if (location.hostname.indexOf('localhost') !== -1) {
                 return {

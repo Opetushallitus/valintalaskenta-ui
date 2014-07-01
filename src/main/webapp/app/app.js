@@ -1,12 +1,7 @@
 "use strict";
 
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
-    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash',
-    'valintalaskenta.directives',
-    'valintalaskenta.services.provider',
-    'valintalaskenta.services.service',
-    'valintalaskenta.services.factory',
-    'valintalaskenta.controllers'], function($rootScopeProvider) {
+    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel, LocalisationService){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
@@ -634,15 +629,6 @@ app.factory('Valintatulos', function($resource) {
         get: {method: "GET"}
     });
 });
-
-
-
-
-
-
-
-
-
 
 
 

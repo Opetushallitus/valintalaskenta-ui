@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('valintalaskenta.controllers', [])
-    .controller('RootCtrl', ['$rootScope', '$scope','Props' ,'LocalisationService',
+angular.module('valintalaskenta').controller('RootCtrl', ['$rootScope', '$scope','Props' ,'LocalisationService',
         function($rootScope, $scope, Props, LocalisationService ) {
             /**
              * katsotaan käyttäjän käyttöprofiilista cas/myroles tiedostosta
