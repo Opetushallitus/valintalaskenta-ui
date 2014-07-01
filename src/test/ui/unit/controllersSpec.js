@@ -238,6 +238,26 @@ describe('Testing SijoitteluntulosController', function(){
         $httpBackend.flush();
     });
 
+    it('check initialized variables', function() {
+        expect(scope.model.sijoitteluTulokset.oid).toBe("1.2.246.562.5.39836447563");
+        expect(scope.model.sijoitteluTulokset.tarjoajaOid).toBe("1.2.246.562.10.60222091211");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot.length).toBe(1);
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].alinHyvaksyttyPistemaara).toBe(2);
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].aloituspaikat).toBe(40);
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].eiVarasijatayttoa).toBeFalsy();
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset.length).toBe(17);
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakeneet).toBe(17);
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hyvaksytty).toBe(8);
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].kaikkiEhdonTayttavatHyvaksytaan).toBeFalsy();
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].nimi).toBe("Varsinaisen valinnanvaiheen valintatapajono");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].oid).toBe("1397647295344-8565235898154713515");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].poissaOlevaTaytto).toBeFalsy();
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].prioriteetti).toBe(0);
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].tasasijasaanto).toBe("ARVONTA");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].valittu).toBeTruthy();
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].varalla).toBe(0);
+    });
+
     afterEach(function() {
 
         $httpBackend.verifyNoOutstandingExpectation();
