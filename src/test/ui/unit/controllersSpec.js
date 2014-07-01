@@ -30,7 +30,7 @@ describe('Testing HakukohteetController', function(){
         $httpBackend.expectGET('haku/hakukohdeTulos?count=15&hakukohdeTilas=JULKAISTU&organisationOids=1.2.246.562.10.00000000001&searchTerms=&startIndex=0')
             .respond(201,hakukohteetjson);
 
-        ctrl = $controller(HakukohteetController, {'$rootScope' : rootScope, '$scope' : scope,
+        ctrl = $controller('HakukohteetController', {'$rootScope' : rootScope, '$scope' : scope,
             '$location': location, '$routeParams': routeParams, 'HakukohteetModel': hakukohteetModel,
             'GlobalStates': globalStates, 'HakuModel': hakuModel});
         $httpBackend.flush();
@@ -122,7 +122,7 @@ describe('Testing HenkiloController', function(){
         $httpBackend.expectGET('haku-app/applications?appState=ACTIVE&appState=INCOMPLETE&q=&rows=30&start=0')
             .respond(201,hakemuksetjson);
 
-        ctrl = $controller(HenkiloController, {'$scope' : scope,
+        ctrl = $controller('HenkiloController', {'$scope' : scope,
             '$location': location, '$routeParams': routeParams, 'HenkiloModel': henkiloModel});
         $httpBackend.flush();
     });
@@ -159,7 +159,7 @@ describe('Testing HenkiloController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
-/*
+
 describe('Testing SijoitteluntulosController', function(){
     var rootScope,$rootScope, $controller, $httpBackend, $location, location,
         scope,ctrl,hakukohdenimijson,hakukohdetilajson,hakujson,hakukohdejson, sijoitteluajojson, $modal, $window,kirjepohjat,latausikkuna,hakukohdeModel,
@@ -207,6 +207,14 @@ describe('Testing SijoitteluntulosController', function(){
 
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
             .respond(201,hakukohdejson);
+
+        $httpBackend.expectGET('/dokumentit/osoitetarrat/'+routeParams.hakukohdeOid)
+            .respond(201,'');
+        $httpBackend.expectGET('/dokumentit/hyvaksymiskirjeet/'+routeParams.hakukohdeOid)
+            .respond(201,'');
+        $httpBackend.expectGET('/dokumentit/sijoitteluntulokset/'+routeParams.hakukohdeOid)
+            .respond(201,'');
+
         $httpBackend.expectGET('haku/'+routeParams.hakuOid)
             .respond(201,hakujson);
         $httpBackend.expectGET('resources/sijoittelu/'+routeParams.hakuOid+'/sijoitteluajo/latest/hakukohde/'+routeParams.hakukohdeOid)
@@ -220,7 +228,8 @@ describe('Testing SijoitteluntulosController', function(){
         $httpBackend.expectGET('resources/tila/hakukohde/'+routeParams.hakukohdeOid+'/1397647295344-8565235898154713515')
             .respond(201,hakukohdetilajson);
 
-        ctrl = $controller(SijoitteluntulosController, {'$scope' : scope, '$modal' : $modal, '$routeParams': routeParams,
+
+        ctrl = $controller('SijoitteluntulosController', {'$scope' : scope, '$modal' : $modal, '$routeParams': routeParams,
             '$window' : $window, 'Kirjepohjat': kirjepohjat, 'Latausikkuna': latausikkuna, 'HakukohdeModel': hakukohdeModel,
             'SijoitteluntulosModel': sijoitteluntulosModel, 'OsoitetarratSijoittelussaHyvaksytyille': osoitetarratSijoittelussaHyvaksytyille,
             'Hyvaksymiskirjeet': hyvaksymiskirjeet, 'Jalkiohjauskirjeet': jalkiohjauskirjeet, 'SijoitteluXls': sijoitteluXls,
@@ -235,4 +244,3 @@ describe('Testing SijoitteluntulosController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
-*/

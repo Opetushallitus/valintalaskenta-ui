@@ -252,7 +252,11 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 });
 
 
-function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
+angular.module('valintalaskenta').
+    controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
+        'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet',
+        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta',
+        function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta) {
     $scope.hakuOid = $routeParams.hakuOid;
@@ -501,4 +505,4 @@ function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirje
     $scope.isKorkeakoulu();
 
 
-}
+}]);

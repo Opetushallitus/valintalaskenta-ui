@@ -147,7 +147,9 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
 });
 
 
-function HakukohteetController($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
+angular.module('valintalaskenta').
+    controller('HakukohteetController',['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', 'GlobalStates', 'HakuModel',
+        function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
@@ -187,7 +189,8 @@ function HakukohteetController($rootScope, $scope, $location, $routeParams, Haku
     $scope.lazyLoading = function () {
         $scope.model.getNextPage(false);
     }
-}
+}]);
+
 
 app.factory('GlobalStates', function () {
     var model = new function () {
