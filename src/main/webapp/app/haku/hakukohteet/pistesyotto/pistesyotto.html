@@ -1,4 +1,4 @@
-﻿<h1>Valintojen toteuttaminen</h1>
+﻿<h1>{{ t('hakukohteetpistesyotto.header') || 'Valintojen toteuttaminen' }}</h1>
 <div ng-include="'haku/topNavigation.html'"/>
 <style>
 .btn-file {
@@ -36,43 +36,42 @@
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
 
-                <a ng-if="arvonta" href="" ng-click="arvoPisteet()">Arvo pisteet</a>
+                <a ng-if="arvonta" href="" ng-click="arvoPisteet()">{{ t('hakukohteetpistesyotto.arvopisteet') || 'Arvo pisteet' }}</a>
 
-                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
+                <input type="text" class="search margin-vertical-2" placeholder="{{ t('hakukohteetpistesyotto.suodatahakijoita') || 'Suodata hakijoita' }}"
                        ng-model="hakijaFilter"/>
 
                 <select ng-model="koeFilter" ng-options="avain.kuvaus for avain in model.avaimet"
                         ng-change="updateFilterData()">
-                    <option value="">Kaikki kokeet</option>
+                    <option value="">{{ t('hakukohteetpistesyotto.kaikkikokeet') || 'Kaikki kokeet' }}</option>
                 </select>
                 <select ng-model="osallistuminenFilter" ng-change="updateFilterData()">
-                    <option value="">Kaikki tilat</option>
-                    <option value="MERKITSEMATTA">Merkitsemättä</option>
-                    <option value="OSALLISTUI">Osallistui</option>
-                    <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                    <option value="">{{ t('hakukohteetpistesyotto.kaikkitilat') || 'Kaikki tilat' }}</option>
+                    <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
+                    <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
+                    <option value="EI_OSALLISTUNUT">{{ t('hakukohteetpistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
                 </select>
                 <pagination-pagesize page-size="pageSize"></pagination-pagesize>
                 <form name="form" ng-if="model.avaimet">
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                            class="btn btn-primary btn-sm margin-bottom-2" ng-click="submit()">Tallenna
+                            class="btn btn-primary btn-sm margin-bottom-2" ng-click="submit()">{{ t('hakukohteetpistesyotto.tallenna') || 'Tallenna' }}
                     </button>
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
                     		ng-click="pistesyottoVientiXlsx()"
-                            class="btn btn-default btn-sm margin-bottom-2">Vie taulukkolaskentaan
+                            class="btn btn-default btn-sm margin-bottom-2">{{ t('hakukohteetpistesyotto.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
                     </button>
                     <span	ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
                     		class="btn btn-primary btn-sm margin-bottom-2 btn-file">
-					    Tuo taulukkolaskennasta <input type="file" ng-file-select="pistesyottoTuontiXlsx($files)" >
+					    {{ t('hakukohteetpistesyotto.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input type="file" ng-file-select="pistesyottoTuontiXlsx($files)" >
 					</span>
                     <div>
-                        <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista
-                            virheet!
+                        <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">{{ t('hakukohteetpistesyotto.tarkistavirheet') || 'Tarkista virheet!' }}
                         </div>
                     </div>
                     <table class="virkailija-table-1" stay-on-focus>
                         <thead>
                         <tr>
-                            <th><a href="" ng-click="reverse=!reverse">Tiedot</a></th>
+                            <th><a href="" ng-click="reverse=!reverse">{{ t('hakukohteetpistesyotto.tiedot') || 'Tiedot' }}</a></th>
                             <th ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
                                 {{avain.kuvaus}}
                                 <span ng-if="avain.min !== undefined && avain.min !== null|| avain.max !== null && avain.max !== undefined">
@@ -112,9 +111,9 @@
                                                         ng-if="avain.osallistuminenTunniste"
                                                         ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                                                         >
-                                                    <option value="MERKITSEMATTA">Merkitsemättä</option>
-                                                    <option value="OSALLISTUI">Osallistui</option>
-                                                    <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                                                    <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
+                                                    <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
+                                                    <option value="EI_OSALLISTUNUT">{{ t('hakukohteetpistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
                                                 </select>
                                                 <br/>
                                                 <span style="color: red;"></span>
@@ -127,9 +126,9 @@
                                                             ng-model="hakija.additionalData[avain.tunniste]"
                                                             ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
 
-                                                        <option value="">Tyhjä</option>
-                                                        <option value="true">Kyllä</option>
-                                                        <option value="false">Ei</option>
+                                                        <option value="">{{ t('hakukohteetpistesyotto.tyhja') || 'Tyhjä' }}</option>
+                                                        <option value="true">{{ t('hakukohteetpistesyotto.kylla') || 'Kyllä' }}</option>
+                                                        <option value="false">{{ t('hakukohteetpistesyotto.ei') || 'Ei' }}</option>
 
                                                     </select>
                                                 </span>
@@ -138,9 +137,9 @@
                                                     <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                                             ng-model="hakija.additionalData[avain.tunniste]"
                                                             ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
-                                                        <option value="">Tyhjä</option>
-                                                        <option value="true">Hyväksytty</option>
-                                                        <option value="false">Hylätty</option>
+                                                        <option value="">{{ t('hakukohteetpistesyotto.tyhja') || 'Tyhjä' }}</option>
+                                                        <option value="true">{{ t('hakukohteetpistesyotto.hyvaksytty') || 'Hyväksytty' }}</option>
+                                                        <option value="false">{{ t('hakukohteetpistesyotto.hylatty') || 'Hylätty' }}</option>
                                                     </select>
                                                 </span>
 
@@ -149,9 +148,9 @@
                                                         ng-if="avain.osallistuminenTunniste"
                                                         ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                                                         >
-                                                    <option value="MERKITSEMATTA">Merkitsemättä</option>
-                                                    <option value="OSALLISTUI">Osallistui</option>
-                                                    <option value="EI_OSALLISTUNUT">Ei osallistunut</option>
+                                                    <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
+                                                    <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
+                                                    <option value="EI_OSALLISTUNUT">{{ t('hakukohteetpistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
                                                 </select>
                                                 <span style="color: red;"></span>
                                             </div>
@@ -159,7 +158,7 @@
 
                                         </div>
                                         <div ng-switch-default>
-                                            Syötetty muualla: {{hakija.additionalData[avain.tunniste]}}
+                                            {{ t('hakukohteetpistesyotto.syotettymuualla') || 'Syötetty muualla' }}: {{hakija.additionalData[avain.tunniste]}}
                                         </div>
                                     </div>
                                     <div ng-switch-default>
@@ -172,14 +171,13 @@
                         </tbody>
                     </table>
 
-                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResult.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
+                    <pagination previous-text="{{ t('hakukohteetpistesyotto.edellinen') || 'Edellinen' }}" next-text="{{ t('hakukohteetpistesyotto.seuraava') || 'Seuraava' }}" total-items="filteredResult.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
                     <br/>
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                            class="btn btn-primary btn-sm margin-top-2" ng-click="submit()">Tallenna
+                            class="btn btn-primary btn-sm margin-top-2" ng-click="submit()">{{ t('hakukohteetpistesyotto.tallenna') || 'Tallenna' }}
                     </button>
                     <div>
-                        <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">Tarkista
-                            virheet!
+                        <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">{{ t('hakukohteetpistesyotto.tarkistavirheet') || 'Tarkista virheet!' }}
                         </div>
                     </div>
                 </form>
@@ -189,6 +187,6 @@
 
     <div class="clear"></div>
     <div ng-show="showLoading"
-         style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...
+         style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">{{ t('hakukohteetpistesyotto.kasitellaan') || 'käsitellään' }}...
     </div>
 </div>

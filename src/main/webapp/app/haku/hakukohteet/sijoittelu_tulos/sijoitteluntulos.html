@@ -1,4 +1,4 @@
-<h1>Valintojen toteuttaminen</h1>
+<h1>{{ t('sijoitteluntulos.header') || 'Valintojen toteuttaminen' }}</h1>
 <div ng-include="'haku/topNavigation.html'"></div>
 
 <div class="tabsheets">
@@ -25,51 +25,48 @@
                 <!--</div>-->
 
                 <br/>
-                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita"
+                <input type="text" class="search margin-vertical-2" placeholder="{{ t('sijoitteluntulos.suodatahakijoita') || 'Suodata hakijoita' }}"
                        ng-model="hakijaFilter"/>
 
-                <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">Vie
-                    taulukkolaskentaan</a>
-                <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">Muodosta
-                    hyväksymiskirjeet</a>
-                <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">Muodosta
-                    hyväksytyille osoitetarrat</a>
+                <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('sijoitteluntulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
+                <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
+                <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostaosoitetarrat') || 'Muodosta hyväksytyille osoitetarrat' }}</a>
 
                 <br/>
 
-                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{sijoitteluntuloksetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !sijoitteluntuloksetUrl}">Lataa tulokset</a>
-                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{hyvaksymiskirjeetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !hyvaksymiskirjeetUrl}">Lataa hyväksymiskirjeet</a>
-                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{osoitetarratUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !osoitetarratUrl}">Lataa osoitetarrat</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{sijoitteluntuloksetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !sijoitteluntuloksetUrl}">{{ t('sijoitteluntulos.lataatulokset') || 'Lataa tulokset' }}</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{hyvaksymiskirjeetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !hyvaksymiskirjeetUrl}">{{ t('sijoitteluntulos.lataahyvaksymiskirjeet') || 'Lataa hyväksymiskirjeet' }}</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{osoitetarratUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !osoitetarratUrl}">{{ t('sijoitteluntulos.lataaosoitetarrat') || 'Lataa osoitetarrat' }}</a>
 
             </div>
 
             <div class="margin-vertical-2 overflow-x-scroll">
                 <pagination-pagesize page-size="pageSize"></pagination-pagesize>
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot | orderBy:'index':true track by $index">
-                    <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">Tallenna</a>
-                    <a ng-click="selectIlmoitettuToAll(jono.oid)" class="btn btn-default btn-sm margin-bottom-2">{{ 'sijoitteluntulos.buttons.acceptall' | translate }}</a>
+                    <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
+                    <a ng-click="selectIlmoitettuToAll(jono.oid)" class="btn btn-default btn-sm margin-bottom-2">{{ t('sijoitteluntulos.hyvaksyvalintaesitys') || 'Hyväksy valintaesitys' }}</a>
                     <table class="virkailija-table-1">
                         <thead>
                         <tr>
                             <th colspan="10">
                                 {{jono.nimi}}: {{jono.prioriteetti}} /
                                 <!---Valintatapajono OID: {{jono.oid}}-->
-                                Aloituspaikat: {{jono.aloituspaikat}} /
-                                Tasasijasaanto: {{jono.tasasijasaanto}} /
+                                {{ t('sijoitteluntulos.aloituspaikat') || 'Aloituspaikat' }}: {{jono.aloituspaikat}} /
+                                {{ t('sijoitteluntulos.tasasijasaanto') || 'Tasasijasääntö' }}: {{jono.tasasijasaanto}} /
                                 {{jono.eiVarasijatayttoa ? 'Ei varasijatäyttöä' : 'Varasijatäyttö'}}
                             </th>
                         </tr>
                         <tr>
-                            <th>Jonosija ({{jono.hakemukset.length}})</th>
-                            <th>Hakija</th>
-                            <th>Hakutoive</th>
-                            <th>Pisteet</th>
-                            <th>Sijoittelun tila</th>
-                            <th>Vastaanottotieto</th>
-                            <th>{{ 'sijoitteluntulos.header.enrollmentinfo' | translate }}</th>
-                            <th>Muokattu</th>
-                            <th>Muokkaa</th>
-                            <th>Toiminto</th>
+                            <th>{{ t('sijoitteluntulos.jonosija') || 'Jonosija' }} ({{jono.hakemukset.length}})</th>
+                            <th>{{ t('sijoitteluntulos.hakija') || 'Hakija' }}</th>
+                            <th>{{ t('sijoitteluntulos.hakutoive') || 'Hakutoive' }}</th>
+                            <th>{{ t('sijoitteluntulos.pisteet') || 'Pisteet' }}</th>
+                            <th>{{ t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila' }}</th>
+                            <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto' }}</th>
+                            <th>{{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto' }}</th>
+                            <th>{{ t('sijoitteluntulos.muokattu') || 'Muokattu' }}</th>
+                            <th>{{ t('sijoitteluntulos.muokkaa') || 'Muokkaa' }}</th>
+                            <th>{{ t('sijoitteluntulos.toiminto') || 'Toiminto' }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -86,7 +83,7 @@
                             <td><span ng-if="hakemus.pisteet >= 0">{{hakemus.pisteet}}</span></td>
                             <td>
                                 <span>{{hakemus.tila}}</span>
-                                <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>
+                                <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
                                 <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
                                 <modal modal-template="sijoitteluTilaHistoriModal.html">
                                     <modal-open>
@@ -100,7 +97,7 @@
                                 <div ng-show="(updateOrg && (hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || updateOph">
                                     <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                         <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as (tila.value | translate) for tila in hakemuksenMuokattuVastaanottoTilat">
-                                            <option value="">Kesken</option>
+                                            <option value="">{{ t('sijoitteluntulos.kesken') || 'Kesken' }}</option>
                                         </select>
                                     </span>
                                 </div>
@@ -136,52 +133,52 @@
                                                              enabled="updateOph"/>
                             </td>
                             <td>
-								<a ng-if="hakemus.tila == 'HYVAKSYTTY'" ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">Hyväksymiskirje</a>
+								<a ng-if="hakemus.tila == 'HYVAKSYTTY'" ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
 							</td>
                         </tr>
                         </tbody>
                     </table>
-                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$index].length" ng-model="currentPage[$index]" items-per-page="pageSize"></pagination>
+                    <pagination previous-text="{{ t('sijoitteluntulos.edellinen') || 'Edellinen' }}" next-text="{{ t('sijoitteluntulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[$index].length" ng-model="currentPage[$index]" items-per-page="pageSize"></pagination>
                     <br/>
-                    <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-top-2">Tallenna</a>
+                    <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="clear"></div>
     <div ng-show="showLoading"
-         style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...
+         style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">{{ t('sijoitteluntulos.kasitellaan') || 'käsitellään' }}...
     </div>
 </div>
 
 
 <script type="text/ng-template" id="sijoitteluLogModal.html">
     <div class="modal-header">
-        Muutokset
+        {{ t('sijoitteluntulos.muutokset') || 'Muutokset' }}
     </div>
 
     <div class="modal-body">
         <table class="table table-condensed table-hover table-striped">
             <thead>
             <tr>
-                <th>Luotu</th>
-                <th>Muokkaaja</th>
-                <th>Muutos</th>
-                <th>Selite</th>
+                <th>{{ t('sijoitteluntulos.luotu') || 'Luotu' }}</th>
+                <th>{{ t('sijoitteluntulos.muokkaaja') || 'Muokkaaja' }}</th>
+                <th>{{ t('sijoitteluntulos.muutos') || 'Muutos' }}</th>
+                <th>{{ t('sijoitteluntulos.selite') || 'Selite' }}</th>
             </tr>
             </thead>
             <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true">
                 <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
                 <td fast-bind-once="entry.muokkaaja"></td>
                 <td>
-                    <span ng-if="entry.muutos == ''">Kesken</span>
-                    <span ng-if="entry.muutos == 'ILMOITETTU'">Hakijalle ilmoitettu</span>
-                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">Vastaanottanut läsnäolevana</span>
-                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">Vastaanottanut poissaolevana</span>
-                    <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">Ei vastaanotettu määräaikana</span>
-                    <span ng-if="entry.muutos == 'PERUNUT'">Perunut</span>
-                    <span ng-if="entry.muutos == 'PERUUTETTU'">Peruutettu</span>
-                    <span ng-if="entry.muutos == 'EHDOLLISESTI_VASTAANOTTANUT'">Ehdollisesti vastaanottanut</span>
+                    <span ng-if="entry.muutos == ''">{{ t('sijoitteluntulos.kesken') || 'Kesken' }}</span>
+                    <span ng-if="entry.muutos == 'ILMOITETTU'">{{ t('sijoitteluntulos.hakijalleilmoitettu') || 'Hakijalle ilmoitettu' }}</span>
+                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">{{ t('sijoitteluntulos.vastaanottanutlasnaolevana') || 'Vastaanottanut läsnäolevana' }}</span>
+                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">{{ t('sijoitteluntulos.vastaanottanutpoissaolevana') || 'Vastaanottanut poissaolevana' }}</span>
+                    <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">{{ t('sijoitteluntulos.eivastaanotettu') || 'Ei vastaanotettu määräaikana' }}</span>
+                    <span ng-if="entry.muutos == 'PERUNUT'">{{ t('sijoitteluntulos.perunut') || 'Perunut' }}</span>
+                    <span ng-if="entry.muutos == 'PERUUTETTU'">{{ t('sijoitteluntulos.peruutettu') || 'Peruutettu' }}</span>
+                    <span ng-if="entry.muutos == 'EHDOLLISESTI_VASTAANOTTANUT'">{{ t('sijoitteluntulos.ehdollisestivastaanottanut') || 'Ehdollisesti vastaanottanut' }}</span>
                 </td>
                 <td fast-bind-once="entry.selite"></td>
             </tr>
@@ -191,7 +188,7 @@
     <div class="modal-footer">
         <div class="row">
             <a class="btn btn-default btn-sm" ng-click="sulje();"
-               role="button">Sulje</a>
+               role="button">{{ t('sijoitteluntulos.sulje') || 'Sulje' }}</a>
         </div>
     </div>
 
@@ -199,15 +196,15 @@
 
 <script type="text/ng-template" id="sijoitteluTilaHistoriModal.html">
     <div class="modal-header">
-        Muutokset
+        {{ t('sijoitteluntulos.muutokset') || 'Muutokset' }}
     </div>
 
     <div class="modal-body">
         <table class="table table-condensed table-hover table-striped">
             <thead>
             <tr>
-                <th>Luotu</th>
-                <th>Tila</th>
+                <th>{{ t('sijoitteluntulos.luotu') || 'Luotu' }}</th>
+                <th>{{ t('sijoitteluntulos.tila') || 'Tila' }}</th>
             </tr>
             </thead>
             <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true">
@@ -220,7 +217,7 @@
     <div class="modal-footer">
         <div class="row">
             <a class="btn btn-default btn-sm" ng-click="sulje();"
-               role="button">Sulje</a>
+               role="button">{{ t('sijoitteluntulos.sulje') || 'Sulje' }}</a>
         </div>
     </div>
 

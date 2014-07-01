@@ -1,4 +1,4 @@
-<h1>Valintojen toteuttaminen</h1>
+<h1>{{ t('hakukohteethakukohdeperustiedot.header') || 'Valintojen toteuttaminen' }}</h1>
 <div ng-include="'haku/topNavigation.html'"></div>
 <div class="clear"></div>
 
@@ -16,31 +16,24 @@
             <div class="col-md-9">
 
                 <dl>
-                    <dt>HakukohdeOid</dt>
+                    <dt>{{ t('hakukohteethakukohdeperustiedot.hakukohdeoid') || 'HakukohdeOid' }}</dt>
                     <dd>{{model.hakukohde.oid}}</dd>
 
-                    <dt>Aloituspaikat</dt>
+                    <dt>{{ t('hakukohteethakukohdeperustiedot.aloituspaikat') || 'Aloituspaikat' }}</dt>
                     <dd>{{model.hakukohde.valintojenAloituspaikatLkm}}</dd>
-
-                    <!--<dt>Ensisijaisia hakijoita yhteensä</dt>-->
-                    <!--<dd>{{model.ensisijaiset.length}}</dd>-->
-
-                    <!--<dt>Hakijoita yhteensä</dt>-->
-                    <!--<dd>{{hakeneetModel.hakeneet.length}}</dd>-->
-
 
                 </dl>
 
-                <h3>Valintatapajonokohtaiset tiedot</h3>
+                <h3>{{ t('hakukohteethakukohdeperustiedot.valintatapajonokohtaiset') || 'Valintatapajonokohtaiset tiedot' }}</h3>
                 <table class="virkailija-table-1">
                     <thead>
                     <tr>
-                        <th>Valintatapajono</th>
-                        <th>Hyväksytyt yhteensä</th>
-                        <th>Harkinnanvaraisesti hyväksytyt yhteensä</th>
-                        <th>Varasijoilla yhteensä</th>
-                        <th>Paikan vastaanottaneet yhteensä</th>
-                        <th>Alin hyväksytty pistemäärä</th>
+                        <th>{{ t('hakukohteethakukohdeperustiedot.valintatapajono') || 'Valintatapajono' }}</th>
+                        <th>{{ t('hakukohteethakukohdeperustiedot.hyvaksytyt') || 'Hyväksytyt yhteensä' }}</th>
+                        <th>{{ t('hakukohteethakukohdeperustiedot.harkinnanvaraisesti') || 'Harkinnanvaraisesti hyväksytyt yhteensä' }}</th>
+                        <th>{{ t('hakukohteethakukohdeperustiedot.varasijoilla') || 'Varasijoilla yhteensä' }}</th>
+                        <th>{{ t('hakukohteethakukohdeperustiedot.vastaanottaneet') || 'Paikan vastaanottaneet yhteensä' }}</th>
+                        <th>{{ t('hakukohteethakukohdeperustiedot.hyvaksytty') || 'Alin hyväksytty pistemäärä' }}</th>
                     </tr>
                     </thead>
                     <tbody>
