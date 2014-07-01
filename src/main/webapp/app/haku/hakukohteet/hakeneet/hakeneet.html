@@ -1,4 +1,4 @@
-<h1>Valintojen toteuttaminen</h1>
+<h1>{{ t('hakukohteethakeneet.header') || 'Valintojen toteuttaminen' }}</h1>
 <div ng-include="'haku/topNavigation.html'" />
 
 <div class="tabsheets">
@@ -23,8 +23,8 @@
                     <table class="virkailija-table-1">
                         <thead>
                         <tr>
-                            <th>Nimi</th>
-                            <th>Tila</th>
+                            <th>{{ t('hakukohteethakeneet.nimi') || 'Nimi' }}</th>
+                            <th>{{ t('hakukohteethakeneet.tila') || 'Tila' }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -43,7 +43,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResult.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
+                    <pagination previous-text="{{ t('hakukohteethakeneet.edellinen') || 'Edellinen' }}" next-text="{{ t('hakukohteethakeneet.seuraava') || 'Seuraava' }}" total-items="filteredResult.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
                 </form>
             </div>
         </div>
