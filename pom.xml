@@ -31,10 +31,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc-portlet</artifactId>
+            <version>${spring.version}</version>
         </dependency>
       <dependency>
           <groupId>javax.servlet</groupId>
@@ -42,6 +44,7 @@
           <version>2.5</version>
           <scope>provided</scope>
       </dependency>
+
       <!-- spring security -->
       <dependency>
           <groupId>org.springframework.security</groupId>
@@ -72,6 +75,36 @@
       <dependency>
           <groupId>fi.vm.sade.generic</groupId>
           <artifactId>generic-common</artifactId>
+          <exclusions>
+              <exclusion>
+                  <artifactId>spring-web</artifactId>
+                  <groupId>org.springframework</groupId>
+              </exclusion>
+              <exclusion>
+                  <artifactId>spring-context</artifactId>
+                  <groupId>org.springframework</groupId>
+              </exclusion>
+              <exclusion>
+                  <artifactId>spring-tx</artifactId>
+                  <groupId>org.springframework</groupId>
+              </exclusion>
+              <exclusion>
+                  <artifactId>spring-beans</artifactId>
+                  <groupId>org.springframework</groupId>
+              </exclusion>
+              <exclusion>
+                  <artifactId>spring-core</artifactId>
+                  <groupId>org.springframework</groupId>
+              </exclusion>
+              <exclusion>
+                  <artifactId>spring-asm</artifactId>
+                  <groupId>org.springframework</groupId>
+              </exclusion>
+              <exclusion>
+                  <artifactId>spring-expression</artifactId>
+                  <groupId>org.springframework</groupId>
+              </exclusion>
+          </exclusions>
       </dependency>
       <dependency>
           <groupId>org.hibernate</groupId>
