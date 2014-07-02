@@ -162,7 +162,8 @@ describe('Testing HenkiloController', function(){
 
 describe('Testing SijoitteluntulosController', function(){
     var rootScope,$rootScope, $controller, $httpBackend, $location, location,
-        scope,ctrl,hakukohdenimijson,hakukohdetilajson,hakujson,hakukohdejson, sijoitteluajojson, $modal, $window,kirjepohjat,latausikkuna,hakukohdeModel,
+        scope,ctrl,hakukohdenimijson,hakukohdetilajson,hakujson,hakukohdejson, sijoitteluajojson, $modal, $window,
+        kirjepohjat,latausikkuna,hakukohdeModel,
         sijoitteluntulosModel, osoitetarratSijoittelussaHyvaksytyille, hyvaksymiskirjeet, jalkiohjauskirjeet,
         sijoitteluXls, authService;
     var routeParams = {"hakuOid": "oid",
@@ -296,9 +297,9 @@ describe('Testing SijoitteluntulosController', function(){
         scope.resetIlmoittautumisTila(hakemus);
         expect(hakemus.muokattuIlmoittautumisTila).toBe("EI_TEHTY");
         hakemus.muokattuVastaanottoTila = "VASTAANOTTANUT";
-        hakemus.muokattuIlmoittautumisTila = "";
+        hakemus.muokattuIlmoittautumisTila = "LASNA";
         scope.resetIlmoittautumisTila(hakemus);
-        expect(hakemus.muokattuIlmoittautumisTila).toBe("EI_TEHTY");
+        expect(hakemus.muokattuIlmoittautumisTila).toBe("LASNA");
         hakemus.muokattuVastaanottoTila = "EHDOLLISESTI_VASTAANOTTANUT";
         hakemus.muokattuIlmoittautumisTila = "";
         scope.resetIlmoittautumisTila(hakemus);
@@ -311,6 +312,134 @@ describe('Testing SijoitteluntulosController', function(){
 
     afterEach(function() {
 
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+
+
+
+describe('Testing HakukohdeController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hakukohdeModel, hakuModel,
+        sijoitteluntulosModel, location, hakukohdejson, hakujson, sijoitteluajojson, hakukohdenimijson,
+        hakukohdetilajson;
+
+    var routeParams = {"hakuOid": "oid",
+        "hakukohdeOid" : "oid2"};
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector, hakukohdeJSON, hakuJSON, sijoitteluajoJSON, hakukohdenimiJSON,
+                               hakukohdetilaJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        hakukohdeModel = $injector.get('HakukohdeModel');
+        hakuModel = $injector.get('HakuModel');
+        sijoitteluntulosModel = $injector.get('SijoitteluntulosModel');
+        hakukohdejson = hakukohdeJSON;
+        hakujson = hakuJSON;
+        hakukohdenimijson = hakukohdenimiJSON;
+        sijoitteluajojson = sijoitteluajoJSON;
+        hakukohdetilajson = hakukohdetilaJSON;
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+
+        $httpBackend.flush();
+    }));
+
+    it('should get HakukohdeController', function() {
+        scope = $rootScope.$new();
+        location = $location;
+
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
+        $httpBackend.expectGET('haku/'+routeParams.hakuOid)
+            .respond(201,hakujson);
+        $httpBackend.expectGET('resources/sijoittelu/'+routeParams.hakuOid+'/sijoitteluajo/latest/hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,sijoitteluajojson);
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
+            .respond(201,hakukohdenimijson);
+        $httpBackend.expectGET('resources/tila/hakukohde/'+routeParams.hakukohdeOid+'/1397647295344-8565235898154713515')
+            .respond(201,hakukohdetilajson);
+
+        ctrl = $controller('HakukohdeController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
+            'HakukohdeModel': hakukohdeModel, 'HakuModel': hakuModel, 'SijoitteluntulosModel': sijoitteluntulosModel});
+
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.hakuOid).toBe(routeParams.hakuOid);
+        expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
+        expect(scope.model.hakukohde.alinHyvaksyttavaKeskiarvo).toBe(0);
+        expect(scope.model.hakukohde.alinValintaPistemaara).toBe(0);
+        expect(scope.model.hakukohde.aloituspaikatLkm).toBe(40);
+        expect(scope.model.hakukohde.edellisenVuodenHakijatLkm).toBe(0);
+        expect(scope.model.hakukohde.hakuOid).toBe("1.2.246.562.5.2013080813081926341927");
+        expect(scope.model.hakukohde.hakuaikaAlkuPvm).toBe(1398936000000);
+        expect(scope.model.hakukohde.hakuaikaLoppuPvm).toBe(1402920000000);
+        expect(scope.model.hakukohde.hakukelpoisuusvaatimusUris.length).toBe(1);
+        expect(scope.model.hakukohde.hakukohdeKoodistoNimi).toBe("Puutarhatalouden perustutkinto, yo, Kevät 2014, julkaistu");
+        expect(scope.model.hakukohde.hakukohdeKoulutusOids.length).toBe(2);
+        expect(scope.model.hakukohde.hakukohdeNimiUri).toBe("hakukohteet_879#1");
+        expect(scope.model.hakukohde.kaksoisTutkinto).toBeFalsy();
+        expect(scope.model.hakukohde.kaytetaanHakukohdekohtaistaHakuaikaa).toBeFalsy();
+        expect(scope.model.hakukohde.kaytetaanHaunPaattymisenAikaa).toBeTruthy();
+        expect(scope.model.hakukohde.kaytetaanJarjestelmanValintaPalvelua).toBeFalsy();
+        expect(scope.model.hakukohde.liitteidenToimitusPvm).toBe(1394802000000);
+        expect(scope.model.hakukohde.modified).toBe(1400588726870);
+        expect(scope.model.hakukohde.modifiedBy).toBe("1.2.246.562.24.00000000001");
+        expect(scope.model.hakukohde.oid).toBe("1.2.246.562.5.39836447563");
+        expect(scope.model.hakukohde.opetuskielet.length).toBe(1);
+        expect(scope.model.hakukohde.tarjoajaOid).toBe("1.2.246.562.10.60222091211");
+        expect(scope.model.hakukohde.tila).toBe("JULKAISTU");
+        expect(scope.model.hakukohde.valintakoes.length).toBe(1);
+        expect(scope.model.hakukohde.valintaperustekuvausKoodiUri).toBe("valintaperustekuvausryhma_3#1");
+        expect(scope.model.hakukohde.valintojenAloituspaikatLkm).toBe(40);
+        expect(scope.model.hakukohde.version).toBe(35);
+        expect(scope.model.hakukohde.ylinValintapistemaara).toBe(0);
+    });
+
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+describe('Testing HakukohdeNimiController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hakukohdeModel;
+
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        hakukohdeModel = $injector.get('HakukohdeModel');
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+
+        $httpBackend.flush();
+    }));
+
+    it('should get HakukohdeNimiController', function() {
+        scope = $rootScope.$new();
+        ctrl = $controller('HakukohdeNimiController', {'$scope' : scope, 'HakukohdeModel': hakukohdeModel});
+    });
+
+    it('check initialized variables', function() {
+    });
+
+
+    afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });

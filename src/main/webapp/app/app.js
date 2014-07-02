@@ -1,5 +1,6 @@
 "use strict";
 
+
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
     'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
@@ -36,8 +37,8 @@ var SIJOITTELU_URL_BASE = SIJOITTELU_URL_BASE || "";
 app.config(function($routeProvider) {
     $routeProvider.
     when('/haku/', {controller:HakuController, templateUrl:TEMPLATE_URL_BASE + 'haku/haut.html'}).
-    when('/haku/:hakuOid/hakukohde/', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakukohde.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/perustiedot/hakukohdeperustiedot.html'}).
+    when('/haku/:hakuOid/hakukohde/', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakukohde.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/perustiedot/hakukohdeperustiedot.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valinnanhallinta', {controller:ValinnanhallintaController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hallinta/valinnanhallinta.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset', {controller:HarkinnanvaraisetController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/harkinnanvaraiset/harkinnanvaraiset.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintalaskentatulos', {controller:ValintalaskentatulosController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/valintalaskenta_tulos/valintalaskentatulos.html'}).
@@ -56,7 +57,7 @@ app.config(function($routeProvider) {
     when('/haku/:hakuOid/yhteisvalinnanhallinta/valintatulos', {controller:ValintatulosController, templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/tulos/valintatulos.html'}).
 
     when('/lisahaku/:hakuOid/hakukohde', {controller: LisahakuController, templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/lisahakuHakukohde.html'}).
-    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: HakukohdeController, templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakukohdeperustiedot.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: 'HakukohdeController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakukohdeperustiedot.html'}).
     when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hyvaksytyt', {controller: LisahakuhyvaksytytController, templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hyvaksytyt.html'}).
     when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller: HakeneetController, templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakeneet.html'}).
 
