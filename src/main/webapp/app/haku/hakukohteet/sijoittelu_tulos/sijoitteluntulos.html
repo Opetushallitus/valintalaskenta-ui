@@ -108,8 +108,7 @@
 
                             <td>
                                 <div ng-show="hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT'">
-                                      <select ng-disabled="!(updateOrg || updateOph)"
-                                              ng-model="hakemus.muokattuIlmoittautumisTila"
+                                      <select ng-model="hakemus.muokattuIlmoittautumisTila"
                                               ng-options="tila.value as tila.text | translate for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                       </select>
                                  </div>
