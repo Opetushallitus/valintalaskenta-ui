@@ -43,9 +43,9 @@ describe('Testing HakukohteetController', function(){
          expect(scope.model.searchWord).toBe("");
          expect(scope.model.lastSearch).toBe("");
          expect(scope.model.lastHakuOid).toBe(routeParams.hakuOid);
-         expect(scope.model.omatHakukohteet).toBe(true);
+         expect(scope.model.omatHakukohteet).toBeTruthy();
          expect(scope.model.valmiitHakukohteet).toBe("JULKAISTU");
-         expect(scope.model.readyToQueryForNextPage).toBe(true);
+         expect(scope.model.readyToQueryForNextPage).toBeTruthy();
 
     });
 
@@ -58,8 +58,8 @@ describe('Testing HakukohteetController', function(){
         };
         var lisahaku = false;
         scope.showHakukohde(hakukohde, lisahaku);
-        expect(scope.hakukohteetVisible).toBe(false);
-        expect(globalStates.hakukohteetVisible).toBe(false);
+        expect(scope.hakukohteetVisible).toBeFalsy();
+        expect(globalStates.hakukohteetVisible).toBeFalsy();
         expect(rootScope.selectedHakukohdeNimi).toBe('koulu1');
         expect(location.path()).toMatch('/haku/.*');
     });
@@ -73,17 +73,17 @@ describe('Testing HakukohteetController', function(){
         };
         var lisahaku = true;
         scope.showHakukohde(hakukohde, lisahaku);
-        expect(scope.hakukohteetVisible).toBe(false);
-        expect(globalStates.hakukohteetVisible).toBe(false);
+        expect(scope.hakukohteetVisible).toBeFalsy();
+        expect(globalStates.hakukohteetVisible).toBeFalsy();
         expect(rootScope.selectedHakukohdeNimi).toBe('koulu2');
         expect(location.path()).toMatch('/lisahaku/.*');
     });
 
     it('toggleHakukohteetVisible', function() {
         scope.toggleHakukohteetVisible();
-        expect(globalStates.hakukohteetVisible).toBe(true);
+        expect(globalStates.hakukohteetVisible).toBeTruthy();
         scope.toggleHakukohteetVisible();
-        expect(globalStates.hakukohteetVisible).toBe(false);
+        expect(globalStates.hakukohteetVisible).toBeFalsy();
     });
 
     afterEach(function() {
@@ -133,14 +133,14 @@ describe('Testing HenkiloController', function(){
         expect(scope.model.pageSize).toBe(30);
         expect(scope.model.searchWord).toBe("");
         expect(scope.model.lastSearch).toBe("");
-        expect(scope.model.readyToQueryForNextPage).toBe(true);
+        expect(scope.model.readyToQueryForNextPage).toBeTruthy();
     });
 
     it('toggleHenkiloittainVisible', function() {
         scope.toggleHenkiloittainVisible();
-        expect(scope.henkiloittainVisible).toBe(false);
+        expect(scope.henkiloittainVisible).toBeFalsy();
         scope.toggleHenkiloittainVisible();
-        expect(scope.henkiloittainVisible).toBe(true);
+        expect(scope.henkiloittainVisible).toBeTruthy();
     });
 
     it('showHakemus', function() {
@@ -436,6 +436,65 @@ describe('Testing HakukohdeNimiController', function(){
     });
 
     it('check initialized variables', function() {
+    });
+
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+describe('Testing HakeneetController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakeneetModel, hakukohdeModel,
+        hakukohdejson,hakeneetjson,hakukohdenimijson;
+    var routeParams = {"hakuOid": "oid",
+        "hakukohdeOid" : "oid2"};
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector, hakukohdeJSON, hakeneetJSON, hakukohdenimiJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        hakeneetModel = $injector.get('HakeneetModel');
+        hakukohdeModel = $injector.get('HakukohdeModel');
+        hakukohdejson = hakukohdeJSON;
+        hakeneetjson = hakeneetJSON;
+        hakukohdenimijson = hakukohdenimiJSON;
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+
+        $httpBackend.flush();
+    }));
+
+    it('should get HakeneetController', function() {
+        scope = $rootScope.$new();
+
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
+        $httpBackend.expectGET('haku-app/applications?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
+            .respond(201,hakeneetjson);
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
+            .respond(201,hakukohdenimijson);
+        ctrl = $controller('HakeneetController', {'$scope' : scope,'$location': location, '$routeParams': routeParams,
+            'HakeneetModel': hakeneetModel, 'HakukohdeModel': hakukohdeModel});
+
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.model.hakeneet.length).toBe(17);
+        expect(scope.model.hakeneet[10].firstNames).toBe("Peetu I");
+        expect(scope.model.hakeneet[10].lastName).toBe("Kuusijoki");
+        expect(scope.model.hakeneet[10].oid).toBe("1.2.246.562.11.00000842048");
+        expect(scope.model.hakeneet[10].personOid).toBe("1.2.246.562.24.92205707637");
+        expect(scope.model.hakeneet[10].ssn).toBe("161178-934E");
+        expect(scope.model.hakeneet[10].state).toBe("INCOMPLETE");
+        expect(scope.tila.ACTIVE).toBeDefined();
+        expect(scope.tila.INCOMPLETE).toBeDefined();
     });
 
 
