@@ -192,7 +192,11 @@
 });
 
 
-function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls, IlmoitusTila) {
+angular.module('valintalaskenta').
+    controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel',
+        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila',
+        function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
+                  Osoitetarrat, ValintakoeXls, IlmoitusTila) {
 	// kayttaa dokumenttipalvelua
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	
@@ -241,10 +245,8 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 					letterBodyText: letterBodyText
 				},
 				function(id) {
-				//Dokumenttipalvelu.paivita($scope.update);
 					Latausikkuna.avaa(id, otsikko, valintakoe.valintakoeTunniste);
 	    	},function() {
-	    		//Dokumenttipalvelu.paivita($scope.update);
 	    	});
 		} else {
 			Ilmoitus.avaa("Koekutsuja ei voida muodostaa!","Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.", IlmoitusTila.WARNING);
@@ -280,7 +282,6 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
     			tag: "valintakoetulos",
     			hakemusOids: hakemusOids
     		},function(id) {
-    			//Dokumenttipalvelu.paivita($scope.update);
     			Latausikkuna.avaa(id, otsikko, valintakoe.valintakoeTunniste);
     	});
     };
@@ -294,7 +295,6 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
         		}, function(id) {
     		Latausikkuna.avaa(id, "Osoitetarrat hakukohteen valintakokeille", "Kaikille hakukohteen valintakokeille");
     	}, function() {
-    		//Dokumenttipalvelu.paivita($scope.update);
     		
     	});
     };
@@ -326,6 +326,4 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
             page = 1;
         });
     }
-    
-    
-}   
+}]);
