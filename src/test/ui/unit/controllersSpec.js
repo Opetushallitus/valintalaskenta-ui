@@ -258,6 +258,57 @@ describe('Testing SijoitteluntulosController', function(){
         expect(scope.model.sijoitteluTulokset.valintatapajonot[0].varalla).toBe(0);
     });
 
+    it('updateVastaanottoTila', function() {
+        var hakemus = {
+            oid: '1.2.246.562.5.39836447563',
+            showMuutaHakemus: true
+        };
+        var valintatapajonoOid = "2";
+
+        expect(hakemus.showMuutaHakemus).toBeTruthy();
+        scope.updateVastaanottoTila(hakemus, valintatapajonoOid);
+        expect(hakemus.showMuutaHakemus).toBeFalsy();
+    });
+
+    it('selectIlmoitettuToAll', function() {
+        var valintatapajonoOid = "1397647295344-8565235898154713515";
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[0].muokattuVastaanottoTila).toBe("");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[3].muokattuVastaanottoTila).toBe("");
+        scope.selectIlmoitettuToAll(valintatapajonoOid);
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[0].muokattuVastaanottoTila).toBe("ILMOITETTU");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[3].muokattuVastaanottoTila).toBe("");
+    });
+
+    it('isKorkeakoulu', function() {
+        scope.model.haku.kohdejoukkoUri = "uri_1";
+        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
+        scope.isKorkeakoulu();
+        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
+        scope.model.haku.kohdejoukkoUri = "uri_12";
+        scope.isKorkeakoulu();
+        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(6);
+    });
+
+    it('resetIlmoittautumisTila', function() {
+        var hakemus = {
+            muokattuVastaanottoTila: ''
+        };
+        scope.resetIlmoittautumisTila(hakemus);
+        expect(hakemus.muokattuIlmoittautumisTila).toBe("EI_TEHTY");
+        hakemus.muokattuVastaanottoTila = "VASTAANOTTANUT";
+        hakemus.muokattuIlmoittautumisTila = "";
+        scope.resetIlmoittautumisTila(hakemus);
+        expect(hakemus.muokattuIlmoittautumisTila).toBe("EI_TEHTY");
+        hakemus.muokattuVastaanottoTila = "EHDOLLISESTI_VASTAANOTTANUT";
+        hakemus.muokattuIlmoittautumisTila = "";
+        scope.resetIlmoittautumisTila(hakemus);
+        expect(hakemus.muokattuIlmoittautumisTila).toBe("EI_TEHTY");
+        hakemus.muokattuVastaanottoTila = null;
+        hakemus.muokattuIlmoittautumisTila = "";
+        scope.resetIlmoittautumisTila(hakemus);
+        expect(hakemus.muokattuIlmoittautumisTila).toBe("EI_TEHTY");
+    });
+
     afterEach(function() {
 
         $httpBackend.verifyNoOutstandingExpectation();

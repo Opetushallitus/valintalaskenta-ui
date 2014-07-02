@@ -485,12 +485,8 @@ angular.module('valintalaskenta').
     }
 
     $scope.isKorkeakoulu = function() {
-        var returnValue = false;
-        if ($scope.model.haku.kohdejoukkoUri) {
-            returnValue = $scope.model.haku.kohdejoukkoUri.indexOf('_12') !== -1;
-        }
-        if(returnValue) {
-            $scope.hakemuksenMuokattuVastaanottoTilat.push({value: "EHDOLLISESTI_VASTAANOTTANUT"})
+        if ($scope.model.haku.kohdejoukkoUri && $scope.model.haku.kohdejoukkoUri.indexOf('_12') !== -1) {
+            $scope.hakemuksenMuokattuVastaanottoTilat.push({value: "EHDOLLISESTI_VASTAANOTTANUT"});
         }
     };
 
