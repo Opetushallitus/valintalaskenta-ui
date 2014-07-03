@@ -1037,3 +1037,55 @@ describe('Testing ValintalaskentatulosController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
+
+
+describe('Testing HakuController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakuModel, parametriService,
+        findalljson;
+    var routeParams = {"hakuOid": "oid1",
+        "hakukohdeOid" : "oid2"};
+
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector, findallJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        hakuModel = $injector.get('HakuModel');
+        parametriService = $injector.get('ParametriService');
+        findalljson = findallJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+
+        $httpBackend.flush();
+    }));
+
+    it('should get HakuController', function() {
+        scope = $rootScope.$new();
+        location = $location;
+
+        $httpBackend.expectGET('haku/findAll')
+            .respond(201,findalljson);
+        $httpBackend.expectGET('resources/parametrit/'+routeParams.hakuOid)
+            .respond(201,'{"valintakoekutsut":true,"hakeneet":true,"valintalaskenta":true,"pistesyotto":true,"valinnanhallinta":true,"harkinnanvaraiset":true}');
+
+        ctrl = $controller('HakuController', {'$scope' : scope,'$location': location,
+            '$routeParams': routeParams, 'HakuModel': hakuModel, 'ParametriService': parametriService});
+
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.hakumodel.haut.length).toBe(4);
+        expect(scope.hakumodel.lisahaku).toBeFalsy();
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});

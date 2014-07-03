@@ -36,7 +36,7 @@ var SIJOITTELU_URL_BASE = SIJOITTELU_URL_BASE || "";
 //Route configuration
 app.config(function($routeProvider) {
     $routeProvider.
-    when('/haku/', {controller:HakuController, templateUrl:TEMPLATE_URL_BASE + 'haku/haut.html'}).
+    when('/haku/', {controller:'HakuController', templateUrl:TEMPLATE_URL_BASE + 'haku/haut.html'}).
     when('/haku/:hakuOid/hakukohde/', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakukohde.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/perustiedot/hakukohdeperustiedot.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valinnanhallinta', {controller:'ValinnanhallintaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hallinta/valinnanhallinta.html'}).

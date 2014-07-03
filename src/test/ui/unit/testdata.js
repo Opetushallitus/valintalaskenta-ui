@@ -359,4 +359,115 @@ angular.module('testData', [])
     [{"tunniste":"ElÃ¤intenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pÃ¤Ã¤sy- ja soveltuvuuskoe","kuvaus":"PÃ¤Ã¤sy- ja soveltuvuuskoe","funktiotyyppi":"LUKUARVOFUNKTIO","lahde":"SYOTETTAVA_ARVO","onPakollinen":true,"min":"0.0","max":"10.0","arvot":null,"osallistuminenTunniste":"ElÃ¤intenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pÃ¤Ã¤sy- ja soveltuvuuskoe-OSALLISTUMINEN"},{"tunniste":"kielikoe_fi","kuvaus":"Kielikoe","funktiotyyppi":"TOTUUSARVOFUNKTIO","lahde":"SYOTETTAVA_ARVO","onPakollinen":false,"min":null,"max":null,"arvot":null,"osallistuminenTunniste":"kielikoe_fi-OSALLISTUMINEN"},{"tunniste":"1_2_246_562_5_85532589612_urheilija_lisapiste","kuvaus":"Urheilijan lisÃ¤piste","funktiotyyppi":"LUKUARVOFUNKTIO","lahde":"SYOTETTAVA_ARVO","onPakollinen":false,"min":"0","max":"3","arvot":null,"osallistuminenTunniste":"1_2_246_562_5_85532589612_urheilija_lisapiste-OSALLISTUMINEN"}]
 ).value('hakutoiveetJSON',
     {"type":"Application","applicationSystemId":"1.2.246.562.5.2013080813081926341927","answers":{"hakutoiveet":{"preference4-Koulutus-id-aoIdentifier":"879","preference4-Koulutus-id-educationcode":"koulutus_361201","preference4-Opetuspiste-id":"1.2.246.562.10.60222091211","preference1-Opetuspiste":"Jämsän ammattiopisto, Auvila","preference3-Koulutus-id-athlete":"false","preference5-Opetuspiste-id":"1.2.246.562.10.37818936132","preference4-Koulutus-id-athlete":"false","preference2-Koulutus-id-aoIdentifier":"879","preference3-Opetuspiste-id":"1.2.246.562.10.65350415967","preference2-Koulutus":"Puutarhatalouden perustutkinto, yo","preference1-Koulutus-educationDegree":"32","preference5-Koulutus-educationDegree":"32","preference5-discretionary":"false","preference2-Koulutus-id-sora":"false","preference4-Koulutus-id-vocational":"true","preference3-Koulutus-id":"1.2.246.562.14.2013093016313174170362","preference1-Opetuspiste-id":"1.2.246.562.10.17482356668","preference5-Koulutus-id-lang":"FI","preference1-Koulutus-id-sora":"false","preference2-Koulutus-educationDegree":"32","preference5-Opetuspiste-id-parents":"1.2.246.562.10.37818936132,1.2.246.562.10.32506551657,1.2.246.562.10.55867603791,1.2.246.562.10.00000000001,1.2.246.562.10.37818936132","preference5-Koulutus-id-sora":"false","preference1-Koulutus-id-aoIdentifier":"879","preference1-Koulutus-id-educationcode":"koulutus_361201","preference5-Koulutus-id-athlete":"false","preference2-discretionary":"false","preference2-Koulutus-id":"1.2.246.562.5.804712295110","preference3-discretionary":"false","preference3-Koulutus-id-vocational":"true","preference1-Koulutus-id-vocational":"true","preference4-Koulutus-educationDegree":"32","preference1-Koulutus-id-athlete":"true","preference4-Koulutus-id-kaksoistutkinto":"false","preference5-Koulutus-id-kaksoistutkinto":"false","preference5-Koulutus-id":"1.2.246.562.14.2013092509132552072524","preference4-Opetuspiste-id-parents":"1.2.246.562.10.60222091211,1.2.246.562.10.98873174761,1.2.246.562.10.47941294986,1.2.246.562.10.00000000001,1.2.246.562.10.60222091211","preference2-Opetuspiste":"Järviseudun ammatti-instituutti, Kurejoen toimipiste","preference2-Koulutus-id-athlete":"false","preference4-discretionary":"false","preference3-Koulutus-educationDegree":"32","preference5-Koulutus":"Puutarhatalouden perustutkinto, yo","preference2-Koulutus-id-kaksoistutkinto":"false","preference5-Opetuspiste":"Keudan ammattiopisto,  Saaren kartano","preference3-Koulutus-id-kaksoistutkinto":"false","preference5-Koulutus-id-educationcode":"koulutus_361201","preference1-discretionary":"false","preference4-Koulutus-id-sora":"false","preference5-Koulutus-id-vocational":"true","preference3-Koulutus-id-lang":"FI","preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys":"false","preference2-Opetuspiste-id":"1.2.246.562.10.38700491541","preference3-Opetuspiste":"Etelä-Savon ammattiopisto, metsäkoulu","preference4-Koulutus-id-lang":"FI","preference1-Opetuspiste-id-parents":"1.2.246.562.10.17482356668,1.2.246.562.10.28700525299,1.2.246.562.10.48442622063,1.2.246.562.10.00000000001,1.2.246.562.10.17482356668","preference4-Koulutus":"Puutarhatalouden perustutkinto, yo","preference2-Koulutus-id-vocational":"true","preference1-Koulutus-id":"1.2.246.562.5.42343977726","preference3-Koulutus-id-sora":"false","preference2-Opetuspiste-id-parents":"1.2.246.562.10.38700491541,1.2.246.562.10.68305822832,1.2.246.562.10.97795516299,1.2.246.562.10.00000000001,1.2.246.562.10.38700491541","preference4-Koulutus-id":"1.2.246.562.5.39836447563","preference2-Koulutus-id-lang":"FI","preference4-Opetuspiste":"Ahlmanin ammattiopisto","preference3-Koulutus-id-educationcode":"koulutus_361201","preference1-Koulutus-id-kaksoistutkinto":"false","preference1-Koulutus":"Puutarhatalouden perustutkinto, yo","preference3-Koulutus":"Puutarhatalouden perustutkinto, yo","preference3-Koulutus-id-aoIdentifier":"879","preference5-Koulutus-id-aoIdentifier":"879","preference3-Opetuspiste-id-parents":"1.2.246.562.10.65350415967,1.2.246.562.10.63885487908,1.2.246.562.10.401318955310,1.2.246.562.10.00000000001,1.2.246.562.10.65350415967","preference1-Koulutus-id-lang":"FI","preference2-Koulutus-id-educationcode":"koulutus_361201"},"henkilotiedot":{"Henkilotunnus_plain":"110388-922Y","Kutsumanimi_user":"Janita","kansalaisuus":"FIN","asuinmaa":"FIN","Etunimet_user":"Janita Eveliina","Sukunimi_user":"Vanhala","SUKUPUOLI":"n","Sukunimi":"Alamäki","matkapuhelinnumero1":"050 4278910","Henkilotunnus":"110388-922Y","Henkilotunnus_digest":"0a2b7f426226d2b1f883a98c1e15887a2a8b82c5a1cde43efda109b618417ed4","Postinumero":"48400","lahiosoite":"Umpilampi 280","sukupuoli":"2","turvakielto":"false","Kutsumanimi":"Henrik","Sähköposti":"hakija-507563@oph.fi","Etunimet":"Henrik XX","onkoSinullaSuomalainenHetu":"true","aidinkieli":"FI","syntymaaika":"11.03.1988"},"koulutustausta":{"lukion_kieli":"FI","ylioppilastutkinto":"fi","ammatillinenTutkintoSuoritettu":"false","POHJAKOULUTUS":"9","lukioPaattotodistusVuosi":"2013"},"lisatiedot":{"lupaSahkoisesti":"true","lupaJulkaisu":"true","asiointikieli":"suomi","TYOKOKEMUSKUUKAUDET":"3"},"osaaminen":{"LK_MA":"7","LK_YH":"8","LK_B1":"6","LK_AI_OPPIAINE":"FI","LK_AI":"6","LK_GE":"7","LK_KE":"7","LK_FY":"9","LK_A1_OPPIAINE":"EN","LK_LI":"8","LK_TE":"6","LK_BI":"7","LK_KU":"10","LK_FI":"7","LK_KT":"6","LK_HI":"7","LK_B1_OPPIAINE":"SV","LK_A1":"7","LK_PS":"6","LK_MU":"9"}},"oid":"1.2.246.562.11.00000827076","state":"INCOMPLETE","personOid":"1.2.246.562.24.87133504726","studentOid":"1.2.246.562.24.92518399606","lastAutomatedProcessingTime":1402487345984,"received":1394726584218,"updated":1402487346534,"redoPostProcess":"FAILED","fullName":"alamäki henrik xx","searchNames":["alamäki","henrik","xx"],"meta":{"sessionId":"anonymousUser","grades_transferred_lk":"true"},"overriddenAnswers":{"Etunimet":"Janita Eveliina","Kutsumanimi":"Janita","Sukunimi":"Vanhala","asiointikieli":"(null)","kotikunta":"(null)","Henkilotunnus":"110388-922Y","Sukupuoli":"(null)","onkoSinullaSuomalainenHetu":"(null)","turvakielto":"(null)"},"notes":[{"type":"ApplicationNote","noteText":"Hakemus vastaanotettu","added":1394726584218,"user":"anonymousUser"}],"_id":{"time":1394726584000,"new":false,"inc":2103563236,"machine":-458223683,"timeSecond":1394726584}}
+).value('findallJSON',
+    [ {
+        "modified" : 1403526147721,
+        "modifiedBy" : "1.2.246.562.24.57970782582",
+        "oid" : "1.2.246.562.29.21702520681",
+        "version" : 1,
+        "maxHakukohdes" : 15,
+        "hakukausiUri" : "kausi_k#1",
+        "hakukausiVuosi" : 2015,
+        "hakutapaUri" : "hakutapa_03#1",
+        "tila" : "VALMIS",
+        "hakutyyppiUri" : "hakutyyppi_01#1",
+        "nimi" : {
+            "kieli_fi" : "VARSINAINEN JATKUVA HAKU"
+        },
+        "hakuaikas" : [ {
+            "oid" : "230616",
+            "version" : 0,
+            "nimi" : "VARSINAINEN HAKUAIKA",
+            "alkuPvm" : 1427890402157,
+            "loppuPvm" : 1430396002157
+        } ],
+        "koulutuksenAlkamisVuosi" : 0,
+        "kohdejoukkoUri" : "haunkohdejoukko_10#1",
+        "sijoittelu" : true
+    }, {
+        "modified" : 1399548941167,
+        "modifiedBy" : "1.2.246.562.24.00000000001",
+        "oid" : "1.2.246.562.29.41647728207",
+        "version" : 1,
+        "maxHakukohdes" : 5,
+        "hakukausiUri" : "kausi_k#1",
+        "hakukausiVuosi" : 2014,
+        "hakutapaUri" : "hakutapa_01#1",
+        "tila" : "JULKAISTU",
+        "hakutyyppiUri" : "hakutyyppi_01#1",
+        "nimi" : {
+            "kieli_sv" : "Testihaku ml monta hakukohdetta sv",
+            "kieli_en" : "Testihaku ml monta hakukohdetta en",
+            "kieli_fi" : "Testihaku ml monta hakukohdetta"
+        },
+        "hakuaikas" : [ {
+            "oid" : "227340",
+            "version" : 0,
+            "nimi" : "",
+            "alkuPvm" : 1400492606519,
+            "loppuPvm" : 1402307006519
+        }, {
+            "oid" : "226560",
+            "version" : 0,
+            "nimi" : "",
+            "alkuPvm" : 1400151573944,
+            "loppuPvm" : 1404125973944
+        } ],
+        "koulutuksenAlkamiskausiUri" : "kausi_s#1",
+        "koulutuksenAlkamisVuosi" : 2014,
+        "kohdejoukkoUri" : "haunkohdejoukko_11#1",
+        "sijoittelu" : true
+    }, {
+        "modified" : 1390460940628,
+        "modifiedBy" : "1.2.246.562.24.56130560613",
+        "oid" : "1.2.246.562.5.2013112910452702965370",
+        "version" : 0,
+        "maxHakukohdes" : 0,
+        "hakukausiUri" : "kausi_k#1",
+        "hakukausiVuosi" : 2014,
+        "hakutapaUri" : "hakutapa_02#1",
+        "tila" : "JULKAISTU",
+        "hakutyyppiUri" : "hakutyyppi_01#1",
+        "nimi" : {
+            "kieli_sv" : "Ansökan till yrkesinriktad grundutbildning som anordnas som specialundervisning",
+            "kieli_fi" : "Haku erityisopetuksena järjestettäviin ammatillisiin perustutkintoihin"
+        },
+        "hakuaikas" : [ {
+            "oid" : "164630",
+            "version" : 0,
+            "alkuPvm" : 1388565453546,
+            "loppuPvm" : 1401435453546
+        } ],
+        "koulutuksenAlkamiskausiUri" : "kausi_s#1",
+        "koulutuksenAlkamisVuosi" : 2014,
+        "haunTunniste" : "1.2.246.562.5.2013112910452702965370",
+        "kohdejoukkoUri" : "haunkohdejoukko_15#1",
+        "sijoittelu" : false
+    }, {
+        "modified" : 1390460948671,
+        "modifiedBy" : "1.2.246.562.24.56130560613",
+        "oid" : "1.2.246.562.5.2013112910480420004764",
+        "version" : 1,
+        "maxHakukohdes" : 0,
+        "hakukausiUri" : "kausi_k#1",
+        "hakukausiVuosi" : 2014,
+        "hakutapaUri" : "hakutapa_02#1",
+        "tila" : "JULKAISTU",
+        "hakutyyppiUri" : "hakutyyppi_01#1",
+        "nimi" : {
+            "kieli_sv" : "Ansökan till undervisning och handledning i tränings- och rehabiliteringssyfte",
+            "kieli_fi" : "Haku valmentavaan ja kuntouttavaan opetukseen ja ohjaukseen"
+        },
+        "hakuaikas" : [ {
+            "oid" : "164636",
+            "version" : 1,
+            "alkuPvm" : 1388566032925,
+            "loppuPvm" : 1409471232925
+        } ],
+        "koulutuksenAlkamiskausiUri" : "kausi_s#1",
+        "koulutuksenAlkamisVuosi" : 2014,
+        "haunTunniste" : "1.2.246.562.5.2013112910480420004764",
+        "kohdejoukkoUri" : "haunkohdejoukko_16#1",
+        "sijoittelu" : false
+    }]
 );
