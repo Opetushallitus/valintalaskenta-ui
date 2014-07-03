@@ -749,8 +749,49 @@ describe('Testing PistesyottoController', function(){
 
     it('check initialized variables', function() {
         expect(scope.model.hakeneet.length).toBe(7);
+        expect(scope.model.avaimet.length).toBe(3);
+        expect(scope.model.filter).toBe("OSALLISTUU");
+        expect(scope.hakuOid).toBe(routeParams.hakuOid);
+        expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
+        expect(scope.muutettu).toBeFalsy();
+        expect(scope.osallistuminenFilter).toBe("");
+        expect(scope.predicate.length).toBe(2);
+        expect(scope.predicate[0]).toBe("lastName");
+        expect(scope.predicate[1]).toBe("firstNames");
     });
 
+    it('showTiedotPartial', function() {
+        expect(scope.model.hakeneet[0].showTiedotPartial).toBeFalsy();
+        scope.showTiedotPartial(scope.model.hakeneet[0]);
+        expect(scope.model.hakeneet[0].showTiedotPartial).toBeTruthy();
+    });
+
+    it('changeArvo', function() {
+        scope.model.hakeneet[0].additionalData[0] = "OSALLISTUI";
+        scope.changeArvo(scope.model.hakeneet[0], 0, scope.model.hakeneet[0].additionalData[0],"");
+
+        expect(scope.model.hakeneet[0].additionalData[0]).toBeUndefined();
+        scope.model.hakeneet[0].additionalData[0] = "OSALLISTUI";
+        scope.changeArvo(scope.model.hakeneet[0], 0, scope.model.hakeneet[0].additionalData[0],"boolean");
+
+        expect(scope.model.hakeneet[0].additionalData[0]).toBe("true");
+    });
+
+    it('osallistuvatFilter', function() {
+        scope.model.hakeneet[0].osallistuu["ElÃ¤intenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pÃ¤Ã¤sy- ja soveltuvuuskoe"] = "OSALLISTUU";
+        expect(scope.osallistuvatFilter(scope.model.hakeneet[0])).toBeTruthy();
+        scope.osallistuminenFilter = "a";
+        expect(scope.osallistuvatFilter(scope.model.hakeneet[0])).toBeFalsy();
+        scope.model.hakeneet[0].filterData["ElÃ¤intenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pÃ¤Ã¤sy- ja soveltuvuuskoe-OSALLISTUMINEN"]="a";
+        expect(scope.osallistuvatFilter(scope.model.hakeneet[0])).toBeTruthy();
+    });
+
+    it('arvoPisteet', function() {
+        scope.model.hakeneet[0].additionalData["ElÃ¤intenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pÃ¤Ã¤sy- ja soveltuvuuskoe-OSALLISTUMINEN"]="";
+        scope.model.hakeneet[0].osallistuu["ElÃ¤intenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pÃ¤Ã¤sy- ja soveltuvuuskoe"] = "OSALLISTUU";
+        scope.arvoPisteet();
+        expect(scope.model.hakeneet[0].additionalData["ElÃ¤intenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pÃ¤Ã¤sy- ja soveltuvuuskoe-OSALLISTUMINEN"]).toBe("OSALLISTUI");
+    });
 
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();

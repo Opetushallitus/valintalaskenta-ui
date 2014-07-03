@@ -253,15 +253,13 @@ angular.module('valintalaskenta').
         }
 
         if (show && $scope.osallistuminenFilter !== "") {
-            if ($scope.koeFilter == null) {
+            if ($scope.koeFilter === null) {
 
                 if (actual.filterData) {
                     var tempShow = false;
                     PistesyottoModel.avaimet.forEach(function (avain) {
 
                         if (actual.osallistuu[avain.tunniste] === 'OSALLISTUU' && actual.filterData[avain.tunniste + '-OSALLISTUMINEN'] === $scope.osallistuminenFilter) {
-                            console.log(actual);
-                            console.log(avain.tunniste + '-OSALLISTUMINEN');
                             tempShow = true;
                         }
 
@@ -283,6 +281,7 @@ angular.module('valintalaskenta').
     };
 
     $scope.arvonta = $routeParams.arvonta;
+
     $scope.arvoPisteet = function() {
         PistesyottoModel.hakeneet.forEach(function(hakija){
             PistesyottoModel.avaimet.forEach(function(avain){
