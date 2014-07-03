@@ -938,3 +938,102 @@ describe('Testing HarkinnanvaraisetController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
+
+
+describe('Testing ValintalaskentatulosController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, $timeout, $upload,
+        ilmoitus, ilmoitusTila, latausikkuna, valintatapajonoVienti, valintalaskentatulosModel, tulosXls, hakukohdeModel,
+        $http, authService, hakukohdejson, valinnanvaihejson, hakukohdenimijson;
+    var routeParams = {"hakuOid": "oid1",
+        "hakukohdeOid" : "oid2"};
+
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector, hakukohdeJSON, valinnanvaiheJSON, hakukohdenimiJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $upload = $injector.get('$upload');
+        $timeout = $injector.get('$timeout');
+        $controller = $injector.get('$controller');
+        ilmoitus = $injector.get('Ilmoitus');
+        ilmoitusTila = $injector.get('IlmoitusTila');
+        latausikkuna = $injector.get('Latausikkuna');
+        valintatapajonoVienti = $injector.get('ValintatapajonoVienti');
+        valintalaskentatulosModel = $injector.get('ValintalaskentatulosModel');
+        tulosXls = $injector.get('TulosXls');
+        hakukohdeModel = $injector.get('HakukohdeModel');
+        $http = $injector.get('$http');
+        authService = $injector.get('AuthService');
+        hakukohdejson = hakukohdeJSON;
+        valinnanvaihejson = valinnanvaiheJSON;
+        hakukohdenimijson = hakukohdenimiJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+
+        $httpBackend.flush();
+    }));
+
+    it('should get ValintalaskentatulosController', function() {
+        scope = $rootScope.$new();
+        location = $location;
+
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
+        $httpBackend.expectGET('resources/hakukohde/'+routeParams.hakukohdeOid+'/valinnanvaihe')
+            .respond(201,valinnanvaihejson);
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
+            .respond(201,hakukohdenimijson);
+        $httpBackend.expectGET('resources/hakukohde/'+routeParams.hakukohdeOid+'/ilmanlaskentaa')
+            .respond(201,"[]");
+
+        ctrl = $controller('ValintalaskentatulosController', {'$scope' : scope,'$location': location,
+            '$routeParams': routeParams, '$timeout': $timeout, '$upload': $upload,
+            'Ilmoitus': ilmoitus, 'IlmoitusTila': ilmoitusTila, 'Latausikkuna': latausikkuna,
+            'ValintatapajonoVienti': valintatapajonoVienti, 'ValintalaskentatulosModel': valintalaskentatulosModel,
+            'TulosXls': tulosXls, 'hakukohdeModel': hakukohdeModel, '$http': $http, 'AuthService': authService});
+
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.model.hakeneet.length).toBe(0);
+        expect(scope.hakuOid).toBe(routeParams.hakuOid);
+        expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
+        expect(scope.model.valinnanvaiheet.length).toBe(3);
+        expect(scope.model.ilmanlaskentaa.length).toBe(0);
+    });
+
+    it('showHistory', function() {
+        var valintatapajonoOid = "oid1";
+        var hakemusOid = "oid2";
+        scope.showHistory(valintatapajonoOid, hakemusOid);
+        expect(location.path()).toMatch('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
+    });
+
+    it('showTilaPartial', function() {
+        var valintatulos = {
+        };
+        scope.showTilaPartial(valintatulos);
+        expect(valintatulos.showTilaPartial).toBeFalsy();
+        scope.showTilaPartial(valintatulos);
+        expect(valintatulos.showTilaPartial).toBeTruthy();
+    });
+
+    it('showHenkiloPartial', function() {
+        var valintatulos = {
+        };
+        scope.showHenkiloPartial(valintatulos);
+        expect(valintatulos.showHenkiloPartial).toBeFalsy();
+        scope.showHenkiloPartial(valintatulos);
+        expect(valintatulos.showHenkiloPartial).toBeTruthy();
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});

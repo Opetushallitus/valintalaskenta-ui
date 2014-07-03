@@ -180,7 +180,12 @@
 });
 
 
-function ValintalaskentatulosController($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna, ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService) {
+angular.module('valintalaskenta').
+    controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
+        'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ValintalaskentatulosModel',
+        'TulosXls', 'HakukohdeModel', '$http', 'AuthService',
+    function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
+              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -213,6 +218,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
             Ilmoitus.avaa("Valintatapajonon vienti epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
         });
     };
+
     $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files) {
 		var file = $files[0];
 		var fileReader = new FileReader();
@@ -249,14 +255,14 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     };
 
     $scope.showTilaPartial = function(valintatulos) {
-         if(valintatulos.showTilaPartial == null || valintatulos.showTilaPartial == false) {
+         if(valintatulos.showTilaPartial === null || valintatulos.showTilaPartial === false) {
              valintatulos.showTilaPartial = true;
          } else {
              valintatulos.showTilaPartial = false;
          }
     };
     $scope.showHenkiloPartial = function(valintatulos) {
-        if(valintatulos.showHenkiloPartial == null || valintatulos.showHenkiloPartial == false) {
+        if(valintatulos.showHenkiloPartial === null || valintatulos.showHenkiloPartial === false) {
             valintatulos.showHenkiloPartial = true;
         } else {
             valintatulos.showHenkiloPartial = false;
@@ -286,7 +292,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     };
 
     $scope.changeSija = function (jonosija, value) {
-        if (value != 'HYVAKSYTTAVISSA') {
+        if (value !== 'HYVAKSYTTAVISSA') {
             $timeout(function(){
                 delete jonosija.jonosija;
             });
@@ -294,4 +300,4 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
 
     };
 
-}
+}]);
