@@ -634,6 +634,124 @@ describe('Testing ValintakoetulosController', function(){
         expect(scope.predicate[1]).toBe("etunimi");
     });
 
+    it('isBlank', function() {
+        expect(scope.isBlank(null)).toBeTruthy();
+        expect(scope.isBlank("")).toBeTruthy();
+        expect(scope.isBlank(1)).toBeFalsy();
+        expect(scope.isBlank("abc")).toBeFalsy();
+    });
+
+    it('filterValitut', function() {
+        var hakijat = [
+            {
+                valittu: true
+            },
+            {
+                valittu: false
+            },
+            {
+            }
+        ];
+        expect(scope.model.filterValitut(hakijat).length).toBe(1);
+    });
+
+    it('filterOsallistujat', function() {
+        var hakijat = [
+            {
+                osallistuminen: "EI OSALLISTU"
+            },
+            {
+            },
+            {
+                osallistuminen: "OSALLISTUU"
+            }
+        ];
+        expect(scope.model.filterOsallistujat(hakijat).length).toBe(1);
+    });
+
+    it('isAllValittu', function() {
+        var koe = scope.model.valintakokeet['1403085635151-6979991825029653724'];
+        var hakijat;
+
+        expect(scope.model.isAllValittu(koe)).toBeTruthy();
+
+        hakijat = [
+            {
+                osallistuminen: "EI OSALLISTU"
+            },
+            {
+            },
+            {
+                osallistuminen: "OSALLISTUU"
+            }
+        ];
+
+        koe.hakijat = hakijat;
+        expect(scope.model.isAllValittu(koe)).toBeFalsy();
+
+    });
+
+    it('aktiivisetJaLahetettavatValintakoeOids', function() {
+        var oids = scope.model.aktiivisetJaLahetettavatValintakoeOids();
+        expect(oids.length).toBe(1);
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+describe('Testing PistesyottoController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakeneetModel, hakukohdeModel,
+        hakukohdejson,additionaljson,hakukohdenimijson,avaimetjson;
+    var routeParams = {"hakuOid": "oid1",
+        "hakukohdeOid" : "oid2"};
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector, hakukohdeJSON, additionaldataJSON, hakukohdenimiJSON, avaimetJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        hakeneetModel = $injector.get('HakeneetModel');
+        hakukohdeModel = $injector.get('HakukohdeModel');
+        hakukohdejson = hakukohdeJSON;
+        additionaljson = additionaldataJSON;
+        hakukohdenimijson = hakukohdenimiJSON;
+        avaimetjson = avaimetJSON;
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+
+        $httpBackend.flush();
+    }));
+
+    it('should get PistesyottoController', function() {
+        scope = $rootScope.$new();
+
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
+        $httpBackend.expectGET('resources/valintakoe/hakutoive/'+routeParams.hakukohdeOid)
+            .respond(201,"[]");
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
+            .respond(201,hakukohdenimijson);
+        $httpBackend.expectGET('haku-app/applications/additionalData/'+routeParams.hakuOid+"/"+routeParams.hakukohdeOid)
+            .respond(201,additionaljson);
+        $httpBackend.expectGET('resources/hakukohde/avaimet/'+routeParams.hakukohdeOid)
+            .respond(201,avaimetjson);
+        ctrl = $controller('PistesyottoController', {'$scope' : scope,'$location': location, '$routeParams': routeParams,
+            'HakeneetModel': hakeneetModel, 'HakukohdeModel': hakukohdeModel});
+
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.model.hakeneet.length).toBe(7);
+    });
+
+
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();

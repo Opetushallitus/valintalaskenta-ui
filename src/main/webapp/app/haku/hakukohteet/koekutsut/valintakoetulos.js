@@ -254,9 +254,7 @@ angular.module('valintalaskenta').
 	};
 	$scope.valintakoeTulosXLS = function(valintakoe) {
 		var hakemusOids = null;
-		if($scope.model.isAllValittu(valintakoe)) {
-			
-		} else {
+		if(!$scope.model.isAllValittu(valintakoe)) {
     		hakemusOids = $scope.model.valitutHakemusOids(valintakoe);
 		}
     	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid},{hakemusOids: hakemusOids, valintakoeOids:[valintakoe.valintakoeOid]}, function(id) {
@@ -311,7 +309,7 @@ angular.module('valintalaskenta').
     $scope.model.refresh($scope.hakukohdeOid);
 
 
-    $scope.nakymanTila = "Kokeittain"; // Hakijoittain
+    $scope.nakymanTila = "Kokeittain";
 
     $scope.predicate = ['sukunimi','etunimi'];
 
