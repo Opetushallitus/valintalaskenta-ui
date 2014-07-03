@@ -798,3 +798,143 @@ describe('Testing PistesyottoController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
+
+describe('Testing HarkinnanvaraisetController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, $log, ilmoitus, ilmoitusTila, latausikkuna,
+        koekutsukirjeet, osoitetarratHakemuksille, harkinnanvaraisetModel, pohjakuolutukset, hakukohdeModel, hakeneetModel,
+        hakukohdejson,hakeneetjson,hakukohdenimijson, hakutoiveetjson;
+    var routeParams = {"hakuOid": "oid1",
+        "hakukohdeOid" : "oid2"};
+
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector, hakukohdeJSON, hakeneetJSON, hakukohdenimiJSON, hakutoiveetJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $log = $injector.get('$log');
+        $controller = $injector.get('$controller');
+        hakukohdeModel = $injector.get('HakukohdeModel');
+        hakeneetModel = $injector.get('HakeneetModel');
+        ilmoitus = $injector.get('Ilmoitus');
+        ilmoitusTila = $injector.get('IlmoitusTila');
+        latausikkuna = $injector.get('Latausikkuna');
+        koekutsukirjeet = $injector.get('Koekutsukirjeet');
+        osoitetarratHakemuksille = $injector.get('OsoitetarratHakemuksille');
+        harkinnanvaraisetModel = $injector.get('HarkinnanvaraisetModel');
+        pohjakuolutukset = $injector.get('Pohjakuolutukset');
+        hakukohdejson = hakukohdeJSON;
+        hakeneetjson = hakeneetJSON;
+        hakukohdenimijson = hakukohdenimiJSON;
+        hakutoiveetjson = hakutoiveetJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+
+        $httpBackend.flush();
+    }));
+
+    it('should get HarkinnanvaraisetController', function() {
+        scope = $rootScope.$new();
+
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
+        $httpBackend.expectGET('haku-app/applications?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
+            .respond(201,hakeneetjson);
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
+            .respond(201,hakukohdenimijson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000840202?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000846235?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000833345?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000832029?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000828499?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000861032?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000869924?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000847247?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000872681?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000842048?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000875976?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000857004?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000843021?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000869636?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000858430?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000871815?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+
+        $httpBackend.expectGET('resources/harkinnanvarainenhyvaksynta/haku/'+routeParams.hakuOid+'/hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,[]);
+
+        ctrl = $controller('HarkinnanvaraisetController', {'$scope' : scope,'$location': location, '$log' : $log,
+            '$routeParams': routeParams, 'Ilmoitus': ilmoitus, 'IlmoitusTila': ilmoitusTila, 'Latausikkuna': latausikkuna,
+            'Koekutsukirjeet': koekutsukirjeet, 'OsoitetarratHakemuksille': osoitetarratHakemuksille,
+            'HarkinnanvaraisetModel': harkinnanvaraisetModel, 'HakukohdeModel': hakukohdeModel,
+            'Pohjakuolutukset': pohjakuolutukset});
+
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.model.hakeneet.length).toBe(17);
+        expect(scope.arvoFilter).toBe("SYOTETTAVA_ARVO");
+        expect(scope.hakuOid).toBe(routeParams.hakuOid);
+        expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
+        expect(scope.muutettu).toBeFalsy();
+        expect(scope.predicate).toBe("sukunimi");
+        expect(scope.model.harkinnanvaraisestiHyvaksytyt.length).toBe(0);
+        expect(scope.pohjakoulutukset[0]).toBe("Ulkomailla suoritettu koulutus");
+        expect(scope.pohjakoulutukset[1]).toBe("Perusopetuksen oppimäärä");
+        expect(scope.pohjakoulutukset[2]).toBe("Perusopetuksen osittain yksilöllistetty oppimäärä");
+        expect(scope.pohjakoulutukset[3]).toBe("Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain");
+        expect(scope.pohjakoulutukset[6]).toBe("Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä");
+        expect(scope.pohjakoulutukset[7]).toBe("Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)");
+        expect(scope.pohjakoulutukset[9]).toBe("Lukion päättötodistus, ylioppilastutkinto tai abiturientti");
+    });
+
+    it('filterHarkinnanvaraiset', function() {
+        expect(scope.model.filterHarkinnanvaraiset().length).toBe(0);
+        scope.model.hakeneet[1].hakenutHarkinnanvaraisesti = "true";
+        expect(scope.model.filterHarkinnanvaraiset().length).toBe(1);
+    });
+
+    it('filterValitut', function() {
+        expect(scope.model.filterValitut().length).toBe(1);
+        scope.model.hakeneet[2].hakenutHarkinnanvaraisesti = "true";
+        expect(scope.model.filterValitut().length).toBe(2);
+    });
+
+    it('isAllValittu', function() {
+        expect(scope.model.isAllValittu()).toBeTruthy();
+        scope.model.hakeneet[2].valittu = null;
+        expect(scope.model.isAllValittu()).toBeFalsy();
+    });
+
+    it('valitutHakemusOids', function() {
+        expect(scope.model.valitutHakemusOids().length).toBe(1);
+        scope.model.hakeneet[2].valittu = "true";
+        expect(scope.model.valitutHakemusOids().length).toBe(2);
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
