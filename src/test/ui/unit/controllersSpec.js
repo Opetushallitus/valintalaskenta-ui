@@ -1312,6 +1312,41 @@ describe('Testing ValintatulosController', function(){
 
     });
 
+    it('check initialized variables', function() {
+        expect(scope.model.hakemukset.length).toBe(0);
+        expect(scope.model.hakemusCount).toBeNull();
+        expect(scope.model.hakuOid).toBeNull();
+        expect(scope.model.filter.hakukohteet.length).toBe(0);
+        expect(scope.model.filter.type).toBe("KAIKKI");
+    });
+
+    it('addHakukohde', function() {
+        var hakukohde = {};
+        scope.hakukohdeToAdd = hakukohde;
+
+        expect(scope.model.filter.hakukohteet.length).toBe(0);
+        scope.addHakukohde();
+        expect(scope.model.filter.hakukohteet.length).toBe(1);
+    });
+
+    it('deleteHakukohde', function() {
+        expect(scope.model.filter.hakukohteet.length).toBe(1);
+        scope.deleteHakukohde(0);
+        expect(scope.model.filter.hakukohteet.length).toBe(0);
+    });
+
+    it('getHakukohdeStyle', function() {
+        var hakukohde = {
+            hakutoiveenValintatapajonot: [
+                {tila:"HYVAKSYTTY"},
+                {tila:"PERUUNTUNUT"},
+                {tila:"PERUNUT"},
+                {tila:"HYLATTY"}
+            ]
+        };
+        expect(scope.getHakukohdeStyle(hakukohde),"VARALLA");
+    });
+
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
@@ -1403,6 +1438,47 @@ describe('Testing LisahakuhyvaksytytController', function(){
         ctrl = $controller('LisahakuhyvaksytytController', {'$scope' : scope, '$location':$location, '$routeParams': routeParams,
         'HyvaksytytModel':hyvaksytytModel,'HakukohdeModel':hakukohdeModel,'AuthService':authService,'HakemusKey':hakemusKey});
         $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.hakuOid).toBe(routeParams.hakuOid);
+        expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
+        expect(scope.hakemuksenMuokattuIlmoittautumisTilat.length).toBe(8);
+        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
+        expect(scope.muutettu).toBeFalsy();
+        expect(scope.predicate).toBe("sukunimi");
+        expect(scope.model.hakeneet.length).toBe(17);
+
+        expect(scope.hakemuksenMuokattuIlmoittautumisTilat[0].value).toBe("EI_TEHTY");
+        expect(scope.hakemuksenMuokattuIlmoittautumisTilat[1].value).toBe("LASNA_KOKO_LUKUVUOSI");
+        expect(scope.hakemuksenMuokattuIlmoittautumisTilat[2].value).toBe("POISSA_KOKO_LUKUVUOSI");
+        expect(scope.hakemuksenMuokattuIlmoittautumisTilat[3].value).toBe("EI_ILMOITTAUTUNUT");
+        expect(scope.hakemuksenMuokattuIlmoittautumisTilat[4].value).toBe("LASNA_SYKSY");
+        expect(scope.hakemuksenMuokattuIlmoittautumisTilat[5].value).toBe("POISSA_SYKSY");
+        expect(scope.hakemuksenMuokattuIlmoittautumisTilat[6].value).toBe("LASNA");
+        expect(scope.hakemuksenMuokattuIlmoittautumisTilat[7].value).toBe("POISSA");
+
+        expect(scope.hakemuksenMuokattuVastaanottoTilat[0].value).toBe("ILMOITETTU");
+        expect(scope.hakemuksenMuokattuVastaanottoTilat[1].value).toBe("VASTAANOTTANUT");
+        expect(scope.hakemuksenMuokattuVastaanottoTilat[2].value).toBe("EI_VASTAANOTETTU_MAARA_AIKANA");
+        expect(scope.hakemuksenMuokattuVastaanottoTilat[3].value).toBe("PERUNUT");
+        expect(scope.hakemuksenMuokattuVastaanottoTilat[4].value).toBe("PERUUTETTU");
+
+    });
+
+    it('resetIlmoittautumisTila', function() {
+        var hakemus = {
+            muokattuVastaanottoTila: 'VASTAANOTTANUT',
+            muokattuIlmoittautumisTila: 'TEHTY'
+        };
+        scope.resetIlmoittautumisTila(hakemus);
+        expect(hakemus.muokattuIlmoittautumisTila).toBe("TEHTY");
+        hakemus.muokattuVastaanottoTila = "EHDOLLISESTI_VASTAANOTTANUT";
+        scope.resetIlmoittautumisTila(hakemus);
+        expect(hakemus.muokattuIlmoittautumisTila).toBe("TEHTY");
+        hakemus.muokattuVastaanottoTila = "EI_VASTAANOTTANUT";
+        scope.resetIlmoittautumisTila(hakemus);
+        expect(hakemus.muokattuIlmoittautumisTila).toBe("EI_TEHTY");
     });
 
     afterEach(function() {
