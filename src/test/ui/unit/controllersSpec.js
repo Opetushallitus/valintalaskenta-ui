@@ -801,7 +801,7 @@ describe('Testing PistesyottoController', function(){
 
 describe('Testing HarkinnanvaraisetController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, $log, ilmoitus, ilmoitusTila, latausikkuna,
-        koekutsukirjeet, osoitetarratHakemuksille, harkinnanvaraisetModel, pohjakuolutukset, hakukohdeModel, hakeneetModel,
+        koekutsukirjeet, osoitetarratHakemuksille, harkinnanvaraisetModel, pohjakoulutukset, hakukohdeModel, hakeneetModel,
         hakukohdejson,hakeneetjson,hakukohdenimijson, hakutoiveetjson;
     var routeParams = {"hakuOid": "oid1",
         "hakukohdeOid" : "oid2"};
@@ -822,7 +822,7 @@ describe('Testing HarkinnanvaraisetController', function(){
         koekutsukirjeet = $injector.get('Koekutsukirjeet');
         osoitetarratHakemuksille = $injector.get('OsoitetarratHakemuksille');
         harkinnanvaraisetModel = $injector.get('HarkinnanvaraisetModel');
-        pohjakuolutukset = $injector.get('Pohjakuolutukset');
+        pohjakoulutukset = $injector.get('Pohjakoulutukset');
         hakukohdejson = hakukohdeJSON;
         hakeneetjson = hakeneetJSON;
         hakukohdenimijson = hakukohdenimiJSON;
@@ -887,7 +887,7 @@ describe('Testing HarkinnanvaraisetController', function(){
             '$routeParams': routeParams, 'Ilmoitus': ilmoitus, 'IlmoitusTila': ilmoitusTila, 'Latausikkuna': latausikkuna,
             'Koekutsukirjeet': koekutsukirjeet, 'OsoitetarratHakemuksille': osoitetarratHakemuksille,
             'HarkinnanvaraisetModel': harkinnanvaraisetModel, 'HakukohdeModel': hakukohdeModel,
-            'Pohjakuolutukset': pohjakuolutukset});
+            'Pohjakoulutukset': pohjakoulutukset});
 
         $httpBackend.flush();
     });
@@ -1131,7 +1131,7 @@ describe('Testing ValintalaskentaHistoriaController', function(){
 
 describe('Testing HenkiloTiedotController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, $q, $modal, parametriService, latausikkuna,
-        jalkiohjauskirjepohjat,jalkiohjauskirjeet,henkiloTiedotModel,authService,pohjakuolutukset,ilmoitus,ilmoitusTila,
+        jalkiohjauskirjepohjat,jalkiohjauskirjeet,henkiloTiedotModel,authService,pohjakoulutukset,ilmoitus,ilmoitusTila,
         hakujson,hakuhenkilojson, sijoitteluajolatestjson;
     var routeParams = {"hakuOid": "oid1",
         "hakukohdeOid" : "oid2"};
@@ -1151,7 +1151,7 @@ describe('Testing HenkiloTiedotController', function(){
         jalkiohjauskirjeet = $injector.get('Jalkiohjauskirjeet');
         henkiloTiedotModel = $injector.get('HenkiloTiedotModel');
         authService = $injector.get('AuthService');
-        pohjakuolutukset = $injector.get('Pohjakuolutukset');
+        pohjakoulutukset = $injector.get('Pohjakoulutukset');
         ilmoitus = $injector.get('Ilmoitus');
         ilmoitusTila = $injector.get('IlmoitusTila');
         hakujson = hakuJSON;
@@ -1186,8 +1186,14 @@ describe('Testing HenkiloTiedotController', function(){
         ctrl = $controller('HenkiloTiedotController', {'$q' : $q, '$scope' : scope, '$modal': $modal, '$routeParams': routeParams,
             'ParametriService': parametriService, 'Latausikkuna': latausikkuna, 'Jalkiohjauskirjepohjat': jalkiohjauskirjepohjat,
             'Jalkiohjauskirjeet':jalkiohjauskirjeet, 'HenkiloTiedotModel': henkiloTiedotModel, 'AuthService': authService,
-            'Pohjakuolutukset':pohjakuolutukset, 'Ilmoitus': ilmoitus, 'IlmoitusTila': ilmoitusTila});
+            'Pohjakoulutukset':pohjakoulutukset, 'Ilmoitus': ilmoitus, 'IlmoitusTila': ilmoitusTila});
         $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.model.hakuOid).toBe(routeParams.hakuOid);
+        expect(scope.model.hakutoiveet.length).toBe(2);
+        expect(scope.model.errors.length).toBe(0);
     });
 
     afterEach(function() {

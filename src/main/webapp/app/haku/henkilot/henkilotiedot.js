@@ -296,9 +296,9 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
 angular.module('valintalaskenta').
     controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
-        'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakuolutukset', 'Ilmoitus', 'IlmoitusTila',
+        'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila',
         function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
-                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, Ilmoitus, IlmoitusTila) {
+                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila) {
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -309,12 +309,8 @@ angular.module('valintalaskenta').
         var hakemusOid = $scope.model.hakemus.oid;
         var asiointikieli = $scope.model.hakemus.answers.lisatiedot.asiointikieli;
         var langcode = "FI";
-        if(asiointikieli === undefined) {
-        	
-        } else {
-        	if(asiointikieli.toUpperCase() === "RUOTSI") {
-				langcode = "SV";        		
-        	}
+        if(asiointikieli !== undefined && asiointikieli.toUpperCase() === "RUOTSI") {
+			langcode = "SV";
         }
         var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -346,7 +342,7 @@ angular.module('valintalaskenta').
         });
     };
 
-    $scope.pohjakoulutukset = Pohjakuolutukset;
+    $scope.pohjakoulutukset = Pohjakoulutukset;
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;

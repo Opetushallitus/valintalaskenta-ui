@@ -117,9 +117,9 @@ app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitu
 
 angular.module('valintalaskenta').
     controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
-        'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel', 'Pohjakuolutukset',
+        'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel', 'Pohjakoulutukset',
         function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,
-            OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
+            OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HarkinnanvaraisetModel;
     $scope.hakuOid = $routeParams.hakuOid;
@@ -129,7 +129,7 @@ angular.module('valintalaskenta').
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
     $scope.muutettu = false;
 
-    $scope.pohjakoulutukset = Pohjakuolutukset;
+    $scope.pohjakoulutukset = Pohjakoulutukset;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 
