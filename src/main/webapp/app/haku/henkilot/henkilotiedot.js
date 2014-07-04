@@ -294,7 +294,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
     return model;
 });
 
-function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, Ilmoitus, IlmoitusTila) {
+angular.module('valintalaskenta').
+    controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
+        'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakuolutukset', 'Ilmoitus', 'IlmoitusTila',
+        function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
+                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, Ilmoitus, IlmoitusTila) {
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -384,4 +388,4 @@ function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriServ
     };
 
     $scope.privileges = ParametriService;
-}
+}]);

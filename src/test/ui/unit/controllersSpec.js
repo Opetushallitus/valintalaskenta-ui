@@ -1089,3 +1089,109 @@ describe('Testing HakuController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
+
+describe('Testing ValintalaskentaHistoriaController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, valintalaskentaHistoriaModel;
+    var routeParams = {"hakuOid": "oid1",
+        "hakukohdeOid" : "oid2"};
+
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $controller = $injector.get('$controller');
+        $location = $injector.get('$location');
+        valintalaskentaHistoriaModel = $injector.get('ValintalaskentaHistoriaModel');
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+
+        $httpBackend.expectGET('resources/jonosijahistoria')
+            .respond(201,[]);
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get ValintalaskentaHistoriaController', function() {
+        scope = $rootScope.$new();
+
+        ctrl = $controller('ValintalaskentaHistoriaController', {'$scope' : scope, '$routeParams': routeParams,
+            'ValintalaskentaHistoriaModel': valintalaskentaHistoriaModel});
+
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+
+describe('Testing HenkiloTiedotController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, $q, $modal, parametriService, latausikkuna,
+        jalkiohjauskirjepohjat,jalkiohjauskirjeet,henkiloTiedotModel,authService,pohjakuolutukset,ilmoitus,ilmoitusTila,
+        hakujson,hakuhenkilojson, sijoitteluajolatestjson;
+    var routeParams = {"hakuOid": "oid1",
+        "hakukohdeOid" : "oid2"};
+
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector,hakuJSON,hakuhenkiloJSON,sijoitteluajolatestJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $controller = $injector.get('$controller');
+        $location = $injector.get('$location');
+        $q = $injector.get('$q');
+        $modal = $injector.get('$modal');
+        parametriService = $injector.get('ParametriService');
+        latausikkuna = $injector.get('Latausikkuna');
+        jalkiohjauskirjepohjat = $injector.get('Jalkiohjauskirjepohjat');
+        jalkiohjauskirjeet = $injector.get('Jalkiohjauskirjeet');
+        henkiloTiedotModel = $injector.get('HenkiloTiedotModel');
+        authService = $injector.get('AuthService');
+        pohjakuolutukset = $injector.get('Pohjakuolutukset');
+        ilmoitus = $injector.get('Ilmoitus');
+        ilmoitusTila = $injector.get('IlmoitusTila');
+        hakujson = hakuJSON;
+        hakuhenkilojson = hakuhenkiloJSON;
+        sijoitteluajolatestjson = sijoitteluajolatestJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get HenkiloTiedotController', function() {
+        scope = $rootScope.$new();
+
+        $httpBackend.expectGET('haku/'+routeParams.hakuOid)
+            .respond(201,hakujson);
+        $httpBackend.expectGET('haku-app/applications?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakuhenkilojson);
+        $httpBackend.expectGET('resources/harkinnanvarainenhyvaksynta/haku/'+routeParams.hakuOid+'/hakemus')
+            .respond(201,"[]");
+        $httpBackend.expectGET('resources/sijoittelu/'+routeParams.hakuOid+'/sijoitteluajo/latest/hakemus/1.2.246.562.11.00000832618')
+            .respond(201,sijoitteluajolatestjson);
+        $httpBackend.expectGET('resources/valintakoe/hakemus/1.2.246.562.11.00000832618')
+            .respond(201,'{"hakuOid":null,"hakemusOid":null,"hakijaOid":null,"etunimi":null,"sukunimi":null,"createdAt":null,"hakutoiveet":[]}');
+        $httpBackend.expectGET('resources/tila/1.2.246.562.11.00000832618')
+            .respond(201,"[]");
+        $httpBackend.expectGET('resources/hakemus/'+routeParams.hakuOid)
+            .respond(201,'{"hakuoid":"1.2.246.562.5.2013080813081926341927","hakemusoid":"1.2.246.562.11.00000852630","hakukohteet":[]}');
+
+        ctrl = $controller('HenkiloTiedotController', {'$q' : $q, '$scope' : scope, '$modal': $modal, '$routeParams': routeParams,
+            'ParametriService': parametriService, 'Latausikkuna': latausikkuna, 'Jalkiohjauskirjepohjat': jalkiohjauskirjepohjat,
+            'Jalkiohjauskirjeet':jalkiohjauskirjeet, 'HenkiloTiedotModel': henkiloTiedotModel, 'AuthService': authService,
+            'Pohjakuolutukset':pohjakuolutukset, 'Ilmoitus': ilmoitus, 'IlmoitusTila': ilmoitusTila});
+        $httpBackend.flush();
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
