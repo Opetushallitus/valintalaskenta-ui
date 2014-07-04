@@ -1201,3 +1201,212 @@ describe('Testing HenkiloTiedotController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
+
+
+describe('Testing YhteisvalinnanHallintaController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, $q, $modal, latausikkuna,
+        jalkiohjauskirjepohjat,jalkiohjauskirjeet,ilmoitus,ilmoitusTila,sijoittelunTulosTaulukkolaskenta,
+        sijoittelunTulosOsoitetarrat,sijoittelunTulosHyvaksymiskirjeet,aktivoiKelaFtp,valintakoelaskentaAktivointi,
+        kelaDokumentti,sijoitteluAjo,jalkiohjausXls,sijoitteluAktivointi,hakuModel,virheModel,jatkuvaSijoittelu,
+        $interval,$log,$timeout,$http,$route,$window,sijoitteluajolatestalljson;
+    var routeParams = {"hakuOid": "oid1",
+        "hakukohdeOid" : "oid2"};
+
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector,sijoitteluajolatestallJSON) {
+        $window = $injector.get('$window');
+        $route = $injector.get('$route');
+        $http = $injector.get('$http');
+        $timeout = $injector.get('$timeout');
+        $log = $injector.get('$log');
+        $interval = $injector.get('$interval');
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $controller = $injector.get('$controller');
+        $location = $injector.get('$location');
+        $q = $injector.get('$q');
+        $modal = $injector.get('$modal');
+        latausikkuna = $injector.get('Latausikkuna');
+        jalkiohjauskirjepohjat = $injector.get('Jalkiohjauskirjepohjat');
+        jalkiohjauskirjeet = $injector.get('Jalkiohjauskirjeet');
+        ilmoitus = $injector.get('Ilmoitus');
+        ilmoitusTila = $injector.get('IlmoitusTila');
+        sijoittelunTulosTaulukkolaskenta = $injector.get('SijoittelunTulosTaulukkolaskenta');
+        sijoittelunTulosOsoitetarrat = $injector.get('SijoittelunTulosOsoitetarrat');
+        sijoittelunTulosHyvaksymiskirjeet = $injector.get('SijoittelunTulosHyvaksymiskirjeet');
+        aktivoiKelaFtp = $injector.get('AktivoiKelaFtp');
+        valintakoelaskentaAktivointi = $injector.get('ValintakoelaskentaAktivointi');
+        kelaDokumentti = $injector.get('KelaDokumentti');
+        sijoitteluAjo = $injector.get('SijoitteluAjo');
+        jalkiohjausXls = $injector.get('JalkiohjausXls');
+        sijoitteluAktivointi = $injector.get('SijoitteluAktivointi');
+        hakuModel = $injector.get('HakuModel');
+        virheModel = $injector.get('VirheModel');
+        jatkuvaSijoittelu = $injector.get('JatkuvaSijoittelu');
+        sijoitteluajolatestalljson = sijoitteluajolatestallJSON;
+
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('haku/haut.html').respond("");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get YhteisvalinnanHallintaController', function() {
+        scope = $rootScope.$new();
+        $httpBackend.expectGET('resources/sijoittelu/' + routeParams.hakuOid + '/sijoitteluajo/latest')
+            .respond(201,sijoitteluajolatestalljson);
+        $httpBackend.expectGET('resources/koostesijoittelu/jatkuva?hakuOid=' + routeParams.hakuOid)
+            .respond(201,"");
+
+        ctrl = $controller('YhteisvalinnanHallintaController', {'$scope' : scope, '$modal': $modal, '$interval': $interval,
+            '_': _,'SijoittelunTulosTaulukkolaskenta': sijoittelunTulosTaulukkolaskenta,
+            'SijoittelunTulosOsoitetarrat':sijoittelunTulosOsoitetarrat,'SijoittelunTulosHyvaksymiskirjeet':sijoittelunTulosHyvaksymiskirjeet,
+            'Jalkiohjauskirjepohjat':jalkiohjauskirjepohjat, 'AktivoiKelaFtp': aktivoiKelaFtp, '$log': $log, '$timeout': $timeout,
+            '$q':$q,'$location':$location,'ValintakoelaskentaAktivointi':valintakoelaskentaAktivointi,'Ilmoitus':ilmoitus,
+            'KelaDokumentti':kelaDokumentti,'Latausikkuna':latausikkuna,'$routeParams':routeParams, '$http':$http,
+            '$route':$route,'$window':$window,'SijoitteluAjo':sijoitteluAjo,'JalkiohjausXls':jalkiohjausXls,
+            'Jalkiohjauskirjeet':jalkiohjauskirjeet, 'SijoitteluAktivointi':sijoitteluAktivointi,'HakuModel':hakuModel,
+            'VirheModel':virheModel,'JatkuvaSijoittelu':jatkuvaSijoittelu,'IlmoitusTila':ilmoitusTila
+        });
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+describe('Testing ValintatulosController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, valintatulosModel;
+    var routeParams = {"hakuOid": "oid1",
+        "hakukohdeOid" : "oid2"};
+
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $controller = $injector.get('$controller');
+        $location = $injector.get('$location');
+        valintatulosModel = $injector.get('ValintatulosModel');
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get ValintatulosController', function() {
+        scope = $rootScope.$new();
+
+        ctrl = $controller('ValintatulosController', {'$scope' : scope, 'ValintatulosModel':valintatulosModel, '$routeParams': routeParams});
+
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+describe('Testing LisahakuhyvaksytytController', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hyvaksytytModel, hakukohdeModel, authService,
+        hakemusKey,hakukohdejson,hakeneetjson,hakukohdenimijson,hakutoiveetjson;
+    var routeParams = {"hakuOid": "oid1",
+        "hakukohdeOid" : "oid2"};
+
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector,hakukohdeJSON,hakeneetJSON,hakukohdenimiJSON,hakutoiveetJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $controller = $injector.get('$controller');
+        $location = $injector.get('$location');
+        hyvaksytytModel = $injector.get('HyvaksytytModel');
+        hakukohdeModel = $injector.get('HakukohdeModel');
+        authService = $injector.get('AuthService');
+        hakemusKey = $injector.get('HakemusKey');
+        hakukohdejson = hakukohdeJSON;
+        hakeneetjson = hakeneetJSON;
+        hakukohdenimijson = hakukohdenimiJSON;
+        hakutoiveetjson = hakutoiveetJSON;
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get LisahakuhyvaksytytController', function() {
+        scope = $rootScope.$new();
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
+        $httpBackend.expectGET('haku-app/applications?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
+            .respond(201,hakeneetjson);
+        $httpBackend.expectGET('organisaatio/'+routeParams.hakukohdeOid+'/parentoids')
+            .respond(201,"1.2.246.562.10.00000000001/1.2.246.562.20.59262166669");
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
+            .respond(201,hakukohdenimijson);
+        $httpBackend.expectGET('organisaatio/'+routeParams.hakukohdeOid+'/parentoids')
+            .respond(201,"1.2.246.562.10.00000000001/1.2.246.562.20.59262166669");
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000840202?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000846235?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000833345?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000832029?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000828499?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000861032?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000869924?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000847247?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000872681?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000842048?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000875976?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000857004?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000843021?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000869636?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000858430?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000871815?appState=ACTIVE&appState=INCOMPLETE')
+            .respond(201,hakutoiveetjson);
+        for (var i = 0; i < 17; i++) {
+            $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076/lisahaku-hyvaksytty')
+                .respond(201, "");
+            $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076/lisahaku-vastaanottotieto')
+                .respond(201, "");
+            $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076/lisahaku-ilmoittautumistieto')
+                .respond(201, "");
+        }
+        ctrl = $controller('LisahakuhyvaksytytController', {'$scope' : scope, '$location':$location, '$routeParams': routeParams,
+        'HyvaksytytModel':hyvaksytytModel,'HakukohdeModel':hakukohdeModel,'AuthService':authService,'HakemusKey':hakemusKey});
+        $httpBackend.flush();
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
