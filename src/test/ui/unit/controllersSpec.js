@@ -1039,7 +1039,8 @@ describe('Testing ValintalaskentatulosController', function(){
 });
 
 
-describe('Testing HakuController', function(){
+
+xdescribe('Testing HakuController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakuModel, parametriService,
         findalljson;
     var routeParams = {"hakuOid": "oid1",
