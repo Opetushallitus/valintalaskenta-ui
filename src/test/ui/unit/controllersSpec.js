@@ -16,7 +16,7 @@ describe('Testing HakukohteetController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));
 
@@ -110,7 +110,7 @@ describe('Testing HenkiloController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));
 
@@ -196,7 +196,7 @@ describe('Testing SijoitteluntulosController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -346,7 +346,7 @@ describe('Testing HakukohdeController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -425,7 +425,7 @@ describe('Testing HakukohdeNimiController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -465,7 +465,7 @@ describe('Testing HakeneetController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -532,7 +532,7 @@ describe('Testing ValinnanhallintaController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -600,7 +600,7 @@ describe('Testing ValintakoetulosController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -723,7 +723,7 @@ describe('Testing PistesyottoController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -831,7 +831,7 @@ describe('Testing HarkinnanvaraisetController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -972,7 +972,7 @@ describe('Testing ValintalaskentatulosController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -1059,7 +1059,7 @@ describe('Testing HakuController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
         $httpBackend.flush();
     }));
@@ -1110,7 +1110,7 @@ describe('Testing ValintalaskentaHistoriaController', function(){
 
         $httpBackend.expectGET('resources/jonosijahistoria')
             .respond(201,[]);
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));
 
@@ -1161,7 +1161,7 @@ describe('Testing HenkiloTiedotController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));
 
@@ -1251,7 +1251,7 @@ describe('Testing YhteisvalinnanHallintaController', function(){
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('haku/haut.html').respond("");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));
 
@@ -1301,7 +1301,7 @@ describe('Testing ValintatulosController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));
 
@@ -1377,7 +1377,7 @@ describe('Testing LisahakuhyvaksytytController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));
 
