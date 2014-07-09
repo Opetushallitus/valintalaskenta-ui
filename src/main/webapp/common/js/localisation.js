@@ -8,7 +8,7 @@ angular.module('oph.localisation', [])
             query: {
                 method:'GET',
                 params:{
-                    category: 'valintaperusteet'
+                    category: 'valintalaskenta'
                 },
                 isArray: true
             }
