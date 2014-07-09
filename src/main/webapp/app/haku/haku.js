@@ -62,5 +62,5 @@ angular.module('valintalaskenta').
                 $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
             }
         }
-    });
+    };
 }]);
