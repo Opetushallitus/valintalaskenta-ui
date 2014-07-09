@@ -294,7 +294,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
     return model;
 });
 
-function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat, Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakuolutukset, Ilmoitus, IlmoitusTila) {
+angular.module('valintalaskenta').
+    controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
+        'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila',
+        function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
+                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila) {
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -305,18 +309,14 @@ function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriServ
         var hakemusOid = $scope.model.hakemus.oid;
         var asiointikieli = $scope.model.hakemus.answers.lisatiedot.asiointikieli;
         var langcode = "FI";
-        if(asiointikieli === undefined) {
-        	
-        } else {
-        	if(asiointikieli.toUpperCase() === "RUOTSI") {
-				langcode = "SV";        		
-        	}
+        if(asiointikieli !== undefined && asiointikieli.toUpperCase() === "RUOTSI") {
+			langcode = "SV";
         }
-        console.log();
         var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
             controller: ViestintapalveluIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
@@ -342,7 +342,7 @@ function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriServ
         });
     };
 
-    $scope.pohjakoulutukset = Pohjakuolutukset;
+    $scope.pohjakoulutukset = Pohjakoulutukset;
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
@@ -384,4 +384,4 @@ function HenkiloTiedotController($q, $scope, $modal, $routeParams, ParametriServ
     };
 
     $scope.privileges = ParametriService;
-}
+}]);

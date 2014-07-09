@@ -134,9 +134,8 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
 
         };
 
-        this.refreshIfNeeded = function () {
-            var hakuOid = $routeParams.hakuOid;
-            if (hakuOid != model.lastHakuOid) {
+        this.refreshIfNeeded = function (hakuOid) {
+            if (hakuOid !== model.lastHakuOid) {
                 model.searchWord = "";
                 model.lastHakuOid = hakuOid;
                 model.refresh();
@@ -148,14 +147,16 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
 });
 
 
-function HakukohteetController($rootScope, $scope, $location, $timeout, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
+angular.module('valintalaskenta').
+    controller('HakukohteetController',['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', 'GlobalStates', 'HakuModel',
+        function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
     $scope.hakuModel = HakuModel;
 
     $scope.model = HakukohteetModel;
-    $scope.model.refreshIfNeeded();
+    $scope.model.refreshIfNeeded($routeParams.hakuOid);
 
     $scope.$watch('model.searchWord', debounce(function () {
         HakukohteetModel.refresh();
@@ -188,7 +189,8 @@ function HakukohteetController($rootScope, $scope, $location, $timeout, $routePa
     $scope.lazyLoading = function () {
         $scope.model.getNextPage(false);
     }
-}
+}]);
+
 
 app.factory('GlobalStates', function () {
     var model = new function () {

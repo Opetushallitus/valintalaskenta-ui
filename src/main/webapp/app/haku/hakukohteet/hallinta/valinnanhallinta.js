@@ -34,7 +34,11 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
     return model;
 });
 
-function ValinnanhallintaController($scope, $routeParams, $modal, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel, ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
+angular.module('valintalaskenta').
+    controller('ValinnanhallintaController',['$scope', '$routeParams', '$modal', 'Latausikkuna', 'Ilmoitus', 'ValinnanhallintaModel',
+        'HakukohdeModel', 'ValintalaskentaMuistissa', 'ValintakoelaskentaAktivointi', 'ParametriService', 'IlmoitusTila',
+    function ($scope, $routeParams, $modal, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel,
+              ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
     $scope.model = ValinnanhallintaModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
@@ -69,4 +73,4 @@ function ValinnanhallintaController($scope, $routeParams, $modal, Latausikkuna, 
     };
 
     $scope.privileges = ParametriService;
-}
+}]);

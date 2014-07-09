@@ -1,4 +1,5 @@
 "use strict";
+
 app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus, IlmoitusTila) {
     var model;
     model = new function () {
@@ -49,7 +50,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
 
                         model.avaimet.forEach(function (avain) {
                             avain.tyyppi = function () {
-                                if (avain.funktiotyyppi == "TOTUUSARVOFUNKTIO") {
+                                if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO") {
                                     return "boolean";
                                 }
                                 return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
@@ -143,7 +144,11 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
 });
 
 
-function PistesyottoController($scope, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus, IlmoitusTila, Latausikkuna, HakukohdeModel) {
+angular.module('valintalaskenta').
+    controller('PistesyottoController', ['$scope', '$log', '$timeout', '$routeParams', '$upload', 'PistesyottoVienti',
+        'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel',
+        function ($scope, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
+                  IlmoitusTila, Latausikkuna, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = PistesyottoModel;
     $scope.hakuOid = $routeParams.hakuOid;
@@ -164,7 +169,8 @@ function PistesyottoController($scope, $log, $timeout, $routeParams, $upload, Pi
 
     $scope.submit = function () {
         PistesyottoModel.submit();
-    }
+    };
+
 	$scope.pistesyottoTuontiXlsx = function($files) {
 		var file = $files[0];
 		var fileReader = new FileReader();
@@ -213,84 +219,82 @@ function PistesyottoController($scope, $log, $timeout, $routeParams, $upload, Pi
             });
         }
 
-    }
+    };
+
     $scope.changeArvo = function (hakija, tunniste, value, tyyppi) {
         hakija.additionalData[tunniste] = "";
-        if (value == "OSALLISTUI") {
-            if (tyyppi == "boolean") {
+        if (value === "OSALLISTUI") {
+            if (tyyppi === "boolean") {
                 hakija.additionalData[tunniste] = "true";
             } else {
                 hakija.additionalData[tunniste] = undefined;
             }
         }
 
-    }
+    };
 
     $scope.osallistuvatFilter = function (actual) {
         var show = false;
 
-        if ($scope.koeFilter == null) {
+        if ($scope.koeFilter === null) {
             if (actual.osallistuu) {
                 PistesyottoModel.avaimet.forEach(function (avain) {
 
-                    if (actual.osallistuu[avain.tunniste] == 'OSALLISTUU') {
+                    if (actual.osallistuu[avain.tunniste] === 'OSALLISTUU') {
                         show = true;
                     }
 
                 });
             }
-        } else if ($scope.koeFilter
-            && actual.osallistuu
-            && actual.osallistuu[$scope.koeFilter.tunniste] == 'OSALLISTUU') {
+        } else if ($scope.koeFilter &&
+            actual.osallistuu && actual.osallistuu[$scope.koeFilter.tunniste] === 'OSALLISTUU') {
 
             show = true;
         }
 
-        if (show && $scope.osallistuminenFilter != "") {
-            if ($scope.koeFilter == null) {
+        if (show && $scope.osallistuminenFilter !== "") {
+            if ($scope.koeFilter === null) {
 
                 if (actual.filterData) {
                     var tempShow = false;
                     PistesyottoModel.avaimet.forEach(function (avain) {
 
-                        if (actual.osallistuu[avain.tunniste] == 'OSALLISTUU' && actual.filterData[avain.tunniste + '-OSALLISTUMINEN'] == $scope.osallistuminenFilter) {
-                            console.log(actual);
-                            console.log(avain.tunniste + '-OSALLISTUMINEN');
+                        if (actual.osallistuu[avain.tunniste] === 'OSALLISTUU' && actual.filterData[avain.tunniste + '-OSALLISTUMINEN'] === $scope.osallistuminenFilter) {
                             tempShow = true;
                         }
 
                     });
                     show = tempShow;
                 }
-            } else if (actual.filterData
-                && actual.filterData[$scope.koeFilter.tunniste + '-OSALLISTUMINEN']
-                != $scope.osallistuminenFilter) {
+            } else if (actual.filterData &&
+                actual.filterData[$scope.koeFilter.tunniste + '-OSALLISTUMINEN'] !== $scope.osallistuminenFilter) {
                 show = false;
             }
         }
 
         return show;
 
-    }
+    };
 
     $scope.updateFilterData = function () {
         PistesyottoModel.updateFilterData();
-    }
+    };
 
     $scope.arvonta = $routeParams.arvonta;
+
     $scope.arvoPisteet = function() {
         PistesyottoModel.hakeneet.forEach(function(hakija){
             PistesyottoModel.avaimet.forEach(function(avain){
-                if(hakija.osallistuu[avain.tunniste] == 'OSALLISTUU') {
+                if(hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
                     var min = parseFloat(avain.min, 0);
                     var max = parseFloat(avain.max, 0);
                     var random = (Math.random() * (max - min) + min);
                     random = random.toFixed(1);
-                    console.log(random);
+
                     hakija.additionalData[avain.tunniste] = "" + random;
                     hakija.additionalData[avain.tunniste + '-OSALLISTUMINEN'] = 'OSALLISTUI';
                 }
             });
         });
-    }
-}
+    };
+}]);

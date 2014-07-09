@@ -32,7 +32,17 @@
 });
 
 
-function YhteisvalinnanHallintaController($scope, $modal, $interval, SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q, $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams, $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, Sijoitteluktivointi, HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
+angular.module('valintalaskenta').
+    controller('YhteisvalinnanHallintaController',['$scope', '$modal', '$interval', '_', 'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat',
+        'SijoittelunTulosHyvaksymiskirjeet', 'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', '$log', '$timeout', '$q',
+        '$location', 'ValintakoelaskentaAktivointi', 'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
+        '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
+        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila',
+        function ($scope, $modal, $interval, _, SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat,
+                  SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q,
+                  $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
+                  $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
+                  HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
     $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -48,6 +58,8 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
             return true;
         }
     };
+
+
     $scope.naytetaanHaut = false;
     $scope.kaikkiHautValittu = false;
     $scope.isValittu = function (haku) {
@@ -123,6 +135,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
             backdrop: 'static',
             templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
             controller: ValintalaskentaIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
@@ -145,6 +158,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
             controller: ViestintapalveluIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
@@ -200,7 +214,7 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
 	
     $scope.kaynnistaSijoittelu = function () {
         var hakuoid = $routeParams.hakuOid;
-        Sijoitteluktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {
+        SijoitteluAktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {
             Latausikkuna.avaaKustomoitu(id, "Suoritetaan sijoittelua haulle", "", "haku/hallinta/modaalinen/sijoitteluikkuna.html", {});
         }, function () {
             Ilmoitus.avaa("Sijoittelun aktivointi epäonnistui", "Sijoittelun aktivointi epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
@@ -259,4 +273,4 @@ function YhteisvalinnanHallintaController($scope, $modal, $interval, Sijoittelun
         alert("virhe");
     });
 
-}
+}]);

@@ -1,5 +1,5 @@
-﻿<h1>Valintojen toteuttaminen</h1>
-<div ng-include="'../common/js/topnavigation/topNavigation.html'"></div>
+<h1>{{ t('valinnanhallinta.header') || 'Valintojen toteuttaminen' }}</h1>
+<div ng-include="'haku/topNavigation.html'"></div>
 <div class="clear"></div>
 
 <div class="tabsheets">
@@ -16,8 +16,8 @@
 			<table ng-show="model.tulosValinnanvaiheet" class="virkailija-table-1">
 				<thead>
 					<tr>
-						<th>Valinnanvaiheen nimi</th>
-						<th>Tyyppi</th>
+						<th>{{ t('valinnanhallinta.valinnanvaiheennimi') || 'Valinnanvaiheen nimi' }}</th>
+						<th>{{ t('valinnanhallinta.tyyppi') || 'Tyyppi' }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -25,16 +25,16 @@
 					<tr ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
 						<td>{{valinnanvaihe.nimi}}</td>
 						<td>
-							<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'VALINTAKOE'">Valintakoevalinnanvaihe</span>
-							<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'TAVALLINEN'">Valinnanvaihe</span>
+							<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'VALINTAKOE'">{{ t('valinnanhallinta.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}</span>
+							<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'TAVALLINEN'">{{ t('valinnanhallinta.valinnanvaihe') || 'Valinnanvaihe' }}</span>
 						</td>
 						<td>
                             <div ng-show="valinnanvaihe.aktiivinen">
-                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN' && privileges.showValinnanhallinta()" ng-click="kaynnistaValintalaskenta($index)" class="btn btn-primary btn-sm">Käynnistä laskenta</a>
-                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE' && privileges.showValintakoekutsut()" ng-click="kaynnistaValintakoelaskenta($index)" class="btn btn-primary btn-sm">Käynnistä valintakoelaskenta</a>
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN' && privileges.showValinnanhallinta()" ng-click="kaynnistaValintalaskenta($index)" class="btn btn-primary btn-sm">{{ t('valinnanhallinta.kaynnistalaskenta') || 'Käynnistä laskenta' }}</a>
+                                <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE' && privileges.showValintakoekutsut()" ng-click="kaynnistaValintakoelaskenta($index)" class="btn btn-primary btn-sm">{{ t('valinnanhallinta.kaynnistavalintakoelaskenta') || 'Käynnistä valintakoelaskenta' }}</a>
                             </div>
                             <div ng-show="!valinnanvaihe.aktiivinen">
-                                Valinnanvaihe ei ole aktiivinen
+                                {{ t('valinnanhallinta.eioleaktiivinen') || 'Valinnanvaihe ei ole aktiivinen' }}
                             </div>
 		                </td>
 	                </tr>
@@ -43,21 +43,8 @@
 			
 
 			<div ng-show="!model.tulosValinnanvaiheet" class="offset-left-16-4 grid16-8">
-				<p class="alert alert-danger">Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa</p>
+				<p class="alert alert-danger">{{ t('valinnanhallinta.eiolemallinnettu') || 'Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa' }}</p>
 			</div>
-			<!--
-			<div>
-				<div class="width-12-6">
-					<h3 class="margin-top-0">Esivalinta</h3>
-					<a href="#">syötä pistetietoja</a>
-					<a href="#">pistejärjestys</a>
-				</div>
-
-				<div class="width-12-6">
-					<button class="small btn">Käynnistä vaihe</button>
-				</div>
-			</div>
-			-->
 			<div class="clear"></div>
 		</div>
 	</div>

@@ -33,7 +33,7 @@ var paths = {
 
 		'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
 
-		'bower_components/underscore/underscore.js',
+        'bower_components/lodash/dist/lodash.underscore.min.js',
 
 		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
 	],
@@ -46,7 +46,16 @@ var paths = {
 		'bower_components'
 	],
 	unitTests: [
-		'src/test/ui/unit/test.js'
+        'src/main/webapp/common/jslib/jquery.js',
+        'src/main/webapp/common/jslib/angular.js',
+        'src/main/webapp/common/jslib/*.js',
+        'src/main/webapp/common/jslib/ui.bootstrap-tpls.min.js',
+        'src/main/webapp/app/app.js',
+        'src/main/webapp/app/**/*.js',
+        'src/main/webapp/common/js/**/*.js',
+        'src/main/webapp/common/jslib/static/tinymce-4.0.12/*.js',
+        'src/test/ui/angular-mocks.js',
+        'src/test/ui/unit/**/*.js'
 	],
 	jslib: 'src/main/webapp/common/jslib',
 	sources: [
@@ -61,7 +70,7 @@ var paths = {
 
 // DEFAULT
 gulp.task('default', function (callback) {
-	runSequence('scripts', callback);
+	runSequence('test', callback);
 });
 
 // Development
@@ -91,8 +100,7 @@ gulp.task('build', function (callback) {
 gulp.task('test', function () {
 	return gulp.src(paths.unitTests)
 		.pipe(karma({
-			configFile: 'src/test/ui/valintalaskenta-test.conf.js',
-			action: 'watch'
+			configFile: 'src/test/ui/valintalaskenta-test.conf.js'
 		}).on('error', function (err) {
             // Make sure failed tests cause gulp to exit non-zero
             throw err;

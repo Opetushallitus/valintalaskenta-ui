@@ -148,11 +148,10 @@
                 <!--</executions>-->
             <!--</plugin>-->
         <!--</plugins>-->
-        <!--<plugins>
+        <plugins>
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                &lt;!&ndash; NB! Set <version> to the latest released version of frontend-maven-plugin, like in README.md &ndash;&gt;
                 <version>0.0.14</version>
 
                 <executions>
@@ -173,7 +172,6 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        &lt;!&ndash; Optional configuration which provides for running any npm command &ndash;&gt;
                         <configuration>
                             <arguments>install</arguments>
                         </configuration>
@@ -182,6 +180,7 @@
 
                     <execution>
                         <id>Gulp build</id>
+                        <phase>test</phase>
                         <goals>
                             <goal>gulp</goal>
                         </goals>
@@ -190,47 +189,7 @@
                 </executions>
             </plugin>
 
-        </plugins>-->
-        <pluginManagement>
-        	<plugins>
-
-        		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        		<plugin>
-        			<groupId>org.eclipse.m2e</groupId>
-        			<artifactId>lifecycle-mapping</artifactId>
-        			<version>1.0.0</version>
-        			<configuration>
-        				<lifecycleMappingMetadata>
-        					<pluginExecutions>
-        						<pluginExecution>
-        							<pluginExecutionFilter>
-        								<groupId>
-        									com.github.eirslett
-        								</groupId>
-        								<artifactId>
-        									frontend-maven-plugin
-        								</artifactId>
-        								<versionRange>
-        									[0.0.14,)
-        								</versionRange>
-        								<goals>
-        									<goal>npm</goal>
-        									<goal>gulp</goal>
-        									<goal>
-        										install-node-and-npm
-        									</goal>
-        								</goals>
-        							</pluginExecutionFilter>
-        							<action>
-        								<ignore></ignore>
-        							</action>
-        						</pluginExecution>
-        					</pluginExecutions>
-        				</lifecycleMappingMetadata>
-        			</configuration>
-        		</plugin>
-        	</plugins>
-        </pluginManagement>
+        </plugins>
     </build>
 
 </project>

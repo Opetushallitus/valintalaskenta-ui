@@ -115,7 +115,11 @@ app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitu
     return model;
 });
 
-function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet, OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
+angular.module('valintalaskenta').
+    controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
+        'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel', 'Pohjakoulutukset',
+        function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,
+            OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HarkinnanvaraisetModel;
     $scope.hakuOid = $routeParams.hakuOid;
@@ -125,7 +129,7 @@ function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmo
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
     $scope.muutettu = false;
 
-    $scope.pohjakoulutukset = Pohjakuolutukset;
+    $scope.pohjakoulutukset = Pohjakoulutukset;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 
@@ -182,5 +186,4 @@ function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmo
             Ilmoitus.avaa("Koekutsuja ei voida muodostaa!", "Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.", IlmoitusTila.WARNING);
         }
     };
-
-}
+}]);

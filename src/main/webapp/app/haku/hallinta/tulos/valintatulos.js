@@ -50,7 +50,9 @@ app.factory('ValintatulosModel', function (Valintatulos) {
     return model;
 });
 
-function ValintatulosController($scope, ValintatulosModel, $routeParams) {
+angular.module('valintalaskenta').
+    controller('ValintatulosController', ['$scope', 'ValintatulosModel', '$routeParams',
+        function ($scope, ValintatulosModel, $routeParams) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.model = ValintatulosModel;
 
@@ -96,4 +98,4 @@ function ValintatulosController($scope, ValintatulosModel, $routeParams) {
     $scope.search = function () {
         $scope.model.search($scope.hakuOid, 0, 200);
     };
-}
+}]);

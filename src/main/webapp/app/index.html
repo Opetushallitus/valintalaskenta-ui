@@ -8,7 +8,7 @@
     <!-- libs -->
     <script type="text/javascript" src="../common/jslib/jquery.min.js"></script>
     <script type="text/javascript" src="../common/jslib/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="../common/jslib/underscore.js"></script>
+    <script type="text/javascript" src="../common/jslib/lodash.underscore.min.js"></script>
     <script type="text/javascript" src="../common/jslib/angular-file-upload-html5-shim.min.js"></script>
     <script type="text/javascript" src="../common/jslib/angular.min.js"></script>
     <script type="text/javascript" src="../common/jslib/angular-resource.min.js"></script>
@@ -30,6 +30,9 @@
     <script type="text/javascript" src="routes.js"></script>
 
     <script type="text/javascript" src="../common/js/auth.js"></script>
+    <script type="text/javascript" src="../common/js/rootctrl.js"></script>
+    <script type="text/javascript" src="../common/js/props.js"></script>
+    <script type="text/javascript" src="../common/js/localisation.js"></script>
     <script type="text/javascript" src="../common/js/filters.js"></script>
     <script type="text/javascript" src="../common/modaalinen/valintalaskentaikkuna.js"></script>
     <script type="text/javascript" src="../common/modaalinen/viestintapalveluikkuna.js"></script>
@@ -57,7 +60,6 @@
     <script type="text/javascript" src="../common/js/loading.js"></script>
     <script type="text/javascript" src="../common/js/directives.js"></script>
     <script type="text/javascript" src="../common/js/modal.js"></script>
-    <script type="text/javascript" src="../common/js/localizations.js"></script>
 
     <!-- Common scripts-->
     <script type="text/javascript" src="../common/js/pagination/pagination.js"></script>
@@ -75,7 +77,7 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-<body>
+<body data-ng-controller="RootCtrl">
     <div id="application-wrapper">
         <div id="angularbox" ng-view=""></div>
     </div>

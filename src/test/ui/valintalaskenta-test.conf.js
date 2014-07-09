@@ -17,6 +17,7 @@ module.exports = function(config) {
         'main/webapp/common/jslib/angular.js',
         'main/webapp/common/jslib/jquery.js',
         'main/webapp/common/jslib/*.js',
+        'main/webapp/common/jslib/static/tinymce-4.0.12/*.js',
         'main/webapp/app/app.js',
         'main/webapp/app/**/*.js',
         'main/webapp/common/js/**/*.js',
@@ -27,7 +28,6 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      
     ],
 
 
@@ -61,7 +61,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
 
     // If browser does not capture in given timeout [ms], kill it
@@ -70,6 +70,11 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: true,
+
+      plugins : [
+          'karma-jasmine',
+          'karma-phantomjs-launcher'
+      ]
   });
 };

@@ -100,8 +100,10 @@
 	return model;
 });
 
-function LisahakuhyvaksytytController($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService,
-                                      HakemusKey) {
+angular.module('valintalaskenta').
+    controller('LisahakuhyvaksytytController', ['$scope', '$location', '$routeParams', 'HyvaksytytModel', 'HakukohdeModel',
+        'AuthService', 'HakemusKey',
+        function ($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService, HakemusKey) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HyvaksytytModel;
     $scope.hakuOid =  $routeParams.hakuOid;
@@ -186,4 +188,4 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
             value: hakemus.muokattuIlmoittautumisTila
         });
     };
-}
+}]);

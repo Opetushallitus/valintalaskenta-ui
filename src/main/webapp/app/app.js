@@ -1,22 +1,20 @@
 "use strict";
-var app = angular.module('valintalaskenta',
-    ['ngResource',
-    'loading',
-    'ngRoute',
-    'ngAnimate',
-    'pascalprecht.translate',
-    'ui.tinymce',
-    'valvomo',
-    'ui.bootstrap',
-    'angularFileUpload',
-    'underscore'],
-    function($rootScopeProvider) {
+
+
+var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
+    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
-}).run(function($http, MyRolesModel){
+}).run(function($http, MyRolesModel, LocalisationService){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
   	tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12';
     MyRolesModel;
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
+    LocalisationService.getTranslation("");
+});
+
+var underscore = angular.module('lodash', []);
+underscore.factory('_', function() {
+    return window._; // assumes lodash has already been loaded on the page
 });
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
@@ -33,15 +31,158 @@ var ORGANISAATIO_URL_BASE = ORGANISAATIO_URL_BASE || "";
 var HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE || "";
 var VIESTINTAPALVELU_URL_BASE = VIESTINTAPALVELU_URL_BASE || "";
 var CAS_URL = CAS_URL || "/cas/myroles";
+var SIJOITTELU_URL_BASE = SIJOITTELU_URL_BASE || "";
 
+//Route configuration
+app.config(function($routeProvider) {
+    $routeProvider.
+    when('/haku/', {controller:'HakuController', templateUrl:TEMPLATE_URL_BASE + 'haku/haut.html'}).
+    when('/haku/:hakuOid/hakukohde/', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakukohde.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/perustiedot/hakukohdeperustiedot.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valinnanhallinta', {controller:'ValinnanhallintaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hallinta/valinnanhallinta.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset', {controller:'HarkinnanvaraisetController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/harkinnanvaraiset/harkinnanvaraiset.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintalaskentatulos', {controller:'ValintalaskentatulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/valintalaskenta_tulos/valintalaskentatulos.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintakoetulos', {controller:'ValintakoetulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/koekutsut/valintakoetulos.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller:'HakeneetController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakeneet/hakeneet.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto', {controller:'PistesyottoController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/pistesyotto.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/sijoitteluntulos', {controller:'SijoitteluntulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/sijoittelu_tulos/sijoitteluntulos.html'}).
 
-var underscore = angular.module('underscore', []);
-underscore.factory('_', function() {
-    return window._; // assumes lodash has already been loaded on the page
+    when('/valintatapajono/:valintatapajonoOid/hakemus/:hakemusOid/valintalaskentahistoria', {controller:'ValintalaskentaHistoriaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/valintalaskenta_tulos/valintalaskentahistoria.html'}).
+
+    when('/haku/:hakuOid/henkiloittain/', {controller:'HenkiloController', templateUrl:TEMPLATE_URL_BASE + 'haku/henkilot/henkilo.html'}).
+    when('/haku/:hakuOid/henkiloittain/:hakemusOid/henkilotiedot', {controller:'HenkiloTiedotController', templateUrl:TEMPLATE_URL_BASE + 'haku/henkilot/henkilotiedot.html'}).
+    when('/haku/:hakuOid/henkiloittain/:hakemusOid/henkilotiedot/:scrollTo', {controller:'HenkiloTiedotController', templateUrl:TEMPLATE_URL_BASE + 'haku/henkilot/henkilotiedot.html'}).
+
+    when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:'YhteisvalinnanHallintaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/yhteisvalinnanhallinta.html'}).
+    when('/haku/:hakuOid/yhteisvalinnanhallinta/valintatulos', {controller:'ValintatulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/tulos/valintatulos.html'}).
+
+    when('/lisahaku/:hakuOid/hakukohde', {controller: 'LisahakuController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/lisahakuHakukohde.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: 'HakukohdeController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakukohdeperustiedot.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hyvaksytyt', {controller: 'LisahakuhyvaksytytController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hyvaksytyt.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller: 'HakeneetController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakeneet.html'}).
+
+    otherwise({redirectTo:'/haku/'});
+
 });
 
 
 
+
+//MODAALISET IKKUNAT
+app.factory('Ilmoitus', function($modal, IlmoitusTila) {
+	return {
+		avaa: function(otsikko, ilmoitus, tila) {
+			$modal.open({
+		      backdrop: 'static',
+		      templateUrl: '../common/modaalinen/ilmoitus.html',
+		      controller: function($scope, $window, $modalInstance) {
+				  $scope.ilmoitus = ilmoitus;
+		    	  $scope.otsikko = otsikko;
+                  if(!tila) {
+                      tila = IlmoitusTila.INFO;
+                  }
+                  $scope.tila = tila;
+		    	  $scope.sulje = function() {
+		    	  		$modalInstance.dismiss('cancel');
+		    	  };
+		      },
+		      resolve: {
+		    	  
+		      }
+		    }).result.then(function() {
+		    }, function() {
+		    });
+		    
+		}
+	};
+});
+app.factory('Latausikkuna', function($log, $modal, DokumenttiProsessinTila) {
+	return {
+		
+		avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli) {
+			var timer = null;
+			var cancelTimerWhenClosing = function() {
+				DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
+			};
+			$modal.open({
+		      backdrop: 'static',
+		      templateUrl: ikkunaHtml,
+		      controller: function($log, $scope, $window, $modalInstance, $interval, laajennos, DokumenttiProsessinTila) {
+		    	  cancelTimerWhenClosing = function() {
+				  	$interval.cancel(timer);
+				  };
+				  $scope.lisatiedot = lisatiedot;
+		    	  $scope.otsikko = otsikko;
+		    	  $scope.prosessi = {};
+		    	  $scope.kutsuLaajennettuaMallia = function() {
+		    	  	$log.error($scope.prosessi.dokumenttiId);
+		    	  	laajennos($scope.prosessi.dokumenttiId);
+		    	  };
+		    	  $scope.update = function() {
+		    	  		DokumenttiProsessinTila.lue({id: id.id}, function(data) {
+		    	  			if(data.keskeytetty == true) {
+		    	  				cancelTimerWhenClosing();
+		    	  			}
+		    	  			$scope.prosessi = data;
+		    	  			if(data.dokumenttiId != null) {
+		    	  				$interval.cancel(timer);
+		    	  			}
+		    	  		});
+		    	  };
+		    	  $scope.onVirheita = function() {
+		    	  	if($scope.prosessi == null) {
+		    	  		return false;
+		    	  	} else {
+		    	  		return $scope.prosessi.keskeytetty; 
+		    	  	}
+		    	  };
+		    	  $scope.onKesken = function() {
+		    	  	if($scope.prosessi == null) {
+		    	  		return true;
+		    	  	} else {
+		    	  		return $scope.prosessi.dokumenttiId == null; 
+		    	  	}
+		    	  };
+		    	  $scope.getProsentit = function(t) {
+		    	  	if(t == null) {
+		    	  		return 0;
+		    	  	}
+					return t.prosentteina * 100;
+				  };
+		    	  $scope.sulje = function() {
+		    	  		DokumenttiProsessinTila.ilmoita({id: id.id, poikkeus:"Käyttäjän sulkema"});
+		    	  		$modalInstance.dismiss('cancel');
+		    	  };
+		    	  timer = $interval(function () {
+				        $scope.update();
+				  }, 10000);
+				  
+				  $scope.ok = function() {
+				  	if($scope.onKesken()) {
+				  		return;
+				  	} else {
+				  		$window.location.href = "/dokumenttipalvelu-service/resources/dokumentit/lataa/" + $scope.prosessi.dokumenttiId;
+				  	}
+				  };
+		      },
+		      resolve: {
+		    	  laajennos: function() {
+		    	  	return laajennettuMalli;
+		    	  }
+		      }
+		    }).result.then(function() {
+		    	cancelTimerWhenClosing();
+		    }, function() {
+		    	DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
+		    	cancelTimerWhenClosing();
+		    });
+		    
+		},
+		avaa: function(id, otsikko, lisatiedot) {
+			this.avaaKustomoitu(id,otsikko,lisatiedot,'../common/modaalinen/latausikkuna.html',{});
+		}
+	};
+});
 
 //TARJONTA RESOURCES
 app.factory('Haku', function($resource) {
@@ -191,7 +332,11 @@ app.factory('Dokumenttiprosessi', function($http, $log, $rootScope, $resource, $
 		}
 	};
 });
-
+app.factory('HaeDokumenttipalvelusta', function($resource) {
+    return $resource(DOKUMENTTIPALVELU_URL_BASE + "/dokumentit/:tyyppi/:hakukohdeoid", {tyyppi: "@tyyppi", hakukohdeoid: "@hakukohdeoid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
 app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $window, Poller) {
 	
     return {
@@ -258,7 +403,7 @@ app.factory('ValintaryhmaLaskenta', function ($resource) {
 });
 
 
-app.factory('Sijoitteluktivointi', function($resource) {
+app.factory('SijoitteluAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/aktivoi", {}, {
         aktivoi: {method: "POST"}
     });
@@ -492,15 +637,6 @@ app.factory('Valintatulos', function($resource) {
 
 
 
-
-
-
-
-
-
-
-
-
 // Valintakoetulokset
 app.factory('Valintakoetulokset', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintakoe/hakutoive/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
@@ -579,9 +715,7 @@ app.factory('ValintaryhmatJaHakukohteet', function($resource) {
     });
 });
 
-
-
-app.constant('Pohjakuolutukset', {
+app.constant('Pohjakoulutukset', {
 	0: "Ulkomailla suoritettu koulutus",
 	1: "Perusopetuksen oppimäärä",
 	2: "Perusopetuksen osittain yksilöllistetty oppimäärä",

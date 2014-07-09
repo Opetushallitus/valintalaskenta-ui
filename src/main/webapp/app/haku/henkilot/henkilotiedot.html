@@ -1,4 +1,4 @@
-<h1>Valinnat</h1>
+<h1>{{ t('henkilotiedot.header') || 'Valinnat' }}</h1>
 
 
 <div ng-include="'../common/js/topnavigation/topNavigation.html'"></div>
@@ -19,20 +19,20 @@
                 {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
 			
 			<a ng-show="privileges.showValintalaskenta()" ng-click="muodostaJalkiohjauskirje()"
-       			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta jälkiohjauskirje</a>
+       			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('henkilotiedot.jalkiohjauskirje') || 'Muodosta jälkiohjauskirje' }}</a>
 			
             <dl class="margin-top-6">
 
-                <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">Henkilötunnus</dt>
+                <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">{{ t('henkilotiedot.henkilotunnus') || 'Henkilötunnus' }}</dt>
                 <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
-                <dt>hakemuksen oid:</dt>
+                <dt>{{ t('henkilotiedot.hakemuksenoid') || 'hakemuksen oid' }}:</dt>
                 <dd>
                     <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{model.hakuOid}}/esikatselu/{{model.hakemus.oid}}"
                        target="_blank">
                         {{model.hakemus.oid}}
                     </a>
                 </dd>
-                <dt ng-show="model.hakemus.answers.henkilotiedot">Lähiosoite</dt>
+                <dt ng-show="model.hakemus.answers.henkilotiedot">{{ t('henkilotiedot.lahiosoite') || 'Lähiosoite' }}</dt>
                 <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}},
                     {{model.hakemus.answers.henkilotiedot.Postinumero}}
                     {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}

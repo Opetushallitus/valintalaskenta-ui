@@ -1,5 +1,5 @@
-<h1>Valintojen toteuttaminen</h1>
-<div ng-include="'../common/js/topnavigation/topNavigation.html'"/>
+<h1>{{ t('valintakoetulos.header') || 'Valintojen toteuttaminen' }}</h1>
+<div ng-include="'haku/topNavigation.html'"/>
 
 <div class="tabsheets">
 
@@ -15,34 +15,32 @@
             <div>
 
                 <div>
-                    <span>Näytä</span>
+                    <span>{{ t('valintakoetulos.nayta') || 'Näytä' }}</span>
                     <select ng-model="nakymanTila" ng-change="updateNakymanTila()">
-                        <option value="Kokeittain" selected="selected">Kokeittain</option>
-                        <option value="Hakijoittain">Hakijoittain</option>
+                        <option value="Kokeittain" selected="selected">{{ t('valintakoetulos.kokeittain') || 'Kokeittain' }}</option>
+                        <option value="Hakijoittain">{{ t('valintakoetulos.hakijoittain') || 'Hakijoittain' }}</option>
                     </select>
 
                     <pagination-pagesize page-size="pageSize"></pagination-pagesize>
 
                     <input id="osallistuu" type="checkbox" ng-model="model.filter" ng-true-value="OSALLISTUU"
                            ng-false-value="" ng-change="updateNakymanTila()"/>
-                    <label for="osallistuu">Vain kutsuttavat</label>
+                    <label for="osallistuu">{{ t('valintakoetulos.vainkutsuttavat') || 'Vain kutsuttavat' }}</label>
 
                 </div>
             </div>
 
             <div ng-if="nakymanTila == 'Hakijoittain'">
-                <h2>Hakijoittain</h2>
-                <a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">Vie
-                    taulukkolaskentaan</a>
-                <a ng-click="allAddressLabelPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">Muodosta
-                    osoitetarrat</a>
+                <h2>{{ t('valintakoetulos.hakijoittain') || 'Hakijoittain' }}</h2>
+                <a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('valintakoetulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
+                <a ng-click="allAddressLabelPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('valintakoetulos.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
 
                 <table class="virkailija-table-1">
                     <thead>
                     <tr>
                         <th rowspan="2"><a href=""
-                                           ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">Nimi</a></th>
-                        <th colspan="{{model.koetyypit.length}}">Kokeet</th>
+                                           ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">{{ t('valintakoetulos.nimi') || 'Nimi' }}</a></th>
+                        <th colspan="{{model.koetyypit.length}}">{{ t('valintakoetulos.kokeet') || 'Kokeet' }}</th>
                     </tr>
                     <tr>
                         <th ng-repeat="koetyyppi in model.koetyypit">{{koetyyppi}}</th>
@@ -60,7 +58,7 @@
                         <td ng-repeat="koetyyppi in model.koetyypit | orderBy:koetyyppi">
                             <div ng-switch="hakemus.kokeet[koetyyppi].osallistuminen">
                                 <div ng-if="hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut">
-                                    <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
+                                    <span ng-switch-when="OSALLISTUU">{{ t('valintakoetulos.kutsutaan') || 'Kutsutaan' }}</span>
                                     <span ng-switch-default></span>
                                 </div>
                                 <div ng-if="!hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut">
@@ -70,7 +68,7 @@
                         </td>
                     </tr>
                 </table>
-                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[0].length" page="currentPage[0]" items-per-page="pageSize"></pagination>
+                <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[0].length" ng-model="currentPage[0]" items-per-page="pageSize"></pagination>
             </div>
 
             <div ng-if="nakymanTila == 'Kokeittain'">
@@ -82,7 +80,7 @@
 	                    </div>
 
 						<div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length==0">
-                            Valintakokeeseen ei ole osallistujia
+                            {{ t('valintakoetulos.eiosallistujia') || 'Valintakokeeseen ei ole osallistujia' }}
 	                    </div>
 
 	                    <div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length>0">
@@ -94,30 +92,27 @@
 	                            </form>
 	                            <div class="btn-toolbar margin-top-2 margin-bottom-2" role="toolbar">
 	                                <a ng-click="valintakoeTulosXLS(valintakoe); $event.stopPropagation()"
-	                                   class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;Vie
-	                                    taulukkolaskentaan</a>
+	                                   class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('valintakoetulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
 									
 	                                <div ng-if="isBlank(tinymceModel[valintakoe.valintakoeOid])" class="inline-block"
 	                                     popover="Kirjoita viesti ylläolevaan kenttään." popover-trigger="mouseenter">
 	                                    <a class="btn btn-default btn-sm disabled">
-	                                        <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
+	                                        <i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostakoekutsut') || 'Muodosta koekutsut' }}
 	                                    </a>
 	                                </div>
 	
 	                                <a ng-if="!isBlank(tinymceModel[valintakoe.valintakoeOid])"
 	                                   ng-click="tulostaKoekutsukirjeet(valintakoe);$event.stopPropagation()"
 	                                   class="btn btn-default btn-sm">
-	                                    <i class="fa fa-file"></i>&nbsp;Muodosta koekutsut
+	                                    <i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostakoekutsut') || 'Muodosta koekutsut' }}
 	                                </a>
 	
 	                                <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()"
-	                                   class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;Muodosta osoitetarrat</a>
+	                                   class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
 	                            </div>
 	                        </div>
 	                        <div ng-hide="valintakoe.aktiivinen">
-	                            <p>Tälle valintakokeelle ei voi muodostaa osoitetarroja tai koekutsuja. Asetus on
-	                                muokattavissa
-	                                valintaperusteiden mallinnuksessa.</p>
+	                            <p>{{ t('valintakoetulos.eivoimuodostaa') || 'Tälle valintakokeelle ei voi muodostaa osoitetarroja tai koekutsuja. Asetus on muokattavissa valintaperusteiden mallinnuksessa.' }}</p>
 	
 	                            <div ng-show="valintakoe.virheIlmoitus" class="alert alert-danger">
 	                                <h3>{{valintakoe.virheIlmoitus}}</h3>
@@ -128,12 +123,12 @@
 	                            <tr>
 	                                <th><input ng-if="(valintakoe.hakijat|filter:model.filterImmutable).length>0" type="checkbox" ng-model="valintakoe.valittu"
 	                                           ng-change="model.checkAll(valintakoe);"/></th>
-	                                <th><a href="" ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">Nimi</a>
+	                                <th><a href="" ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">{{ t('valintakoetulos.nimi') || 'Nimi' }}</a>
 	                                </th>
 	                                <th><a href=""
-	                                       ng-click="predicate = 'osallistuminen'; reverse=!reverse">Osallistuminen</a>
+	                                       ng-click="predicate = 'osallistuminen'; reverse=!reverse">{{ t('valintakoetulos.osallistuminen') || 'Osallistuminen' }}</a>
 	                                </th>
-	                                <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">Laskettu pvm</a>
+	                                <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">{{ t('valintakoetulos.laskettupvm') || 'Laskettu pvm' }}</a>
 	                                </th>
 	                            </tr>
 	                            </thead>
@@ -151,7 +146,7 @@
 	                                </td>
 	                                <td>
 	                                    <div ng-switch="koe.osallistuminen">
-	                                        <span ng-switch-when="OSALLISTUU">Kutsutaan</span>
+	                                        <span ng-switch-when="OSALLISTUU">{{ t('valintakoetulos.kutsutaan') || 'Kutsutaan' }}</span>
 	                                        <span ng-switch-default></span>
 	                                    </div>
 	                                </td>
@@ -160,7 +155,7 @@
 	
 	                            </tbody>
 	                        </table>
-                            <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResults[$index].length" page="currentPage[$index]" items-per-page="pageSize"></pagination>
+                            <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[$index].length" ng-model="currentPage[$index]" items-per-page="pageSize"></pagination>
 	                    </div>
 	                </div>
                 </div>

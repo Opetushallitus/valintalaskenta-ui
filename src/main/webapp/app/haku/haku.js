@@ -46,7 +46,9 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
     return model;
 });
 
-function HakuController($scope, $location, $routeParams, HakuModel, ParametriService) {
+angular.module('valintalaskenta').
+    controller('HakuController', ['$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService',
+        function ($scope, $location, $routeParams, HakuModel, ParametriService) {
     $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
 
@@ -60,6 +62,5 @@ function HakuController($scope, $location, $routeParams, HakuModel, ParametriSer
                 $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
             }
         }
-    }
-
-}
+    });
+}]);

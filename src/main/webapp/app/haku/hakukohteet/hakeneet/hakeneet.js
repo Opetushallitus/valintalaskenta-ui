@@ -30,7 +30,9 @@
     return model;
 });
 
-function HakeneetController($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
+angular.module('valintalaskenta').
+    controller('HakeneetController', ['$scope', '$location', '$routeParams', 'HakeneetModel', 'HakukohdeModel',
+        function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -47,4 +49,4 @@ function HakeneetController($scope, $location, $routeParams, HakeneetModel, Haku
         "ACTIVE": "Aktiivinen",
         "INCOMPLETE": "Puutteellinen"
     };
-}
+}]);

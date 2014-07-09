@@ -1,7 +1,4 @@
 "use strict";
-//var VALINTAPERUSTEET = "APP_VALINTAPERUSTEET";
-//var VALINTOJENTOTEUTTAMIEN = "APP_VALINTOJENTOTEUTTAMINEN";
-//var SIJOITTELU = "APP_SIJOITTELU";
 
 var READ = "READ";
 var UPDATE = "READ_UPDATE";
@@ -28,7 +25,7 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
                 refresh();
             }, 1000);
         });
-    }
+    };
 
     refresh();
 

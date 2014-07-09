@@ -10,11 +10,11 @@
 			<div class="col-sm-3" ng-show="prosessi.kokonaistyo.kokonaismaara">{{prosessi.kokonaistyo.tehty}} / {{prosessi.kokonaistyo.kokonaismaara}}</div>
 			<br>
 			<div class="col-sm-12">
-			Suoritus etenee virheettömästi ja varoituksetta
+                {{ t('kelaikkuna.suoritus') || 'Suoritus etenee virheettömästi ja varoituksetta' }}
 			</div>
 		</div>
 		<div ng-show="onVirheita()">
-			Dokumentin luonti epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.
+            {{ t('kelaikkuna.virhe') || 'Dokumentin luonti epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.' }}
 			<div class="bs-callout bs-callout-danger" ng-repeat="poikkeus in prosessi.poikkeukset">
 		    	<h4>{{poikkeus.palvelu}}</h4>
 		    	<p ng-repeat="oid in poikkeus.oidit">{{oid.tyyppi}} {{oid.oid}}</p>
@@ -26,9 +26,9 @@
 </div>
 <div class="modal-footer">
 	<div class="row">
-		<a ng-show="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">Keskeytä muodostus</a>
-		<a ng-hide="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">Sulje latausikkuna</a>
-		<a ng-class="{disabled: onKesken()}" class="btn btn-default btn-sm" ng-click="ok()"  role="button">Lataa tiedosto</a>
-		<a ng-class="{disabled: onKesken()}" class="btn btn-primary btn-sm" ng-click="kutsuLaajennettuaMallia();"  role="button">FTP vienti</a>
+		<a ng-show="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('kelaikkuna.keskeyta') || 'Keskeytä muodostus' }}</a>
+		<a ng-hide="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('kelaikkuna.sulje') || 'Sulje latausikkuna' }}</a>
+		<a ng-class="{disabled: onKesken()}" class="btn btn-default btn-sm" ng-click="ok()"  role="button">{{ t('kelaikkuna.lataa') || 'Lataa tiedosto' }}</a>
+		<a ng-class="{disabled: onKesken()}" class="btn btn-primary btn-sm" ng-click="kutsuLaajennettuaMallia();"  role="button">{{ t('kelaikkuna.ftp') || 'FTP vienti' }}</a>
 	</div>
 </div>

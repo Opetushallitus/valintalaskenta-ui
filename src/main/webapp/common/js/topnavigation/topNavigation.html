@@ -1,14 +1,13 @@
-<div ng-controller="HakuController" class="col-md-12">
-	<div ng-include="'haku/hakulista.html'"></div>
+<div ng-controller="HakuController" class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-include="'haku/hakulista.html'"></div>
 </div>
 
-<div class="tabs" ng-controller="navigationController">
-    <a ng-if="hakuModel.hakuOid.lisahaku" ng-class="navClass('hakukohde', 3)" href="#/lisahaku/{{hakuOid}}/hakukohde" class="tab"><span>Hakukohteittain</span></a>
-    <a ng-if="!hakuModel.hakuOid.lisahaku" ng-class="navClass('hakukohde', 3)" href="#/haku/{{hakuOid}}/hakukohde" class="tab"><span>Hakukohteittain</span></a>
-    <!--<a href="#/haku/{{hakuOid}}/henkiloittain/" class="tab disabled"><span>Henkilöittäin</span></a>-->
-    <a privileges="valintalaskenta"  ng-class="navClass('henkiloittain', 3)" href="#/haku/{{hakuOid}}/henkiloittain/" class="tab"><span>Henkilöittäin</span></a>
-    <a ng-if="hakuModel.hakuOid.lisahaku" ng-class="navClass('valintaryhmittain', 3)" ng-href="#/lisahaku/{{hakuOid}}/valintaryhmittain" class="tab"><span>Valintaryhmittäin</span></a>
-    <a ng-if="!hakuModel.hakuOid.lisahaku" ng-class="navClass('valintaryhmittain', 3)" ng-href="#/haku/{{hakuOid}}/valintaryhmittain" class="tab"><span>Valintaryhmittäin</span></a>
-    <a ng-show="displaytab.valinnanhallinta" ng-class="navClass('yhteisvalinnanhallinta', 3)" href="#/haku/{{hakuOid}}/yhteisvalinnanhallinta/" auth="crudOph" auth-service="APP_VALINTAPERUSTEET" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
-    <!-- <a href="#/valinnanvaihe/:id/laskentakaava" class="tab"><span>Laskentakaavat</span></a>    -->
+
+<div class="row tabs">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-controller="navigationController">
+        <a ng-if="hakuModel.hakuOid.lisahaku" ng-class="navClass('hakukohde', 3)" href="#/lisahaku/{{hakuOid}}/hakukohde" class="tab"><span>{{ t('topnavigation.hakukohteittain') || 'Hakukohteittain' }}</span></a>
+        <a ng-if="!hakuModel.hakuOid.lisahaku" ng-class="navClass('hakukohde', 3)" href="#/haku/{{hakuOid}}/hakukohde" class="tab"><span>{{ t('topnavigation.hakukohteittain') || 'Hakukohteittain' }}</span></a>
+        <a privileges="valintalaskenta" ng-class="navClass('henkiloittain', 3)" href="#/haku/{{hakuOid}}/henkiloittain/" class="tab"><span>{{ t('topnavigation.henkiloittain') || 'Henkilöittäin' }}</span></a>
+        <span><a ng-show="displaytab.valinnanhallinta" ng-class="navClass('yhteisvalinnanhallinta', 3)" href="#/haku/{{hakuOid}}/yhteisvalinnanhallinta/" auth="crudOph" auth-service="APP_VALINTAPERUSTEET" class="tab float-right"><span>{{ t('topnavigation.yhteisvalinta') || 'Yhteisvalinnan hallinta' }}</span></a></span>
+    </div>
 </div>

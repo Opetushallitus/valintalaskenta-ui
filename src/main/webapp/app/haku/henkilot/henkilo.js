@@ -96,7 +96,9 @@ app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot) {
     return modelInterface;
 });
 
-function HenkiloController($scope, $location, $routeParams, HenkiloModel) {
+angular.module('valintalaskenta').
+    controller('HenkiloController',['$scope', '$location', '$routeParams', 'HenkiloModel',
+        function ($scope, $location, $routeParams, HenkiloModel) {
 
     $scope.model = HenkiloModel;
     $scope.model.refreshIfNeeded($routeParams.hakuOid);
@@ -133,4 +135,4 @@ function HenkiloController($scope, $location, $routeParams, HenkiloModel) {
         $location.path('/haku/' + $routeParams.hakuOid + '/henkiloittain/' + hakemus.oid + "/henkilotiedot/id_" + hakemus.oid);
     };
 
-}
+}]);

@@ -1,5 +1,5 @@
 
-<h1>Hakeneet</h1>
+<h1>{{ t('hakeneet.header') || 'Hakeneet' }}</h1>
 
 <div ng-include="'../common/js/topnavigation/topNavigation.html'" />
 
@@ -19,18 +19,18 @@
             <h1>{{hakukohdeModel.hakukohde.hakukohdeKoodistoNimi}}</h1>
             
             <div ng-show="model.errors.length > 0" class="alert alert-danger">
-                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <h3>{{ t('hakeneet.error') || 'Tietoja haettaessa tapahtui virhe' }}</h3>
                 <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
-                <h2>Hakeneet</h2>
+                <h2>{{ t('hakeneet.hakeneet') || 'Hakeneet' }}</h2>
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
                         <thead>
                         <tr>
-                            <th>Nimi</th>
-                            <th>Hakemus</th>
+                            <th>{{ t('hakeneet.nimi') || 'Nimi' }}</th>
+                            <th>{{ t('hakeneet.hakemus') || 'Hakemus' }}</th>
                         </tr>
                         </thead>
                         <tbody>

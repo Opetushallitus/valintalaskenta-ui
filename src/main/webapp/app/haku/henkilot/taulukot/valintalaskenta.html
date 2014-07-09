@@ -4,19 +4,19 @@
         <thead>
         <tr>
             <th colspan="2"></th>
-            <th colspan="3">Valintalaskenta</th>
-            <th colspan="3">Sijoittelu</th>
+            <th colspan="3">{{ t('valintalaskenta.valintalaskenta') || 'Valintalaskenta' }}</th>
+            <th colspan="3">{{ t('valintalaskenta.sijoittelu') || 'Sijoittelu' }}</th>
         </tr>
         <tr>
-            <th>Hakutoive</th>
-            <th>Valintatapajono
+            <th>{{ t('valintalaskenta.hakutoive') || 'Hakutoive' }}</th>
+            <th>{{ t('valintalaskenta.valintatapajono') || 'Valintatapajono' }}
                 <a href="" ng-model="filter" ng-init="false" ng-click="filter = !filter">({{filter ? 'Viimeinen' :
                     'Kaikki'}})</a>
             </th>
-            <th>Yhteispisteet</th>
-            <th colspan="2">Valintatieto</th>
-            <th>Tila</th>
-            <th colspan="2">Vastaanottotila</th>
+            <th>{{ t('valintalaskenta.yhteispisteet') || 'Yhteispisteet' }}</th>
+            <th colspan="2">{{ t('valintalaskenta.valintatieto') || 'Valintatieto' }}</th>
+            <th>{{ t('valintalaskenta.tila') || 'Tila' }}</th>
+            <th colspan="2">{{ t('valintalaskenta.vastaanottotila') || 'Vastaanottotila' }}</th>
 
         </tr>
         </thead>
@@ -55,7 +55,7 @@
             </td>
             <td>
                 <span>{{model.sijoittelu[valintatapajono.valintatapajonooid].tila}}</span>
-                <span ng-if="model.sijoittelu[valintatapajono.valintatapajonooid].tila == 'HYVAKSYTTY' && model.sijoittelu[valintatapajono.valintatapajonooid].hyvaksyttyHarkinnanvaraisesti == true">(Harkinnanvaraisesti)</span>
+                <span ng-if="model.sijoittelu[valintatapajono.valintatapajonooid].tila == 'HYVAKSYTTY' && model.sijoittelu[valintatapajono.valintatapajonooid].hyvaksyttyHarkinnanvaraisesti == true">({{ t('valintalaskenta.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
                 <span ng-if="model.sijoittelu[valintatapajono.valintatapajonooid].varasijanNumero != undefined">({{model.sijoittelu[valintatapajono.valintatapajonooid].varasijanNumero}})</span>
             </td>
             <td>{{model.sijoittelu[valintatapajono.valintatapajonooid].vastaanottoTila}}</td>
