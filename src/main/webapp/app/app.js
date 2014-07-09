@@ -254,7 +254,7 @@ app.factory('ValintalaskentaMuistissa', function($resource) {
     });
 });
 app.factory('ValintaryhmaLaskenta', function ($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakoostepalvelu/resources/valintalaskentamuistissa/aktivoi?hakuOid=:hakuOid&onkoWhitelist=true", {hakuOid: "@hakuOid"});
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktivoi?hakuOid=:hakuOid&onkoWhitelist=true", {hakuOid: "@hakuOid"});
 });
 
 
