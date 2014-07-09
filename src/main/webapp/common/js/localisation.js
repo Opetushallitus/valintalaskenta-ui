@@ -2,9 +2,9 @@
  * Hakee käännöspalvelusta resurssit sovelluksen lokalisointiin
  */
 angular.module('oph.localisation', [])
-    .factory('Localisations',[ '$resource', 'Props','$q', function ($resource, Props, $q) {
+    .factory('Localisations',[ '$resource','$q', function ($resource, Props, $q) {
         var localisations ={};
-        var locals = $resource(Props.localizationUrl+'/localisation',{},{
+        var locals = $resource(LOCALISATION_URL_BASE+'/localisation',{},{
             query: {
                 method:'GET',
                 params:{

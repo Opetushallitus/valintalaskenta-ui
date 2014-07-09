@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ConfigController {
 
+    @Value("${localisation.rest}")
+    private String localisationUrl;
+
     @Value("${valintalaskenta-ui.tarjona-service-url.rest}")
     private String tarjontaServiceUrl;
 
@@ -63,6 +66,7 @@ public class ConfigController {
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
+        append(b, "LOCALISATION_URL_BASE", localisationUrl);
         append(b, "TARJONTA_URL_BASE", tarjontaServiceUrl);
         append(b, "VALINTAPERUSTEET_URL_BASE", valintaperusteetServiceUrl);
         append(b, "DOKUMENTTIPALVELU_URL_BASE", dokumenttipalveluUrl);
