@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h2 style="margin-top: -12px;">Valintalaskenta</h2>
+	<h2 style="margin-top: -12px;">{{ t('valintalaskentaikkuna.header') || 'Valintalaskenta' }}</h2>
 </div>
 <div class="modal-body">
 	<h3 style="margin-top: -12px;">{{nimi}}</h3>
@@ -11,7 +11,7 @@
 	</div>
 
     <div ng-if="virheet">
-    <h3 class="text-danger">Virheet</h3>
+    <h3 class="text-danger">{{ t('valintalaskentaikkuna.virheet') || 'Virheet' }}</h3>
     <ul class="list-unstyled">
         <table class="table">
             <tr class="danger" ng-repeat="virhe in virheet">
@@ -23,12 +23,12 @@
     </ul>
     </div>
     <div ng-if="varoitukset">
-    <h3 class="text-warning">Varoitukset</h3>
+    <h3 class="text-warning">{{ t('valintalaskentaikkuna.varoitukset') || 'Varoitukset' }}</h3>
     <table class="table">
         <thead>
         <tr>
-            <th>OID</th>
-            <th>Selite</th>
+            <th>{{ t('valintalaskentaikkuna.oid') || 'OID' }}</th>
+            <th>{{ t('valintalaskentaikkuna.selite') || 'Selite' }}</th>
         </tr>
         </thead>
         <tbody>
@@ -40,16 +40,16 @@
     </table>
     </div>
     <span ng-if="!virheet && !varoitukset">
-        Suoritus etenee virheettömästi ja varoituksetta
+        {{ t('valintalaskentaikkuna.suoritusetenee') || 'Suoritus etenee virheettömästi ja varoituksetta' }}
     </span>
 </div>
 <div class="modal-footer">
 	<div class="row">
-		<a class="btn btn-default" ng-click="ok()"  role="button">Sulje ikkuna</a>
-	         	<a class="btn btn-default" ng-click="naytaLisaa()"  role="button"><span ng-hide="lisaa">Lisää &raquo;</span><span ng-show="lisaa">Vähemmän &laquo;</span></a>
+		<a class="btn btn-default" ng-click="ok()"  role="button">{{ t('valintalaskentaikkuna.sulje') || 'Sulje ikkuna' }}</a>
+	         	<a class="btn btn-default" ng-click="naytaLisaa()"  role="button"><span ng-hide="lisaa">Lisää &raquo;</span><span ng-show="lisaa">{{ t('valintalaskentaikkuna.vahemman') || 'Vähemmän' }} &laquo;</span></a>
 	</div>
 	<br>
 	<div class="row" ng-show="lisaa">			
-		<a class="btn btn-danger" ng-click="peruuta()">Keskeytä valintalaskenta</a>
+		<a class="btn btn-danger" ng-click="peruuta()">{{ t('valintalaskentaikkuna.keskeyta') || 'Keskeytä valintalaskenta' }}</a>
 	</div>
 </div>
