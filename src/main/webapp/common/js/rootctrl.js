@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('valintalaskenta').controller('RootCtrl', ['$rootScope', '$scope','Props' ,'LocalisationService',
-        function($rootScope, $scope, Props, LocalisationService ) {
+angular.module('valintalaskenta').controller('RootCtrl', ['$rootScope', '$scope','LocalisationService',
+        function($rootScope, $scope, LocalisationService ) {
             /**
              * katsotaan käyttäjän käyttöprofiilista cas/myroles tiedostosta
              * hänen palveluun määrittämä käyttökieli
