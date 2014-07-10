@@ -52,8 +52,9 @@ angular.module('valintalaskenta').
     $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
 
-    $scope.changeHaku = function() {
-        ParametriService.refresh($routeParams.hakuOid);
+    ParametriService.refresh($routeParams.hakuOid);
+
+    $scope.$watch('hakumodel.hakuOid', function () {
 
         if ($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid !== $routeParams.hakuOid) {
             if ($scope.hakumodel.hakuOid.lisahaku) {
