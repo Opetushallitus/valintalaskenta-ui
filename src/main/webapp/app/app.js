@@ -56,6 +56,10 @@ app.config(function($routeProvider) {
     when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:'YhteisvalinnanHallintaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/yhteisvalinnanhallinta.html'}).
     when('/haku/:hakuOid/yhteisvalinnanhallinta/valintatulos', {controller:'ValintatulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/tulos/valintatulos.html'}).
 
+    when('/haku/:hakuOid/valintaryhmittain', {controller: 'ValintaryhmaController', templateUrl: TEMPLATE_URL_BASE + 'haku/valintaryhmat/valintaryhma.html'}).
+    when('/lisahaku/:hakuOid/valintaryhmittain', {controller:'ValintaryhmaController', templateUrl: TEMPLATE_URL_BASE + 'haku/valintaryhmat/valintaryhma.html'}).
+
+
     when('/lisahaku/:hakuOid/hakukohde', {controller: 'LisahakuController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/lisahakuHakukohde.html'}).
     when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: 'HakukohdeController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakukohdeperustiedot.html'}).
     when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hyvaksytyt', {controller: 'LisahakuhyvaksytytController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hyvaksytyt.html'}).
