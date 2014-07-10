@@ -34,7 +34,7 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
                         match ? haku.lisahaku = true : haku.lisahaku = false;
                     });
 
-                }, function(error) {    
+                }, function(error) {
                     $log.error(error);
                 });
             }
@@ -51,6 +51,20 @@ angular.module('valintalaskenta').
         function ($scope, $location, $routeParams, HakuModel, ParametriService) {
     $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
+
+    ParametriService.refresh($routeParams.hakuOid);
+
+    $scope.$watch('hakumodel.hakuOid', function () {
+
+        if ($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid !== $routeParams.hakuOid) {
+            if ($scope.hakumodel.hakuOid.lisahaku) {
+                $location.path('/lisahaku/' + HakuModel.hakuOid.oid + '/hakukohde/');
+            } else {
+                $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
+            }
+        }
+    });
+
 
     $scope.changeHaku = function() {
         ParametriService.refresh($routeParams.hakuOid);
