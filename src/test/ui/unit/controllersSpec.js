@@ -165,7 +165,7 @@ describe('Testing SijoitteluntulosController', function(){
         scope,ctrl,hakukohdenimijson,hakukohdetilajson,hakujson,hakukohdejson, sijoitteluajojson, $modal, $window,
         kirjepohjat,latausikkuna,hakukohdeModel,
         sijoitteluntulosModel, osoitetarratSijoittelussaHyvaksytyille, hyvaksymiskirjeet, jalkiohjauskirjeet,
-        sijoitteluXls, authService;
+        sijoitteluXls, authService,localisationService;
     var routeParams = {"hakuOid": "oid",
         "hakukohdeOid" : "oid2"};
     beforeEach(module('valintalaskenta','testData'));
@@ -192,6 +192,7 @@ describe('Testing SijoitteluntulosController', function(){
         jalkiohjauskirjeet = $injector.get('Jalkiohjauskirjeet');
         sijoitteluXls = $injector.get('SijoitteluXls');
         authService = $injector.get('AuthService');
+        localisationService = $injector.get('LocalisationService');
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
@@ -220,6 +221,9 @@ describe('Testing SijoitteluntulosController', function(){
             .respond(201,hakujson);
         $httpBackend.expectGET('resources/sijoittelu/'+routeParams.hakuOid+'/sijoitteluajo/latest/hakukohde/'+routeParams.hakukohdeOid)
             .respond(201,sijoitteluajojson);
+        for (var i = 0; i < 8; i++) {
+            $httpBackend.expectGET('/localisation?category=valintalaskenta').respond("");
+        }
         $httpBackend.expectGET('organisaatio/undefined/parentoids')
             .respond(201,'1.2.246.562.10.00000000001/undefined');
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
@@ -234,7 +238,7 @@ describe('Testing SijoitteluntulosController', function(){
             '$window' : $window, 'Kirjepohjat': kirjepohjat, 'Latausikkuna': latausikkuna, 'HakukohdeModel': hakukohdeModel,
             'SijoitteluntulosModel': sijoitteluntulosModel, 'OsoitetarratSijoittelussaHyvaksytyille': osoitetarratSijoittelussaHyvaksytyille,
             'Hyvaksymiskirjeet': hyvaksymiskirjeet, 'Jalkiohjauskirjeet': jalkiohjauskirjeet, 'SijoitteluXls': sijoitteluXls,
-            'AuthService': authService});
+            'AuthService': authService, 'LocalisationService': localisationService});
 
         $httpBackend.flush();
     });
@@ -1355,7 +1359,7 @@ describe('Testing ValintatulosController', function(){
 
 describe('Testing LisahakuhyvaksytytController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hyvaksytytModel, hakukohdeModel, authService,
-        hakemusKey,hakukohdejson,hakeneetjson,hakukohdenimijson,hakutoiveetjson;
+        hakemusKey,hakukohdejson,hakeneetjson,hakukohdenimijson,hakutoiveetjson, localisationService;
     var routeParams = {"hakuOid": "oid1",
         "hakukohdeOid" : "oid2"};
 
@@ -1370,6 +1374,7 @@ describe('Testing LisahakuhyvaksytytController', function(){
         hakukohdeModel = $injector.get('HakukohdeModel');
         authService = $injector.get('AuthService');
         hakemusKey = $injector.get('HakemusKey');
+        localisationService = $injector.get('LocalisationService');
         hakukohdejson = hakukohdeJSON;
         hakeneetjson = hakeneetJSON;
         hakukohdenimijson = hakukohdenimiJSON;
@@ -1387,10 +1392,14 @@ describe('Testing LisahakuhyvaksytytController', function(){
             .respond(201,hakukohdejson);
         $httpBackend.expectGET('haku-app/applications?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
             .respond(201,hakeneetjson);
+        for (var i = 0; i < 8; i++) {
+            $httpBackend.expectGET('/localisation?category=valintalaskenta').respond("");
+        }
         $httpBackend.expectGET('organisaatio/'+routeParams.hakukohdeOid+'/parentoids')
             .respond(201,"1.2.246.562.10.00000000001/1.2.246.562.20.59262166669");
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
             .respond(201,hakukohdenimijson);
+
         $httpBackend.expectGET('organisaatio/'+routeParams.hakukohdeOid+'/parentoids')
             .respond(201,"1.2.246.562.10.00000000001/1.2.246.562.20.59262166669");
         $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076?appState=ACTIVE&appState=INCOMPLETE')
@@ -1436,7 +1445,8 @@ describe('Testing LisahakuhyvaksytytController', function(){
                 .respond(201, "");
         }
         ctrl = $controller('LisahakuhyvaksytytController', {'$scope' : scope, '$location':$location, '$routeParams': routeParams,
-        'HyvaksytytModel':hyvaksytytModel,'HakukohdeModel':hakukohdeModel,'AuthService':authService,'HakemusKey':hakemusKey});
+        'HyvaksytytModel':hyvaksytytModel,'HakukohdeModel':hakukohdeModel,'AuthService':authService,'HakemusKey':hakemusKey,
+        'LocalisationService':localisationService});
         $httpBackend.flush();
     });
 
