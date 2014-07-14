@@ -4,17 +4,12 @@
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
 			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-model="model.searchWord"/>
-                <input id="omatHakukohteet" type="checkbox" ng-model="model.omatHakukohteet" ng-change="model.refresh()"/>
-                <label for="omatHakukohteet">{{ t('hakukohdelista.omathakukohteet') || 'Omat hakukohteet' }}</label>
 
                 <p class="margin-vertical-2">{{ t('hakukohdelista.hakukohteitahaettu') || 'Hakukohteita haettu' }} {{model.getCount()}} / {{model.getTotalCount()}}</p>
 			</div>
 			<ul  class="selectlist" lazy-loading>
 			    <li ng-class="hakukohdeOid === hakukohde.hakukohdeOid ? 'selected' : ''" ng-repeat="hakukohde in model.hakukohteet">
 			        <a ng-click="showHakukohde(hakukohde, hakuModel.hakuOid.lisahaku)">
-			        	<!--
-			        		href="#/haku/{{hakuOid}}/hakukohde/{{hakukohde.hakukohdeOid}}/{{subpage}}"
-			        	-->
 			            <span class="icon file"></span>
 			            <span class="node" fast-bind-once="model.getTarjoajaNimi(hakukohde)">
 			            </span>
