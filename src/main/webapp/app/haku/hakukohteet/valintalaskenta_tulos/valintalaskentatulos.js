@@ -1,4 +1,6 @@
-﻿app.factory('ValintalaskentatulosModel', function(
+﻿"use strict";
+
+app.factory('ValintalaskentatulosModel', function(
 	$routeParams,
     ValinnanvaiheListByHakukohde,
     JarjestyskriteeriMuokattuJonosija,
@@ -148,14 +150,14 @@
                 // Suodatetaan pois hakemukset joille ei ole merkitty jonosijaa ja asetetaan pisteiksi jonosijan negaatio
                 var suodatetutSijat = _.chain(yksijono.jonosijat)
                     .filter(function(sija) {
-                        return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila != '')
+                        return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila !== '');
                     }).map(function(sija) {
                         if(_.isUndefined(sija.jonoSija && _.isNumber(sija.jonosija))) {
                             sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                         } else {
                             delete sija.jarjestyskriteerit[0].arvo;
                         }
-                        if(_.isUndefined(sija.prioriteetti) || sija.prioriteetti == 0) {
+                        if(_.isUndefined(sija.prioriteetti) || sija.prioriteetti === 0) {
                             sija.prioriteetti = model.hakutoivePrioriteetti(sija.hakemusOid);
                         }
                         sija.jarjestyskriteerit[0].tila = sija.tuloksenTila;
@@ -174,7 +176,7 @@
             }
         };
 
-	};
+	}();
 
 	return model;
 });

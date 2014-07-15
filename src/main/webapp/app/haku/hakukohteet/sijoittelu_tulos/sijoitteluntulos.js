@@ -1,4 +1,5 @@
 "use strict";
+
 app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
                                                $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila,
                                                HaunTiedot) {
@@ -245,7 +246,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             }
             return oidit;
         };
-    };
+    }();
 
     return model;
 
@@ -485,7 +486,7 @@ angular.module('valintalaskenta').
         muokattavatHakemukset.forEach(function (hakemus) {
             hakemus.muokattuVastaanottoTila = "ILMOITETTU";
         });
-    }
+    };
 
     $scope.isKorkeakoulu = function() {
         if ($scope.model.haku.kohdejoukkoUri && $scope.model.haku.kohdejoukkoUri.indexOf('_12') !== -1) {

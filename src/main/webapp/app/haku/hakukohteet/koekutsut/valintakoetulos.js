@@ -1,4 +1,7 @@
-﻿app.factory('ValintakoetulosModel', function($routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe, HakukohdeHenkilot) {
+﻿"use strict";
+
+app.factory('ValintakoetulosModel', function($routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe,
+                                             HakukohdeHenkilot) {
 	var model;
 	model = new function() {
 
@@ -47,7 +50,7 @@
 	                                e.etunimi = hakija.firstNames;
 	                                e.sukunimi = hakija.lastName;
 	                                e.valittu = true;
-	                                e.aktiivinen = entry.aktiivinen != false;
+	                                e.aktiivinen = entry.aktiivinen;
 	                                e.valintakoeOid = entry.oid;
 	                                e.lahetetaankoKoekutsut = true;
 	                                e.valintakoeTunniste = entry.nimi; // OVT-6961?
@@ -149,7 +152,7 @@
                                 entry.etunimi = koetulos.etunimi;
                                 entry.sukunimi = koetulos.sukunimi;
                                 entry.valittu = true;
-                                entry.aktiivinen = valintakoe.aktiivinen != false;
+                                entry.aktiivinen = valintakoe.aktiivinen;
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
                                 // OVT-6961

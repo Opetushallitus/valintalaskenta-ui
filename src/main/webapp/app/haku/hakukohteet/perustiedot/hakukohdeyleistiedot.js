@@ -1,3 +1,6 @@
+"use strict";
+
+
 /**
  * Created with IntelliJ IDEA.
  * User: tommiha
@@ -127,7 +130,8 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
 });
 
 angular.module('valintalaskenta').
-    controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel', 'SijoitteluntulosModel',
+    controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
+        'SijoitteluntulosModel',
         function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;

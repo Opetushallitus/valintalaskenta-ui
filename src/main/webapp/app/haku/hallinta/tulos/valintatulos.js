@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('ValintatulosModel', function (Valintatulos) {
 
     var model = new function () {

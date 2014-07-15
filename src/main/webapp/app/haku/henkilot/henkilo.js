@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot) {
 
     function getName(hakemus) {

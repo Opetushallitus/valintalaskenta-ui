@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$routeParams, $q) {
 
     var deferred = $q.defer();

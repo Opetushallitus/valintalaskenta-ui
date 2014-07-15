@@ -1,4 +1,6 @@
-﻿app.factory('HakeneetModel', function (HakukohdeHenkilot) {
+﻿'use strict';
+
+app.factory('HakeneetModel', function (HakukohdeHenkilot) {
     var model;
     model = new function () {
 
@@ -17,7 +19,7 @@
             }, function (error) {
                 model.errors.push(error);
             });
-        }
+        };
 
 
         this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {

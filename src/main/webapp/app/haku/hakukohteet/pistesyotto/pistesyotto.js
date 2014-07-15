@@ -1,6 +1,7 @@
 "use strict";
 
-app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus, IlmoitusTila) {
+app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus,
+                                          IlmoitusTila) {
     var model;
     model = new function () {
 
@@ -104,7 +105,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
 
         this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {
 
-            if (hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
+            if (hakukohdeOid && hakukohdeOid !== model.hakukohdeOid) {
                 model.refresh(hakukohdeOid, hakuOid);
             }
 
@@ -136,9 +137,9 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
             model.hakeneet.forEach(function (hakija) {
                 angular.copy(hakija.additionalData, hakija.filterData);
             });
-        }
+        };
 
-    };
+    }();
 
     return model;
 });

@@ -1,4 +1,7 @@
-app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeChildren, HakukohdeNimi, AuthService, TarjontaHaku) {
+"use strict";
+
+app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeChildren, HakukohdeNimi, AuthService,
+                                          TarjontaHaku) {
     var model;
 
     model = new function () {
@@ -24,10 +27,9 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
                 }
             }
             return kielet[0];
-        }
+        };
 
         this.getKieliCode = function() {
-        	console.log(this.hakukohde);
         }
         
         this.getTarjoajaNimi = function (hakukohde) {
@@ -141,14 +143,15 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
                 model.refresh();
             }
         };
-    };
+    }();
 
     return model;
 });
 
 
 angular.module('valintalaskenta').
-    controller('HakukohteetController',['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', 'GlobalStates', 'HakuModel',
+    controller('HakukohteetController',['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel',
+        'GlobalStates', 'HakuModel',
         function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -176,19 +179,19 @@ angular.module('valintalaskenta').
     $scope.toggleHakukohteetVisible = function () {
         $scope.hakukohteetVisible = !$scope.hakukohteetVisible;
         GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
-    }
+    };
 
     $scope.showHakukohde = function (hakukohde, lisahaku) {
         $rootScope.selectedHakukohdeNimi = hakukohde.hakukohdeNimi.fi;
         $scope.hakukohteetVisible = false;
         GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
         $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/sijoitteluntulos'));
-    }
+    };
 
     // uuden sivun lataus
     $scope.lazyLoading = function () {
         $scope.model.getNextPage(false);
-    }
+    };
 }]);
 
 

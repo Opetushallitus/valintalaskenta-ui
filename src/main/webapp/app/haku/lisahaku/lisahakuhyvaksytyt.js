@@ -1,4 +1,6 @@
-﻿app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
+﻿"use strict";
+
+app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
 	var model;
 	model = new function() {
 
@@ -95,7 +97,7 @@
         };
 
 
-	};
+	}();
 
 	return model;
 });

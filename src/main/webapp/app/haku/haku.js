@@ -1,7 +1,9 @@
+"use strict";
+
 app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
     var model;
     model = new function () {
-        this.hakuOid;
+        this.hakuOid = "";
         this.haut = [];
         this.lisahaku = false;
         this.getNimi = function () {

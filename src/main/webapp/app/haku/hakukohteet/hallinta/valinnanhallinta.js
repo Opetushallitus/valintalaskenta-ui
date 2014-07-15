@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperusteet) {
 
     var model;
@@ -35,8 +37,9 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
 });
 
 angular.module('valintalaskenta').
-    controller('ValinnanhallintaController',['$scope', '$routeParams', '$modal', 'Latausikkuna', 'Ilmoitus', 'ValinnanhallintaModel',
-        'HakukohdeModel', 'ValintalaskentaMuistissa', 'ValintakoelaskentaAktivointi', 'ParametriService', 'IlmoitusTila',
+    controller('ValinnanhallintaController',['$scope', '$routeParams', '$modal', 'Latausikkuna', 'Ilmoitus',
+        'ValinnanhallintaModel', 'HakukohdeModel', 'ValintalaskentaMuistissa', 'ValintakoelaskentaAktivointi',
+        'ParametriService', 'IlmoitusTila',
     function ($scope, $routeParams, $modal, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel,
               ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
     $scope.model = ValinnanhallintaModel;
@@ -60,7 +63,7 @@ angular.module('valintalaskenta').
             }
         });
 
-    }
+    };
 
     $scope.kaynnistaValintakoelaskenta = function () {
         var hakuOid = $routeParams.hakuOid;

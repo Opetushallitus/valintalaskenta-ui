@@ -1,4 +1,6 @@
-﻿app.factory('VirheModel', function (HakuVirheet) {
+﻿"use strict";
+
+app.factory('VirheModel', function (HakuVirheet) {
 
     var factory = (function () {
         var instance = {};
