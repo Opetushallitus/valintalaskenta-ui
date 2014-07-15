@@ -108,3 +108,8 @@
 .wide .modal-dialog {
     width: 90%;
 }
+
+collapsible > div > div {
+    cursor: pointer;
+    cursor: hand;
+}
