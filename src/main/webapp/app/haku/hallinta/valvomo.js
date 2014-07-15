@@ -1,7 +1,6 @@
-"use strict";
-
 angular.module('resources.valvomo', [])
     .factory('ValvomoResource', ['$resource', function ($resource) {
+        "use strict";
 
         return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/:resurssi/status", {}, {
             get: {method: "GET", isArray: true}
@@ -14,6 +13,8 @@ angular.module('valvomo', ['resources.valvomo', 'ngRoute']);
 angular.module('valvomo').controller('ValvomoController',
     ['$scope', '$routeParams', '$interval', '$timeout', '$window', 'ValvomoResource',
         function ($scope, $routeParams, $interval, $timeout, $window, ValvomoResource) {
+    "use strict";
+
     $scope.sijoittelu = [];
     $scope.valintalaskenta = [];
     $scope.valintakoelaskenta = [];
@@ -85,6 +86,8 @@ angular.module('valvomo').controller('ValvomoController',
 }]);
 
 angular.module('valvomo').config(['$routeProvider', function ($routeProvider) {
+    "use strict";
+
     $routeProvider.
         when('/valvomo', {controller: 'ValvomoController', templateUrl: TEMPLATE_URL_BASE + 'haku/hallinta/valvomo.html'}).
         when('/valvomo/:selectedTab', {controller: 'ValvomoController', templateUrl: TEMPLATE_URL_BASE + 'haku/hallinta/valvomo.html'}).

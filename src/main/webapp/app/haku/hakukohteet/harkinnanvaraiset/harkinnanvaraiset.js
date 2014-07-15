@@ -1,9 +1,10 @@
-"use strict";
-
 app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta,
                                                 HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
+    "use strict";
     var model;
     model = new function () {
+
+
         this.valittu = true;
         this.hakeneet = [];
         this.harkinnanvaraisestiHyvaksytyt = [];
@@ -124,6 +125,8 @@ angular.module('valintalaskenta').
         'Pohjakoulutukset',
         function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,
             OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset) {
+    "use strict";
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HarkinnanvaraisetModel;
     $scope.hakuOid = $routeParams.hakuOid;

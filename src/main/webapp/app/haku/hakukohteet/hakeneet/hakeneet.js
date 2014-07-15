@@ -1,6 +1,5 @@
-﻿'use strict';
-
-app.factory('HakeneetModel', function (HakukohdeHenkilot) {
+﻿app.factory('HakeneetModel', function (HakukohdeHenkilot) {
+    'use strict';
     var model;
     model = new function () {
 
@@ -35,6 +34,8 @@ app.factory('HakeneetModel', function (HakukohdeHenkilot) {
 angular.module('valintalaskenta').
     controller('HakeneetController', ['$scope', '$location', '$routeParams', 'HakeneetModel', 'HakukohdeModel',
         function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
+    'use strict';
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;

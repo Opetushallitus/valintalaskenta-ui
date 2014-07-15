@@ -1,6 +1,5 @@
-"use strict";
-
 app.factory('ValintatulosModel', function (Valintatulos) {
+    "use strict";
 
     var model = new function () {
 
@@ -55,6 +54,8 @@ app.factory('ValintatulosModel', function (Valintatulos) {
 angular.module('valintalaskenta').
     controller('ValintatulosController', ['$scope', 'ValintatulosModel', '$routeParams',
         function ($scope, ValintatulosModel, $routeParams) {
+    "use strict";
+
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.model = ValintatulosModel;
 

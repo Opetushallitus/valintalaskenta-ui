@@ -1,7 +1,7 @@
-"use strict";
-
 app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus,
                                           IlmoitusTila) {
+    "use strict";
+
     var model;
     model = new function () {
 
@@ -101,7 +101,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                 });
 
             });
-        }
+        };
 
         this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {
 
@@ -109,7 +109,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                 model.refresh(hakukohdeOid, hakuOid);
             }
 
-        }
+        };
 
 
         var blockSubmit = false;
@@ -150,6 +150,8 @@ angular.module('valintalaskenta').
         'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel',
         function ($scope, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
                   IlmoitusTila, Latausikkuna, HakukohdeModel) {
+    "use strict";
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = PistesyottoModel;
     $scope.hakuOid = $routeParams.hakuOid;

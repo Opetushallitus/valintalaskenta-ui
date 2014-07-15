@@ -1,7 +1,6 @@
-﻿"use strict";
-
-app.factory('ValintakoetulosModel', function($routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe,
+﻿app.factory('ValintakoetulosModel', function($routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe,
                                              HakukohdeHenkilot) {
+    "use strict";
 	var model;
 	model = new function() {
 
@@ -200,6 +199,9 @@ angular.module('valintalaskenta').
         'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila',
         function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
                   Osoitetarrat, ValintakoeXls, IlmoitusTila) {
+
+    "use strict";
+
 	// kayttaa dokumenttipalvelua
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	

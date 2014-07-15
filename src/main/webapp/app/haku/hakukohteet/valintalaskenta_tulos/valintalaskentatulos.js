@@ -1,14 +1,8 @@
-﻿"use strict";
+﻿app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q) {
+    "use strict";
 
-app.factory('ValintalaskentatulosModel', function(
-	$routeParams,
-    ValinnanvaiheListByHakukohde,
-    JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa,
-    HakukohdeHenkilotFull,
-    Ilmoitus,
-    IlmoitusTila, $q) {
-	var model;
+    var model;
 	model = new function() {
 
 		this.hakukohdeOid = {};
@@ -188,6 +182,8 @@ angular.module('valintalaskenta').
         'TulosXls', 'HakukohdeModel', '$http', 'AuthService',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService) {
+    "use strict";
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;

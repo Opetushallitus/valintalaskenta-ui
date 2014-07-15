@@ -1,6 +1,5 @@
-"use strict";
-
 app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperusteet) {
+    "use strict";
 
     var model;
     model = new function () {
@@ -42,6 +41,8 @@ angular.module('valintalaskenta').
         'ParametriService', 'IlmoitusTila',
     function ($scope, $routeParams, $modal, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel,
               ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
+    "use strict";
+
     $scope.model = ValinnanhallintaModel;
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);

@@ -1,7 +1,7 @@
-"use strict";
-
 app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeChildren, HakukohdeNimi, AuthService,
                                           TarjontaHaku) {
+    "use strict";
+
     var model;
 
     model = new function () {
@@ -30,7 +30,7 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
         };
 
         this.getKieliCode = function() {
-        }
+        };
         
         this.getTarjoajaNimi = function (hakukohde) {
 
@@ -153,6 +153,8 @@ angular.module('valintalaskenta').
     controller('HakukohteetController',['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel',
         'GlobalStates', 'HakuModel',
         function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
+    "use strict";
+
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
@@ -196,8 +198,10 @@ angular.module('valintalaskenta').
 
 
 app.factory('GlobalStates', function () {
+    "use strict";
+
     var model = new function () {
         this.hakukohteetVisible = true;
-    }
+    }();
     return model;
 });
