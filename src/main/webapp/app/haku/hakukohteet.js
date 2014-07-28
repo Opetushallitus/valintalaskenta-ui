@@ -187,7 +187,7 @@ angular.module('valintalaskenta').
         $rootScope.selectedHakukohdeNimi = hakukohde.hakukohdeNimi.fi;
         $scope.hakukohteetVisible = false;
         GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
-        $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/sijoitteluntulos'));
+        $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/perustiedot'));
     };
 
     // uuden sivun lataus
