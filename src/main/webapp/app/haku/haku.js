@@ -34,7 +34,7 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
                         match ? haku.lisahaku = true : haku.lisahaku = false;
                     });
 
-                }, function(error) {    
+                }, function(error) {
                     $log.error(error);
                 });
             }
