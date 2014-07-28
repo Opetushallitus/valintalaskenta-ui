@@ -22,7 +22,7 @@ var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
 var VALINTAPERUSTEET_URL_BASE = VALINTAPERUSTEET_URL_BASE || "";
 var DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE || ""; 
 var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
-var VALINTALASKENTAKOOSTE_URL_BASE_HTTP = VALINTALASKENTAKOOSTE_URL_BASE.replace(/:\d{4}/, '');
+var VALINTALASKENTAKOOSTE_URL_BASE_HTTP = VALINTALASKENTAKOOSTE_URL_BASE.replace(/:\d{4}/, '') || "";
 var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 var SERVICE_EXCEL_URL_BASE = SERVICE_EXCEL_URL_BASE || "";
 var SIJOITTELU_EXCEL_URL_BASE = SIJOITTELU_EXCEL_URL_BASE || "";
@@ -56,6 +56,10 @@ app.config(function($routeProvider) {
 
     when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:'YhteisvalinnanHallintaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/yhteisvalinnanhallinta.html'}).
     when('/haku/:hakuOid/yhteisvalinnanhallinta/valintatulos', {controller:'ValintatulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/tulos/valintatulos.html'}).
+
+    when('/haku/:hakuOid/valintaryhmittain', {controller: 'ValintaryhmaController', templateUrl: TEMPLATE_URL_BASE + 'haku/valintaryhmat/valintaryhma.html'}).
+    when('/lisahaku/:hakuOid/valintaryhmittain', {controller:'ValintaryhmaController', templateUrl: TEMPLATE_URL_BASE + 'haku/valintaryhmat/valintaryhma.html'}).
+
 
     when('/lisahaku/:hakuOid/hakukohde', {controller: 'LisahakuController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/lisahakuHakukohde.html'}).
     when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: 'HakukohdeController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakukohdeperustiedot.html'}).
@@ -399,6 +403,9 @@ app.factory('ValintalaskentaMuistissa', function($resource) {
         aktivoi: {method: "POST"}
     });
 });
+app.factory('ValintaryhmaLaskenta', function ($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktivoi?hakuOid=:hakuOid&onkoWhitelist=true", {hakuOid: "@hakuOid"});
+});
 
 
 app.factory('SijoitteluAktivointi', function($resource) {
@@ -701,6 +708,17 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
     });
 });
 
+//Valintaryhma
+app.factory('ValintaryhmatJaHakukohteet', function($resource) {
+    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/puu", {
+        q: "@q",
+        hakuOid: "@hakuOid",
+        tila: "@tila",
+        kohdejoukko: "@kohdejoukko"
+    }, {
+        get: {method: "GET", isArray: true  }
+    });
+});
 
 app.constant('Pohjakoulutukset', {
 	0: "Ulkomailla suoritettu koulutus",
@@ -717,3 +735,4 @@ app.constant('IlmoitusTila', {
 	WARNING: 'warning',
 	ERROR: 'danger'
 });
+

@@ -1043,6 +1043,7 @@ describe('Testing ValintalaskentatulosController', function(){
 });
 
 
+
 describe('Testing HakuController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakuModel, parametriService,
         findalljson;
@@ -1074,6 +1075,7 @@ describe('Testing HakuController', function(){
 
         $httpBackend.expectGET('haku/findAll')
             .respond(201,findalljson);
+
         $httpBackend.expectGET('resources/parametrit/'+routeParams.hakuOid)
             .respond(201,'{"valintakoekutsut":true,"hakeneet":true,"valintalaskenta":true,"pistesyotto":true,"valinnanhallinta":true,"harkinnanvaraiset":true}');
 

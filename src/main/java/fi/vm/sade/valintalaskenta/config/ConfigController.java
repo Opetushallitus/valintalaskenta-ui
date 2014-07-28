@@ -62,7 +62,7 @@ public class ConfigController {
      * 
      * @return
      */
-    @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript")
+    @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript", headers="Accept=*/*")
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
