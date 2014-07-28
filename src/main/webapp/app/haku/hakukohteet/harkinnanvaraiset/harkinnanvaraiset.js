@@ -1,6 +1,10 @@
-app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
+app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta,
+                                                HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
+    "use strict";
     var model;
     model = new function () {
+
+
         this.valittu = true;
         this.hakeneet = [];
         this.harkinnanvaraisestiHyvaksytyt = [];
@@ -68,7 +72,7 @@ app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitu
                         model.hakeneet.forEach(function (hakija) {
                             for (var i = 0; i < result.length; i++) {
                                 var harkinnanvarainen = result[i];
-                                if (harkinnanvarainen.hakemusOid == hakija.oid) {
+                                if (harkinnanvarainen.hakemusOid === hakija.oid) {
                                     hakija.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
                                     hakija.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
                                 }
@@ -117,13 +121,16 @@ app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitu
 
 angular.module('valintalaskenta').
     controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
-        'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel', 'Pohjakoulutukset',
+        'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel',
+        'Pohjakoulutukset',
         function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,
             OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset) {
+    "use strict";
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HarkinnanvaraisetModel;
     $scope.hakuOid = $routeParams.hakuOid;
-    ;
+
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
@@ -165,7 +172,7 @@ angular.module('valintalaskenta').
 
     function isBlank(str) {
         return (!str || /^\s*$/.test(str));
-    };
+    }
 
     $scope.muodostaKoekutsut = function () {
         var letterBodyText = $scope.tinymceModel;

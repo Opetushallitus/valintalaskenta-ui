@@ -70,7 +70,7 @@
                                     <div ng-show="hakija.lisahakuHyvaksytty && (hakija.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakija.hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')">
                                         <select ng-model="hakija.hakemus.muokattuIlmoittautumisTila"
                                                 ng-change="setIlmoittautumisTila(hakija.hakemus)"
-                                                ng-options="tila.value as tila.text | translate for tila in hakemuksenMuokattuIlmoittautumisTilat">
+                                                ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                         </select>
                                     </div>
                                 </td>

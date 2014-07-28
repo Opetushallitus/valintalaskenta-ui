@@ -7,6 +7,9 @@
  */
 
 app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNimi) {
+    "use strict";
+
+
     var model;
 
     model = new function () {
@@ -127,8 +130,12 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
 });
 
 angular.module('valintalaskenta').
-    controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel', 'SijoitteluntulosModel',
+    controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
+        'SijoitteluntulosModel',
         function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel) {
+    "use strict";
+
+
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
@@ -143,6 +150,9 @@ angular.module('valintalaskenta').
 angular.module('valintalaskenta').
     controller('HakukohdeNimiController', ['$scope', 'HakukohdeModel',
         function ($scope, HakukohdeModel) {
+    "use strict";
+
+
     $scope.hakukohdeModel = HakukohdeModel;
 }]);
 

@@ -1,4 +1,5 @@
 app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$routeParams, $q) {
+    "use strict";
 
     var deferred = $q.defer();
 	
@@ -86,6 +87,8 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 angular.module('valintalaskenta').
     controller('ValintalaskentaHistoriaController', ['$scope', '$routeParams', 'ValintalaskentaHistoriaModel',
         function ($scope, $routeParams, ValintalaskentaHistoriaModel) {
+    "use strict";
+
 	$scope.hakijaOid = $routeParams.hakijaOid;
 	$scope.model = ValintalaskentaHistoriaModel;
 

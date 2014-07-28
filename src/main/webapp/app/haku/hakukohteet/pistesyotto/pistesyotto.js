@@ -1,6 +1,7 @@
-"use strict";
+app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus,
+                                          IlmoitusTila) {
+    "use strict";
 
-app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus, IlmoitusTila) {
     var model;
     model = new function () {
 
@@ -100,15 +101,15 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                 });
 
             });
-        }
+        };
 
         this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {
 
-            if (hakukohdeOid && hakukohdeOid != model.hakukohdeOid) {
+            if (hakukohdeOid && hakukohdeOid !== model.hakukohdeOid) {
                 model.refresh(hakukohdeOid, hakuOid);
             }
 
-        }
+        };
 
 
         var blockSubmit = false;
@@ -136,9 +137,9 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
             model.hakeneet.forEach(function (hakija) {
                 angular.copy(hakija.additionalData, hakija.filterData);
             });
-        }
+        };
 
-    };
+    }();
 
     return model;
 });
@@ -149,6 +150,8 @@ angular.module('valintalaskenta').
         'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel',
         function ($scope, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
                   IlmoitusTila, Latausikkuna, HakukohdeModel) {
+    "use strict";
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = PistesyottoModel;
     $scope.hakuOid = $routeParams.hakuOid;

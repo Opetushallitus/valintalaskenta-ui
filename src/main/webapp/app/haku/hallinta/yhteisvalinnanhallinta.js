@@ -1,4 +1,6 @@
-﻿app.factory('VirheModel', function (HakuVirheet) {
+﻿
+app.factory('VirheModel', function (HakuVirheet) {
+    "use strict";
 
     var factory = (function () {
         var instance = {};
@@ -43,6 +45,8 @@ angular.module('valintalaskenta').
                   $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                   $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
                   HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
+    "use strict";
+
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
     $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;

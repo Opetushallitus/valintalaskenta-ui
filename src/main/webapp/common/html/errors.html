@@ -1,5 +1,5 @@
 <div ng-show="model.errors.length > 0" class="alert alert-danger">
-    <h3>Taustapalvelu on hetkellisesti poissa käytöstä. Yritä hetken kuluttua uudestaan.</h3>
-    <span ng-init="showErrors = false" ng-click="showErrors = !showErrors" class="plainBtn">Näytä lokiviestit</span>
+    <h3>{{ t('errors.header') || 'Taustapalvelu on hetkellisesti poissa käytöstä. Yritä hetken kuluttua uudestaan.' }}</h3>
+    <span ng-init="showErrors = false" ng-click="showErrors = !showErrors" class="plainBtn">{{ t('errors.loki') || 'Näytä lokiviestit' }}</span>
     <p ng-show="showErrors" ng-repeat="error in model.errors track by $index">{{error}}</p>
 </div>

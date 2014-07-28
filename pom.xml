@@ -130,24 +130,7 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<artifactId>jslint-maven-plugin</artifactId>-->
-                <!--<version>1.0.1</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<goals>-->
-                            <!--<goal>jslint</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<sourceJsFolder>${basedir}/src/main/webapp/js</sourceJsFolder>-->
-                            <!--<failOnIssues>false</failOnIssues>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
+
         <plugins>
             <plugin>
                 <groupId>com.github.eirslett</groupId>
@@ -158,6 +141,7 @@
 
                     <execution>
                         <id>install node and npm</id>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>install-node-and-npm</goal>
                         </goals>
@@ -169,6 +153,7 @@
 
                     <execution>
                         <id>npm install</id>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>npm</goal>
                         </goals>
@@ -177,13 +162,28 @@
                         </configuration>
                     </execution>
 
+                    <!--<execution>-->
+                        <!--<id>Gulp build</id>-->
+                        <!--<phase>test</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>gulp</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
 
                     <execution>
-                        <id>Gulp build</id>
-                        <phase>test</phase>
+                        <id>javascript tests</id>
                         <goals>
-                            <goal>gulp</goal>
+                            <goal>karma</goal>
                         </goals>
+
+                        <!-- optional: the default plase is "test". Some developers
+                        choose to run karma in the "integration-test" phase. -->
+                        <phase>test</phase>
+
+                        <configuration>
+                            <!-- optional: the default is "karma.conf.js" in your working directory -->
+                            <karmaConfPath>src/test/ui/valintalaskenta-test.conf.js</karmaConfPath>
+                        </configuration>
                     </execution>
 
                 </executions>

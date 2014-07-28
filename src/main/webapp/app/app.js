@@ -32,6 +32,7 @@ var HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE || "";
 var VIESTINTAPALVELU_URL_BASE = VIESTINTAPALVELU_URL_BASE || "";
 var CAS_URL = CAS_URL || "/cas/myroles";
 var SIJOITTELU_URL_BASE = SIJOITTELU_URL_BASE || "";
+var LOCALISATION_URL_BASE = LOCALISATION_URL_BASE || "";
 
 //Route configuration
 app.config(function($routeProvider) {

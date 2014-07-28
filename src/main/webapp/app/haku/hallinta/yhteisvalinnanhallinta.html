@@ -9,8 +9,8 @@
 </script>
 
 
-<accordion close-others="false">
-<accordion-group heading="{{ t('yhteisvalinnanhallinta.tiedot') || 'Haun tiedot' }}">
+
+<collapsible show="false" heading="{{ t('yhteisvalinnanhallinta.tiedot') || 'Haun tiedot' }}">
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.nimi.kieli_fi}}</div>
 
@@ -34,8 +34,8 @@
     </div>
 
 
-</accordion-group>
-<accordion-group heading="{{ t('yhteisvalinnanhallinta.valintalaskentajasijoittelu') || 'Valintalaskenta ja sijoittelu' }}" is-open="false">
+</collapsible>
+<collapsible heading="{{ t('yhteisvalinnanhallinta.valintalaskentajasijoittelu') || 'Valintalaskenta ja sijoittelu' }}" is-open="false">
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Valintalaskenta' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
         <button privileges="valintakoekutsut" ng-click="aktivoiHaunValintakoelaskenta()"
@@ -72,9 +72,9 @@
         <div class="col-md-10">{{jatkuva.virhe}}</div>
     </div>
 
-</accordion-group>
+</collapsible>
 
-<accordion-group heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Sijoittelun tulokset' }}">
+<collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Sijoittelun tulokset' }}">
     <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
     </button>
@@ -85,9 +85,9 @@
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieosoitetarroiksi') || 'Vie osoitetarroiksi' }}
     </button>
 
-</accordion-group>
+</collapsible>
 
-<accordion-group heading="{{ t('yhteisvalinnanhallinta.jalkiohjaus') || 'Jälkiohjaus' }}">
+<collapsible heading="{{ t('yhteisvalinnanhallinta.jalkiohjaus') || 'Jälkiohjaus' }}">
 
     <button privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viejalkiohjaustuloksettaulukkolaskentaan') || 'Vie jälkiohjaustulokset taulukkolaskentaan' }}
@@ -103,9 +103,9 @@
             href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
             class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
     </button>
-</accordion-group>
+</collapsible>
 
-<accordion-group heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}">
+<collapsible heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}">
 
     <div class="form-horizontal">
         <div class="form-group">
@@ -163,8 +163,8 @@
             </tbody>
         </table>
     </div>
-</accordion-group>
-<accordion-group heading="Virheet valintakokeissa ja laskennoissa" privileges="valintalaskenta" ng-click="showErrors()">
+</collapsible>
+<collapsible heading="Virheet valintakokeissa ja laskennoissa" privileges="valintalaskenta" ng-click="showErrors()">
     <div ng-show="virheet.valintakoe.length > 0 || virheet.valintalaskenta.length > 0 || virheet.eiKoeVirheita || virheet.eiLaskentaVirheita">
         <div class="tabs">
             <a class="tab" ng-class="!valintalaskentavirheet ? 'current' : ''"
@@ -308,10 +308,9 @@
     </div>
 
 
-</accordion-group>
+</collapsible>
 
 
-</accordion>
 
 
 </div>
