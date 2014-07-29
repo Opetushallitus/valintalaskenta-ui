@@ -1,4 +1,7 @@
-app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeChildren, HakukohdeNimi, AuthService, TarjontaHaku) {
+app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeChildren, HakukohdeNimi, AuthService,
+                                          TarjontaHaku) {
+    "use strict";
+
     var model;
 
     model = new function () {
@@ -24,11 +27,10 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
                 }
             }
             return kielet[0];
-        }
+        };
 
         this.getKieliCode = function() {
-        	console.log(this.hakukohde);
-        }
+        };
         
         this.getTarjoajaNimi = function (hakukohde) {
 
@@ -134,28 +136,32 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
 
         };
 
-        this.refreshIfNeeded = function () {
-            var hakuOid = $routeParams.hakuOid;
-            if (hakuOid != model.lastHakuOid) {
+        this.refreshIfNeeded = function (hakuOid) {
+            if (hakuOid !== model.lastHakuOid) {
                 model.searchWord = "";
                 model.lastHakuOid = hakuOid;
                 model.refresh();
             }
         };
-    };
+    }();
 
     return model;
 });
 
 
-function HakukohteetController($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
+angular.module('valintalaskenta').
+    controller('HakukohteetController',['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel',
+        'GlobalStates', 'HakuModel',
+        function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
+    "use strict";
+
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
     $scope.hakuModel = HakuModel;
 
     $scope.model = HakukohteetModel;
-    $scope.model.refreshIfNeeded();
+    $scope.model.refreshIfNeeded($routeParams.hakuOid);
 
     $scope.$watch('model.searchWord', debounce(function () {
         HakukohteetModel.refresh();
@@ -175,24 +181,27 @@ function HakukohteetController($rootScope, $scope, $location, $routeParams, Haku
     $scope.toggleHakukohteetVisible = function () {
         $scope.hakukohteetVisible = !$scope.hakukohteetVisible;
         GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
-    }
+    };
 
     $scope.showHakukohde = function (hakukohde, lisahaku) {
         $rootScope.selectedHakukohdeNimi = hakukohde.hakukohdeNimi.fi;
         $scope.hakukohteetVisible = false;
         GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
-        $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/sijoitteluntulos'));
-    }
+        $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/perustiedot'));
+    };
 
     // uuden sivun lataus
     $scope.lazyLoading = function () {
         $scope.model.getNextPage(false);
-    }
-}
+    };
+}]);
+
 
 app.factory('GlobalStates', function () {
+    "use strict";
+
     var model = new function () {
         this.hakukohteetVisible = true;
-    }
+    }();
     return model;
 });

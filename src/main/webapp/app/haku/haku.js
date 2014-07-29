@@ -1,7 +1,9 @@
 app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
+    "use strict";
+
     var model;
     model = new function () {
-        this.hakuOid;
+        this.hakuOid = "";
         this.haut = [];
         this.lisahaku = false;
         this.getNimi = function () {
@@ -17,8 +19,6 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
             return "Nimetön hakukohde";
         };
         this.init = function (oid) {
-
-
             if(model.haut.length === 0) {
                 TarjontaHaut.query({}, function(result) {
                     model.haut = result;
@@ -34,7 +34,7 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
                         match ? haku.lisahaku = true : haku.lisahaku = false;
                     });
 
-                }, function(error) {    
+                }, function(error) {
                     $log.error(error);
                 });
             }
@@ -46,7 +46,11 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
     return model;
 });
 
-function HakuController($scope, $location, $routeParams, HakuModel, ParametriService) {
+angular.module('valintalaskenta').
+    controller('HakuController', ['$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService',
+        function ($scope, $location, $routeParams, HakuModel, ParametriService) {
+    "use strict";
+
     $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
 
@@ -62,5 +66,4 @@ function HakuController($scope, $location, $routeParams, HakuModel, ParametriSer
             }
         }
     });
-
-}
+}]);

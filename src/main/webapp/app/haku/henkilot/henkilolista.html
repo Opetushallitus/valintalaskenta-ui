@@ -5,8 +5,8 @@
 	<div id="toolbarcontent" class="width-90" ng-show="henkiloittainVisible">
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
-			    <input type="text" class="search" placeholder="Suodata nimen perusteella" ng-model="model.searchWord"/>
-                <p class="margin-vertical-2">Henkilöitä haettu {{model.getCount()}} / {{model.getTotalCount()}}</p>
+			    <input type="text" class="search" placeholder="{{ t('henkilolista.suodatanimi') || 'Suodata nimen perusteella' }}" ng-model="model.searchWord"/>
+                <p class="margin-vertical-2">{{ t('henkilolista.haettu') || 'Henkilöitä haettu' }} {{model.getCount()}} / {{model.getTotalCount()}}</p>
 			</div>
 			<ul class="selectlist" lazy-loading>
 			    <li ng-class="hakemusOid === hakemus.oid ? 'selected' : ''" ng-repeat="hakemus in model.hakemukset">
@@ -24,7 +24,7 @@
 	<div id="toolbartoggle-btn" class="width-10" ng-click="toggleHenkiloittainVisible()">
 		<div>
 			<div>
-				<span ng-class="henkiloittainVisible ? '' : 'minimized'">Henkilölista</span>
+				<span ng-class="henkiloittainVisible ? '' : 'minimized'">{{ t('henkilolista.henkilolista') || 'Henkilölista' }}</span>
 			</div>
 		</div>
 	</div>

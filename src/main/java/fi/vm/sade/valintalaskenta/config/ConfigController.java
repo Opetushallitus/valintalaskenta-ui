@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ConfigController {
 
+    @Value("${localisation.rest:https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1}")
+    private String localisationUrl;
+
     @Value("${valintalaskenta-ui.tarjona-service-url.rest}")
     private String tarjontaServiceUrl;
 
@@ -59,10 +62,11 @@ public class ConfigController {
      * 
      * @return
      */
-    @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript")
+    @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript", headers="Accept=*/*")
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
+        append(b, "LOCALISATION_URL_BASE", localisationUrl);
         append(b, "TARJONTA_URL_BASE", tarjontaServiceUrl);
         append(b, "VALINTAPERUSTEET_URL_BASE", valintaperusteetServiceUrl);
         append(b, "DOKUMENTTIPALVELU_URL_BASE", dokumenttipalveluUrl);

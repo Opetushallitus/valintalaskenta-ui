@@ -1,7 +1,7 @@
 ﻿
-<h1>Harkinnanvaraiset hakemukset</h1>
+<h1>{{ t('hyvaksytyt.header') || 'Harkinnanvaraiset hakemukset' }}</h1>
 
-<div ng-include="'haku/topNavigation.html'" />
+<div ng-include="'../common/js/topnavigation/topNavigation.html'" />
 
 <div class="tabsheets">
 
@@ -17,7 +17,7 @@
 
             
             <div ng-show="model.errors.length > 0" class="alert alert-danger">
-                <h3>Tietoja haettaessa tapahtui virhe</h3>
+                <h3>{{ t('hyvaksytyt.error') || 'Tietoja haettaessa tapahtui virhe' }}</h3>
                 <p ng-repeat="error in model.errors">{{error}}</p>
             </div>
 
@@ -27,22 +27,22 @@
                     <table class="virkailija-table-1">
                         <thead>
                             <tr>
-                                <th>Nimi</th>
-                                <th>Hakemus</th>
-                                <th>Hyväksymisen tila</th>
+                                <th>{{ t('hyvaksytyt.nimi') || 'Nimi' }}</th>
+                                <th>{{ t('hyvaksytyt.hakemus') || 'Hakemus' }}</th>
+                                <th>{{ t('hyvaksytyt.tila') || 'Hyväksymisen tila' }}</th>
                                 <th></th>
-                                <th>Vastaanottotieto</th>
-                                <th>Ilmoittautumistieto</th>
+                                <th>{{ t('hyvaksytyt.vastaanottotieto') || 'Vastaanottotieto' }}</th>
+                                <th>{{ t('hyvaksytyt.ilmoittautumistieto') || 'Ilmoittautumistieto' }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="hakija in model.hakeneet | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                                 <td>
-                                    <span title="Sukunimi">{{hakija.lastName}}</span>,
-                                	<span title="Etunimi">{{hakija.firstNames}}</span>
+                                    <span title="{{ t('hyvaksytyt.sukunimi') || 'Sukunimi' }}">{{hakija.lastName}}</span>,
+                                	<span title="{{ t('hyvaksytyt.etunimi') || 'Etunimi' }}">{{hakija.firstNames}}</span>
                                 </td>
                                 <td>
-                                    <span title="HakemusOid">
+                                    <span title="{{ t('hyvaksytyt.hakemusoid') || 'HakemusOid' }}">
                                         <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakija.oid}}" target="_blank" >
 	                                        {{hakija.oid}}
 	                                    </a>
@@ -54,14 +54,14 @@
                                     {{hakija.lisahakuHyvaksytty}}
                                 </td>
                                 <td>
-                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuValitse(hakija.hakemus.oid)" class="btn btn-primary btn-sm">Hyväksy</a>
-                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuPoistavalinta(hakija.hakemus.oid)" class="btn btn-default btn-sm ">Hylkää</a>
+                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuValitse(hakija.hakemus.oid)" class="btn btn-primary btn-sm">{{ t('hyvaksytyt.hyvaksy') || 'Hyväksy' }}</a>
+                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuPoistavalinta(hakija.hakemus.oid)" class="btn btn-default btn-sm ">{{ t('hyvaksytyt.hylkaa') || 'Hylkää' }}</a>
                                 </td>
 
                                 <td>
                                     <div ng-show="hakija.lisahakuHyvaksytty">
                                         <select ng-change="resetIlmoittautumisTila(hakija.hakemus)" ng-model="hakija.hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
-                                            <option value="">Kesken</option>
+                                            <option value="">{{ t('hyvaksytyt.kesken') || 'Kesken' }}</option>
                                         </select>
                                     </div>
                                 </td>
@@ -70,14 +70,14 @@
                                     <div ng-show="hakija.lisahakuHyvaksytty && (hakija.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakija.hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')">
                                         <select ng-model="hakija.hakemus.muokattuIlmoittautumisTila"
                                                 ng-change="setIlmoittautumisTila(hakija.hakemus)"
-                                                ng-options="tila.value as tila.text | translate for tila in hakemuksenMuokattuIlmoittautumisTilat">
+                                                ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                         </select>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="model.hakeneet.length" page="currentPage" items-per-page="pageSize"></pagination>
+                    <pagination previous-text="Edellinen" next-text="Seuraava" total-items="model.hakeneet.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
                 </form>
             </div>
         </div>

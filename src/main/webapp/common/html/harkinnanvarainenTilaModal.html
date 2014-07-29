@@ -1,10 +1,10 @@
 <div class="modal-header">
-    <span>{{ 'discretionary.modal.title' | translate }}</span>
+    <span>{{ t('harkinnanvarainentilamodal.header') || 'Harkinnanvarainen' }}</span>
 </div>
 
 <div class="modal-body">
     <div ng-if="error">
-        <alert type="'danger'" >Tallennus epäonnistui. Ole hyvä ja yritä uudelleen hetken päästä.</alert>
+        <alert type="'danger'" >{{ t('harkinnanvarainentilamodal.error') || 'Tallennus epäonnistui. Ole hyvä ja yritä uudelleen hetken päästä.' }}</alert>
         <pre ng-show="false">
             {{error}}
         </pre>
@@ -13,18 +13,18 @@
     <form class="form-horizontal" role="form">
 
         <div class="form-group">
-            <label class="col-sm-4 control-label">{{ 'discretionary.modal.oid' | translate }}</label>
+            <label class="col-sm-4 control-label">{{ t('harkinnanvarainentilamodal.oid') || 'Hakemuksen tunniste' }}</label>
             <div class="col-sm-8">
                 <p class="form-control-static">{{hakemus.hakemusOid}}</p>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-4 control-label">{{ 'discretionary.modal.state' | translate }}</label>
+            <label class="col-sm-4 control-label">{{ t('harkinnanvarainentilamodal.state') || 'Harkinnanvarainen tila' }}</label>
             <div class="col-sm-8">
                 <select ng-model="hakemus.muokattuHarkinnanvaraisuusTila">
-                    <option value="HYVAKSYTTY">Hyväksytty</option>
-                    <option value="EI_HYVAKSYTTY">Ei Hyväksytty</option>
+                    <option value="HYVAKSYTTY">{{ t('harkinnanvarainentilamodal.hyvaksytty') || 'Hyväksytty' }}</option>
+                    <option value="EI_HYVAKSYTTY">{{ t('harkinnanvarainentilamodal.eihyvaksytty') || 'Ei Hyväksytty' }}</option>
                 </select>
             </div>
         </div>
@@ -34,7 +34,7 @@
 
 <div class="modal-footer">
     <div class="row">
-        <a class="btn btn-default btn-sm" ng-click="sulje();"  role="button">Peruuta</a>
-        <a class="btn btn-primary btn-sm" ng-click="update();"  role="button">Tallenna</a>
+        <a class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('harkinnanvarainentilamodal.peruuta') || 'Peruuta' }}</a>
+        <a class="btn btn-primary btn-sm" ng-click="update();"  role="button">{{ t('harkinnanvarainentilamodal.tallenna') || 'Tallenna' }}</a>
     </div>
 </div>

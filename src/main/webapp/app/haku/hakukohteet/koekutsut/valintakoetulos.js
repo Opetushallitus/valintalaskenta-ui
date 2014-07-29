@@ -1,4 +1,6 @@
-﻿app.factory('ValintakoetulosModel', function($routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe, HakukohdeHenkilot) {
+﻿app.factory('ValintakoetulosModel', function($routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe,
+                                             HakukohdeHenkilot) {
+    "use strict";
 	var model;
 	model = new function() {
 
@@ -47,7 +49,7 @@
 	                                e.etunimi = hakija.firstNames;
 	                                e.sukunimi = hakija.lastName;
 	                                e.valittu = true;
-	                                e.aktiivinen = entry.aktiivinen != false;
+	                                e.aktiivinen = entry.aktiivinen;
 	                                e.valintakoeOid = entry.oid;
 	                                e.lahetetaankoKoekutsut = true;
 	                                e.valintakoeTunniste = entry.nimi; // OVT-6961?
@@ -149,7 +151,7 @@
                                 entry.etunimi = koetulos.etunimi;
                                 entry.sukunimi = koetulos.sukunimi;
                                 entry.valittu = true;
-                                entry.aktiivinen = valintakoe.aktiivinen != false;
+                                entry.aktiivinen = valintakoe.aktiivinen;
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
                                 // OVT-6961
@@ -192,7 +194,14 @@
 });
 
 
-function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet, Osoitetarrat, ValintakoeXls, IlmoitusTila) {
+angular.module('valintalaskenta').
+    controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel',
+        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila',
+        function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
+                  Osoitetarrat, ValintakoeXls, IlmoitusTila) {
+
+    "use strict";
+
 	// kayttaa dokumenttipalvelua
 	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
 	
@@ -241,10 +250,8 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 					letterBodyText: letterBodyText
 				},
 				function(id) {
-				//Dokumenttipalvelu.paivita($scope.update);
 					Latausikkuna.avaa(id, otsikko, valintakoe.valintakoeTunniste);
 	    	},function() {
-	    		//Dokumenttipalvelu.paivita($scope.update);
 	    	});
 		} else {
 			Ilmoitus.avaa("Koekutsuja ei voida muodostaa!","Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.", IlmoitusTila.WARNING);
@@ -252,9 +259,7 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
 	};
 	$scope.valintakoeTulosXLS = function(valintakoe) {
 		var hakemusOids = null;
-		if($scope.model.isAllValittu(valintakoe)) {
-			
-		} else {
+		if(!$scope.model.isAllValittu(valintakoe)) {
     		hakemusOids = $scope.model.valitutHakemusOids(valintakoe);
 		}
     	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid},{hakemusOids: hakemusOids, valintakoeOids:[valintakoe.valintakoeOid]}, function(id) {
@@ -280,7 +285,6 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
     			tag: "valintakoetulos",
     			hakemusOids: hakemusOids
     		},function(id) {
-    			//Dokumenttipalvelu.paivita($scope.update);
     			Latausikkuna.avaa(id, otsikko, valintakoe.valintakoeTunniste);
     	});
     };
@@ -294,7 +298,6 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
         		}, function(id) {
     		Latausikkuna.avaa(id, "Osoitetarrat hakukohteen valintakokeille", "Kaikille hakukohteen valintakokeille");
     	}, function() {
-    		//Dokumenttipalvelu.paivita($scope.update);
     		
     	});
     };
@@ -311,7 +314,7 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
     $scope.model.refresh($scope.hakukohdeOid);
 
 
-    $scope.nakymanTila = "Kokeittain"; // Hakijoittain
+    $scope.nakymanTila = "Kokeittain";
 
     $scope.predicate = ['sukunimi','etunimi'];
 
@@ -326,6 +329,4 @@ function ValintakoetulosController($scope, $routeParams, Ilmoitus, Latausikkuna,
             page = 1;
         });
     }
-    
-    
-}   
+}]);

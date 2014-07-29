@@ -1,5 +1,5 @@
-﻿<h1>Valintojen toteuttaminen</h1>
-<div ng-include="'haku/topNavigation.html'" />
+﻿<h1>{{ t('hakukohteetharkinnanvaraiset.header') || 'Valintojen toteuttaminen' }}</h1>
+<div ng-include="'../common/js/topnavigation/topNavigation.html'" />
 
 <div class="tabsheets">
 
@@ -19,23 +19,23 @@
 			</form>
 			
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
-                <h2>Harkinnanvaraiset hakijat</h2>
+                <h2>{{ t('hakukohteetharkinnanvaraiset.harkinnanvaraisethakijat') || 'Harkinnanvaraiset hakijat' }}</h2>
                 
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
                 <br>
-                <a ng-click="muodostaKoekutsut();" class="btn btn-default btn-sm pdf">Muodosta koekutsut</a>
-                <a ng-click="muodostaOsoitetarrat();" class="btn btn-default btn-sm pdf">Muodosta osoitetarrat</a>
+                <a ng-click="muodostaKoekutsut();" class="btn btn-default btn-sm pdf">{{ t('hakukohteetharkinnanvaraiset.muodostakoekutsut') || 'Muodosta koekutsut' }}</a>
+                <a ng-click="muodostaOsoitetarrat();" class="btn btn-default btn-sm pdf">{{ t('hakukohteetharkinnanvaraiset.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
                 <br>
-                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" >Tallenna</a>
+                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2">{{ t('hakukohteetharkinnanvaraiset.tallenna') || 'Tallenna' }}</a>
                 <pagination-pagesize page-size="pageSize"></pagination-pagesize>
                 <form name="form" ng-submit="submit()">
                     <table class="virkailija-table-1">
                         <thead>
                             <tr>
                                 <th><input type="checkbox" ng-change="model.checkAll();" ng-model="model.valittu"></th>
-                                <th>Nimi</th>
-                                <th>Pohjakoulutus</th>
-                                <th>Harkinnanvarainen tila</th>
+                                <th>{{ t('hakukohteetharkinnanvaraiset.nimi') || 'Nimi' }}</th>
+                                <th>{{ t('hakukohteetharkinnanvaraiset.pohjakoulutus') || 'Pohjakoulutus' }}</th>
+                                <th>{{ t('hakukohteetharkinnanvaraiset.harkinnanvarainentila') || 'Harkinnanvarainen tila' }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,16 +54,16 @@
                                 <td>
 
                                     <select ng-model="hakija.muokattuHarkinnanvaraisuusTila">
-                                        <option value="HYVAKSYTTY">Hyväksytty</option>
-                                        <option value="EI_HYVAKSYTTY">Ei Hyväksytty</option>
+                                        <option value="HYVAKSYTTY">{{ t('hakukohteetharkinnanvaraiset.hyvaksytty') || 'Hyväksytty' }}</option>
+                                        <option value="EI_HYVAKSYTTY">{{ t('hakukohteetharkinnanvaraiset.eihyvaksytty') || 'Ei Hyväksytty' }}</option>
                                     </select>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </form>
-                <pagination previous-text="Edellinen" next-text="Seuraava" total-items="filteredResult.length" page="currentPage" items-per-page="pageSize"></pagination>
-                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" >Tallenna</a>
+                <pagination previous-text="{{ t('hakukohteetharkinnanvaraiset.edellinen') || 'Edellinen' }}" next-text="{{ t('hakukohteetharkinnanvaraiset.seuraava') || 'Seuraava' }}" total-items="filteredResult.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
+                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" >{{ t('hakukohteetharkinnanvaraiset.tallenna') || 'Tallenna' }}</a>
             </div>
         </div>
     </div>

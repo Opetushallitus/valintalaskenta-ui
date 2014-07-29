@@ -1,37 +1,37 @@
 <div class="valinta-tulokset">
 
 
-    <h1>Valinnan tulokset</h1>
+    <h1>{{ t('valintatulos.header') || 'Valinnan tulokset' }}</h1>
 
     <div class="filters">
         <div class="tyyppiSuodatin">
-            <span>Tyyppi</span>
+            <span>{{ t('valintatulos.tyyppi') || 'Tyyppi' }}</span>
             <select ng-model="model.filter.type" >
-                <option value="KAIKKI">Kaikki</option>
-                <option value="HYVAKSYTYT">Hyväksytyt</option>
-                <option value="ILMANHYVAKSYNTAA">Ei yhtään hyväksyttyä hakutoivetta</option>
-                <option value="VASTAANOTTANEET">Paikan Vastaanottaneet</option>
+                <option value="KAIKKI">{{ t('valintatulos.kaikki') || 'Kaikki' }}</option>
+                <option value="HYVAKSYTYT">{{ t('valintatulos.hyvaksytyt') || 'Hyväksytyt' }}</option>
+                <option value="ILMANHYVAKSYNTAA">{{ t('valintatulos.eihyvaksyttya') || 'Ei yhtään hyväksyttyä hakutoivetta' }}</option>
+                <option value="VASTAANOTTANEET">{{ t('valintatulos.paikanvastaanottaneet') || 'Paikan Vastaanottaneet' }}</option>
             </select>
         </div>
         <div class="hakukohdeSuodatin">
-            <span>Hakukohde Oid</span>
+            <span>{{ t('valintatulos.hakukohdeoid') || 'Hakukohde Oid' }}</span>
             <input type="text" ng-model="hakukohdeToAdd">
-            <span class="btn btn-primary btn-sm" ng-click="addHakukohde()">Lisää</span>
+            <span class="btn btn-primary btn-sm" ng-click="addHakukohde()">{{ t('valintatulos.lisaa') || 'Lisää' }}</span>
             <span ng-repeat="hakukohde in model.filter.hakukohteet">
                 {{hakukohde}} <span ng-click="deleteHakukohde($index)">(X)</span>
             </span>
         </div>
         <div class="tarjoajaSuodatin">
-            <span>Tarjoaja Oid</span>
+            <span>{{ t('valintatulos.tarjoajaoid') || 'Tarjoaja Oid' }}</span>
             <input type="text" ng-model="tarjoajaToAdd">
-            <span class="btn btn-primary btn-sm" ng-click="addTarjoaja()">Lisää</span>
+            <span class="btn btn-primary btn-sm" ng-click="addTarjoaja()">{{ t('valintatulos.lisaa') || 'Lisää' }}</span>
             <span ng-repeat="tarjoaja in model.filter.tarjoajat">
                 {{tarjoaja}} <span ng-click="deleteTarjoaja($index)">(X)</span>
             </span>
         </div>
         <div>
-            <span class="btn btn-primary btn-sm" ng-click="search()">Hae</span>
-            <a class="btn btn-primary btn-sm" href="#/haku/{{hakuOid}}/yhteisvalinnanhallinta/" >Takaisin</a>
+            <span class="btn btn-primary btn-sm" ng-click="search()">{{ t('valintatulos.hae') || 'Hae' }}</span>
+            <a class="btn btn-primary btn-sm" href="#/haku/{{hakuOid}}/yhteisvalinnanhallinta/" >{{ t('valintatulos.takaisin') || 'Takaisin' }}</a>
         </div>
 
     </div>

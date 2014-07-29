@@ -1,4 +1,7 @@
+"use strict";
 
-function LisahakuController($routeParams) {
+angular.module('valintalaskenta').
+    controller('LisahakuController', ['$routeParams',
+        function ($routeParams) {
 
-}
+}]);

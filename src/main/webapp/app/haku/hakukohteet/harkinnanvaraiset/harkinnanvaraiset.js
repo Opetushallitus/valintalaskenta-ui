@@ -1,6 +1,10 @@
-app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
+app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta,
+                                                HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
+    "use strict";
     var model;
     model = new function () {
+
+
         this.valittu = true;
         this.hakeneet = [];
         this.harkinnanvaraisestiHyvaksytyt = [];
@@ -68,7 +72,7 @@ app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitu
                         model.hakeneet.forEach(function (hakija) {
                             for (var i = 0; i < result.length; i++) {
                                 var harkinnanvarainen = result[i];
-                                if (harkinnanvarainen.hakemusOid == hakija.oid) {
+                                if (harkinnanvarainen.hakemusOid === hakija.oid) {
                                     hakija.muokattuHarkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
                                     hakija.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
                                 }
@@ -115,17 +119,24 @@ app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitu
     return model;
 });
 
-function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet, OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakuolutukset) {
+angular.module('valintalaskenta').
+    controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
+        'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel',
+        'Pohjakoulutukset',
+        function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,
+            OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset) {
+    "use strict";
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HarkinnanvaraisetModel;
     $scope.hakuOid = $routeParams.hakuOid;
-    ;
+
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
     $scope.muutettu = false;
 
-    $scope.pohjakoulutukset = Pohjakuolutukset;
+    $scope.pohjakoulutukset = Pohjakoulutukset;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 
@@ -161,7 +172,7 @@ function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmo
 
     function isBlank(str) {
         return (!str || /^\s*$/.test(str));
-    };
+    }
 
     $scope.muodostaKoekutsut = function () {
         var letterBodyText = $scope.tinymceModel;
@@ -182,5 +193,4 @@ function HarkinnanvaraisetController($scope, $location, $log, $routeParams, Ilmo
             Ilmoitus.avaa("Koekutsuja ei voida muodostaa!", "Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.", IlmoitusTila.WARNING);
         }
     };
-
-}
+}]);

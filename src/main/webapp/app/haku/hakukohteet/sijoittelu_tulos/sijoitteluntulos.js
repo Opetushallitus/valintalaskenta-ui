@@ -1,7 +1,7 @@
-"use strict";
 app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
                                                $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila,
                                                HaunTiedot) {
+    "use strict";
 
     var model = new function () {
 
@@ -245,33 +245,62 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             }
             return oidit;
         };
-    };
+    }();
 
     return model;
 
 });
 
 
-function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
+angular.module('valintalaskenta').
+    controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
+        'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet',
+        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService',
+        function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet,
-                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService) {
+                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta,LocalisationService) {
+    "use strict";
+
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.hakukohdeModel = HakukohdeModel;
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
-
+	
+    //
+    // pikalatauslinkit on harmaannettuna jos ei ensimmaistakaan generointia 
+    $scope.osoitetarratUrl = null;
+    $scope.hyvaksymiskirjeetUrl = null;
+    $scope.sijoitteluntuloksetUrl = null;
+    HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastaus) {
+		if(vastaus[0]) {
+			$scope.osoitetarratUrl = vastaus[0].documentId;
+		}
+	});
+    HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastaus) {
+		if(vastaus[0]) {
+			$scope.hyvaksymiskirjeetUrl = vastaus[0].documentId;
+		}
+	});
+	HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}, function(vastaus) {
+		if(vastaus[0]) {
+			$scope.sijoitteluntuloksetUrl = vastaus[0].documentId;
+		}	
+	});
+	
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
-        {value: "EI_TEHTY", text: "sijoitteluntulos.enrollmentinfo.notdone"},
-        {value: "LASNA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.present"},
-        {value: "POISSA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.notpresent"},
-        {value: "EI_ILMOITTAUTUNUT", text: "sijoitteluntulos.enrollmentinfo.noenrollment"},
-        {value: "LASNA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.presentfall"},
-        {value: "POISSA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.notpresentfall"},
-        {value: "LASNA", text: "sijoitteluntulos.enrollmentinfo.presentspring"},
-        {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring"}
+        {value: "EI_TEHTY", text: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},
+        {value: "LASNA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.present", default_text:"Läsnä (koko lukuvuosi)"},
+        {value: "POISSA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.notpresent", default_text:"Poissa (koko lukuvuosi)"},
+        {value: "EI_ILMOITTAUTUNUT", text: "sijoitteluntulos.enrollmentinfo.noenrollment", default_text:"Ei ilmoittautunut"},
+        {value: "LASNA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.presentfall", default_text:"Läsnä syksy, poissa kevät"},
+        {value: "POISSA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.notpresentfall", default_text:"Poissa syksy, läsnä kevät"},
+        {value: "LASNA", text: "sijoitteluntulos.enrollmentinfo.presentspring", default_text:"Läsnä, keväällä alkava koulutus"},
+        {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"}
     ];
+
+    LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat);
 
     //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
     $scope.hakemuksenMuokattuVastaanottoTilat = [
@@ -289,6 +318,7 @@ function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirje
     for (var i = 0; i < 1000; i++) {
         $scope.currentPage[i] = 1;
     }
+
 
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
@@ -310,6 +340,7 @@ function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirje
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
             controller: ViestintapalveluIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
@@ -374,6 +405,7 @@ function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirje
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
             controller: ViestintapalveluIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
@@ -455,15 +487,11 @@ function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirje
         muokattavatHakemukset.forEach(function (hakemus) {
             hakemus.muokattuVastaanottoTila = "ILMOITETTU";
         });
-    }
+    };
 
     $scope.isKorkeakoulu = function() {
-        var returnValue = false;
-        if ($scope.model.haku.kohdejoukkoUri) {
-            returnValue = $scope.model.haku.kohdejoukkoUri.indexOf('_12') !== -1;
-        }
-        if(returnValue) {
-            $scope.hakemuksenMuokattuVastaanottoTilat.push({value: "EHDOLLISESTI_VASTAANOTTANUT"})
+        if ($scope.model.haku.kohdejoukkoUri && $scope.model.haku.kohdejoukkoUri.indexOf('_12') !== -1) {
+            $scope.hakemuksenMuokattuVastaanottoTilat.push({value: "EHDOLLISESTI_VASTAANOTTANUT"});
         }
     };
 
@@ -478,4 +506,4 @@ function SijoitteluntulosController($scope, $modal, $routeParams, $window, Kirje
     $scope.isKorkeakoulu();
 
 
-}
+}]);

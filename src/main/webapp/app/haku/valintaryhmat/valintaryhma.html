@@ -1,0 +1,88 @@
+<!-- Node template -->
+<script type="text/ng-template" id="node.html">
+    <span class="node"
+          ng-if="data.nimi && data.tyyppi !== 'HAKUKOHDE' && data.showValintaryhma | filter:domain.search.q">
+        <i class="fa fa-users valintaryhma"
+           ng-click="domain.expandNode(data)"></i>
+        <input ng-click="changeValintaryhma(data)" name="valintaryhmaOid" type="radio" ng-model="model.parentOid"
+               value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
+    </span>
+
+    <ol ng-if="data.isVisible">
+        <li ng-repeat="data in data.alavalintaryhmat | filter:domain.search.q | orderBy:'nimi'"
+            ng-include="'node.html'">
+        </li>
+    </ol>
+
+</script>
+
+
+<h1>Valintojen toteuttaminen</h1>
+<div ng-include="'../common/js/topnavigation/topNavigation.html'"></div>
+
+<div class="clear"></div>
+
+<div class="tabsheets" style="clear: both">
+
+
+    <div class="col-md-6">
+        <h2>Valintaryhmähierarkia</h2>
+        <a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
+        <br/>
+
+        <div class="valintaryhmaSelector">
+            <ol class="treelist collapsible">
+                <li>
+                    <span class="node">
+                    <i class="fa fa-users valintaryhma auki"></i>
+                    <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="" id="root"/> <label
+                            for="root">Juuri</label>
+                    </span>
+                </li>
+                <ol>
+                    <li ng-repeat="data in domain.valintaperusteList | filter:domain.search.q | orderBy:'nimi'"
+                        ng-model="data"
+                        ng-if="!domain.isHakukohde(data)"
+                        ng-include="'node.html'">
+
+                    </li>
+                </ol>
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div collapse="!selectedValintaryhma">
+            <h2>Valintaryhmä: {{selectedValintaryhma.nimi}}</h2>
+            <button ng-click="kaynnistaValintalaskenta(selectedValintaryhma)" class="btn btn-sm btn-primary">Suorita laskenta valintaryhmälle
+            </button>
+            <button ng-click="showHakukohteet(selectedValintaryhma)" class="btn btn-sm btn-default"><i ng-class="hakukohteetVisible ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> Näytä valintaryhmään liittyvät hakukohteet</button>
+        </div>
+
+        <div ng-if="hakukohteetVisible">
+            <h3>Valintaryhmään kuuluvat hakukohteet:</h3>
+            <table class="virkailija-table-1">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Hakukohde</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="hakukohde in hakukohteet track by $index">
+                    <td>{{$index + 1}}</td>
+                    <td>{{hakukohde.nimi}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+
+
+
+

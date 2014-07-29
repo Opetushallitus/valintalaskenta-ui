@@ -27,27 +27,6 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
         });
     };
 
-    /**
-     * Palauttaa käyttäjän käyttökielen ( fi | sv | en )cas/myroles:sta oletus kieli on fi
-     * @returns {promise}
-     */
-    var getUserLang = function(){
-        var deferred = $q.defer();
-        refresh().then(
-            function(data){
-                // oletus kieli fi, jos käyttäjällä ei kieltä asetettu cas/myroles:ssa
-                var userLang = 'fi';
-                for(var i=0 ; i < data.length; i++ ){
-                    if( data[i].match("LANG_") !== null){
-                        userLang = data[i].slice(5);
-                    }
-                }
-                deferred.resolve(userLang);
-            }
-        );
-        return deferred.promise;
-    };
-
     refresh();
 
     return deferred.promise;

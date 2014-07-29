@@ -1,4 +1,5 @@
 app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$routeParams, $q) {
+    "use strict";
 
     var deferred = $q.defer();
 	
@@ -83,7 +84,11 @@ app.factory('ValintalaskentaHistoriaModel', function(ValintalaskentaHistoria,$ro
 
 
 
-function ValintalaskentaHistoriaController($scope, $routeParams, ValintalaskentaHistoriaModel) {
+angular.module('valintalaskenta').
+    controller('ValintalaskentaHistoriaController', ['$scope', '$routeParams', 'ValintalaskentaHistoriaModel',
+        function ($scope, $routeParams, ValintalaskentaHistoriaModel) {
+    "use strict";
+
 	$scope.hakijaOid = $routeParams.hakijaOid;
 	$scope.model = ValintalaskentaHistoriaModel;
 
@@ -103,6 +108,4 @@ function ValintalaskentaHistoriaController($scope, $routeParams, Valintalaskenta
 	$scope.openTree = function(tree) {
 		tree.show = !tree.show;
 	};
-
-
-}
+}]);

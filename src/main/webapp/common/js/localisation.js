@@ -1,14 +1,14 @@
 /**
  * Hakee käännöspalvelusta resurssit sovelluksen lokalisointiin
  */
-angular.module('valintalaskenta.services.factory', [])
-    .factory('Localisations',[ '$resource', 'Props','$q', function ($resource, Props, $q) {
+angular.module('oph.localisation', [])
+    .factory('Localisations',[ '$resource','$q', function ($resource, $q) {
         var localisations ={};
-        var locals = $resource(Props.localizationUrl+'/localisation',{},{
+        var locals = $resource(LOCALISATION_URL_BASE+'/localisation',{},{
             query: {
                 method:'GET',
                 params:{
-                    category: 'hakulomakkeenhallinta'
+                    category: 'valintalaskenta'
                 },
                 isArray: true
             }
@@ -26,18 +26,41 @@ angular.module('valintalaskenta.services.factory', [])
             return deferred.promise;
         };
         return localisations;
-    }]);
+    }])
 
 
 /**
  * Sovelluksen lokalisointi palvelu
  */
-angular.module('valintalaskenta.services.service', [])
-    .service('LocalisationService',  [ 'Localisations', '$q', 'MyRoles', '$cacheFactory',
-        function(Localisations, $q, MyRoles, $cacheFactory){
+    .service('LocalisationService',  [ 'Localisations', '$q', 'MyRolesModel', '$cacheFactory',
+        function(Localisations, $q, MyRolesModel, $cacheFactory){
 
             //välimuisti käännöksille
             var cache = $cacheFactory('locales');
+
+            /**
+             * Palauttaa käyttäjän käyttökielen ( fi | sv | en )cas/myroles:sta oletus kieli on fi
+             * @returns {promise}
+             */
+            this.getUserLang = function(){
+                var deferred = $q.defer();
+                MyRolesModel.then(
+                    function(data){
+                        var found = true;
+                        // oletus kieli fi, jos käyttäjällä ei kieltä asetettu cas/myroles:ssa
+                        var userLang = 'fi';
+                        for(var i=0 ; i < data.length && found ; i++ ){
+                            if( data[i].match("LANG_") !== null){
+                                userLang = data[i].slice(5);
+                                found = false;
+                            }
+                        }
+                        deferred.resolve(userLang);
+                    }
+                );
+                return deferred.promise;
+            };
+
             /**
              * Haetaan käännöspalvelusta käyttäjän käyttökielen mukaan
              * lokalisoidut käännökset ja laitetaan ne välimuistiin
@@ -48,7 +71,7 @@ angular.module('valintalaskenta.services.service', [])
             function getTranslations(userLang){
                 var deferred = $q.defer();
                 if(cache.info().size == 0){
-                    Localisations.getLocalisations().then(function(data){
+                     Localisations.getLocalisations().then(function(data){
                         for(var trl in data){
                             if(data[trl].id !== undefined && data[trl].locale === userLang){
                                 putCachedLocalisation(data[trl].key, data[trl].value );
@@ -59,6 +82,20 @@ angular.module('valintalaskenta.services.service', [])
                 };
                 return deferred.promise;
             };
+
+            this.getTranslationsForArray = function(array){
+                var self = this;
+                array.forEach(function(item) {
+                    self.getTranslation(item.text).then(function (text) {
+                        if (text) {
+                            item.text = text;
+                        } else {
+                            item.text = item.default_text;
+                        }
+                    });
+                });
+            };
+
             /**
              * Palauttaa käännöstekstin avaimelle
              * @param key: käännöstekstin avain
@@ -67,7 +104,7 @@ angular.module('valintalaskenta.services.service', [])
             this.getTranslation = function(key){
                 var deferred = $q.defer();
                 if(!hasTranslation(key)){
-                    MyRoles.getUserLang().then(function(data){
+                    this.getUserLang().then(function(data){
                         getTranslations(data).then(function(){
                             var locale = cache.get(key);
                             deferred.resolve( locale ? cache.get(key) : undefined );
@@ -109,4 +146,23 @@ angular.module('valintalaskenta.services.service', [])
                 }
             };
 
-        }]);
+        }])
+/**
+ * UI-directive käännösten käyttämiseen
+ */
+    .directive('tl', ['LocalisationService', function(LocalisationService) {
+
+        return {
+            restrict: 'A',
+            replace: true,
+            scope: false,
+            compile: function(element, attrs) {
+                var key = attrs["tl"];
+                LocalisationService.getTranslation(key).then(function(data){
+                    element.html(data);
+                });
+
+            }
+
+        };
+    }]);

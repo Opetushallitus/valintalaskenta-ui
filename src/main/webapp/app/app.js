@@ -1,18 +1,20 @@
 "use strict";
 
+
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
-    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload',
-    'valintalaskenta.directives',
-    'valintalaskenta.services.provider',
-    'valintalaskenta.services.service',
-    'valintalaskenta.services.factory',
-    'valintalaskenta.controllers'], function($rootScopeProvider) {
+    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
-}).run(function($http, MyRolesModel){
+}).run(function($http, MyRolesModel, LocalisationService){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
   	tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12';
     MyRolesModel;
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
+    LocalisationService.getTranslation("");
+});
+
+var underscore = angular.module('lodash', []);
+underscore.factory('_', function() {
+    return window._; // assumes lodash has already been loaded on the page
 });
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
@@ -20,7 +22,7 @@ var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
 var VALINTAPERUSTEET_URL_BASE = VALINTAPERUSTEET_URL_BASE || "";
 var DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE || ""; 
 var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
-var VALINTALASKENTAKOOSTE_URL_BASE_HTTP = VALINTALASKENTAKOOSTE_URL_BASE.replace(/:\d{4}/, '');
+var VALINTALASKENTAKOOSTE_URL_BASE_HTTP = VALINTALASKENTAKOOSTE_URL_BASE.replace(/:\d{4}/, '') || "";
 var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 var SERVICE_EXCEL_URL_BASE = SERVICE_EXCEL_URL_BASE || "";
 var SIJOITTELU_EXCEL_URL_BASE = SIJOITTELU_EXCEL_URL_BASE || "";
@@ -30,34 +32,39 @@ var HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE || "";
 var VIESTINTAPALVELU_URL_BASE = VIESTINTAPALVELU_URL_BASE || "";
 var CAS_URL = CAS_URL || "/cas/myroles";
 var SIJOITTELU_URL_BASE = SIJOITTELU_URL_BASE || "";
+var LOCALISATION_URL_BASE = LOCALISATION_URL_BASE || "";
 
 //Route configuration
 app.config(function($routeProvider) {
     $routeProvider.
-    when('/haku/', {controller:HakuController, templateUrl:TEMPLATE_URL_BASE + 'haku/haut.html'}).
-    when('/haku/:hakuOid/hakukohde/', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakukohde.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/perustiedot/hakukohdeperustiedot.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valinnanhallinta', {controller:ValinnanhallintaController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hallinta/valinnanhallinta.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset', {controller:HarkinnanvaraisetController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/harkinnanvaraiset/harkinnanvaraiset.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintalaskentatulos', {controller:ValintalaskentatulosController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/valintalaskenta_tulos/valintalaskentatulos.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintakoetulos', {controller:ValintakoetulosController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/koekutsut/valintakoetulos.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller:HakeneetController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakeneet/hakeneet.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto', {controller:PistesyottoController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/pistesyotto.html'}).
-    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/sijoitteluntulos', {controller:SijoitteluntulosController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/sijoittelu_tulos/sijoitteluntulos.html'}).
+    when('/haku/', {controller:'HakuController', templateUrl:TEMPLATE_URL_BASE + 'haku/haut.html'}).
+    when('/haku/:hakuOid/hakukohde/', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakukohde.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/perustiedot/hakukohdeperustiedot.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valinnanhallinta', {controller:'ValinnanhallintaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hallinta/valinnanhallinta.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset', {controller:'HarkinnanvaraisetController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/harkinnanvaraiset/harkinnanvaraiset.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintalaskentatulos', {controller:'ValintalaskentatulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/valintalaskenta_tulos/valintalaskentatulos.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintakoetulos', {controller:'ValintakoetulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/koekutsut/valintakoetulos.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller:'HakeneetController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakeneet/hakeneet.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto', {controller:'PistesyottoController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/pistesyotto.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/sijoitteluntulos', {controller:'SijoitteluntulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/sijoittelu_tulos/sijoitteluntulos.html'}).
 
-    when('/valintatapajono/:valintatapajonoOid/hakemus/:hakemusOid/valintalaskentahistoria', {controller:ValintalaskentaHistoriaController, templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/valintalaskenta_tulos/valintalaskentahistoria.html'}).
+    when('/valintatapajono/:valintatapajonoOid/hakemus/:hakemusOid/valintalaskentahistoria', {controller:'ValintalaskentaHistoriaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/valintalaskenta_tulos/valintalaskentahistoria.html'}).
 
-    when('/haku/:hakuOid/henkiloittain/', {controller:HenkiloController, templateUrl:TEMPLATE_URL_BASE + 'haku/henkilot/henkilo.html'}).
-    when('/haku/:hakuOid/henkiloittain/:hakemusOid/henkilotiedot', {controller:HenkiloTiedotController, templateUrl:TEMPLATE_URL_BASE + 'haku/henkilot/henkilotiedot.html'}).
-    when('/haku/:hakuOid/henkiloittain/:hakemusOid/henkilotiedot/:scrollTo', {controller:HenkiloTiedotController, templateUrl:TEMPLATE_URL_BASE + 'haku/henkilot/henkilotiedot.html'}).
+    when('/haku/:hakuOid/henkiloittain/', {controller:'HenkiloController', templateUrl:TEMPLATE_URL_BASE + 'haku/henkilot/henkilo.html'}).
+    when('/haku/:hakuOid/henkiloittain/:hakemusOid/henkilotiedot', {controller:'HenkiloTiedotController', templateUrl:TEMPLATE_URL_BASE + 'haku/henkilot/henkilotiedot.html'}).
+    when('/haku/:hakuOid/henkiloittain/:hakemusOid/henkilotiedot/:scrollTo', {controller:'HenkiloTiedotController', templateUrl:TEMPLATE_URL_BASE + 'haku/henkilot/henkilotiedot.html'}).
 
-    when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:YhteisvalinnanHallintaController, templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/yhteisvalinnanhallinta.html'}).
-    when('/haku/:hakuOid/yhteisvalinnanhallinta/valintatulos', {controller:ValintatulosController, templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/tulos/valintatulos.html'}).
+    when('/haku/:hakuOid/yhteisvalinnanhallinta', {controller:'YhteisvalinnanHallintaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/yhteisvalinnanhallinta.html'}).
+    when('/haku/:hakuOid/yhteisvalinnanhallinta/valintatulos', {controller:'ValintatulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hallinta/tulos/valintatulos.html'}).
 
-    when('/lisahaku/:hakuOid/hakukohde', {controller: LisahakuController, templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/lisahakuHakukohde.html'}).
-    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: HakukohdeController, templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakukohdeperustiedot.html'}).
-    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hyvaksytyt', {controller: LisahakuhyvaksytytController, templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hyvaksytyt.html'}).
-    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller: HakeneetController, templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakeneet.html'}).
+    when('/haku/:hakuOid/valintaryhmittain', {controller: 'ValintaryhmaController', templateUrl: TEMPLATE_URL_BASE + 'haku/valintaryhmat/valintaryhma.html'}).
+    when('/lisahaku/:hakuOid/valintaryhmittain', {controller:'ValintaryhmaController', templateUrl: TEMPLATE_URL_BASE + 'haku/valintaryhmat/valintaryhma.html'}).
+
+
+    when('/lisahaku/:hakuOid/hakukohde', {controller: 'LisahakuController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/lisahakuHakukohde.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/perustiedot', {controller: 'HakukohdeController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakukohdeperustiedot.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hyvaksytyt', {controller: 'LisahakuhyvaksytytController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hyvaksytyt.html'}).
+    when('/lisahaku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller: 'HakeneetController', templateUrl: TEMPLATE_URL_BASE + 'haku/lisahaku/hakeneet.html'}).
 
     otherwise({redirectTo:'/haku/'});
 
@@ -330,7 +337,11 @@ app.factory('Dokumenttiprosessi', function($http, $log, $rootScope, $resource, $
 		}
 	};
 });
-
+app.factory('HaeDokumenttipalvelusta', function($resource) {
+    return $resource(DOKUMENTTIPALVELU_URL_BASE + "/dokumentit/:tyyppi/:hakukohdeoid", {tyyppi: "@tyyppi", hakukohdeoid: "@hakukohdeoid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
 app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $window, Poller) {
 	
     return {
@@ -392,9 +403,12 @@ app.factory('ValintalaskentaMuistissa', function($resource) {
         aktivoi: {method: "POST"}
     });
 });
+app.factory('ValintaryhmaLaskenta', function ($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktivoi?hakuOid=:hakuOid&onkoWhitelist=true", {hakuOid: "@hakuOid"});
+});
 
 
-app.factory('Sijoitteluktivointi', function($resource) {
+app.factory('SijoitteluAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/aktivoi", {}, {
         aktivoi: {method: "POST"}
     });
@@ -628,15 +642,6 @@ app.factory('Valintatulos', function($resource) {
 
 
 
-
-
-
-
-
-
-
-
-
 // Valintakoetulokset
 app.factory('Valintakoetulokset', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintakoe/hakutoive/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
@@ -703,8 +708,19 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
     });
 });
 
+//Valintaryhma
+app.factory('ValintaryhmatJaHakukohteet', function($resource) {
+    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/puu", {
+        q: "@q",
+        hakuOid: "@hakuOid",
+        tila: "@tila",
+        kohdejoukko: "@kohdejoukko"
+    }, {
+        get: {method: "GET", isArray: true  }
+    });
+});
 
-app.constant('Pohjakuolutukset', {
+app.constant('Pohjakoulutukset', {
 	0: "Ulkomailla suoritettu koulutus",
 	1: "Perusopetuksen oppimäärä",
 	2: "Perusopetuksen osittain yksilöllistetty oppimäärä",
@@ -719,3 +735,4 @@ app.constant('IlmoitusTila', {
 	WARNING: 'warning',
 	ERROR: 'danger'
 });
+

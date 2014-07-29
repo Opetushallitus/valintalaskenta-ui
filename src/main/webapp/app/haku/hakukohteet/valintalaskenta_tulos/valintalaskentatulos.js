@@ -1,12 +1,8 @@
-﻿app.factory('ValintalaskentatulosModel', function(
-	$routeParams,
-    ValinnanvaiheListByHakukohde,
-    JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa,
-    HakukohdeHenkilotFull,
-    Ilmoitus,
-    IlmoitusTila, $q) {
-	var model;
+﻿app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q) {
+    "use strict";
+
+    var model;
 	model = new function() {
 
 		this.hakukohdeOid = {};
@@ -148,14 +144,14 @@
                 // Suodatetaan pois hakemukset joille ei ole merkitty jonosijaa ja asetetaan pisteiksi jonosijan negaatio
                 var suodatetutSijat = _.chain(yksijono.jonosijat)
                     .filter(function(sija) {
-                        return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila != '')
+                        return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila !== '');
                     }).map(function(sija) {
                         if(_.isUndefined(sija.jonoSija && _.isNumber(sija.jonosija))) {
                             sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                         } else {
                             delete sija.jarjestyskriteerit[0].arvo;
                         }
-                        if(_.isUndefined(sija.prioriteetti) || sija.prioriteetti == 0) {
+                        if(_.isUndefined(sija.prioriteetti) || sija.prioriteetti === 0) {
                             sija.prioriteetti = model.hakutoivePrioriteetti(sija.hakemusOid);
                         }
                         sija.jarjestyskriteerit[0].tila = sija.tuloksenTila;
@@ -174,13 +170,20 @@
             }
         };
 
-	};
+	}();
 
 	return model;
 });
 
 
-function ValintalaskentatulosController($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna, ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService) {
+angular.module('valintalaskenta').
+    controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
+        'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ValintalaskentatulosModel',
+        'TulosXls', 'HakukohdeModel', '$http', 'AuthService',
+    function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
+              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService) {
+    "use strict";
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -213,6 +216,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
             Ilmoitus.avaa("Valintatapajonon vienti epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
         });
     };
+
     $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files) {
 		var file = $files[0];
 		var fileReader = new FileReader();
@@ -249,14 +253,14 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     };
 
     $scope.showTilaPartial = function(valintatulos) {
-         if(valintatulos.showTilaPartial == null || valintatulos.showTilaPartial == false) {
+         if(valintatulos.showTilaPartial === null || valintatulos.showTilaPartial === false) {
              valintatulos.showTilaPartial = true;
          } else {
              valintatulos.showTilaPartial = false;
          }
     };
     $scope.showHenkiloPartial = function(valintatulos) {
-        if(valintatulos.showHenkiloPartial == null || valintatulos.showHenkiloPartial == false) {
+        if(valintatulos.showHenkiloPartial === null || valintatulos.showHenkiloPartial === false) {
             valintatulos.showHenkiloPartial = true;
         } else {
             valintatulos.showHenkiloPartial = false;
@@ -286,7 +290,7 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
     };
 
     $scope.changeSija = function (jonosija, value) {
-        if (value != 'HYVAKSYTTAVISSA') {
+        if (value !== 'HYVAKSYTTAVISSA') {
             $timeout(function(){
                 delete jonosija.jonosija;
             });
@@ -294,4 +298,4 @@ function ValintalaskentatulosController($scope, $location, $routeParams, $timeou
 
     };
 
-}
+}]);

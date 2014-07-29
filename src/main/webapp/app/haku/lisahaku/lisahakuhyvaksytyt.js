@@ -1,4 +1,6 @@
-﻿app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
+﻿"use strict";
+
+app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
 	var model;
 	model = new function() {
 
@@ -95,13 +97,15 @@
         };
 
 
-	};
+	}();
 
 	return model;
 });
 
-function LisahakuhyvaksytytController($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService,
-                                      HakemusKey) {
+angular.module('valintalaskenta').
+    controller('LisahakuhyvaksytytController', ['$scope', '$location', '$routeParams', 'HyvaksytytModel', 'HakukohdeModel',
+        'AuthService', 'HakemusKey','LocalisationService',
+        function ($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService, HakemusKey, LocalisationService) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HyvaksytytModel;
     $scope.hakuOid =  $routeParams.hakuOid;
@@ -113,15 +117,16 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
     $scope.currentPage = 1;
 
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
-        {value: "EI_TEHTY", text: "sijoitteluntulos.enrollmentinfo.notdone"},
-        {value: "LASNA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.present"},
-        {value: "POISSA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.notpresent"},
-        {value: "EI_ILMOITTAUTUNUT", text: "sijoitteluntulos.enrollmentinfo.noenrollment"},
-        {value: "LASNA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.presentfall"},
-        {value: "POISSA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.notpresentfall"},
-        {value: "LASNA", text: "sijoitteluntulos.enrollmentinfo.presentspring"},
-        {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring"}
+        {value: "EI_TEHTY", text: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},
+        {value: "LASNA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.present", default_text:"Läsnä (koko lukuvuosi)"},
+        {value: "POISSA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.notpresent", default_text:"Poissa (koko lukuvuosi)"},
+        {value: "EI_ILMOITTAUTUNUT", text: "sijoitteluntulos.enrollmentinfo.noenrollment", default_text:"Ei ilmoittautunut"},
+        {value: "LASNA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.presentfall", default_text:"Läsnä syksy, poissa kevät"},
+        {value: "POISSA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.notpresentfall", default_text:"Poissa syksy, läsnä kevät"},
+        {value: "LASNA", text: "sijoitteluntulos.enrollmentinfo.presentspring", default_text:"Läsnä, keväällä alkava koulutus"},
+        {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"}
     ];
+    LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat);
 
     //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
     $scope.hakemuksenMuokattuVastaanottoTilat = [
@@ -131,7 +136,6 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
         {value: "PERUNUT", text: "Perunut"},
         {value: "PERUUTETTU", text: "Peruutettu"}
     ];
-
 
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
@@ -186,4 +190,4 @@ function LisahakuhyvaksytytController($scope, $location, $routeParams, Hyvaksyty
             value: hakemus.muokattuIlmoittautumisTila
         });
     };
-}
+}]);

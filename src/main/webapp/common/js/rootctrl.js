@@ -1,13 +1,12 @@
 'use strict';
 
-angular.module('valintalaskenta.controllers', [])
-    .controller('RootCtrl', ['$rootScope', '$scope','Props' ,'MyRolesModel', 'LocalisationService',
-        function($rootScope, $scope, Props, MyRolesModel, LocalisationService ) {
+angular.module('valintalaskenta').controller('RootCtrl', ['$rootScope', '$scope','LocalisationService',
+        function($rootScope, $scope, LocalisationService ) {
             /**
              * katsotaan käyttäjän käyttöprofiilista cas/myroles tiedostosta
              * hänen palveluun määrittämä käyttökieli
              */
-            MyRolesModel.getUserLang().then(function(data){
+            LocalisationService.getUserLang().then(function(data){
                 $scope.userLang = data;
             });
             /**

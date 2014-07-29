@@ -3,14 +3,14 @@
           <table class="virkailija-table-1" style="width: 800px;">
         <thead>
         <tr>
-            <th>Dokumentit</th>
-            <th>Luotu</th>
-            <th>Koko</th>
+            <th>{{ t('dokumenttipalvelu.dokumentit') || 'Dokumentit' }}</th>
+            <th>{{ t('dokumenttipalvelu.luotu') || 'Luotu' }}</th>
+            <th>{{ t('dokumenttipalvelu.koko') || 'Koko' }}</th>
         </tr>
         </thead>
         <tbody ng-repeat="tiedosto in dokumentit  | limitTo:dokumenttiLimit">
         	<tr>
-            				<td class="align-center"><a href="{{DOKUMENTTIPALVELU_URL_BASE}}/dokumentit/lataa/{{tiedosto.documentId}}" ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</a><span ng-show="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</span></td>
+                <td class="align-center"><a href="{{DOKUMENTTIPALVELU_URL_BASE}}/dokumentit/lataa/{{tiedosto.documentId}}" ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</a><span ng-show="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</span></td>
 	            <td class="align-center">{{tiedosto.createdAt}}</td>
 	            <td class="align-center">{{tiedosto.size}}</td>
         	</tr>
@@ -18,11 +18,11 @@
         <tfoot>
         	<tr ng-show="dokumentit.length > dokumenttiLimit">
 				<td class="align-center" colspan="4">
-					<a ng-click="showMoreDokumentit()" class="button small" style="">Näytä lisää +{{dokumentit.length - dokumenttiLimit}}</a>
+					<a ng-click="showMoreDokumentit()" class="button small" style="">{{ t('dokumenttipalvelu.nayta') || 'Näytä lisää' }} +{{dokumentit.length - dokumenttiLimit}}</a>
 				</td>
 			</tr>
 			<tr ng-hide="dokumentit">
-				<td class="align-center" colspan="4">Ei luotuja dokumentteja</td>
+				<td class="align-center" colspan="4">{{ t('dokumenttipalvelu.eiluotuja') || 'Ei luotuja dokumentteja' }}</td>
 			</tr>
 		</tfoot>
           </table>

@@ -6,7 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
-app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNimi, HakukohdeHenkilotFull) {
+app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNimi) {
+    "use strict";
+
+
     var model;
 
     model = new function () {
@@ -66,7 +69,7 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
             _.each(hakemukset, function(hakemus) {
                 var toive = (_.invert(hakemus.answers.hakutoiveet))[hakukohdeOid];
 
-                if(toive && parseInt(toive.substring(10,11)) == 1) {
+                if(toive && parseInt(toive.substring(10,11)) === 1) {
                     result.push(hakemus);
                 }
             });
@@ -86,17 +89,9 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
                     defer.reject("hakukohteen nimen hakeminen epäonnistui");
                 });
             }, function(error) {
-                defer.reject("hakukohteen tietojen hakeminen epäonnistui")
+                defer.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
 
-            /*
-            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
-                model.ensisijaiset = model.haeEnsisijaiset(result, hakukohdeOid);
-                defer.resolve();
-            }, function(error) {
-                defer.reject();
-            });
-            */
             return defer.promise;
 
         };
@@ -134,22 +129,31 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
     return model;
 });
 
-function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, HakuModel, /*HakeneetModel,*/ SijoitteluntulosModel) {
+angular.module('valintalaskenta').
+    controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
+        'SijoitteluntulosModel',
+        function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel) {
+    "use strict";
+
+
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
-//    $scope.hakeneetModel = HakeneetModel;
-//    $scope.hakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
 
     $scope.model.refreshIfNeeded($scope.hakukohdeOid);
 
     $scope.sijoitteluntulosModel = SijoitteluntulosModel;
     $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
-}
+}]);
 
-function HakukohdeNimiController($scope, HakukohdeModel) {
+angular.module('valintalaskenta').
+    controller('HakukohdeNimiController', ['$scope', 'HakukohdeModel',
+        function ($scope, HakukohdeModel) {
+    "use strict";
+
+
     $scope.hakukohdeModel = HakukohdeModel;
-}
+}]);
 
 

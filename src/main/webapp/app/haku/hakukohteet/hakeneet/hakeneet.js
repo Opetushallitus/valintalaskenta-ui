@@ -1,4 +1,5 @@
 ﻿app.factory('HakeneetModel', function (HakukohdeHenkilot) {
+    'use strict';
     var model;
     model = new function () {
 
@@ -17,7 +18,7 @@
             }, function (error) {
                 model.errors.push(error);
             });
-        }
+        };
 
 
         this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {
@@ -30,7 +31,11 @@
     return model;
 });
 
-function HakeneetController($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
+angular.module('valintalaskenta').
+    controller('HakeneetController', ['$scope', '$location', '$routeParams', 'HakeneetModel', 'HakukohdeModel',
+        function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
+    'use strict';
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -47,4 +52,4 @@ function HakeneetController($scope, $location, $routeParams, HakeneetModel, Haku
         "ACTIVE": "Aktiivinen",
         "INCOMPLETE": "Puutteellinen"
     };
-}
+}]);

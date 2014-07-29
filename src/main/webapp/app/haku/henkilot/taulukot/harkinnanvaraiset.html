@@ -1,14 +1,14 @@
 <br/>
 <div class="henkilotiedot" ng-if="model.hakenutHarkinnanvaraisesti">
-    <h2>Harkinnanvaraiset</h2>
+    <h2>{{ t('harkinnanvaraiset.header') || 'Harkinnanvaraiset' }}</h2>
 
-    <div >
+    <div>
         <table class="virkailija-table-1">
             <thead>
                 <tr>
-                    <th>Hakutoive</th>
-                    <th>Pohjakoulutus</th>
-                    <th>Harkinnanvarainen tila</th>
+                    <th>{{ t('harkinnanvaraiset.hakutoive') || 'Hakutoive' }}</th>
+                    <th>{{ t('harkinnanvaraiset.pohjakoulutus') || 'Pohjakoulutus' }}</th>
+                    <th>{{ t('harkinnanvaraiset.tila') || 'Harkinnanvarainen tila' }}</th>
                     <th></th>
                 </tr>
             </thead>
