@@ -52,7 +52,7 @@
                                     tulosjono.aloituspaikat = jono.aloituspaikat;
 
                                     tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
-                                    tulosjono.tasasijasaanto = jono.tasasijasaanto;
+                                    tulosjono.tasasijasaanto = jono.tasapistesaanto;
                                     tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
                                     tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
                                     tulosjono.poissaOlevaTaytto = jono.poissaOlevaTaytto;
