@@ -73,6 +73,12 @@
                                     model.hakeneet.forEach(function(hakija) {
                                         var jonosija = _.findWhere(jonosijat, {hakemusOid : hakija.oid});
                                         if(jonosija) {
+                                            var krit = jonosija.jarjestyskriteerit[0];
+                                            if(krit.tila != 'HYVAKSYTTAVISSA') {
+                                                delete jonosija.jonosija
+                                            } else {
+                                                jonosija.jonosija = -(krit.arvo);
+                                            }
                                             tulosjono.jonosijat.push(jonosija);
                                         } else {
                                             jonosija = {};
