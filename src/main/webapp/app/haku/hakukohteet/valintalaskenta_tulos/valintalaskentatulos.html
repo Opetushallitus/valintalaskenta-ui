@@ -123,7 +123,7 @@
                                                 <select ng-model="tulos.tuloksenTila" ng-change="changeSija(tulos, tulos.tuloksenTila)">
                                                     <option value="HYVAKSYTTAVISSA">{{ t('valintalaskentatulos.hyvaksyttavissa') || 'Hyväksyttävissä' }}</option>
                                                     <option value="HYLATTY">{{ t('valintalaskentatulos.hylatty') || 'Hylätty' }}</option>
-                                                    <option value="MAARITTELEMATON">{{ t('valintalaskentatulos.maarittalematon') || 'Määrittelemätön' }}</option>
+                                                    <option value="">{{ t('valintalaskentatulos.maarittalematon') || 'Määrittelemätön' }}</option>
                                                 </select>
                                             </td>
                                             <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.FI"
