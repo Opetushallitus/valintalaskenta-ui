@@ -39,14 +39,23 @@ angular.module('valintalaskenta').
         'SijoittelunTulosHyvaksymiskirjeet', 'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', '$log', '$timeout', '$q',
         '$location', 'ValintakoelaskentaAktivointi', 'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
-        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila',
+        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'ValintalaskentaKerrallaAktivointi',
         function ($scope, $modal, $interval, _, SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat,
                   SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q,
                   $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                   $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
-                  HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
+                  HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, ValintalaskentaKerrallaAktivointi) {
     "use strict";
 
+    $scope.aktivoiValintalaskentaKerralla = function () {
+    	var hakuoid = $routeParams.hakuOid;
+        ValintakoelaskentaKerrallaAktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {
+            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
+        }, function () {
+            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+        });
+    };
+    
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
     $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -225,7 +234,7 @@ angular.module('valintalaskenta').
         });
 
     };
-
+    
     $scope.aktivoiHaunValintakoelaskenta = function () {
         var hakuoid = $routeParams.hakuOid;
         ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {

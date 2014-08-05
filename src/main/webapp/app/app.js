@@ -382,7 +382,11 @@ app.factory('ValintakoelaskentaAktivointi', function($resource) {
         aktivoi: {method: "POST"}
     });
 });
-
+app.factory('ValintalaskentaKerrallaAktivointi', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuOid", {hakuOid: "@hakuOid"}, {
+        aktivoi: {method: "POST"}
+    });
+});
 app.factory('ValintalaskentaKaynnissa', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktiivinenValintalaskenta", {}, {
         hae: {method: "GET"}
