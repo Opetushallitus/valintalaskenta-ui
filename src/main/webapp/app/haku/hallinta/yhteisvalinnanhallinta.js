@@ -49,11 +49,26 @@ angular.module('valintalaskenta').
 
     $scope.aktivoiValintalaskentaKerralla = function () {
     	var hakuoid = $routeParams.hakuOid;
-    	ValintalaskentaKerrallaAktivointi.aktivoi({hakuoid: hakuoid}, function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
-        }, function () {
-            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/seurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        hakukohdeOid: null,
+                        valinnanvaihe: null
+                    };
+                }
+            }
         });
+//    	ValintalaskentaKerrallaAktivointi.aktivoi({hakuoid: hakuoid}, function (id) {
+//            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/seurantaikkuna.html", {});
+//        }, function () {
+//            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+//        });
     };
     
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;

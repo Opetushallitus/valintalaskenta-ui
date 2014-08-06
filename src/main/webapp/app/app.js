@@ -384,7 +384,8 @@ app.factory('ValintakoelaskentaAktivointi', function($resource) {
 });
 app.factory('ValintalaskentaKerrallaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid", {hakuoid: "@hakuoid"}, {
-        aktivoi: {method: "POST"}
+        aktivoi: {method: "POST"},
+        keskeyta: {method: "DELETE"}
     });
 });
 app.factory('ValintalaskentaKaynnissa', function($resource) {
