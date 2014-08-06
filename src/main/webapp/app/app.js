@@ -20,6 +20,7 @@ underscore.factory('_', function() {
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
 var VALINTAPERUSTEET_URL_BASE = VALINTAPERUSTEET_URL_BASE || "";
+var SEURANTA_URL_BASE = SEURANTA_URL_BASE || "";
 var DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE || ""; 
 var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
 var VALINTALASKENTAKOOSTE_URL_BASE_HTTP = VALINTALASKENTAKOOSTE_URL_BASE.replace(/:\d{4}/, '') || "";
@@ -386,6 +387,18 @@ app.factory('ValintalaskentaKerrallaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid", {hakuoid: "@hakuoid"}, {
         aktivoi: {method: "POST"},
         keskeyta: {method: "DELETE"}
+    });
+});
+app.factory('SeurantaPalvelu', function($resource) {
+    return $resource(SEURANTA_URL_BASE + "resources/seuranta/laskenta/:uuid", {uuid: "@uuid"}, {
+        hae: {method: "GET"}
+    });
+});
+app.factory('ValintalaskentaKerrallaHakukohteelleAktivointi', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid/hakukohde/:hakukohdeoid", {
+    	hakuoid: "@hakuoid",
+    	hakukohdeoid: "@hakukohdeoid"}, {
+        aktivoi: {method: "POST"}
     });
 });
 app.factory('ValintalaskentaKaynnissa', function($resource) {

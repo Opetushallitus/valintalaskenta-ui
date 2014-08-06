@@ -1,4 +1,5 @@
-function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $routeParams, HakuModel) {
+function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $routeParams, 
+		HakuModel, ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila, SeurantaPalvelu) {
 	$scope.uuid = null;
 	$scope.tyot = [];
 	$scope.nimi = HakuModel.getNimi();
@@ -6,22 +7,23 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 	$scope.getProsentit = function(t) {
 		return t.prosentteina * 100;
 	};
-//	ValintalaskentaMuistissa.aktivoi({
-//		hakuOid: oids.hakuOid,
-//		hakukohdeOid: oids.hakukohdeOid,
-//		valinnanvaihe: oids.valinnanvaihe
-//		}, [], function(uuid) {
-//		$scope.uuid = uuid.latausUrl;
-//		update();
-//	}, function() {
-//		ValintalaskentaKaynnissa.hae(function(uuid) {
-//			$scope.uuid = uuid.latausUrl;
-//			update();
-//		});
-//	});
+	ValintalaskentaKerrallaAktivointi.aktivoi({
+		hakuOid: oids.hakuOid
+		}, function(uuid) {
+		$scope.uuid = uuid.latausUrl;
+		update();
+	}, function() {
+		Ilmoitus.avaa(
+				"Valintakoelaskenta epäonnistui", 
+				"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", 
+				IlmoitusTila.ERROR);
+	});
 	
 	var update = function () {
 		if($scope.uuid != null) {
+			SeurantaPalvelu.hae({uuid:$scope.uuid}, function(r) {
+				$log.info(r);
+			});
 //			ValintalaskentaStatus.get({uuid:$scope.uuid}, function(r) {
 //				if(r.prosessi) {
 //				    $scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
