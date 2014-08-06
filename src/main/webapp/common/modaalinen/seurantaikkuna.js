@@ -10,8 +10,9 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 	ValintalaskentaKerrallaAktivointi.aktivoi({
 		hakuoid: oids.hakuOid
 		}, function(uuid) {
-		$scope.uuid = uuid.latausUrl;
-		update();
+			console.log(uuid);
+			$scope.uuid = uuid.latausUrl;
+			update();
 	}, function() {
 		Ilmoitus.avaa(
 				"Valintakoelaskenta epäonnistui", 
@@ -22,7 +23,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 	var update = function () {
 		if($scope.uuid != null) {
 			SeurantaPalvelu.hae({uuid:$scope.uuid}, function(r) {
-				$log.info(r);
+				console.log(r);
 			});
 //			ValintalaskentaStatus.get({uuid:$scope.uuid}, function(r) {
 //				if(r.prosessi) {
