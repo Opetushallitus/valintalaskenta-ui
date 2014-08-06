@@ -49,7 +49,7 @@ angular.module('valintalaskenta').
 
     $scope.aktivoiValintalaskentaKerralla = function () {
     	var hakuoid = $routeParams.hakuOid;
-        ValintakoelaskentaKerrallaAktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {
+    	ValintalaskentaKerrallaAktivointi.aktivoi({hakuoid: hakuoid}, function (id) {
             Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
         }, function () {
             Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
