@@ -8,7 +8,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 		return t.prosentteina * 100;
 	};
 	ValintalaskentaKerrallaAktivointi.aktivoi({
-		hakuOid: oids.hakuOid
+		hakuoid: oids.hakuOid
 		}, function(uuid) {
 		$scope.uuid = uuid.latausUrl;
 		update();

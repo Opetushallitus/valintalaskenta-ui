@@ -57,9 +57,7 @@ angular.module('valintalaskenta').
             resolve: {
                 oids: function () {
                     return {
-                        hakuOid: $routeParams.hakuOid,
-                        hakukohdeOid: null,
-                        valinnanvaihe: null
+                        hakuOid: $routeParams.hakuOid
                     };
                 }
             }
