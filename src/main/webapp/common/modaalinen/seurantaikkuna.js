@@ -1,11 +1,17 @@
 function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $routeParams, 
 		HakuModel, ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila, SeurantaPalvelu) {
 	$scope.uuid = null;
-	$scope.tyot = [];
 	$scope.nimi = HakuModel.getNimi();
 	$scope.lisaa = false;
-	$scope.getProsentit = function(t) {
-		return t.prosentteina * 100;
+	$scope.ohitettu = 0;
+	$scope.tehty = 0;
+	$scope.kaikkityot = 0;
+	$scope.getProsentit = function() {
+		if($scope.kaikkityot == 0) {
+			return 0;
+		} else {
+			return Math.round(($scope.tehty / $scope.kaikkityot) * 100);
+		}
 	};
 	ValintalaskentaKerrallaAktivointi.aktivoi({
 		hakuoid: oids.hakuOid
@@ -20,27 +26,25 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 				IlmoitusTila.ERROR);
 	});
 	
-	var update = function () {
-		if($scope.uuid != null) {
-			SeurantaPalvelu.hae({uuid:$scope.uuid}, function(r) {
-				console.log(r);
-			});
-//			ValintalaskentaStatus.get({uuid:$scope.uuid}, function(r) {
-//				if(r.prosessi) {
-//				    $scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
-//                    $scope.virheet = r.prosessi.exceptions;
-//                    $scope.varoitukset = r.prosessi.varoitukset;
-//				}
-//			});
-		}
-    };
-    
 	var timer = $interval(function () {
         update();
     }, 10000);
-
+	
+	var update = function () {
+		if($scope.uuid != null) {
+			SeurantaPalvelu.hae({uuid:$scope.uuid}, function(r) {
+				$scope.ohitettu = r.hakukohteitaKeskeytetty;
+				$scope.tehty = r.hakukohteitaValmiina + r.hakukohteitaKeskeytetty;
+				$scope.kaikkityot = r.hakukohteitaYhteensa;
+				if($scope.tehty == $scope.kaikkityot) {
+					$interval.cancel(timer);
+				}
+			});
+		}
+    };
+    
 	$scope.peruuta = function() {
-//    	ValintalaskentaKeskeyta.keskeyta({uuid:$scope.uuid});
+		ValintalaskentaKerrallaAktivointi.keskeyta({uuid:$scope.uuid});
     };
 
     $scope.naytaLisaa = function() {
