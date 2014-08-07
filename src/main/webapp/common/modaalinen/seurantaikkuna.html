@@ -5,15 +5,24 @@
 	<h3 style="margin-top: -12px;">{{nimi}}</h3>
 	<br>
 	<progressbar class="progress active" value="getProsentit()" type="info">{{getProsentit()}}%</progressbar>
-
+	<div class="progress">
+	  <div class="progress-bar progress-bar-success" style="width: {{getOnnistuneetProsentit()}}%">
+	    getOnnistuneetProsentit()%
+	  </div>
+	  <div class="progress-bar progress-bar-danger" style="width: {{getOhitetutProsentit()}}%">
+	    getOhitetutProsentit()%
+	  </div>
+	</div>
 </div>
 <div class="modal-footer">
 	<div class="row">
 		<a class="btn btn-default" ng-click="ok()"  role="button">{{ t('valintalaskentaikkuna.sulje') || 'Sulje ikkuna' }}</a>
-	         	<a class="btn btn-default" ng-click="naytaLisaa()"  role="button"><span ng-hide="lisaa">Lisää &raquo;</span><span ng-show="lisaa">{{ t('valintalaskentaikkuna.vahemman') || 'Vähemmän' }} &laquo;</span></a>
+	    <a class="btn btn-default" ng-click="naytaLisaa()"  role="button"><span ng-hide="lisaa">Lisää &raquo;</span><span ng-show="lisaa">{{ t('valintalaskentaikkuna.vahemman') || 'Vähemmän' }} &laquo;</span></a>
 	</div>
 	<br>
 	<div class="row" ng-show="lisaa">			
+		<a class="btn btn-default" ng-click="yhteenveto()">{{ t('valintalaskentaikkuna.uudelleenyrita') || 'Lataa yhteenveto' }}</a>
+		<a class="btn btn-default" ng-click="uudelleenyrita()">{{ t('valintalaskentaikkuna.uudelleenyrita') || 'Yritä uudelleen ohitettuja hakukohteita' }}</a>
 		<a class="btn btn-danger" ng-click="peruuta()">{{ t('valintalaskentaikkuna.keskeyta') || 'Keskeytä valintalaskenta' }}</a>
 	</div>
 </div>

@@ -389,6 +389,11 @@ app.factory('ValintalaskentaKerrallaAktivointi', function($resource) {
         keskeyta: {method: "DELETE"}
     });
 });
+app.factory('ValintalaskentaKerrallaUudelleenYrita', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/uudelleenyrita/:uuid", {uuid: "@uuid"}, {
+        uudelleenyrita: {method: "POST"}
+    });
+});
 app.factory('SeurantaPalvelu', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/seuranta/yhteenveto/:uuid", {uuid: "@uuid"}, {
         hae: {method: "GET"}
