@@ -1,5 +1,6 @@
 function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $routeParams, 
-		HakuModel, ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila, SeurantaPalvelu,ValintalaskentaKerrallaUudelleenYrita) {
+		HakuModel, ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila, SeurantaPalvelu,
+		ValintalaskentaKerrallaUudelleenYrita,SeurantaPalveluLataa) {
 	$scope.uuid = null;
 	$scope.kaynnissa = false;
 	$scope.nimi = HakuModel.getNimi();
@@ -47,9 +48,11 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 		}
 	};
 	$scope.yhteenveto = function() {
-		
+		SeurantaPalveluLataa.get({uuid: $scope.uuid});
 	};
-	
+	$scope.vieJsoniksi = function() {
+		SeurantaPalvelu
+	};
 	
 	var update = function () {
 		if($scope.uuid != null) {

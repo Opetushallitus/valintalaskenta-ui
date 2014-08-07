@@ -399,6 +399,11 @@ app.factory('SeurantaPalvelu', function($resource) {
         hae: {method: "GET"}
     });
 });
+app.factory('SeurantaPalveluLataa', function($resource) {
+    return $resource(SEURANTA_URL_BASE + "/seuranta/lataa/:uuid", {uuid: "@uuid"}, {
+        hae: {method: "GET"}
+    });
+});
 app.factory('ValintalaskentaKerrallaHakukohteelleAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid/hakukohde/:hakukohdeoid", {
     	hakuoid: "@hakuoid",
