@@ -390,7 +390,7 @@ app.factory('ValintalaskentaKerrallaAktivointi', function($resource) {
     });
 });
 app.factory('SeurantaPalvelu', function($resource) {
-    return $resource(SEURANTA_URL_BASE + "resources/seuranta/laskenta/:uuid", {uuid: "@uuid"}, {
+    return $resource(SEURANTA_URL_BASE + "/seuranta/yhteenveto/:uuid", {uuid: "@uuid"}, {
         hae: {method: "GET"}
     });
 });
