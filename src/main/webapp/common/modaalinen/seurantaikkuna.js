@@ -1,36 +1,16 @@
 function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $routeParams, 
-		HakuModel, ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila, SeurantaPalvelu) {
+		HakuModel, ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila, SeurantaPalvelu,ValintalaskentaKerrallaUudelleenYrita) {
 	$scope.uuid = null;
+	$scope.kaynnissa = false;
 	$scope.nimi = HakuModel.getNimi();
 	$scope.lisaa = false;
 	$scope.ohitettu = 0;
 	$scope.tehty = 0;
 	$scope.kaikkityot = 0;
-	$scope.getOnnistuneetProsentit = function() {
-		if($scope.kaikkityot == 0) {
-			return 0;
-		} else {
-			return Math.round(($scope.tehty / $scope.kaikkityot) * 100);
-		}
-	};
-	$scope.getOhitetutProsentit = function() {
-		if($scope.kaikkityot == 0) {
-			return 0;
-		} else {
-			return Math.round(($scope.ohitettu / $scope.kaikkityot) * 100);
-		}
-	};
-	$scope.getProsentit = function() {
-		if($scope.kaikkityot == 0) {
-			return 0;
-		} else {
-			return Math.round((($scope.tehty + $scope.ohitettu) / $scope.kaikkityot) * 100);
-		}
-	};
+	
 	ValintalaskentaKerrallaAktivointi.aktivoi({
 		hakuoid: oids.hakuOid
 		}, function(uuid) {
-			console.log(uuid);
 			$scope.uuid = uuid.latausUrl;
 			update();
 	}, function() {
@@ -39,15 +19,37 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 				"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", 
 				IlmoitusTila.ERROR);
 	});
+	var timer = $interval(function () {
+        update();
+    }, 10000);
 	$scope.uudelleenyrita = function() {
-		
+		if($scope.uuid == null || $scope.kaynnissa) {
+			Ilmoitus.avaa(
+					"Laskenta on vielä käynnissä", 
+					"Uudelleen yritystä voidaan yrittää vasta kun vanha laskenta on päättynyt", 
+					IlmoitusTila.ERROR);
+		} else {
+			ValintalaskentaKerrallaUudelleenYrita.uudelleenyrita({
+				uuid: $scope.uuid
+				}, function(uuid) {
+					$scope.uuid = uuid.latausUrl;
+					update();
+					$interval.cancel(timer);
+					timer = $interval(function () {
+				        update();
+				    }, 10000);
+			}, function() {
+				Ilmoitus.avaa(
+						"Valintakoelaskenta epäonnistui", 
+						"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", 
+						IlmoitusTila.ERROR);
+			});
+		}
 	};
 	$scope.yhteenveto = function() {
 		
 	};
-	var timer = $interval(function () {
-        update();
-    }, 10000);
+	
 	
 	var update = function () {
 		if($scope.uuid != null) {
@@ -55,6 +57,9 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 				$scope.ohitettu = r.hakukohteitaKeskeytetty;
 				$scope.tehty = r.hakukohteitaValmiina;
 				$scope.kaikkityot = r.hakukohteitaYhteensa;
+				
+				$scope.kaynnissa = (r.tila == "MENEILLAAN"); 
+				
 				if($scope.tehty + $scope.ohitettu == $scope.kaikkityot) {
 					$interval.cancel(timer);
 				}
@@ -71,12 +76,33 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
     };
 
 	  $scope.ok = function () {
-		  $interval.cancel(timer);
+		$interval.cancel(timer);
 	    $modalInstance.close(); //$scope.selected.item);
 	  };
 
 	  $scope.cancel = function () {
-		  $interval.cancel(timer);
+		$interval.cancel(timer);
 	    $modalInstance.dismiss('cancel');
 	  };
+	  $scope.getOnnistuneetProsentit = function() {
+			if($scope.kaikkityot == 0) {
+				return 0;
+			} else {
+				return Math.round(($scope.tehty / $scope.kaikkityot) * 100);
+			}
+		};
+		$scope.getOhitetutProsentit = function() {
+			if($scope.kaikkityot == 0) {
+				return 0;
+			} else {
+				return Math.round(($scope.ohitettu / $scope.kaikkityot) * 100);
+			}
+		};
+		$scope.getProsentit = function() {
+			if($scope.kaikkityot == 0) {
+				return 0;
+			} else {
+				return Math.round((($scope.tehty + $scope.ohitettu) / $scope.kaikkityot) * 100);
+			}
+		};
 };
