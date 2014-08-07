@@ -208,7 +208,7 @@ angular.module('valintalaskenta').
                     	},
                         hakuOid: $routeParams.hakuOid,
                         pohjat: function() {
-                        	return Jalkiohjauskirjepohjat.get({languageCode: langcode, tag: tag});
+                        	return Jalkiohjauskirjepohjat.get({templateName: templateName, languageCode: langcode, tag: tag});
                         }
                     };
                 }
