@@ -39,7 +39,7 @@ angular.module('valintalaskenta').
         'SijoittelunTulosHyvaksymiskirjeet', 'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', '$log', '$timeout', '$q',
         '$location', 'ValintakoelaskentaAktivointi', 'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
-        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila',
+        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'HakuModel',
         function ($scope, $modal, $interval, _, SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat,
                   SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q,
                   $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
@@ -177,9 +177,16 @@ angular.module('valintalaskenta').
     SijoitteluAjo.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function (result) {
         $scope.sijoitteluModel = result;
     });
-
+    $scope.hakuaVastaavaJalkiohjauskirjeMuotti = function() {
+    	if(HakuModel.hakuOid.nivelvaihe) {
+    		return "jalkiohjauskirje_nivel";	
+    	}else {
+	    	return "jalkiohjauskirje";
+	    }
+    };
     $scope.muodostaJalkiohjauskirjeet = function (langcode) {
     	var tag = $routeParams.hakuOid;
+    	var templateName = $scope.hakuaVastaavaJalkiohjauskirjeMuotti();
         var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -193,7 +200,7 @@ angular.module('valintalaskenta').
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
-					        	tag: tag}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
+					        	tag: tag, templateName: templateName}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
 					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
 					        }, function () {
 					            
