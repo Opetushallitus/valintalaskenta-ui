@@ -24,7 +24,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 		if($scope.kaikkityot == 0) {
 			return 0;
 		} else {
-			return Math.round(($scope.tehty / $scope.kaikkityot) * 100);
+			return Math.round((($scope.tehty + $scope.ohitettu) / $scope.kaikkityot) * 100);
 		}
 	};
 	ValintalaskentaKerrallaAktivointi.aktivoi({
@@ -53,9 +53,9 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 		if($scope.uuid != null) {
 			SeurantaPalvelu.hae({uuid:$scope.uuid}, function(r) {
 				$scope.ohitettu = r.hakukohteitaKeskeytetty;
-				$scope.tehty = r.hakukohteitaValmiina + r.hakukohteitaKeskeytetty;
+				$scope.tehty = r.hakukohteitaValmiina;
 				$scope.kaikkityot = r.hakukohteitaYhteensa;
-				if($scope.tehty == $scope.kaikkityot) {
+				if($scope.tehty + $scope.ohitettu == $scope.kaikkityot) {
 					$interval.cancel(timer);
 				}
 			});
