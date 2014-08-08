@@ -66,11 +66,26 @@ angular.module('valintalaskenta').
                 }
             }
         });
-//    	ValintalaskentaKerrallaAktivointi.aktivoi({hakuoid: hakuoid}, function (id) {
-//            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/seurantaikkuna.html", {});
-//        }, function () {
-//            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-//        });
+    };
+    $scope.prosentteina = function(a, b) {
+    	return Math.round((a / b)*100);
+    };
+    $scope.uudelleenYritaLaskentaa = function($event, laskenta) {
+    	$event.stopPropagation();
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/seurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        uuid: laskenta.uuid
+                    };
+                }
+            }
+        });
     };
     
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
