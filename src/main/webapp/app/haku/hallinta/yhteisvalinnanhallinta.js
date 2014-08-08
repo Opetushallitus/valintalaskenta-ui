@@ -39,7 +39,7 @@ angular.module('valintalaskenta').
         'SijoittelunTulosHyvaksymiskirjeet', 'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', '$log', '$timeout', '$q',
         '$location', 'ValintakoelaskentaAktivointi', 'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
-        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila',
+        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'HakuModel',
         function ($scope, $modal, $interval, _, SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat,
                   SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q,
                   $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
@@ -47,6 +47,28 @@ angular.module('valintalaskenta').
                   HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
     "use strict";
 
+    $scope.aktivoiValintalaskentaKerralla = function () {
+    	var hakuoid = $routeParams.hakuOid;
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/seurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid
+                    };
+                }
+            }
+        });
+//    	ValintalaskentaKerrallaAktivointi.aktivoi({hakuoid: hakuoid}, function (id) {
+//            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/seurantaikkuna.html", {});
+//        }, function () {
+//            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+//        });
+    };
+    
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
     $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
@@ -155,9 +177,16 @@ angular.module('valintalaskenta').
     SijoitteluAjo.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function (result) {
         $scope.sijoitteluModel = result;
     });
-
+    $scope.hakuaVastaavaJalkiohjauskirjeMuotti = function() {
+    	if(HakuModel.hakuOid.nivelvaihe) {
+    		return "jalkiohjauskirje_nivel";	
+    	}else {
+	    	return "jalkiohjauskirje";
+	    }
+    };
     $scope.muodostaJalkiohjauskirjeet = function (langcode) {
     	var tag = $routeParams.hakuOid;
+    	var templateName = $scope.hakuaVastaavaJalkiohjauskirjeMuotti();
         var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -171,7 +200,7 @@ angular.module('valintalaskenta').
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
-					        	tag: tag}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
+					        	tag: tag, templateName: templateName}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
 					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
 					        }, function () {
 					            
@@ -179,7 +208,7 @@ angular.module('valintalaskenta').
                     	},
                         hakuOid: $routeParams.hakuOid,
                         pohjat: function() {
-                        	return Jalkiohjauskirjepohjat.get({languageCode: langcode, tag: tag});
+                        	return Jalkiohjauskirjepohjat.get({templateName: templateName, languageCode: langcode, tag: tag});
                         }
                     };
                 }
@@ -225,7 +254,7 @@ angular.module('valintalaskenta').
         });
 
     };
-
+    
     $scope.aktivoiHaunValintakoelaskenta = function () {
         var hakuoid = $routeParams.hakuOid;
         ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {

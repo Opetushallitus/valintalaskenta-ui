@@ -255,10 +255,10 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 angular.module('valintalaskenta').
     controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet',
-        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService',
+        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel',
         function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet,
-                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta,LocalisationService) {
+                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta,LocalisationService,HakuModel) {
     "use strict";
 
     $scope.hakuOid = $routeParams.hakuOid;
@@ -335,7 +335,7 @@ angular.module('valintalaskenta').
     	var hakukohde = $scope.hakukohdeModel.hakukohde;
     	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
     	var langcode = $scope.hakukohdeModel.getKieliCode();
-    	
+    	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -351,7 +351,7 @@ angular.module('valintalaskenta').
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOid,
-					        	templateName: "hyvaksymiskirje",
+					        	templateName: templateName,
 					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
@@ -363,7 +363,7 @@ angular.module('valintalaskenta').
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOid,
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
+                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
@@ -394,13 +394,20 @@ angular.module('valintalaskenta').
             
         });
     };
+    $scope.hakuaVastaavaHyvaksymiskirjeMuotti = function() {
+    	if(HakuModel.hakuOid.nivelvaihe) {
+    		return "hyvaksmiskirje_nivel";	
+    	}else {
+	    	return "hyvaksmiskirje";
+	    }
+    };
     
     $scope.createHyvaksymiskirjeetPDF = function (oidit) {
         
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
     	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
     	var langcode = $scope.hakukohdeModel.getKieliCode();
-    	
+    	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -416,7 +423,7 @@ angular.module('valintalaskenta').
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOid,
-					        	templateName: "Organisaation viimeisin",
+					        	templateName: templateName,
 					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
@@ -428,7 +435,7 @@ angular.module('valintalaskenta').
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOid,
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:"hyvaksymiskirje", languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
+                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()

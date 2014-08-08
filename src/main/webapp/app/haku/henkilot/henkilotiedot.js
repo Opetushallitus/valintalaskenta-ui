@@ -296,15 +296,21 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
 angular.module('valintalaskenta').
     controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
-        'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila',
+        'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila','HakuModel',
         function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
-                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila) {
+                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel) {
     "use strict";
 
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
-
+    $scope.hakuaVastaavaJalkiohjauskirjeMuotti = function() {
+    	if(HakuModel.hakuOid.nivelvaihe) {
+    		return "jalkiohjauskirje_nivel";	
+    	}else {
+	    	return "jalkiohjauskirje";
+	    }
+    };
     $scope.muodostaJalkiohjauskirje = function () {
         
         var tag = $routeParams.hakuOid;
@@ -314,6 +320,7 @@ angular.module('valintalaskenta').
         if(asiointikieli !== undefined && asiointikieli.toUpperCase() === "RUOTSI") {
 			langcode = "SV";
         }
+        var templateName = $scope.hakuaVastaavaJalkiohjauskirjeMuotti();
         var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -327,7 +334,7 @@ angular.module('valintalaskenta').
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
-					        	tag: tag}, {hakemusOids: [hakemusOid],
+					        	tag: tag, templateName: templateName}, {hakemusOids: [hakemusOid],
 					        	letterBodyText: sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
 					        }, function () {
@@ -336,7 +343,7 @@ angular.module('valintalaskenta').
                     	},
                         hakuOid: $routeParams.hakuOid,
                         pohjat: function() {
-                        	return Jalkiohjauskirjepohjat.get({languageCode: langcode, tag: tag});
+                        	return Jalkiohjauskirjepohjat.get({templateName: templateName,languageCode: langcode, tag: tag});
                         }
                     };
                 }

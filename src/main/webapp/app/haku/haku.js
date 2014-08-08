@@ -18,6 +18,7 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
             }
             return "Nimetön hakukohde";
         };
+        this.nivelvaihe = false;
         this.init = function (oid) {
             if(model.haut.length === 0) {
                 TarjontaHaut.query({}, function(result) {
@@ -27,7 +28,12 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
                         if (haku.oid === oid) {
                             model.hakuOid = haku;
                         }
-
+                        
+                        var kohdejoukkoUri = haku.kohdejoukkoUri;
+                        var kohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
+                        var nivelvaihe = kohdejoukkoUriRegExp.exec(kohdejoukkoUri);
+                        nivelvaihe ? haku.nivelvaihe = true : haku.nivelvaihe = false;
+                        
                         var hakutyyppi = haku.hakutyyppiUri;
                         var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
                         var match = lisahakutyyppiRegExp.exec(hakutyyppi);
