@@ -254,7 +254,7 @@ app.factory('HakuVirheet', function($resource) {
 });
 
 app.factory('ValinnanvaiheListByHakukohde', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {
+return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe?tarjoajaOid=:tarjoajaOid", {hakukohdeoid: "@hakukohdeoid", tarjoajaOid: @tarjoajaOid}, {
     get: {method: "GET", isArray: true},
     post:{method: "POST"}
   });
@@ -311,6 +311,12 @@ app.factory('Valintatapajono', function($resource) {
 app.factory('ValinnanVaiheetIlmanLaskentaa', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid/ilmanlaskentaa", {hakukohdeoid: "@hakukohdeoid"}, {
         get: {method: "GET", isArray: true}
+    });
+});
+
+app.factory('ValintaperusteetHakukohde', function($resource) {
+    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
+        get: {method: "GET", isArray: false}
     });
 });
 
