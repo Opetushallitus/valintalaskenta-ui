@@ -1,4 +1,4 @@
-function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $routeParams, 
+function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interval, $routeParams, 
 		HakuModel, ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila, SeurantaPalvelu,
 		ValintalaskentaKerrallaUudelleenYrita,SeurantaPalveluLataa) {
 	$scope.uuid = oids.uuid;
@@ -66,10 +66,10 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 		}
 	};
 	$scope.yhteenveto = function() {
-		SeurantaPalveluLataa.get({uuid: $scope.uuid});
+		
 	};
 	$scope.vieJsoniksi = function() {
-		SeurantaPalvelu
+		$window.open(SEURANTA_URL_BASE + "/seuranta/lataa/" +$scope.uuid);
 	};
 	
 	var update = function () {

@@ -74,7 +74,7 @@
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Haun valintalaskennat' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
         <div class="list-group">
-		  <a class="list-group-item" ng-repeat="laskenta in haunLaskennat | orderBy:luotu | limitTo:10" ng-click="uudelleenYritaLaskentaa($event, laskenta);">
+		  <a class="list-group-item" ng-repeat="laskenta in haunLaskennat | orderBy:'luotu':'true' | limitTo:10" ng-click="uudelleenYritaLaskentaa($event, laskenta);">
 		    <h4 class="list-group-item-heading">{{laskenta.tila}}</h4>
 		    <div class="list-group-item-text">
 			    <div class="progress">
