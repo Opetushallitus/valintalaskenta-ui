@@ -70,7 +70,31 @@
     </div>
 
 </collapsible>
-
+<collapsible heading="{{ t('yhteisvalinnanhallinta.valintalaskennanseuranta') || 'Valintalaskennan seuranta' }}" is-open="false">
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Haun valintalaskennat' }}</strong></div>
+    <div class="col-md-10 margin-bottom-2">
+        <div class="list-group">
+		  <a href="#" class="list-group-item active" ng-repeat="laskenta in haunLaskennat | orderBy : luotu">
+		    <h4 class="list-group-item-heading">{{laskenta.tila}}</h4>
+		    <div class="progress">
+			  <div class="progress-bar progress-bar-success" style="width: {{laskenta.hakukohteitaValmiina}}%">
+			    {{laskenta.hakukohteitaValmiina}}%
+			  </div>
+			  <div class="progress-bar progress-bar-danger" style="width: {{laskenta.hakukohteitaKeskeytetty}}%">
+			    {{laskenta.hakukohteitaKeskeytetty}}%
+			  </div>
+			</div>
+			<div ng-if="uuid">
+				<div class="col-sm-4">Hakukohteita valmiina {{laskenta.hakukohteitaValmiina}} / {{laskenta.hakukohteitaYhteensa}}</div>
+				<div ng-if="ohitettu">
+					<div class="col-sm-4">Hakukohteita ohitettu {{laskenta.hakukohteitaKeskeytetty}} / {{laskenta.hakukohteitaYhteensa}}</div>
+				</div>
+			</div>
+		  </a>
+		  	
+		</div>
+    </div>
+</collapsible>
 <collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Sijoittelun tulokset' }}">
     <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
