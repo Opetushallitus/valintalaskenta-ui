@@ -254,7 +254,7 @@ app.factory('HakuVirheet', function($resource) {
 });
 
 app.factory('ValinnanvaiheListByHakukohde', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe?tarjoajaOid=:tarjoajaOid", {hakukohdeoid: "@hakukohdeoid", tarjoajaOid: @tarjoajaOid}, {
+return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe?tarjoajaOid=:tarjoajaOid", {hakukohdeoid: "@hakukohdeoid", tarjoajaOid: "@tarjoajaOid"}, {
     get: {method: "GET", isArray: true},
     post:{method: "POST"}
   });
