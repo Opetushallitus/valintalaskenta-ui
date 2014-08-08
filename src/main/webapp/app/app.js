@@ -396,17 +396,17 @@ app.factory('ValintalaskentaKerrallaUudelleenYrita', function($resource) {
 });
 app.factory('SeurantaPalvelu', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/seuranta/yhteenveto/:uuid", {uuid: "@uuid"}, {
-        hae: {method: "GET"}
+        hae: {method: "GET", isArray:false}
     });
 });
 app.factory('SeurantaPalveluHaunLaskennat', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/seuranta/hae/:hakuoid", {hakuoid: "@hakuoid"}, {
-        hae: {method: "GET"}
+        hae: {method: "GET", isArray:true}
     });
 });
 app.factory('SeurantaPalveluLataa', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/seuranta/lataa/:uuid", {uuid: "@uuid"}, {
-        hae: {method: "GET"}
+        hae: {method: "GET", isArray:false}
     });
 });
 app.factory('ValintalaskentaKerrallaHakukohteelleAktivointi', function($resource) {
