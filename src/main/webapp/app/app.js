@@ -399,6 +399,11 @@ app.factory('SeurantaPalvelu', function($resource) {
         hae: {method: "GET"}
     });
 });
+app.factory('SeurantaPalveluHaunLaskennat', function($resource) {
+    return $resource(SEURANTA_URL_BASE + "/seuranta/hae/:hakuoid", {hakuoid: "@hakuoid"}, {
+        hae: {method: "GET"}
+    });
+});
 app.factory('SeurantaPalveluLataa', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/seuranta/lataa/:uuid", {uuid: "@uuid"}, {
         hae: {method: "GET"}

@@ -39,12 +39,12 @@ angular.module('valintalaskenta').
         'SijoittelunTulosHyvaksymiskirjeet', 'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', '$log', '$timeout', '$q',
         '$location', 'ValintakoelaskentaAktivointi', 'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
-        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'HakuModel',
+        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'HakuModel', 'SeurantaPalveluHaunLaskennat',
         function ($scope, $modal, $interval, _, SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat,
                   SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q,
                   $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                   $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
-                  HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila) {
+                  HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat) {
     "use strict";
 
     $scope.aktivoiValintalaskentaKerralla = function () {
@@ -84,7 +84,10 @@ angular.module('valintalaskenta').
             return true;
         }
     };
-
+    $scope.haunLaskennat = function() {
+    	return SeurantaPalveluHaunLaskennat.hae({hakuoid: $routeParams.hakuOid});	
+    };
+    
 
     $scope.naytetaanHaut = false;
     $scope.kaikkiHautValittu = false;
