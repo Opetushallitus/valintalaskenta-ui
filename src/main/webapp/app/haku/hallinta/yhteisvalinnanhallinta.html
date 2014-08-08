@@ -70,13 +70,13 @@
     </div>
 
 </collapsible>
-<collapsible heading="{{ t('yhteisvalinnanhallinta.valintalaskennanseuranta') || 'Valintalaskennan seuranta' }}" is-open="false">
+<collapsible heading="{{ t('yhteisvalinnanhallinta.valintalaskennanseuranta') || 'Valintalaskennan seuranta' }}" ng-click="updateHaunLaskennat();" is-open="naytaHaunLaskennat">
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Haun valintalaskennat' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
         <div class="list-group">
-		  <a href="#" class="list-group-item active" ng-repeat="laskenta in haunLaskennat | orderBy : luotu">
+		  <a href="#" class="list-group-item" ng-repeat="laskenta in haunLaskennat | orderBy:luotu | limitTo:10">
 		    <h4 class="list-group-item-heading">{{laskenta.tila}}</h4>
-		    <div class="progress">
+		    <div class="progress" class="list-group-item-text">
 			  <div class="progress-bar progress-bar-success" style="width: {{laskenta.hakukohteitaValmiina}}%">
 			    {{laskenta.hakukohteitaValmiina}}%
 			  </div>
@@ -84,14 +84,14 @@
 			    {{laskenta.hakukohteitaKeskeytetty}}%
 			  </div>
 			</div>
-			<div ng-if="uuid">
+			<div ng-if="laskenta.uuid" class="list-group-item-text">
 				<div class="col-sm-4">Hakukohteita valmiina {{laskenta.hakukohteitaValmiina}} / {{laskenta.hakukohteitaYhteensa}}</div>
-				<div ng-if="ohitettu">
+				<div ng-if="laskenta.hakukohteitaKeskeytetty">
 					<div class="col-sm-4">Hakukohteita ohitettu {{laskenta.hakukohteitaKeskeytetty}} / {{laskenta.hakukohteitaYhteensa}}</div>
 				</div>
 			</div>
+			<br>
 		  </a>
-		  	
 		</div>
     </div>
 </collapsible>
