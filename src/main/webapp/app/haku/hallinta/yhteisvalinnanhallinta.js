@@ -84,9 +84,7 @@ angular.module('valintalaskenta').
             return true;
         }
     };
-    $scope.haunLaskennat = function() {
-    	return SeurantaPalveluHaunLaskennat.hae({hakuoid: $routeParams.hakuOid});	
-    };
+    $scope.haunLaskennat = SeurantaPalveluHaunLaskennat.hae({hakuoid: $routeParams.hakuOid});
     
 
     $scope.naytetaanHaut = false;
