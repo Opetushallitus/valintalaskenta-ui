@@ -1,5 +1,5 @@
 ﻿app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q) {
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde) {
     "use strict";
 
     var model;
@@ -32,7 +32,11 @@
             model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
+            model.tarjoajaOid = "";
             model.hakeneet = [];
+            ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
+                model.tarjoajaOid = result.tarjoajaOid;
+            });
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			    model.valinnanvaiheet = result;
             	ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
@@ -166,7 +170,7 @@
 
                 vaihe.valintatapajonot[0].jonosijat = suodatetutSijat;
 
-                ValinnanvaiheListByHakukohde.post({hakukohdeoid: model.hakukohdeOid}, vaihe, function(result) {
+                ValinnanvaiheListByHakukohde.post({hakukohdeoid: model.hakukohdeOid, tarjoajaOid: model.tarjoajaOid}, vaihe, function(result) {
                 	model.refresh($routeParams.hakukohdeOid, $routeParams.hakuOid);
                     Ilmoitus.avaa("Tallennus onnistui", "Valintatulosten tallennus onnistui.");
                 }, function(error) {

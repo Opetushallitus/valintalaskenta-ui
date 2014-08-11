@@ -1,7 +1,7 @@
-function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $routeParams, 
+function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interval, $routeParams, 
 		HakuModel, ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila, SeurantaPalvelu,
 		ValintalaskentaKerrallaUudelleenYrita,SeurantaPalveluLataa) {
-	$scope.uuid = null;
+	$scope.uuid = oids.uuid;
 	$scope.kaynnissa = false;
 	$scope.nimi = HakuModel.getNimi();
 	$scope.lisaa = false;
@@ -9,17 +9,35 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 	$scope.tehty = 0;
 	$scope.kaikkityot = 0;
 	
-	ValintalaskentaKerrallaAktivointi.aktivoi({
-		hakuoid: oids.hakuOid
-		}, function(uuid) {
-			$scope.uuid = uuid.latausUrl;
-			update();
-	}, function() {
-		Ilmoitus.avaa(
-				"Valintakoelaskenta epäonnistui", 
-				"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", 
-				IlmoitusTila.ERROR);
-	});
+	if($scope.uuid) {
+		ValintalaskentaKerrallaUudelleenYrita.uudelleenyrita({
+			uuid: $scope.uuid
+			}, function(uuid) {
+				$scope.uuid = uuid.latausUrl;
+				update();
+				$interval.cancel(timer);
+				timer = $interval(function () {
+			        update();
+			    }, 10000);
+		}, function() {
+			Ilmoitus.avaa(
+					"Valintakoelaskennan uudelleen yritys epäonnistui", 
+					"Valintakoelaskenta uudelleen yritys epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", 
+					IlmoitusTila.ERROR);
+		});
+	} else {
+		ValintalaskentaKerrallaAktivointi.aktivoi({
+			hakuoid: oids.hakuOid
+			}, function(uuid) {
+				$scope.uuid = uuid.latausUrl;
+				update();
+		}, function() {
+			Ilmoitus.avaa(
+					"Valintakoelaskenta epäonnistui", 
+					"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", 
+					IlmoitusTila.ERROR);
+		});
+	}
 	var timer = $interval(function () {
         update();
     }, 10000);
@@ -48,10 +66,10 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $rout
 		}
 	};
 	$scope.yhteenveto = function() {
-		SeurantaPalveluLataa.get({uuid: $scope.uuid});
+		
 	};
 	$scope.vieJsoniksi = function() {
-		SeurantaPalvelu
+		$window.open(SEURANTA_URL_BASE + "/seuranta/lataa/" +$scope.uuid);
 	};
 	
 	var update = function () {

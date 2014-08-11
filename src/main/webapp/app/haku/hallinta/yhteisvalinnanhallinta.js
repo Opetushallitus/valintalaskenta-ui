@@ -35,16 +35,20 @@ app.factory('VirheModel', function (HakuVirheet) {
 
 
 angular.module('valintalaskenta').
-    controller('YhteisvalinnanHallintaController',['$scope', '$modal', '$interval', '_', 'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat',
-        'SijoittelunTulosHyvaksymiskirjeet', 'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', '$log', '$timeout', '$q',
-        '$location', 'ValintakoelaskentaAktivointi', 'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
+    controller('YhteisvalinnanHallintaController',['$scope', '$modal', '$interval', '_', 
+        'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat', 'SijoittelunTulosHyvaksymiskirjeet', 
+        'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp',
+        '$log', '$timeout', '$q','$location', 
+        'ValintakoelaskentaAktivointi', 'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
-        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'HakuModel', 'SeurantaPalveluHaunLaskennat',
-        function ($scope, $modal, $interval, _, SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat,
-                  SijoittelunTulosHyvaksymiskirjeet, Jalkiohjauskirjepohjat, AktivoiKelaFtp, $log, $timeout, $q,
-                  $location, ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
-                  $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
-                  HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat) {
+        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat',
+        function ($scope, $modal, $interval, _, 
+        		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, 
+        		Jalkiohjauskirjepohjat, AktivoiKelaFtp, 
+        		$log, $timeout, $q, $location, 
+        		ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
+                $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
+                HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat) {
     "use strict";
 
     $scope.aktivoiValintalaskentaKerralla = function () {
@@ -62,11 +66,26 @@ angular.module('valintalaskenta').
                 }
             }
         });
-//    	ValintalaskentaKerrallaAktivointi.aktivoi({hakuoid: hakuoid}, function (id) {
-//            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/seurantaikkuna.html", {});
-//        }, function () {
-//            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-//        });
+    };
+    $scope.prosentteina = function(a, b) {
+    	return Math.round((a / b)*100);
+    };
+    $scope.uudelleenYritaLaskentaa = function($event, laskenta) {
+    	$event.stopPropagation();
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/seurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        uuid: laskenta.uuid
+                    };
+                }
+            }
+        });
     };
     
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -84,11 +103,17 @@ angular.module('valintalaskenta').
             return true;
         }
     };
-    $scope.haunLaskennat = function() {
-    	return SeurantaPalveluHaunLaskennat.hae({hakuoid: $routeParams.hakuOid});	
+    $scope.naytaHaunLaskennat = false;
+    $scope.haunLaskennat = [];
+    $scope.updateHaunLaskennat = function() {
+    	console.log("Hakuoid " + $routeParams.hakuOid);
+    	console.log("accordi " + $scope.naytaHaunLaskennat);
+    	if(SeurantaPalveluHaunLaskennat.hae) {
+	    	SeurantaPalveluHaunLaskennat.hae({hakuoid: $routeParams.hakuOid}, function(laskennat) {
+	    		$scope.haunLaskennat = laskennat;
+	    	});
+    	}
     };
-    
-
     $scope.naytetaanHaut = false;
     $scope.kaikkiHautValittu = false;
     $scope.isValittu = function (haku) {

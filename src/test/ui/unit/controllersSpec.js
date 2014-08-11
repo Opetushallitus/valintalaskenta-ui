@@ -987,7 +987,9 @@ describe('Testing ValintalaskentatulosController', function(){
 
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
             .respond(201,hakukohdejson);
-        $httpBackend.expectGET('resources/hakukohde/'+routeParams.hakukohdeOid+'/valinnanvaihe')
+        $httpBackend.expectGET('resources/hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,{});
+        $httpBackend.expectGET('resources/hakukohde/'+routeParams.hakukohdeOid+'/valinnanvaihe?tarjoajaOid=')
             .respond(201,valinnanvaihejson);
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
             .respond(201,hakukohdenimijson);
