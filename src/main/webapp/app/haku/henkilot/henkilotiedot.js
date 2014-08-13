@@ -297,8 +297,10 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 angular.module('valintalaskenta').
     controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
         'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila','HakuModel',
+        'ValintalaskentaKerrallaHakukohteille',
         function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
-                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel) {
+                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel,
+                  ValintalaskentaKerrallaHakukohteille) {
     "use strict";
 
     $scope.model = HenkiloTiedotModel;
@@ -390,6 +392,18 @@ angular.module('valintalaskenta').
             }
         }
 
+    };
+
+    $scope.valintalaskentaKerrallaHakukohteille = function() {
+        var hakutoiveet = [];
+        $scope.model.hakutoiveet.forEach(function (hakutoive) {
+            hakutoiveet.push(hakutoive.hakukohdeOid);
+        });
+        ValintalaskentaKerrallaHakukohteille.aktivoi({hakuoid: $routeParams.hakuOid, whitelist: true},hakutoiveet,
+            function (valintalaskenta) {
+
+        }, function (error) {
+        });
     };
 
     $scope.privileges = ParametriService;
