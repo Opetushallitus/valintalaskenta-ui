@@ -93,6 +93,8 @@
 				                    		class="btn btn-primary btn-sm margin-bottom-2 btn-file">
 									    {{ t('valintalaskentatulos.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input type="file" ng-file-select="valintatapajonoTuontiXlsx($files)" >
 									</span>
+                                    <a ng-show="!valintatapajono.valmisSijoiteltavaksi" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</a>
+                                    <a ng-show="valintatapajono.valmisSijoiteltavaksi" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</a>
                                     <table class="virkailija-table-1">
                                         <thead>
                                         <tr>
@@ -160,6 +162,8 @@
                         <div>
                             <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index"  ng-if="!valintatapajono.ilmanLaskentaa">
                                 <h3>{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{valintatapajono.nimi}}</h3>
+                                <a ng-show="!valintatapajono.valmisSijoiteltavaksi" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</a>
+                                <a ng-show="valintatapajono.valmisSijoiteltavaksi" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</a>
                                 <table class="virkailija-table-1">
                                     <thead>
                                     <tr>

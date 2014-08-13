@@ -1,5 +1,5 @@
 ﻿app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde) {
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus) {
     "use strict";
 
     var model;
@@ -180,6 +180,15 @@
             }
         };
 
+        this.muutaSijoittelunStatus = function(jono, status) {
+            ValintatapajonoSijoitteluStatus,put({valintatapajonoOid: jono.oid, status: status},function(result) {
+                jono.valmisSijoiteltavaksi = status;
+                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+            }, function(error) {
+                Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+            });
+        };
+
 	}();
 
 	return model;
@@ -283,6 +292,10 @@ angular.module('valintalaskenta').
 
     $scope.submit = function (vaiheoid, jonooid) {
         ValintalaskentatulosModel.submit(vaiheoid, jonooid);
+    };
+
+    $scope.muutaSijoittelunStatus = function (jono, status) {
+        ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status);
     };
 
     $scope.changeTila = function (jonosija, value) {

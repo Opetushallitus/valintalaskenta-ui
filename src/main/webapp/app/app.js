@@ -747,6 +747,16 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
     });
 });
 
+app.factory('ValintatapajonoSijoitteluStatus', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/valmissijoiteltavaksi?status=:status", {
+            valintatapajonoOid: "@valintatapajonoOid",
+            status: "@status"
+        },
+        {
+            put: {method: "put"}
+        });
+});
+
 //Valintaryhma
 app.factory('ValintaryhmatJaHakukohteet', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/puu", {
