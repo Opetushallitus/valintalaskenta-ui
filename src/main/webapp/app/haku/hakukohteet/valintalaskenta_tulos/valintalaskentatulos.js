@@ -56,6 +56,7 @@
                                     tulosjono.aloituspaikat = jono.aloituspaikat;
 
                                     tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
+                                    tulosjono.siirretaanSijoitteluun = jono.valmisSijoiteltavaksi;
                                     tulosjono.tasasijasaanto = jono.tasapistesaanto;
                                     tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
                                     tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
@@ -181,7 +182,7 @@
         };
 
         this.muutaSijoittelunStatus = function(jono, status) {
-            ValintatapajonoSijoitteluStatus,put({valintatapajonoOid: jono.oid, status: status},function(result) {
+            ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status},function(result) {
                 jono.valmisSijoiteltavaksi = status;
                 Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
             }, function(error) {
