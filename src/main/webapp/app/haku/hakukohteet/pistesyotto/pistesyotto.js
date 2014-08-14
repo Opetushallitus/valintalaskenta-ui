@@ -51,6 +51,13 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
 
                         model.avaimet.forEach(function (avain) {
                             avain.tyyppi = function () {
+                                if(avain.vaatiiOsallistumisen === false) {
+                                    if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO") {
+                                        return "kutsuton-boolean";
+                                    } else {
+                                        return "kutsuton-input";
+                                    }
+                                }
                                 if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO") {
                                     return "boolean";
                                 }
@@ -85,6 +92,11 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
 
                                     if (!hakija.additionalData[avain.osallistuminenTunniste]) {
                                         hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+                                    }
+
+                                    if(avain.vaatiiOsallistumisen == false) {
+                                        hakija.osallistuu[avain.tunniste] = 'OSALLISTUU';
+                                        hakija.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
                                     }
 
                                     if (hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
