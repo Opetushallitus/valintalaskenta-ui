@@ -55,13 +55,41 @@
                                     tulosjono.prioriteetti = jono.prioriteetti;
                                     tulosjono.aloituspaikat = jono.aloituspaikat;
 
-                                    tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
-                                    tulosjono.siirretaanSijoitteluun = jono.valmisSijoiteltavaksi;
-                                    tulosjono.tasasijasaanto = jono.tasapistesaanto;
-                                    tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
-                                    tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
-                                    tulosjono.poissaOlevaTaytto = jono.poissaOlevaTaytto;
-                                    tulosjono.kaytetaanValintalaskentaa = jono.kaytetaanValintalaskentaa;
+                                    if(jono.siirretaanSijoitteluun == null) {
+                                        tulosjono.siirretaanSijoitteluun = true;
+                                    } else {
+                                        tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
+                                    }
+                                    if(jono.valmisSijoiteltavaksi == null) {
+                                        tulosjono.siirretaanSijoitteluun = true;
+                                    } else {
+                                        tulosjono.siirretaanSijoitteluun = jono.valmisSijoiteltavaksi;
+                                    }
+                                    if(jono.tasapistesaanto == null) {
+                                        tulosjono.tasasijasaanto = 'ARVONTA'
+                                    } else {
+                                        tulosjono.tasasijasaanto = jono.tasapistesaanto;
+                                    }
+                                    if(jono.eiVarasijatayttoa == null) {
+                                        tulosjono.eiVarasijatayttoa = false;
+                                    } else {
+                                        tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
+                                    }
+                                    if(jono.kaikkiEhdonTayttavatHyvaksytaan == null) {
+                                        tulosjono.kaikkiEhdonTayttavatHyvaksytaan = false;
+                                    } else {
+                                        tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
+                                    }
+                                    if(jono.poissaOlevaTaytto == null) {
+                                        tulosjono.poissaOlevaTaytto = false;
+                                    } else {
+                                        tulosjono.poissaOlevaTaytto = jono.poissaOlevaTaytto;
+                                    }
+                                    if(jono.kaytetaanValintalaskentaa == null) {
+                                        tulosjono.kaytetaanValintalaskentaa = true;
+                                    } else {
+                                        tulosjono.kaytetaanValintalaskentaa = jono.kaytetaanValintalaskentaa;
+                                    }
 
                                     tulosjono.nimi = jono.nimi;
                                     tulosjono.jonosijat = [];
