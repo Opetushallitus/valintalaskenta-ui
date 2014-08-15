@@ -20,7 +20,9 @@
 			
 			<a ng-show="privileges.showValintalaskenta()" ng-click="muodostaJalkiohjauskirje()"
        			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('henkilotiedot.jalkiohjauskirje') || 'Muodosta jälkiohjauskirje' }}</a>
-			
+            <button privileges="valintalaskenta" ng-click="valintalaskentaKerrallaHakukohteille()"
+                    class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskenta') || 'Suorita valintalaskenta' }}
+            </button>
             <dl class="margin-top-6">
 
                 <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">{{ t('henkilotiedot.henkilotunnus') || 'Henkilötunnus' }}</dt>

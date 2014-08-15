@@ -384,6 +384,13 @@ app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $w
 });
 
 //koostepalvelus
+app.factory('ValintalaskentaKerrallaHakukohteille', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid/whitelist/:whitelist",
+        {hakuoid: "@hakuoid", whitelist: "@whitelist"}, {
+        aktivoi: {method: "POST"}
+    });
+});
+
 app.factory('ValintakoelaskentaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiValintakoelaskenta", {}, {
         aktivoi: {method: "POST"}
@@ -745,6 +752,16 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
     {
         post: {method: "POST"}
     });
+});
+
+app.factory('ValintatapajonoSijoitteluStatus', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/valmissijoiteltavaksi?status=:status", {
+            valintatapajonoOid: "@valintatapajonoOid",
+            status: "@status"
+        },
+        {
+            put: {method: "put"}
+        });
 });
 
 //Valintaryhma

@@ -1,5 +1,5 @@
 ﻿app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde) {
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus) {
     "use strict";
 
     var model;
@@ -55,12 +55,41 @@
                                     tulosjono.prioriteetti = jono.prioriteetti;
                                     tulosjono.aloituspaikat = jono.aloituspaikat;
 
-                                    tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
-                                    tulosjono.tasasijasaanto = jono.tasapistesaanto;
-                                    tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
-                                    tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
-                                    tulosjono.poissaOlevaTaytto = jono.poissaOlevaTaytto;
-                                    tulosjono.kaytetaanValintalaskentaa = jono.kaytetaanValintalaskentaa;
+                                    if(jono.siirretaanSijoitteluun == null) {
+                                        tulosjono.siirretaanSijoitteluun = true;
+                                    } else {
+                                        tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
+                                    }
+                                    if(jono.valmisSijoiteltavaksi == null) {
+                                        tulosjono.siirretaanSijoitteluun = true;
+                                    } else {
+                                        tulosjono.siirretaanSijoitteluun = jono.valmisSijoiteltavaksi;
+                                    }
+                                    if(jono.tasapistesaanto == null) {
+                                        tulosjono.tasasijasaanto = 'ARVONTA'
+                                    } else {
+                                        tulosjono.tasasijasaanto = jono.tasapistesaanto;
+                                    }
+                                    if(jono.eiVarasijatayttoa == null) {
+                                        tulosjono.eiVarasijatayttoa = false;
+                                    } else {
+                                        tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
+                                    }
+                                    if(jono.kaikkiEhdonTayttavatHyvaksytaan == null) {
+                                        tulosjono.kaikkiEhdonTayttavatHyvaksytaan = false;
+                                    } else {
+                                        tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
+                                    }
+                                    if(jono.poissaOlevaTaytto == null) {
+                                        tulosjono.poissaOlevaTaytto = false;
+                                    } else {
+                                        tulosjono.poissaOlevaTaytto = jono.poissaOlevaTaytto;
+                                    }
+                                    if(jono.kaytetaanValintalaskentaa == null) {
+                                        tulosjono.kaytetaanValintalaskentaa = true;
+                                    } else {
+                                        tulosjono.kaytetaanValintalaskentaa = jono.kaytetaanValintalaskentaa;
+                                    }
 
                                     tulosjono.nimi = jono.nimi;
                                     tulosjono.jonosijat = [];
@@ -180,6 +209,15 @@
             }
         };
 
+        this.muutaSijoittelunStatus = function(jono, status) {
+            ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status},function(result) {
+                jono.valmisSijoiteltavaksi = status;
+                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+            }, function(error) {
+                Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+            });
+        };
+
 	}();
 
 	return model;
@@ -283,6 +321,10 @@ angular.module('valintalaskenta').
 
     $scope.submit = function (vaiheoid, jonooid) {
         ValintalaskentatulosModel.submit(vaiheoid, jonooid);
+    };
+
+    $scope.muutaSijoittelunStatus = function (jono, status) {
+        ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status);
     };
 
     $scope.changeTila = function (jonosija, value) {
