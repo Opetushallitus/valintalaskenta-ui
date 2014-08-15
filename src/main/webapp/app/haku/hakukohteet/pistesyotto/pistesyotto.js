@@ -49,16 +49,20 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                     HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}, function (result) {
                         model.avaimet = result;
 
+                        var onkoVainTrueFalseArvo = function(arvot) {
+                            return arvot && arvot.length == 2 && arvot.indexOf("true") != -1 && arvot.indexOf("false") != -1
+                        };
+
                         model.avaimet.forEach(function (avain) {
                             avain.tyyppi = function () {
                                 if(avain.vaatiiOsallistumisen === false) {
-                                    if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO") {
+                                    if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO" || onkoVainTrueFalseArvo(avain.arvot)) {
                                         return "kutsuton-boolean";
                                     } else {
                                         return "kutsuton-input";
                                     }
                                 }
-                                if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO") {
+                                if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO" || onkoVainTrueFalseArvo(avain.arvot)) {
                                     return "boolean";
                                 }
                                 return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";

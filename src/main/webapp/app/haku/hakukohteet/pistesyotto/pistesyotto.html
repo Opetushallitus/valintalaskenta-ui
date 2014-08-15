@@ -185,8 +185,8 @@
                                                     <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                                             ng-model="hakija.additionalData[avain.tunniste]">
                                                         <option value="">{{ t('hakukohteetpistesyotto.tyhja') || 'Tyhjä' }}</option>
-                                                        <option value="true">{{ t('hakukohteetpistesyotto.hyvaksytty') || 'Hyväksytty' }}</option>
-                                                        <option value="false">{{ t('hakukohteetpistesyotto.hylatty') || 'Hylätty' }}</option>
+                                                        <option value="true">{{ t('hakukohteetpistesyotto.hyvaksytty') || 'Hyväksytty / Kyllä / Tosi' }}</option>
+                                                        <option value="false">{{ t('hakukohteetpistesyotto.hylatty') || 'Hylätty / Ei / Epätosi' }}</option>
                                                     </select>
                                                 </span>
 
