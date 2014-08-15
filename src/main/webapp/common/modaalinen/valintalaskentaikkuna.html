@@ -4,6 +4,14 @@
 <div class="modal-body">
 	<h3 style="margin-top: -12px;">{{nimi}}</h3>
 	<br>
+
+    <div class="row" ng-if="tyo">
+        <div class="col-sm-4">{{ t('valintalaskentaikkuna.hakukohteita') || 'Hakukohteita' }}</div>
+        <div class="col-sm-4" ng-if="tyo.kokonaismaara">{{tyo.tehty}} / {{tyo.kokonaismaara}}</div>
+        <div class="col-sm-4" ng-if="tyo.kokonaismaara"><progressbar class="progress-striped active" value="tyo.prosentti" type="info">{{tyo.prosentti}}%</progressbar></div>
+        <div class="col-sm-4" ng-if="!tyo.kokonaismaara">{{ t('valintalaskentaikkuna.valmis') || 'Valmis!' }}</div>
+    </div>
+
 	<div class="row" ng-repeat="t in tyot track by $index">
 		<div class="col-sm-4">{{t.nimi}}</div>
 		<div class="col-sm-4">{{t.tehty}} / {{t.kokonaismaara}}</div>

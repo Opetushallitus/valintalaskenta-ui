@@ -297,10 +297,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 angular.module('valintalaskenta').
     controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
         'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila','HakuModel',
-        'ValintalaskentaKerrallaHakukohteille',
         function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
-                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel,
-                  ValintalaskentaKerrallaHakukohteille) {
+                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel) {
     "use strict";
 
     $scope.model = HenkiloTiedotModel;
@@ -399,11 +397,24 @@ angular.module('valintalaskenta').
         $scope.model.hakutoiveet.forEach(function (hakutoive) {
             hakutoiveet.push(hakutoive.hakukohdeOid);
         });
-        ValintalaskentaKerrallaHakukohteille.aktivoi({hakuoid: $routeParams.hakuOid, whitelist: true},hakutoiveet,
-            function (valintalaskenta) {
 
-        }, function (error) {
+        var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
+            controller: ValintalaskentaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        hakukohdeOid: null,
+                        valinnanvaihe: null,
+                        hakutoiveet: hakutoiveet
+                    };
+                }
+            }
         });
+
     };
 
     $scope.privileges = ParametriService;

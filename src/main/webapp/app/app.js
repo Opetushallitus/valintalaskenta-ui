@@ -429,6 +429,11 @@ app.factory('ValintalaskentaKerrallaHakukohteelleAktivointi', function($resource
         aktivoi: {method: "POST"}
     });
 });
+app.factory('ValintalaskentaStatus', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/status/:uuid", {uuid: "@uuid"}, {
+        get: {method: "GET"}
+    });
+});
 app.factory('ValintalaskentaKaynnissa', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktiivinenValintalaskenta", {}, {
         hae: {method: "GET"}
@@ -439,7 +444,7 @@ app.factory('ValintalaskentaKeskeyta', function($resource) {
         keskeyta: {method: "POST"}
     });
 });
-app.factory('ValintalaskentaStatus', function($resource) {
+app.factory('ValintalaskentaMuistissaStatus', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/status/:uuid", {uuid: "@uuid"}, {
         aktivoi: {method: "GET"}
     });

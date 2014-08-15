@@ -195,7 +195,8 @@ angular.module('valintalaskenta').
                     return {
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: null,
-                        valinnanvaihe: null
+                        valinnanvaihe: null,
+                        laskeMuistissa: true
                     };
                 }
             }
