@@ -221,8 +221,7 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
                 oids: function () {
                     return {
                         hakuOid: $scope.hakumodel.hakuOid.oid,
-                        hakukohdeOids: hakukohdeOids,
-                        laskeMuistissa: true
+                        hakukohdeOids: hakukohdeOids
                     };
                 }
             }
