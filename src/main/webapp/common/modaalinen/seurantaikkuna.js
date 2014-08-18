@@ -36,7 +36,11 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 		if(!tyyppi) {
 			tyyppi = "HAKU";
 		}
-		ValintalaskentaKerrallaHakukohteille.aktivoi({hakuoid: oids.hakuOid, tyyppi: tyyppi, whitelist: whitelist}, oids.hakukohteet, 
+		var hakukohteet = oids.hakukohteet;
+		if(!hakukohteet) {
+			hakukohteet = [];
+		}
+		ValintalaskentaKerrallaHakukohteille.aktivoi({hakuoid: oids.hakuOid, tyyppi: tyyppi, whitelist: whitelist}, hakukohteet, 
 		function(uuid) {
 			$scope.uuid = uuid.latausUrl;
 			update();
