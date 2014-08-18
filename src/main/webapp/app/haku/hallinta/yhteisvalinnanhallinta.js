@@ -103,6 +103,10 @@ angular.module('valintalaskenta').
             return true;
         }
     };
+    $scope.yksittainenhakukohde = { hakukohteitaYhteensa: 1 };
+    $scope.notequals = function(actual, expected) {
+    	return !angular.equals(expected, actual);
+    };
     $scope.naytaHaunLaskennat = false;
     $scope.haunLaskennat = [];
     $scope.updateHaunLaskennat = function() {
