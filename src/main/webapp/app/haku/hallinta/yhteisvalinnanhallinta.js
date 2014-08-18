@@ -113,7 +113,7 @@ angular.module('valintalaskenta').
     	console.log("Hakuoid " + $routeParams.hakuOid);
     	console.log("accordi " + $scope.naytaHaunLaskennat);
     	if(SeurantaPalveluHaunLaskennat.hae) {
-	    	SeurantaPalveluHaunLaskennat.hae({hakuoid: $routeParams.hakuOid}, function(laskennat) {
+	    	SeurantaPalveluHaunLaskennat.hae({hakuoid: $routeParams.hakuOid, tyyppi: "HAKU"}, function(laskennat) {
 	    		$scope.haunLaskennat = laskennat;
 	    	});
     	}

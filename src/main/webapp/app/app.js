@@ -385,8 +385,8 @@ app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $w
 
 //koostepalvelus
 app.factory('ValintalaskentaKerrallaHakukohteille', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid/whitelist/:whitelist",
-        {hakuoid: "@hakuoid", whitelist: "@whitelist"}, {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid/tyyppi/:tyyppi/whitelist/:whitelist",
+        {hakuoid: "@hakuoid", whitelist: "@whitelist", tyyppi: "@tyyppi"}, {
         aktivoi: {method: "POST"}
     });
 });
@@ -398,7 +398,6 @@ app.factory('ValintakoelaskentaAktivointi', function($resource) {
 });
 app.factory('ValintalaskentaKerrallaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid", {hakuoid: "@hakuoid"}, {
-        aktivoi: {method: "POST"},
         keskeyta: {method: "DELETE"}
     });
 });
@@ -413,7 +412,7 @@ app.factory('SeurantaPalvelu', function($resource) {
     });
 });
 app.factory('SeurantaPalveluHaunLaskennat', function($resource) {
-    return $resource(SEURANTA_URL_BASE + "/seuranta/hae/:hakuoid", {hakuoid: "@hakuoid"}, {
+    return $resource(SEURANTA_URL_BASE + "/seuranta/hae/:hakuoid/tyyppi/:tyyppi", {hakuoid: "@hakuoid", tyyppi: "@tyyppi"}, {
         hae: {method: "GET", isArray:true}
     });
 });
