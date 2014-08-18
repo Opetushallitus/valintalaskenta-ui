@@ -1,34 +1,67 @@
-function ValintalaskentaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval, $routeParams, HakuModel, ValintalaskentaKeskeyta, ValintalaskentaKaynnissa, ValintalaskentaMuistissa, ValintalaskentaStatus) {
+function ValintalaskentaIkkunaCtrl($scope, $modalInstance, oids, $interval, HakuModel,
+                                   ValintalaskentaKeskeyta, ValintalaskentaKaynnissa, ValintalaskentaMuistissa,
+                                   ValintalaskentaStatus, ValintalaskentaKerrallaHakukohteille, ValintalaskentaMuistissaStatus) {
 	$scope.uuid = null;
 	$scope.tyot = [];
 	$scope.nimi = HakuModel.getNimi();
 	$scope.lisaa = false;
+    $scope.tehty = 0;
+
 	$scope.getProsentit = function(t) {
 		return t.prosentteina * 100;
 	};
-	ValintalaskentaMuistissa.aktivoi({
-		hakuOid: oids.hakuOid,
-		hakukohdeOid: oids.hakukohdeOid,
-		valinnanvaihe: oids.valinnanvaihe
-		}, [], function(uuid) {
-		$scope.uuid = uuid.latausUrl;
-		update();
-	}, function() {
-		ValintalaskentaKaynnissa.hae(function(uuid) {
-			$scope.uuid = uuid.latausUrl;
-			update();
-		});
-	});
-	
+
+    if (oids.laskeMuistissa) {
+        ValintalaskentaMuistissa.aktivoi({
+            hakuOid: oids.hakuOid,
+            hakukohdeOid: oids.hakukohdeOid,
+            valinnanvaihe: oids.valinnanvaihe
+        }, [], function (uuid) {
+            $scope.uuid = uuid.latausUrl;
+            update();
+        }, function () {
+            ValintalaskentaKaynnissa.hae(function (uuid) {
+                $scope.uuid = uuid.latausUrl;
+                update();
+            });
+        });
+    } else {
+        ValintalaskentaKerrallaHakukohteille.aktivoi({hakuoid: oids.hakuOid, whitelist: true}, oids.hakutoiveet,
+            function (uuid) {
+                $scope.uuid = uuid.latausUrl;
+                update();
+            }, function (error) {
+        });
+    }
+
 	var update = function () {
 		if($scope.uuid != null) {
-			ValintalaskentaStatus.get({uuid:$scope.uuid}, function(r) {
-				if(r.prosessi) {
-				    $scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
-                    $scope.virheet = r.prosessi.exceptions;
-                    $scope.varoitukset = r.prosessi.varoitukset;
-				}
-			});
+            if (oids.laskeMuistissa) {
+                ValintalaskentaMuistissaStatus.get({uuid: $scope.uuid}, function (r) {
+                    if (r.prosessi) {
+                        $scope.tyot = [r.prosessi.kokonaistyo, r.prosessi.valintalaskenta, r.prosessi.hakemukset, r.prosessi.valintaperusteet, r.prosessi.hakukohteilleHakemukset];
+                        $scope.virheet = r.prosessi.exceptions;
+                        $scope.varoitukset = r.prosessi.varoitukset;
+                    }
+                });
+            } else {
+                ValintalaskentaStatus.get({uuid: $scope.uuid}, function (r) {
+                    if (r) {
+                        $scope.tyo = {
+                            tehty: r.tehty,
+                            kokonaismaara: r.hakukohteita,
+                            prosentti: 0
+                        };
+                        if (r.tehty > 0) {
+                            if (r.tehty !== r.hakukohteita) {
+                                $scope.tyo.prosentti = (r.tehty / r.hakukohteita) * 100;
+                            } else {
+                                $scope.tyo.prosentti = 100;
+                            }
+                        }
+                    }
+                });
+            }
 		}
     };
     
@@ -37,7 +70,11 @@ function ValintalaskentaIkkunaCtrl($scope, $modalInstance, oids, $log, $interval
     }, 10000);
 
 	$scope.peruuta = function() {
-    	ValintalaskentaKeskeyta.keskeyta({uuid:$scope.uuid});
+        if (oids.laskeMuistissa) {
+            ValintalaskentaKeskeyta.keskeyta({uuid: $scope.uuid});
+        } else {
+
+        }
     };
 
     $scope.naytaLisaa = function() {

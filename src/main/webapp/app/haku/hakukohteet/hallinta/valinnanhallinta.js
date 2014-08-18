@@ -58,7 +58,8 @@ angular.module('valintalaskenta').
                     return {
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
-                        valinnanvaihe: valinnanvaihe
+                        valinnanvaihe: valinnanvaihe,
+                        laskeMuistissa: true
                     };
                 }
             }
