@@ -212,22 +212,22 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
             hakukohdeOids.push(hakukohde.oid);
         });
 
-
         var valintalaskentaInstance = $modal.open({
             backdrop: 'static',
-            templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
-            controller: ValintaryhmaValintalaskentaIkkunaCtrl,
+            templateUrl: '../common/modaalinen/valintaryhmaseurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
-                        hakuOid: $scope.hakumodel.hakuOid.oid,
-                        hakukohdeOids: hakukohdeOids,
-                        laskeMuistissa: true
+                        hakuOid: $routeParams.hakuOid,
+                        tyyppi: "VALINTARYHMA",
+                        valintaryhmanimi: valintaryhma.nimi,
+                        hakukohteet: hakukohdeOids
                     };
                 }
             }
         });
-
 
     };
 

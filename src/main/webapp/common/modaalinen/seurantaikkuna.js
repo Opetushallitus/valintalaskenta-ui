@@ -1,9 +1,11 @@
 function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interval, $routeParams, 
-		HakuModel, ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila, SeurantaPalvelu,
-		ValintalaskentaKerrallaUudelleenYrita,SeurantaPalveluLataa) {
+		HakuModel, ValintalaskentaKerrallaHakukohteille, ValintalaskentaKerrallaAktivointi, 
+		Ilmoitus, IlmoitusTila, SeurantaPalvelu,
+		ValintalaskentaKerrallaUudelleenYrita, SeurantaPalveluLataa) {
 	$scope.uuid = oids.uuid;
 	$scope.kaynnissa = false;
 	$scope.nimi = HakuModel.getNimi();
+	$scope.valintaryhmanimi = oids.valintaryhmanimi;
 	$scope.lisaa = false;
 	$scope.ohitettu = 0;
 	$scope.tehty = 0;
@@ -26,23 +28,38 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 					IlmoitusTila.ERROR);
 		});
 	} else {
-		ValintalaskentaKerrallaAktivointi.aktivoi({
-			hakuoid: oids.hakuOid
-			}, function(uuid) {
-				$scope.uuid = uuid.latausUrl;
-				update();
+		var whitelist = oids.whitelist;
+		if(!whitelist) {
+			whitelist = true;
+		}
+		var tyyppi = oids.tyyppi;
+		if(!tyyppi) {
+			tyyppi = "HAKU";
+		}
+		var hakukohteet = oids.hakukohteet;
+		if(!hakukohteet) {
+			hakukohteet = [];
+		}
+		ValintalaskentaKerrallaHakukohteille.aktivoi({hakuoid: oids.hakuOid, tyyppi: tyyppi, whitelist: whitelist}, hakukohteet, 
+		function(uuid) {
+			$scope.uuid = uuid.latausUrl;
+			update();
 		}, function() {
-			Ilmoitus.avaa(
-					"Valintakoelaskenta epäonnistui", 
-					"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", 
-					IlmoitusTila.ERROR);
+		Ilmoitus.avaa(
+				"Valintakoelaskenta epäonnistui", 
+				"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", 
+				IlmoitusTila.ERROR);
 		});
 	}
+
 	var timer = $interval(function () {
         update();
     }, 10000);
+	$scope.isKaynnissa = function() {
+		return $scope.uuid == null || $scope.kaynnissa;
+	};
 	$scope.uudelleenyrita = function() {
-		if($scope.uuid == null || $scope.kaynnissa) {
+		if($scope.isKaynnissa()) {
 			Ilmoitus.avaa(
 					"Laskenta on vielä käynnissä", 
 					"Uudelleen yritystä voidaan yrittää vasta kun vanha laskenta on päättynyt", 
