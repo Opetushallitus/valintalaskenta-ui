@@ -407,7 +407,7 @@ angular.module('valintalaskenta').
                     return {
                         hakuOid: $routeParams.hakuOid,
                         tyyppi: "VALINTARYHMA",
-                        hakutoiveet: hakutoiveet
+                        hakukohteet: hakutoiveet
                     };
                 }
             }
