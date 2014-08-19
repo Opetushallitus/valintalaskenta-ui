@@ -222,7 +222,7 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
                     return {
                         hakuOid: $routeParams.hakuOid,
                         tyyppi: "VALINTARYHMA",
-                        valintaryhmanimi: valintaryhma.nimi,
+                        nimentarkennus: valintaryhma.nimi,
                         hakukohteet: hakukohdeOids
                     };
                 }

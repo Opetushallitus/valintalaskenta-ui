@@ -5,7 +5,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 	$scope.uuid = oids.uuid;
 	$scope.kaynnissa = false;
 	$scope.nimi = HakuModel.getNimi();
-	$scope.valintaryhmanimi = oids.valintaryhmanimi;
+	$scope.nimentarkennus = oids.nimentarkennus;
 	$scope.lisaa = false;
 	$scope.ohitettu = 0;
 	$scope.tehty = 0;

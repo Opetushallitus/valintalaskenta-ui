@@ -397,24 +397,22 @@ angular.module('valintalaskenta').
         $scope.model.hakutoiveet.forEach(function (hakutoive) {
             hakutoiveet.push(hakutoive.hakukohdeOid);
         });
-
         var valintalaskentaInstance = $modal.open({
             backdrop: 'static',
-            templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
-            controller: ValintalaskentaIkkunaCtrl,
+            templateUrl: '../common/modaalinen/hakutoiveetseurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
             size: 'lg',
             resolve: {
                 oids: function () {
                     return {
                         hakuOid: $routeParams.hakuOid,
-                        hakukohdeOid: null,
-                        valinnanvaihe: null,
-                        hakutoiveet: hakutoiveet
+                        nimentarkennus: "",
+                        tyyppi: "VALINTARYHMA",
+                        hakukohteet: hakutoiveet
                     };
                 }
             }
         });
-
     };
 
     $scope.privileges = ParametriService;
