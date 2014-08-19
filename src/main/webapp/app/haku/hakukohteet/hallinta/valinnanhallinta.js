@@ -48,6 +48,24 @@ angular.module('valintalaskenta').
     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
 
+    $scope.kaikkiKerralla = function() {
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/hakukohdeseurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        nimentarkennus: $scope.hakukohdeModel.getHakukohdeNimi(),
+                        tyyppi: "HAKUKOHDE",
+                        hakukohteet: [$routeParams.hakukohdeOid]
+                    };
+                }
+            }
+        });
+    };
     $scope.kaynnistaValintalaskenta = function (valinnanvaihe) {
         var valintalaskentaInstance = $modal.open({
             backdrop: 'static',

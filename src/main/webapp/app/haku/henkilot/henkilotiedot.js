@@ -406,6 +406,7 @@ angular.module('valintalaskenta').
                 oids: function () {
                     return {
                         hakuOid: $routeParams.hakuOid,
+                        nimentarkennus: "",
                         tyyppi: "VALINTARYHMA",
                         hakukohteet: hakutoiveet
                     };
