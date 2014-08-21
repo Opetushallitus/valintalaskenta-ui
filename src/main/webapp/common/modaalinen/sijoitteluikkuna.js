@@ -20,7 +20,14 @@ function SijoitteluIkkunaCtrl($scope, $modalInstance, $window, $log,
 		SijoittelunValvonta.hae({
 			hakuoid : $scope.hakuOid
 		}, function(r) {
-			console.log(r);
+			if(r.valmis) {
+				$scope.valmis = 100;
+				$interval.cancel(timer);
+			}
+			if(r.ohitettu) {
+				$scope.ohitettu = 100;
+				$interval.cancel(timer);
+			}
 		});
 	
 	};
