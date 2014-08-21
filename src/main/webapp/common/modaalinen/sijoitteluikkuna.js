@@ -41,11 +41,5 @@ function SijoitteluIkkunaCtrl($scope, $modalInstance, $window, $log,
 		$interval.cancel(timer);
 		$modalInstance.dismiss('cancel');
 	};
-	$scope.isValmis = function() {
-		return 0;
-	};
-	$scope.isOhitettu = function() {
-		return 0;
-	};
 
 };
