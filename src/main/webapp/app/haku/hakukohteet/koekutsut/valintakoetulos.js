@@ -242,8 +242,12 @@ angular.module('valintalaskenta').
 				}
 				otsikko = "Muodostetaan koekutsukirjeet valituille hakemuksille";
 			}
+			var hakukohde = $scope.hakukohdeModel.hakukohde;
 			Koekutsukirjeet.post({
-				hakukohdeOid:$routeParams.hakukohdeOid, 
+				hakuOid: $routeParams.hakuOid,
+				hakukohdeOid:$routeParams.hakukohdeOid,
+				tarjoajaOid: hakukohde.tarjoajaOid,
+				templateName: "koekutsukirje",
 				valintakoeOids: [valintakoe.valintakoeOid]},{
 					tag: "valintakoetulos",
 					hakemusOids: hakemusOids,

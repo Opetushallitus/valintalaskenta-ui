@@ -177,8 +177,12 @@ angular.module('valintalaskenta').
     $scope.muodostaKoekutsut = function () {
         var letterBodyText = $scope.tinymceModel;
         if (!isBlank(letterBodyText)) {
+        	var hakukohde = $scope.hakukohdeModel.hakukohde;
             Koekutsukirjeet.post({
-                    hakukohdeOid: $routeParams.hakukohdeOid,
+            	hakuOid: $routeParams.hakuOid,
+				hakukohdeOid:$routeParams.hakukohdeOid,
+				tarjoajaOid: hakukohde.tarjoajaOid,
+				templateName: "koekutsukirje",
                     valintakoeOids: null}, {
                     tag: "harkinnanvaraiset",
                     hakemusOids: $scope.model.valitutHakemusOids(),
