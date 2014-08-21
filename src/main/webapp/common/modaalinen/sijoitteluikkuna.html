@@ -1,0 +1,26 @@
+<div class="modal-header">
+	<h2 style="margin-top: -12px;">{{ t('sijoitteluikkuna.header') || 'Sijoittelu' }}</h2>
+</div>
+<div class="modal-body">
+	<h3 style="margin-top: -12px;">{{nimi}}</h3>
+	<br>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-success" style="width: {{isValmis()}}%">
+	    {{isValmis()}}%
+	  </div>
+	  <div class="progress-bar progress-bar-danger" style="width: {{isOhitettu()}}%">
+	    {{isOhitettu()}}%
+	  </div>
+	</div>
+	<div ng-if="uuid">
+		<div class="col-sm-4" ng-if="valmis">Sijoittelu on valmis</div>
+		<div ng-if="ohitettu">
+			<div class="col-sm-4">Sijoittelu ei onnistunut</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<div class="row">
+		<a class="btn btn-default" ng-click="ok()"  role="button">{{ t('valintalaskentaikkuna.sulje') || 'Sulje ikkuna' }}</a>
+	</div>
+</div>
