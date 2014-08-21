@@ -463,6 +463,11 @@ app.factory('SijoitteluAktivointi', function($resource) {
         aktivoi: {method: "POST"}
     });
 });
+app.factory('SijoittelunValvonta', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/status/:hakuoid", {hakuoid: "@hakuoid"}, {
+        hae: {method: "GET"}
+    });
+});
 
 app.factory('AktivoiHaunValintalaskenta', function($resource) {
   return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoiHaunValintalaskenta", {}, {

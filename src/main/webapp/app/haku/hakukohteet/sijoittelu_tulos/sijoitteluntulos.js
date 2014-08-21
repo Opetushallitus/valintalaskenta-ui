@@ -396,9 +396,9 @@ angular.module('valintalaskenta').
     };
     $scope.hakuaVastaavaHyvaksymiskirjeMuotti = function() {
     	if(HakuModel.hakuOid.nivelvaihe) {
-    		return "hyvaksmiskirje_nivel";	
+    		return "hyvaksymiskirje_nivel";	
     	}else {
-	    	return "hyvaksmiskirje";
+	    	return "hyvaksymiskirje";
 	    }
     };
     

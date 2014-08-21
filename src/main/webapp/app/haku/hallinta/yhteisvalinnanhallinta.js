@@ -110,8 +110,6 @@ angular.module('valintalaskenta').
     $scope.naytaHaunLaskennat = false;
     $scope.haunLaskennat = [];
     $scope.updateHaunLaskennat = function() {
-    	console.log("Hakuoid " + $routeParams.hakuOid);
-    	console.log("accordi " + $scope.naytaHaunLaskennat);
     	if(SeurantaPalveluHaunLaskennat.hae) {
 	    	SeurantaPalveluHaunLaskennat.hae({hakuoid: $routeParams.hakuOid, tyyppi: "HAKU"}, function(laskennat) {
 	    		$scope.haunLaskennat = laskennat;
@@ -279,13 +277,12 @@ angular.module('valintalaskenta').
 	};
 	
     $scope.kaynnistaSijoittelu = function () {
-        var hakuoid = $routeParams.hakuOid;
-        SijoitteluAktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Suoritetaan sijoittelua haulle", "", "haku/hallinta/modaalinen/sijoitteluikkuna.html", {});
-        }, function () {
-            Ilmoitus.avaa("Sijoittelun aktivointi epäonnistui", "Sijoittelun aktivointi epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/sijoitteluikkuna.html',
+            controller: SijoitteluIkkunaCtrl,
+            size: 'lg'
         });
-
     };
     
     $scope.aktivoiHaunValintakoelaskenta = function () {
