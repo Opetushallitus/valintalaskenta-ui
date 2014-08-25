@@ -10,17 +10,50 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 	$scope.ohitettu = 0;
 	$scope.tehty = 0;
 	$scope.kaikkityot = 0;
+	$scope.source = null;
+	var timer = undefined;
+    $scope.paivitaPollaten = function(uuid) {
+    	$scope.uuid = uuid;
+		update();
+		$interval.cancel(timer);
+		timer = $interval(function () {
+	        update();
+	    }, 10000);
+    };
+    $scope.paivitaSSE = function(uuid) {
+    	$scope.uuid = uuid;
+    	$scope.source = new EventSource('/seuranta-service/resources/seuranta/yhteenveto/'+ uuid +'/sse');
+    	$scope.source.addEventListener('message', function(e) {
+    		$scope.$apply(function () {
+    			var r = angular.fromJson(e.data);
+        		$scope.ohitettu = r.hakukohteitaKeskeytetty;
+    			$scope.tehty = r.hakukohteitaValmiina;
+    			$scope.kaikkityot = r.hakukohteitaYhteensa;
+    			$scope.kaynnissa = (r.tila == "MENEILLAAN");    
+            }); 
+  		}, false);
+
+    	$scope.source.addEventListener('open', function(e) {
+  			$log.info("SSE yhteys avattu");
+  		}, false);
+
+    	$scope.source.addEventListener('error', function(e) {
+  		  if (e.readyState == EventSource.CLOSED) {
+  			$log.error("SSE yhteys suljettu");
+  		  }
+  		}, false);
+    };
+    
 	
 	if($scope.uuid) {
 		ValintalaskentaKerrallaUudelleenYrita.uudelleenyrita({
 			uuid: $scope.uuid
 			}, function(uuid) {
-				$scope.uuid = uuid.latausUrl;
-				update();
-				$interval.cancel(timer);
-				timer = $interval(function () {
-			        update();
-			    }, 10000);
+				if (!!window.EventSource) {
+					$scope.paivitaSSE(uuid.latausUrl);
+				} else {
+					$scope.paivitaPollaten(uuid.latausUrl);
+				}
 		}, function() {
 			Ilmoitus.avaa(
 					"Valintakoelaskennan uudelleen yritys epäonnistui", 
@@ -42,8 +75,11 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 		}
 		ValintalaskentaKerrallaHakukohteille.aktivoi({hakuoid: oids.hakuOid, tyyppi: tyyppi, whitelist: whitelist}, hakukohteet, 
 		function(uuid) {
-			$scope.uuid = uuid.latausUrl;
-			update();
+			if (!!window.EventSource) {
+				$scope.paivitaSSE(uuid.latausUrl);
+			} else {
+				$scope.paivitaPollaten(uuid.latausUrl);
+			}
 		}, function() {
 		Ilmoitus.avaa(
 				"Valintakoelaskenta epäonnistui", 
@@ -51,10 +87,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 				IlmoitusTila.ERROR);
 		});
 	}
-
-	var timer = $interval(function () {
-        update();
-    }, 10000);
+	
 	$scope.isKaynnissa = function() {
 		return $scope.uuid == null || $scope.kaynnissa;
 	};
@@ -114,12 +147,16 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
     };
 
 	  $scope.ok = function () {
-		$interval.cancel(timer);
+		  if(timer) {
+				 $interval.cancel(timer);
+			 }
 	    $modalInstance.close(); //$scope.selected.item);
 	  };
 
 	  $scope.cancel = function () {
-		$interval.cancel(timer);
+		 if(timer) {
+			 $interval.cancel(timer);
+		 }
 	    $modalInstance.dismiss('cancel');
 	  };
 	  $scope.getOnnistuneetProsentit = function() {

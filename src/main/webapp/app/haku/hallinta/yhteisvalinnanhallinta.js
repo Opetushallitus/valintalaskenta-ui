@@ -51,6 +51,7 @@ angular.module('valintalaskenta').
                 HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat) {
     "use strict";
 
+    
     $scope.aktivoiValintalaskentaKerralla = function () {
     	var hakuoid = $routeParams.hakuOid;
     	var valintalaskentaInstance = $modal.open({
