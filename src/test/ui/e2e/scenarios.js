@@ -16,7 +16,7 @@ describe('E2E-TESTS', function() {
             });
 
             it('should select first item from dropdown', function() {
-                element(by.cssContainingText('option', 'MUUTettu')).click();
+                element(by.cssContainingText('option', 'Ammatillisen')).click();
                 expect(browser.getLocationAbsUrl()).toMatch("/hakukohde");
             });
 

@@ -166,14 +166,6 @@
                         </configuration>
                     </execution>
 
-                    <!--<execution>-->
-                        <!--<id>Gulp build</id>-->
-                        <!--<phase>test</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>gulp</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-
                     <execution>
                         <id>javascript tests</id>
                         <goals>
