@@ -29,6 +29,6 @@
 	<div class="row" ng-show="lisaa">
 		<a class="btn btn-default" ng-click="yhteenveto()">{{ t('valintalaskentaikkuna.vietaulukkolaskentaan') || 'Lataa yhteenveto' }}</a>
 		<a ng-hide="isKaynnissa()" class="btn btn-default" ng-click="uudelleenyrita()">{{ t('valintalaskentaikkuna.uudelleenyrita') || 'Yritä uudelleen ohitettuja hakukohteita' }}</a>
-		<a class="btn btn-danger" ng-click="peruuta()">{{ t('valintalaskentaikkuna.keskeyta') || 'Keskeytä valintalaskenta' }}</a>
+		<a class="btn btn-danger" ng-class="{disabled:disabloikeskeyta}" ng-click="peruuta()">{{ t('valintalaskentaikkuna.keskeyta') || 'Keskeytä valintalaskenta' }}</a>
 	</div>
 </div>

@@ -10,6 +10,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 	$scope.ohitettu = 0;
 	$scope.tehty = 0;
 	$scope.kaikkityot = 0;
+	$scope.disabloikeskeyta = false;
 	$scope.source = null;
 	var timer = undefined;
     $scope.paivitaPollaten = function(uuid) {
@@ -139,7 +140,10 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
     };
     
 	$scope.peruuta = function() {
-		ValintalaskentaKerrallaAktivointi.keskeyta({hakuoid:$scope.uuid});
+		if(!$scope.disabloikeskeyta) {
+			$scope.disabloikeskeyta = true;
+			ValintalaskentaKerrallaAktivointi.keskeyta({hakuoid:$scope.uuid});
+		}
     };
 
     $scope.naytaLisaa = function() {

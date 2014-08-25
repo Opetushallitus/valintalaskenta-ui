@@ -29,6 +29,6 @@
 		<a class="btn btn-default" ng-click="vieJsoniksi()">{{ t('valintalaskentaikkuna.viejsoniksi') || 'Vie jsoniksi' }}</a>
 		<a class="btn btn-default" ng-click="yhteenveto()">{{ t('valintalaskentaikkuna.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
 		<a ng-hide="isKaynnissa()" class="btn btn-default" ng-click="uudelleenyrita()">{{ t('valintalaskentaikkuna.uudelleenyrita') || 'Yritä uudelleen ohitettuja hakukohteita' }}</a>
-		<a class="btn btn-danger" ng-click="peruuta()">{{ t('valintalaskentaikkuna.keskeyta') || 'Keskeytä valintalaskenta' }}</a>
+		<a class="btn btn-danger" ng-class="{disabled:disabloikeskeyta}" ng-click="peruuta()">{{ t('valintalaskentaikkuna.keskeyta') || 'Keskeytä valintalaskenta' }}</a>
 	</div>
 </div>
