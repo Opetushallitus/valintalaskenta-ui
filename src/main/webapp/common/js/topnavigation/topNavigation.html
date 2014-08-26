@@ -9,8 +9,8 @@
         <a ng-if="hakuModel.hakuOid.lisahaku" ng-class="navClass('hakukohde', 3)" href="#/lisahaku/{{hakuOid}}/hakukohde" class="tab"><span>{{ t('topnavigation.hakukohteittain') || 'Hakukohteittain' }}</span></a>
         <a ng-if="!hakuModel.hakuOid.lisahaku" ng-class="navClass('hakukohde', 3)" href="#/haku/{{hakuOid}}/hakukohde" class="tab"><span>{{ t('topnavigation.hakukohteittain') || 'Hakukohteittain' }}</span></a>
         <a privileges="valintalaskenta"  ng-class="navClass('henkiloittain', 3)" href="#/haku/{{hakuOid}}/henkiloittain/" class="tab"><span>{{ t('topnavigation.henkiloittain') || 'Henkilöittäin' }}</span></a>
-        <a ng-if="hakuModel.hakuOid.lisahaku" ng-class="navClass('valintaryhmittain', 3)" ng-href="#/lisahaku/{{hakuOid}}/valintaryhmittain" class="tab"><span>{{ t('topnavigation.valintaryhmittain') || 'Valintaryhmittäin' }}</span></a>
-        <a ng-if="!hakuModel.hakuOid.lisahaku" ng-class="navClass('valintaryhmittain', 3)" ng-href="#/haku/{{hakuOid}}/valintaryhmittain" class="tab"><span>{{ t('topnavigation.valintaryhmittain') || 'Valintaryhmittäin' }}</span></a>
+        <a privileges="valintalaskenta" ng-if="hakuModel.hakuOid.lisahaku" ng-class="navClass('valintaryhmittain', 3)" ng-href="#/lisahaku/{{hakuOid}}/valintaryhmittain" class="tab"><span>{{ t('topnavigation.valintaryhmittain') || 'Valintaryhmittäin' }}</span></a>
+        <a privileges="valintalaskenta" ng-if="!hakuModel.hakuOid.lisahaku" ng-class="navClass('valintaryhmittain', 3)" ng-href="#/haku/{{hakuOid}}/valintaryhmittain" class="tab"><span>{{ t('topnavigation.valintaryhmittain') || 'Valintaryhmittäin' }}</span></a>
         <a ng-show="displaytab.valinnanhallinta" ng-class="navClass('yhteisvalinnanhallinta', 3)" href="#/haku/{{hakuOid}}/yhteisvalinnanhallinta/" auth="crudOph" auth-service="APP_VALINTAPERUSTEET" class="tab float-right"><span>{{ t('topnavigation.yhteisvalinta') || 'Yhteisvalinnan hallinta' }}</span></a>
 
     </div>
