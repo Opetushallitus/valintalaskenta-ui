@@ -23,7 +23,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
     };
     $scope.paivitaSSE = function(uuid) {
     	$scope.uuid = uuid;
-    	$scope.source = new EventSource('/seuranta-service/resources/seuranta/yhteenveto/'+ uuid +'/sse');
+    	$scope.source = new EventSource(SEURANTA_URL_BASE + '/seuranta/yhteenveto/'+ uuid +'/sse');
     	$scope.source.addEventListener('message', function(e) {
     		$scope.$apply(function () {
     			var r = angular.fromJson(e.data);
@@ -117,7 +117,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 		}
 	};
 	$scope.yhteenveto = function() {
-		
+		$window.open(VALINTALASKENTAKOOSTE_URL_BASE + "resources//valintalaskentakerralla/status/"+$scope.uuid+"/xls");
 	};
 	$scope.vieJsoniksi = function() {
 		$window.open(SEURANTA_URL_BASE + "/seuranta/lataa/" +$scope.uuid);
