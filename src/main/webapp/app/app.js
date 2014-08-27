@@ -415,13 +415,6 @@ app.factory('SeurantaPalveluLataa', function($resource) {
         hae: {method: "GET", isArray:false}
     });
 });
-app.factory('ValintalaskentaKerrallaHakukohteelleAktivointi', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid/hakukohde/:hakukohdeoid", {
-    	hakuoid: "@hakuoid",
-    	hakukohdeoid: "@hakukohdeoid"}, {
-        aktivoi: {method: "POST"}
-    });
-});
 app.factory('ValintalaskentaStatus', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/status/:uuid", {uuid: "@uuid"}, {
         get: {method: "GET"}
