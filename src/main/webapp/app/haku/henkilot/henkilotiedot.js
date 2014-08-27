@@ -32,7 +32,10 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                 model.hakutoiveet.length = 0;
 
                 for (var i = 1; i < 10; i++) {
-                    var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                    if(!model.hakemus.answers.hakutoiveet) {
+                    	break;
+                    }
+                	var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
 
                     if (oid === undefined) {
                         break;
