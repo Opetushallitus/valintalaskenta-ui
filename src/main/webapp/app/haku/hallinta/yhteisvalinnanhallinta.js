@@ -185,27 +185,6 @@ angular.module('valintalaskenta').
             });
     };
     // KELA TAULUKON CHECKBOXIT LOPPUU
-
-    ///////////////////
-    $scope.aktivoiMuistinvarainenValintalaskenta = function () {
-        var valintalaskentaInstance = $modal.open({
-            backdrop: 'static',
-            templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
-            controller: ValintalaskentaIkkunaCtrl,
-            size: 'lg',
-            resolve: {
-                oids: function () {
-                    return {
-                        hakuOid: $routeParams.hakuOid,
-                        hakukohdeOid: null,
-                        valinnanvaihe: null,
-                        laskeMuistissa: true
-                    };
-                }
-            }
-        });
-    };
-
     SijoitteluAjo.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function (result) {
         $scope.sijoitteluModel = result;
     });
