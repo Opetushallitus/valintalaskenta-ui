@@ -265,7 +265,24 @@ angular.module('valintalaskenta').
             size: 'lg'
         });
     };
-    
+    $scope.aktivoiHaunValintalaskenta = function() {
+    	var hakuoid = $routeParams.hakuOid;
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/seurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        valinnanvaihe: -1,
+                        valintakoelaskenta: false
+                    };
+                }
+            }
+        });
+    };
     $scope.aktivoiHaunValintakoelaskenta = function () {
         var hakuoid = $routeParams.hakuOid;
     	var valintalaskentaInstance = $modal.open({
