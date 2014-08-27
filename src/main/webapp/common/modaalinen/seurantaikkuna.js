@@ -12,6 +12,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 	$scope.kaikkityot = 0;
 	$scope.disabloikeskeyta = false;
 	$scope.source = null;
+	$scope.kokonaanvalmis = false;
 	var timer = undefined;
     $scope.paivitaPollaten = function(uuid) {
     	$scope.uuid = uuid;
@@ -21,16 +22,24 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 	        update();
 	    }, 10000);
     };
+    $scope.paivitaMuuttujat = function(r) {
+    	$scope.ohitettu = r.hakukohteitaKeskeytetty;
+		$scope.tehty = r.hakukohteitaValmiina;
+		$scope.kaikkityot = r.hakukohteitaYhteensa;
+		$scope.kaynnissa = (r.tila == "MENEILLAAN");
+		if($scope.kaikkityot) {
+			if($scope.tehty == $scope.kaikkityot) {
+				$scope.kokonaanvalmis = true;
+			}
+		}
+    };
     $scope.paivitaSSE = function(uuid) {
     	$scope.uuid = uuid;
     	$scope.source = new EventSource(SEURANTA_URL_BASE + '/seuranta/yhteenveto/'+ uuid +'/sse');
     	$scope.source.addEventListener('message', function(e) {
     		$scope.$apply(function () {
     			var r = angular.fromJson(e.data);
-        		$scope.ohitettu = r.hakukohteitaKeskeytetty;
-    			$scope.tehty = r.hakukohteitaValmiina;
-    			$scope.kaikkityot = r.hakukohteitaYhteensa;
-    			$scope.kaynnissa = (r.tila == "MENEILLAAN");    
+    			$scope.paivitaMuuttujat(r);  
             }); 
   		}, false);
 
@@ -88,13 +97,15 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 				IlmoitusTila.ERROR);
 		});
 	}
-	
+	$scope.hideUudelleenYritys = function() {
+		// uudelleen yritys piiloon jos kokonaan valmis tai kaynnissa
+		return $scope.isKokonaanValmis() || $scope.isKaynnissa();  
+	};
+	$scope.isKokonaanValmis = function() {
+		return $scope.kokonaanvalmis;
+	};
 	$scope.isKaynnissa = function() { // onko ajossa tai onko mielekasta enaa ajaakkaan
-		if($scope.uuid == null || $scope.kaynnissa) {
-			// tavallaan ei enaa kaynnissa koska kaikki tyot on tehty
-			return $scope.ohitettu + $scope.tehty != $scope.kaikkityot;
-		}
-		return false;
+		return $scope.uuid == null || $scope.kaynnissa;
 	};
 	$scope.uudelleenyrita = function() {
 		if($scope.isKaynnissa()) {
@@ -130,12 +141,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 	var update = function () {
 		if($scope.uuid != null) {
 			SeurantaPalvelu.hae({uuid:$scope.uuid}, function(r) {
-				$scope.ohitettu = r.hakukohteitaKeskeytetty;
-				$scope.tehty = r.hakukohteitaValmiina;
-				$scope.kaikkityot = r.hakukohteitaYhteensa;
-				
-				$scope.kaynnissa = (r.tila == "MENEILLAAN"); 
-				
+				$scope.paivitaMuuttujat(r);
 				if($scope.tehty + $scope.ohitettu == $scope.kaikkityot) {
 					$interval.cancel(timer);
 				}
