@@ -17,7 +17,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	$scope.kokonaanvalmis = false;
 	$scope.valinnanvaihe = oids.valinnanvaihe;
 	$scope.valintakoelaskenta = oids.valintakoelaskenta;
-
+	
 	var timer = undefined;
 	$scope.paivitaPollaten = function(uuid) {
 		$scope.uuid = uuid;
@@ -37,6 +37,18 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 				$scope.kokonaanvalmis = true;
 			}
 		}
+	};
+	
+	$scope.hideUudelleenYritys = function() {
+		// uudelleen yritys piiloon jos kokonaan valmis tai kaynnissa
+		return $scope.isKokonaanValmis() || $scope.isKaynnissa();
+	};
+	$scope.isKokonaanValmis = function() {
+		return $scope.kokonaanvalmis;
+	};
+	$scope.isKaynnissa = function() { // onko ajossa tai onko mielekasta enaa
+										// ajaakkaan
+		return $scope.uuid == null || $scope.kaynnissa;
 	};
 	$scope.paivitaSSE = function(uuid) {
 		$scope.uuid = uuid;
@@ -62,27 +74,51 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			}
 		}, false);
 	};
-
-	if ($scope.uuid) {
+	$scope.paivitaForce = function(uuid) {
+		if (!!window.EventSource) {
+			$scope.paivitaSSE(uuid);
+		} else {
+			$scope.paivitaPollaten(uuid);
+		}
+	};
+	$scope.uudelleenyritaForce = function() {
 		ValintalaskentaKerrallaUudelleenYrita
-				.uudelleenyrita(
-						{
-							uuid : $scope.uuid
-						},
-						function(uuid) {
-							if (!!window.EventSource) {
-								$scope.paivitaSSE(uuid.latausUrl);
-							} else {
-								$scope.paivitaPollaten(uuid.latausUrl);
-							}
-						},
-						function() {
-							Ilmoitus
-									.avaa(
-											"Valintakoelaskennan uudelleen yritys epäonnistui",
-											"Valintakoelaskenta uudelleen yritys epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.",
-											IlmoitusTila.ERROR);
-						});
+		.uudelleenyrita(
+				{
+					uuid : $scope.uuid
+				},
+				function(uuid) {
+					$scope.paivitaForce(uuid.latausUrl);
+				},
+				function() {
+					Ilmoitus
+							.avaa(
+									"Valintakoelaskenta epäonnistui",
+									"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.",
+									IlmoitusTila.ERROR);
+				});
+	};
+	$scope.uudelleenyrita = function() {
+		if ($scope.isKaynnissa()) {
+			Ilmoitus
+					.avaa(
+							"Laskenta on vielä käynnissä",
+							"Uudelleen yritystä voidaan yrittää vasta kun vanha laskenta on päättynyt",
+							IlmoitusTila.ERROR);
+		} else {
+			$scope.kaynnissa = true;
+			$scope.uudelleenyritaForce();
+		}
+	};
+	if(oids.laskenta) {
+		$scope.paivitaMuuttujat(oids.laskenta);
+	}
+	if ($scope.uuid) {
+		if ($scope.isKaynnissa()) {
+			$scope.paivitaForce($scope.uuid);
+		} else {
+			$scope.uudelleenyritaForce();
+		}
 	} else {
 		var whitelist = oids.whitelist;
 		if (!whitelist) {
@@ -107,11 +143,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 						},
 						hakukohteet,
 						function(uuid) {
-							if (!!window.EventSource) {
-								$scope.paivitaSSE(uuid.latausUrl);
-							} else {
-								$scope.paivitaPollaten(uuid.latausUrl);
-							}
+							$scope.paivitaForce(uuid.latausUrl);
 						},
 						function() {
 							Ilmoitus
@@ -121,46 +153,10 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 											IlmoitusTila.ERROR);
 						});
 	}
-	$scope.hideUudelleenYritys = function() {
-		// uudelleen yritys piiloon jos kokonaan valmis tai kaynnissa
-		return $scope.isKokonaanValmis() || $scope.isKaynnissa();
-	};
-	$scope.isKokonaanValmis = function() {
-		return $scope.kokonaanvalmis;
-	};
-	$scope.isKaynnissa = function() { // onko ajossa tai onko mielekasta enaa
-										// ajaakkaan
-		return $scope.uuid == null || $scope.kaynnissa;
-	};
-	$scope.uudelleenyrita = function() {
-		if ($scope.isKaynnissa()) {
-			Ilmoitus
-					.avaa(
-							"Laskenta on vielä käynnissä",
-							"Uudelleen yritystä voidaan yrittää vasta kun vanha laskenta on päättynyt",
-							IlmoitusTila.ERROR);
-		} else {
-			ValintalaskentaKerrallaUudelleenYrita
-					.uudelleenyrita(
-							{
-								uuid : $scope.uuid
-							},
-							function(uuid) {
-								if (!!window.EventSource) {
-									$scope.paivitaSSE(uuid.latausUrl);
-								} else {
-									$scope.paivitaPollaten(uuid.latausUrl);
-								}
-							},
-							function() {
-								Ilmoitus
-										.avaa(
-												"Valintakoelaskenta epäonnistui",
-												"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.",
-												IlmoitusTila.ERROR);
-							});
-		}
-	};
+	
+	
+	
+	
 	$scope.yhteenveto = function() {
 		$window.open(VALINTALASKENTAKOOSTE_URL_BASE
 				+ "resources//valintalaskentakerralla/status/" + $scope.uuid

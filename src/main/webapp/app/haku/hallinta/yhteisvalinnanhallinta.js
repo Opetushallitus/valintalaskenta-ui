@@ -82,7 +82,8 @@ angular.module('valintalaskenta').
                 oids: function () {
                     return {
                         hakuOid: $routeParams.hakuOid,
-                        uuid: laskenta.uuid
+                        uuid: laskenta.uuid,
+                        laskenta: laskenta
                     };
                 }
             }
