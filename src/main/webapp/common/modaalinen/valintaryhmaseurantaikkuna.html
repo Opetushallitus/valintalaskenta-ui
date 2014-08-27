@@ -6,10 +6,10 @@
 	<h2 style="margin-top: -12px;">{{nimentarkennus}}</h2>
 	<br>
 	<div class="progress">
-	  <div class="progress-bar" style="width: {{getOnnistuneetProsentit()}}%">
+	  <div class="progress-bar" ng-style="{width:getOnnistuneetProsentit()+'%'}">
 	    {{getOnnistuneetProsentit()}}%
 	  </div>
-	  <div class="progress-bar progress-bar-danger" style="width: {{getOhitetutProsentit()}}%">
+	  <div class="progress-bar progress-bar-danger" ng-style="{width:getOhitetutProsentit()+'%'}">
 	    {{getOhitetutProsentit()}}%
 	  </div>
 	</div>
