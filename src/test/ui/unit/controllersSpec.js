@@ -510,8 +510,8 @@ describe('Testing HakeneetController', function(){
 
 describe('Testing ValinnanhallintaController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hakukohdeModel, $modal,
-        hakukohdejson,latausikkuna,ilmoitus,valinnanhallintaModel, valintalaskentaMuistissa,
-            valintakoelaskentaAktivointi, parametriService, ilmoitusTila, valinnanvaihejson, hakukohdenimijson;
+        hakukohdejson,latausikkuna,ilmoitus,valinnanhallintaModel, 
+            parametriService, ilmoitusTila, valinnanvaihejson, hakukohdenimijson;
     var routeParams = {"hakuOid": "oid",
         "hakukohdeOid" : "oid2"};
     beforeEach(module('valintalaskenta','testData'));
@@ -525,8 +525,6 @@ describe('Testing ValinnanhallintaController', function(){
         latausikkuna = $injector.get('Latausikkuna');
         ilmoitus = $injector.get('Ilmoitus');
         valinnanhallintaModel = $injector.get('ValinnanhallintaModel');
-        valintalaskentaMuistissa = $injector.get('ValintalaskentaMuistissa');
-        valintakoelaskentaAktivointi = $injector.get('ValintakoelaskentaAktivointi');
         parametriService = $injector.get('ParametriService');
         ilmoitusTila = $injector.get('IlmoitusTila');
 
@@ -553,7 +551,7 @@ describe('Testing ValinnanhallintaController', function(){
 
         ctrl = $controller('ValinnanhallintaController', {'$scope' : scope, '$routeParams': routeParams, '$modal': $modal,
             'Latausikkuna': latausikkuna, 'Ilmoitus': ilmoitus, 'ValinnanhallintaModel': valinnanhallintaModel,
-            'HakukohdeModel': hakukohdeModel, 'ValintalaskentaMuistissa': valintalaskentaMuistissa, 'ValintakoelaskentaAktivointi': valintakoelaskentaAktivointi,
+            'HakukohdeModel': hakukohdeModel, 
             'ParametriService': parametriService, 'IlmoitusTila': ilmoitusTila});
 
         $httpBackend.flush();
@@ -1214,7 +1212,7 @@ describe('Testing HenkiloTiedotController', function(){
 describe('Testing YhteisvalinnanHallintaController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, $q, $modal, latausikkuna,
         jalkiohjauskirjepohjat,jalkiohjauskirjeet,ilmoitus,ilmoitusTila,sijoittelunTulosTaulukkolaskenta,
-        sijoittelunTulosOsoitetarrat,sijoittelunTulosHyvaksymiskirjeet,aktivoiKelaFtp,valintakoelaskentaAktivointi,
+        sijoittelunTulosOsoitetarrat,sijoittelunTulosHyvaksymiskirjeet,aktivoiKelaFtp,
         kelaDokumentti,sijoitteluAjo,jalkiohjausXls,sijoitteluAktivointi,hakuModel,virheModel,jatkuvaSijoittelu,
         $interval,$log,$timeout,$http,$route,$window,sijoitteluajolatestalljson;
     var routeParams = {"hakuOid": "oid1",
@@ -1244,7 +1242,6 @@ describe('Testing YhteisvalinnanHallintaController', function(){
         sijoittelunTulosOsoitetarrat = $injector.get('SijoittelunTulosOsoitetarrat');
         sijoittelunTulosHyvaksymiskirjeet = $injector.get('SijoittelunTulosHyvaksymiskirjeet');
         aktivoiKelaFtp = $injector.get('AktivoiKelaFtp');
-        valintakoelaskentaAktivointi = $injector.get('ValintakoelaskentaAktivointi');
         kelaDokumentti = $injector.get('KelaDokumentti');
         sijoitteluAjo = $injector.get('SijoitteluAjo');
         jalkiohjausXls = $injector.get('JalkiohjausXls');
@@ -1274,7 +1271,7 @@ describe('Testing YhteisvalinnanHallintaController', function(){
             '_': _,'SijoittelunTulosTaulukkolaskenta': sijoittelunTulosTaulukkolaskenta,
             'SijoittelunTulosOsoitetarrat':sijoittelunTulosOsoitetarrat,'SijoittelunTulosHyvaksymiskirjeet':sijoittelunTulosHyvaksymiskirjeet,
             'Jalkiohjauskirjepohjat':jalkiohjauskirjepohjat, 'AktivoiKelaFtp': aktivoiKelaFtp, '$log': $log, '$timeout': $timeout,
-            '$q':$q,'$location':$location,'ValintakoelaskentaAktivointi':valintakoelaskentaAktivointi,'Ilmoitus':ilmoitus,
+            '$q':$q,'$location':$location,'Ilmoitus':ilmoitus,
             'KelaDokumentti':kelaDokumentti,'Latausikkuna':latausikkuna,'$routeParams':routeParams, '$http':$http,
             '$route':$route,'$window':$window,'SijoitteluAjo':sijoitteluAjo,'JalkiohjausXls':jalkiohjausXls,
             'Jalkiohjauskirjeet':jalkiohjauskirjeet, 'SijoitteluAktivointi':sijoitteluAktivointi,'HakuModel':hakuModel,

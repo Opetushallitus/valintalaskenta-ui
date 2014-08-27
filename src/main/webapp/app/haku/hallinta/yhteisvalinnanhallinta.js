@@ -39,14 +39,14 @@ angular.module('valintalaskenta').
         'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat', 'SijoittelunTulosHyvaksymiskirjeet', 
         'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp',
         '$log', '$timeout', '$q','$location', 
-        'ValintakoelaskentaAktivointi', 'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
+        'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
         'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat',
         function ($scope, $modal, $interval, _, 
         		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, 
         		Jalkiohjauskirjepohjat, AktivoiKelaFtp, 
         		$log, $timeout, $q, $location, 
-        		ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
+        		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                 $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
                 HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat) {
     "use strict";
@@ -288,10 +288,20 @@ angular.module('valintalaskenta').
     
     $scope.aktivoiHaunValintakoelaskenta = function () {
         var hakuoid = $routeParams.hakuOid;
-        ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
-        }, function () {
-            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/valintakoelaskenta.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        valinnanvaihe: null,
+                        valintakoelaskenta: true
+                    };
+                }
+            }
         });
     };
 

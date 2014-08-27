@@ -13,6 +13,9 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 	$scope.disabloikeskeyta = false;
 	$scope.source = null;
 	$scope.kokonaanvalmis = false;
+	$scope.valinnanvaihe = oids.valinnanvaihe;
+	$scope.valintakoelaskenta = oids.valintakoelaskenta;
+	
 	var timer = undefined;
     $scope.paivitaPollaten = function(uuid) {
     	$scope.uuid = uuid;
@@ -83,7 +86,13 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 		if(!hakukohteet) {
 			hakukohteet = [];
 		}
-		ValintalaskentaKerrallaHakukohteille.aktivoi({hakuoid: oids.hakuOid, tyyppi: tyyppi, whitelist: whitelist}, hakukohteet, 
+		ValintalaskentaKerrallaHakukohteille.aktivoi({
+			hakuoid: oids.hakuOid, 
+			tyyppi: tyyppi, 
+			whitelist: whitelist,
+			valinnanvaihe: oids.valinnanvaihe,
+			valintakoelaskenta: oids.valintakoelaskenta,
+		}, hakukohteet, 
 		function(uuid) {
 			if (!!window.EventSource) {
 				$scope.paivitaSSE(uuid.latausUrl);

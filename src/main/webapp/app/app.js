@@ -390,12 +390,6 @@ app.factory('ValintalaskentaKerrallaHakukohteille', function($resource) {
         aktivoi: {method: "POST"}
     });
 });
-
-app.factory('ValintakoelaskentaAktivointi', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintakoelaskenta/aktivoiValintakoelaskenta", {}, {
-        aktivoi: {method: "POST"}
-    });
-});
 app.factory('ValintalaskentaKerrallaAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid", {hakuoid: "@hakuoid"}, {
         keskeyta: {method: "DELETE"}
@@ -433,31 +427,6 @@ app.factory('ValintalaskentaStatus', function($resource) {
         get: {method: "GET"}
     });
 });
-app.factory('ValintalaskentaKaynnissa', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktiivinenValintalaskenta", {}, {
-        hae: {method: "GET"}
-    });
-});
-app.factory('ValintalaskentaKeskeyta', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/keskeytaAktiivinenValintalaskenta", {uuid: "@uuid"}, {
-        keskeyta: {method: "POST"}
-    });
-});
-app.factory('ValintalaskentaMuistissaStatus', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/status/:uuid", {uuid: "@uuid"}, {
-        aktivoi: {method: "GET"}
-    });
-});
-app.factory('ValintalaskentaMuistissa', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktivoi", {}, {
-        aktivoi: {method: "POST"}
-    });
-});
-app.factory('ValintaryhmaLaskenta', function ($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentamuistissa/aktivoi?hakuOid=:hakuOid&onkoWhitelist=true", {hakuOid: "@hakuOid"});
-});
-
-
 app.factory('SijoitteluAktivointi', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/aktivoi", {}, {
         aktivoi: {method: "POST"}
@@ -468,13 +437,6 @@ app.factory('SijoittelunValvonta', function($resource) {
         hae: {method: "GET"}
     });
 });
-
-app.factory('AktivoiHaunValintalaskenta', function($resource) {
-  return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskenta/aktivoiHaunValintalaskenta", {}, {
-      aktivoi: {method: "GET"}
-  });
-});
-
 app.factory('OsoitetarratSijoittelussaHyvaksytyille', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/osoitetarrat/sijoittelussahyvaksytyille/aktivoi", {}, {
 		post:  {method:'POST', isArray:false}
