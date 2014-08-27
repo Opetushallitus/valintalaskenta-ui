@@ -89,8 +89,12 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log, $interv
 		});
 	}
 	
-	$scope.isKaynnissa = function() {
-		return $scope.uuid == null || $scope.kaynnissa;
+	$scope.isKaynnissa = function() { // onko ajossa tai onko mielekasta enaa ajaakkaan
+		if($scope.uuid == null || $scope.kaynnissa) {
+			// tavallaan ei enaa kaynnissa koska kaikki tyot on tehty
+			return $scope.ohitettu + $scope.tehty != $scope.kaikkityot;
+		}
+		return false;
 	};
 	$scope.uudelleenyrita = function() {
 		if($scope.isKaynnissa()) {

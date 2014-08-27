@@ -131,82 +131,83 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
 
                 ValintakoetuloksetHakemuksittain.get({hakemusOid: model.hakemus.oid}, function (hakemus) {
-                    hakemus.hakutoiveet.forEach(function (hakutoive) {
-                        var hakukohde = model.hakutoiveetMap[hakutoive.hakukohdeOid];
-                        var hakukohdeOid = hakutoive.hakukohdeOid;
-                        if (hakukohde) {
-
-                            hakukohde.valintakokeet = {};
-                            hakukohde.osallistuminen = false;
-                            hakutoive.valinnanVaiheet.forEach(function (valinnanVaihe) {
-
-                                valinnanVaihe.valintakokeet.forEach(function (valintakoe) {
-                                    var valintakoe = {
-                                        jarjestysluku: valinnanVaihe.valinnanVaiheJarjestysluku,
-                                        valinnanVaiheOid: valinnanVaihe.valinnanVaiheOid,
-                                        valintakoeOid: valintakoe.valintakoeOid,
-                                        valintakoeTunniste: valintakoe.valintakoeTunniste,
-                                        osallistuminen: valintakoe.osallistuminenTulos.osallistuminen
-                                    };
-                                    hakukohde.valintakokeet[valintakoe.valintakoeTunniste] = valintakoe;
-
-                                    if (valintakoe.osallistuminen === 'OSALLISTUU') {
-                                        hakukohde.osallistuminen = true;
-                                    }
-                                });
-
-                            });
-
-                            if (hakukohde.osallistuminen) {
-                                HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (result) {
-
-                                    hakukohde.avaimet = result;
-
-                                    hakukohde.avaimet.forEach(function (avain) {
-                                        avain.tyyppi = function () {
-                                            if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO") {
-                                                return "boolean";
-                                            }
-                                            return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
-                                        };
-                                    });
-
-                                    hakukohde.osallistuu = {};
-
-                                    if (!hakukohde.additionalData) {
-                                        hakukohde.additionalData = {};
-                                    }
-
-                                    model.naytaPistetsyotto = false;
-                                    hakukohde.avaimet.forEach(function (avain) {
-                                        hakukohde.osallistuu[avain.tunniste] = false;
-
-                                        if (hakukohde.valintakokeet &&
-                                            hakukohde.valintakokeet[avain.tunniste]) {
-                                            hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
-                                            if (hakukohde.osallistuu[avain.tunniste] === 'OSALLISTUU') {
-                                                hakukohde.naytaPistesyotto = true;
-                                                model.naytaPistesyotto = true;
-                                            }
-                                        }
-
-                                        if (!hakukohde.additionalData[avain.tunniste]) {
-                                            hakukohde.additionalData[avain.tunniste] = "";
-                                        }
-
-                                        if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
-                                            hakukohde.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-                                        }
-
-                                    });
-
-                                }, function (error) {
-                                    model.errors.push(error);
-                                });
-                            }
-                        }
-                    });
-
+                	if(hakemus.hakutoiveet) { // Ilman tarkistusta => TypeError: Cannot read property 'forEach' of undefined
+	                    hakemus.hakutoiveet.forEach(function (hakutoive) {
+	                        var hakukohde = model.hakutoiveetMap[hakutoive.hakukohdeOid];
+	                        var hakukohdeOid = hakutoive.hakukohdeOid;
+	                        if (hakukohde) {
+	
+	                            hakukohde.valintakokeet = {};
+	                            hakukohde.osallistuminen = false;
+	                            hakutoive.valinnanVaiheet.forEach(function (valinnanVaihe) {
+	
+	                                valinnanVaihe.valintakokeet.forEach(function (valintakoe) {
+	                                    var valintakoe = {
+	                                        jarjestysluku: valinnanVaihe.valinnanVaiheJarjestysluku,
+	                                        valinnanVaiheOid: valinnanVaihe.valinnanVaiheOid,
+	                                        valintakoeOid: valintakoe.valintakoeOid,
+	                                        valintakoeTunniste: valintakoe.valintakoeTunniste,
+	                                        osallistuminen: valintakoe.osallistuminenTulos.osallistuminen
+	                                    };
+	                                    hakukohde.valintakokeet[valintakoe.valintakoeTunniste] = valintakoe;
+	
+	                                    if (valintakoe.osallistuminen === 'OSALLISTUU') {
+	                                        hakukohde.osallistuminen = true;
+	                                    }
+	                                });
+	
+	                            });
+	
+	                            if (hakukohde.osallistuminen) {
+	                                HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (result) {
+	
+	                                    hakukohde.avaimet = result;
+	
+	                                    hakukohde.avaimet.forEach(function (avain) {
+	                                        avain.tyyppi = function () {
+	                                            if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO") {
+	                                                return "boolean";
+	                                            }
+	                                            return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
+	                                        };
+	                                    });
+	
+	                                    hakukohde.osallistuu = {};
+	
+	                                    if (!hakukohde.additionalData) {
+	                                        hakukohde.additionalData = {};
+	                                    }
+	
+	                                    model.naytaPistetsyotto = false;
+	                                    hakukohde.avaimet.forEach(function (avain) {
+	                                        hakukohde.osallistuu[avain.tunniste] = false;
+	
+	                                        if (hakukohde.valintakokeet &&
+	                                            hakukohde.valintakokeet[avain.tunniste]) {
+	                                            hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
+	                                            if (hakukohde.osallistuu[avain.tunniste] === 'OSALLISTUU') {
+	                                                hakukohde.naytaPistesyotto = true;
+	                                                model.naytaPistesyotto = true;
+	                                            }
+	                                        }
+	
+	                                        if (!hakukohde.additionalData[avain.tunniste]) {
+	                                            hakukohde.additionalData[avain.tunniste] = "";
+	                                        }
+	
+	                                        if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
+	                                            hakukohde.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+	                                        }
+	
+	                                    });
+	
+	                                }, function (error) {
+	                                    model.errors.push(error);
+	                                });
+	                            }
+	                        }
+	                    });
+                	}
 
                     ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function (valintalaskenta) {
                         valintalaskenta.hakukohteet.forEach(function (hakukohde) {
