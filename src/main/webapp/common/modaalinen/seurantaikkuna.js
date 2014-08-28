@@ -17,7 +17,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	$scope.kokonaanvalmis = false;
 	$scope.valinnanvaihe = oids.valinnanvaihe;
 	$scope.valintakoelaskenta = oids.valintakoelaskenta;
-	
+
 	var timer = undefined;
 	$scope.paivitaPollaten = function(uuid) {
 		$scope.uuid = uuid;
@@ -38,7 +38,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			}
 		}
 	};
-	
+
 	$scope.hideUudelleenYritys = function() {
 		// uudelleen yritys piiloon jos kokonaan valmis tai kaynnissa
 		return $scope.isKokonaanValmis() || $scope.isKaynnissa();
@@ -47,7 +47,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		return $scope.kokonaanvalmis;
 	};
 	$scope.isKaynnissa = function() { // onko ajossa tai onko mielekasta enaa
-										// ajaakkaan
+		// ajaakkaan
 		return $scope.uuid == null || $scope.kaynnissa;
 	};
 	$scope.paivitaSSE = function(uuid) {
@@ -83,20 +83,20 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	};
 	$scope.uudelleenyritaForce = function() {
 		ValintalaskentaKerrallaUudelleenYrita
-		.uudelleenyrita(
-				{
-					uuid : $scope.uuid
-				},
-				function(uuid) {
-					$scope.paivitaForce(uuid.latausUrl);
-				},
-				function() {
-					Ilmoitus
-							.avaa(
-									"Valintakoelaskenta epäonnistui",
-									"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.",
-									IlmoitusTila.ERROR);
-				});
+				.uudelleenyrita(
+						{
+							uuid : $scope.uuid
+						},
+						function(uuid) {
+							$scope.paivitaForce(uuid.latausUrl);
+						},
+						function() {
+							Ilmoitus
+									.avaa(
+											"Valintakoelaskenta epäonnistui",
+											"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.",
+											IlmoitusTila.ERROR);
+						});
 	};
 	$scope.uudelleenyrita = function() {
 		if ($scope.isKaynnissa()) {
@@ -110,16 +110,19 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			$scope.uudelleenyritaForce();
 		}
 	};
-	if(oids.laskenta) {
+	if (oids.laskenta) {
+		$log.info("Jatketaan olemassa olevaa laskentaa.");
 		$scope.paivitaMuuttujat(oids.laskenta);
-	}
-	if ($scope.uuid) {
 		if ($scope.isKaynnissa()) {
+			$log.info("On jo kaynnissa. Koitetaan ottaa uusi yhteys palvelimeen. " + $scope.uuid);
 			$scope.paivitaForce($scope.uuid);
 		} else {
+			$log.info("Ei ole kaynnissa. Koitetaan alustaa uusi laskenta.");
+			$scope.kaynnissa = true;
 			$scope.uudelleenyritaForce();
 		}
 	} else {
+		$log.info("Aloitetaan kokonaan uusi laskenta.");
 		var whitelist = oids.whitelist;
 		if (!whitelist) {
 			whitelist = true;
@@ -153,10 +156,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 											IlmoitusTila.ERROR);
 						});
 	}
-	
-	
-	
-	
+
 	$scope.yhteenveto = function() {
 		$window.open(VALINTALASKENTAKOOSTE_URL_BASE
 				+ "resources//valintalaskentakerralla/status/" + $scope.uuid
