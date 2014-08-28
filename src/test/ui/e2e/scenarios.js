@@ -15,7 +15,7 @@ describe('E2E-TESTS', function() {
                     toMatch(/Valintojen toteuttaminen/);
             });
 
-            it('should select first item from dropdown', function() {
+            it('should select Ammatillisen item from dropdown', function() {
                 element(by.cssContainingText('option', 'Ammatillisen')).click();
                 expect(browser.getLocationAbsUrl()).toMatch("/hakukohde");
             });

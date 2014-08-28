@@ -39,14 +39,14 @@ angular.module('valintalaskenta').
         'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat', 'SijoittelunTulosHyvaksymiskirjeet', 
         'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp',
         '$log', '$timeout', '$q','$location', 
-        'ValintakoelaskentaAktivointi', 'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
+        'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
         'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat',
         function ($scope, $modal, $interval, _, 
         		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, 
         		Jalkiohjauskirjepohjat, AktivoiKelaFtp, 
         		$log, $timeout, $q, $location, 
-        		ValintakoelaskentaAktivointi, Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
+        		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                 $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
                 HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat) {
     "use strict";
@@ -82,7 +82,8 @@ angular.module('valintalaskenta').
                 oids: function () {
                     return {
                         hakuOid: $routeParams.hakuOid,
-                        uuid: laskenta.uuid
+                        uuid: laskenta.uuid,
+                        laskenta: laskenta
                     };
                 }
             }
@@ -185,27 +186,6 @@ angular.module('valintalaskenta').
             });
     };
     // KELA TAULUKON CHECKBOXIT LOPPUU
-
-    ///////////////////
-    $scope.aktivoiMuistinvarainenValintalaskenta = function () {
-        var valintalaskentaInstance = $modal.open({
-            backdrop: 'static',
-            templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
-            controller: ValintalaskentaIkkunaCtrl,
-            size: 'lg',
-            resolve: {
-                oids: function () {
-                    return {
-                        hakuOid: $routeParams.hakuOid,
-                        hakukohdeOid: null,
-                        valinnanvaihe: null,
-                        laskeMuistissa: true
-                    };
-                }
-            }
-        });
-    };
-
     SijoitteluAjo.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function (result) {
         $scope.sijoitteluModel = result;
     });
@@ -285,13 +265,40 @@ angular.module('valintalaskenta').
             size: 'lg'
         });
     };
-    
+    $scope.aktivoiHaunValintalaskenta = function() {
+    	var hakuoid = $routeParams.hakuOid;
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/seurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        valinnanvaihe: -1,
+                        valintakoelaskenta: false
+                    };
+                }
+            }
+        });
+    };
     $scope.aktivoiHaunValintakoelaskenta = function () {
         var hakuoid = $routeParams.hakuOid;
-        ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuoid}, {}, function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta haulle", "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
-        }, function () {
-            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+    	var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/valintakoelaskenta.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        valinnanvaihe: null,
+                        valintakoelaskenta: true
+                    };
+                }
+            }
         });
     };
 

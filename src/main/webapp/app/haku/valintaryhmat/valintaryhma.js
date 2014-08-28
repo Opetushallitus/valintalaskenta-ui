@@ -105,7 +105,7 @@ app.factory('ValintaryhmaLista', function ($resource, $q, ValintaryhmatJaHakukoh
     return modelInterface;
 });
 
-function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, ValintaryhmaLista, ValintaryhmaLaskenta) {
+function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, ValintaryhmaLista) {
     $scope.predicate = 'nimi';
     $scope.domain = ValintaryhmaLista;
 
@@ -234,10 +234,22 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
     $scope.kaynnistaValintakoelaskenta = function () {
         var hakuOid = $routeParams.hakuOid;
         var hakukohdeOid = $routeParams.hakukohdeOid;
-        ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, {}, function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta hakukohteelle " + hakukohdeOid, "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
-        }, function (error) {
-            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. Valintakoelaskenta epäonnistui palvelin virheeseen:" + error.data, IlmoitusTila.ERROR);
+        var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/valintakoelaskenta.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        valinnanvaihe: null,
+                        valintakoelaskenta: true,
+                        tyyppi: "VALINTARYHMA",
+                        hakukohteet: [$routeParams.hakukohdeOid]
+                    };
+                }
+            }
         });
     };
 

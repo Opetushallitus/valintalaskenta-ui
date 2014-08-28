@@ -6,10 +6,10 @@
 	<h2 style="margin-top: -12px;">{{nimentarkennus}}</h2>
 	<br>
 	<div class="progress">
-	  <div class="progress-bar progress-bar-success" style="width: {{getOnnistuneetProsentit()}}%">
+	  <div class="progress-bar" ng-style="{width:getOnnistuneetProsentit()+'%'}">
 	    {{getOnnistuneetProsentit()}}%
 	  </div>
-	  <div class="progress-bar progress-bar-danger" style="width: {{getOhitetutProsentit()}}%">
+	  <div class="progress-bar progress-bar-danger" ng-style="{width:getOhitetutProsentit()+'%'}">
 	    {{getOhitetutProsentit()}}%
 	  </div>
 	</div>
@@ -28,7 +28,7 @@
 	<br>
 	<div class="row" ng-show="lisaa">
 		<a class="btn btn-default" ng-click="yhteenveto()">{{ t('valintalaskentaikkuna.vietaulukkolaskentaan') || 'Lataa yhteenveto' }}</a>
-		<a ng-hide="isKaynnissa()" class="btn btn-default" ng-click="uudelleenyrita()">{{ t('valintalaskentaikkuna.uudelleenyrita') || 'Yritä uudelleen ohitettuja hakukohteita' }}</a>
+		<a ng-hide="hideUudelleenYritys()" class="btn btn-default" ng-click="uudelleenyrita()">{{ t('valintalaskentaikkuna.uudelleenyrita') || 'Yritä uudelleen ohitettuja hakukohteita' }}</a>
 		<a class="btn btn-danger" ng-class="{disabled:disabloikeskeyta}" ng-click="peruuta()">{{ t('valintalaskentaikkuna.keskeyta') || 'Keskeytä valintalaskenta' }}</a>
 	</div>
 </div>

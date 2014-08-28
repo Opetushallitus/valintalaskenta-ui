@@ -35,8 +35,8 @@
         <button privileges="valintakoekutsut" ng-click="aktivoiHaunValintakoelaskenta()"
                 class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritahaulle') || 'Suorita valintakoelaskenta haulle' }}
         </button>
-        <button privileges="valintalaskenta" ng-click="aktivoiMuistinvarainenValintalaskenta()"
-                class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskenta') || 'Suorita valintalaskenta' }}
+        <button privileges="valintakoekutsut" ng-click="aktivoiHaunValintalaskenta()"
+                class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskenta') || 'Suorita valintalaskenta haulle' }}
         </button>
         <button privileges="valintalaskenta" ng-click="aktivoiValintalaskentaKerralla()"
                 class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskentajavalintakoelaskentahaulle') || 'Suorita valintalaskenta ja valintakoelaskenta haulle' }}
@@ -78,7 +78,7 @@
 		    <h4 class="list-group-item-heading">{{laskenta.tila}}</h4>
 		    <div class="list-group-item-text">
 			    <div class="progress">
-				  <div class="progress-bar progress-bar-success" style="width: {{prosentteina(laskenta.hakukohteitaValmiina,laskenta.hakukohteitaYhteensa)}}%">
+				  <div class="progress-bar" style="width: {{prosentteina(laskenta.hakukohteitaValmiina,laskenta.hakukohteitaYhteensa)}}%">
 				    {{prosentteina(laskenta.hakukohteitaValmiina,laskenta.hakukohteitaYhteensa)}}%
 				  </div>
 				  <div class="progress-bar progress-bar-danger" style="width: {{prosentteina(laskenta.hakukohteitaKeskeytetty,laskenta.hakukohteitaYhteensa)}}%">

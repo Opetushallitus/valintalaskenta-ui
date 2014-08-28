@@ -37,10 +37,10 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
 
 angular.module('valintalaskenta').
     controller('ValinnanhallintaController',['$scope', '$routeParams', '$modal', 'Latausikkuna', 'Ilmoitus',
-        'ValinnanhallintaModel', 'HakukohdeModel', 'ValintalaskentaMuistissa', 'ValintakoelaskentaAktivointi',
+        'ValinnanhallintaModel', 'HakukohdeModel', 
         'ParametriService', 'IlmoitusTila',
     function ($scope, $routeParams, $modal, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel,
-              ValintalaskentaMuistissa, ValintakoelaskentaAktivointi, ParametriService, IlmoitusTila) {
+              ParametriService, IlmoitusTila) {
     "use strict";
 
     $scope.model = ValinnanhallintaModel;
@@ -69,29 +69,42 @@ angular.module('valintalaskenta').
     $scope.kaynnistaValintalaskenta = function (valinnanvaihe) {
         var valintalaskentaInstance = $modal.open({
             backdrop: 'static',
-            templateUrl: '../common/modaalinen/valintalaskentaikkuna.html',
-            controller: ValintalaskentaIkkunaCtrl,
+            templateUrl: '../common/modaalinen/hakukohdeseurantaikkuna.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
             resolve: {
                 oids: function () {
                     return {
                         hakuOid: $routeParams.hakuOid,
-                        hakukohdeOid: $routeParams.hakukohdeOid,
                         valinnanvaihe: valinnanvaihe,
-                        laskeMuistissa: true
+                        valintakoelaskenta: false,
+                        tyyppi: "HAKUKOHDE",
+                        hakukohteet: [$routeParams.hakukohdeOid]
                     };
                 }
             }
         });
-
     };
 
     $scope.kaynnistaValintakoelaskenta = function () {
         var hakuOid = $routeParams.hakuOid;
         var hakukohdeOid = $routeParams.hakukohdeOid;
-        ValintakoelaskentaAktivointi.aktivoi({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, {}, function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Valintakoelaskenta hakukohteelle " + hakukohdeOid, "", "haku/hallinta/modaalinen/valintakoeikkuna.html", {});
-        }, function (error) {
-            Ilmoitus.avaa("Valintakoelaskenta epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. Valintakoelaskenta epäonnistui palvelin virheeseen:" + error.data, IlmoitusTila.ERROR);
+        var valintalaskentaInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/valintakoelaskenta.html',
+            controller: SeurantaIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                        hakuOid: $routeParams.hakuOid,
+                        valinnanvaihe: null,
+                        valintakoelaskenta: true,
+                        tyyppi: "HAKUKOHDE",
+                        hakukohteet: [$routeParams.hakukohdeOid]
+                    };
+                }
+            }
         });
     };
 
