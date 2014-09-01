@@ -21,6 +21,7 @@
 </div>
 <div class="modal-footer">
 	<div class="row">
+		<a ng-hide="hideUudelleenYritys()" class="btn btn-default" ng-click="uudelleenyrita()">{{ t('valintalaskentaikkuna.uudelleenyrita') || 'Yritä uudelleen ohitettuja hakukohteita' }}</a>
 		<a class="btn btn-default" ng-click="ok()"  role="button">{{ t('valintalaskentaikkuna.sulje') || 'Sulje ikkuna' }}</a>
 	    <a class="btn btn-default" ng-click="naytaLisaa()"  role="button"><span ng-hide="lisaa">Lisää &raquo;</span><span ng-show="lisaa">{{ t('valintalaskentaikkuna.vahemman') || 'Vähemmän' }} &laquo;</span></a>
 	</div>
@@ -28,7 +29,6 @@
 	<div class="row" ng-show="lisaa">			
 		<a class="btn btn-default" ng-click="vieJsoniksi()">{{ t('valintalaskentaikkuna.viejsoniksi') || 'Vie jsoniksi' }}</a>
 		<a class="btn btn-default" ng-click="yhteenveto()">{{ t('valintalaskentaikkuna.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
-		<a ng-hide="hideUudelleenYritys()" class="btn btn-default" ng-click="uudelleenyrita()">{{ t('valintalaskentaikkuna.uudelleenyrita') || 'Yritä uudelleen ohitettuja hakukohteita' }}</a>
 		<a class="btn btn-danger" ng-class="{disabled:disabloikeskeyta}" ng-click="peruuta()">{{ t('valintalaskentaikkuna.keskeyta') || 'Keskeytä valintalaskenta' }}</a>
 	</div>
 </div>

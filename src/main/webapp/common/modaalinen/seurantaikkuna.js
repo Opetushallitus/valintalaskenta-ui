@@ -31,7 +31,10 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		$scope.ohitettu = r.hakukohteitaKeskeytetty;
 		$scope.tehty = r.hakukohteitaValmiina;
 		$scope.kaikkityot = r.hakukohteitaYhteensa;
-		$scope.kaynnissa = (r.tila == "MENEILLAAN");
+		if(r.tila == "VALMIS") {
+			$scope.kaynnissa = false;
+		}
+		//$scope.kaynnissa = (r.tila == "MENEILLAAN");
 		if ($scope.kaikkityot) {
 			if ($scope.tehty == $scope.kaikkityot) {
 				$scope.kokonaanvalmis = true;
@@ -88,6 +91,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 							uuid : $scope.uuid
 						},
 						function(uuid) {
+							$scope.kaynnissa = true;
 							$scope.paivitaForce(uuid.latausUrl);
 						},
 						function() {
@@ -113,14 +117,6 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	if (oids.laskenta) {
 		$log.info("Jatketaan olemassa olevaa laskentaa.");
 		$scope.paivitaMuuttujat(oids.laskenta);
-		if ($scope.isKaynnissa()) {
-			$log.info("On jo kaynnissa. Koitetaan ottaa uusi yhteys palvelimeen. " + $scope.uuid);
-			$scope.paivitaForce($scope.uuid);
-		} else {
-			$log.info("Ei ole kaynnissa. Koitetaan alustaa uusi laskenta.");
-			$scope.kaynnissa = true;
-			$scope.uudelleenyritaForce();
-		}
 	} else {
 		$log.info("Aloitetaan kokonaan uusi laskenta.");
 		var whitelist = oids.whitelist;
@@ -146,6 +142,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 						},
 						hakukohteet,
 						function(uuid) {
+							$scope.kaynnissa = true;
 							$scope.paivitaForce(uuid.latausUrl);
 						},
 						function() {
