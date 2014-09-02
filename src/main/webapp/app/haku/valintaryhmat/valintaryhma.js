@@ -1,23 +1,28 @@
 //domain .. this is both, service & domain layer
-app.factory('ValintaryhmaLista', function ($resource, $q, ValintaryhmatJaHakukohteet, AuthService) {
+app.factory('ValintaryhmaLista', function ($resource, $q, ValintaryhmatJaHakukohteet, AuthService, HakuModel) {
 
     //and return interface for manipulating the model
     var modelInterface = {
         //models
+        hakukohteet: [],
         valintaperusteList: [],
-        search: {   q: null,
-            valintaryhmatAuki: null
+        search: {
+            q: null,
+            valintaryhmatAuki: null,
+            haku: null
         },
         tilasto: {
             valintaryhmia: 0,
             valintaryhmiaNakyvissa: 0
         },
 
-        refresh: function () {
+        refresh: function (hakuOid) {
             var deferred = $q.defer();
+
             ValintaryhmatJaHakukohteet.get({
                 q: this.search.q,
-                hakukohteet: true
+                hakukohteet: true,
+                hakuOid: hakuOid
             }, function (result) {
                 modelInterface.valintaperusteList = result;
                 modelInterface.update();
@@ -59,35 +64,28 @@ app.factory('ValintaryhmaLista', function ($resource, $q, ValintaryhmatJaHakukoh
                     modelInterface.tilasto.valintaryhmia++;
                 }
 
-                /*
-                 AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
-                 "use strict";
-                 item.access = false;
-                 organisations.forEach(function(org){
-
-                 if(item.organisaatiot.length > 0) {
-                 item.organisaatiot.forEach(function(org2) {
-                 if(org2.parentOidPath.indexOf(org) > -1) {
-                 item.access = true;
-                 }
-                 });
-                 } else {
-                 AuthService.updateOph("APP_VALINTAPERUSTEET").then(function(){
-                 item.access = true;
-                 });
-                 }
-                 });
-                 });
-                 */
-
-
                 if (item.alavalintaryhmat) {
                     for (var i = 0; i < item.alavalintaryhmat.length; i++)  recursion(item.alavalintaryhmat[i]);
                 }
-            }
+
+                if(item.tyyppi === 'HAKUKOHDE') {
+                    modelInterface.tilasto.hakukohteita++;
+                    modelInterface.hakukohteet.push(item);
+                }
+            };
+
             for (var i = 0; i < list.length; i++) {
                 recursion(list[i]);
             }
+            
+            modelInterface.hakukohteet.forEach(function(hakukohde){
+                hakukohde.sisaltaaHakukohteita = true;
+                var parent = hakukohde.ylavalintaryhma;
+                while(typeof parent !== 'undefined' && parent !== null) {
+                    parent.sisaltaaHakukohteita = true;
+                    parent = parent.ylavalintaryhma;
+                }
+            });
 
             modelInterface.valintaperusteList = list;
         },
@@ -109,7 +107,7 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
     $scope.predicate = 'nimi';
     $scope.domain = ValintaryhmaLista;
 
-    var promise = ValintaryhmaLista.refresh();
+    var promise = ValintaryhmaLista.refresh($routeParams.hakuOid);
     promise.then(function (result) {
         _.forEach($scope.domain.valintaperusteList, function (valintaperusteHierarkia) {
             $scope.reverseSearch(valintaperusteHierarkia);

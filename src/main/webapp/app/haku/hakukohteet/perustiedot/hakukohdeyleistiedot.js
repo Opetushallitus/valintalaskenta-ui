@@ -1,12 +1,5 @@
-/**
- * Created with IntelliJ IDEA.
- * User: tommiha
- * Date: 3/13/13
- * Time: 1:59 PM
- * To change this template use File | Settings | File Templates.
- */
 
-app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNimi) {
+angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'TarjontaHakukohde', 'HakukohdeNimi', function ($q, $log, TarjontaHakukohde, HakukohdeNimi) {
     "use strict";
 
 
@@ -127,7 +120,7 @@ app.factory('HakukohdeModel', function ($q, $log, TarjontaHakukohde, HakukohdeNi
     }();
 
     return model;
-});
+}]);
 
 angular.module('valintalaskenta').
     controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',

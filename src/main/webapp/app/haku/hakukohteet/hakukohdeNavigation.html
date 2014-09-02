@@ -27,6 +27,10 @@
         <span>{{ t('hakukohdenavigation.harkinnanvaraiset') || 'Harkinnanvaraiset' }}</span>
     </a>
 
+    <a auth-additional-check="hakijaryhmat" ng-class="navClass('hakijaryhmat', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakijaryhmat" class="tab">
+        <span>{{ t('hakukohdenavigation.hakijaryhmat') || 'Hakijaryhmät' }}</span>
+    </a>
+
     <a auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('valintalaskentatulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintalaskentatulos" class="tab">
     	<span>{{ t('hakukohdenavigation.valintalaskennantulos') || 'Valintalaskennan tulos' }}</span>
     </a>

@@ -1,0 +1,40 @@
+<h1>{{ t('hakukohteet.hakijaryhmat') || 'Hakijaryhmät' }}</h1>
+<div ng-include="'../common/js/topnavigation/topNavigation.html'"></div>
+
+<div class="tabsheets">
+
+    <div ng-include="'haku/hakukohdelista.html'"></div>
+    <div class="toggle-content-container overflow-x-scroll">
+
+        <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
+
+        <div class="tabsheets">
+
+            <table class="virkailija-table-1">
+                <thead>
+                <tr>
+                    <th>Hakija</th>
+                    <th>Hakemuksen tila</th>
+                    <th>Valinnan tila</th>
+                    <th>Sijoittelun tila</th>
+                    <th>Vastaanottotila</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+    <div class="clear"></div>
+</div>
