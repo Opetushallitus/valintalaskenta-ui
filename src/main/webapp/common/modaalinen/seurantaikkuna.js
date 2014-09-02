@@ -24,7 +24,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		if (!!window.EventSource) {
 			$scope.paivitaSSE(uuid);
 			$interval.cancel(timer);
-			$log.info("SSE keep alive timeri kaynnistetty");
+			$log.info("SSE "+uuid+" keep alive timeri kaynnistetty");
 			timer = $interval(function() {
 				// keep alive SSE yhteyteen
 				$scope.paivitaSSE(uuid);
@@ -42,7 +42,9 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		$scope.tehty = r.hakukohteitaValmiina;
 		$scope.kaikkityot = r.hakukohteitaYhteensa;
 		if(r.tila == "VALMIS") {
-			$scope.kaynnissa = false;
+			if ($scope.ohitettu + $scope.tehty == $scope.kaikkityot) {
+				$scope.kaynnissa = false;
+			}
 		}
 		//$scope.kaynnissa = (r.tila == "MENEILLAAN");
 		if ($scope.kaikkityot) {
@@ -71,18 +73,19 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 				var r = angular.fromJson(e.data);
 				$scope.paivitaMuuttujat(r);
 				if (!$scope.kaynnissa) {
+					$log.info("SSE "+$scope.uuid+" suljetaan selaimen pyynnosta!");
 					$scope.source.close();
 				}
 			});
 		}, false);
 
 		$scope.source.addEventListener('open', function(e) {
-			$log.info("SSE yhteys avattu");
+			$log.info("SSE "+uuid+" yhteys avattu");
 		}, false);
 
 		$scope.source.addEventListener('error', function(e) {
 			if (e.readyState == EventSource.CLOSED) {
-				$log.error("SSE yhteys suljettu");
+				$log.error("SSE "+uuid+" yhteys suljettu");
 			}
 		}, false);
 	};
@@ -90,7 +93,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		$scope.uuid = uuid;
 		if($scope.source) {
 			if($scope.source.readystate == EventSource.CLOSED || $scope.source.readyState == EventSource.CLOSED) {
-				$log.info("SSE uudelleen kaynnistys koska yhteys oli suljettu");
+				$log.info("SSE "+uuid+" uudelleen kaynnistys koska yhteys oli suljettu");
 				$scope.reconnect(uuid);
 			}
 		} else {
@@ -210,6 +213,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			$interval.cancel(timer);
 		}
 		if ($scope.source) {
+			$log.info("SSE "+$scope.uuid+" suljetaan selaimen pyynnosta!");
 			$scope.source.close();
 		}
 		$modalInstance.close(); // $scope.selected.item);
@@ -220,6 +224,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			$interval.cancel(timer);
 		}
 		if ($scope.source) {
+			$log.info("SSE "+$scope.uuid+" suljetaan selaimen pyynnosta!");
 			$scope.source.close();
 		}
 		$modalInstance.dismiss('cancel');
