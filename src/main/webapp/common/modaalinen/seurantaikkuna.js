@@ -21,11 +21,20 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	var timer = undefined;
 	$scope.paivitaPollaten = function(uuid) {
 		$scope.uuid = uuid;
-		update();
-		$interval.cancel(timer);
-		timer = $interval(function() {
+		if (!!window.EventSource) {
+			$scope.paivitaSSE(uuid);
+			$interval.cancel(timer);
+			timer = $interval(function() {
+				// keep alive SSE yhteyteen
+				$scope.paivitaSSE(uuid);
+			}, 10000);
+		} else {
 			update();
-		}, 10000);
+			$interval.cancel(timer);
+			timer = $interval(function() {
+				update();
+			}, 10000);
+		}
 	};
 	$scope.paivitaMuuttujat = function(r) {
 		$scope.ohitettu = r.hakukohteitaKeskeytetty;
@@ -53,8 +62,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		// ajaakkaan
 		return $scope.uuid == null || $scope.kaynnissa;
 	};
-	$scope.paivitaSSE = function(uuid) {
-		$scope.uuid = uuid;
+	$scope.reconnect = function(uuid) {
 		$scope.source = new EventSource(SEURANTA_URL_BASE
 				+ '/seuranta/yhteenveto/' + uuid + '/sse');
 		$scope.source.addEventListener('message', function(e) {
@@ -77,12 +85,18 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			}
 		}, false);
 	};
-	$scope.paivitaForce = function(uuid) {
-		if (!!window.EventSource) {
-			$scope.paivitaSSE(uuid);
+	$scope.paivitaSSE = function(uuid) {
+		$scope.uuid = uuid;
+		if($scope.source) {
+			if($scope.source.readystate == EventSource.CLOSED) {
+				$scope.reconnect(uuid);
+			}
 		} else {
-			$scope.paivitaPollaten(uuid);
+			$scope.reconnect(uuid);
 		}
+	};
+	$scope.paivitaForce = function(uuid) {
+		$scope.paivitaPollatenTaiSSElla(uuid);
 	};
 	$scope.uudelleenyritaForce = function() {
 		ValintalaskentaKerrallaUudelleenYrita
