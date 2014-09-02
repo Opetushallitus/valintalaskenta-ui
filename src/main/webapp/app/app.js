@@ -48,6 +48,7 @@ app.config(function($routeProvider) {
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller:'HakeneetController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakeneet/hakeneet.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto', {controller:'PistesyottoController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/pistesyotto.html'}).
     when('/haku/:hakuOid/hakukohde/:hakukohdeOid/sijoitteluntulos', {controller:'SijoitteluntulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/sijoittelu_tulos/sijoitteluntulos.html'}).
+    when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakijaryhmat', {controller:'HakijaryhmatController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakijaryhmat/hakijaryhmat.html'}).
 
     when('/valintatapajono/:valintatapajonoOid/hakemus/:hakemusOid/valintalaskentahistoria', {controller:'ValintalaskentaHistoriaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/valintalaskenta_tulos/valintalaskentahistoria.html'}).
 
