@@ -24,6 +24,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		if (!!window.EventSource) {
 			$scope.paivitaSSE(uuid);
 			$interval.cancel(timer);
+			$log.info("SSE keep alive timeri kaynnistetty");
 			timer = $interval(function() {
 				// keep alive SSE yhteyteen
 				$scope.paivitaSSE(uuid);
@@ -88,7 +89,8 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	$scope.paivitaSSE = function(uuid) {
 		$scope.uuid = uuid;
 		if($scope.source) {
-			if($scope.source.readystate == EventSource.CLOSED) {
+			if($scope.source.readystate == EventSource.CLOSED || $scope.source.readyState == EventSource.CLOSED) {
+				$log.info("SSE uudelleen kaynnistys koska yhteys oli suljettu");
 				$scope.reconnect(uuid);
 			}
 		} else {
@@ -96,7 +98,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		}
 	};
 	$scope.paivitaForce = function(uuid) {
-		$scope.paivitaPollatenTaiSSElla(uuid);
+		$scope.paivitaPollaten(uuid);
 	};
 	$scope.uudelleenyritaForce = function() {
 		ValintalaskentaKerrallaUudelleenYrita
