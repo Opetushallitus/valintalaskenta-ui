@@ -361,13 +361,11 @@ angular.module('valintalaskenta').
         $scope.updateOph = true;
     });
 
-    $scope.isValinnanvaiheVisible = function (valintalaskenta, index, filter, last) {
-        return ((last && !filter && valintalaskenta[index].valintatapajonot) ||
-            (index + 1 < valintalaskenta.length && valintalaskenta[index + 1].valintatapajonot.length === 0) || filter);
+    $scope.isValinnanvaiheVisible = function (filter, first) {
+        return (!filter || filter && first);
     };
-    $scope.isValinnanvaiheNameVisible = function (valintalaskenta, index, filter, last, first) {
-        return ((last && !filter && valintalaskenta[index].valintatapajonot) ||
-            (!filter && index + 1 < valintalaskenta.length && valintalaskenta[index + 1].valintatapajonot.length === 0) || first && filter);
+    $scope.isValinnanvaiheNameVisible = function (first) {
+        return (first);
     };
 
     $scope.tallennaPisteet = function () {
@@ -401,22 +399,26 @@ angular.module('valintalaskenta').
         $scope.model.hakutoiveet.forEach(function (hakutoive) {
             hakutoiveet.push(hakutoive.hakukohdeOid);
         });
-        var valintalaskentaInstance = $modal.open({
-            backdrop: 'static',
-            templateUrl: '../common/modaalinen/hakutoiveetseurantaikkuna.html',
-            controller: SeurantaIkkunaCtrl,
-            size: 'lg',
-            resolve: {
-                oids: function () {
-                    return {
-                        hakuOid: $routeParams.hakuOid,
-                        nimentarkennus: "",
-                        tyyppi: "VALINTARYHMA",
-                        hakukohteet: hakutoiveet
-                    };
-                }
-            }
-        });
+        if(hakutoiveet[0] != null) {
+            var valintalaskentaInstance = $modal.open({
+	            backdrop: 'static',
+	            templateUrl: '../common/modaalinen/hakutoiveetseurantaikkuna.html',
+	            controller: SeurantaIkkunaCtrl,
+	            size: 'lg',
+	            resolve: {
+	                oids: function () {
+	                    return {
+	                        hakuOid: $routeParams.hakuOid,
+	                        nimentarkennus: "",
+	                        tyyppi: "VALINTARYHMA",
+	                        hakukohteet: hakutoiveet
+	                    };
+	                }
+	            }
+	        });
+        } else {
+        	Ilmoitus.avaa("Ei hakutoiveta", "Hakijalle ei ole hakutoiveita.", IlmoitusTila.ERROR);
+        }
     };
 
     $scope.privileges = ParametriService;

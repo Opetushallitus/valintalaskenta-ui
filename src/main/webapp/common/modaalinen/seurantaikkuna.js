@@ -66,6 +66,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		return $scope.uuid == null || $scope.kaynnissa;
 	};
 	$scope.reconnect = function(uuid) {
+		$log.info("Yhdistetaan! " + uuid);
 		$scope.source = new EventSource(SEURANTA_URL_BASE
 				+ '/seuranta/yhteenveto/' + uuid + '/sse');
 		$scope.source.addEventListener('message', function(e) {

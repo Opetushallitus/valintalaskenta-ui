@@ -28,9 +28,9 @@
                 </a>
             </td>
         </tr>
-        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta" ng-show="hakutoive.valintalaskenta && isValinnanvaiheVisible(hakutoive.valintalaskenta,$index,filter,$last)">
+        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'createdAt':true" ng-show="hakutoive.valintalaskenta && isValinnanvaiheVisible(filter,$first)">
             <td>
-                <div ng-if="isValinnanvaiheNameVisible(hakutoive.valintalaskenta,$index,filter,$last,$first)">
+                <div ng-if="isValinnanvaiheNameVisible($first)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                     <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                         {{hakutoive.oppilaitos}}
