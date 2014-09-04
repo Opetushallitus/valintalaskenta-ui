@@ -361,13 +361,11 @@ angular.module('valintalaskenta').
         $scope.updateOph = true;
     });
 
-    $scope.isValinnanvaiheVisible = function (valintalaskenta, index, filter, last) {
-        return ((last && !filter && valintalaskenta[index].valintatapajonot) ||
-            (index + 1 < valintalaskenta.length && valintalaskenta[index + 1].valintatapajonot.length === 0) || filter);
+    $scope.isValinnanvaiheVisible = function (filter, first) {
+        return (!filter || filter && first);
     };
-    $scope.isValinnanvaiheNameVisible = function (valintalaskenta, index, filter, last, first) {
-        return ((last && !filter && valintalaskenta[index].valintatapajonot) ||
-            (!filter && index + 1 < valintalaskenta.length && valintalaskenta[index + 1].valintatapajonot.length === 0) || first && filter);
+    $scope.isValinnanvaiheNameVisible = function (first) {
+        return (first);
     };
 
     $scope.tallennaPisteet = function () {
