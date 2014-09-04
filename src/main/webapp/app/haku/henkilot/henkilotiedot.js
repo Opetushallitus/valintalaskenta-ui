@@ -401,22 +401,26 @@ angular.module('valintalaskenta').
         $scope.model.hakutoiveet.forEach(function (hakutoive) {
             hakutoiveet.push(hakutoive.hakukohdeOid);
         });
-        var valintalaskentaInstance = $modal.open({
-            backdrop: 'static',
-            templateUrl: '../common/modaalinen/hakutoiveetseurantaikkuna.html',
-            controller: SeurantaIkkunaCtrl,
-            size: 'lg',
-            resolve: {
-                oids: function () {
-                    return {
-                        hakuOid: $routeParams.hakuOid,
-                        nimentarkennus: "",
-                        tyyppi: "VALINTARYHMA",
-                        hakukohteet: hakutoiveet
-                    };
-                }
-            }
-        });
+        if(hakutoiveet[0] != null) {
+            var valintalaskentaInstance = $modal.open({
+	            backdrop: 'static',
+	            templateUrl: '../common/modaalinen/hakutoiveetseurantaikkuna.html',
+	            controller: SeurantaIkkunaCtrl,
+	            size: 'lg',
+	            resolve: {
+	                oids: function () {
+	                    return {
+	                        hakuOid: $routeParams.hakuOid,
+	                        nimentarkennus: "",
+	                        tyyppi: "VALINTARYHMA",
+	                        hakukohteet: hakutoiveet
+	                    };
+	                }
+	            }
+	        });
+        } else {
+        	Ilmoitus.avaa("Ei hakutoiveta", "Hakijalle ei ole hakutoiveita.", IlmoitusTila.ERROR);
+        }
     };
 
     $scope.privileges = ParametriService;
