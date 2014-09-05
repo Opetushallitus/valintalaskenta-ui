@@ -230,7 +230,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             }, function (error) {
             	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
             });
-        }
+        };
 
         this.valitutOidit = function(){
             var oidit = [];

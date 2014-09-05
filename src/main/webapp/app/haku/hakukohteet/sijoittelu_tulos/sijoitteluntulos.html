@@ -82,7 +82,8 @@
                             <td>{{hakemus.prioriteetti}}</td>
                             <td><span ng-if="hakemus.pisteet >= 0">{{hakemus.pisteet}}</span></td>
                             <td>
-                                <span>{{hakemus.tila}}</span>
+                                <span ng-if="!hakemus.tilanKuvaukset.FI">{{hakemus.tila}}</span>
+                                <span ng-if="hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.FI}}</span>
                                 <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
                                 <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
                                 <modal modal-template="sijoitteluTilaHistoriModal.html">
