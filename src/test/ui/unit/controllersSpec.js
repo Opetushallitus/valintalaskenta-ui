@@ -993,6 +993,8 @@ describe('Testing ValintalaskentatulosController', function(){
             .respond(201,hakukohdenimijson);
         $httpBackend.expectGET('resources/hakukohde/'+routeParams.hakukohdeOid+'/ilmanlaskentaa')
             .respond(201,"[]");
+        $httpBackend.expectGET('organisaatio/1.2.246.562.10.60222091211/parentoids')
+            .respond(201,"1.2.246.562.10.00000000001/1.2.246.562.20.59262166669");
 
         ctrl = $controller('ValintalaskentatulosController', {'$scope' : scope,'$location': location,
             '$routeParams': routeParams, '$timeout': $timeout, '$upload': $upload,

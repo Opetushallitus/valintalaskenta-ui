@@ -237,7 +237,7 @@ angular.module('valintalaskenta').
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.model = ValintalaskentatulosModel;
     $scope.hakukohdeModel = HakukohdeModel;
-    HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+    var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
     $scope.pageSize = 50;
     $scope.currentPage = [];
@@ -315,9 +315,21 @@ angular.module('valintalaskenta').
         }
     };
 
+
+
+
+
+
     AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
         $scope.updateOph = true;
     });
+
+        hakukohdeModelpromise.then(function () {
+            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
+                $scope.crudOrg = true;
+            });
+        });
+
 
     $scope.submit = function (vaiheoid, jonooid) {
         ValintalaskentatulosModel.submit(vaiheoid, jonooid);
@@ -349,5 +361,8 @@ angular.module('valintalaskenta').
         }
 
     };
+
+
+
 
 }]);
