@@ -1362,13 +1362,15 @@ describe('Testing ValintatulosController', function(){
 
 describe('Testing LisahakuhyvaksytytController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hyvaksytytModel, hakukohdeModel, authService,
-        hakemusKey,hakukohdejson,hakeneetjson,hakukohdenimijson,hakutoiveetjson, localisationService;
+        hakemusKey,hakukohdejson,hakeneetjson,hakukohdenimijson,hakutoiveetjson, localisationService,sijoitteluajojson,
+        hakukohdetilajson;
     var routeParams = {"hakuOid": "oid1",
         "hakukohdeOid" : "oid2"};
 
     beforeEach(module('valintalaskenta','testData'));
 
-    beforeEach(inject(function($injector,hakukohdeJSON,hakeneetJSON,hakukohdenimiJSON,hakutoiveetJSON) {
+    beforeEach(inject(function($injector,hakukohdeJSON,hakeneetJSON,hakukohdenimiJSON,hakutoiveetJSON,sijoitteluajoJSON,
+                               hakukohdetilaJSON) {
         $httpBackend = $injector.get('$httpBackend');
         $rootScope = $injector.get('$rootScope');
         $controller = $injector.get('$controller');
@@ -1382,6 +1384,8 @@ describe('Testing LisahakuhyvaksytytController', function(){
         hakeneetjson = hakeneetJSON;
         hakukohdenimijson = hakukohdenimiJSON;
         hakutoiveetjson = hakutoiveetJSON;
+        sijoitteluajojson = sijoitteluajoJSON;
+        hakukohdetilajson = hakukohdetilaJSON;
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
@@ -1405,48 +1409,13 @@ describe('Testing LisahakuhyvaksytytController', function(){
 
         $httpBackend.expectGET('organisaatio/'+routeParams.hakukohdeOid+'/parentoids')
             .respond(201,"1.2.246.562.10.00000000001/1.2.246.562.20.59262166669");
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000840202?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000846235?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000833345?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000832029?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000828499?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000861032?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000869924?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000847247?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000872681?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000842048?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000875976?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000857004?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000843021?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000869636?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000858430?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000871815?appState=ACTIVE&appState=INCOMPLETE')
-            .respond(201,hakutoiveetjson);
-        for (var i = 0; i < 17; i++) {
-            $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076/lisahaku-hyvaksytty')
-                .respond(201, "");
-            $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076/lisahaku-vastaanottotieto')
-                .respond(201, "");
-            $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076/lisahaku-ilmoittautumistieto')
-                .respond(201, "");
-        }
+        $httpBackend.expectGET('resources/sijoittelu/'+routeParams.hakuOid+'/sijoitteluajo/latest/hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,sijoitteluajojson);
+
+        $httpBackend.expectGET('resources/tila/hakukohde/'+routeParams.hakukohdeOid+'/1397647295344-8565235898154713515')
+            .respond(201,hakukohdetilajson);
+
+
         ctrl = $controller('LisahakuhyvaksytytController', {'$scope' : scope, '$location':$location, '$routeParams': routeParams,
         'HyvaksytytModel':hyvaksytytModel,'HakukohdeModel':hakukohdeModel,'AuthService':authService,'HakemusKey':hakemusKey,
         'LocalisationService':localisationService});
