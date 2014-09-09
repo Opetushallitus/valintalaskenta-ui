@@ -1,69 +1,138 @@
 ﻿"use strict";
 
-app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) {
+app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, $q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
+                                        $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila,
+                                        HaunTiedot, SijoitteluTila) {
 	var model;
 	model = new function() {
 
 		this.hakeneet = [];
 		this.avaimet = [];
         this.errors = [];
+        this.sijoittelu = {};
+        this.latestSijoitteluajo = {};
+        this.sijoitteluTulokset = {};
+        this.sijoitteluMap = {};
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
+            model.hakuOid = hakuOid;
+            model.valintatapajonoOid = "";
+            model.sijoittelu = {};
+            model.latestSijoitteluajo = {};
+            model.sijoitteluTulokset = {};
+            model.sijoitteluMap = {};
             HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows:100000}, function(result) {
                 model.hakeneet = result.results;
                 if(model.hakeneet) {
-                    model.hakeneet.forEach(function(hakija){
 
-                        Hakemus.get({oid: hakija.oid}, function(result) {
-                            hakija.hakemus=result;
+                    LatestSijoitteluajoHakukohde.get({
+                        hakukohdeOid: hakukohdeOid,
+                        hakuOid: hakuOid
+                    }, function (result) {
+                        if (result.sijoitteluajoId) {
+                            model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
 
-                            HakemusKey.get({
-                                oid: hakija.hakemus.oid,
-                                key: "lisahaku-hyvaksytty"
-                            }, function (res) {
-                                if (res["lisahaku-hyvaksytty"] === model.hakukohdeOid) {
-                                    hakija.lisahakuHyvaksytty = "Kyllä";
-                                }
+                            model.sijoitteluTulokset = result;
+
+                            var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
+
+                            valintatapajonot.forEach(function (valintatapajono, index) {
+                                valintatapajono.index = index;
+                                valintatapajono.valittu = true;
+                                var valintatapajonoOid = valintatapajono.oid;
+                                var hakemukset = valintatapajono.hakemukset;
+                                model.valintatapajonoOid = valintatapajono.oid;
+                                hakemukset.forEach(function (hakemus, index) {
+
+                                    if (hakemus.tila === "HYVAKSYTTY") {
+                                        model.sijoitteluMap[hakemus.hakemusOid] = {};
+                                        model.sijoitteluMap[hakemus.hakemusOid].tila = "HYVAKSYTTY";
+                                    }
+                                });
+
+                                VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
+                                    valintatapajonoOid: valintatapajonoOid}, function (result) {
+
+                                    model.hakeneet.forEach(function (currentHakemus) {
+
+
+                                        //make rest calls in separate scope to prevent hakemusOid to be overridden during rest call
+                                        currentHakemus.vastaanottoTila = "";
+                                        currentHakemus.muokattuVastaanottoTila = "";
+                                        currentHakemus.muokattuIlmoittautumisTila = "";
+
+                                        result.some(function (vastaanottotila) {
+                                            if (vastaanottotila.hakemusOid === currentHakemus.oid) {
+                                                currentHakemus.logEntries = vastaanottotila.logEntries;
+                                                if (vastaanottotila.tila === null) {
+                                                    vastaanottotila.tila = "";
+                                                }
+                                                currentHakemus.vastaanottoTila = vastaanottotila.tila;
+                                                currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
+                                                if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT") {
+                                                }
+
+                                                if (vastaanottotila.ilmoittautumisTila === null) {
+                                                    vastaanottotila.ilmoittautumisTila = "EI_TEHTY";
+                                                }
+                                                currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
+                                                currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
+                                                return true;
+                                            }
+                                        });
+                                    });
+
+                                }, function (error) {
+                                    model.errors.push(error);
+                                });
+
                             });
-                            HakemusKey.get({
-                                oid: hakija.hakemus.oid,
-                                key: "lisahaku-vastaanottotieto"
-                            }, function (res) {
-                                hakija.hakemus.muokattuVastaanottoTila = res["lisahaku-vastaanottotieto"];
-                            });
-                            HakemusKey.get({
-                                oid: hakija.hakemus.oid,
-                                key: "lisahaku-ilmoittautumistieto"
-                            }, function (res) {
-                                hakija.hakemus.muokattuIlmoittautumisTila = res["lisahaku-ilmoittautumistieto"];
-                            });
+
+                        }
+
+                        model.hakeneet.forEach(function (currentHakemus) {
+                            if(model.sijoitteluMap[currentHakemus.oid]) {
+                                currentHakemus.lisahakuHyvaksytty = "Kyllä"
+                            }
                         });
-                    });    
+
+                    }, function (error) {
+                        model.errors.push(error.data.message);
+                    });
                 }
                 
             }, function(error) {
                 model.errors.push(error);
             });
+
+
 		};
 
-       this.updateHakemus = function(hakemusOid) {
-            HakemusKey.put({
-               oid: hakemusOid,
-               key: "lisahaku-hyvaksytty",
-               value: model.hakukohdeOid
-           }, function (res) {
+      this.updateHakemus = function(hakemusOid, hyvaksytty) {
+          var tilaParams = {
+              hakuoid: model.hakuOid,
+              hakukohdeOid: model.hakukohdeOid,
+              hakemusOid: hakemusOid
+          };
 
-           }, function (error) {
-                error = error;
-           });
-           model.hakeneet.forEach(function(hakija) {
-               if(hakija.oid === hakemusOid) {
-                   hakija.lisahakuHyvaksytty = "Kyllä";
-               }
-           });
-       };
+          SijoitteluTila.post(tilaParams, hyvaksytty, function (result) {
+
+              model.hakeneet.forEach(function(hakija) {
+                  if(hakija.oid === hakemusOid) {
+                      if(hyvaksytty) {
+                        hakija.lisahakuHyvaksytty = "Kyllä";
+                      } else {
+                          hakija.lisahakuHyvaksytty = null;
+                      }
+                  }
+              });
+              Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+          }, function (error) {
+              Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+          });
+      };
 
         this.removeHakemusFromHyvaksytyt = function(hakemusOid) {
             HakemusKey.put({
@@ -104,8 +173,9 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey) 
 
 angular.module('valintalaskenta').
     controller('LisahakuhyvaksytytController', ['$scope', '$location', '$routeParams', 'HyvaksytytModel', 'HakukohdeModel',
-        'AuthService', 'HakemusKey','LocalisationService',
-        function ($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService, HakemusKey, LocalisationService) {
+        'AuthService', 'HakemusKey','LocalisationService','SijoitteluntulosModel', 'VastaanottoTila', 'Ilmoitus', 'IlmoitusTila',
+        function ($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService, HakemusKey, LocalisationService,
+                  SijoitteluntulosModel, VastaanottoTila, Ilmoitus, IlmoitusTila) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HyvaksytytModel;
     $scope.hakuOid =  $routeParams.hakuOid;
@@ -144,6 +214,9 @@ angular.module('valintalaskenta').
 
     $scope.predicate = 'sukunimi';
 
+    $scope.lisahakuUpdate = function(hakemusOid, hyvaksytty) {
+        $scope.model.updateHakemus(hakemusOid, hyvaksytty);
+    };
 
     $scope.lisahakuValitse = function(hakemusOid) {
         $scope.model.updateHakemus(hakemusOid);
@@ -167,27 +240,52 @@ angular.module('valintalaskenta').
     $scope.resetIlmoittautumisTila = function(hakemus) {
         if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT' && hakemus.muokattuVastaanottoTila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
             hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
+            hakemus.ilmoittautumisTila = 'EI_TEHTY';
         } else if (!hakemus.muokattuIlmoittautumisTila) {
             hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
+            hakemus.ilmoittautumisTila = 'EI_TEHTY';
         }
 
-        HakemusKey.put({
-            oid: hakemus.oid,
-            key: "lisahaku-vastaanottotieto",
-            value: hakemus.muokattuVastaanottoTila
+        hakemus.tila = hakemus.muokattuVastaanottoTila;
+        hakemus.valintatapajonoOid = $scope.model.valintatapajonoOid;
+        hakemus.hakemusOid = hakemus.oid;
+        hakemus.hakijaOid = hakemus.personOid;
+        hakemus.hakutoive = 1;
+
+        var tilaParams = {
+            hakuoid: $routeParams.hakuOid,
+            hakukohdeOid: $routeParams.hakukohdeOid,
+            hakemusOid: hakemus.oid
+        };
+
+        var tilaObj = [hakemus];
+
+        VastaanottoTila.post(tilaParams, tilaObj, function (result) {
+            Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+        }, function (error) {
+            Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
-        HakemusKey.put({
-            oid: hakemus.oid,
-            key: "lisahaku-ilmoittautumistieto",
-            value: hakemus.muokattuIlmoittautumisTila
-        });
+
     };
 
     $scope.setIlmoittautumisTila = function(hakemus) {
-        HakemusKey.put({
-            oid: hakemus.oid,
-            key: "lisahaku-ilmoittautumistieto",
-            value: hakemus.muokattuIlmoittautumisTila
+        var tilaParams = {
+            hakuoid: $routeParams.hakuOid,
+            hakukohdeOid: $routeParams.hakukohdeOid,
+            hakemusOid: hakemus.oid
+        };
+        hakemus.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
+        hakemus.hakemusOid = hakemus.oid;
+        hakemus.hakijaOid = hakemus.personOid;
+        hakemus.hakutoive = 1;
+
+        var tilaObj = [hakemus];
+
+        VastaanottoTila.post(tilaParams, tilaObj, function (result) {
+            Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+        }, function (error) {
+            Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
+
     };
 }]);
