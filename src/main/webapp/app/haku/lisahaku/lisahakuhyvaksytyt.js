@@ -14,6 +14,21 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
         this.sijoitteluTulokset = {};
         this.sijoitteluMap = {};
 
+        this.getJonoOid = function(hakukohdeOid, hakuOid) {
+            LatestSijoitteluajoHakukohde.get({
+                hakukohdeOid: hakukohdeOid,
+                hakuOid: hakuOid
+            }, function (result) {
+                if (result.sijoitteluajoId) {
+                    result.valintatapajonot.forEach(function (valintatapajono, index) {
+                        model.valintatapajonoOid = valintatapajono.oid;
+                    });
+                }
+            }, function (error) {
+                model.errors.push(error.data.message);
+            });
+        };
+
 		this.refresh = function(hakukohdeOid, hakuOid) {
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
@@ -128,6 +143,9 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
                       }
                   }
               });
+              if(!model.valintatapajonoOid) {
+                  model.getJonoOid(model.hakuOid, model.hakukohdeOid);
+              }
               Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
           }, function (error) {
               Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
