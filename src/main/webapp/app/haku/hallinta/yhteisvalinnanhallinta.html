@@ -29,7 +29,7 @@
 
 
 </collapsible>
-<collapsible heading="{{ t('yhteisvalinnanhallinta.valintalaskentajasijoittelu') || 'Valintalaskenta ja sijoittelu' }}" is-open="false">
+<collapsible ng-if="!hakumodel.hakuOid.lisahaku" heading="{{ t('yhteisvalinnanhallinta.valintalaskentajasijoittelu') || 'Valintalaskenta ja sijoittelu' }}" is-open="false">
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Valintalaskenta' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
         <button privileges="valintakoekutsut" ng-click="aktivoiHaunValintakoelaskenta()"
@@ -70,7 +70,7 @@
     </div>
 
 </collapsible>
-<collapsible heading="{{ t('yhteisvalinnanhallinta.valintalaskennanseuranta') || 'Valintalaskennan seuranta' }}" ng-click="updateHaunLaskennat();" is-open="naytaHaunLaskennat">
+<collapsible ng-if="!hakumodel.hakuOid.lisahaku" heading="{{ t('yhteisvalinnanhallinta.valintalaskennanseuranta') || 'Valintalaskennan seuranta' }}" ng-click="updateHaunLaskennat();" is-open="naytaHaunLaskennat">
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Haun valintalaskennat' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
         <div class="list-group">
