@@ -54,22 +54,22 @@
                                     {{hakija.lisahakuHyvaksytty}}
                                 </td>
                                 <td>
-                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuValitse(hakija.hakemus.oid)" class="btn btn-primary btn-sm">{{ t('hyvaksytyt.hyvaksy') || 'Hyväksy' }}</a>
-                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuPoistavalinta(hakija.hakemus.oid)" class="btn btn-default btn-sm ">{{ t('hyvaksytyt.hylkaa') || 'Hylkää' }}</a>
+                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuUpdate(hakija.oid, true)" class="btn btn-primary btn-sm">{{ t('hyvaksytyt.hyvaksy') || 'Hyväksy' }}</a>
+                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuUpdate(hakija.oid, false)" class="btn btn-default btn-sm ">{{ t('hyvaksytyt.hylkaa') || 'Hylkää' }}</a>
                                 </td>
 
                                 <td>
                                     <div ng-show="hakija.lisahakuHyvaksytty">
-                                        <select ng-change="resetIlmoittautumisTila(hakija.hakemus)" ng-model="hakija.hakemus.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
+                                        <select ng-change="resetIlmoittautumisTila(hakija)" ng-model="hakija.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
                                             <option value="">{{ t('hyvaksytyt.kesken') || 'Kesken' }}</option>
                                         </select>
                                     </div>
                                 </td>
 
                                 <td>
-                                    <div ng-show="hakija.lisahakuHyvaksytty && (hakija.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakija.hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')">
-                                        <select ng-model="hakija.hakemus.muokattuIlmoittautumisTila"
-                                                ng-change="setIlmoittautumisTila(hakija.hakemus)"
+                                    <div ng-show="hakija.lisahakuHyvaksytty && (hakija.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakija.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')">
+                                        <select ng-model="hakija.muokattuIlmoittautumisTila"
+                                                ng-change="setIlmoittautumisTila(hakija)"
                                                 ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                         </select>
                                     </div>

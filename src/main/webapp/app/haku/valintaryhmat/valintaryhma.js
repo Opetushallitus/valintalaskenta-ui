@@ -148,12 +148,10 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
         $scope.hakukohteetVisible ? $scope.hakukohteetVisible = false : "";
         $scope.selectedValintaryhma = valintaryhma;
         $scope.hakukohteet.length = 0;
+        $scope.fetchValintaryhmat(valintaryhma);
     };
 
     $scope.showHakukohteet = function (valintaryhma) {
-        if (_.isEmpty($scope.hakukohteet)) {
-            $scope.fetchValintaryhmat(valintaryhma);
-        }
         $scope.hakukohteetVisible = !$scope.hakukohteetVisible;
     };
 
@@ -202,8 +200,6 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
     };
 
     $scope.kaynnistaValintalaskenta = function (valintaryhma) {
-
-        $scope.fetchValintaryhmat(valintaryhma);
 
         var hakukohdeOids = [];
         _.forEach($scope.hakukohteet, function (hakukohde) {

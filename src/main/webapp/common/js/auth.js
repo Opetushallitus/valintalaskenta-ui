@@ -85,7 +85,7 @@ app.factory('ParametriService', function ($q, Parametrit) {
 });
 
 
-app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
+app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _) {
 
     // organisation check
     var roleCheck = function (service, org, model, roles) {
@@ -118,7 +118,7 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
         });
 
         return deferred.promise;
-    }
+    };
 
     // OPH check -- voidaan ohittaa organisaatioiden haku
     var ophAccessCheck = function (service, roles) {
@@ -133,7 +133,7 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
         });
 
         return deferred.promise;
-    }
+    };
 
     return {
         check: function (roles, service, orgOid) {
@@ -166,7 +166,6 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
 
         getOrganizations: function (service, targetRoles) {
             var deferred = $q.defer();
-
             MyRolesModel.then(function (model) {
 
                 var organizations = [];
@@ -191,5 +190,85 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
             return deferred.promise;
         }
 
+    };
+});
+
+app.directive('privileges', function ($animate, $timeout, ParametriService) {
+    return {
+        link: function ($scope, element, attrs) {
+            $animate.addClass(element, 'ng-hide');
+
+            $timeout(function(){
+                ParametriService.promise().then(function (data) {
+                    if(data[attrs.privileges]) {
+
+                        $animate.removeClass(element, 'ng-hide');
+                    }
+                });
+            });
+
+        }
+    };
+});
+
+app.directive('auth', function ($animate, $timeout, AuthService, ParametriService) {
+    return {
+        link: function ($scope, element, attrs) {
+            $animate.addClass(element, 'ng-hide');
+
+            var success = function () {
+                if (attrs.authAdditionalCheck) {
+
+                    ParametriService.promise().then(function (data) {
+                        if (data[attrs.authAdditionalCheck]) {
+                            $animate.removeClass(element, 'ng-hide');
+                        }
+                    });
+
+                } else {
+                    $animate.removeClass(element, 'ng-hide');
+                }
+            }
+
+            $timeout(function () {
+                switch (attrs.auth) {
+
+                    case "crudOph":
+                        AuthService.crudOph(attrs.authService).then(success);
+                        break;
+
+                    case "updateOph":
+                        AuthService.updateOph(attrs.authService).then(success);
+                        break;
+
+                    case "readOph":
+                        AuthService.readOph(attrs.authService).then(success);
+                        break;
+                }
+            }, 0);
+
+            attrs.$observe('authOrg', function () {
+                if (attrs.authOrg) {
+                    switch (attrs.auth) {
+                        case "crud":
+                            AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success);
+                            break;
+
+                        case "update":
+                            AuthService.updateOrg(attrs.authService, attrs.authOrg).then(success);
+                            break;
+
+                        case "read":
+                            AuthService.readOrg(attrs.authService, attrs.authOrg).then(success);
+                            break;
+
+                        default:
+                            AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrg).then(success);
+                            break;
+                    }
+                }
+            });
+
+        }
     };
 });

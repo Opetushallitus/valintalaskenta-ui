@@ -603,6 +603,17 @@ app.factory('VastaanottoTila', function($resource) {
  });
 });
 
+app.factory('SijoitteluTila', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakukohde/:hakukohdeOid/hakemus/:hakemusOid",
+        {
+            hakuoid: "@hakuoid",
+            hakukohdeOid: "@hakukohdeoid",
+            hakemusOid: "@hakemusOid"
+        }, {
+            post: {method: "POST"}
+        });
+});
+
 app.factory('HakemuksenVastaanottoTila', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid",
         {

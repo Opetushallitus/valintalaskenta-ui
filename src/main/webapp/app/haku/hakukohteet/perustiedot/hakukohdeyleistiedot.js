@@ -90,9 +90,10 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
         };
 
         this.refreshIfNeeded = function (hakukohdeOid) {
+            var promise;
             if (model.isHakukohdeChanged(hakukohdeOid) && (hakukohdeOid !== undefined) && !model.refreshing) {
                 model.refreshingModel = true;
-                var promise = model.refresh(hakukohdeOid);
+                promise = model.refresh(hakukohdeOid);
                 promise.then(function() {
                     model.refreshingModel = false;
                 }, function(error) {
@@ -100,6 +101,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
                     $log.error("Error fetching applications");
                 });
             }
+            return promise;
         };
 
 
