@@ -100,6 +100,10 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
                     model.refreshingModel = false;
                     $log.error("Error fetching applications");
                 });
+            } else  {
+                var def = $q.defer();
+                promise = def.promise;
+                def.resolve();
             }
             return promise;
         };
