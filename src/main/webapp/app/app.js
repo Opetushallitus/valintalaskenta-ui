@@ -604,11 +604,12 @@ app.factory('VastaanottoTila', function($resource) {
 });
 
 app.factory('SijoitteluTila', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakukohde/:hakukohdeOid/hakemus/:hakemusOid",
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakukohde/:hakukohdeOid/hakemus/:hakemusOid?tarjoajaOid=:tarjoajaOid",
         {
             hakuoid: "@hakuoid",
             hakukohdeOid: "@hakukohdeoid",
-            hakemusOid: "@hakemusOid"
+            hakemusOid: "@hakemusOid",
+            tarjoajaOid: "@tarjoajaOid"
         }, {
             post: {method: "POST"}
         });
