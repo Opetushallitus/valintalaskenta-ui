@@ -40,7 +40,6 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
             model.sijoitteluMap = {};
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.tarjoajaOid = result.tarjoajaOid;
-                console.log(model.tarjoajaOid);
             });
             HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows:100000}, function(result) {
                 model.hakeneet = result.results;
