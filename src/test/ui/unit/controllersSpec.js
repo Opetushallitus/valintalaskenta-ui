@@ -1397,6 +1397,8 @@ describe('Testing LisahakuhyvaksytytController', function(){
         scope = $rootScope.$new();
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
             .respond(201,hakukohdejson);
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,{});
         $httpBackend.expectGET('haku-app/applications?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
             .respond(201,hakeneetjson);
         for (var i = 0; i < 8; i++) {

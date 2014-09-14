@@ -2,7 +2,7 @@
 
 app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, $q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
                                         $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila,
-                                        HaunTiedot, SijoitteluTila) {
+                                        HaunTiedot, SijoitteluTila, TarjontaHakukohde) {
 	var model;
 	model = new function() {
 
@@ -38,6 +38,9 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
             model.latestSijoitteluajo = {};
             model.sijoitteluTulokset = {};
             model.sijoitteluMap = {};
+            TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
+                model.tarjoajaOid = result.tarjoajaOid;
+            });
             HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows:100000}, function(result) {
                 model.hakeneet = result.results;
                 if(model.hakeneet) {
@@ -129,17 +132,18 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
           var tilaParams = {
               hakuoid: model.hakuOid,
               hakukohdeOid: model.hakukohdeOid,
-              hakemusOid: hakemusOid
+              hakemusOid: hakemusOid,
+              tarjoajaOid: model.tarjoajaOid
           };
 
           SijoitteluTila.post(tilaParams, hyvaksytty, function (result) {
 
               model.hakeneet.forEach(function(hakija) {
                   if(hakija.oid === hakemusOid) {
-                      if(hyvaksytty) {
+                      if(hyvaksytty == 'true') {
                         hakija.lisahakuHyvaksytty = "Kyllä";
                       } else {
-                          hakija.lisahakuHyvaksytty = null;
+                        hakija.lisahakuHyvaksytty = null;
                       }
                   }
               });
@@ -151,31 +155,6 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
               Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
           });
       };
-
-        this.removeHakemusFromHyvaksytyt = function(hakemusOid) {
-            HakemusKey.put({
-                oid: hakemusOid,
-                key: "lisahaku-hyvaksytty",
-                value: ""
-            });
-            HakemusKey.put({
-                oid: hakemusOid,
-                key: "lisahaku-vastaanottotieto",
-                value: ""
-            });
-            HakemusKey.put({
-                oid: hakemusOid,
-                key: "lisahaku-ilmoittautumistieto",
-                value: ""
-            });
-            model.hakeneet.forEach(function(hakija) {
-                if(hakija.oid === hakemusOid) {
-                    hakija.lisahakuHyvaksytty = null;
-                    hakija.hakemus.muokattuVastaanottoTila = null;
-                    hakija.hakemus.muokattuIlmoittautumisTila = null;
-                }
-            });
-        };
 
 		this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
             if(hakukohdeOid && hakukohdeOid !== model.hakukohdeOid) {
@@ -258,17 +237,18 @@ angular.module('valintalaskenta').
     $scope.resetIlmoittautumisTila = function(hakemus) {
         if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT' && hakemus.muokattuVastaanottoTila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
             hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
-            hakemus.ilmoittautumisTila = 'EI_TEHTY';
         } else if (!hakemus.muokattuIlmoittautumisTila) {
             hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
-            hakemus.ilmoittautumisTila = 'EI_TEHTY';
         }
 
-        hakemus.tila = hakemus.muokattuVastaanottoTila;
-        hakemus.valintatapajonoOid = $scope.model.valintatapajonoOid;
-        hakemus.hakemusOid = hakemus.oid;
-        hakemus.hakijaOid = hakemus.personOid;
-        hakemus.hakutoive = 1;
+        var tulos = {};
+        tulos.tila = hakemus.muokattuVastaanottoTila;
+        tulos.valintatapajonoOid = $scope.model.valintatapajonoOid;
+        tulos.hakemusOid = hakemus.oid;
+        tulos.hakijaOid = hakemus.personOid;
+        tulos.hakutoive = 1;
+        tulos.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
+        tulos.hakuOid = $routeParams.hakuOid;
 
         var tilaParams = {
             hakuoid: $routeParams.hakuOid,
@@ -276,7 +256,7 @@ angular.module('valintalaskenta').
             hakemusOid: hakemus.oid
         };
 
-        var tilaObj = [hakemus];
+        var tilaObj = [tulos];
 
         VastaanottoTila.post(tilaParams, tilaObj, function (result) {
             Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
@@ -292,12 +272,17 @@ angular.module('valintalaskenta').
             hakukohdeOid: $routeParams.hakukohdeOid,
             hakemusOid: hakemus.oid
         };
-        hakemus.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
-        hakemus.hakemusOid = hakemus.oid;
-        hakemus.hakijaOid = hakemus.personOid;
-        hakemus.hakutoive = 1;
 
-        var tilaObj = [hakemus];
+        var tulos = {};
+        tulos.tila = hakemus.muokattuVastaanottoTila;
+        tulos.valintatapajonoOid = $scope.model.valintatapajonoOid;
+        tulos.hakemusOid = hakemus.oid;
+        tulos.hakijaOid = hakemus.personOid;
+        tulos.hakutoive = 1;
+        tulos.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
+        tulos.hakuOid = $routeParams.hakuOid;
+
+        var tilaObj = [tulos];
 
         VastaanottoTila.post(tilaParams, tilaObj, function (result) {
             Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");

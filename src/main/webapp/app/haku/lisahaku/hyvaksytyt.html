@@ -54,8 +54,8 @@
                                     {{hakija.lisahakuHyvaksytty}}
                                 </td>
                                 <td>
-                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuUpdate(hakija.oid, true)" class="btn btn-primary btn-sm">{{ t('hyvaksytyt.hyvaksy') || 'Hyväksy' }}</a>
-                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuUpdate(hakija.oid, false)" class="btn btn-default btn-sm ">{{ t('hyvaksytyt.hylkaa') || 'Hylkää' }}</a>
+                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuUpdate(hakija.oid, 'true')" class="btn btn-primary btn-sm">{{ t('hyvaksytyt.hyvaksy') || 'Hyväksy' }}</a>
+                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuUpdate(hakija.oid, 'false')" class="btn btn-default btn-sm ">{{ t('hyvaksytyt.hylkaa') || 'Hylkää' }}</a>
                                 </td>
 
                                 <td>
