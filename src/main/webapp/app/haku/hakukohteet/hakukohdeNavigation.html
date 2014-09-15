@@ -27,7 +27,7 @@
         <span>{{ t('hakukohdenavigation.harkinnanvaraiset') || 'Harkinnanvaraiset' }}</span>
     </a>
 
-    <a auth-additional-check="hakijaryhmat" ng-class="navClass('hakijaryhmat', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakijaryhmat" class="tab">
+    <a auth-additional-check="hakijaryhmat" auth="crud" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('hakijaryhmat', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakijaryhmat" class="tab">
         <span>{{ t('hakukohdenavigation.hakijaryhmat') || 'Hakijaryhmät' }}</span>
     </a>
 
