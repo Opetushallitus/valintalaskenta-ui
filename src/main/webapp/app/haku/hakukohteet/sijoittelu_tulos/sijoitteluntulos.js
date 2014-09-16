@@ -221,7 +221,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             		tila: hakemus.muokattuVastaanottoTila,
                     ilmoittautumisTila: hakemus.muokattuIlmoittautumisTila,
             		valintatapajonoOid: valintatapajonoOid,
-                	hakemusOid: hakemus.hakemusOid
+                	hakemusOid: hakemus.hakemusOid,
+                    julkaistavissa: hakemus.julkaistavissa
             	};
             });
 
@@ -304,7 +305,6 @@ angular.module('valintalaskenta').
 
     //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
     $scope.hakemuksenMuokattuVastaanottoTilat = [
-        {value: "ILMOITETTU"},
         {value: "VASTAANOTTANUT"},
         {value: "EI_VASTAANOTETTU_MAARA_AIKANA"},
         {value: "PERUNUT"},
