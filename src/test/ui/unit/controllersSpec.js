@@ -293,12 +293,12 @@ describe('Testing SijoitteluntulosController', function(){
 
     it('isKorkeakoulu', function() {
         scope.model.haku.kohdejoukkoUri = "uri_1";
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
+        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(4);
         scope.isKorkeakoulu();
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
+        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(4);
         scope.model.haku.kohdejoukkoUri = "uri_12";
         scope.isKorkeakoulu();
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(6);
+        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
     });
 
     it('resetIlmoittautumisTila', function() {
