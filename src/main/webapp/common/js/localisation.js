@@ -84,16 +84,25 @@ angular.module('oph.localisation', [])
             };
 
             this.getTranslationsForArray = function(array){
+                var deferred = $q.defer();
+
                 var self = this;
+                var promises = [];
+
                 array.forEach(function(item) {
-                    self.getTranslation(item.text).then(function (text) {
+                    promises.push(self.getTranslation(item.text).then(function (text) {
                         if (text) {
                             item.text = text;
                         } else {
                             item.text = item.default_text;
                         }
-                    });
+                    }));
+
                 });
+                $q.all(promises).then(function () {
+                    deferred.resolve();
+                });
+                return deferred.promise;
             };
 
             /**
