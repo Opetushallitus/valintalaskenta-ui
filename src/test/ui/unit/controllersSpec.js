@@ -207,31 +207,38 @@ describe('Testing SijoitteluntulosController', function(){
         rootScope = $rootScope;
         location = $location;
 
-        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
-            .respond(201,hakukohdejson);
-
         $httpBackend.expectGET('/dokumentit/osoitetarrat/'+routeParams.hakukohdeOid)
             .respond(201,'');
         $httpBackend.expectGET('/dokumentit/hyvaksymiskirjeet/'+routeParams.hakukohdeOid)
             .respond(201,'');
         $httpBackend.expectGET('/dokumentit/sijoitteluntulokset/'+routeParams.hakukohdeOid)
             .respond(201,'');
-
-        $httpBackend.expectGET('haku/'+routeParams.hakuOid)
-            .respond(201,hakujson);
-        $httpBackend.expectGET('resources/sijoittelu/'+routeParams.hakuOid+'/sijoitteluajo/latest/hakukohde/'+routeParams.hakukohdeOid)
-            .respond(201,sijoitteluajojson);
         for (var i = 0; i < 8; i++) {
             $httpBackend.expectGET('/localisation?category=valintalaskenta').respond("");
         }
         $httpBackend.expectGET('organisaatio/undefined/parentoids')
             .respond(201,'1.2.246.562.10.00000000001/undefined');
+
+
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
+
+
+        $httpBackend.expectGET('haku/'+routeParams.hakuOid)
+            .respond(201,hakujson);
+        $httpBackend.expectGET('resources/sijoittelu/'+routeParams.hakuOid+'/sijoitteluajo/latest/hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,sijoitteluajojson);
+
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
             .respond(201,hakukohdenimijson);
         $httpBackend.expectGET('organisaatio/1.2.246.562.10.60222091211/parentoids')
             .respond(201,'1.2.246.562.10.00000000001/1.2.246.562.10.47941294986/1.2.246.562.10.98873174761/1.2.246.562.10.60222091211');
         $httpBackend.expectGET('resources/tila/hakukohde/'+routeParams.hakukohdeOid+'/1397647295344-8565235898154713515')
             .respond(201,hakukohdetilajson);
+
+
+
+
 
 
         ctrl = $controller('SijoitteluntulosController', {'$scope' : scope, '$modal' : $modal, '$routeParams': routeParams,
