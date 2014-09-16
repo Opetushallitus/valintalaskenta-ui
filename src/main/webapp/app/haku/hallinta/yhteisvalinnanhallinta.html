@@ -56,11 +56,17 @@
 
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.ajotiheys') || 'Sijoittelun ajotiheys (min)' }}</strong></div>
     <div class="col-md-10 margin-bottom-1"><input type="number" min="0" max="1440" id="ajotiheys" name="ajotiheys"
-                                                  ng-model="ajotiheys"/></div>
+                                                  ng-model="jatkuva.ajotiheys"/></div>
 
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.aloitusajankohta') || 'Sijoittelun aloitusajankohta' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1"><timepicker ng-model="aloitusajankohta" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></timepicker></div>
-
+    <div class="col-md-10 margin-bottom-1">
+        <timepicker ng-model="jatkuva.aloitusajankohta" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+    </div>
+    <div class="offset-left-12-2 col-md-10 margin-bottom-1">
+        <button ng-click="paivitaJatkuvanSijoittelunAloitus()"
+                class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.paivita') || 'Päivitä' }}
+        </button>
+    </div>
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoitteluajettu') || 'Sijoittelu ajettu' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{sijoitteluModel.startMils | date:'dd.MM.yyyy HH:mm'}} -
         {{sijoitteluModel.endMils |

@@ -338,6 +338,14 @@ angular.module('valintalaskenta').
         });
     };
 
+    $scope.paivitaJatkuvanSijoittelunAloitus = function () {
+        JatkuvaSijoittelu.get({hakuOid: $routeParams.hakuOid, method: 'paivita'}, function (result) {
+            $route.reload();
+        }, function (error) {
+            alert("virhe");
+        });
+    };
+
     JatkuvaSijoittelu.get({hakuOid: $routeParams.hakuOid}, function (result) {
         $scope.jatkuva = result;
     }, function (error) {
