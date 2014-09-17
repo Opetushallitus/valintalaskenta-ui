@@ -60,7 +60,7 @@
 
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.aloitusajankohta') || 'Sijoittelun aloitusajankohta' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">
-        <timepicker ng-model="jatkuva.aloitusajankohta" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+        <timepicker ng-model="jatkuva.aloitusajankohta" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
     </div>
     <div class="offset-left-12-2 col-md-10 margin-bottom-1">
         <button ng-click="paivitaJatkuvanSijoittelunAloitus()"
@@ -217,7 +217,7 @@
 
         <div class="tabsheets hakuVirheet">
             <div ng-show="!valintalaskentavirheet">
-                <h2 ng-show="virheet.eiKoeVirheita">{{ t('yhteisvalinnanhallinta.eivirheita') || 'Ei virheit� valintakokeissa' }}</h2>
+                <h2 ng-show="virheet.eiKoeVirheita">{{ t('yhteisvalinnanhallinta.eivirheita') || 'Ei virheitä valintakokeissa' }}</h2>
 
                 <h2 ng-show="virheet.valintakoe.length > 0">{{ t('yhteisvalinnanhallinta.valintakoevirheet') || 'Valintakoevirheet' }} ({{virheet.valintakoe.length}})</h2>
 

@@ -339,7 +339,8 @@ angular.module('valintalaskenta').
     };
 
     $scope.paivitaJatkuvanSijoittelunAloitus = function () {
-        JatkuvaSijoittelu.get({hakuOid: $routeParams.hakuOid, method: 'paivita'}, function (result) {
+        JatkuvaSijoittelu.get({hakuOid: $routeParams.hakuOid, aloitusajankohta: new Date($scope.jatkuva.aloitusajankohta).getTime(), ajotiheys: $scope.jatkuva.ajotiheys,
+            method: 'paivita'}, function (result) {
             $route.reload();
         }, function (error) {
             alert("virhe");
