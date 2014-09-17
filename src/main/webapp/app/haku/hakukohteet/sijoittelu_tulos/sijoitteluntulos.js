@@ -265,7 +265,6 @@ angular.module('valintalaskenta').
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.hakukohdeModel = HakukohdeModel;
-    HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
     $scope.model = SijoitteluntulosModel;
 	
     //
@@ -300,7 +299,8 @@ angular.module('valintalaskenta').
         {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"}
     ];
 
-    LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat);
+
+
 
     //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
     $scope.hakemuksenMuokattuVastaanottoTilat = [
@@ -320,7 +320,6 @@ angular.module('valintalaskenta').
     }
 
 
-    $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
     $scope.updateVastaanottoTila = function (hakemus, valintatapajonoOid) {
         $scope.model.updateVastaanottoTila(hakemus, valintatapajonoOid);
@@ -510,7 +509,15 @@ angular.module('valintalaskenta').
         }
     };
 
-    $scope.isKorkeakoulu();
+
+
+    LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat).then(function () {
+
+        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+        $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
+
+        $scope.isKorkeakoulu();
+    });
 
 
 }]);
