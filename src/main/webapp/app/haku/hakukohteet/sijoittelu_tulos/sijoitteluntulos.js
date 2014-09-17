@@ -142,6 +142,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             }
                                             currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
+                                            currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
                                             return true;
                                         }
                                     });
