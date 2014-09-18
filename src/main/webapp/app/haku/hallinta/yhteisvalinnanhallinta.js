@@ -339,6 +339,9 @@ angular.module('valintalaskenta').
     };
 
     $scope.paivitaJatkuvanSijoittelunAloitus = function () {
+        $scope.jatkuva.aloitusajankohta = new Date($scope.jatkuva.aloitusajankohta_date);
+        $scope.jatkuva.aloitusajankohta.setHours(new Date($scope.jatkuva.aloitusajankohta_time).getHours(),new Date($scope.jatkuva.aloitusajankohta_time).getMinutes());
+
         JatkuvaSijoittelu.get({hakuOid: $routeParams.hakuOid, aloitusajankohta: new Date($scope.jatkuva.aloitusajankohta).getTime(), ajotiheys: $scope.jatkuva.ajotiheys,
             method: 'paivita'}, function (result) {
             $route.reload();
@@ -349,6 +352,8 @@ angular.module('valintalaskenta').
 
     JatkuvaSijoittelu.get({hakuOid: $routeParams.hakuOid}, function (result) {
         $scope.jatkuva = result;
+        $scope.jatkuva.aloitusajankohta_date = $scope.jatkuva.aloitusajankohta;
+        $scope.jatkuva.aloitusajankohta_time = $scope.jatkuva.aloitusajankohta;
     }, function (error) {
         alert("virhe");
     });

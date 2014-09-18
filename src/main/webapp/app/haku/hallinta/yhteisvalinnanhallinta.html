@@ -60,7 +60,10 @@
 
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.aloitusajankohta') || 'Sijoittelun aloitusajankohta' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">
-        <timepicker ng-model="jatkuva.aloitusajankohta" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+        <div style="display:inline-block;">
+            <datepicker ng-model="jatkuva.aloitusajankohta_date" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+        </div>
+        <timepicker ng-model="jatkuva.aloitusajankohta_time" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
     </div>
     <div class="offset-left-12-2 col-md-10 margin-bottom-1">
         <button ng-click="paivitaJatkuvanSijoittelunAloitus()"
