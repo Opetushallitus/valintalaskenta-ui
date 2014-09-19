@@ -306,6 +306,7 @@ angular.module('valintalaskenta').
 
     //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
     $scope.hakemuksenMuokattuVastaanottoTilat = [
+        {value: "KESKEN"},
         {value: "VASTAANOTTANUT"},
         {value: "EI_VASTAANOTETTU_MAARA_AIKANA"},
         {value: "PERUNUT"},

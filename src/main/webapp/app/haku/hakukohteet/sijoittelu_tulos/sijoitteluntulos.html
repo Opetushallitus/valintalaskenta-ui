@@ -103,7 +103,6 @@
                                 <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
                                     <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                         <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as (tila.value | translate) for tila in hakemuksenMuokattuVastaanottoTilat">
-                                            <option value="">{{ t('sijoitteluntulos.kesken') || 'Kesken' }}</option>
                                         </select>
                                     </span>
                                 </div>
