@@ -190,11 +190,13 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
         		return valintatapajono.oid === valintatapajonoOid;
         	});
+
+            var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
+
         	var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
         		return valintatapajono.hakemukset;
         	})), function(hakemus) {
-        		return (hakemus.muokattuVastaanottoTila !== "" && hakemus.vastaanottoTila !== hakemus.muokattuVastaanottoTila ||
-                    hakemus.muokattuIlmoittautumisTila !== "" && hakemus.ilmoittautumisTila !== hakemus.muokattuIlmoittautumisTila);
+        		return (halututTilat.indexOf(hakemus.tila) != -1);
         	});
         	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
@@ -490,10 +492,10 @@ angular.module('valintalaskenta').
         var muokattavatHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
             return valintatapajono.hakemukset;
         })), function(hakemus) {
-            return (hakemus.vastaanottoTila === "" && hakemus.tila == 'HYVAKSYTTY');
+            return (hakemus.vastaanottoTila === "KESKEN");
         });
         muokattavatHakemukset.forEach(function (hakemus) {
-            hakemus.muokattuVastaanottoTila = "ILMOITETTU";
+            hakemus.julkaistavissa = true;
         });
     };
 
