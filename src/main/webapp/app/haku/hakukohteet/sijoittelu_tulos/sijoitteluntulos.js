@@ -193,11 +193,9 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
             var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
 
-        	var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
+        	var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
         		return valintatapajono.hakemukset;
-        	})), function(hakemus) {
-        		return (halututTilat.indexOf(hakemus.tila) != -1);
-        	});
+        	}));
         	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function(error){
@@ -470,6 +468,7 @@ angular.module('valintalaskenta').
 
     var order = {
         "HYVAKSYTTY": 1,
+        "VARASIJALTA_HYVAKSYTTY": 1,
         "VARALLA": 2,
         "PERUNUT": 3,
         "PERUUTETTU": 4,
