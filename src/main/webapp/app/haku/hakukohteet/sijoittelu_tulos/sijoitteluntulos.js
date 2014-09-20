@@ -121,15 +121,15 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                 hakemukset.forEach(function (currentHakemus) {
 
                                     //make rest calls in separate scope to prevent hakemusOid to be overridden during rest call
-                                    currentHakemus.vastaanottoTila = "";
-                                    currentHakemus.muokattuVastaanottoTila = "";
-                                    currentHakemus.muokattuIlmoittautumisTila = "";
+                                    currentHakemus.vastaanottoTila = "KESKEN";
+                                    currentHakemus.muokattuVastaanottoTila = "KESKEN";
+                                    currentHakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
 
                                     result.some(function (vastaanottotila) {
                                         if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid) {
                                             currentHakemus.logEntries = vastaanottotila.logEntries;
                                             if (vastaanottotila.tila === null) {
-                                                vastaanottotila.tila = "";
+                                                vastaanottotila.tila = "KESKEN";
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
