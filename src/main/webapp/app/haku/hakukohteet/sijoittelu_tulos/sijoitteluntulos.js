@@ -121,15 +121,15 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                 hakemukset.forEach(function (currentHakemus) {
 
                                     //make rest calls in separate scope to prevent hakemusOid to be overridden during rest call
-                                    currentHakemus.vastaanottoTila = "";
-                                    currentHakemus.muokattuVastaanottoTila = "";
-                                    currentHakemus.muokattuIlmoittautumisTila = "";
+                                    currentHakemus.vastaanottoTila = "KESKEN";
+                                    currentHakemus.muokattuVastaanottoTila = "KESKEN";
+                                    currentHakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
 
                                     result.some(function (vastaanottotila) {
                                         if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid) {
                                             currentHakemus.logEntries = vastaanottotila.logEntries;
                                             if (vastaanottotila.tila === null) {
-                                                vastaanottotila.tila = "";
+                                                vastaanottotila.tila = "KESKEN";
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
@@ -142,6 +142,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             }
                                             currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
+                                            currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
                                             return true;
                                         }
                                     });
@@ -189,11 +190,13 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
         		return valintatapajono.oid === valintatapajonoOid;
         	});
+
+            var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
+
         	var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
         		return valintatapajono.hakemukset;
         	})), function(hakemus) {
-        		return (hakemus.muokattuVastaanottoTila !== "" && hakemus.vastaanottoTila !== hakemus.muokattuVastaanottoTila ||
-                    hakemus.muokattuIlmoittautumisTila !== "" && hakemus.ilmoittautumisTila !== hakemus.muokattuIlmoittautumisTila);
+        		return (halututTilat.indexOf(hakemus.tila) != -1);
         	});
         	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
@@ -221,7 +224,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             		tila: hakemus.muokattuVastaanottoTila,
                     ilmoittautumisTila: hakemus.muokattuIlmoittautumisTila,
             		valintatapajonoOid: valintatapajonoOid,
-                	hakemusOid: hakemus.hakemusOid
+                	hakemusOid: hakemus.hakemusOid,
+                    julkaistavissa: hakemus.julkaistavissa
             	};
             });
 
@@ -304,7 +308,7 @@ angular.module('valintalaskenta').
 
     //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
     $scope.hakemuksenMuokattuVastaanottoTilat = [
-        {value: "ILMOITETTU"},
+        {value: "KESKEN"},
         {value: "VASTAANOTTANUT"},
         {value: "EI_VASTAANOTETTU_MAARA_AIKANA"},
         {value: "PERUNUT"},
@@ -488,10 +492,10 @@ angular.module('valintalaskenta').
         var muokattavatHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
             return valintatapajono.hakemukset;
         })), function(hakemus) {
-            return (hakemus.vastaanottoTila === "" && hakemus.tila == 'HYVAKSYTTY');
+            return (hakemus.vastaanottoTila === "KESKEN");
         });
         muokattavatHakemukset.forEach(function (hakemus) {
-            hakemus.muokattuVastaanottoTila = "ILMOITETTU";
+            hakemus.julkaistavissa = true;
         });
     };
 

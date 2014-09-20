@@ -147,3 +147,7 @@ collapsible > div > div {
     cursor: pointer;
     cursor: hand;
 }
+
+.well {
+    margin-bottom: 0;
+}

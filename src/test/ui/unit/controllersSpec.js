@@ -284,11 +284,11 @@ describe('Testing SijoitteluntulosController', function(){
 
     it('selectIlmoitettuToAll', function() {
         var valintatapajonoOid = "1397647295344-8565235898154713515";
-        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[0].muokattuVastaanottoTila).toBe("");
-        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[3].muokattuVastaanottoTila).toBe("");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[0].muokattuVastaanottoTila).toBe("KESKEN");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[3].muokattuVastaanottoTila).toBe("KESKEN");
         scope.selectIlmoitettuToAll(valintatapajonoOid);
-        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[0].muokattuVastaanottoTila).toBe("ILMOITETTU");
-        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[3].muokattuVastaanottoTila).toBe("");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[0].muokattuVastaanottoTila).toBe("KESKEN");
+        expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[3].muokattuVastaanottoTila).toBe("KESKEN");
     });
 
     it('isKorkeakoulu', function() {
