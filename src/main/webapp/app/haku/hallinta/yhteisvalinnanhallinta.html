@@ -54,8 +54,8 @@
         </button>
     </div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.ajotiheys') || 'Sijoittelun ajotiheys (min)' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1"><input type="number" min="0" max="1440" id="ajotiheys" name="ajotiheys"
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.ajotiheys') || 'Sijoittelun ajotiheys (t)' }}</strong></div>
+    <div class="col-md-10 margin-bottom-1"><input type="number" min="0" max="24" id="ajotiheys" name="ajotiheys"
                                                   ng-model="jatkuva.ajotiheys"/></div>
 
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.aloitusajankohta') || 'Sijoittelun aloitusajankohta' }}</strong></div>
