@@ -22,12 +22,12 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
         this.filterHyvaksytty = function(hakemukset) {
 			return _.filter(hakemukset,function(hakemus) {
-				return hakemus.tila === "HYVAKSYTTY";
+				return hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY";
 			});
 		};
 		this.isAllValittu = function(valintatapajono) {
 			return _.reduce(valintatapajono.hakemukset, function(memo, hakemus){
-				if(hakemus.tila === "HYVAKSYTTY") {
+				if(hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
 					return memo && hakemus.valittu;
 				}
 				return memo;
@@ -39,7 +39,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 		this.checkAll = function(valintatapajono) {
 			var kaikkienUusiTila = valintatapajono.valittu;
 			_.each(valintatapajono.hakemukset, function(hakemus) {
-                if(hakemus.tila === "HYVAKSYTTY") {
+                if(hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
 				    hakemus.valittu = kaikkienUusiTila;
                 }
 			});
@@ -93,14 +93,14 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                         var sija = 0;
                         hakemukset.forEach(function (hakemus, index) {
 
-                            if (hakemus.tila === "HYVAKSYTTY") {
+                            if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
                                 sija++;
                                 hakemus.valittu = true;
                                 hakemuserittely.hyvaksytyt.push(hakemus);
                                 hakemus.sija = sija;
                             }
 
-                            if (hakemus.tila === "HYVAKSYTTY" && hakemus.hyvaksyttyHarkinnanvaraisesti) {
+                            if ((hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && hakemus.hyvaksyttyHarkinnanvaraisesti) {
                                 hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
                             }
 
