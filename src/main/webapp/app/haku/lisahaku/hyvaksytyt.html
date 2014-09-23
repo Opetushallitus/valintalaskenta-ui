@@ -60,14 +60,17 @@
 
                                 <td>
                                     <div ng-show="hakija.lisahakuHyvaksytty">
-                                        <select ng-change="resetIlmoittautumisTila(hakija)" ng-model="hakija.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
-                                            <option value="">{{ t('hyvaksytyt.kesken') || 'Kesken' }}</option>
-                                        </select>
+
+                                        <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="hakija.julkaistavissa" ng-change="setIlmoittautumisTila(hakija)"> <br/></div>
+                                        <div ng-show="hakija.julkaistavissa">
+                                            <select ng-change="resetIlmoittautumisTila(hakija)" ng-model="hakija.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
+                                            </select>
+                                        </div>
                                     </div>
                                 </td>
 
                                 <td>
-                                    <div ng-show="hakija.lisahakuHyvaksytty && (hakija.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakija.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')">
+                                    <div ng-show="hakija.julkaistavissa && hakija.lisahakuHyvaksytty && (hakija.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakija.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')">
                                         <select ng-model="hakija.muokattuIlmoittautumisTila"
                                                 ng-change="setIlmoittautumisTila(hakija)"
                                                 ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
