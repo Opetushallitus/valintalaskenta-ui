@@ -21,23 +21,23 @@
         </tr>
         </thead>
         <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'">
-        <tr ng-hide="hakutoive.valintalaskenta">
+        <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot">
             <td colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                 <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                 {{hakutoive.oppilaitos}}
                 </a>
             </td>
         </tr>
-        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'createdAt':true" ng-show="hakutoive.valintalaskenta && isValinnanvaiheVisible(filter,$first)">
+        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero'" ng-show="hakutoive.valintalaskenta && isValinnanvaiheVisible(filter,$first)" ng-if="valinnanvaihe.valintatapajonot">
             <td>
-                <div ng-if="isValinnanvaiheNameVisible($first)">
+                <div ng-if="isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                     <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                         {{hakutoive.oppilaitos}}
                     </a>
                 </div>
             </td>
-            <td ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajonot">{{valintatapajono.nimi}}</span><br/>
+            <td ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajonot | orderBy: 'prioriteetti'">{{valintatapajono.nimi}}</span><br/>
                 <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'"></span>
             </td>
             <!-- jonosijoja pitäisi olla hakemuksella vain yksi per jono -->

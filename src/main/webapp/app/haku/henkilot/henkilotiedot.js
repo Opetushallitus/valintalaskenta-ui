@@ -300,9 +300,9 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
 angular.module('valintalaskenta').
     controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
-        'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila','HakuModel',
+        'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila','HakuModel', '$filter',
         function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
-                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel) {
+                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel,$filter) {
     "use strict";
 
     $scope.model = HenkiloTiedotModel;
@@ -364,10 +364,21 @@ angular.module('valintalaskenta').
     $scope.isValinnanvaiheVisible = function (filter, first) {
         return (!filter || filter && first);
     };
-    $scope.isValinnanvaiheNameVisible = function (first) {
-        return (first);
-    };
 
+    $scope.isValinnanvaiheNameVisible = function (index, valinnanvaiheet) {
+        var orderBy = $filter('orderBy');
+        valinnanvaiheet = orderBy(valinnanvaiheet, 'jarjestysnumero', false);
+        for (var i = 0; i < valinnanvaiheet.length; i++) {
+            if (valinnanvaiheet[i].valintatapajonot.length > 0) {
+                if (index === i) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        }
+    };
     $scope.tallennaPisteet = function () {
         var promises = $scope.model.tallennaPisteet();
         $q.all(promises).then(function () {

@@ -114,11 +114,11 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 							$scope.kaynnissa = true;
 							$scope.paivitaForce(uuid.latausUrl);
 						},
-						function() {
+						function(err) {
 							Ilmoitus
 									.avaa(
 											"Valintakoelaskenta epäonnistui",
-											"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.",
+											"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. " + err.data,
 											IlmoitusTila.ERROR);
 						});
 	};
@@ -165,11 +165,11 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 							$scope.kaynnissa = true;
 							$scope.paivitaForce(uuid.latausUrl);
 						},
-						function() {
+						function(err) {
 							Ilmoitus
 									.avaa(
 											"Valintakoelaskenta epäonnistui",
-											"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.",
+											"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. " + err.data,
 											IlmoitusTila.ERROR);
 						});
 	}
