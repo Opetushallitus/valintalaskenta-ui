@@ -84,15 +84,16 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
                                         result.some(function (vastaanottotila) {
                                             if (vastaanottotila.hakemusOid === currentHakemus.oid) {
                                                 currentHakemus.logEntries = vastaanottotila.logEntries;
-                                                if (vastaanottotila.tila === null) {
-                                                    vastaanottotila.tila = "";
+                                                currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
+                                                if (!vastaanottotila.tila || vastaanottotila.tila == null) {
+                                                    vastaanottotila.tila = "KESKEN";
                                                 }
                                                 currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                                 currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
                                                 if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT") {
                                                 }
 
-                                                if (vastaanottotila.ilmoittautumisTila === null) {
+                                                if (!vastaanottotila.ilmoittautumisTila || vastaanottotila.ilmoittautumisTila == null) {
                                                     vastaanottotila.ilmoittautumisTila = "EI_TEHTY";
                                                 }
                                                 currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
@@ -197,7 +198,7 @@ angular.module('valintalaskenta').
 
     //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
     $scope.hakemuksenMuokattuVastaanottoTilat = [
-        {value: "ILMOITETTU", text: "Hakijalle ilmoitettu"},
+        {value: "KESKEN", text: "Kesken"},
         {value: "VASTAANOTTANUT", text: "Vastaanottanut"},
         {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text: "Ei vastaanotettu määräaikana"},
         {value: "PERUNUT", text: "Perunut"},
@@ -249,6 +250,7 @@ angular.module('valintalaskenta').
         tulos.hakutoive = 1;
         tulos.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
         tulos.hakuOid = $routeParams.hakuOid;
+        tulos.julkaistavissa = hakemus.julkaistavissa;
 
         var tilaParams = {
             hakuoid: $routeParams.hakuOid,
@@ -272,6 +274,13 @@ angular.module('valintalaskenta').
             hakukohdeOid: $routeParams.hakukohdeOid,
             hakemusOid: hakemus.oid
         };
+        if(!hakemus.muokattuIlmoittautumisTila) {
+            hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
+        }
+
+        if(!hakemus.muokattuVastaanottoTila) {
+            hakemus.muokattuVastaanottoTila = "KESKEN"
+        }
 
         var tulos = {};
         tulos.tila = hakemus.muokattuVastaanottoTila;
@@ -281,6 +290,7 @@ angular.module('valintalaskenta').
         tulos.hakutoive = 1;
         tulos.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
         tulos.hakuOid = $routeParams.hakuOid;
+        tulos.julkaistavissa = hakemus.julkaistavissa;
 
         var tilaObj = [tulos];
 
@@ -291,4 +301,5 @@ angular.module('valintalaskenta').
         });
 
     };
+
 }]);
