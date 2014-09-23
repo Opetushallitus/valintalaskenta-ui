@@ -1449,7 +1449,7 @@ describe('Testing LisahakuhyvaksytytController', function(){
         expect(scope.hakemuksenMuokattuIlmoittautumisTilat[6].value).toBe("LASNA");
         expect(scope.hakemuksenMuokattuIlmoittautumisTilat[7].value).toBe("POISSA");
 
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[0].value).toBe("ILMOITETTU");
+        expect(scope.hakemuksenMuokattuVastaanottoTilat[0].value).toBe("KESKEN");
         expect(scope.hakemuksenMuokattuVastaanottoTilat[1].value).toBe("VASTAANOTTANUT");
         expect(scope.hakemuksenMuokattuVastaanottoTilat[2].value).toBe("EI_VASTAANOTETTU_MAARA_AIKANA");
         expect(scope.hakemuksenMuokattuVastaanottoTilat[3].value).toBe("PERUNUT");
