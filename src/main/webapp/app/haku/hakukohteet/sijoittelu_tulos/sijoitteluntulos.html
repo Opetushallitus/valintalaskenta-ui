@@ -82,13 +82,11 @@
                             <td>{{hakemus.prioriteetti}}</td>
                             <td><span ng-if="hakemus.pisteet >= 0">{{hakemus.pisteet}}</span></td>
                             <td>
-                                <span>{{hakemus.tila}}</span>
-                                <!-- Tilapäisratkasu -->
-                                <!--<span ng-if="!hakemus.tilanKuvaukset.FI">{{hakemus.tila}}</span>-->
-                                <!--<span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.FI}}</span>-->
-                                <!--<span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.SV}}</span>-->
-                                <!--<span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.EN}}</span>-->
-                                <span ng-if="hakemus.tila == 'HYVAKSYTTY' && hakemus.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
+                                <span ng-if="!hakemus.tilanKuvaukset.FI">{{hakemus.tila}}</span>
+                                <span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.FI}}</span>
+                                <span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.SV}}</span>
+                                <span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.EN}}</span>
+                                <span ng-if="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY') && hakemus.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
                                 <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
                                 <modal modal-template="sijoitteluTilaHistoriModal.html">
                                     <modal-open>
@@ -100,8 +98,8 @@
 
                             <td>
                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="hakemus.julkaistavissa"> <br/></div>
-                                <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
-                                    <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
+                                <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
+                                    <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                         <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as (tila.value | translate) for tila in hakemuksenMuokattuVastaanottoTilat">
                                         </select>
                                     </span>
@@ -120,6 +118,7 @@
                             </td>
 
                             <td>
+                                <span ng-if="hakemus.logEntries[hakemus.logEntries.length-1].luotu">{{hakemus.muokattuVastaanottoTila}}</span>
                                 <modal modal-template="sijoitteluLogModal.html">
                                     <modal-open>
                                         {{hakemus.logEntries[hakemus.logEntries.length-1].luotu
@@ -137,7 +136,7 @@
                                                              enabled="updateOph"/>
                             </td>
                             <td>
-								<a ng-if="hakemus.tila == 'HYVAKSYTTY'" ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
+								<a ng-if="hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY'" ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
 							</td>
                         </tr>
                         </tbody>
