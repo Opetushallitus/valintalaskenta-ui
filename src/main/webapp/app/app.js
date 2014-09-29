@@ -298,6 +298,12 @@ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/
   });
 });
 
+app.factory('HakukohdeHakijaryhma', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/hakijaryhma", {hakukohdeoid: "@hakukohdeoid"}, {
+        get: {method: "GET", isArray: true}
+    });
+});
+
 //valintaperusteet
 app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {

@@ -11,28 +11,42 @@
 
         <div class="tabsheets">
 
-            <table class="virkailija-table-1">
-                <thead>
-                <tr>
-                    <th>Hakija</th>
-                    <th>Hakemuksen tila</th>
-                    <th>Valinnan tila</th>
-                    <th>Sijoittelun tila</th>
-                    <th>Vastaanottotila</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
+            <input type="text" class="search margin-vertical-2" placeholder="{{ t('valintalaskentatulos.suodatahakijoita') || 'Suodata hakijoita' }}"
+                   ng-model="hakijaFilter"/>
 
 
+            <h2>{{ t('hakijaryhmat.hakijaryhmat') || 'Hakijaryhmät' }}</h2>
+            <div ng-repeat="hakijaryhma in model.hakijaryhmat track by $index">
+                <h3>{{ t('hakijaryhmat.hakijaryhma') || 'Hakijaryhmä' }}: {{hakijaryhma.nimi}}</h3>
+                <table class="virkailija-table-1">
+                    <thead>
+                    <tr>
+                        <th>{{ t('hakijaryhmat.hakija') || 'Hakija' }}</th>
+                        <th>{{ t('hakijaryhmat.hakemuksentila') || 'Hakemuksen tila' }}</th>
+                        <th>{{ t('hakijaryhmat.yhteispisteet') || 'Tulos' }}</th>
+                        <!--<th>Valinnan tila</th>-->
+                        <!--<th>Sijoittelun tila</th>-->
+                        <!--<th>Vastaanottotila</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="tulos in hakijaryhma.jonosijat  | filter:hakijaFilter">
+                        <td class="leftorientedcolumn">
+                            <show-person-information sukunimi="{{tulos.sukunimi}}"
+                                                     etunimi="{{tulos.etunimi}}"
+                                                     hakemus-oid="{{tulos.hakemusOid}}"
+                                                     haku-oid="{{hakuOid}}"
+                                                     henkilo-oid="{{tulos.hakijaOid}}"/>
+                        </td>
+                        <td>{{tulos.jarjestyskriteerit[0].tila}}</td>
+                        <td>{{tulos.jarjestyskriteerit[0].arvo}}</td>
+                        <!--<td></td>-->
+                        <!--<td></td>-->
+                        <!--<td></td>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
