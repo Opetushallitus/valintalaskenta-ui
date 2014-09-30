@@ -160,7 +160,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                 $modal.open({
                     scope: $scope,
                     templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
-                    controller: function ($scope, $window, $modalInstance, Ilmoitus) {
+                    controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu) {
                         $scope.update = function () {
                             var tilaParams = {
                                 hakuoid: $scope.hakuOid,
@@ -227,11 +227,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                         };
 
                         $scope.isKorkeakoulu = function() {
-                            var returnValue = false;
-                            if ($scope.haku.kohdejoukkoUri) {
-                                returnValue = $scope.haku.kohdejoukkoUri.indexOf('_12') !== -1;
-                            }
-                            return returnValue;
+                            return Korkeakoulu.isKorkeakoulu($scope.haku.kohdejoukkoUri);
                         };
                     },
                     resolve: {

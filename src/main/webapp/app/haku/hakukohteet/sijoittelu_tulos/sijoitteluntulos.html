@@ -70,7 +70,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="hakemus in filteredResults[$index] = (jono.hakemukset | orderBy:['sija'] | filter:hakijaFilter) | startFrom:(currentPage[$index]-1)*pageSize | limitTo:pageSize">
+                        <tr ng-repeat="hakemus in filteredResults[$index] = (jono.hakemukset | orderBy:jarjesta | filter:hakijaFilter) | startFrom:(currentPage[$index]-1)*pageSize | limitTo:pageSize">
                             <td><span ng-if="hakemus.sija > 0">{{hakemus.sija}}</span></td>
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakemus.sukunimi}}"

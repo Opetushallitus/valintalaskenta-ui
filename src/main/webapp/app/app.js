@@ -2,7 +2,7 @@
 
 
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
-    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation'], function($rootScopeProvider) {
+    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation', 'oph.services'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel, LocalisationService){
 	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
@@ -296,6 +296,12 @@ return $resource(SERVICE_URL_BASE + "resources/harkinnanvarainenhyvaksynta/haku/
     }, {
         get: {method: "GET", isArray: true}
   });
+});
+
+app.factory('HakukohdeHakijaryhma', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/hakijaryhma", {hakukohdeoid: "@hakukohdeoid"}, {
+        get: {method: "GET", isArray: true}
+    });
 });
 
 //valintaperusteet
