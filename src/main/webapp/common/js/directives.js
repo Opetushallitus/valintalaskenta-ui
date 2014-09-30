@@ -211,7 +211,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                         $scope.showEhdollisesti = function() {
                             var returnValue = false;
 
-                            if ($scope.hakemus.showEhdollisesti) {
+                            if ($scope.hakemus && $scope.hakemus.showEhdollisesti) {
                                 returnValue = $scope.hakemus.showEhdollisesti;
                             }
                             return returnValue;
@@ -220,7 +220,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                         $scope.showSitovasti = function() {
                             var returnValue = false;
 
-                            if ($scope.hakemus.showSitovasti) {
+                            if ($scope.hakemus && $scope.hakemus.showSitovasti) {
                                 returnValue = $scope.hakemus.showSitovasti;
                             }
                             return returnValue;

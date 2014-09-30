@@ -30,44 +30,44 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                 // autoscroll kutsuu controlleria kahteen kertaan. öri öri
                 model.hakutoiveetMap = {};
                 model.hakutoiveet.length = 0;
+                if(model.hakemus.answers) {
+                    for (var i = 1; i < 10; i++) {
+                        if (!model.hakemus.answers.hakutoiveet) {
+                            break;
+                        }
+                        var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
 
-                for (var i = 1; i < 10; i++) {
-                    if(!model.hakemus.answers.hakutoiveet) {
-                    	break;
-                    }
-                	var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                        if (oid === undefined) {
+                            break;
+                        }
 
-                    if (oid === undefined) {
-                        break;
-                    }
+                        var hakutoiveIndex = i;
+                        var koulutus = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"];
+                        var oppilaitos = model.hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"];
 
-                    var hakutoiveIndex = i;
-                    var koulutus = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"];
-                    var oppilaitos = model.hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"];
+                        var harkinnanvarainen = model.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
+                        var discretionary = model.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
 
-                    var harkinnanvarainen = model.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
-                    var discretionary = model.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
+                        //create hakutoiveObject that can easily be iterated in view
+                        var hakutoive = {
+                            hakukohdeOid: oid,
+                            hakutoiveNumero: hakutoiveIndex,
+                            koulutuksenNimi: koulutus,
+                            oppilaitos: oppilaitos,
+                            hakemusOid: model.hakemus.oid,
+                            hakenutHarkinnanvaraisesti: (harkinnanvarainen || discretionary),
+                            additionalData: model.hakemus.additionalInfo
+                        };
 
-                    //create hakutoiveObject that can easily be iterated in view
-                    var hakutoive = {
-                        hakukohdeOid: oid,
-                        hakutoiveNumero: hakutoiveIndex,
-                        koulutuksenNimi: koulutus,
-                        oppilaitos: oppilaitos,
-                        hakemusOid: model.hakemus.oid,
-                        hakenutHarkinnanvaraisesti: (harkinnanvarainen || discretionary),
-                        additionalData: model.hakemus.additionalInfo
-                    };
-
-                    if (oid) {
-                        model.hakutoiveetMap[oid] = hakutoive;
-                        model.hakutoiveet.push(hakutoive);
-                    }
-                    if (hakutoive.hakenutHarkinnanvaraisesti === 'true') {
-                        model.hakenutHarkinnanvaraisesti = true;
+                        if (oid) {
+                            model.hakutoiveetMap[oid] = hakutoive;
+                            model.hakutoiveet.push(hakutoive);
+                        }
+                        if (hakutoive.hakenutHarkinnanvaraisesti === 'true') {
+                            model.hakenutHarkinnanvaraisesti = true;
+                        }
                     }
                 }
-
                 HarkinnanvaraisestiHyvaksytty.get({hakemusOid: hakemusOid, hakuOid: hakuOid}, function (result) {
 
                     result.forEach(function (harkinnanvarainen) {
