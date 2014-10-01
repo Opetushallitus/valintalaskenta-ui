@@ -151,91 +151,119 @@ app.directive('sijoitteluVastaanottoTila', function () {
             valintatapajonoOid: '=',
             enabled: '=',
             hakemus: '=',
+            hakutoiveet: '=',
             haku: '='
         },
         templateUrl: '../common/html/sijoitteluVastaanottoTila.html',
         controller: function ($scope, VastaanottoTila, HakemuksenVastaanottoTila, $modal) {
 
             $scope.show = function () {
-                $modal.open({
-                    scope: $scope,
-                    templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
-                    controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu) {
-                        $scope.update = function () {
-                            var tilaParams = {
-                                hakuoid: $scope.hakuOid,
-                                hakukohdeOid: $scope.hakukohdeOid,
-                                valintatapajonoOid: $scope.valintatapajonoOid,
-                                hakemusOid: $scope.hakemus.hakemusOid,
-                                selite: $scope.hakemus.selite
-                            };
+                if ($scope.enabled) {
+                    $modal.open({
+                        scope: $scope,
+                        templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
+                        controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu) {
+                            $scope.update = function () {
 
-                            $scope.selite = "";
-                            if ($scope.hakemus.muokattuVastaanottoTila === "") {
-                                $scope.hakemus.muokattuVastaanottoTila = null;
-                            }
-                            var tilaObj = {
-                                valintatapajonoOid: $scope.valintatapajonoOid,
-                                hakemusOid: $scope.hakemus.hakemusOid,
-                                tila: $scope.hakemus.muokattuVastaanottoTila
-                            };
-
-                            VastaanottoTila.post(tilaParams, [tilaObj], function (result) {
-
-                                setVastaanottoTila($scope.hakemus, tilaParams);
-                            }, function (error) {
-                                $scope.error = error;
-                            });
-                        };
-
-                        var setVastaanottoTila = function (hakemus, tilaParams) {
-                            HakemuksenVastaanottoTila.get(tilaParams, function (result) {
-                                if (!result.tila) {
-                                    hakemus.vastaanottoTila = "";
-                                    hakemus.muokattuVastaanottoTila = "";
-                                } else {
-                                    hakemus.vastaanottoTila = result.tila;
-                                    hakemus.muokattuVastaanottoTila = result.tila;
+                                if ($scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_LASNA' ||
+                                    $scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA') {
+                                    $scope.hakutoiveet.forEach(function (hakutoive) {
+                                        if (hakutoive.hakukohdeOid !== $scope.hakukohdeOid) {
+                                            var tilaParams = {
+                                                hakuoid: $scope.hakuOid,
+                                                hakukohdeOid: hakutoive.hakukohdeOid,
+                                                valintatapajonoOid: $scope.valintatapajonoOid,
+                                                hakemusOid: hakutoive.hakemusOid,
+                                                selite: 'Ottanut vastaan toisen opiskelupaikan'
+                                            };
+                                            var tilaObj = {
+                                                valintatapajonoOid: $scope.valintatapajonoOid,
+                                                hakemusOid: hakutoive.hakemusOid,
+                                                tila: 'PERUUTETTU'
+                                            };
+                                            VastaanottoTila.post(tilaParams, [tilaObj], function (result) {
+                                            }, function (error) {
+                                                $scope.error = error;
+                                            });
+                                        }
+                                    });
                                 }
-                                $modalInstance.close(result)
-                                Ilmoitus.avaa("Tallennus onnistui", "Sijoittelun vastaanottotila muutettu.");
-                            }, function (error) {
-                                $scope.error = error;
-                            });
-                        };
 
-                        $scope.sulje = function () {
-                            $modalInstance.dismiss('cancel');
-                        };
 
-                        $scope.showEhdollisesti = function() {
-                            var returnValue = false;
+                                var tilaParams = {
+                                    hakuoid: $scope.hakuOid,
+                                    hakukohdeOid: $scope.hakukohdeOid,
+                                    valintatapajonoOid: $scope.valintatapajonoOid,
+                                    hakemusOid: $scope.hakemus.hakemusOid,
+                                    selite: $scope.hakemus.selite
+                                };
 
-                            if ($scope.hakemus.showEhdollisesti) {
-                                returnValue = $scope.hakemus.showEhdollisesti;
-                            }
-                            return returnValue;
-                        };
+                                $scope.selite = "";
+                                if ($scope.hakemus.muokattuVastaanottoTila === "") {
+                                    $scope.hakemus.muokattuVastaanottoTila = null;
+                                }
+                                var tilaObj = {
+                                    valintatapajonoOid: $scope.valintatapajonoOid,
+                                    hakemusOid: $scope.hakemus.hakemusOid,
+                                    tila: $scope.hakemus.muokattuVastaanottoTila
+                                };
 
-                        $scope.showSitovasti = function() {
-                            var returnValue = false;
+                                VastaanottoTila.post(tilaParams, [tilaObj], function (result) {
+                                    setVastaanottoTila($scope.hakemus, tilaParams);
+                                }, function (error) {
+                                    $scope.error = error;
+                                });
+                            };
 
-                            if ($scope.hakemus.showSitovasti) {
-                                returnValue = $scope.hakemus.showSitovasti;
-                            }
-                            return returnValue;
-                        };
+                            var setVastaanottoTila = function (hakemus, tilaParams) {
+                                HakemuksenVastaanottoTila.get(tilaParams, function (result) {
+                                    if (!result.tila) {
+                                        hakemus.vastaanottoTila = "";
+                                        hakemus.muokattuVastaanottoTila = "";
+                                    } else {
+                                        hakemus.vastaanottoTila = result.tila;
+                                        hakemus.muokattuVastaanottoTila = result.tila;
+                                    }
+                                    $modalInstance.close(result)
+                                    Ilmoitus.avaa("Tallennus onnistui", "Sijoittelun vastaanottotila muutettu.");
+                                }, function (error) {
+                                    $scope.error = error;
+                                });
+                            };
 
-                        $scope.isKorkeakoulu = function() {
-                            return Korkeakoulu.isKorkeakoulu($scope.haku.kohdejoukkoUri);
-                        };
-                    },
-                    resolve: {
+                            $scope.sulje = function () {
+                                $modalInstance.dismiss('cancel');
+                            };
 
-                    }
-                }).result.then(function () {
-                    }, function () {
-                    });
+                            $scope.showEhdollisesti = function () {
+                                var returnValue = false;
+
+                                if ($scope.hakemus && $scope.hakemus.showEhdollisesti) {
+                                    returnValue = $scope.hakemus.showEhdollisesti;
+                                }
+                                return returnValue;
+                            };
+
+                            $scope.showSitovasti = function () {
+                                var returnValue = false;
+
+                                if ($scope.hakemus && $scope.hakemus.showSitovasti) {
+                                    returnValue = $scope.hakemus.showSitovasti;
+                                }
+                                return returnValue;
+                            };
+
+                            $scope.isKorkeakoulu = function () {
+                                return Korkeakoulu.isKorkeakoulu($scope.haku.kohdejoukkoUri);
+                            };
+                        },
+                        resolve: {
+
+                        }
+                    }).result.then(function () {
+                        }, function () {
+                        });
+                }
             };
 
         }
