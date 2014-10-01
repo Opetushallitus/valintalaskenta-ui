@@ -136,8 +136,10 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
               hakemusOid: hakemusOid,
               tarjoajaOid: model.tarjoajaOid
           };
+          var tilaObj = {};
+          tilaObj.hyvaksy = hyvaksytty;
 
-          SijoitteluTila.post(tilaParams, hyvaksytty, function (result) {
+          SijoitteluTila.post(tilaParams, tilaObj, function (result) {
 
               model.hakeneet.forEach(function(hakija) {
                   if(hakija.oid === hakemusOid) {

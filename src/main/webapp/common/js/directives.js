@@ -162,57 +162,65 @@ app.directive('sijoitteluVastaanottoTila', function () {
                     $modal.open({
                         scope: $scope,
                         templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
-                        controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu) {
+                        controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu, SijoitteluTila) {
                             $scope.update = function () {
+                                if ($scope.hakemus) {
+                                    if ($scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_LASNA' ||
+                                        $scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA') {
+                                        $scope.hakutoiveet.forEach(function (hakutoive) {
+                                            if (hakutoive.hakukohdeOid !== $scope.hakukohdeOid) {
 
-                                if ($scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_LASNA' ||
-                                    $scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA') {
-                                    $scope.hakutoiveet.forEach(function (hakutoive) {
-                                        if (hakutoive.hakukohdeOid !== $scope.hakukohdeOid) {
-                                            var tilaParams = {
-                                                hakuoid: $scope.hakuOid,
-                                                hakukohdeOid: hakutoive.hakukohdeOid,
-                                                valintatapajonoOid: $scope.valintatapajonoOid,
-                                                hakemusOid: hakutoive.hakemusOid,
-                                                selite: 'Ottanut vastaan toisen opiskelupaikan'
-                                            };
-                                            var tilaObj = {
-                                                valintatapajonoOid: $scope.valintatapajonoOid,
-                                                hakemusOid: hakutoive.hakemusOid,
-                                                tila: 'PERUUTETTU'
-                                            };
-                                            VastaanottoTila.post(tilaParams, [tilaObj], function (result) {
-                                            }, function (error) {
-                                                $scope.error = error;
-                                            });
-                                        }
+                                                var tilaParams = {
+                                                    hakuoid: $scope.hakuOid,
+                                                    hakukohdeOid: hakutoive.hakukohdeOid,
+                                                    hakemusOid: hakutoive.hakemusOid,
+                                                    tarjoajaOid: ''
+                                                };
+                                                var tilaObj = {};
+                                                tilaObj.hyvaksy = false;
+                                                tilaObj.tila = 'PERUUNTUNUT';
+                                                tilaObj.tilanKuvaukset = [
+                                                    'Ottanut vastaan toisen opiskelupaikan',
+                                                    'Ottanut vastaan toisen opiskelupaikan',
+                                                    'Ottanut vastaan toisen opiskelupaikan'
+                                                ];
+
+                                                SijoitteluTila.post(tilaParams, tilaObj, function (result) {
+
+                                                }, function (error) {
+                                                    $scope.error = error;
+                                                });
+
+
+                                            }
+                                        });
+                                    }
+
+
+                                    var tilaParams = {
+                                        hakuoid: $scope.hakuOid,
+                                        hakukohdeOid: $scope.hakukohdeOid,
+                                        valintatapajonoOid: $scope.valintatapajonoOid,
+                                        hakemusOid: $scope.hakemus.hakemusOid,
+                                        selite: $scope.hakemus.selite
+                                    };
+
+                                    $scope.selite = "";
+                                    if ($scope.hakemus.muokattuVastaanottoTila === "") {
+                                        $scope.hakemus.muokattuVastaanottoTila = null;
+                                    }
+                                    var tilaObj = {
+                                        valintatapajonoOid: $scope.valintatapajonoOid,
+                                        hakemusOid: $scope.hakemus.hakemusOid,
+                                        tila: $scope.hakemus.muokattuVastaanottoTila
+                                    };
+
+                                    VastaanottoTila.post(tilaParams, [tilaObj], function (result) {
+                                        setVastaanottoTila($scope.hakemus, tilaParams);
+                                    }, function (error) {
+                                        $scope.error = error;
                                     });
                                 }
-
-
-                                var tilaParams = {
-                                    hakuoid: $scope.hakuOid,
-                                    hakukohdeOid: $scope.hakukohdeOid,
-                                    valintatapajonoOid: $scope.valintatapajonoOid,
-                                    hakemusOid: $scope.hakemus.hakemusOid,
-                                    selite: $scope.hakemus.selite
-                                };
-
-                                $scope.selite = "";
-                                if ($scope.hakemus.muokattuVastaanottoTila === "") {
-                                    $scope.hakemus.muokattuVastaanottoTila = null;
-                                }
-                                var tilaObj = {
-                                    valintatapajonoOid: $scope.valintatapajonoOid,
-                                    hakemusOid: $scope.hakemus.hakemusOid,
-                                    tila: $scope.hakemus.muokattuVastaanottoTila
-                                };
-
-                                VastaanottoTila.post(tilaParams, [tilaObj], function (result) {
-                                    setVastaanottoTila($scope.hakemus, tilaParams);
-                                }, function (error) {
-                                    $scope.error = error;
-                                });
                             };
 
                             var setVastaanottoTila = function (hakemus, tilaParams) {
