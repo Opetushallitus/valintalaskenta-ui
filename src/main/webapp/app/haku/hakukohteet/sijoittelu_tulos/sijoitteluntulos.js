@@ -143,6 +143,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
+                                            currentHakemus.hyvaksyttyVarasijalta = vastaanottotila.hyvaksyttyVarasijalta;
                                             return true;
                                         }
                                     });
@@ -223,7 +224,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                     ilmoittautumisTila: hakemus.muokattuIlmoittautumisTila,
             		valintatapajonoOid: valintatapajonoOid,
                 	hakemusOid: hakemus.hakemusOid,
-                    julkaistavissa: hakemus.julkaistavissa
+                    julkaistavissa: hakemus.julkaistavissa,
+                    hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta
             	};
             });
 

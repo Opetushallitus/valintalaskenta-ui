@@ -136,8 +136,10 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
               hakemusOid: hakemusOid,
               tarjoajaOid: model.tarjoajaOid
           };
+          var tilaObj = {};
+          tilaObj.hyvaksy = hyvaksytty;
 
-          SijoitteluTila.post(tilaParams, hyvaksytty, function (result) {
+          SijoitteluTila.post(tilaParams, tilaObj, function (result) {
 
               model.hakeneet.forEach(function(hakija) {
                   if(hakija.oid === hakemusOid) {
@@ -251,6 +253,7 @@ angular.module('valintalaskenta').
         tulos.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
         tulos.hakuOid = $routeParams.hakuOid;
         tulos.julkaistavissa = hakemus.julkaistavissa;
+        tulos.hyvaksyttyVarasijalta = false;
 
         var tilaParams = {
             hakuoid: $routeParams.hakuOid,
@@ -291,6 +294,7 @@ angular.module('valintalaskenta').
         tulos.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
         tulos.hakuOid = $routeParams.hakuOid;
         tulos.julkaistavissa = hakemus.julkaistavissa;
+        tulos.hyvaksyttyVarasijalta = false;
 
         var tilaObj = [tulos];
 

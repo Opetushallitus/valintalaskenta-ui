@@ -62,6 +62,7 @@
                             <th>{{ t('sijoitteluntulos.hakutoive') || 'Hakutoive' }}</th>
                             <th>{{ t('sijoitteluntulos.pisteet') || 'Pisteet' }}</th>
                             <th>{{ t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila' }}</th>
+                            <th>{{ t('sijoitteluntulos.varasijatoiminto') || 'Varasijalta hyväksyminen' }}</th>
                             <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto' }}</th>
                             <th>{{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto' }}</th>
                             <th>{{ t('sijoitteluntulos.muokattu') || 'Muokattu' }}</th>
@@ -93,6 +94,10 @@
                                         | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
                                     </modal-open>
                                 </modal>
+                            </td>
+
+                            <td>
+                                <div ng-show="hakemus.tila == 'VARALLA' && updateOph">{{ t('sijoitteluntulos.varasijahyvaksy') || 'Hyväksytään varasijalta' }}: <input type="checkbox" ng-model="hakemus.hyvaksyttyVarasijalta"></div>
                             </td>
 
                             <td>
