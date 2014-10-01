@@ -251,6 +251,7 @@ angular.module('valintalaskenta').
         tulos.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
         tulos.hakuOid = $routeParams.hakuOid;
         tulos.julkaistavissa = hakemus.julkaistavissa;
+        tulos.hyvaksyttyVarasijalta = false;
 
         var tilaParams = {
             hakuoid: $routeParams.hakuOid,
@@ -291,6 +292,7 @@ angular.module('valintalaskenta').
         tulos.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
         tulos.hakuOid = $routeParams.hakuOid;
         tulos.julkaistavissa = hakemus.julkaistavissa;
+        tulos.hyvaksyttyVarasijalta = false;
 
         var tilaObj = [tulos];
 
