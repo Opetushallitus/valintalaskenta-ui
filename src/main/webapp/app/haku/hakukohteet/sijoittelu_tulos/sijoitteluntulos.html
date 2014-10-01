@@ -97,8 +97,8 @@
 
                             <td>
                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="hakemus.julkaistavissa"> <br/></div>
-                                <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
-                                    <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
+                                <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
+                                    <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                         <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as (tila.value | translate) for tila in hakemuksenMuokattuVastaanottoTilat">
                                         </select>
                                     </span>
