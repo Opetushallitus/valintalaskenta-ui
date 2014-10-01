@@ -65,7 +65,6 @@
                             <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto' }}</th>
                             <th>{{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto' }}</th>
                             <th>{{ t('sijoitteluntulos.muokattu') || 'Muokattu' }}</th>
-                            <th>{{ t('sijoitteluntulos.muokkaa') || 'Muokkaa' }}</th>
                             <th>{{ t('sijoitteluntulos.toiminto') || 'Toiminto' }}</th>
                         </tr>
                         </thead>
@@ -126,14 +125,6 @@
                                     </modal-open>
 
                                 </modal>
-                            </td>
-                            <td>
-                                <sijoittelu-vastaanotto-tila hakemus="jono"
-                                                             valintatapajono-oid="jono.oid"
-                                                             haku-oid="model.hakuOid"
-                                                             hakukohde-oid="model.hakukohdeOid"
-                                                             haku="model.haku"
-                                                             enabled="updateOph"/>
                             </td>
                             <td>
 								<a ng-if="hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY'" ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
