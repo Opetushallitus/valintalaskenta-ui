@@ -165,8 +165,8 @@ app.directive('sijoitteluVastaanottoTila', function () {
                         controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu, SijoitteluTila) {
                             $scope.update = function () {
                                 if ($scope.hakemus) {
-                                    if ($scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_LASNA' ||
-                                        $scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA') {
+                                    if ($scope.isKorkeakoulu() && $scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_LASNA' ||
+                                        $scope.isKorkeakoulu() && $scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA') {
                                         $scope.hakutoiveet.forEach(function (hakutoive) {
                                             if (hakutoive.hakukohdeOid !== $scope.hakukohdeOid) {
 
