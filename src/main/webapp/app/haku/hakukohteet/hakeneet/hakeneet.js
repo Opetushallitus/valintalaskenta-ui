@@ -1,4 +1,4 @@
-﻿app.factory('HakeneetModel', function (HakukohdeHenkilot) {
+﻿app.factory('HakeneetModel', function (HakukohdeHenkilotFull) {
     'use strict';
     var model;
     model = new function () {
@@ -13,11 +13,41 @@
             model.hakukohdeOid = hakukohdeOid;
             model.hakuOid = hakuOid;
 
-            HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
-                model.hakeneet = result.results;
+            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
+                model.hakeneet = result;
+
+                model.hakeneet.forEach(function (hakija) {
+                    if(hakija.answers) {
+                        for (var i = 1; i < 10; i++) {
+                            if (!hakija.answers.hakutoiveet) {
+                                break;
+                            }
+                            var oid = hakija.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+
+                            if (oid === undefined) {
+                                break;
+                            }
+
+                            if (oid === hakukohdeOid) {
+                                hakija.hakutoiveNumero = i;
+
+                                for (var j = 0; j < hakija.preferenceEligibilities.length; j++) {
+                                    if (hakija.preferenceEligibilities[j].aoId === hakukohdeOid) {
+                                        hakija.hakukelpoisuus = hakija.preferenceEligibilities[j].status;
+                                    }
+
+                                }
+                                break;
+                            }
+
+                        }
+                    }
+                });
+
             }, function (error) {
                 model.errors.push(error);
             });
+
         };
 
 

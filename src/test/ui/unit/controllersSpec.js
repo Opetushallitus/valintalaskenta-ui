@@ -458,12 +458,12 @@ describe('Testing HakukohdeNimiController', function(){
 
 describe('Testing HakeneetController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakeneetModel, hakukohdeModel,
-        hakukohdejson,hakeneetjson,hakukohdenimijson;
+        hakukohdejson,hakeneetfulljson,hakukohdenimijson;
     var routeParams = {"hakuOid": "oid",
         "hakukohdeOid" : "oid2"};
     beforeEach(module('valintalaskenta','testData'));
 
-    beforeEach(inject(function($injector, hakukohdeJSON, hakeneetJSON, hakukohdenimiJSON) {
+    beforeEach(inject(function($injector, hakukohdeJSON, hakeneetFullJSON, hakukohdenimiJSON) {
         $httpBackend = $injector.get('$httpBackend');
         $rootScope = $injector.get('$rootScope');
         $location = $injector.get('$location');
@@ -471,7 +471,7 @@ describe('Testing HakeneetController', function(){
         hakeneetModel = $injector.get('HakeneetModel');
         hakukohdeModel = $injector.get('HakukohdeModel');
         hakukohdejson = hakukohdeJSON;
-        hakeneetjson = hakeneetJSON;
+        hakeneetfulljson = hakeneetFullJSON;
         hakukohdenimijson = hakukohdenimiJSON;
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
@@ -486,8 +486,8 @@ describe('Testing HakeneetController', function(){
 
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
             .respond(201,hakukohdejson);
-        $httpBackend.expectGET('haku-app/applications?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
-            .respond(201,hakeneetjson);
+        $httpBackend.expectGET('haku-app/applications/listfull?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
+            .respond(201,hakeneetfulljson);
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
             .respond(201,hakukohdenimijson);
         ctrl = $controller('HakeneetController', {'$scope' : scope,'$location': location, '$routeParams': routeParams,
@@ -497,13 +497,13 @@ describe('Testing HakeneetController', function(){
     });
 
     it('check initialized variables', function() {
-        expect(scope.model.hakeneet.length).toBe(17);
-        expect(scope.model.hakeneet[10].firstNames).toBe("Peetu I");
-        expect(scope.model.hakeneet[10].lastName).toBe("Kuusijoki");
-        expect(scope.model.hakeneet[10].oid).toBe("1.2.246.562.11.00000842048");
-        expect(scope.model.hakeneet[10].personOid).toBe("1.2.246.562.24.92205707637");
-        expect(scope.model.hakeneet[10].ssn).toBe("161178-934E");
-        expect(scope.model.hakeneet[10].state).toBe("INCOMPLETE");
+        expect(scope.model.hakeneet.length).toBe(3);
+        expect(scope.model.hakeneet[1].answers.henkilotiedot.Etunimet).toBe("Tanja");
+        expect(scope.model.hakeneet[1].answers.henkilotiedot.Sukunimi).toBe("Tanssija");
+        expect(scope.model.hakeneet[1].oid).toBe("1.2.246.562.11.00000000026");
+        expect(scope.model.hakeneet[1].personOid).toBe("1.2.246.562.24.59107908085");
+        expect(scope.model.hakeneet[1].answers.henkilotiedot.Henkilotunnus).toBe("120589-238D");
+        expect(scope.model.hakeneet[1].state).toBe("ACTIVE");
         expect(scope.tila.ACTIVE).toBeDefined();
         expect(scope.tila.INCOMPLETE).toBeDefined();
     });

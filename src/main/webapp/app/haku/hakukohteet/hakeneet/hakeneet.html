@@ -25,13 +25,15 @@
                         <tr>
                             <th>{{ t('hakukohteethakeneet.nimi') || 'Nimi' }}</th>
                             <th>{{ t('hakukohteethakeneet.tila') || 'Tila' }}</th>
+                            <th>{{ t('hakukohteethakeneet.hakukelpoisuustieto') || 'Hakukelpoisuustieto' }}</th>
+                            <th>{{ t('hakukohteethakeneet.hakutoiveennumero') || 'Hakutoiveen numero' }}</th>
                         </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="hakija in filteredResult=(model.hakeneet | orderBy:'lastName' | filter:hakijaFilter)| startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
+                            <tr ng-repeat="hakija in filteredResult=(model.hakeneet | orderBy:'answers.henkilotiedot.Sukunimi' | filter:hakijaFilter)| startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                                 <td class="leftorientedcolumn">
-                                    <show-person-information sukunimi="{{hakija.lastName}}"
-                                                             etunimi="{{hakija.firstNames}}"
+                                    <show-person-information sukunimi="{{hakija.answers.henkilotiedot.Sukunimi}}"
+                                                             etunimi="{{hakija.answers.henkilotiedot.Etunimet}}"
                                                              hakemus-oid="{{hakija.oid}}"
                                                              haku-oid="{{hakuOid}}"
                                                              henkilo-oid="{{hakija.personOid}}" />
@@ -39,6 +41,12 @@
                                 </td>
                                 <td>
                                     {{tila[hakija.state]}}
+                                </td>
+                                <td>
+                                    {{ t('hakija.hakukelpoisuus') || hakija.hakukelpoisuus }}
+                                </td>
+                                <td>
+                                    {{hakija.hakutoiveNumero}}
                                 </td>
                             </tr>
                         </tbody>
