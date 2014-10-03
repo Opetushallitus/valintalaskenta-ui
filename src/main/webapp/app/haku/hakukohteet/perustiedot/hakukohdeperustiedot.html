@@ -18,10 +18,6 @@
                 <dl>
                     <dt>{{ t('hakukohteethakukohdeperustiedot.hakukohdeoid') || 'HakukohdeOid' }}</dt>
                     <dd>{{model.hakukohde.oid}}</dd>
-
-                    <dt>{{ t('hakukohteethakukohdeperustiedot.aloituspaikat') || 'Aloituspaikat' }}</dt>
-                    <dd>{{model.hakukohde.valintojenAloituspaikatLkm}}</dd>
-
                 </dl>
 
                 <h3>{{ t('hakukohteethakukohdeperustiedot.valintatapajonokohtaiset') || 'Valintatapajonokohtaiset tiedot' }}</h3>
@@ -29,8 +25,10 @@
                     <thead>
                     <tr>
                         <th>{{ t('hakukohteethakukohdeperustiedot.valintatapajono') || 'Valintatapajono' }}</th>
+                        <th>{{ t('hakukohteethakukohdeperustiedot.aloituspaikat') || 'Aloituspaikat' }}</th>
                         <th>{{ t('hakukohteethakukohdeperustiedot.hyvaksytyt') || 'Hyväksytyt yhteensä' }}</th>
-                        <th>{{ t('hakukohteethakukohdeperustiedot.harkinnanvaraisesti') || 'Harkinnanvaraisesti hyväksytyt yhteensä' }}</th>
+                        <th ng-if="!isKorkeakoulu()">{{ t('hakukohteethakukohdeperustiedot.harkinnanvaraisesti') || 'Harkinnanvaraisesti hyväksytyt yhteensä' }}</th>
+                        <th ng-if="isKorkeakoulu()">{{ t('hakukohteethakukohdeperustiedot.ehdollisesti') || 'Ehdollisesti vastaanottanut' }}</th>
                         <th>{{ t('hakukohteethakukohdeperustiedot.varasijoilla') || 'Varasijoilla yhteensä' }}</th>
                         <th>{{ t('hakukohteethakukohdeperustiedot.vastaanottaneet') || 'Paikan vastaanottaneet yhteensä' }}</th>
                         <th>{{ t('hakukohteethakukohdeperustiedot.hyvaksytty') || 'Alin hyväksytty pistemäärä' }}</th>
@@ -39,8 +37,10 @@
                     <tbody>
                     <tr ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt">
                         <td>{{erittely.nimi}}</td>
+                        <td>{{erittely.aloituspaikat}}</td>
                         <td>{{erittely.hyvaksytyt.length}}</td>
-                        <td>{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>
+                        <td ng-if="!isKorkeakoulu()">{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>
+                        <td ng-if="isKorkeakoulu()">{{erittely.ehdollisesti.length}}</td>
                         <td>{{erittely.varasijoilla.length}}</td>
                         <td>{{erittely.paikanVastaanottaneet.length}}</td>
                         <td><span ng-if="erittely.hyvaksytyt[erittely.hyvaksytyt.length-1].pisteet >= 0">{{erittely.hyvaksytyt[erittely.hyvaksytyt.length-1].pisteet}}</span></td>
