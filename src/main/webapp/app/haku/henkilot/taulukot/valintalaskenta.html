@@ -28,7 +28,7 @@
                 </a>
             </td>
         </tr>
-        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero'" ng-show="(!filter && hakutoive.valintalaskenta) ||  (filter && hakutoive.valintalaskenta && isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
+        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="(filter && hakutoive.valintalaskenta) ||  (!filter && hakutoive.valintalaskenta && isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
             <td>
                 <div ng-if="isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
