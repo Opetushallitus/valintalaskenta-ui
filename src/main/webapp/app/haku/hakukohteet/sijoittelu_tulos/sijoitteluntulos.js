@@ -84,9 +84,10 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                             hyvaksytyt: [],
                             paikanVastaanottaneet: [],
                             hyvaksyttyHarkinnanvaraisesti: [],
-                            varasijoilla: []
+                            varasijoilla: [],
+                            ehdollisesti: []
                         };
-
+                        hakemuserittely.aloituspaikat = valintatapajono.aloituspaikat;
                         model.hakemusErittelyt.push(hakemuserittely);
 
                         var lastTasaSija = 1;
@@ -103,6 +104,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                             if ((hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && hakemus.hyvaksyttyHarkinnanvaraisesti) {
                                 hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
                             }
+
 
                             if (hakemus.tila === "VARALLA") {
                                 sija++;
@@ -135,6 +137,10 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
                                             if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT") {
                                                 hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
+                                            }
+
+                                            if (currentHakemus.vastaanottoTila === "EHDOLLISESTI_VASTAANOTTANUT") {
+                                                hakemuserittely.ehdollisesti.push(currentHakemus);
                                             }
 
                                             if (vastaanottotila.ilmoittautumisTila === null) {

@@ -1,5 +1,6 @@
 
-angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'TarjontaHakukohde', 'HakukohdeNimi', function ($q, $log, TarjontaHakukohde, HakukohdeNimi) {
+angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'TarjontaHakukohde', 'HakukohdeNimi',
+    function ($q, $log, TarjontaHakukohde, HakukohdeNimi) {
     "use strict";
 
 
@@ -130,8 +131,8 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
 
 angular.module('valintalaskenta').
     controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
-        'SijoitteluntulosModel',
-        function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel) {
+        'SijoitteluntulosModel', 'Korkeakoulu',
+        function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu) {
     "use strict";
 
 
@@ -141,6 +142,11 @@ angular.module('valintalaskenta').
     $scope.hakumodel = HakuModel;
 
     $scope.model.refreshIfNeeded($scope.hakukohdeOid);
+
+    $scope.isKorkeakoulu = function () {
+        return Korkeakoulu.isKorkeakoulu($scope.sijoitteluntulosModel.haku.kohdejoukkoUri);
+    };
+
 
     $scope.sijoitteluntulosModel = SijoitteluntulosModel;
     $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));

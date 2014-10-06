@@ -73,6 +73,9 @@ app.factory('ParametriService', function ($q, Parametrit) {
         instance.showValintakoekutsut = function () {
             return privileges.valintakoekutsut;
         };
+        instance.showHakijaryhmat = function () {
+            return privileges.hakijaryhmat;
+        };
 
         instance.promise = function () {
             return instance.deferred.promise;
