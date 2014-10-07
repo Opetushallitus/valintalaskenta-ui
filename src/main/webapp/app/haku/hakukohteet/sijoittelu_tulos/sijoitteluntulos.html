@@ -45,6 +45,8 @@
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot | orderBy:'index':true track by $index">
                     <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
                     <a ng-click="selectIlmoitettuToAll(jono.oid)" class="btn btn-default btn-sm margin-bottom-2">{{ t('sijoitteluntulos.hyvaksyvalintaesitys') || 'Hyväksy valintaesitys' }}</a>
+                    <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="model.naytaVainMuuttuneet"> <br/></div>
+
                     <table class="virkailija-table-1">
                         <thead>
                         <tr>
@@ -70,7 +72,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="hakemus in filteredResults[$index] = (jono.hakemukset | orderBy:jarjesta | filter:hakijaFilter) | startFrom:(currentPage[$index]-1)*pageSize | limitTo:pageSize">
+                        <tr ng-repeat="hakemus in filteredResults[$index] = (jono.hakemukset | orderBy:jarjesta | filter:hakijaFilter | filter:filterChangedValues) | startFrom:(currentPage[$index]-1)*pageSize | limitTo:pageSize">
                             <td><span ng-if="hakemus.sija > 0">{{hakemus.sija}}</span></td>
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakemus.sukunimi}}"

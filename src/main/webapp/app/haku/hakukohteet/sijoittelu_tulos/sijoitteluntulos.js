@@ -276,7 +276,7 @@ angular.module('valintalaskenta').
 
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.model = SijoitteluntulosModel;
-	
+
     //
     // pikalatauslinkit on harmaannettuna jos ei ensimmaistakaan generointia 
     $scope.osoitetarratUrl = null;
@@ -410,7 +410,18 @@ angular.module('valintalaskenta').
 	    	return "hyvaksymiskirje";
 	    }
     };
-    
+
+    $scope.filterChangedValues = function(hakemus) {
+        if ($scope.model.naytaVainMuuttuneet) {
+            if (hakemus.tilaHistoria && hakemus.tilaHistoria.length > 0 &&
+                hakemus.tilaHistoria[hakemus.tilaHistoria.length-1].tila === hakemus.tila) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
     $scope.createHyvaksymiskirjeetPDF = function (oidit) {
         
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
