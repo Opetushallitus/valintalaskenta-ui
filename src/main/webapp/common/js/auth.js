@@ -2,9 +2,9 @@
 
 
 angular.module('valintalaskenta')
-    .constant('READ', '_READ')
-    .constant('UPDATE', '_READ_UPDATE')
-    .constant('CRUD', '_CRUD')
+    .constant('READ', 'READ')
+    .constant('UPDATE', 'READ_UPDATE')
+    .constant('CRUD', 'CRUD')
     .constant('OPH_ORG', "1.2.246.562.10.00000000001");
 
 
@@ -25,7 +25,6 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
 
 //                deferred.resolve(kkRead);
                 deferred.resolve(result);
-
             } else {
                 $timeout(function () {
                     refresh();
@@ -137,7 +136,6 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _, CRUD,
     // OPH check -- voidaan ohittaa organisaatioiden haku
     var ophAccessCheck = function (service, roles) {
         var deferred = $q.defer();
-
         MyRolesModel.then(function (model) {
             if (roleCheck(service, OPH_ORG, model, roles)) {
                 deferred.resolve();
@@ -229,7 +227,6 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
     return {
         link: function ($scope, element, attrs) {
             $animate.addClass(element, 'ng-hide');
-
             UserModel.refreshIfNeeded();
 
             var success = function () {
@@ -245,41 +242,71 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
                     $animate.removeClass(element, 'ng-hide');
                 }
             };
-
             if (attrs.authKkUser) {
                 UserModel.organizationsDeferred.promise.then(function () {
                     if (UserModel.isKKUser) {
                         $animate.removeClass(element, 'ng-hide');
                     } else {
-                        checkOphRights();
-                        observeAuthOrg();
+                        $timeout(function () {
+                            switch (attrs.auth) {
+
+                                case "crudOph":
+                                    AuthService.crudOph(attrs.authService).then(success);
+                                    break;
+
+                                case "updateOph":
+                                    AuthService.updateOph(attrs.authService).then(success);
+                                    break;
+
+                                case "readOph":
+                                    AuthService.readOph(attrs.authService).then(success);
+                                    break;
+                            }
+                        }, 0);
+
+                        attrs.$observe('authOrg', function () {
+                            if (attrs.authOrg) {
+                                switch (attrs.auth) {
+                                    case "crud":
+                                        AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success);
+                                        break;
+
+                                    case "update":
+                                        AuthService.updateOrg(attrs.authService, attrs.authOrg).then(success);
+                                        break;
+
+                                    case "read":
+                                        AuthService.readOrg(attrs.authService, attrs.authOrg).then(success);
+                                        break;
+
+                                    default:
+                                        AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrg).then(success);
+                                        break;
+                                }
+                            }
+                        });
+
                     }
 
                 });
             } else {
-                $timeout(checkOphRights, 0);
-                observeAuthOrg();
-            }
+                $timeout(function () {
+                    switch (attrs.auth) {
 
-            function checkOphRights() {
-                switch (attrs.auth) {
+                        case "crudOph":
+                            AuthService.crudOph(attrs.authService).then(success);
+                            break;
 
-                    case "crudOph":
-                        AuthService.crudOph(attrs.authService).then(success);
-                        break;
+                        case "updateOph":
+                            AuthService.updateOph(attrs.authService).then(success);
+                            break;
 
-                    case "updateOph":
-                        AuthService.updateOph(attrs.authService).then(success);
-                        break;
+                        case "readOph":
+                            AuthService.readOph(attrs.authService).then(success);
+                            break;
+                    }
+                }, 0);
 
-                    case "readOph":
-                        AuthService.readOph(attrs.authService).then(success);
-                        break;
-                }
-            }
-
-
-            function observeAuthOrg() {
                 attrs.$observe('authOrg', function () {
                     if (attrs.authOrg) {
                         switch (attrs.auth) {
@@ -302,6 +329,8 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
                     }
                 });
             }
+
         }
     }
 });
+
