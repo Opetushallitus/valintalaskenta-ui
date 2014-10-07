@@ -6,6 +6,8 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
         this.hakuOid = "";
         this.haut = [];
         this.lisahaku = false;
+        this.nivelvaihe = false;
+
         this.getNimi = function () {
             if (this.hakuOid.nimi.kieli_fi !== undefined) {
                 return this.hakuOid.nimi.kieli_fi;
@@ -18,7 +20,7 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
             }
             return "Nimetön hakukohde";
         };
-        this.nivelvaihe = false;
+
         this.init = function (oid) {
             if(model.haut.length === 0) {
                 TarjontaHaut.query({}, function(result) {
@@ -28,7 +30,6 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
                         if (haku.oid === oid) {
                             model.hakuOid = haku;
                         }
-                        
                         var kohdejoukkoUri = haku.kohdejoukkoUri;
                         var kohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
                         var nivelvaihe = kohdejoukkoUriRegExp.exec(kohdejoukkoUri);
@@ -46,6 +47,7 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
             }
 
         };
+
     }();
 
 
@@ -56,7 +58,6 @@ angular.module('valintalaskenta').
     controller('HakuController', ['$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService',
         function ($scope, $location, $routeParams, HakuModel, ParametriService) {
     "use strict";
-
     $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
 
@@ -72,4 +73,12 @@ angular.module('valintalaskenta').
             }
         }
     });
+}])
+
+.filter('kkHakuFilter', ['_', function (_) {
+    return function (haut) {
+        return _.filter(haut, function (haku) {
+            return haku.kohdejoukkoUri.indexOf('_12') > -1;
+        });
+    };
 }]);

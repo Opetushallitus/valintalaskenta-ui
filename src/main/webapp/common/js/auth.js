@@ -1,12 +1,20 @@
 "use strict";
 
-var READ = "READ";
-var UPDATE = "READ_UPDATE";
-var CRUD = "CRUD";
-var OPH_ORG = "1.2.246.562.10.00000000001";
+
+angular.module('valintalaskenta')
+    .constant('READ', '_READ')
+    .constant('UPDATE', '_READ_UPDATE')
+    .constant('CRUD', '_CRUD')
+    .constant('OPH_ORG', "1.2.246.562.10.00000000001");
+
 
 app.factory('MyRolesModel', function ($q, $http, $timeout) {
     var deferred = $q.defer();
+
+    var kkCrud = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_CRUD", "APP_VALINTAPERUSTEET_CRUD_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
+    var kkUpdate = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ_UPDATE", "APP_VALINTAPERUSTEET_READ_UPDATE_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
+    var kkRead = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ", "APP_VALINTAPERUSTEET_READ_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
+
 
     // retrytetään niin kauan, että oikeuksia saadaan.
     var refresh = function () {
@@ -14,7 +22,10 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
         $http.get(CAS_URL).success(function (result) {
             // kyllä nyt jotain oikeuksia pitäis olla, jos tänne on tultu
             if (result.length > 0) {
+
+//                deferred.resolve(kkRead);
                 deferred.resolve(result);
+
             } else {
                 $timeout(function () {
                     refresh();
@@ -88,7 +99,7 @@ app.factory('ParametriService', function ($q, Parametrit) {
 });
 
 
-app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _) {
+app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _, CRUD, READ, UPDATE, OPH_ORG) {
 
     // organisation check
     var roleCheck = function (service, org, model, roles) {
@@ -201,9 +212,9 @@ app.directive('privileges', function ($animate, $timeout, ParametriService) {
         link: function ($scope, element, attrs) {
             $animate.addClass(element, 'ng-hide');
 
-            $timeout(function(){
+            $timeout(function () {
                 ParametriService.promise().then(function (data) {
-                    if(data[attrs.privileges]) {
+                    if (data[attrs.privileges]) {
 
                         $animate.removeClass(element, 'ng-hide');
                     }
@@ -214,10 +225,12 @@ app.directive('privileges', function ($animate, $timeout, ParametriService) {
     };
 });
 
-app.directive('auth', function ($animate, $timeout, AuthService, ParametriService) {
+app.directive('auth', function ($animate, $timeout, AuthService, ParametriService, UserModel) {
     return {
         link: function ($scope, element, attrs) {
             $animate.addClass(element, 'ng-hide');
+
+            UserModel.refreshIfNeeded();
 
             var success = function () {
                 if (attrs.authAdditionalCheck) {
@@ -231,9 +244,24 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
                 } else {
                     $animate.removeClass(element, 'ng-hide');
                 }
+            };
+
+            if (attrs.authKkUser) {
+                UserModel.organizationsDeferred.promise.then(function () {
+                    if (UserModel.isKKUser) {
+                        $animate.removeClass(element, 'ng-hide');
+                    } else {
+                        checkOphRights();
+                        observeAuthOrg();
+                    }
+
+                });
+            } else {
+                $timeout(checkOphRights, 0);
+                observeAuthOrg();
             }
 
-            $timeout(function () {
+            function checkOphRights() {
                 switch (attrs.auth) {
 
                     case "crudOph":
@@ -248,30 +276,32 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
                         AuthService.readOph(attrs.authService).then(success);
                         break;
                 }
-            }, 0);
+            }
 
-            attrs.$observe('authOrg', function () {
-                if (attrs.authOrg) {
-                    switch (attrs.auth) {
-                        case "crud":
-                            AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success);
-                            break;
 
-                        case "update":
-                            AuthService.updateOrg(attrs.authService, attrs.authOrg).then(success);
-                            break;
+            function observeAuthOrg() {
+                attrs.$observe('authOrg', function () {
+                    if (attrs.authOrg) {
+                        switch (attrs.auth) {
+                            case "crud":
+                                AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success);
+                                break;
 
-                        case "read":
-                            AuthService.readOrg(attrs.authService, attrs.authOrg).then(success);
-                            break;
+                            case "update":
+                                AuthService.updateOrg(attrs.authService, attrs.authOrg).then(success);
+                                break;
 
-                        default:
-                            AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrg).then(success);
-                            break;
+                            case "read":
+                                AuthService.readOrg(attrs.authService, attrs.authOrg).then(success);
+                                break;
+
+                            default:
+                                AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrg).then(success);
+                                break;
+                        }
                     }
-                }
-            });
-
+                });
+            }
         }
-    };
+    }
 });
