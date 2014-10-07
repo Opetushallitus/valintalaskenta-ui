@@ -1,4 +1,5 @@
-app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeHakijaryhma, Ilmoitus, IlmoitusTila, $q) {
+app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeHakijaryhma, Ilmoitus, IlmoitusTila, $q,
+                                                        HakemuksenVastaanottoTila,HakemuksenVastaanottoTilat) {
     "use strict";
 
     var model;
@@ -8,7 +9,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
         this.hakijaryhmat = [];
         this.errors = [];
 
-        this.refresh = function(hakukohdeOid) {
+        this.refresh = function(hakuOid, hakukohdeOid) {
             var defer = $q.defer();
 
             model.hakijaryhmat = [];
@@ -19,6 +20,30 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
 
             HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.hakijaryhmat = result;
+
+                model.hakijaryhmat.forEach(function (hakijaryhma) {
+                    hakijaryhma.jonosijat.forEach(function (jonosija) {
+                        var tilaParams = {
+                            hakemusOid: jonosija.hakemusOid
+                        };
+                        HakemuksenVastaanottoTilat.get(tilaParams, function (result) {
+                            var tilaParams = {
+                                hakuoid: hakuOid,
+                                hakukohdeOid: hakukohdeOid,
+                                valintatapajonoOid: result[0].valintatapajonoOid,
+                                hakemusOid: jonosija.hakemusOid
+                            };
+
+                            HakemuksenVastaanottoTila.get(tilaParams, function (result) {
+                                model.errors.push('');
+                            }, function (error) {
+                            });
+                        }, function (error) {
+                        });
+
+
+                    });
+                });
             }, function(error) {
                 model.errors.push(error);
                 defer.reject("hakukohteen tietojen hakeminen epäonnistui");
@@ -45,9 +70,18 @@ angular.module('valintalaskenta').
             $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
             $scope.model = ValintalaskentaHakijaryhmaModel;
             $scope.hakukohdeModel = HakukohdeModel;
+
+            $scope.pageSize = 50;
+            $scope.currentPage = [];
+            $scope.filteredResults = [];
+
+            for (var i = 0; i < 1000; i++) {
+                $scope.currentPage[i] = 1;
+            }
+
             var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
-            var promise = $scope.model.refresh($scope.hakukohdeOid);
+            var promise = $scope.model.refresh($scope.hakuOid, $scope.hakukohdeOid);
 
             AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
                 $scope.updateOph = true;

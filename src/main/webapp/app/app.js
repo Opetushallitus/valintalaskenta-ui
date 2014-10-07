@@ -622,6 +622,7 @@ app.factory('SijoitteluTila', function($resource) {
         });
 });
 
+
 app.factory('HakemuksenVastaanottoTila', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid",
         {
@@ -631,6 +632,15 @@ app.factory('HakemuksenVastaanottoTila', function($resource) {
             hakemusOid: "@hakemusOid"
         }, {
             get: {method: "GET"}
+        });
+});
+
+app.factory('HakemuksenVastaanottoTilat', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid",
+        {
+            hakemusOid: "@hakemusOid"
+        }, {
+            get: {method: "GET", isArray: true}
         });
 });
 

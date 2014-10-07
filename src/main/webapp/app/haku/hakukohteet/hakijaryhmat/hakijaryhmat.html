@@ -13,40 +13,46 @@
 
             <input type="text" class="search margin-vertical-2" placeholder="{{ t('valintalaskentatulos.suodatahakijoita') || 'Suodata hakijoita' }}"
                    ng-model="hakijaFilter"/>
+            <pagination-pagesize page-size="pageSize"></pagination-pagesize>
+            <accordion close-others="true">
+                <accordion-group ng-repeat="hakijaryhma in model.hakijaryhmat track by $index"
+                        is-open="$first">
 
+                    <accordion-heading>
 
-            <h2>{{ t('hakijaryhmat.hakijaryhmat') || 'Hakijaryhmät' }}</h2>
-            <div ng-repeat="hakijaryhma in model.hakijaryhmat track by $index">
-                <h3>{{ t('hakijaryhmat.hakijaryhma') || 'Hakijaryhmä' }}: {{hakijaryhma.nimi}}</h3>
-                <table class="virkailija-table-1">
-                    <thead>
-                    <tr>
-                        <th>{{ t('hakijaryhmat.hakija') || 'Hakija' }}</th>
-                        <th>{{ t('hakijaryhmat.hakemuksentila') || 'Hakemuksen tila' }}</th>
-                        <th>{{ t('hakijaryhmat.yhteispisteet') || 'Tulos' }}</th>
-                        <!--<th>Valinnan tila</th>-->
-                        <!--<th>Sijoittelun tila</th>-->
-                        <!--<th>Vastaanottotila</th>-->
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="tulos in hakijaryhma.jonosijat  | filter:hakijaFilter">
-                        <td class="leftorientedcolumn">
-                            <show-person-information sukunimi="{{tulos.sukunimi}}"
-                                                     etunimi="{{tulos.etunimi}}"
-                                                     hakemus-oid="{{tulos.hakemusOid}}"
-                                                     haku-oid="{{hakuOid}}"
-                                                     henkilo-oid="{{tulos.hakijaOid}}"/>
-                        </td>
-                        <td>{{tulos.jarjestyskriteerit[0].tila}}</td>
-                        <td>{{tulos.jarjestyskriteerit[0].arvo}}</td>
-                        <!--<td></td>-->
-                        <!--<td></td>-->
-                        <!--<td></td>-->
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                        <h3>{{ t('hakijaryhmat.hakijaryhma') || 'Hakijaryhmä' }}: {{hakijaryhma.nimi}}</h3>
+
+                    </accordion-heading>
+
+                    <table class="virkailija-table-1">
+                        <thead>
+                        <tr>
+                            <th>{{ t('hakijaryhmat.hakija') || 'Hakija' }}</th>
+                            <th>{{ t('hakijaryhmat.hakemuksentila') || 'Hakemuksen tila' }}</th>
+                            <th>{{ t('hakijaryhmat.valinnantila') || 'Valinnan tila' }}</th>
+                            <th>{{ t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila' }}</th>
+                            <th>{{ t('hakijaryhmat.vastaanottotila') || 'Vastaanottotila' }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tulos in filteredResults[$index] = (hakijaryhma.jonosijat | filter:hakijaFilter)">
+                            <td class="leftorientedcolumn">
+                                <show-person-information sukunimi="{{tulos.sukunimi}}"
+                                                         etunimi="{{tulos.etunimi}}"
+                                                         hakemus-oid="{{tulos.hakemusOid}}"
+                                                         haku-oid="{{hakuOid}}"
+                                                         henkilo-oid="{{tulos.hakijaOid}}"/>
+                            </td>
+                            <td>{{tulos.jarjestyskriteerit[0].tila}}</td>
+                            <td>{{tulos.tuloksenTila}}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[$parent.$parent.$index][$parent.$index].length" ng-model="currentPage[$parent.$parent.$index][$parent.$index]" items-per-page="pageSize"></pagination>
+                </accordion-group>
+            </accordion>
         </div>
 
     </div>
