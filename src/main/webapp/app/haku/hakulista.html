@@ -1,4 +1,15 @@
 
 <h1 class="inline-block">{{ t('hakulista.header') || 'Haku' }}: </h1>
-<select ng-model="hakumodel.hakuOid" ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | julkaistuHaku:haku | orderBy:'nimi.kieli_fi' "></select>
+        <div ng-switch="hakufiltering">
+            <select ng-model="hakumodel.hakuOid"
+                    ng-switch-when="all"
+                    ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | julkaistuHaku:haku | orderBy:'nimi.kieli_fi' "></select>
 
+            <select ng-model="hakumodel.hakuOid"
+                    ng-switch-when="toinenAsteUser"
+                    ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | julkaistuHaku:haku | toinenAsteHakuFilter | orderBy:'nimi.kieli_fi' "></select>
+
+            <select ng-model="hakumodel.hakuOid"
+                    ng-switch-when="kkUser"
+                    ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | julkaistuHaku:haku | kkHakuFilter | orderBy:'nimi.kieli_fi' "></select>
+        </div>

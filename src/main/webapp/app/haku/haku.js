@@ -55,11 +55,26 @@ app.factory('HakuModel', function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
 });
 
 angular.module('valintalaskenta').
-    controller('HakuController', ['$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService',
-        function ($scope, $location, $routeParams, HakuModel, ParametriService) {
+    controller('HakuController', ['$log', '$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService', 'UserModel',
+        function ($log, $scope, $location, $routeParams, HakuModel, ParametriService, UserModel) {
     "use strict";
     $scope.hakumodel = HakuModel;
     HakuModel.init($routeParams.hakuOid);
+    UserModel.refreshIfNeeded();
+
+
+    //determining if haku-listing should be filtered based on users organizations
+    UserModel.organizationsDeferred.promise.then(function () {
+        if(UserModel.isOphUser || UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser) {
+            $scope.hakufiltering = "all";
+        } else if(UserModel.isKKUser && !UserModel.hasOtherThanKKUserOrgs) {
+            $scope.hakufiltering = "kkUser";
+        } else if(!UserModel.isKKUser && UserModel.hasOtherThanKKUserOrgs) {
+            $scope.hakufiltering = "toinenAsteUser";
+        } else {
+            $scope.hakufiltering = "all";
+        }
+    });
 
     ParametriService.refresh($routeParams.hakuOid);
 
@@ -81,4 +96,11 @@ angular.module('valintalaskenta').
             return haku.kohdejoukkoUri.indexOf('_12') > -1;
         });
     };
-}]);
+}])
+    .filter('toinenAsteHakuFilter', ['_', function (_) {
+        return function (haut) {
+            return _.filter(haut, function (haku) {
+                return haku.kohdejoukkoUri.indexOf('_12') === -1;
+            });
+        };
+    }]);

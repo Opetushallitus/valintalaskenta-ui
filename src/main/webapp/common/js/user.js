@@ -30,8 +30,9 @@ angular.module('valintalaskenta')
                     });
 
                     $q.all(organizationPromises).then(function () {
-                        model.organizationsDeferred.resolve();
                         model.analyzeOrganizations();
+
+                        model.organizationsDeferred.resolve();
                     }, function () {
                         model.organizationsDeferred.reject();
                     });
