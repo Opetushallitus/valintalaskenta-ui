@@ -162,41 +162,9 @@ app.directive('sijoitteluVastaanottoTila', function () {
                     $modal.open({
                         scope: $scope,
                         templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
-                        controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu, SijoitteluTila) {
+                        controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu) {
                             $scope.update = function () {
                                 if ($scope.hakemus) {
-                                    if ($scope.isKorkeakoulu() && $scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_LASNA' ||
-                                        $scope.isKorkeakoulu() && $scope.hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_POISSAOLEVA') {
-                                        $scope.hakutoiveet.forEach(function (hakutoive) {
-                                            if (hakutoive.hakukohdeOid !== $scope.hakukohdeOid) {
-
-                                                var tilaParams = {
-                                                    hakuoid: $scope.hakuOid,
-                                                    hakukohdeOid: hakutoive.hakukohdeOid,
-                                                    hakemusOid: hakutoive.hakemusOid,
-                                                    tarjoajaOid: ''
-                                                };
-                                                var tilaObj = {};
-                                                tilaObj.hyvaksy = false;
-                                                tilaObj.tila = 'PERUUNTUNUT';
-                                                tilaObj.tilanKuvaukset = [
-                                                    'Ottanut vastaan toisen opiskelupaikan',
-                                                    'Ottanut vastaan toisen opiskelupaikan',
-                                                    'Ottanut vastaan toisen opiskelupaikan'
-                                                ];
-
-                                                SijoitteluTila.post(tilaParams, tilaObj, function (result) {
-
-                                                }, function (error) {
-                                                    $scope.error = error;
-                                                });
-
-
-                                            }
-                                        });
-                                    }
-
-
                                     var tilaParams = {
                                         hakuoid: $scope.hakuOid,
                                         hakukohdeOid: $scope.hakukohdeOid,
