@@ -29,6 +29,7 @@ var SERVICE_EXCEL_URL_BASE = SERVICE_EXCEL_URL_BASE || "";
 var SIJOITTELU_EXCEL_URL_BASE = SIJOITTELU_EXCEL_URL_BASE || "";
 var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
 var ORGANISAATIO_URL_BASE = ORGANISAATIO_URL_BASE || "";
+var ORGANIZATION_SERVICE_URL_BASE = ORGANISAATIO_URL_BASE || "/organisaatio-service/";
 var HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE || "";
 var VIESTINTAPALVELU_URL_BASE = VIESTINTAPALVELU_URL_BASE || "";
 var CAS_URL = CAS_URL || "/cas/myroles";
@@ -621,6 +622,7 @@ app.factory('SijoitteluTila', function($resource) {
         });
 });
 
+
 app.factory('HakemuksenVastaanottoTila', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/:hakuoid/:hakukohdeOid/:valintatapajonoOid",
         {
@@ -630,6 +632,15 @@ app.factory('HakemuksenVastaanottoTila', function($resource) {
             hakemusOid: "@hakemusOid"
         }, {
             get: {method: "GET"}
+        });
+});
+
+app.factory('HakemuksenVastaanottoTilat', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid",
+        {
+            hakemusOid: "@hakemusOid"
+        }, {
+            get: {method: "GET", isArray: true}
         });
 });
 
@@ -775,3 +786,8 @@ app.constant('IlmoitusTila', {
 	ERROR: 'danger'
 });
 
+app.factory('OrganizationByOid', function ($resource) {
+    return $resource(ORGANIZATION_SERVICE_URL_BASE + "organisaatio/:oid", {oid: "@oid"}, {
+        get: {method: "GET", cache: true}
+    });
+});

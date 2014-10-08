@@ -1088,6 +1088,9 @@ describe('Testing HakuController', function(){
         $httpBackend.expectGET('resources/parametrit/'+routeParams.hakuOid)
             .respond(201,'{"valintakoekutsut":true,"hakeneet":true,"valintalaskenta":true,"pistesyotto":true,"valinnanhallinta":true,"harkinnanvaraiset":true}');
 
+        $httpBackend.expectGET('/organisaatio-service/organisaatio/1.2.246.562.10.00000000001')
+            .respond(201,'1.2.246.562.10.00000000001/1.2.246.562.10.47941294986/1.2.246.562.10.98873174761/1.2.246.562.10.60222091211');
+
         ctrl = $controller('HakuController', {'$scope' : scope,'$location': location,
             '$routeParams': routeParams, 'HakuModel': hakuModel, 'ParametriService': parametriService});
 
