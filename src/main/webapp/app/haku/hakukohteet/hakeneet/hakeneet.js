@@ -31,11 +31,13 @@
                             if (oid === hakukohdeOid) {
                                 hakija.hakutoiveNumero = i;
 
-                                for (var j = 0; j < hakija.preferenceEligibilities.length; j++) {
-                                    if (hakija.preferenceEligibilities[j].aoId === hakukohdeOid) {
-                                        hakija.hakukelpoisuus = hakija.preferenceEligibilities[j].status;
-                                    }
+                                if (hakija.preferenceEligibilities) {
+                                    for (var j = 0; j < hakija.preferenceEligibilities.length; j++) {
+                                        if (hakija.preferenceEligibilities[j].aoId === hakukohdeOid) {
+                                            hakija.hakukelpoisuus = hakija.preferenceEligibilities[j].status;
+                                        }
 
+                                    }
                                 }
                                 break;
                             }
