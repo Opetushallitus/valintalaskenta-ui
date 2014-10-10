@@ -196,9 +196,9 @@
 
 angular.module('valintalaskenta').
     controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel',
-        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila',
+        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window',
         function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
-                  Osoitetarrat, ValintakoeXls, IlmoitusTila) {
+                  Osoitetarrat, ValintakoeXls, IlmoitusTila,$window) {
 
     "use strict";
 
