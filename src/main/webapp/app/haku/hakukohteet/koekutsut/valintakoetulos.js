@@ -254,7 +254,19 @@ angular.module('valintalaskenta').
 					letterBodyText: letterBodyText
 				},
 				function(id) {
-					Latausikkuna.avaa(id, otsikko, valintakoe.valintakoeTunniste);
+					Latausikkuna.avaaKustomoitu(id, otsikko, valintakoe.valintakoeTunniste, "haku/hakukohteet/koekutsut/modaalinen/valintakoe.html",
+		                    function (dokumenttiId) {
+								$window.open(VIESTINTAPALVELU_URL_BASE + "/api/v1/letter/previewLetterBatchEmail/" + dokumenttiId);
+		                    },
+		                    function (dokumenttiId) {
+		                        KoekutsukirjeetSahkopostita.put(dokumenttiId, function (success) {
+		                            Ilmoitus.avaa("Sähköpostilla lähetys onnistui", "Koekutsukirjeiden lähetys sähköpostilla onnistui");
+		                        }, function () {
+		                            Ilmoitus.avaa("Sähköpostilla lähetys epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+		                        });
+
+		                    }
+		                );
 	    	},function() {
 	    	});
 		} else {

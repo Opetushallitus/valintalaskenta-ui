@@ -361,10 +361,9 @@ angular.module('valintalaskenta').
         $scope.updateOph = true;
     });
 
-
     $scope.isValinnanvaiheNameVisible = function (index, valinnanvaiheet) {
         var orderBy = $filter('orderBy');
-        valinnanvaiheet = orderBy(valinnanvaiheet, 'jarjestysnumero', false);
+        valinnanvaiheet = orderBy(valinnanvaiheet, 'jarjestysnumero', true);
         for (var i = 0; i < valinnanvaiheet.length; i++) {
             if (valinnanvaiheet[i].valintatapajonot.length > 0) {
                 if (index === i) {
@@ -376,6 +375,7 @@ angular.module('valintalaskenta').
             }
         }
     };
+
     $scope.tallennaPisteet = function () {
         var promises = $scope.model.tallennaPisteet();
         $q.all(promises).then(function () {
