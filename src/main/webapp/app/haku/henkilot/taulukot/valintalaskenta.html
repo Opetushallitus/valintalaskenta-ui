@@ -10,8 +10,8 @@
         <tr>
             <th>{{ t('valintalaskenta.hakutoive') || 'Hakutoive' }}</th>
             <th>{{ t('valintalaskenta.valintatapajono') || 'Valintatapajono' }}
-                <a href="" ng-model="filter" ng-init="false" ng-click="filter = !filter">({{filter ? 'Viimeinen' :
-                    'Kaikki'}})</a>
+                <a href="" ng-model="filter" ng-init="false" ng-click="filter = !filter">({{filter ? 'Näytä viimeinen' :
+                    'Näytä kaikki'}})</a>
             </th>
             <th>{{ t('valintalaskenta.yhteispisteet') || 'Yhteispisteet' }}</th>
             <th colspan="2">{{ t('valintalaskenta.valintatieto') || 'Valintatieto' }}</th>
@@ -24,11 +24,11 @@
         <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot">
             <td colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                 <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
-                {{hakutoive.oppilaitos}}
+                    {{hakutoive.oppilaitos}}
                 </a>
             </td>
         </tr>
-        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="(filter && hakutoive.valintalaskenta) ||  (!filter && hakutoive.valintalaskenta && isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
+        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="filter || (!filter && isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
             <td>
                 <div ng-if="isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
