@@ -564,19 +564,19 @@ app.factory('HakemusAdditionalData', function($resource) {
     });
 });
 app.factory('HakukohdeHenkilot', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "haku-app/applications",{aoOid: "@aoOid", appState:["ACTIVE","INCOMPLETE"]}, {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications",{aoOid: "@aoOid", appState:["ACTIVE","INCOMPLETE"], rows: 100000}, {
         get: {method: "GET", isArray: false}
     });
 });
 
 app.factory('HakukohdeHenkilotFull', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/listfull",{aoOid: "@aoOid", appState:["ACTIVE","INCOMPLETE"]}, {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/listfull",{aoOid: "@aoOid", appState:["ACTIVE","INCOMPLETE"], rows: 100000}, {
         get: {method: "GET", isArray: true}
     });
 });
 
 app.factory('Henkilot', function($resource) {
-	return $resource(HAKEMUS_URL_BASE + "haku-app/applications", {appState:["ACTIVE","INCOMPLETE"]},{
+	return $resource(HAKEMUS_URL_BASE + "haku-app/applications", {appState:["ACTIVE","INCOMPLETE"], rows: 100000},{
 		query:  {method:'GET', isArray:false}
     });
 });
