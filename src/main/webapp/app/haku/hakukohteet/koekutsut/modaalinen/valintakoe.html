@@ -27,7 +27,6 @@
 <div class="modal-footer">
 	<div class="row">
 		<a ng-show="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('valintakoe.keskeyta') || 'Keskeytä muodostus' }}</a>
-		<a ng-hide="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('valintakoe.sulje') || 'Sulje latausikkuna' }}</a>
 		<a ng-class="{disabled: onKesken()}" class="btn btn-default btn-sm" ng-click="ok()"  role="button">{{ t('valintakoe.lataa') || 'Lataa tiedosto' }}</a>
 		<a ng-class="{disabled: onKesken()}" class="btn btn-primary btn-sm" ng-click="kutsuLaajennettuaMallia();"  role="button">{{ t('valintakoe.esikatsele.sahkoposti') || 'Esikatsele sähköpostilähetys' }}</a>
 		<a ng-class="{disabled: onKesken()}" class="btn btn-primary btn-sm" ng-click="kutsuLaajennettuaMalliaKaksi();"  role="button">{{ t('valintakoe.sahkoposti') || 'Lähetä sähköpostina' }}</a>
