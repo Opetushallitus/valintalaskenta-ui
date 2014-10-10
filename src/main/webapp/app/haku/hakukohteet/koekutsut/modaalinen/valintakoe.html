@@ -1,0 +1,35 @@
+<div class="modal-header">
+	<h3>{{otsikko}}</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<h3>{{lisatiedot}}</h3>
+		<br>
+		<div ng-hide="onVirheita()">
+			<div class="col-sm-9"><progressbar ng-class="{progressBarDanger: onVirheita()}" class="progress-striped active" value="getProsentit(prosessi.kokonaistyo)" type="info">{{getProsentit(prosessi.kokonaistyo)}}%</progressbar></div>				
+			<div class="col-sm-3" ng-show="prosessi.kokonaistyo.kokonaismaara">{{prosessi.kokonaistyo.tehty}} / {{prosessi.kokonaistyo.kokonaismaara}}</div>
+			<br>
+			<div class="col-sm-12">
+                {{ t('valintakoe.suoritus') || 'Suoritus etenee virheettömästi ja varoituksetta' }}
+			</div>
+		</div>
+		<div ng-show="onVirheita()">
+            {{ t('valintakoe.virhe') || 'Dokumentin luonti epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.' }}
+			<div class="bs-callout bs-callout-danger" ng-repeat="poikkeus in prosessi.poikkeukset">
+		    	<h4>{{poikkeus.palvelu}}</h4>
+		    	<p ng-repeat="oid in poikkeus.oidit">{{oid.tyyppi}} {{oid.oid}}</p>
+		    	<p>{{poikkeus.palvelukutsu}} {{poikkeus.viesti}}</p>
+		  	</div>
+		</div>
+	</div>
+	
+</div>
+<div class="modal-footer">
+	<div class="row">
+		<a ng-show="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('valintakoe.keskeyta') || 'Keskeytä muodostus' }}</a>
+		<a ng-hide="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('valintakoe.sulje') || 'Sulje latausikkuna' }}</a>
+		<a ng-class="{disabled: onKesken()}" class="btn btn-default btn-sm" ng-click="ok()"  role="button">{{ t('valintakoe.lataa') || 'Lataa tiedosto' }}</a>
+		<a ng-class="{disabled: onKesken()}" class="btn btn-primary btn-sm" ng-click="kutsuLaajennettuaMallia();"  role="button">{{ t('valintakoe.esikatsele.sahkoposti') || 'Esikatsele sähköpostilähetys' }}</a>
+		<a ng-class="{disabled: onKesken()}" class="btn btn-primary btn-sm" ng-click="kutsuLaajennettuaMalliaKaksi();"  role="button">{{ t('valintakoe.sahkoposti') || 'Lähetä sähköpostina' }}</a>
+	</div>
+</div>
