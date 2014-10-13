@@ -133,6 +133,30 @@
                                                 <span style="color: red;"></span>
                                             </div>
 
+                                            <div ng-switch-when="combo">
+                                                <!-- combo -->
+
+                                                <select ng-model="hakija.additionalData[avain.tunniste]"
+                                                        osallistuminen="hakija.additionalData[avain.osallistuminenTunniste]"
+                                                        ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste)"
+                                                        ng-options="a as a for a in avain.arvot"
+                                                        >
+                                                    <option value=""></option>
+                                                </select>
+
+
+                                                <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
+                                                        ng-if="avain.osallistuminenTunniste"
+                                                        ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
+                                                        >
+                                                    <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
+                                                    <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
+                                                    <option value="EI_OSALLISTUNUT">{{ t('hakukohteetpistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
+                                                </select>
+                                                <br/>
+                                                <span style="color: red;"></span>
+                                            </div>
+
                                             <div ng-switch-when="boolean" class="input-group">
                                                 <!-- input -->
                                                 <span ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
