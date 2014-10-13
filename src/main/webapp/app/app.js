@@ -107,7 +107,7 @@ app.factory('Ilmoitus', function($modal, IlmoitusTila) {
 app.factory('Latausikkuna', function($log, $modal, DokumenttiProsessinTila) {
 	return {
 		
-		avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli) {
+		avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli, laajennettuMalliKaksi) {
 			var timer = null;
 			var cancelTimerWhenClosing = function() {
 				DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
@@ -125,6 +125,10 @@ app.factory('Latausikkuna', function($log, $modal, DokumenttiProsessinTila) {
 		    	  $scope.kutsuLaajennettuaMallia = function() {
 		    	  	$log.error($scope.prosessi.dokumenttiId);
 		    	  	laajennos($scope.prosessi.dokumenttiId);
+		    	  };
+		    	  $scope.kutsuLaajennettuaMalliaKaksi = function() {
+		    	  	$log.error($scope.prosessi.dokumenttiId);
+		    	  	laajennosKaksi($scope.prosessi.dokumenttiId);
 		    	  };
 		    	  $scope.update = function() {
 		    	  		DokumenttiProsessinTila.lue({id: id.id}, function(data) {
@@ -469,6 +473,20 @@ app.factory('ValintakoeXls', function($resource) {
     });
 });
 
+app.factory('KoekutsukirjeetEsikatseleSahkopostita', function($resource) {
+	return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/letter/previewLetterBatchEmail/:documentId", {
+			documentId: "@documentId"
+	    }, {
+	    put: {method: "GET", isArray:false}
+	});
+});
+app.factory('KoekutsukirjeetSahkopostita', function($resource) {
+	return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/letter/emailLetterBatch/:documentId", {
+			documentId: "@documentId"
+	    }, {
+	    put: {method: "POST", isArray:false}
+	});
+});
 app.factory('AktivoiKelaFtp', function($resource) {
 	return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/laheta/:documentId", {
 			documentId: "@documentId"
