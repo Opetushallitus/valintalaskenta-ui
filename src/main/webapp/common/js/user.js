@@ -15,7 +15,6 @@ angular.module('valintalaskenta')
 
                 AuthService.getOrganizations('APP_VALINTOJENTOTEUTTAMINEN', ['READ', 'READ_UPDATE', 'CRUD']).then(function (oidList) {
                     model.organizationOids = oidList;
-
                     var organizationPromises = [];
                     _.forEach(oidList, function (oid) {
                         var deferred = $q.defer();
@@ -55,11 +54,10 @@ angular.module('valintalaskenta')
 
             this.analyzeOrganizations = function () {
                 model.isKKOrganization();
-
                 _.some(model.organizations, function (organisaatioData) {
                     if(model.isOphOrganization(organisaatioData)) {
                         model.isOphUser = true;
-                    } else {
+                    } else if(model.isOtherThanKKOrganization(organisaatioData)) {
                         model.hasOtherThanKKUserOrgs = true;
                     }
                 });
@@ -79,6 +77,11 @@ angular.module('valintalaskenta')
                 return organization.oid === OPH_ORG;
             };
 
+            this.isOtherThanKKOrganization = function (organization) {
+                return !(organization.oppilaitosTyyppiUri.indexOf('_41') > -1||
+                    organization.oppilaitosTyyppiUri.indexOf('_42') > -1 ||
+                    organization.oppilaitosTyyppiUri.indexOf('_43') > -1 );
+            };
 
         };
 

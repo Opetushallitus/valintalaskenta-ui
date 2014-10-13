@@ -93,14 +93,20 @@ angular.module('valintalaskenta').
 .filter('kkHakuFilter', ['_', function (_) {
     return function (haut) {
         return _.filter(haut, function (haku) {
-            return haku.kohdejoukkoUri.indexOf('_12') > -1;
+            if(haku.kohdejoukkoUri) {
+                return haku.kohdejoukkoUri.indexOf('_12') > -1;
+            }
         });
     };
 }])
     .filter('toinenAsteHakuFilter', ['_', function (_) {
         return function (haut) {
             return _.filter(haut, function (haku) {
-                return haku.kohdejoukkoUri.indexOf('_12') === -1;
+                if(haku.kohdejoukkoUri) {
+                    return haku.kohdejoukkoUri.indexOf('_12') === -1;
+                }
             });
         };
     }]);
+
+
