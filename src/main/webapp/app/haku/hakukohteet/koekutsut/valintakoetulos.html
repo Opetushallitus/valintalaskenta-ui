@@ -57,11 +57,11 @@
                         </td>
                         <td ng-repeat="koetyyppi in model.koetyypit | orderBy:koetyyppi">
                             <div ng-switch="hakemus.kokeet[koetyyppi].osallistuminen">
-                                <div ng-if="hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut">
+                                <div ng-if="hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut && hakemus.kokeet[koetyyppi].aktiivinen">
                                     <span ng-switch-when="OSALLISTUU">{{ t('valintakoetulos.kutsutaan') || 'Kutsutaan' }}</span>
                                     <span ng-switch-default></span>
                                 </div>
-                                <div ng-if="!hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut">
+                                <div ng-if="!hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut || !hakemus.kokeet[koetyyppi].aktiivinen">
                                     <span></span>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
 
             <div ng-if="nakymanTila == 'Kokeittain'">
                 <div ng-repeat="valintakoe in model.valintakokeet track by $index">
-                	<div ng-if="valintakoe.hakijat && valintakoe.lahetetaankoKoekutsut" class="panel panel-default">
+                	<div ng-if="valintakoe.hakijat && valintakoe.lahetetaankoKoekutsut && valintakoe.aktiivinen" class="panel panel-default">
 
 	                    <div class="panel-heading">
 	                        <div class="panel-title">{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></div>
