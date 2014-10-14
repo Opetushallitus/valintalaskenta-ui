@@ -66,7 +66,7 @@ angular.module('valintalaskenta')
             this.isKKOrganization = function () {
                 MyRolesModel.then(function (myroles) {
                     model.isKKUser = _.some(myroles, function (role) {
-                        return role.indexOf("APP_VALINTAPERUSTEETKK") > -1;
+                        return role.indexOf("APP_VALINTOJENTOTEUTTAMINENKK") > -1;
                     });
                 }, function (error) {
                     $log.error('Käyttäjän roolien hakeminen korkeakoulukäyttöoikeuksien tarkistuksessa epäonnistui');
@@ -78,7 +78,8 @@ angular.module('valintalaskenta')
             };
 
             this.isOtherThanKKOrganization = function (organization) {
-                return !(organization.oppilaitosTyyppiUri.indexOf('_41') > -1||
+                return !(!organization.oppilaitosTyyppiUri ||
+                    organization.oppilaitosTyyppiUri.indexOf('_41') > -1 ||
                     organization.oppilaitosTyyppiUri.indexOf('_42') > -1 ||
                     organization.oppilaitosTyyppiUri.indexOf('_43') > -1 );
             };
