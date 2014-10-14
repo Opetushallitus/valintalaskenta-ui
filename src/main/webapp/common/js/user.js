@@ -1,6 +1,6 @@
 angular.module('valintalaskenta')
 
-    .factory('UserModel', ['$q', '$log', '_', 'AuthService', 'OrganizationByOid', 'OPH_ORG', function ($q, $log, _, AuthService, OrganizationByOid, OPH_ORG) {
+    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG', function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG) {
         var model = new function () {
             this.organizationsDeferred = undefined;
 
@@ -15,7 +15,6 @@ angular.module('valintalaskenta')
 
                 AuthService.getOrganizations('APP_VALINTOJENTOTEUTTAMINEN', ['READ', 'READ_UPDATE', 'CRUD']).then(function (oidList) {
                     model.organizationOids = oidList;
-
                     var organizationPromises = [];
                     _.forEach(oidList, function (oid) {
                         var deferred = $q.defer();
@@ -54,26 +53,23 @@ angular.module('valintalaskenta')
             };
 
             this.analyzeOrganizations = function () {
-                var isKKUser = false;
+                model.isKKOrganization();
                 _.some(model.organizations, function (organisaatioData) {
-                    if(model.isKKOrganization(organisaatioData)) {
-                        model.isKKUser = true;
-                    } else if(model.isOphOrganization(organisaatioData)) {
+                    if(model.isOphOrganization(organisaatioData)) {
                         model.isOphUser = true;
-                    } else {
+                    } else if(model.isOtherThanKKOrganization(organisaatioData)) {
                         model.hasOtherThanKKUserOrgs = true;
                     }
                 });
             };
 
-            this.isKKOrganization = function (organization) {
-                var kkTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
-                return _.some(kkTunnisteet, function (kkTunniste) {
-                    if(organization.oppilaitosTyyppiUri && organization.oppilaitosTyyppiUri.indexOf(kkTunniste) > -1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+            this.isKKOrganization = function () {
+                MyRolesModel.then(function (myroles) {
+                    model.isKKUser = _.some(myroles, function (role) {
+                        return role.indexOf("APP_VALINTOJENTOTEUTTAMINENKK") > -1;
+                    });
+                }, function (error) {
+                    $log.error('Käyttäjän roolien hakeminen korkeakoulukäyttöoikeuksien tarkistuksessa epäonnistui');
                 });
             };
 
@@ -81,6 +77,12 @@ angular.module('valintalaskenta')
                 return organization.oid === OPH_ORG;
             };
 
+            this.isOtherThanKKOrganization = function (organization) {
+                return !(!organization.oppilaitosTyyppiUri ||
+                    organization.oppilaitosTyyppiUri.indexOf('_41') > -1 ||
+                    organization.oppilaitosTyyppiUri.indexOf('_42') > -1 ||
+                    organization.oppilaitosTyyppiUri.indexOf('_43') > -1 );
+            };
 
         };
 

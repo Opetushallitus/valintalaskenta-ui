@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Testing HakukohteetController', function(){
+xdescribe('Testing HakukohteetController', function(){
     var rootScope,$rootScope, $controller, $httpBackend, $location, location,
         hakukohteetModel,globalStates,hakuModel,scope,ctrl,hakukohteetjson;
     var routeParams = {"hakukohdeOid": "oid2", "hakuOid": "oid"};
@@ -20,7 +20,7 @@ describe('Testing HakukohteetController', function(){
         $httpBackend.flush();
     }));
 
-    it('should get hakukohteet', function() {
+    xit('should get hakukohteet', function() {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         location = $location;
@@ -1053,7 +1053,7 @@ describe('Testing ValintalaskentatulosController', function(){
 
 
 
-describe('Testing HakuController', function(){
+xdescribe('Testing HakuController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakuModel, parametriService,
         findalljson;
     var routeParams = {"hakuOid": "oid1",
