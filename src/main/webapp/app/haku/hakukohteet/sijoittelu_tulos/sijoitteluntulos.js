@@ -341,6 +341,7 @@ angular.module('valintalaskenta').
     };
     
     $scope.luoHyvaksymiskirjeetPDF = function() {
+    	var hakuOid = $routeParams.hakuOid;
     	var hakukohde = $scope.hakukohdeModel.hakukohde;
     	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
     	var langcode = $scope.hakukohdeModel.getKieliCode();
@@ -372,7 +373,7 @@ angular.module('valintalaskenta').
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOid,
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
+                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
@@ -423,7 +424,7 @@ angular.module('valintalaskenta').
     };
 
     $scope.createHyvaksymiskirjeetPDF = function (oidit) {
-        
+        var hakuOid = $routeParams.hakuOid;
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
     	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
     	var langcode = $scope.hakukohdeModel.getKieliCode();
@@ -455,7 +456,7 @@ angular.module('valintalaskenta').
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOid,
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag});
+                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
