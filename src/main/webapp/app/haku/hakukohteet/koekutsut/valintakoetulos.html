@@ -86,23 +86,11 @@
 	                    <div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length>0">
 	                    	
 	                        <div ng-if="(valintakoe.hakijat|filter:model.filterImmutable).length>0" ng-show="valintakoe.aktiivinen">
-	                            <form method="post">
-	                                <textarea ui-tinymce="tinymceOptions"
-	                                          ng-model="tinymceModel[valintakoe.valintakoeOid]"></textarea>
-	                            </form>
 	                            <div class="btn-toolbar margin-top-2 margin-bottom-2" role="toolbar">
 	                                <a ng-click="valintakoeTulosXLS(valintakoe); $event.stopPropagation()"
 	                                   class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('valintakoetulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
 									
-	                                <div ng-if="isBlank(tinymceModel[valintakoe.valintakoeOid])" class="inline-block"
-	                                     popover="Kirjoita viesti ylläolevaan kenttään." popover-trigger="mouseenter">
-	                                    <a class="btn btn-default btn-sm disabled">
-	                                        <i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostakoekutsut') || 'Muodosta koekutsut' }}
-	                                    </a>
-	                                </div>
-	
-	                                <a ng-if="!isBlank(tinymceModel[valintakoe.valintakoeOid])"
-	                                   ng-click="tulostaKoekutsukirjeet(valintakoe);$event.stopPropagation()"
+	                                <a ng-click="createKoekutsukirjeetPDF(valintakoe);$event.stopPropagation()"
 	                                   class="btn btn-default btn-sm">
 	                                    <i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostakoekutsut') || 'Muodosta koekutsut' }}
 	                                </a>
@@ -130,6 +118,8 @@
 	                                </th>
 	                                <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">{{ t('valintakoetulos.laskettupvm') || 'Laskettu pvm' }}</a>
 	                                </th>
+                                    <th>{{ t('valintakoetulos.asiointikieli') || 'Asiointikieli' }}</a>
+                                    </th>
 	                            </tr>
 	                            </thead>
 	                            <tbody>
@@ -151,6 +141,7 @@
 	                                    </div>
 	                                </td>
 	                                <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
+                                    <td><span>{{ koe.asiointikieli }}</span></td>
 	                            </tr>
 	
 	                            </tbody>
