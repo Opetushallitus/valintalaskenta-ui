@@ -1,5 +1,5 @@
 ﻿app.factory('ValintakoetulosModel', function($routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe,
-                                             HakukohdeHenkilot) {
+                                             HakukohdeHenkilotFull) {
     "use strict";
 	var model;
 	model = new function() {
@@ -39,15 +39,16 @@
 	            			hakijat: []
 	            		};
 	            		if(entry.kutsutaankoKaikki) {
-	            			HakukohdeHenkilot.get({aoOid: hakukohdeOid}, function(hakuResult) {
-	            				_.each(hakuResult.results, function(hakija) {
+                            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function(hakuResult) {
+	            				_.each(hakuResult, function(hakija) {
 	            					var e = {};
 		            				e.osallistuminen = "OSALLISTUU";
 		            				e.hakuOid = $routeParams.hakuOid;
 	                                e.hakemusOid = hakija.oid;
-	                                e.hakijaOid = hakija.personOid;
-	                                e.etunimi = hakija.firstNames;
-	                                e.sukunimi = hakija.lastName;
+	                                e.hakijaOid = hakija.applicationSystemId;
+	                                e.etunimi = hakija.answers.henkilotiedot.Etunimet;
+	                                e.sukunimi = hakija.answers.henkilotiedot.Sukunimi;
+                                    e.asiointikieli = hakija.answers.lisatiedot.asiointikieli;
 	                                e.valittu = true;
 	                                e.aktiivinen = entry.aktiivinen;
 	                                e.valintakoeOid = entry.oid;
