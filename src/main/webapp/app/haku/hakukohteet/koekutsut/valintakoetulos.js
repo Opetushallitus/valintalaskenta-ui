@@ -225,7 +225,12 @@ angular.module('valintalaskenta').
 		var hakuOid = $routeParams.hakuOid;
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
     	var hakukohdeOid = $routeParams.hakukohdeOid;
-    	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+    	var tag = null;
+    	if(hakukohde.hakukohdeNimiUri) {
+    		tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+    	} else {
+    		tag = hakukohdeOid;
+    	}
     	var langcode = $scope.hakukohdeModel.getKieliCode();
     	var templateName = "koekutsukirje";
     	var otsikko = null;

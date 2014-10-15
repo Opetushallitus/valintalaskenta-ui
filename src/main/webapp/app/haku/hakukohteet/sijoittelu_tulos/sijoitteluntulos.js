@@ -343,7 +343,12 @@ angular.module('valintalaskenta').
     $scope.luoHyvaksymiskirjeetPDF = function() {
     	var hakuOid = $routeParams.hakuOid;
     	var hakukohde = $scope.hakukohdeModel.hakukohde;
-    	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+    	var tag = null;
+    	if(hakukohde.hakukohdeNimiUri) {
+    		tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+    	} else {
+    		tag = $routeParams.hakukohdeOid;
+    	}
     	var langcode = $scope.hakukohdeModel.getKieliCode();
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
@@ -426,7 +431,12 @@ angular.module('valintalaskenta').
     $scope.createHyvaksymiskirjeetPDF = function (oidit) {
         var hakuOid = $routeParams.hakuOid;
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
-    	var tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+		var tag = null;
+    	if(hakukohde.hakukohdeNimiUri) {
+    		tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+    	} else {
+    		tag = $routeParams.hakukohdeOid;
+    	}
     	var langcode = $scope.hakukohdeModel.getKieliCode();
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
