@@ -419,9 +419,12 @@ angular.module('valintalaskenta').
 
     $scope.filterChangedValues = function(hakemus) {
         if ($scope.model.naytaVainMuuttuneet) {
-            if (hakemus.tilaHistoria && hakemus.tilaHistoria.length > 0 &&
-                hakemus.tilaHistoria[hakemus.tilaHistoria.length-1].tila === hakemus.tila) {
-                return false;
+            if (hakemus.tilaHistoria && hakemus.tilaHistoria.length > 0) {
+                var i = 0;
+                if (hakemus.tilaHistoria.length > 2)
+                    i = hakemus.tilaHistoria.length-2;
+                if (hakemus.tilaHistoria[i].tila === hakemus.tila)
+                    return false;
             }
         }
 
