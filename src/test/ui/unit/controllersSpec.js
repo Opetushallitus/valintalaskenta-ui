@@ -301,6 +301,27 @@ describe('Testing SijoitteluntulosController', function(){
         expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(6);
     });
 
+    it('filterChangedValues', function() {
+        var hakemus = {tilaHistoria: [
+            {
+                tila: "KESKEN"
+            },
+            {
+                tila: "KESKEN"
+            }
+        ]};
+        scope.model.naytaVainMuuttuneet = false;
+        expect(scope.filterChangedValues(hakemus)).toBeTruthy();
+
+        scope.model.naytaVainMuuttuneet = true;
+        hakemus.tila = "KESKEN";
+        expect(scope.filterChangedValues(hakemus)).toBeFalsy();
+
+        scope.model.naytaVainMuuttuneet = true;
+        hakemus.tilaHistoria[0].tila="HYVAKSYTTY"
+        expect(scope.filterChangedValues(hakemus)).toBeTruthy();
+    });
+
     it('resetIlmoittautumisTila', function() {
         var hakemus = {
             muokattuVastaanottoTila: ''
