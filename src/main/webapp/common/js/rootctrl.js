@@ -1,7 +1,10 @@
 'use strict';
 
-angular.module('valintalaskenta').controller('RootCtrl', ['$rootScope', '$scope','LocalisationService',
-        function($rootScope, $scope, LocalisationService ) {
+angular.module('valintalaskenta').controller('RootCtrl', ['$rootScope', '$scope','LocalisationService', 'UserModel',
+        function($rootScope, $scope, LocalisationService, UserModel ) {
+
+            UserModel.refreshIfNeeded();
+
             /**
              * katsotaan käyttäjän käyttöprofiilista cas/myroles tiedostosta
              * hänen palveluun määrittämä käyttökieli

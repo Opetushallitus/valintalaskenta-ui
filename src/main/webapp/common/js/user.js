@@ -46,7 +46,7 @@ angular.module('valintalaskenta')
 
             this.refreshIfNeeded = function () {
                 if (_.isEmpty(model.organizationsDeferred)) {
-                    model.refresh();
+                    return model.refresh();
                 } else {
                     return model.organizationsDeferred.promise;
                 }
