@@ -227,9 +227,9 @@
 angular.module('valintalaskenta').
     controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ValintalaskentatulosModel',
-        'TulosXls', 'HakukohdeModel', '$http', 'AuthService',
+        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService) {
+              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -237,6 +237,7 @@ angular.module('valintalaskenta').
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.model = ValintalaskentatulosModel;
     $scope.hakukohdeModel = HakukohdeModel;
+
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
     $scope.pageSize = 50;
@@ -244,6 +245,19 @@ angular.module('valintalaskenta').
     $scope.filteredResults = [];
 
     var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
+        AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
+            $scope.updateOph = true;
+        });
+
+        hakukohdeModelpromise.then(function () {
+            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
+                $scope.crudOrg = true;
+            });
+        });
+
+        $scope.user = UserModel;
+        UserModel.refreshIfNeeded();
+
 
     for (var i = 0; i < 1000; i++) {
         $scope.currentPage[i] = [];
@@ -320,15 +334,7 @@ angular.module('valintalaskenta').
 
 
 
-    AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
-        $scope.updateOph = true;
-    });
 
-        hakukohdeModelpromise.then(function () {
-            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
-                $scope.crudOrg = true;
-            });
-        });
 
 
     $scope.submit = function (vaiheoid, jonooid) {

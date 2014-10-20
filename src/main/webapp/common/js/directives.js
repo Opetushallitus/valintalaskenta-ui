@@ -321,7 +321,8 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
             valintatapajonoOid: '=',
             hakemusOid: '=',
             enabled: '=',
-            jonosija: '='
+            jonosija: '=',
+            user: '='
         },
         templateUrl: '../common/html/muutaJarjestyskriteeri.html',
         controller: function ($scope, $route, JarjestyskriteeriMuokattuJonosija, $modal) {
