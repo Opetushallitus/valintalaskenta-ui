@@ -256,7 +256,9 @@ angular.module('valintalaskenta').
         });
 
         $scope.user = UserModel;
-        UserModel.refreshIfNeeded();
+        UserModel.refreshIfNeeded().then(function(){
+            $scope.updateOph = UserModel.isKKUser;
+        });
 
 
     for (var i = 0; i < 1000; i++) {
