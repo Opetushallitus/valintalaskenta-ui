@@ -247,6 +247,7 @@ angular.module('valintalaskenta').
     var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
         AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
             $scope.updateOph = true;
+            $scope.jkmuokkaus = true;
         });
 
         hakukohdeModelpromise.then(function () {
@@ -257,7 +258,7 @@ angular.module('valintalaskenta').
 
         $scope.user = UserModel;
         UserModel.refreshIfNeeded().then(function(){
-            $scope.updateOph = UserModel.isKKUser;
+            $scope.jkmuokkaus = UserModel.isKKUser;
         });
 
 
