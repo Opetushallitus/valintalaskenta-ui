@@ -33,3 +33,15 @@ app.filter('julkaistuHaku', function() {
         return result;
     }
 });
+
+app.filter('tilaFilter', function() {
+    return function(input, tilaFilterValue) {
+        var result = [];
+        for(var i = 0; i < input.length ; i++) {
+            if(!tilaFilterValue || input[i].tila === tilaFilterValue) {
+                result.push(input[i]);
+            }
+        }
+        return result;
+    }
+});

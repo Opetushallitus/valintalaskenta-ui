@@ -172,6 +172,7 @@
                                         <th>{{ t('valintalaskentatulos.yhteispisteet') || 'Yhteispisteet' }}</th>
                                         <th>{{ t('valintalaskentatulos.hakutoive') || 'Hakutoive' }}</th>
                                         <th>{{ t('valintalaskentatulos.valintatieto') || 'Valintatieto' }}</th>
+                                        <th>{{ t('valintalaskentatulos.syy') || 'Syy' }}</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -206,10 +207,13 @@
 
                                         </td>
                                         <td>
+                                            {{tulos.jarjestyskriteerit[0].kuvaus.FI}}
+                                        </td>
+                                        <td>
                                             <jarjestyskriteeri-muokkaus jonosija="tulos"
                                                                         valintatapajono-oid="valintatapajono.valintatapajonooid"
                                                                         hakemus-oid="tulos.hakemusOid"
-                                                                        enabled="updateOph"/>
+                                                                        enabled="jkmuokkaus"/>
                                         </td>
                                     </tr>
                                     </tbody>
