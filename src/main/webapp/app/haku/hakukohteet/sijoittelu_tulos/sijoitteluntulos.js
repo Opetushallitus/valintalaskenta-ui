@@ -13,6 +13,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         this.errors = [];
 
         this.hakemusErittelyt = []; //dataa perustietonäkymälle
+        this.sijoitteluntulosHakijoittain = {};
+        this.sijoitteluntulosHakijoittainArray = [];
 
         this.filterValitut = function(hakemukset) {
 			return _.filter(hakemukset,function(hakemus) {
@@ -56,6 +58,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             model.sijoitteluTulokset = {};
             model.hakemusErittelyt.length = 0;
             model.haku = {};
+            model.sijoitteluntulosHakijoittain = {};
+            model.sijoitteluntulosHakijoittainArray = [];
 
             HaunTiedot.get({hakuOid: hakuOid}, function(result) {
                 model.haku = result;
@@ -73,6 +77,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                     var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
 
                     valintatapajonot.forEach(function (valintatapajono, index) {
+
                         valintatapajono.index = index;
                         valintatapajono.valittu = true;
                         var valintatapajonoOid = valintatapajono.oid;
@@ -93,6 +98,26 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                         var lastTasaSija = 1;
                         var sija = 0;
                         hakemukset.forEach(function (hakemus, index) {
+                            var jono = {
+                                nimi: valintatapajono.nimi,
+                                pisteet: hakemus.pisteet,
+                                tila: hakemus.tila,
+                                prioriteetti: valintatapajono.prioriteetti,
+                                tilaHistoria: hakemus.tilaHistoria
+                            };
+                            if (model.sijoitteluntulosHakijoittain[hakemus.hakijaOid] === undefined) {
+                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid] = {
+                                    etunimi: hakemus.etunimi,
+                                    sukunimi: hakemus.sukunimi,
+                                    hakemusOid: hakemus.hakemusOid,
+                                    hakijaOid: hakemus.hakijaOid,
+                                    vastaanottoTila: 'KESKEN',
+                                    ilmoittautumisTila: 'EI_TEHTY',
+                                    jonot: []
+                                };
+
+                            }
+                            model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].jonot.push(jono);
 
                             if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
                                 sija++;
@@ -150,6 +175,10 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
                                             currentHakemus.hyvaksyttyVarasijalta = vastaanottotila.hyvaksyttyVarasijalta;
+
+                                            model.sijoitteluntulosHakijoittain[currentHakemus.hakijaOid].vastaanottoTila=currentHakemus.vastaanottoTila;
+                                            model.sijoitteluntulosHakijoittain[currentHakemus.hakijaOid].ilmoittautumisTila=currentHakemus.ilmoittautumisTila;
+
                                             return true;
                                         }
                                     });
@@ -179,6 +208,11 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
                 }
 
+                for (var key in model.sijoitteluntulosHakijoittain) {
+                    if (model.sijoitteluntulosHakijoittain.hasOwnProperty(key)) {
+                        model.sijoitteluntulosHakijoittainArray.push(model.sijoitteluntulosHakijoittain[key]);
+                    }
+                };
             }, function (error) {
                 model.errors.push(error.data.message);
             });
@@ -276,6 +310,8 @@ angular.module('valintalaskenta').
 
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.model = SijoitteluntulosModel;
+
+    $scope.nakymanTila = "Jonottain";
 
     //
     // pikalatauslinkit on harmaannettuna jos ei ensimmaistakaan generointia 
