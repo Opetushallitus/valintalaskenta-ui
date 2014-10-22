@@ -63,7 +63,7 @@
                 <table class="virkailija-table-1" style="width: 900px;" ng-repeat="hakija in filteredResults[0] = (model.sijoitteluntulosHakijoittainArray | orderBy:predicate:reverse | filter:hakijaFilter) | startFrom:(currentPage[0]-1)*pageSize | limitTo:pageSize">
                     <thead>
                         <tr>
-                            <th style="background-color:whitesmoke;font-size: medium;width:300px">
+                            <th style="background-color:#f1f6f7;font-size: medium;width:300px">
                                 <show-person-information sukunimi="{{hakija.sukunimi}}"
                                                          etunimi="{{hakija.etunimi}}"
                                                          hakemus-oid="{{hakija.hakemusOid}}"
@@ -71,16 +71,16 @@
                                                          henkilo-oid="{{hakija.hakijaOid}}"/>
 
                             </th>
-                            <th style="background-color:whitesmoke;width:345px">
+                            <th style="background-color:#f1f6f7;width:345px">
                                 {{ t('sijoitteluntulos.vastaanottotila') || 'Vastaanottotila' }}:&nbsp;{{hakija.vastaanottoTila}}
                             </th>
-                            <th style="background-color:whitesmoke;">
+                            <th style="background-color:#f1f6f7;">
                                 {{ t('sijoitteluntulos.ilmoittautumistila') || 'Ilmoittautumistila' }}:&nbsp;{{hakija.ilmoittautumisTila}}
                             </th>
                         </tr>
                         <tr>
                             <th>{{ t('sijoitteluntulos.jononnimi') || 'Jonon nimi' }}</th>
-                            <th>{{ t('sijoitteluntulos.yhteispisteet') || 'Yhteispisteet' }}</th>
+                            <th>{{ t('sijoitteluntulos.yhteispisteet') || 'Laskennan tulos' }}</th>
                             <th>{{ t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila' }}</th>
                         </tr>
                     </thead>
