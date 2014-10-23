@@ -60,6 +60,9 @@ public class ConfigController {
 	@Value("${valintalaskentakoostepalvelu.seuranta.rest.url}")
 	private String seurantaUrl;
 
+	@Value("${valintalaskenta-ui.koodisto-service-url.rest}")
+    private String koodistoServiceRestURL;
+
 	/**
 	 * Generoi javascriptia propertiesseista
 	 * 
@@ -85,6 +88,7 @@ public class ConfigController {
 		append(b, "HAKEMUS_UI_URL_BASE", hakemusUiUrl);
 		append(b, "VIESTINTAPALVELU_URL_BASE", viestintapalveluUrl);
 		append(b, "TEMPLATE_URL_BASE", "");
+		append(b, "KOODISTO_URL_BASE", koodistoServiceRestURL);
 		append(b, "CAS_URL", casUrl);
 		if (!authMode.isEmpty()) {
 			append(b, "AUTH_MODE", authMode);
