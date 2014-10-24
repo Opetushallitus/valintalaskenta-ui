@@ -6,6 +6,7 @@ angular.module('valintalaskenta')
 
             var model;
             model = new function () {
+                this.deferred = undefined;
                 this.hakuOid = "";
                 this.haut = [];
                 this.lisahaku = false;
@@ -26,9 +27,11 @@ angular.module('valintalaskenta')
 
                 this.init = function (oid) {
                     if (model.haut.length === 0) {
+                        model.deferred = $q.defer();
+
                         TarjontaHaut.query({}, function (result) {
                             model.haut = result;
-
+                            
                             model.haut.forEach(function (haku) {
                                 if (haku.oid === oid) {
                                     model.hakuOid = haku;
@@ -43,10 +46,14 @@ angular.module('valintalaskenta')
                                 var match = lisahakutyyppiRegExp.exec(hakutyyppi);
                                 match ? haku.lisahaku = true : haku.lisahaku = false;
                             });
+                            model.deferred.resolve();
 
                         }, function (error) {
+                            model.deferred.reject('Hakulistan hakeminen epäonnistui');
                             $log.error(error);
                         });
+
+                        return model.deferred.promise;
                     }
 
                 };
@@ -57,13 +64,14 @@ angular.module('valintalaskenta')
             return model;
         }])
 
-    .controller('HakuController', ['$log', '$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService', 'UserModel', 'CustomHakuFilterUtil', 'CustomHakuFilterOptions',
-        function ($log, $scope, $location, $routeParams, HakuModel, ParametriService, UserModel, CustomHakuFilterUtil, CustomHakuFilterOptions) {
+    .controller('HakuController', ['$log', '$scope', '$location', '$routeParams', '$modal', 'HakuModel', 'ParametriService', 'UserModel', 'CustomHakuUtil',
+        function ($log, $scope, $location, $routeParams, $modal, HakuModel, ParametriService, UserModel, CustomHakuUtil) {
             "use strict";
             $scope.hakumodel = HakuModel;
             HakuModel.init($routeParams.hakuOid);
             UserModel.refreshIfNeeded();
-            $scope.customFilterUtil = CustomHakuFilterUtil;
+            $scope.customHakuUtil = CustomHakuUtil;
+            CustomHakuUtil.refreshIfNeeded($routeParams.hakuOid);
 
             //determining if haku-listing should be filtered based on users organizations
             UserModel.organizationsDeferred.promise.then(function () {
@@ -91,20 +99,27 @@ angular.module('valintalaskenta')
                 }
             });
 
-            $scope.customHakuFilterOptions = CustomHakuFilterOptions;
-
-
-            $scope.rajaaHakujaModal = function () {
-
+            $scope.rajaaHakuja = function () {
+                $modal.open({
+                    backdrop: 'static',
+                    templateUrl: 'haku/hakuFilterModal.html',
+                    size: 'lg'
+                });
+            };
+            console.log($scope.$id);
+            $scope.sulje = function () {
+                console.log('herealsdkös');                      
             };
 
-            $scope.hakukausiOpts = [
-                {key: 'Kevät', value: '_k'},
-                {key: 'Syksy', value: '_s'}
-            ];
 
         }])
-
+    
+    .controller('CustomHakuFilterController', ['$scope', function ($scope) {
+        $scope.$on('rajaaHakuja', function () {
+           $scope.show();
+        });
+    }])
+    
     .filter('kkHakuFilter', ['_', function (_) {
         return function (haut) {
             return _.filter(haut, function (haku) {
@@ -124,62 +139,13 @@ angular.module('valintalaskenta')
         };
     }])
 
-
-    .factory('CustomHakuFilterOptions', ['$q', 'HakujenHakutyypit', 'HakujenKohdejoukot', 'HakujenHakutavat', 'HakujenHakukaudet',
-        function ($q, HakujenHakutyypit, HakujenKohdejoukot, HakujenHakutavat, HakujenHakukaudet) {
-            var optionsModel = new function () {
-                this.deferred = undefined;
-                this.hakuVuosiOpts = undefined;
-                this.hakukausiOpts = undefined;
-                this.hakuKohdejoukkoOpts = undefined;
-                this.hakutyyppiOpts = undefined;
-                this.hakutapaOpts = undefined;
-
-                this.refresh = function () {
-                    optionsModel.deferred = $q.defer();
-                    var promises = [];
-
-                    var hakujentyypitDeferred = $q.defer();
-                    promises.push(hakujentyypitDeferred.promise);
-
-                    HakujenHakutyypit.get(function (result) {
-                        optionsModel.hakutyyppiOpts = result;
-                    });
-
-                    HakujenKohdejoukot.get(function (result) {
-                        optionsModel.hakuKohdejoukkoOpts = result;
-                    });
-
-
-                    $q.all(promises).then(function () {
-                        optionsModel.deferred.resolve();
-                    }, function (error) {
-                        $log.error('CustomHakuFilterOptions päivitys epäonnistui', error)
-                        optionsModel.deferred.reject();
-                    });
-
-                    return optionsModel.deferred.promise;
-                };
-
-                this.refreshIfNeeded = function () {
-                    if (_.isEmpty(optionsModel.deferred)) {
-                        return optionsModel.refresh();
-                    } else {
-                        return optionsModel.deferred.promise;
-                    }
-                };
-            };
-
-            return optionsModel;
-        }])
-
-    .filter('CustomHakuFilter', ['HakuModel', 'CustomHakuFilterUtil', '_',
-        function (HakuModel, CustomHakuFilterUtil, _) {
+    .filter('CustomHakuFilter', ['CustomHakuUtil', '_',
+        function (CustomHakuUtil, _) {
             return function (haut) {
                 var result = haut;
-                _.each(_.keys(CustomHakuFilterUtil), function (filterKey) {
-                    if (CustomHakuFilterParams[filterKey] !== null && CustomHakuFilterParams[filterKey] !== undefined) {
-                        result = CustomHakuFilters[filterKey](result);
+                _.each(CustomHakuUtil.hakuKeys, function (key) {
+                    if (CustomHakuUtil[key].value !== null && CustomHakuUtil[key].value !== undefined) {
+                        result = CustomHakuUtil[key].filter(result);
                     }
                 });
                 return result;
@@ -187,53 +153,121 @@ angular.module('valintalaskenta')
             };
         }])
 
-    .service('CustomHakuFilterUtil', ['_', function (_) {
+    .service('CustomHakuUtil', ['$q', '_', 'HakujenHakutyypit', 'HakujenKohdejoukot', 'HakujenHakutavat', 'HakujenHakukaudet', 'HakuModel',
+        function ($q, _, HakujenHakutyypit, HakujenKohdejoukot, HakujenHakutavat, HakujenHakukaudet, HakuModel) {
 
-        var that = this;
+            var that = this;
 
-        this.hakuvuosi = {
-            value: undefined,
-            filter: function (haut) {
-                return !_.isNumber(that.hakuvuosi.value) ? haut : _.filter(haut, function (haku) {
-                    return haku.hakukausiVuosi === that.hakuvuosi.value;
+            this.hakuKeys = ['hakuvuosi', 'hakukausi', 'kohdejoukko', 'hakutapa', 'hakutyyppi'];
+
+            this.deferred = undefined; // deferred here is meant just to prevent multiple refresh-calls
+
+            this.hakutyyppiOpts = undefined;
+            this.kohdejoukkoOpts = undefined;
+            this.hakutapaOpts = undefined;
+            this.hakukausiOpts = undefined;
+            this.hakuvuodetOpts = undefined;
+
+            this.refresh = function (hakuOid) {
+                that.deferred = $q.defer();
+
+                HakujenHakutyypit.query(function (result) {
+                    that.hakutyyppiOpts = _.map(result, function (hakutyyppi) { //parse hakuoptions
+                        return {
+                            koodiUri: hakutyyppi['koodiUri'],
+                            nimi: _.findWhere(hakutyyppi.metadata, {kieli: 'FI'}).nimi
+                        };
+                    });
                 });
-            }
-        };
 
-        this.hakukausi = {
-            value: undefined,
-            filter: function (haut) {
-                return !_.isNumber(that.hakuvuosi) ? haut : _.filter(haut, function (haku) {
-                    return haku.hakukausiVuosi === that.hakuvuosi.value;
+                HakujenKohdejoukot.query(function (result) {
+                    that.kohdejoukkoOpts = _.map(result, function (kohdejoukko) { //parse hakuoptions
+                        return {
+                            koodiUri: kohdejoukko['koodiUri'],
+                            nimi: _.findWhere(kohdejoukko.metadata, {kieli: 'FI'}).nimi
+                        };
+                    });
                 });
-            }
-        };
 
-        this.kohdejoukko = {
-            value: undefined,
-            filter: function (haut) {
-                return !_.isString(that.kohdejoukko) ? haut : _.filter(haut, function (haku) {
-                    return haku.kohdejoukkoUri === that.kohdejoukko.value;
+                HakujenHakutavat.query(function (result) {
+                    that.hakutapaOpts = _.map(result, function (tapa) { //parse hakuoptions
+                        return {
+                            koodiUri: tapa['koodiUri'],
+                            nimi: _.findWhere(tapa.metadata, {kieli: 'FI'}).nimi
+                        };
+                    });
                 });
-            }
-        };
 
-        this.hakutapa = {
-            value: undefined,
-            filter:function (haut) {
-                return !_.isString(that.hakutapa) ? haut : _.filter(haut, function (haku) {
-                    return haku.hakutapaUri === that.hakutapa.value;
+                HakujenHakukaudet.query(function (result) {
+                    that.hakukausiOpts = _.map(result, function (kausi) { //parse hakuoptions
+                        return {
+                            koodiUri: kausi['koodiUri'],
+                            nimi: _.findWhere(kausi.metadata, {kieli: 'FI'}).nimi
+                        };
+                    });
                 });
-            }
-        };
 
-        this.hakutyyppi = {
-            value: undefined,
-            filter: function (haut) {
-                return !_.isString(that.hakutyyppi) ? haut : _.filter(haut, function (haku) {
-                    return haku.hakutyyppiUri === that.hakutyyppi;
+                if(_.isEmpty(HakuModel.deferred)) {
+                    HakuModel.init(hakuOid);
+                }
+
+                HakuModel.deferred.promise.then(function () {
+                    that.hakuvuodetOpts = _.uniq(_.pluck(HakuModel.haut, 'hakukausiVuosi'));
                 });
-            }
-        };
 
-    }]);
+                that.deferred.resolve();
+            };
+
+            this.refreshIfNeeded = function (hakuOid) {
+                if (_.isEmpty(that.deferred)) {
+                    that.refresh(hakuOid);
+                }
+            };
+
+
+            this.hakuvuosi = {
+                value: undefined,
+                filter: function (haut) {
+                    return !_.isNumber(that.hakuvuosi.value) ? haut : _.filter(haut, function (haku) {
+                        return haku.hakukausiVuosi === that.hakuvuosi.value;
+                    });
+                }
+            };
+
+            this.hakukausi = {
+                value: undefined,
+                filter: function (haut) {
+                    return !_.isString(that.hakukausi.value) ? haut : _.filter(haut, function (haku) {
+                        return haku.hakukausiUri.indexOf(that.hakukausi.value) > -1;
+                    });
+                }
+            };
+
+            this.kohdejoukko = {
+                value: undefined,
+                filter: function (haut) {
+                    return !_.isString(that.kohdejoukko.value) ? haut : _.filter(haut, function (haku) {
+                        return haku.kohdejoukkoUri.indexOf(that.kohdejoukko.value) > -1;
+                    });
+                }
+            };
+
+            this.hakutapa = {
+                value: undefined,
+                filter: function (haut) {
+                    return !_.isString(that.hakutapa.value) ? haut : _.filter(haut, function (haku) {
+                        return haku.hakutapaUri.indexOf(that.hakutapa.value) > -1;
+                    });
+                }
+            };
+
+            this.hakutyyppi = {
+                value: undefined,
+                filter: function (haut) {
+                    return !_.isString(that.hakutyyppi.value) ? haut : _.filter(haut, function (haku) {
+                        return haku.hakutyyppiUri.indexOf(that.hakutyyppi.value) > -1;
+                    });
+                }
+            };
+
+        }]);
