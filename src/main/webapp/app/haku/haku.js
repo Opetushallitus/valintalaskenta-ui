@@ -99,19 +99,6 @@ angular.module('valintalaskenta')
                 }
             });
 
-            $scope.rajaaHakuja = function () {
-                $modal.open({
-                    backdrop: 'static',
-                    templateUrl: 'haku/hakuFilterModal.html',
-                    size: 'lg'
-                });
-            };
-            console.log($scope.$id);
-            $scope.sulje = function () {
-                console.log('herealsdkös');                      
-            };
-
-
         }])
     
     .controller('CustomHakuFilterController', ['$scope', function ($scope) {

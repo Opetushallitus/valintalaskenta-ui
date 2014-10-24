@@ -26,7 +26,7 @@
 
 
 <button ng-click="show = !show" class="btn btn-default btn-sm margin-vertical-2"><i
-        ng-class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> Rajaa hakuja
+        ng-class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> {{t('hakulista.rajaa') || 'Rajaa hakuja'}}
 </button>
 
 
@@ -34,7 +34,7 @@
     <div class="form-horizontal col-md-6">
 
         <div class="form-group">
-            <label class="col-md-2 control-label" for="hakuvuosi">Hakuvuosi</label>
+            <label class="col-md-2 control-label" for="hakuvuosi">{{t('hakulista.hakuvuosi') || 'Hakuvuosi'}}</label>
 
             <div class="col-md-10">
                 <select class="form-control input-sm"
@@ -47,7 +47,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-md-2 control-label" for="hakukausi">Hakukausi</label>
+            <label class="col-md-2 control-label" for="hakukausi">{{t('hakulista.hakukausi') || 'Hakukausi'}}</label>
 
             <div class="col-md-10">
                 <select class="form-control input-sm"
@@ -61,7 +61,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-md-2 control-label" for="hakutapa">Hakutapa</label>
+            <label class="col-md-2 control-label" for="hakutapa">{{t('hakulista.hakutapa') || 'Hakutapa'}}</label>
 
             <div class="col-md-10">
                 <select class="form-control input-sm"
@@ -74,7 +74,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="kohdejoukko">Kohdejoukko</label>
+            <label class="control-label col-md-2" for="kohdejoukko">{{t('hakulista.kohdejoukko') || 'Kohdejoukko'}}</label>
 
             <div class="col-md-10">
                 <select class="form-control input-sm"
@@ -87,7 +87,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="hakutyyppi">Hakutyyppi</label>
+            <label class="control-label col-md-2" for="hakutyyppi">{{t('hakulista.hakutyyppi') || 'Hakutyyppi'}}</label>
 
             <div class="col-md-10">
                 <select class="form-control input-sm"
