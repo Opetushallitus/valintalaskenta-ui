@@ -1,0 +1,349 @@
+
+
+/*** Display
+************************************************/
+.inline-block {
+    display: inline-block;
+}
+
+.block {
+    display: block;
+}
+
+.inline {
+    display: inline;
+}
+
+.display-none {
+    display: none;
+}
+
+.display-table-cell {
+    display: table-cell;
+}
+/*** Visibility
+************************************************/
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/*** Position
+************************************************/
+.absolute {
+    position: absolute;
+}
+
+.relative {
+    position: relative;
+}
+
+.fixed {
+    position: fixed;
+}
+
+/*** Aligning
+************************************************/
+.align-center {
+    text-align: center;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.margin-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.vertical-align-middle {
+    vertical-align: middle;
+}
+
+
+/*** Width
+************************************************/
+
+.width-25 {
+    width: 25%;
+}
+
+.width-75 {
+    width: 75%;
+}
+
+@for $i from 1 through 10 {
+    .width-#{$i}0 {
+        width: #{$i}0%;
+    }
+}
+
+/*** Text
+************************************************/
+
+.bold {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.line-through {
+    text-decoration: line-through;
+}
+
+
+/*** Color
+************************************************/
+.red {
+    color: red;
+}
+
+
+
+
+/*** Background-color
+************************************************/
+$grey: #eee;
+$light-grey: #f8f8f8;
+
+.grey {
+    background-color: $grey;
+}
+
+.light-grey {
+    background-color: $light-grey;
+}
+
+/*** Float
+************************************************/
+ .float-left {
+    float: left;
+}
+
+ .float-right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+/*** Overflow
+************************************************/
+.overflow-x-scroll {
+    overflow-x: scroll;
+}
+
+/*** Table
+************************************************/
+
+.white-space-nowrap {
+    white-space: nowrap;
+}
+
+.white-space-normal {
+    white-space: normal;
+}
+
+
+/*** List
+************************************************/
+.list-style-none {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/*** Border
+************************************************/
+.default-border {
+  border: 1px solid #eeeeee; 
+}
+
+/*** Grids
+************************************************/
+$gutter: 0.00625;
+
+$grid16-count: 16;
+$grid12-count: 12;
+$grid-16-column-width: 100 / $grid16-count;
+$grid-12-column-width: 100 / $grid12-count;
+
+
+/* grid16 classes with gutter*/
+@mixin grid-with-span($grid-span) {
+    float: left;
+    margin-right: percentage($gutter);
+    margin-left: percentage($gutter);
+    width: percentage(($grid-16-column-width * $grid-span) / 100) - percentage($gutter * 2);
+}
+
+@for $grid-span from 1 through 16 {
+    .grid16-#{$grid-span} {
+        @include grid-with-span($grid-span);
+    }
+}
+
+
+
+/* offsets to left and right */
+@mixin offset-right($grid-span, $grid-count) {
+    margin-right: percentage( ($grid-count * $grid-span)  / 100) + percentage($gutter);
+}
+
+@mixin offset-left($grid-span, $grid-count) {
+    margin-left: percentage( ($grid-count * $grid-span) / 100) + percentage($gutter);;
+}
+
+@for $grid-span from 1 to 16 {
+    .offset-left-16-#{$grid-span} {
+        @include offset-left($grid-span, $grid-16-column-width); 
+    }
+    .offset-right-16-#{$grid-span} {
+        @include offset-right($grid-span, $grid-16-column-width); 
+    }
+}
+
+@for $grid-span from 1 to 12 {
+    .offset-left-12-#{$grid-span} {
+        @include offset-left($grid-span, $grid-12-column-width);
+    }
+    .offset-right-12-#{$grid-span} {
+        @include offset-right($grid-span, $grid-12-column-width);
+    }
+}
+
+/* Widths without gutter for 16- and 12-gridsystems*/
+@mixin grid-width($grid-span, $grid-count){
+    float: left;
+    width: percentage(($grid-count * $grid-span) / 100);
+}
+
+@for $grid-span from 1 through 16 {
+    .width-16-#{$grid-span} {
+        @include grid-width($grid-span, $grid-16-column-width);
+    }
+}
+
+@for $grid-span from 1 through 12 {
+    .width-12-#{$grid-span} {
+        @include grid-width($grid-span, $grid-12-column-width)
+    }
+}
+
+
+// gutter separated from columm width
+.gutter {
+    margin-left: percentage($gutter);
+    margin-right: percentage($gutter);
+}
+
+
+
+// Margin and padding
+//--------------------------------
+$spacing-step: 0.5;
+$spacing-step-em: 0.5em;
+
+@mixin margin($width) {
+    margin: #{$width}em;
+}
+
+@mixin margin-horizontal($width) {
+    margin-left: #{$width}em;
+    margin-right: #{$width}em;
+}
+
+@mixin margin-vertical($height) {
+    margin-top: #{$height}em;
+    margin-bottom: #{$height}em;
+}
+
+@mixin padding($width) {
+    padding: #{$width}em;
+}
+
+@mixin padding-horizontal($width) {
+    padding-left: #{$width}em;
+    padding-right: #{$width}em;
+}
+
+@mixin padding-vertical($height) {
+    padding-top: #{$height}em;
+    padding-bottom: #{$height}em;
+}
+
+
+
+
+/* Padding to all directions */
+@for $i from 0 through 10 {
+    .padding-#{$i} {
+        @include padding($i * $spacing-step);
+    }
+}
+
+/* Vertical paddings */
+@for $i from 0 through 10 {
+    .padding-vertical-#{$i} {
+        @include padding-vertical($i * $spacing-step);
+    }
+}
+
+/* Horizontal paddings */
+@for $i from 0 through 10 {
+    .padding-horizontal-#{$i} {
+        @include padding-horizontal($i * $spacing-step);
+    }
+}
+
+/* Padding for all directions separately */
+@for $i from 0 through 10 {
+    @each $direction in top, right, bottom, left {
+        .padding-#{$direction}-#{$i} {
+            padding-#{$direction}: $i * $spacing-step-em;
+        }
+    }
+}
+
+
+
+/* Margin to all directions */
+@for $i from 0 through 10 {
+    .margin-#{$i} {
+        @include margin($i * $spacing-step);
+    }
+}
+
+/* Vertical margins */
+@for $i from 0 through 10 {
+    .margin-vertical-#{$i} {
+        @include margin-vertical($i * $spacing-step);
+    }
+}
+
+/* Horizontal margins */
+@for $i from 0 through 10 {   
+    .margin-horizontal-#{$i} {
+        @include margin-horizontal($i * $spacing-step);
+    }
+}
+
+/* Margins for all directions separately  */
+@for $i from 0 through 10 {
+     @each $direction in top, right, bottom, left {
+        .margin-#{$direction}-#{$i} {
+            margin-#{$direction}: $i * $spacing-step-em;
+        }
+    }
+}
+
