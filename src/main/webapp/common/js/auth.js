@@ -208,13 +208,13 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _, CRUD,
 app.directive('privileges', function ($animate, $timeout, ParametriService) {
     return {
         link: function ($scope, element, attrs) {
-            $animate.addClass(element, 'ng-hide');
+         //   $animate.addClass(element, 'ng-hide');
 
             $timeout(function () {
                 ParametriService.promise().then(function (data) {
                     if (data[attrs.privileges] || attrs.authKkUser) {
 
-                        $animate.removeClass(element, 'ng-hide');
+                      //  $animate.removeClass(element, 'ng-hide');
                     }
                 });
             });
@@ -233,6 +233,10 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
                 if (attrs.authAdditionalCheck) {
 
                     ParametriService.promise().then(function (data) {
+
+                        if (attrs.korkeakouluCheck === 'true') {
+                            $animate.addClass(element, 'ng-hide');
+                        } else
                         if (data[attrs.authAdditionalCheck]) {
                             $animate.removeClass(element, 'ng-hide');
                         }
@@ -241,6 +245,7 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
                 } else {
                     $animate.removeClass(element, 'ng-hide');
                 }
+
             };
             if (attrs.authKkUser) {
                 UserModel.organizationsDeferred.promise.then(function () {

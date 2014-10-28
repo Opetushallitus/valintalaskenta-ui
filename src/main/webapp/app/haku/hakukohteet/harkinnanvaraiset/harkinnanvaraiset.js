@@ -1,5 +1,7 @@
-app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta,
-                                                HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
+angular.module('valintalaskenta')
+
+.factory('HarkinnanvaraisetModel', ['$log', '_', 'HakukohdeHenkilot', 'Ilmoitus', 'Hakemus', 'HarkinnanvarainenHyvaksynta', 'HarkinnanvaraisestiHyvaksytyt', 'IlmoitusTila',
+        function ($log, _, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
     "use strict";
     var model;
     model = new function () {
@@ -11,30 +13,30 @@ app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitu
         this.avaimet = [];
         this.errors = [];
         this.filterHarkinnanvaraiset = function () {
-            return _.filter(this.hakeneet, function (hakija) {
+            return _.filter(model.hakeneet, function (hakija) {
                 return "true" === hakija.hakenutHarkinnanvaraisesti;
             });
         };
         this.filterValitut = function () {
-            return _.filter(this.filterHarkinnanvaraiset(), function (hakija) {
+            return _.filter(model.filterHarkinnanvaraiset(), function (hakija) {
                 return hakija.valittu;
             });
         };
         this.isAllValittu = function () {
-            return this.filterHarkinnanvaraiset().length === this.filterValitut().length;
+            return model.filterHarkinnanvaraiset().length === model.filterValitut().length;
         };
         this.check = function () {
-            this.valittu = this.isAllValittu();
+            model.valittu = model.isAllValittu();
         };
         this.checkAll = function () {
-            var kaikkienUusiTila = this.valittu;
-            _.each(this.filterHarkinnanvaraiset(), function (hakija) {
+            var kaikkienUusiTila = model.valittu;
+            _.each(model.filterHarkinnanvaraiset(), function (hakija) {
                 hakija.valittu = kaikkienUusiTila;
             });
-            this.valittu = this.isAllValittu();
+            model.valittu = model.isAllValittu();
         };
         this.valitutHakemusOids = function () {
-            return _.map(this.filterValitut(), function (hakija) {
+            return _.map(model.filterValitut(), function (hakija) {
                 return hakija.oid;
             });
         };
@@ -117,10 +119,9 @@ app.factory('HarkinnanvaraisetModel', function ($log, HakukohdeHenkilot, Ilmoitu
     }();
 
     return model;
-});
+}])
 
-angular.module('valintalaskenta').
-    controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
+    .controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
         'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel',
         'Pohjakoulutukset',
         function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,

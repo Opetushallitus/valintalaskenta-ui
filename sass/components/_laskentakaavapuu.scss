@@ -1,0 +1,193 @@
+/*** kaavaeditor
+************************************************/
+.kaavaeditor-blue {
+  color: #147fa2;
+}
+
+$logictree-item-spacing: 18px;
+
+.gradingformula {
+  padding: 1em;
+
+  .alikaava {
+    color: #B0B0B0 !important;
+  }
+
+  ul {
+    background-image: url(../img/logictree-line-vertical.gif);
+    background-repeat: no-repeat;
+    background-position: 10px 0px;
+    padding: 13px 0px 0px 10px;
+    margin: 0px;
+
+    > li {
+      display: block;
+      list-style-type: none;
+      padding: 0px 0px 13px 18px;
+      background-image: url(../img/logictree-line-vertical.gif), url(../img/logictree-line-horizontal.gif);
+      background-repeat: repeat-y, no-repeat;
+      background-position: 0px -13px, 2px 9px;
+    }
+
+    > li:last-child {
+      background-repeat: no-repeat, no-repeat;
+      padding-bottom: 0px;
+    }
+  }
+
+  ul.function-pair {
+    background-repeat: repeat-y;
+  }
+
+  .frame, .function, .parameter {
+    display: inline-block;
+    position: relative;
+    height: 18px;
+    line-height: 18px;
+
+    .icon {
+      display: inline-block;
+      margin-right: 0.5em;
+      width: 18px;
+      height: 18px;
+      border: solid 0px transparent;
+      background-color: transparent;
+      background-image: url('../img/18x18-ui-icons.png');
+      background-repeat: no-repeat;
+      cursor: pointer;
+
+      &.dropmenu {
+        position: relative;
+        background-image: none;
+        width: auto;
+
+        > .dropmenu-list {
+          position: absolute;
+          top: 16px;
+          left: 0px;
+          background-image: none;
+          background-color: #eeeeee;
+
+          > li {
+            background-image: none;
+          }
+        }
+      }
+    }
+
+    .label {
+      display: inline-block;
+      height: 18px;
+      line-height: 18px;
+      color: #000000;
+    }
+
+    .dropmenu-list {
+      position: absolute;
+      left: 0px;
+      top: 18px;
+      display: none;
+      background-image: none;
+      background-color: #eeeeee;
+      padding-left: 0px;
+
+      > li {
+        background-image: none;
+        padding-left: 0px;
+      }
+    }
+
+    &:hover {
+      .dropmenu-list {
+        display: block;
+      }
+    }
+
+    &:active,
+    &.active {
+      .node {
+        background-color: #e6f8fe;
+        cursor: pointer;
+      }
+    }
+
+    .node {
+      cursor: pointer;
+    }
+
+    .dropzone {
+      display: inline-block;
+      margin-right: 0.5em;
+      width: 150px;
+      height: 18px;
+      border: solid 0px transparent;
+      background-color: transparent;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .frame {
+    .icon,
+    .staticicon {
+      background-position: -126px 0px;
+    }
+
+    &.open .icon {
+      background-position: -108px 0px;
+    }
+  }
+
+  > .frame {
+    padding-top: $logictree-item-spacing;
+  }
+
+  .function {
+    .icon {
+      background-position: -90px 0px;
+
+      &.sum {
+        background-position: -36px 0px;
+      }
+    }
+  }
+
+  .parameter {
+    .icon,
+    .staticicon {
+      background-position: -72px 0px;
+    }
+  }
+
+  .placeholder {
+    position: relative;
+    margin: 0 0 $logictree-item-spacing 0;
+    padding: 0;
+    min-height: 18px;
+    background: #f5f5f5;
+    border: 1px dashed #bbbbbb;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: -1px;
+      bottom: ($logictree-item-spacing + 1px) * -1;
+      height: $logictree-item-spacing;
+      width: 2px;
+      padding: 0px;
+      margin: 0px;
+      background-image: url(../img/logictree-line-vertical.gif);
+      background-repeat: repeat-y;
+      background-position: 0px -13px;
+    }
+
+    &:last-child:before {
+      display: none;
+    }
+  }
+
+}
+
+

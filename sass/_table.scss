@@ -1,0 +1,193 @@
+
+
+
+/*** Virkailija-table-1 
+************************************************/
+// common table theme 
+
+.virkailija-table-1 {
+    border-spacing: 1px;
+    border-collapse: separate;
+
+    tr {
+        td {
+
+            line-height: 2.3em;
+            padding: 0 0.5em;
+            vertical-align: middle;
+            text-align: center;
+
+            &.rightorientedcolumn {
+                text-align: right;
+            }
+        }
+
+
+        th {
+            line-height: 2.3em;
+            padding: 0 0.5em;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        th a {
+            color: #000;
+        }
+    }
+
+    thead {
+        background-color: #eee;
+        @include background-image("table-header-bg.png");
+        background-repeat: repeat;
+        background-position: left top;
+
+        th {
+            border-bottom: 1px solid #c2c2c2;
+            border-top: 1px solid #ececec;
+        }
+
+        tr:first-of-type {
+
+            th:first-of-type {
+                @include rounded-corner(top, left, 5px);
+                border-left: 1px solid #ececec;
+            }
+
+            th:last-of-type {
+                @include rounded-corner(top, right, 5px);
+                border-right: 1px solid #ececec;
+            }
+
+        }
+    }
+
+    tbody {
+
+        td {
+            border-spacing: 0;
+            border: 1px solid #ececec;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f8f8f8;
+        }
+
+        tr:last-of-type {
+            
+            td:first-of-type {
+                @include rounded-corner(bottom, left, 5px);
+            }
+
+            td:last-of-type {
+                @include rounded-corner(bottom, right, 5px);
+            }
+        }
+    }
+
+    tr {
+        td.rule {
+            padding-left: 3em;
+            @include background-image("ketju-saanto.png");
+            background-repeat: no-repeat;
+            background-position: 0.8em center;
+            background-size: 1.5em;
+        }
+
+        td.follow-up-question {
+            padding-left: 3em;
+            @include background-image("nuoli-jatkokysymys.png"); 
+            background-repeat: no-repeat;
+            background-position: 0.8em center;
+            background-size: 1em;
+        }
+
+        td.condition {
+            padding-left: 3em;
+            @include background-image("pykala-ehto.png"); 
+            background-repeat: no-repeat;
+            background-position: 0.8em center;
+            background-size: 1em;
+        }
+    }
+
+    input,select {
+        position: relative;
+        bottom: 2px;
+        line-height: normal;
+    }
+
+    td.leftorientedcolumn {
+        text-align: left;
+    }
+}
+
+
+
+
+
+
+/*** Dropmenu table
+************************************************/
+
+/* laskentakaavojen dropdown funktiolistalle */
+table.dropmenu-table {
+    position: relative;
+    z-index: 10;
+    top: -25px;
+    left: -5px;
+    border-collapse: separate;
+    border-spacing: 1px;
+
+    thead {
+        
+        th {
+            @include background-image("table-header-bg.png");
+            background-repeat: repeat;
+            background-position: left top;
+            text-align: center;
+            border: 1px solid #ccc;
+            padding: 0.5em 1em 0.5em 1em;
+            
+        }
+        
+    }
+
+    tbody {
+        
+        td {
+            padding: 0.5em;
+            background: #eee;
+            border: 1px solid #ccc;
+            @include transitions(background-color, 0.1s);
+            padding: 0.5em 1.5em 0.5em 1.5em;
+            text-align: center;
+
+            &:hover {
+                background-color: #fff5da;
+                @include box-shadow(0px 0px 2px 0 rgba(0,0,0,0.7) inset);
+            }
+
+            &:active {
+                background-color: #999;
+                color: white;
+                @include box-shadow(0px 0px 1px 0 rgba(0,0,0,0.5) inset);
+            }
+        }
+
+    }
+}
+
+.function {
+
+    &:hover {
+        table.dropmenu-table {
+            display: block;
+        }
+    }
+
+}
+
+
+
+
+

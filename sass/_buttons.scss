@@ -1,0 +1,111 @@
+
+.btn-default {
+    color: black;
+    background-color:#d2ecf5;
+    border-color: #59aeca;
+    box-shadow: -1px 1px 1px 0px #dff2f8 inset;
+
+    &:hover {
+        box-shadow: -1px 1px 1px 0px #dff2f8 inset;
+        border-color: #59aeca;
+        background-color: #9fdbf0;
+        color: black;
+
+    }
+
+    &:focus, &:active {
+        box-shadow: -1px 1px 1px 0px #3a220b inset, 0px 4px 4px 0px #11627c inset;
+        box-shadow: -1px 1px 4px 0px rgba(58,34,11,0.2) inset, 0px 4px 4px 0px rgba(17,98,124,0.5) inset;
+        border-color: #22a4ce;
+        background-color: #24b0dd;
+    }
+}
+
+
+
+.btn-primary {
+    color: black;
+    border-color:#dea300;
+    background-color:#feba00;
+    box-shadow: 0 1px 1px #fde091 inset, 0 -1px 4px rgba(255, 255, 255, 0.05) inset;
+
+    &:hover {
+        color: black;
+        border-color:#c69100;
+        background-color:#e99f00;
+        box-shadow: 0 1px 1px #f8d991 inset, 0 -1px 4px rgba(255, 255, 255, 0.05) inset;
+    }
+
+    &:focus,
+    &:active {
+        color: black;
+        border-color:#dd8b17;
+        background-color:#e39000;
+        box-shadow: 0 3px 6px #aa6a01 inset, 0 -1px 4px rgba(0, 0, 0, 0.05) inset;
+    }
+}
+
+
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 999px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+
+
+.btn {
+    padding:0px 13px;
+    height:36px;
+    line-height:36px;
+
+    &.btn-sm {
+        height:22px;
+        line-height:22px;
+    }
+
+    &.disabled,
+    &:disabled {
+        color:rgba(0, 0, 0, 0.5);
+        border-color:#d5d5d5;
+        background-color:#e3e3e3;
+        box-shadow: 0 1px 1px #f8f6ee inset, 0 -1px 4px rgba(255, 255, 255, 0.05) inset;
+        cursor:default;
+    }
+
+    &.print {
+        padding-left: 30px;
+        @include background-image("print-icon.png");
+        background-repeat: no-repeat;
+        background-position: 5px center;
+    }
+
+    &.excel {
+        padding-left: 30px;
+        background-image: url('../img/excel-icon.png');
+        background-repeat: no-repeat;
+        background-position: 5px center;
+    }
+
+    &.pdf {
+        padding-left: 30px;
+        background-image: url("../img/pdf-icon.png");
+        background-repeat: no-repeat;
+        background-position: 5px center;
+    }
+
+
+}

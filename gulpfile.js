@@ -6,6 +6,7 @@ var gulp = require('gulp'),
 	watch = require('gulp-watch'),
 	livereload = require('gulp-livereload'),
     karma = require('gulp-karma');
+	sass = require('gulp-sass');
 
 var paths = {
 	bower_components: [
@@ -40,6 +41,7 @@ var paths = {
 	css: [
 		'src/main/webapp/common/css/'
 	],
+	sass: 'sass/valintaperusteet.scss',
 	cleanBuildFiles: [
 		'node/',
 		'node_modules/',
@@ -106,6 +108,7 @@ gulp.task('test', function () {
             throw err;
         }));
 });
+
 
 // Livereload
 gulp.task('livereload', function () {

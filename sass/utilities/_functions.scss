@@ -1,0 +1,72 @@
+
+
+$vendor-prefixes: webkit moz o ms;
+
+
+@function add-prefix($property, $prefix, $separator: '-') {
+    @return $separator + $prefix + $separator + $property;
+}
+
+// Vendor prefixes to a CSS declaration.
+@mixin with-vendor-prefixes($property, $value, $prefixes: $vendor-prefixes) {
+    @each $prefix in $prefixes {
+        #{add-prefix($property, $prefix)}: $value;
+    }
+    #{$property}: $value;
+}
+
+/***  Functions
+************************************************/
+
+@mixin rounded-corners($radius) {
+    @include with-vendor-prefixes(border-radius, $radius);
+}
+
+@mixin rounded-corner($horizontal, $vertical, $radius) {
+    -moz-border-#{$horizontal}-#{$vertical}-radius: $radius;
+    -webkit-border-#{$horizontal}-#{$vertical}-radius: $radius;
+    -o-border-#{$horizontal}-#{$vertical}-radius: $radius;
+    -ms-border-#{$horizontal}-#{$vertical}-radius: $radius;
+    border-#{$horizontal}-#{$vertical}-radius: $radius;
+}
+
+
+@mixin box-shadow($value...) {
+    @include with-vendor-prefixes(box-shadow, $value);
+}
+
+// if element needs more than value, the comma separated argument list must be set in a variable like so:
+// $text-shadow-argument: 1px 1px 1px #000, 2px 2px 2px #aaa;
+// @include text-shadow($text-shadow-argument);
+@mixin text-shadow($value) {
+    @include with-vendor-prefixes(text-shadow, $value);
+}
+
+@mixin transitions($property, $duration) {
+    @include with-vendor-prefixes(transition, $property $duration); 
+}
+
+@mixin font-basics($font-size, $font-weight, $font-color) {
+    font-size: $default-font-size;
+    font-weight: $font-weight;
+    color: $font-color;
+}
+
+@mixin background-gradient-from-top-to-bottom($gradient-style, $from-color, $to-color) { 
+    background: $to-color;
+    background: -webkit-gradient($gradient-style, left top, left bottom, from($from-color), to($to-color));
+    background: -webkit-linear-gradient(top, $from-color, $to-color);
+    background: -moz-linear-gradient(top, $from-color, $to-color) ;
+    background: -ms-linear-gradient(top, $from-color, $to-color);
+    background: -o-linear-gradient(top, $from-color, $to-color);
+    background: linear-gradient(top, $from-color, $to-color);
+}
+
+//default font size is 13px
+@mixin font-size-px-to-em($pixels, $context-font-size: $base-font-size) {
+    font-size: #{$pixels / $context-font-size}em;
+}
+
+@mixin background-image($img-name) {
+    background-image: url(#{$img-folder-path}#{$img-name});
+}

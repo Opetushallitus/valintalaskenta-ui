@@ -26,8 +26,13 @@
     <script type="text/javascript"  src="../configuration/configuration.js"></script>
 
     <!-- app js-->
-    <script type="text/javascript" src="haku/hallinta/valvomo.js"></script>
     <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="app-routes.js"></script>
+    <script type="text/javascript" src="app-resources.js"></script>
+    <script type="text/javascript" src="haku/hallinta/valvomo.js"></script>
+    <script type="text/javascript" src="../common/js/lodash-module.js"></script>
+    <script type="text/javascript" src="app-urls.js"></script>
+
 
     <script type="text/javascript" src="../common/js/auth.js"></script>
     <script type="text/javascript" src="../common/js/rootctrl.js"></script>
@@ -81,7 +86,7 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-<body data-ng-controller="RootCtrl">
+<body ng-cloak data-ng-controller="RootCtrl">
     <div id="application-wrapper">
         <div id="angularbox" ng-view=""></div>
     </div>
