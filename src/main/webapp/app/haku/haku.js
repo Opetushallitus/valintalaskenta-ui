@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakuModel', ['$q', '$log', 'Haku', 'HaunTiedot', 'TarjontaHaut',
-        function ($q, $log, Haku, HaunTiedot, TarjontaHaut) {
+    .factory('HakuModel', ['$q', '$log', 'Haku', 'HaunTiedot', 'TarjontaHaut', 'Korkeakoulu',
+        function ($q, $log, Haku, HaunTiedot, TarjontaHaut, Korkeakoulu) {
             "use strict";
 
             var model;
@@ -11,6 +11,7 @@ angular.module('valintalaskenta')
                 this.haut = [];
                 this.lisahaku = false;
                 this.nivelvaihe = false;
+                this.korkeakoulu = false;
 
                 this.getNimi = function () {
                     if (this.hakuOid.nimi.kieli_fi !== undefined) {
@@ -26,7 +27,7 @@ angular.module('valintalaskenta')
                 };
 
                 this.init = function (oid) {
-                    if (model.haut.length === 0) {
+                    if (model.haut.length === 0 || oid !== model.hakuOid) {
                         model.deferred = $q.defer();
 
                         TarjontaHaut.query({}, function (result) {
@@ -35,6 +36,9 @@ angular.module('valintalaskenta')
                             model.haut.forEach(function (haku) {
                                 if (haku.oid === oid) {
                                     model.hakuOid = haku;
+
+                                    model.korkeakoulu = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
+
                                 }
                                 var kohdejoukkoUri = haku.kohdejoukkoUri;
                                 var kohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
@@ -45,6 +49,7 @@ angular.module('valintalaskenta')
                                 var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
                                 var match = lisahakutyyppiRegExp.exec(hakutyyppi);
                                 match ? haku.lisahaku = true : haku.lisahaku = false;
+
                             });
                             model.deferred.resolve();
 
@@ -69,6 +74,7 @@ angular.module('valintalaskenta')
             "use strict";
             $scope.hakumodel = HakuModel;
             HakuModel.init($routeParams.hakuOid);
+
             UserModel.refreshIfNeeded();
             $scope.customHakuUtil = CustomHakuUtil;
             CustomHakuUtil.refreshIfNeeded($routeParams.hakuOid);
