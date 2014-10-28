@@ -1,4 +1,4 @@
-<div class="form">
+<div class="form margin-bottom-2">
     <label class="control-label">{{ t('hakulista.header') || 'Haku' }}: </label>
 
     <div class="row">
@@ -18,19 +18,14 @@
                     ng-switch-when="kkUser"
                     ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | CustomHakuFilter | julkaistuHaku:haku | kkHakuFilter | orderBy:'nimi.kieli_fi' "></select>
         </div>
-
-
+        <button ng-click="show = !show" class="btn btn-default btn-sm margin-top-1"><i
+                ng-class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> {{t('hakulista.rajaa') || 'Rajaa hakuja'}}
+        </button>
     </div>
-
 </div>
 
 
-<button ng-click="show = !show" class="btn btn-default btn-sm margin-vertical-2"><i
-        ng-class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> {{t('hakulista.rajaa') || 'Rajaa hakuja'}}
-</button>
-
-
-<div collapse="!show">
+<div collapse="!show" class="margin-top-2">
     <div class="form-horizontal col-md-6">
 
         <div class="form-group">
