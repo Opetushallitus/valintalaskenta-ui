@@ -1,4 +1,6 @@
-app.filter('duration', function() {
+angular.module('valintalaskenta')
+
+.filter('duration', [function() {
     return function(input) {
 
         return ((input) % (60 * 60 * 24) / (60 * 60) | 0) + 'h ' +
@@ -6,10 +8,10 @@ app.filter('duration', function() {
             ((input) % 60 | 0) + 's';
 
     };
-});
+}])
 
 
-app.filter('startFrom', function() {
+.filter('startFrom', [function() {
     return function(input, start) {
         start = +start; //parse to int
         var returnValue = 0;
@@ -19,10 +21,10 @@ app.filter('startFrom', function() {
         }
 
         return returnValue;
-    }
-});
+    };
+}])
 
-app.filter('julkaistuHaku', function() {
+.filter('julkaistuHaku', [function() {
     return function(input) {
         var result = [];
         for(var i = 0; i < input.length ; i++) {
@@ -31,10 +33,10 @@ app.filter('julkaistuHaku', function() {
             }
         }
         return result;
-    }
-});
+    };
+}])
 
-app.filter('tilaFilter', function() {
+.filter('tilaFilter', [function() {
     return function(input, tilaFilterValue) {
         var result = [];
         for(var i = 0; i < input.length ; i++) {
@@ -43,5 +45,11 @@ app.filter('tilaFilter', function() {
             }
         }
         return result;
-    }
-});
+    };
+}])
+
+.filter('ListLength', [function () { // usefull finding out length of a filtered list in template
+    return function (list) {
+        return list.length;
+    };
+}]);

@@ -13,14 +13,16 @@
         <div class="tabsheets">
 
             <div ng-include="'../common/html/errors.html'"></div>
-			
+
+
+
 			<form method="post">
 				  <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
 			</form>
-			
+
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <h2>{{ t('hakukohteetharkinnanvaraiset.harkinnanvaraisethakijat') || 'Harkinnanvaraiset hakijat' }}</h2>
-                
+                <p>{{ t('hakukohteetharkinnanvaraiset.hakijoidenmaara') || 'Hakijoiden määrä'}}: {{ (model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true} | filter:hakijaFilter) | ListLength}}</p>
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
                 <br>
                 <a ng-click="muodostaKoekutsut();" class="btn btn-default btn-sm pdf">{{ t('hakukohteetharkinnanvaraiset.muodostakoekutsut') || 'Muodosta koekutsut' }}</a>
