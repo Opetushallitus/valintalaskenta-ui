@@ -407,6 +407,7 @@ angular.module('valintalaskenta').
         $scope.model.hakutoiveet.forEach(function (hakutoive) {
             hakutoiveet.push(hakutoive.hakukohdeOid);
         });
+        var erillishaku = HakuModel.hakuOid.erillishaku;
         if(hakutoiveet[0] != null) {
             var valintalaskentaInstance = $modal.open({
 	            backdrop: 'static',
@@ -418,6 +419,7 @@ angular.module('valintalaskenta').
 	                    return {
 	                        hakuOid: $routeParams.hakuOid,
 	                        nimentarkennus: "",
+	                        erillishaku: erillishaku,
 	                        tyyppi: "HAKUKOHDE",
 	                        hakukohteet: hakutoiveet
 	                    };

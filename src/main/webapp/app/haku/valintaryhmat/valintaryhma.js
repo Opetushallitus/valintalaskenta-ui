@@ -205,7 +205,7 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
         _.forEach($scope.hakukohteet, function (hakukohde) {
             hakukohdeOids.push(hakukohde.oid);
         });
-
+        var erillishaku = HakuModel.hakuOid.erillishaku;
         var valintalaskentaInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/valintaryhmaseurantaikkuna.html',
@@ -216,6 +216,7 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
                     return {
                         hakuOid: $routeParams.hakuOid,
                         tyyppi: "VALINTARYHMA",
+                        erillishaku: erillishaku,
                         nimentarkennus: valintaryhma.nimi,
                         hakukohteet: hakukohdeOids
                     };
