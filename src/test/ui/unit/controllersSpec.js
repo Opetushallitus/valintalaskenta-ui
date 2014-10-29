@@ -216,6 +216,7 @@ describe('Testing SijoitteluntulosController', function(){
         for (var i = 0; i < 8; i++) {
             $httpBackend.expectGET('/localisation?category=valintalaskenta').respond("");
         }
+
         $httpBackend.expectGET('organisaatio/undefined/parentoids')
             .respond(201,'1.2.246.562.10.00000000001/undefined');
 
@@ -235,8 +236,6 @@ describe('Testing SijoitteluntulosController', function(){
             .respond(201,'1.2.246.562.10.00000000001/1.2.246.562.10.47941294986/1.2.246.562.10.98873174761/1.2.246.562.10.60222091211');
         $httpBackend.expectGET('resources/tila/hakukohde/'+routeParams.hakukohdeOid+'/1397647295344-8565235898154713515')
             .respond(201,hakukohdetilajson);
-
-
 
 
 
@@ -289,16 +288,6 @@ describe('Testing SijoitteluntulosController', function(){
         scope.selectIlmoitettuToAll(valintatapajonoOid);
         expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[0].muokattuVastaanottoTila).toBe("KESKEN");
         expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[3].muokattuVastaanottoTila).toBe("KESKEN");
-    });
-
-    it('isKorkeakoulu', function() {
-        scope.model.haku.kohdejoukkoUri = "uri_1";
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
-        scope.isKorkeakoulu();
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
-        scope.model.haku.kohdejoukkoUri = "uri_12";
-        scope.isKorkeakoulu();
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(6);
     });
 
     it('filterChangedValues', function() {

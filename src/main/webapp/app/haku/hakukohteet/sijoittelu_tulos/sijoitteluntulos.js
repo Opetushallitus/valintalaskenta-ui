@@ -345,16 +345,6 @@ angular.module('valintalaskenta').
         {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"}
     ];
 
-    $scope.hakemuksenMuokattuVastaanottoTilat = [
-        {value: "KESKEN", text: "sijoitteluntulos.kesken", default_text:"Kesken"},
-        {value: "VASTAANOTTANUT", text: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanottanut"},
-        {value: "EHDOLLISESTI_VASTAANOTTANUT", text: "sijoitteluntulos.ehdollisesti", default_text:"Ehdollisesti vastaanottanut"},
-        {value: "VASTAANOTTANUT_SITOVASTI", text: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
-        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-        {value: "PERUNUT", text: "sijoitteluntulos.perunut", default_text:"Perunut"},
-        {value: "PERUUTETTU", text: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
-    ];
-
     $scope.pageSize = 50;
     $scope.currentPage = [];
     $scope.filteredResults = [];
@@ -574,13 +564,11 @@ angular.module('valintalaskenta').
     };
 
 
-    LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuVastaanottoTilat).then(function () {
-        LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat).then(function () {
+    LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat).then(function () {
 
-            HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-            $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
+        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+        $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
-        });
     });
 
 }]);
