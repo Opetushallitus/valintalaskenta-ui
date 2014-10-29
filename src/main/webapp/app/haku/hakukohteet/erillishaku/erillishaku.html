@@ -1,0 +1,31 @@
+﻿<h1>{{ t('erillishaku.header') || 'Erillishaku' }}</h1>
+<div ng-include="'../common/js/topnavigation/topNavigation.html'"/>
+
+<div class="tabsheets">
+
+    <div ng-include="'haku/hakukohdelista.html'"></div>
+
+    <div class="toggle-content-container overflow-x-scroll">
+
+        <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
+
+
+        <div ng-include="'../common/html/errors.html'"></div>
+
+        <a ng-show="model.valinnanvaiheet" ng-click="valintalaskentaTulosXLS(); $event.stopPropagation();"
+           class="btn btn-default btn-sm excel">{{ t('valintalaskentatulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
+        <br/>
+        <input type="text" class="search margin-vertical-2" placeholder="{{ t('valintalaskentatulos.suodatahakijoita') || 'Suodata hakijoita' }}"
+               ng-model="hakijaFilter"/>
+
+        <pagination-pagesize page-size="pageSize"></pagination-pagesize>
+ 
+
+
+    </div>
+    <div class="clear"></div>
+    <div ng-show="showLoading"
+         style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">{{ t('valintalaskentatulos.kasitellaan') || 'käsitellään' }}...
+    </div>
+</div>
