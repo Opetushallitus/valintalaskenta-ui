@@ -1,9 +1,9 @@
 ﻿angular.module('valintalaskenta')
 
 .factory('ErillishakuModel', ['$routeParams', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
-        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 'ValintatapajonoSijoitteluStatus', 'LatestSijoitteluajoHakukohde', '_',
+        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', '_',
         function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus, LatestSijoitteluajoHakukohde, _) {
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde, _) {
     "use strict";
 
     var model;

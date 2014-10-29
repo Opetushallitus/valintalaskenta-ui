@@ -497,7 +497,7 @@ app.factory('LatestSijoitteluajoHakukohde', function($resource) {
 });
 
 app.factory('ErillisHakuSijoitteluajoHakukohde', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/:sijoitteluajoId/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid", sijoitteluajoId: "@sijoitteluajoId"}, {
+    return $resource(SIJOITTELU_URL_BASE + "resources/erillissijoittelu/:hakuOid/sijoitteluajo/:sijoitteluajoId/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid", sijoitteluajoId: "@sijoitteluajoId"}, {
         get: {method: "GET"}
     });
 });
