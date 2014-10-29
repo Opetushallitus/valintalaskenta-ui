@@ -24,15 +24,7 @@
             <label class="col-sm-3 control-label">{{ t('sijoitteluvastaanottotilamodal.vastaanottotieto') || 'Vastaanottotieto' }}</label>
 
             <div class="col-sm-9">
-                <select ng-disabled="!isEditable()" ng-model="hakemus.muokattuVastaanottoTila">
-                    <option value="KESKEN">{{ t('sijoitteluvastaanottotilamodal.kesken') || 'Kesken' }}</option>
-                    <option ng-if="!isKorkeakoulu()" value="VASTAANOTTANUT">{{ t('sijoitteluvastaanottotilamodal.vastaanottanut') || 'Vastaanottanut' }}</option>
-                    <option ng-if="isKorkeakoulu()" value="EHDOLLISESTI_VASTAANOTTANUT">{{ t('sijoitteluvastaanottotilamodal.ehdollisesti') || 'Ehdollisesti vastaanottanut' }}</option>
-                    <option ng-if="isKorkeakoulu()" value="VASTAANOTTANUT_SITOVASTI">{{ t('sijoitteluvastaanottotilamodal.vastaanottanutsitovasti') || 'Vastaanottanut sitovasti' }}</option>
-                    <option value="EI_VASTAANOTETTU_MAARA_AIKANA">{{ t('sijoitteluvastaanottotilamodal.eivastaanotettumaaraaikana') || 'Ei vastaanotettu määräaikana' }}</option>
-                    <option value="PERUNUT">{{ t('sijoitteluvastaanottotilamodal.perunut') || 'Perunut' }}</option>
-                    <option value="PERUUTETTU">{{ t('sijoitteluvastaanottotilamodal.peruutettu') || 'Peruutettu' }}</option>
-                </select>
+                <muokattu-vastaanotto-tila haku="haku" hakemus="hakemus"/>
             </div>
         </div>
 
