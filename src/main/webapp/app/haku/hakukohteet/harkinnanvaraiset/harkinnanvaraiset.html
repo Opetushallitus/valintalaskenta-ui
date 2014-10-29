@@ -22,7 +22,7 @@
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
                 <h2>{{ t('hakukohteetharkinnanvaraiset.harkinnanvaraisethakijat') || 'Harkinnanvaraiset hakijat' }}</h2>
-                <p>{{ t('hakukohteetharkinnanvaraiset.hakijoidenmaara') || 'Hakijoiden määrä'}}: {{ (model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true} | ListLength}}</p>
+                <p>{{ t('hakukohteetharkinnanvaraiset.hakijoidenmaara') || 'Hakijoiden määrä'}}: {{ model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true} | ListLength}}</p>
                 <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
                 <br>
                 <a ng-click="muodostaKoekutsut();" class="btn btn-default btn-sm pdf">{{ t('hakukohteetharkinnanvaraiset.muodostakoekutsut') || 'Muodosta koekutsut' }}</a>
