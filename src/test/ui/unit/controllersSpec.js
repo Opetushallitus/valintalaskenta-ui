@@ -594,12 +594,12 @@ describe('Testing ValinnanhallintaController', function(){
 describe('Testing ValintakoetulosController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hakukohdeModel, valintakoetulosModel,
         hakukohdejson,latausikkuna,ilmoitus, koekutsukirjeet, osoitetarrat, valintakoeXls,
-        ilmoitusTila, valintakoejson, hakukohdenimijson;
+        ilmoitusTila, valintakoejson, hakukohdenimijson, hakeneetfulljson;
     var routeParams = {"hakuOid": "oid",
         "hakukohdeOid" : "oid2"};
     beforeEach(module('valintalaskenta','testData'));
 
-    beforeEach(inject(function($injector, hakukohdeJSON, valintakoeJSON, hakukohdenimiJSON) {
+    beforeEach(inject(function($injector, hakukohdeJSON, valintakoeJSON, hakukohdenimiJSON, hakeneetFullJSON) {
         $httpBackend = $injector.get('$httpBackend');
         $rootScope = $injector.get('$rootScope');
         $location = $injector.get('$location');
@@ -616,6 +616,7 @@ describe('Testing ValintakoetulosController', function(){
         hakukohdejson = hakukohdeJSON;
         valintakoejson = valintakoeJSON;
         hakukohdenimijson = hakukohdenimiJSON;
+        hakeneetfulljson = hakeneetFullJSON;
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
@@ -635,7 +636,8 @@ describe('Testing ValintakoetulosController', function(){
             .respond(201,hakukohdenimijson);
         $httpBackend.expectGET('resources/valintakoe/hakutoive/'+routeParams.hakukohdeOid)
             .respond(201,"[]");
-
+        $httpBackend.expectGET('haku-app/applications/listfull?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
+            .respond(201,hakeneetfulljson);
         ctrl = $controller('ValintakoetulosController', {'$scope' : scope, '$routeParams': routeParams, 'Ilmoitus': ilmoitus,
             'Latausikkuna': latausikkuna, 'ValintakoetulosModel': valintakoetulosModel, 'HakukohdeModel': hakukohdeModel,
             'Koekutsukirjeet': koekutsukirjeet, 'Osoitetarrat': osoitetarrat, 'ValintakoeXls': valintakoeXls, 'IlmoitusTila': ilmoitusTila});
