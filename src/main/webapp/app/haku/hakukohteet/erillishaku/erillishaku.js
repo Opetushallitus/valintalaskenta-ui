@@ -1,9 +1,9 @@
 ﻿angular.module('valintalaskenta')
 
 .factory('ErillishakuModel', ['$routeParams', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
-        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 'ValintatapajonoSijoitteluStatus',
+        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 'ValintatapajonoSijoitteluStatus', 'LatestSijoitteluajoHakukohde', '_',
         function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus) {
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus, LatestSijoitteluajoHakukohde, _) {
     "use strict";
 
     var model;
@@ -29,12 +29,25 @@
             model.hakukohdeOid = hakukohdeOid;
             model.tarjoajaOid = "";
             model.hakeneet = [];
-            
+
             ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.tarjoajaOid = result.tarjoajaOid;
             });
             ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.valinnanvaiheet = result;
+
+                _.forEach(model.valinnanvaiheet, function (valinnanvaihe) {
+                    _.forEach(valinnanvaihe.valintatapajonot, function (valintatapajono) {
+                        console.log('valintatapajono', valintatapajono);
+                        if(_.has(valintatapajono, 'sijoitteluajoId')) {
+                            ErillisHakuSijoitteluajoHakukohde.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid, sijoitteluajoId: valintatapajono.sijoitteluajoId}, function (result) {
+                                console.log('result', result);
+
+                            });
+                        }
+                    })
+                });
+
 
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
@@ -209,7 +222,7 @@
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.model = ErillishakuModel;
-        ErillishakuModel.refresh($scope.hakukohdeOid, $scope.hakuOid);
+    ErillishakuModel.refresh($scope.hakukohdeOid, $scope.hakuOid);
     $scope.hakukohdeModel = HakukohdeModel;
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
