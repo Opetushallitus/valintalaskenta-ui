@@ -112,7 +112,7 @@
                     <table class="virkailija-table-1">
                         <thead>
                         <tr>
-                            <th colspan="10">
+                            <th colspan="11">
                                 {{jono.nimi}}: {{jono.prioriteetti}} /
                                 <!---Valintatapajono OID: {{jono.oid}}-->
                                 {{ t('sijoitteluntulos.aloituspaikat') || 'Aloituspaikat' }}: {{jono.aloituspaikat}} /
@@ -130,6 +130,7 @@
                             <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto' }}</th>
                             <th>{{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto' }}</th>
                             <th>{{ t('sijoitteluntulos.muokattu') || 'Muokattu' }}</th>
+                            <th>{{ t('sijoitteluntulos.muokkaa') || 'Muokkaa' }}</th>
                             <th>{{ t('sijoitteluntulos.toiminto') || 'Toiminto' }}</th>
                         </tr>
                         </thead>
@@ -168,13 +169,9 @@
                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="hakemus.julkaistavissa"> <br/></div>
                                 <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
                                     <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
-                                        <select ng-change="resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila" ng-options="tila.value as (tila.value | translate) for tila in hakemuksenMuokattuVastaanottoTilat">
-                                        </select>
+                                        <muokattu-vastaanotto-tila/>
                                     </span>
                                 </div>
-                                <!--<div ng-if="(!jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA')">-->
-                                    <!--{{ hakemus.vastaanottoTila | translate }}-->
-                                <!--</div>-->
                             </td>
 
                             <td>
@@ -194,6 +191,14 @@
                                     </modal-open>
 
                                 </modal>
+                            </td>
+                            <td>
+                                <sijoittelu-vastaanotto-tila hakemus="hakemus"
+                                                             valintatapajono-oid="jono.oid"
+                                                             haku-oid="model.hakuOid"
+                                                             hakukohde-oid="model.hakukohdeOid"
+                                                             haku="model.haku"
+                                                             enabled="updateOph"/>
                             </td>
                             <td>
 								<a ng-if="hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY'" ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>

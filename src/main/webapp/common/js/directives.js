@@ -162,7 +162,13 @@ app.directive('sijoitteluVastaanottoTila', function () {
                     $modal.open({
                         scope: $scope,
                         templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
-                        controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu) {
+                        controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu, AuthService) {
+
+
+                            AuthService.updateOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
+                                $scope.updateOph = true;
+                            });
+
                             $scope.update = function () {
                                 if ($scope.hakemus) {
                                     var tilaParams = {
@@ -209,6 +215,17 @@ app.directive('sijoitteluVastaanottoTila', function () {
 
                             $scope.sulje = function () {
                                 $modalInstance.dismiss('cancel');
+                            };
+
+                            $scope.isEditable = function () {
+                                var returnValue = false;
+
+                                if ($scope.isKorkeakoulu() || !$scope.isKorkeakoulu() &&
+                                    $scope.hakemus.muokattuVastaanottoTila === "PERUUTETTU" && $scope.updateOph ||
+                                    !$scope.isKorkeakoulu() && $scope.hakemus.muokattuVastaanottoTila !== "PERUUTETTU") {
+                                    returnValue = true;
+                                }
+                                return returnValue;
                             };
 
                             $scope.showEhdollisesti = function () {
@@ -598,6 +615,20 @@ app.directive('paginationPagesize', function () {
         controller: function ($scope) {
             $scope.itemsInDropdown = [{value:100000, text:"Kaikki"}, {value:20, text:"20 kpl"}, {value:50, text:"50 kpl"},
                 {value:100,text:"100 kpl"},{value:200, text:"200 kpl"}, {value:500, text:"500 kpl"}];
+        }
+
+    };
+});
+
+
+app.directive('muokattuVastaanottoTila', function () {
+    return {
+        restrict: 'E',
+        scope: {
+        },
+        templateUrl: '../common/html/muokattuvastaanottotila.html',
+        controller: function ($scope) {
+
         }
 
     };
