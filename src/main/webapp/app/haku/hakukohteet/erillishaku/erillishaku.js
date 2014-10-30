@@ -2,10 +2,10 @@
 
 .factory('ErillishakuModel', ['$routeParams', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
         'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 
-        'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'ErillishaunVienti',
+        'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'ErillishakuVienti',
         function($routeParams, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
     ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, 
-    ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde,ErillishaunVienti) {
+    ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde,ErillishakuVienti) {
     "use strict";
 
     var model;
