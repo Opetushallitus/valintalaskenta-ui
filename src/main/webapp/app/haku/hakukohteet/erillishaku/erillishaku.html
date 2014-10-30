@@ -180,7 +180,8 @@
                     </button>
                     <table class="table table-bordered">
 
-                        <tbody ng-init="hakijaSijoittelutulos = getHakijanSijoitteluTulos(tulos)" ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
+                        <tbody ng-init="hakijaSijoittelutulos = getHakijanSijoitteluTulos(tulos)"
+                               ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
                         <tr class="active">
                             <td>{{tulos.jonosija}}</td>
                             <td>
@@ -218,7 +219,7 @@
                         <tr ng-if="isLastValinnanvaihe">
                             <td></td>
                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>
-                            <td></td>
+                            <td><span ng-if="jono.oid === valintatapajono.oid" ng-repeat="jono in hakijaSijoittelutulos.jonot">{{jono.tila}}</span></td>
                             <td></td>
                             <td>
                                 <jarjestyskriteeri-muokkaus
