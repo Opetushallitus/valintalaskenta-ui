@@ -178,10 +178,10 @@
                             ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">
                         {{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}
                     </button>
-                    <table class="virkailija-table-1">
+                    <table class="table table-bordered">
 
                         <tbody ng-init="hakijaSijoittelutulos = getHakijanSijoitteluTulos(tulos)" ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
-                        <tr >
+                        <tr class="active">
                             <td>{{tulos.jonosija}}</td>
                             <td>
                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
