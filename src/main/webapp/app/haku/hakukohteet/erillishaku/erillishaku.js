@@ -1,9 +1,9 @@
 ﻿angular.module('valintalaskenta')
 
-.factory('ErillishakuModel', ['$routeParams', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
-        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', '_',
-        function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde, _) {
+.factory('ErillishakuModel', ['$routeParams', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
+        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde',
+        function($routeParams, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde) {
     "use strict";
 
     var model;
@@ -29,6 +29,7 @@
             model.hakukohdeOid = hakukohdeOid;
             model.tarjoajaOid = "";
             model.hakeneet = [];
+            model.erillishakuSijoitteluajoTulos = {};
 
             ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.tarjoajaOid = result.tarjoajaOid;
@@ -36,18 +37,26 @@
             ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.valinnanvaiheet = result;
 
-                _.forEach(model.valinnanvaiheet, function (valinnanvaihe) {
-                    _.forEach(valinnanvaihe.valintatapajonot, function (valintatapajono) {
-                        console.log('valintatapajono', valintatapajono);
+                var found = false;
+                var def = $q.defer();
+                _.some(model.valinnanvaiheet, function (valinnanvaihe) {
+                    _.some(valinnanvaihe.valintatapajonot, function (valintatapajono) {
                         if(_.has(valintatapajono, 'sijoitteluajoId')) {
                             ErillisHakuSijoitteluajoHakukohde.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid, sijoitteluajoId: valintatapajono.sijoitteluajoId}, function (result) {
-                                console.log('result', result);
-
+                                model.erillishakuSijoitteluajoTulos = result;
+                                def.resolve(result);
                             });
+                            found = true;
                         }
-                    })
+                        return found;
+                    });
+                    return found;
                 });
 
+                def.promise.then(function (tulos) {
+
+                });
+                
 
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
@@ -213,9 +222,9 @@
 
     .controller('ErillishakuController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ErillishakuModel',
-        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel',
+        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel) {
+              ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel, SijoitteluntulosModel) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -224,6 +233,8 @@
     $scope.model = ErillishakuModel;
     ErillishakuModel.refresh($scope.hakukohdeOid, $scope.hakuOid);
     $scope.hakukohdeModel = HakukohdeModel;
+        SijoitteluntulosModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
+
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
