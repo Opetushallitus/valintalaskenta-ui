@@ -2,10 +2,10 @@
 
 .factory('ErillishakuModel', ['$routeParams', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
         'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 
-        'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'ErillishakuVienti',
+        'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'ErillishakuVienti', 'VastaanottoTilat',
         function($routeParams, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
     ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, 
-    ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde,ErillishakuVienti) {
+    ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde,ErillishakuVienti, VastaanottoTilat) {
     "use strict";
 
     var model;
@@ -20,6 +20,7 @@
         this.tarjoajaOid = "";
         this.hakeneet = [];
         this.erillishakuDefer = $q.defer();
+        this.vastaanottoTilat = [];
 
 
         this.refresh = function(hakukohdeOid, hakuOid) {
@@ -34,6 +35,7 @@
             model.tarjoajaOid = "";
             model.hakeneet = [];
             model.erillishakuSijoitteluajoTulos = {};
+            model.vastaanottoTilat = [];
 
             ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.tarjoajaOid = result.tarjoajaOid;
@@ -54,6 +56,16 @@
                         return found;
                     });
                     return found;
+                });
+
+                _.forEach(model.valinnanvaiheet, function (valinnanvaihe) {
+                    _.forEach(valinnanvaihe.valintatapajonot, function (valintatapajono) {
+                        VastaanottoTilat.get({hakukohdeOid: hakukohdeOid, valintatapajonoOid: valintatapajono.oid}, function (result) {
+                            _.forEach(result, function (item) {
+                                model.vastaanottoTilat.push(item);
+                            });
+                        });
+                    });
                 });
 
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
@@ -264,14 +276,10 @@
     });
 
         $scope.getHakijanSijoitteluTulos = function (valintatapajono, hakija) {
-            console.log($scope.model.erillishakuSijoitteluajoTulos);
             var jono = _.find($scope.model.erillishakuSijoitteluajoTulos.valintatapajonot, function (item) {
-                console.log(item);
                 return item.oid === valintatapajono.oid;
             });
             
-            console.log(jono);
-
             return _.find(jono.hakemukset, function (item) {
                 return item.hakijaOid === hakija.hakijaOid;
             });

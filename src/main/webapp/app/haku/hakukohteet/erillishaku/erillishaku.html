@@ -194,10 +194,13 @@
                                 {{tulos.jarjestyskriteerit[0].arvo}}
                             </td>
                             <td>
-                                Ilmoittautumistila: {{hakijaSijoittelutulos.ilmoittautumisTila}}
+                                {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}: <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">{{hakijanSijoitteluTulos.tila}}<div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tila.julkaistavissa"></div></div>
+
+
+
                             </td>
                             <td>
-                                Vastaanottotila: {{hakijaSijoittelutulos.vastaanottoTila}}
+                                {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}: <span ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">{{hakijanSijoitteluTulos.ilmoittautumisTila}}</span>
                             </td>
                         </tr>
                         <tr>
@@ -205,7 +208,6 @@
                             <td>{{t('erillishaku.laskennantulos') || 'Laskennan tulos'}}</td>
                             <td>{{tulos.tuloksenTila}}</td>
                             <td>
-
                             </td>
                             <td>
                                 <jarjestyskriteeri-muokkaus
