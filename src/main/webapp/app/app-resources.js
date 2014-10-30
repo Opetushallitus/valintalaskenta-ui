@@ -302,6 +302,11 @@ app.factory('KelaDokumentti', function($resource) {
         post:  {method:'POST', isArray:false}
     });
 });
+app.factory('ErillishakuVienti', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/vienti", {}, {
+        vie: {method:'POST', isArray:false}
+    });
+});
 
 app.factory('PistesyottoVienti', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/pistesyotto/vienti", {}, {

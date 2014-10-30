@@ -1,15 +1,18 @@
 ﻿angular.module('valintalaskenta')
 
 .factory('ErillishakuModel', ['$routeParams', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
-        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde',
+        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 
+        'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'ErillishaunVienti',
         function($routeParams, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde) {
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, 
+    ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde,ErillishaunVienti) {
     "use strict";
 
     var model;
 	model = new function() {
 
         this.hakukohdeOid = {};
+        this.valintatapajonoOid = "";
         this.valinnanvaiheet = [];
         this.ilmanlaskentaa = [];
         this.errors = [];
@@ -233,7 +236,7 @@
     $scope.model = ErillishakuModel;
     ErillishakuModel.refresh($scope.hakukohdeOid, $scope.hakuOid);
     $scope.hakukohdeModel = HakukohdeModel;
-        SijoitteluntulosModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
+    SijoitteluntulosModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
@@ -370,5 +373,46 @@
             }
 
         };
-
+        $scope.erillishaunVientiXlsx = function() {
+        	ErillishakuVienti.vie({
+        		hakukohdeOid: $scope.hakukohdeOid,
+        		hakuOid: $routeParams.hakuOid,
+        		tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOid,
+        		valintatapajonoOid: $scope.model.valintatapajonoOid,
+        	},
+        		{}, function (id) {
+                Latausikkuna.avaa(id, "Erillishaun hakukohteen vienti taulukkolaskentaan", "");
+            }, function () {
+                Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+            });
+        };
+        $scope.erillishaunTuontiXlsx = function($files) {
+    		var file = $files[0];
+    		var fileReader = new FileReader();
+    	    fileReader.readAsArrayBuffer(file);
+    	    var hakukohdeOid = $scope.hakukohdeOid;
+    	    var hakuOid = $routeParams.hakuOid;
+    	    var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOid;
+    	    var valintatapajonoOid = $scope.model.valintatapajonoOid;
+    	    fileReader.onload = function(e) {
+    			$scope.upload = $upload.http({
+    	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid
+    	    		+"&tarjoajaOid="+ tarjoajaOid+"&valintatapajonoOid="+valintatapajonoOid, //upload.php script, node.js route, or servlet url
+    				method: "POST",
+    				headers: {'Content-Type': 'application/octet-stream'},
+    				data: e.target.result
+    			}).progress(function(evt) {
+    				//console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+    			}).success(function(id, status, headers, config) {
+    				Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
+    	            function(dokumenttiId) {
+    	            	// tee paivitys
+    	            	$scope.model.refresh(hakukohdeOid, hakuOid);
+    	            }
+    	            );
+    			}).error(function(data) {
+    			    //error
+    			});
+    	    };
+    	};
 }]);
