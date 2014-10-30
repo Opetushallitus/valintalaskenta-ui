@@ -16,8 +16,7 @@
 <a ng-show="model.valinnanvaiheet" ng-click="erillishaunVientiXlsx(); $event.stopPropagation();"
    class="btn btn-default btn-sm excel">{{ t('erillishaku.vietaulukkolaskentaan') || 'Vie
     taulukkolaskentaan' }}</a>
-<span	ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
-                		class="btn btn-primary btn-sm margin-bottom-2 btn-file">
+<span class="btn btn-primary btn-sm margin-bottom-2 btn-file">
 	    {{ t('erillishaku.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input type="file" ng-file-select="erillishaunTuontiXlsx($files)" >
 </span>
 <br/>
