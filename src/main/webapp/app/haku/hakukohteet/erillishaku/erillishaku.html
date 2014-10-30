@@ -164,7 +164,7 @@
 
             </accordion-heading>
             <div>
-                <div   ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index"
+                <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index"
                      ng-if="!valintatapajono.ilmanLaskentaa">
                     <h3>{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}:
                         {{valintatapajono.nimi}}</h3>
@@ -180,7 +180,7 @@
                     </button>
                     <table class="virkailija-table-1">
 
-                        <tbody ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
+                        <tbody ng-init="hakijaSijoittelutulos = getHakijanSijoitteluTulos(tulos)" ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
                         <tr >
                             <td>{{tulos.jonosija}}</td>
                             <td>
@@ -192,31 +192,41 @@
                             </td>
                             <td>
                                 {{tulos.jarjestyskriteerit[0].arvo}}
-                                <a href="#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria"
-                                   target="_blank" class="historylink">
-                                    {{ t('valintalaskentatulos.lisatietoja') || 'Lisätietoja' }}
-                                </a>
                             </td>
                             <td>
+                                Ilmoittautumistila: {{hakijaSijoittelutulos.ilmoittautumisTila}}
                             </td>
                             <td>
-                                <jarjestyskriteeri-muokkaus jonosija="tulos"
-                                                            valintatapajono-oid="valintatapajono.valintatapajonooid"
-                                                            hakemus-oid="tulos.hakemusOid"
-                                                            enabled="jkmuokkaus"/>
+                                Vastaanottotila: {{hakijaSijoittelutulos.vastaanottoTila}}
                             </td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>{{t('erillishaku.laskennantulos') || 'Laskennan tulos'}}</td>
                             <td>{{tulos.tuloksenTila}}</td>
-                            <td></td><td></td>
+                            <td>
+
+                            </td>
+                            <td>
+                                <jarjestyskriteeri-muokkaus
+                                        jonosija="tulos"
+                                        valintatapajono-oid="valintatapajono.valintatapajonooid"
+                                        hakemus-oid="tulos.hakemusOid"
+                                        enabled="jkmuokkaus"/>
+                            </td>
                         </tr>
                         <tr ng-if="isLastValinnanvaihe">
                             <td></td>
                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>
                             <td></td>
-                            <td></td><td></td>
+                            <td></td>
+                            <td>
+                                <jarjestyskriteeri-muokkaus
+                                        jonosija="tulos"
+                                        valintatapajono-oid="valintatapajono.valintatapajonooid"
+                                        hakemus-oid="tulos.hakemusOid"
+                                        enabled="jkmuokkaus"/>
+                            </td>
                         </tr>
                         </tbody>
 
@@ -232,7 +242,7 @@
 
                 <!-- Erillishaku tulos -->
                 <div ng-if="isLastValinnanvaihe" ng-repeat="valintatapajono in model.erillishakuSijoitteluajoTulos.valintatapajonot">
-
+                    {{valintatapajono}}
                 </div>
 
 

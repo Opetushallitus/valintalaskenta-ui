@@ -47,7 +47,6 @@
                         if(_.has(valintatapajono, 'sijoitteluajoId')) {
                             ErillisHakuSijoitteluajoHakukohde.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid, sijoitteluajoId: valintatapajono.sijoitteluajoId}, function (result) {
                                 model.erillishakuSijoitteluajoTulos = result;
-                                def.resolve(result);
                             });
                             found = true;
                         }
@@ -55,11 +54,6 @@
                     });
                     return found;
                 });
-
-                def.promise.then(function (tulos) {
-
-                });
-                
 
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
@@ -225,9 +219,9 @@
 
     .controller('ErillishakuController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ErillishakuModel',
-        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel',
+        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel, SijoitteluntulosModel) {
+              ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel, SijoitteluntulosModel, _) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -238,7 +232,7 @@
     $scope.hakukohdeModel = HakukohdeModel;
     SijoitteluntulosModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
-
+    
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
     $scope.pageSize = 50;
@@ -264,6 +258,11 @@
         $scope.jkmuokkaus = UserModel.isKKUser;
     });
 
+        $scope.getHakijanSijoitteluTulos = function (hakemus) {
+            return _.find(SijoitteluntulosModel.sijoitteluntulosHakijoittain, function (hakijaTulos) {
+                return hakijaTulos.hakijaOid === hakemus.hakijaOid;
+            });
+        };
 
         for (var i = 0; i < 1000; i++) {
             $scope.currentPage[i] = [];
