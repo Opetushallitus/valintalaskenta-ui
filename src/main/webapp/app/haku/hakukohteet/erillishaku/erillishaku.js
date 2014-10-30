@@ -19,6 +19,7 @@
         this.hakukohdeOid = "";
         this.tarjoajaOid = "";
         this.hakeneet = [];
+        this.erillishakuDefer = $q.defer();
 
 
         this.refresh = function(hakukohdeOid, hakuOid) {
@@ -41,12 +42,12 @@
                 model.valinnanvaiheet = result;
 
                 var found = false;
-                var def = $q.defer();
                 _.some(model.valinnanvaiheet, function (valinnanvaihe) {
                     _.some(valinnanvaihe.valintatapajonot, function (valintatapajono) {
                         if(_.has(valintatapajono, 'sijoitteluajoId')) {
                             ErillisHakuSijoitteluajoHakukohde.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid, sijoitteluajoId: valintatapajono.sijoitteluajoId}, function (result) {
                                 model.erillishakuSijoitteluajoTulos = result;
+                                model.erillishakuDefer.resolve();
                             });
                             found = true;
                         }
@@ -238,7 +239,11 @@
     $scope.pageSize = 50;
     $scope.currentPage = [];
     $scope.filteredResults = [];
-    
+
+    $scope.model.erillishakuDefer.promise.then(function () {
+        $scope.fetch = true;
+    });
+
 /*
     var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
     AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
@@ -258,9 +263,17 @@
         $scope.jkmuokkaus = UserModel.isKKUser;
     });
 
-        $scope.getHakijanSijoitteluTulos = function (hakemus) {
-            return _.find(SijoitteluntulosModel.sijoitteluntulosHakijoittain, function (hakijaTulos) {
-                return hakijaTulos.hakijaOid === hakemus.hakijaOid;
+        $scope.getHakijanSijoitteluTulos = function (valintatapajono, hakija) {
+            console.log($scope.model.erillishakuSijoitteluajoTulos);
+            var jono = _.find($scope.model.erillishakuSijoitteluajoTulos.valintatapajonot, function (item) {
+                console.log(item);
+                return item.oid === valintatapajono.oid;
+            });
+            
+            console.log(jono);
+
+            return _.find(jono.hakemukset, function (item) {
+                return item.hakijaOid === hakija.hakijaOid;
             });
         };
 
