@@ -638,7 +638,7 @@ app.directive('muokattuVastaanottoTila', function () {
             $scope.isEditable = function () {
                 var returnValue = false;
 
-                if ($scope.isKorkeakoulu() || !$scope.isKorkeakoulu() &&
+                if ($scope.isKorkeakoulu() || !$scope.hakemus || !$scope.isKorkeakoulu() &&
                     $scope.hakemus.muokattuVastaanottoTila === "PERUUTETTU" && $scope.updateOph ||
                     !$scope.isKorkeakoulu() && $scope.hakemus.muokattuVastaanottoTila !== "PERUUTETTU") {
                     returnValue = true;
