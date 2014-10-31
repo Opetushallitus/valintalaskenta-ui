@@ -2,10 +2,10 @@
 
 .factory('ErillishakuModel', ['$routeParams', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
         'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 
-        'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'ErillishakuVienti', 'VastaanottoTilat','VastaanottoTila',
+        'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'ErillishakuVienti', 'VastaanottoTilat','VastaanottoTila', 'HaunTiedot',
         function($routeParams, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
     ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, 
-    ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde,ErillishakuVienti, VastaanottoTilat,VastaanottoTila) {
+    ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde,ErillishakuVienti, VastaanottoTilat,VastaanottoTila,HaunTiedot) {
     "use strict";
 
     var model;
@@ -37,6 +37,10 @@
             model.hakeneet = [];
             model.erillishakuSijoitteluajoTulos = {};
             model.vastaanottoTilat = [];
+
+            HaunTiedot.get({hakuOid: hakuOid}, function(result) {
+                model.haku = result;
+            });
 
             ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.tarjoajaOid = result.tarjoajaOid;
@@ -288,9 +292,9 @@
 
     .controller('ErillishakuController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ErillishakuModel',
-        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_',
+        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'HaunTiedot',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel, SijoitteluntulosModel, _) {
+              ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, HaunTiedot) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -325,6 +329,28 @@
         });
     });
     */
+
+    $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
+        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
+            $scope.updateOrg = true;
+        });
+
+    });
+
+    AuthService.crudOph("APP_SIJOITTELU").then(function () {
+        $scope.updateOph = true;
+    });
+
+    $scope.hakemuksenMuokattuIlmoittautumisTilat = [
+        {value: "EI_TEHTY", text: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},
+        {value: "LASNA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.present", default_text:"Läsnä (koko lukuvuosi)"},
+        {value: "POISSA_KOKO_LUKUVUOSI", text: "sijoitteluntulos.enrollmentinfo.notpresent", default_text:"Poissa (koko lukuvuosi)"},
+        {value: "EI_ILMOITTAUTUNUT", text: "sijoitteluntulos.enrollmentinfo.noenrollment", default_text:"Ei ilmoittautunut"},
+        {value: "LASNA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.presentfall", default_text:"Läsnä syksy, poissa kevät"},
+        {value: "POISSA_SYKSY", text: "sijoitteluntulos.enrollmentinfo.notpresentfall", default_text:"Poissa syksy, läsnä kevät"},
+        {value: "LASNA", text: "sijoitteluntulos.enrollmentinfo.presentspring", default_text:"Läsnä, keväällä alkava koulutus"},
+        {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"}
+    ];
 
     $scope.user = UserModel;
     UserModel.refreshIfNeeded().then(function(){

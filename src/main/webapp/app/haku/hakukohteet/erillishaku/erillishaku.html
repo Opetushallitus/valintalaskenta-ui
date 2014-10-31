@@ -196,8 +196,15 @@
                             </td>
                             <td>
                                 {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
-                                <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">{{hakijanSijoitteluTulos.tila}}
-                                    <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tila.julkaistavissa"></div>
+                                <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">
+                                    <div ng-if="tila.valintatapajonoOid === valintatapajono.oid">
+                                        <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tila.julkaistavissa"></div>
+                                        <div ng-show="tila.julkaistavissa && (updateOrg && (hakijanSijoitteluTulos.tila == 'HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'VARASIJALTA_HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakijanSijoitteluTulos.tila == 'VARALLA'))) || tila.julkaistavissa && updateOph">
+                                            <span ng-show="(hakijanSijoitteluTulos.tila == 'HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'VARASIJALTA_HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakijanSijoitteluTulos.tila == 'VARALLA'))">
+                                                <muokattu-vastaanotto-tila haku="model.haku" hakemus="tulos"/>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -205,6 +212,16 @@
                             </td>
                             <td>
                                 {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}: <span ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">{{hakijanSijoitteluTulos.ilmoittautumisTila}}</span>
+                                <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">
+                                    <div ng-if="tila.valintatapajonoOid === valintatapajono.oid">
+                                        <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT'">
+                                            <select ng-model="tulos.muokattuIlmoittautumisTila"
+                                                    ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                         <tr>
