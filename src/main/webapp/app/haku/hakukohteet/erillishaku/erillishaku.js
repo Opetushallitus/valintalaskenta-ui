@@ -355,7 +355,6 @@
     LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat).then(function () {
 
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-        $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
     });
 
