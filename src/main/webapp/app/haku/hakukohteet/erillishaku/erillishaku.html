@@ -247,11 +247,12 @@
                             <td>{{hakijanSijoitteluTulos.tila}}</td>
                             <td></td>
                             <td>
-                                <jarjestyskriteeri-muokkaus
-                                        jonosija="tulos"
-                                        valintatapajono-oid="valintatapajono.valintatapajonooid"
-                                        hakemus-oid="tulos.hakemusOid"
-                                        enabled="jkmuokkaus"/>
+                                <sijoittelu-vastaanotto-tila hakemus="tulos"
+                                                             valintatapajono-oid="valinatapajono.oid"
+                                                             haku-oid="model.hakuOid"
+                                                             hakukohde-oid="model.hakukohdeOid"
+                                                             haku="model.haku"
+                                                             enabled="jkmuokkaus"/>
                             </td>
                         </tr>
                         </tbody>

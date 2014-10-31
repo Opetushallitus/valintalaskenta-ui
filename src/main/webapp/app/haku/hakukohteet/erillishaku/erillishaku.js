@@ -333,12 +333,14 @@
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
             $scope.updateOrg = true;
+
         });
 
     });
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
+        $scope.jkmuokkaus = true;
     });
 
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
@@ -361,6 +363,7 @@
     $scope.user = UserModel;
     UserModel.refreshIfNeeded().then(function(){
         $scope.jkmuokkaus = UserModel.isKKUser;
+        $scope.jkmuokkaus = true;
     });
 
         $scope.getHakijanSijoitteluTulos = function (valintatapajono, hakija) {
