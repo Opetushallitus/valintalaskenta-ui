@@ -189,12 +189,16 @@
                                                          hakemus-oid="{{tulos.hakemusOid}}"
                                                          haku-oid="{{hakuOid}}"
                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
+
                             </td>
                             <td>
                                 {{tulos.jarjestyskriteerit[0].arvo}}
                             </td>
                             <td>
-                                {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}: <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">{{hakijanSijoitteluTulos.tila}}<div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tila.julkaistavissa"></div></div>
+                                {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
+                                <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">{{hakijanSijoitteluTulos.tila}}
+                                    <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tila.julkaistavissa"></div>
+                                </div>
 
 
 
@@ -208,6 +212,9 @@
                             <td>{{t('erillishaku.laskennantulos') || 'Laskennan tulos'}}</td>
                             <td>{{tulos.tuloksenTila}}</td>
                             <td>
+                                <span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.FI}}</span>
+                                <span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.SV}}</span>
+                                <span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.EN}}</span>
                             </td>
                             <td>
                                 <jarjestyskriteeri-muokkaus
@@ -240,6 +247,8 @@
                                 total-items="filteredResults[$parent.$parent.$index][$parent.$index].length"
                                 ng-model="currentPage[$parent.$parent.$index][$parent.$index]"
                                 items-per-page="pageSize"></pagination>
+                    <br/>
+                    <button ng-click="submit(valintatapajono.oid)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
                 </div>
 
             </div>
