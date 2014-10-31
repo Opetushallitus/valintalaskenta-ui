@@ -1,10 +1,10 @@
 ﻿angular.module('valintalaskenta')
 
 .factory('ErillishakuModel', ['$routeParams', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
-        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde', 
+        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde',
         'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'ErillishakuVienti', 'VastaanottoTilat','VastaanottoTila', 'HaunTiedot',
         function($routeParams, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, 
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde,
     ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde,ErillishakuVienti, VastaanottoTilat,VastaanottoTila,HaunTiedot) {
     "use strict";
 
@@ -49,12 +49,14 @@
                 model.valinnanvaiheet = result;
 
                 var found = false;
+
                 _.some(model.valinnanvaiheet, function (valinnanvaihe) {
                     _.some(valinnanvaihe.valintatapajonot, function (valintatapajono) {
                         if(_.has(valintatapajono, 'sijoitteluajoId')) {
                             ErillisHakuSijoitteluajoHakukohde.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid, sijoitteluajoId: valintatapajono.sijoitteluajoId}, function (result) {
                                 model.erillishakuSijoitteluajoTulos = result;
                                 console.log('erillishakuksijoittelu', result);
+
                                 model.erillishakuDefer.resolve();
                             });
                             found = true;
@@ -64,15 +66,27 @@
                     return found;
                 });
 
-                _.forEach(model.valinnanvaiheet, function (valinnanvaihe) {
-                    _.forEach(valinnanvaihe.valintatapajonot, function (valintatapajono) {
-                        VastaanottoTilat.get({hakukohdeOid: hakukohdeOid, valintatapajonoOid: valintatapajono.oid}, function (result) {
-                            _.forEach(result, function (item) {
-                                model.vastaanottoTilat.push(item);
+                model.erillishakuDefer.promise.then(function () {
+                    _.forEach(model.valinnanvaiheet, function (valinnanvaihe) {
+                        _.forEach(valinnanvaihe.valintatapajonot, function (valintatapajono) {
+                            VastaanottoTilat.get({
+                                hakukohdeOid: hakukohdeOid,
+                                valintatapajonoOid: valintatapajono.oid
+                            }, function (result) {
+                                _.forEach(result, function (item) {
+
+                                    model.vastaanottoTilat.push(item);
+                                    var sijoitteluValintatapajono = _.findWhere(model.erillishakuSijoitteluajoTulos.valintatapajonot, {oid: valintatapajono.oid});
+                                    var hakemus = _.findWhere(sijoitteluValintatapajono.hakemukset, {hakemusOid: item.hakemusOid});
+                                        var pickin = _.pick(item, 'hyvaksyttyVarasijalta', 'ilmoittautumisTila', 'julkaistavissa', 'tila');
+                                    _.extend(hakemus, pickin);
+                                });
                             });
                         });
                     });
+
                 });
+
 
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
@@ -238,7 +252,7 @@
             var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
                 return valintatapajono.hakemukset;
             }));
-            
+
             console.log('muokatut hakemukset', muokatutHakemukset);
             model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
@@ -305,7 +319,7 @@
     $scope.hakukohdeModel = HakukohdeModel;
     SijoitteluntulosModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
-    
+
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
     $scope.pageSize = 50;
