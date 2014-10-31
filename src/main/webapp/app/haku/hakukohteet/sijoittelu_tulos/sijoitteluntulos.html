@@ -175,7 +175,7 @@
                             </td>
 
                             <td>
-                                <div ng-show="hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT'">
+                                <div ng-show="hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
                                       <select ng-model="hakemus.muokattuIlmoittautumisTila"
                                               ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                       </select>

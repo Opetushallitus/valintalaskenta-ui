@@ -214,7 +214,7 @@
                                 {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}: <span ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">{{hakijanSijoitteluTulos.ilmoittautumisTila}}</span>
                                 <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">
                                     <div ng-if="tila.valintatapajonoOid === valintatapajono.oid">
-                                        <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT'">
+                                        <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
                                             <select ng-model="tulos.muokattuIlmoittautumisTila"
                                                     ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                             </select>
