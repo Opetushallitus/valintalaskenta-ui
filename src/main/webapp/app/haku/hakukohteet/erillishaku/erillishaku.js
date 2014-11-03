@@ -76,8 +76,12 @@
                             }, function (result) {
                                 _.forEach(result, function (vastaanottotila) {
                                     var jonosija = _.findWhere(valintatapajono.jonosijat, {hakemusOid: vastaanottotila.hakemusOid});
-                                    _.extend( jonosija, _.pick(vastaanottotila, 'hyvaksyttyVarasijalta', 'ilmoittautumisTila', 'julkaistavissa') );
-                                    _.extend( jonosija, {muokattuVastaanottoTila: vastaanottotila.tila});
+                                    _.extend( jonosija, {
+                                        muokattuVastaanottoTila: vastaanottotila.tila,
+                                        muokattuIlmoittautumisTila: vastaanottotila.ilmoittautumisTila,
+                                        hyvaksyttyVarasijalta: vastaanottotila.hyvaksyttyVarasijalta,
+                                        julkaistavissa: vastaanottotila.julkaistavissa
+                                    });
                                 });
                             });
                         });
