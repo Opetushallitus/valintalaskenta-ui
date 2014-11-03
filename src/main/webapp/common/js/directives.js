@@ -177,12 +177,21 @@ app.directive('sijoitteluVastaanottoTila', function () {
 
                                     $scope.selite = "";
                                     if ($scope.hakemus.muokattuVastaanottoTila === "") {
-                                        $scope.hakemus.muokattuVastaanottoTila = null;
+                                        $scope.hakemus.muokattuVastaanottoTila = "KESKEN";
+                                    }
+                                    if ($scope.hakemus.muokattuIlmoittautumisTila === "") {
+                                        $scope.hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
+                                    }
+                                    if ($scope.hakemus.hyvaksyttyVarasijalta === "") {
+                                        $scope.hakemus.hyvaksyttyVarasijalta = false;
                                     }
                                     var tilaObj = {
                                         valintatapajonoOid: $scope.valintatapajonoOid,
                                         hakemusOid: $scope.hakemus.hakemusOid,
-                                        tila: $scope.hakemus.muokattuVastaanottoTila
+                                        tila: $scope.hakemus.muokattuVastaanottoTila,
+                                        ilmoittautumisTila: $scope.hakemus.muokattuIlmoittautumisTila,
+                                        julkaistavissa: true,
+                                        hyvaksyttyVarasijalta: $scope.hakemus.hyvaksyttyVarasijalta
                                     };
 
                                     VastaanottoTila.post(tilaParams, [tilaObj], function (result) {
