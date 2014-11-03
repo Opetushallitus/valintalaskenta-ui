@@ -181,6 +181,9 @@
 
                         <tbody ng-if="fetch"
                                ng-init="hakijanSijoitteluTulos = getHakijanSijoitteluTulos(valintatapajono, tulos)" ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
+
+
+                        <!-- HAKIJAN TIEDOT -->
                         <tr class="active">
                             <td>{{tulos.jonosija}}</td>
                             <td>
@@ -218,14 +221,17 @@
                                 </div>
                             </td>
                         </tr>
+
+                        <!-- LASKENNAN TULOS -->
                         <tr>
                             <td></td>
                             <td>{{t('erillishaku.laskennantulos') || 'Laskennan tulos'}}</td>
                             <td>{{tulos.tuloksenTila}}</td>
                             <td>
-                                <span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.FI}}</span>
-                                <span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.SV}}</span>
-                                <span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.EN}}</span>
+
+                                <span ng-if="userLang=='fi' && tulos.tilanKuvaukset.FI">{{tulos.tilanKuvaukset.FI}}</span>
+                                <span ng-if="userLang=='sv' && tulos.tilanKuvaukset.FI">{{tulos.tilanKuvaukset.SV}}</span>
+                                <span ng-if="userLang=='en' && tulos.tilanKuvaukset.FI">{{tulos.tilanKuvaukset.EN}}</span>
                             </td>
                             <td>
                                 <jarjestyskriteeri-muokkaus
@@ -235,6 +241,8 @@
                                         enabled="jkmuokkaus"/>
                             </td>
                         </tr>
+
+                        <!-- SIJOITTELUN TULOS -->
                         <tr ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
                             <td></td>
                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>

@@ -49,12 +49,25 @@
             });
             ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.valinnanvaiheet = result;
+                console.log(result);
                 var found = false;
                 _.some(model.valinnanvaiheet, function (valinnanvaihe) {
                     _.some(valinnanvaihe.valintatapajonot, function (valintatapajono) {
                         if(_.has(valintatapajono, 'sijoitteluajoId') && valintatapajono.sijoitteluajoId !== null) {
+
                             ErillisHakuSijoitteluajoHakukohde.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid, sijoitteluajoId: valintatapajono.sijoitteluajoId}, function (result) {
                                 model.erillishakuSijoitteluajoTulos = result;
+
+                                _.forEach(model.erillishakuSijoitteluajoTulos.valintatapajonot, function (sijoitteluJono) {
+                                    _.forEach(sijoitteluJono.hakemukset, function (sijoitteluHakemus) {
+                                        _.forEach(valinnanvaihe.valintatapajonot, function (jono) {
+                                            _.extend(_.find(jono.jonosijat, function (hakemus) {
+                                                return hakemus.hakemusOid === sijoitteluHakemus.hakemusOid;
+                                            }), {tilanKuvaukset: sijoitteluHakemus.tilanKuvaukset});
+                                        });
+                                    });
+                                });
+
                                 model.erillishakuDefer.resolve();
                             });
                             found = true;
@@ -65,28 +78,23 @@
                     return found;
                 });
 
-
-
-                model.erillishakuDefer.promise.then(function () {
-                    _.forEach(model.valinnanvaiheet, function (valinnanvaihe) {
-                        _.forEach(valinnanvaihe.valintatapajonot, function (valintatapajono) {
-                            VastaanottoTilat.get({
-                                hakukohdeOid: hakukohdeOid,
-                                valintatapajonoOid: valintatapajono.oid
-                            }, function (result) {
-                                _.forEach(result, function (vastaanottotila) {
-                                    var jonosija = _.findWhere(valintatapajono.jonosijat, {hakemusOid: vastaanottotila.hakemusOid});
-                                    _.extend( jonosija, {
-                                        muokattuVastaanottoTila: vastaanottotila.tila,
-                                        muokattuIlmoittautumisTila: vastaanottotila.ilmoittautumisTila,
-                                        hyvaksyttyVarasijalta: vastaanottotila.hyvaksyttyVarasijalta,
-                                        julkaistavissa: vastaanottotila.julkaistavissa
-                                    });
+                _.forEach(model.valinnanvaiheet, function (valinnanvaihe) {
+                    _.forEach(valinnanvaihe.valintatapajonot, function (valintatapajono) {
+                        VastaanottoTilat.get({
+                            hakukohdeOid: hakukohdeOid,
+                            valintatapajonoOid: valintatapajono.oid
+                        }, function (result) {
+                            _.forEach(result, function (vastaanottotila) {
+                                var jonosija = _.findWhere(valintatapajono.jonosijat, {hakemusOid: vastaanottotila.hakemusOid});
+                                _.extend( jonosija, {
+                                    muokattuVastaanottoTila: vastaanottotila.tila,
+                                    muokattuIlmoittautumisTila: vastaanottotila.ilmoittautumisTila,
+                                    hyvaksyttyVarasijalta: vastaanottotila.hyvaksyttyVarasijalta,
+                                    julkaistavissa: vastaanottotila.julkaistavissa
                                 });
                             });
                         });
                     });
-
                 });
 
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
