@@ -388,14 +388,9 @@
     });
 
         $scope.getHakijanSijoitteluTulos = function (valintatapajono, hakija) {
-            console.log('getHakijanSijoittelutulos');
-            console.log('valintatapajono', valintatapajono);
-            console.log('hakija', hakija);
             var jono = _.find($scope.model.erillishakuSijoitteluajoTulos.valintatapajonot, function (item) {
                 return item.oid === valintatapajono.oid;
             });
-
-            console.log('jono', jono);
 
             if(!_.isEmpty(jono)) {
                 return _.find(jono.hakemukset, function (item) {
