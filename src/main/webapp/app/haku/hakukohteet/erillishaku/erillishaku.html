@@ -195,29 +195,31 @@
                                 {{tulos.jarjestyskriteerit[0].arvo}}
                             </td>
                             <td>
-                                {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
+                                <div ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
+                                    {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
                                     <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tulos.julkaistavissa"></div>
                                     <div ng-show="tila.julkaistavissa && (updateOrg && (hakijanSijoitteluTulos.tila == 'HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'VARASIJALTA_HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakijanSijoitteluTulos.tila == 'VARALLA'))) || tila.julkaistavissa && updateOph">
                                         <span ng-show="(hakijanSijoitteluTulos.tila == 'HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'VARASIJALTA_HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakijanSijoitteluTulos.tila == 'VARALLA'))">
                                             <muokattu-vastaanotto-tila haku="model.haku" hakemus="tulos"/>
                                         </span>
                                     </div>
-
+                                </div>
 
 
                             </td>
                             <td>
-                                {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
-                                <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">
-                                    <div ng-if="tila.valintatapajonoOid === valintatapajono.oid">
-                                        <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
-                                            <select ng-model="tulos.muokattuIlmoittautumisTila"
-                                                    ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
-                                            </select>
+                                <div ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
+                                    {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
+                                    <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">
+                                        <div ng-if="tila.valintatapajonoOid === valintatapajono.oid">
+                                            <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
+                                                <select ng-model="tulos.muokattuIlmoittautumisTila"
+                                                        ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </td>
                         </tr>
                         <tr>
@@ -262,7 +264,7 @@
                                 ng-model="currentPage[$parent.$parent.$index][$parent.$index]"
                                 items-per-page="pageSize"></pagination>
                     <br/>
-                    <button ng-click="submit(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
+                    <button ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe" ng-click="submit(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
                 </div>
 
             </div>
