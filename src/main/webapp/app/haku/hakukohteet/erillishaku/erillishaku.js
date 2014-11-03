@@ -22,6 +22,7 @@
         this.hakeneet = [];
         this.erillishakuDefer = $q.defer();
         this.vastaanottoTilat = [];
+        this.lastValinnanVaihe = "";
 
         this.refresh = function(hakukohdeOid, hakuOid) {
             var defer = $q.defer();
@@ -37,6 +38,7 @@
             model.hakeneet = [];
             model.erillishakuSijoitteluajoTulos = {};
             model.vastaanottoTilat = [];
+            model.lastValinnanVaihe = "";
 
             HaunTiedot.get({hakuOid: hakuOid}, function(result) {
                 model.haku = result;
@@ -57,12 +59,14 @@
                                 model.erillishakuDefer.resolve();
                             });
                             found = true;
+                            model.lastValinnanVaihe = valinnanvaihe.valinnanvaiheoid;
+                            console.log(valinnanvaihe.valinnanvaiheoid);
                         }
                         return found;
                     });
                     return found;
                 });
-                
+
 
 
                 model.erillishakuDefer.promise.then(function () {

@@ -31,7 +31,7 @@
     <accordion close-others="true">
         <accordion-group
                 ng-repeat="valinnanvaihe in model.ilmanlaskentaa | orderBy:['nimi']:false track by $index"
-                is-open="$first" ng-init="isLastValinnanvaihe = $last">
+                is-open="$first">
 
             <accordion-heading>
                 <h3>{{ t('valintalaskentatulos.valinnanvaihe') || 'Valinnanvaihe' }}: <span
@@ -93,7 +93,7 @@
                             </thead>
                             <tbody>
 
-                            <tr colspan="3" ng-if="!isLastValinnanvaihe"
+                            <tr colspan="3" ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe"
                                 ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
                                 <td><input type="number"
                                            ng-model="tulos.jonosija"
@@ -154,7 +154,7 @@
     <accordion close-others="true">
         <accordion-group
                 ng-repeat="valinnanvaihe in model.valinnanvaiheet | orderBy:['createdAt','jarjestysnumero']:true track by $index"
-                is-open="$first" ng-init="isLastValinnanvaihe = $last">
+                is-open="$first">
 
             <accordion-heading>
                 <h3>{{ t('valintalaskentatulos.valinnanvaihe') || 'Valinnanvaihe' }}: <span
@@ -211,7 +211,7 @@
 
                             </td>
                             <td>
-                                {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}: <span ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">{{hakijanSijoitteluTulos.ilmoittautumisTila}}</span>
+                                {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
                                 <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">
                                     <div ng-if="tila.valintatapajonoOid === valintatapajono.oid">
                                         <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
@@ -241,7 +241,7 @@
                                         enabled="jkmuokkaus"/>
                             </td>
                         </tr>
-                        <tr ng-if="isLastValinnanvaihe">
+                        <tr ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
                             <td></td>
                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>
                             <td>{{hakijanSijoitteluTulos.tila}}</td>
