@@ -82,7 +82,6 @@
                                 });
                             });
                         });
-                        console.log(model.erillishakuSijoitteluajoTulos);
                     });
 
                 });
@@ -254,9 +253,10 @@
             _.forEach(muokatutHakemukset, function (mHakemus) {
                 _.extend(
                     mHakemus,
-                    {julkaistavissa: _.findWhere(valintatapajono.jonosijat, {hakemusOid: mHakemus.hakemusOid}).julkaistavissa}
+                    _.pick(_.findWhere(valintatapajono.jonosijat, {hakemusOid: mHakemus.hakemusOid}),
+                        'julkaistavissa','muokattuIlmoittautumisTila', 'muokattuVastaanottoTila', 'hyvaksyttyVarasijalta')
                 );
-                
+
             });
 
             console.log('muokatut hakemukset', muokatutHakemukset);
@@ -276,7 +276,6 @@
             };
 
             var tilaObj = _.map(muokatutHakemukset, function(hakemus) {
-                console.log(hakemus);
                 if (hakemus.muokattuVastaanottoTila === '') {
                     hakemus.muokattuVastaanottoTila = null;
                 }
@@ -293,7 +292,6 @@
                 };
             });
 
-            console.log('tilaParams', tilaParams);
             console.log('tilaObj', tilaObj);
 
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
