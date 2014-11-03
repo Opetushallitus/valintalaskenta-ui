@@ -47,16 +47,13 @@
             });
             ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.valinnanvaiheet = result;
-
                 var found = false;
-
                 _.some(model.valinnanvaiheet, function (valinnanvaihe) {
                     _.some(valinnanvaihe.valintatapajonot, function (valintatapajono) {
-                        if(_.has(valintatapajono, 'sijoitteluajoId')) {
+                        if(_.has(valintatapajono, 'sijoitteluajoId') && valintatapajono.sijoitteluajoId !== null) {
+                            console.log('valintatapajono', valintatapajono);
                             ErillisHakuSijoitteluajoHakukohde.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid, sijoitteluajoId: valintatapajono.sijoitteluajoId}, function (result) {
                                 model.erillishakuSijoitteluajoTulos = result;
-                                console.log('erillishakuksijoittelu', result);
-
                                 model.erillishakuDefer.resolve();
                             });
                             found = true;
@@ -65,6 +62,8 @@
                     });
                     return found;
                 });
+                
+
 
                 model.erillishakuDefer.promise.then(function () {
                     _.forEach(model.valinnanvaiheet, function (valinnanvaihe) {
@@ -74,19 +73,17 @@
                                 valintatapajonoOid: valintatapajono.oid
                             }, function (result) {
                                 _.forEach(result, function (item) {
-
                                     model.vastaanottoTilat.push(item);
-                                    var sijoitteluValintatapajono = _.findWhere(model.erillishakuSijoitteluajoTulos.valintatapajonot, {oid: valintatapajono.oid});
-                                    var hakemus = _.findWhere(sijoitteluValintatapajono.hakemukset, {hakemusOid: item.hakemusOid});
-                                        var pickin = _.pick(item, 'hyvaksyttyVarasijalta', 'ilmoittautumisTila', 'julkaistavissa', 'tila');
-                                    _.extend(hakemus, pickin);
+                                    var sijoittelujono = _.findWhere(model.erillishakuSijoitteluajoTulos.valintatapajonot, {oid: valintatapajono.oid});
+                                    _.extend(_.findWhere(sijoittelujono.hakemukset, {hakemusOid: item.hakemusOid}),
+                                        _.pick(item, 'hyvaksyttyVarasijalta', 'ilmoittautumisTila', 'julkaistavissa', 'tila'));
                                 });
                             });
                         });
+                        console.log(model.erillishakuSijoitteluajoTulos);
                     });
 
                 });
-
 
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
@@ -252,6 +249,7 @@
             var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
                 return valintatapajono.hakemukset;
             }));
+            console.log(muokatutHakemukset);
 
             console.log('muokatut hakemukset', muokatutHakemukset);
             model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
@@ -270,6 +268,7 @@
             };
 
             var tilaObj = _.map(muokatutHakemukset, function(hakemus) {
+                console.log(hakemus);
                 if (hakemus.muokattuVastaanottoTila === '') {
                     hakemus.muokattuVastaanottoTila = null;
                 }
@@ -385,9 +384,11 @@
                 return item.oid === valintatapajono.oid;
             });
 
-            return _.find(jono.hakemukset, function (item) {
-                return item.hakijaOid === hakija.hakijaOid;
-            });
+            if(!_.isEmpty(jono)) {
+                return _.find(jono.hakemukset, function (item) {
+                    return item.hakijaOid === hakija.hakijaOid;
+                });
+            }
         };
 
         for (var i = 0; i < 1000; i++) {
