@@ -210,15 +210,11 @@
                             <td>
                                 <div ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
                                     {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
-                                    <div ng-if="tila.hakijaOid === tulos.hakijaOid" ng-repeat="tila in model.vastaanottoTilat">
-                                        <div ng-if="tila.valintatapajonoOid === valintatapajono.oid">
-                                            <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
-                                                <select ng-model="tulos.muokattuIlmoittautumisTila"
-                                                        ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
-                                                </select>
-                                            </div>
+                                        <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
+                                            <select ng-model="tulos.muokattuIlmoittautumisTila"
+                                                    ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
+                                            </select>
                                         </div>
-                                    </div>
                                 </div>
                             </td>
                         </tr>
