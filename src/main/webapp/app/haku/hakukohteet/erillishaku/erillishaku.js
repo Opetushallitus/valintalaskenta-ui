@@ -53,14 +53,12 @@
                 _.some(model.valinnanvaiheet, function (valinnanvaihe) {
                     _.some(valinnanvaihe.valintatapajonot, function (valintatapajono) {
                         if(_.has(valintatapajono, 'sijoitteluajoId') && valintatapajono.sijoitteluajoId !== null) {
-                            console.log('valintatapajono', valintatapajono);
                             ErillisHakuSijoitteluajoHakukohde.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid, sijoitteluajoId: valintatapajono.sijoitteluajoId}, function (result) {
                                 model.erillishakuSijoitteluajoTulos = result;
                                 model.erillishakuDefer.resolve();
                             });
                             found = true;
                             model.lastValinnanVaihe = valinnanvaihe.valinnanvaiheoid;
-                            console.log(valinnanvaihe.valinnanvaiheoid);
                         }
                         return found;
                     });
@@ -249,8 +247,8 @@
             });
 
             var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
-            var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
-                return valintatapajono.hakemukset;
+            var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function(liittyvaJono) {
+                return liittyvaJono.hakemukset;
             }));
 
             _.forEach(muokatutHakemukset, function (mHakemus) {
@@ -390,9 +388,14 @@
     });
 
         $scope.getHakijanSijoitteluTulos = function (valintatapajono, hakija) {
+            console.log('getHakijanSijoittelutulos');
+            console.log('valintatapajono', valintatapajono);
+            console.log('hakija', hakija);
             var jono = _.find($scope.model.erillishakuSijoitteluajoTulos.valintatapajonot, function (item) {
                 return item.oid === valintatapajono.oid;
             });
+
+            console.log('jono', jono);
 
             if(!_.isEmpty(jono)) {
                 return _.find(jono.hakemukset, function (item) {

@@ -210,7 +210,7 @@
                             <td>
                                 <div ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
                                     {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
-                                        <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
+                                        <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI' || tulos.julkaistavissa">
                                             <select ng-model="tulos.muokattuIlmoittautumisTila"
                                                     ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                             </select>
