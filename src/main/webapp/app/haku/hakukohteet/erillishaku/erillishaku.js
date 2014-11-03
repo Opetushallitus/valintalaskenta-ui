@@ -276,11 +276,11 @@
             };
 
             var tilaObj = _.map(muokatutHakemukset, function(hakemus) {
-                if (hakemus.muokattuVastaanottoTila === '') {
-                    hakemus.muokattuVastaanottoTila = null;
+                if (hakemus.muokattuVastaanottoTila === '' || hakemus.muokattuVastaanottoTila === undefined) {
+                    hakemus.muokattuVastaanottoTila = 'KESKEN';
                 }
-                if (hakemus.muokattuIlmoittautumisTila === '') {
-                    hakemus.muokattuIlmoittautumisTila = null;
+                if (hakemus.muokattuIlmoittautumisTila === '' || hakemus.muokattuIlmoittautumisTila === undefined) {
+                    hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
                 }
                 return {
                     tila: hakemus.muokattuVastaanottoTila,
