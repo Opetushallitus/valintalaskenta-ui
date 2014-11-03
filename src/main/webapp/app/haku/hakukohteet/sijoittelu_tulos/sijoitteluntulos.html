@@ -135,7 +135,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="hakemus in filteredResults[$index] = (jono.hakemukset | orderBy:[jarjesta,'varasijanNumero'] | filter:hakijaFilter | tilaFilter: tilaFilterValue | filter:filterChangedValues) | startFrom:(currentPage[$index]-1)*pageSize | limitTo:pageSize">
+                        <tr ng-repeat="hakemus in filteredResults[$index] = (jono.hakemukset | orderBy:[jarjesta,'varasijanNumero', 'sija'] | filter:hakijaFilter | tilaFilter: tilaFilterValue | filter:filterChangedValues) | startFrom:(currentPage[$index]-1)*pageSize | limitTo:pageSize">
                             <td><span ng-if="hakemus.sija > 0">{{hakemus.sija}}</span></td>
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakemus.sukunimi}}"
