@@ -1418,10 +1418,15 @@ describe('Testing LisahakuhyvaksytytController', function(){
 
     it('should get LisahakuhyvaksytytController', function() {
         scope = $rootScope.$new();
+
+
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
             .respond(201,hakukohdejson);
-        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+
+        $httpBackend.expectGET('haku/'+routeParams.hakuOid)
             .respond(201,{});
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
         $httpBackend.expectGET('haku-app/applications?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
             .respond(201,hakeneetjson);
         for (var i = 0; i < 8; i++) {
@@ -1451,7 +1456,6 @@ describe('Testing LisahakuhyvaksytytController', function(){
         expect(scope.hakuOid).toBe(routeParams.hakuOid);
         expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
         expect(scope.hakemuksenMuokattuIlmoittautumisTilat.length).toBe(8);
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
         expect(scope.muutettu).toBeFalsy();
         expect(scope.predicate).toBe("sukunimi");
         expect(scope.model.hakeneet.length).toBe(17);
@@ -1465,11 +1469,6 @@ describe('Testing LisahakuhyvaksytytController', function(){
         expect(scope.hakemuksenMuokattuIlmoittautumisTilat[6].value).toBe("LASNA");
         expect(scope.hakemuksenMuokattuIlmoittautumisTilat[7].value).toBe("POISSA");
 
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[0].value).toBe("KESKEN");
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[1].value).toBe("VASTAANOTTANUT");
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[2].value).toBe("EI_VASTAANOTETTU_MAARA_AIKANA");
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[3].value).toBe("PERUNUT");
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[4].value).toBe("PERUUTETTU");
 
     });
 
