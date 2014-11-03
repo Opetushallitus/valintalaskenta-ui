@@ -76,11 +76,11 @@
                                 hakukohdeOid: hakukohdeOid,
                                 valintatapajonoOid: valintatapajono.oid
                             }, function (result) {
-                                _.forEach(result, function (item) {
-                                    model.vastaanottoTilat.push(item);
-                                    var sijoittelujono = _.findWhere(model.erillishakuSijoitteluajoTulos.valintatapajonot, {oid: valintatapajono.oid});
-                                    _.extend(_.findWhere(sijoittelujono.hakemukset, {hakemusOid: item.hakemusOid}),
-                                        _.pick(item, 'hyvaksyttyVarasijalta', 'ilmoittautumisTila', 'julkaistavissa', 'tila'));
+                                _.forEach(result, function (vastaanottotila) {
+                                    _.extend(
+                                        _.findWhere(valintatapajono.jonosijat, {hakemusOid: vastaanottotila.hakemusOid}),
+                                        _.pick(vastaanottotila, 'hyvaksyttyVarasijalta', 'ilmoittautumisTila', 'julkaistavissa', 'tila')
+                                    );
                                 });
                             });
                         });
@@ -243,20 +243,26 @@
             });
         };
 
-        this.updateHakemuksienTila = function (valintatapajonoOid) {
-            var jonoonLiittyvat = _.filter(model.erillishakuSijoitteluajoTulos.valintatapajonot, function(valintatapajono) {
-                return valintatapajono.oid === valintatapajonoOid;
+        this.updateHakemuksienTila = function (valintatapajono) {
+            var jonoonLiittyvat = _.filter(model.erillishakuSijoitteluajoTulos.valintatapajonot, function(jono) {
+                return jono.oid === valintatapajono.oid;
             });
 
             var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
-
             var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
                 return valintatapajono.hakemukset;
             }));
-            console.log(muokatutHakemukset);
+
+            _.forEach(muokatutHakemukset, function (mHakemus) {
+                _.extend(
+                    mHakemus,
+                    {julkaistavissa: _.findWhere(valintatapajono.jonosijat, {hakemusOid: mHakemus.hakemusOid}).julkaistavissa}
+                );
+                
+            });
 
             console.log('muokatut hakemukset', muokatutHakemukset);
-            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
+            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function(error){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
