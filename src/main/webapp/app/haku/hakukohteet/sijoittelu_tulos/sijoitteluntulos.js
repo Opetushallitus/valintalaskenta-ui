@@ -345,18 +345,6 @@ angular.module('valintalaskenta').
         {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"}
     ];
 
-
-
-
-    //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
-    $scope.hakemuksenMuokattuVastaanottoTilat = [
-        {value: "KESKEN"},
-        {value: "VASTAANOTTANUT"},
-        {value: "EI_VASTAANOTETTU_MAARA_AIKANA"},
-        {value: "PERUNUT"},
-        {value: "PERUUTETTU"}
-    ];
-
     $scope.pageSize = 50;
     $scope.currentPage = [];
     $scope.filteredResults = [];
@@ -514,6 +502,7 @@ angular.module('valintalaskenta').
             }
         });
     };
+
     $scope.createJalkiohjauskirjeetPDF = function () {
         Jalkiohjauskirjeet.post({sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
             $window.location.href = resurssi.latausUrl;
@@ -521,8 +510,6 @@ angular.module('valintalaskenta').
             alert(response.data.viesti);
         });
     };
-
-   
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
@@ -567,11 +554,6 @@ angular.module('valintalaskenta').
         });
     };
 
-    $scope.isKorkeakoulu = function() {
-        if ($scope.model.haku.kohdejoukkoUri && $scope.model.haku.kohdejoukkoUri.indexOf('_12') !== -1) {
-            $scope.hakemuksenMuokattuVastaanottoTilat.push({value: "EHDOLLISESTI_VASTAANOTTANUT"});
-        }
-    };
 
     $scope.resetIlmoittautumisTila = function(hakemus) {
         if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT' && hakemus.muokattuVastaanottoTila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
@@ -582,14 +564,11 @@ angular.module('valintalaskenta').
     };
 
 
-
     LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat).then(function () {
 
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
         $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
-        $scope.isKorkeakoulu();
     });
-
 
 }]);

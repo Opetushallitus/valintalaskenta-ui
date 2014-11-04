@@ -17,7 +17,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	$scope.kokonaanvalmis = false;
 	$scope.valinnanvaihe = oids.valinnanvaihe;
 	$scope.valintakoelaskenta = oids.valintakoelaskenta;
-
+	
 	var timer = undefined;
 	$scope.paivitaPollaten = function(uuid) {
 		$scope.uuid = uuid;
@@ -156,6 +156,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 						{
 							hakuoid : oids.hakuOid,
 							tyyppi : tyyppi,
+							erillishaku: oids.erillishaku,
 							whitelist : whitelist,
 							valinnanvaihe : oids.valinnanvaihe,
 							valintakoelaskenta : oids.valintakoelaskenta,

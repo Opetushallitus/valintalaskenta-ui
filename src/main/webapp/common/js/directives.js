@@ -162,7 +162,9 @@ app.directive('sijoitteluVastaanottoTila', function () {
                     $modal.open({
                         scope: $scope,
                         templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
-                        controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu) {
+                        controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu, AuthService) {
+
+
                             $scope.update = function () {
                                 if ($scope.hakemus) {
                                     var tilaParams = {
@@ -175,12 +177,21 @@ app.directive('sijoitteluVastaanottoTila', function () {
 
                                     $scope.selite = "";
                                     if ($scope.hakemus.muokattuVastaanottoTila === "") {
-                                        $scope.hakemus.muokattuVastaanottoTila = null;
+                                        $scope.hakemus.muokattuVastaanottoTila = "KESKEN";
+                                    }
+                                    if ($scope.hakemus.muokattuIlmoittautumisTila === "") {
+                                        $scope.hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
+                                    }
+                                    if ($scope.hakemus.hyvaksyttyVarasijalta === "") {
+                                        $scope.hakemus.hyvaksyttyVarasijalta = false;
                                     }
                                     var tilaObj = {
                                         valintatapajonoOid: $scope.valintatapajonoOid,
                                         hakemusOid: $scope.hakemus.hakemusOid,
-                                        tila: $scope.hakemus.muokattuVastaanottoTila
+                                        tila: $scope.hakemus.muokattuVastaanottoTila,
+                                        ilmoittautumisTila: $scope.hakemus.muokattuIlmoittautumisTila,
+                                        julkaistavissa: true,
+                                        hyvaksyttyVarasijalta: $scope.hakemus.hyvaksyttyVarasijalta
                                     };
 
                                     VastaanottoTila.post(tilaParams, [tilaObj], function (result) {
@@ -211,6 +222,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                                 $modalInstance.dismiss('cancel');
                             };
 
+
                             $scope.showEhdollisesti = function () {
                                 var returnValue = false;
 
@@ -232,6 +244,8 @@ app.directive('sijoitteluVastaanottoTila', function () {
                             $scope.isKorkeakoulu = function () {
                                 return Korkeakoulu.isKorkeakoulu($scope.haku.kohdejoukkoUri);
                             };
+
+
                         },
                         resolve: {
 
@@ -239,6 +253,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                     }).result.then(function () {
                         }, function () {
                         });
+
                 }
             };
 
@@ -598,6 +613,51 @@ app.directive('paginationPagesize', function () {
         controller: function ($scope) {
             $scope.itemsInDropdown = [{value:100000, text:"Kaikki"}, {value:20, text:"20 kpl"}, {value:50, text:"50 kpl"},
                 {value:100,text:"100 kpl"},{value:200, text:"200 kpl"}, {value:500, text:"500 kpl"}];
+        }
+
+    };
+});
+
+
+app.directive('muokattuVastaanottoTila', function () {
+    "use strict";
+    return {
+        restrict: 'E',
+        scope: {
+            haku: '=',
+            hakemus: '='
+        },
+        templateUrl: '../common/html/muokattuvastaanottotila.html',
+        controller: function ($scope, AuthService, Korkeakoulu) {
+            $scope.hakemuksenMuokattuVastaanottoTilat = [
+                {value: "KESKEN", text: "sijoitteluntulos.kesken", default_text:"Kesken"},
+                {value: "VASTAANOTTANUT", text: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanottanut"},
+                {value: "EHDOLLISESTI_VASTAANOTTANUT", text: "sijoitteluntulos.ehdollisesti", default_text:"Ehdollisesti vastaanottanut"},
+                {value: "VASTAANOTTANUT_SITOVASTI", text: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
+                {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                {value: "PERUNUT", text: "sijoitteluntulos.perunut", default_text:"Perunut"},
+                {value: "PERUUTETTU", text: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
+            ];
+
+
+            AuthService.updateOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
+                $scope.updateOph = true;
+            });
+
+            $scope.isEditable = function () {
+                var returnValue = false;
+
+                if ($scope.isKorkeakoulu() || !$scope.hakemus || !$scope.isKorkeakoulu() &&
+                    $scope.hakemus.muokattuVastaanottoTila === "PERUUTETTU" && $scope.updateOph ||
+                    !$scope.isKorkeakoulu() && $scope.hakemus.muokattuVastaanottoTila !== "PERUUTETTU") {
+                    returnValue = true;
+                }
+                return returnValue;
+            };
+
+            $scope.isKorkeakoulu = function () {
+                return Korkeakoulu.isKorkeakoulu($scope.haku.kohdejoukkoUri);
+            };
         }
 
     };

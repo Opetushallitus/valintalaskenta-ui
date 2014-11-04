@@ -302,6 +302,11 @@ app.factory('KelaDokumentti', function($resource) {
         post:  {method:'POST', isArray:false}
     });
 });
+app.factory('ErillishakuVienti', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/vienti", {}, {
+        vie: {method:'POST', isArray:false}
+    });
+});
 
 app.factory('PistesyottoVienti', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/pistesyotto/vienti", {}, {
@@ -338,6 +343,9 @@ app.factory('Hyvaksymiskirjeet', function($resource) {
         post:  {method:'POST', isArray:false}
     });
 });
+
+
+
 
 
 app.factory('SijoittelunTulosOsoitetarrat', function($resource) {
@@ -493,13 +501,18 @@ app.factory('LatestSijoitteluajoHakukohde', function($resource) {
     });
 });
 
-app.factory('Valintatulos', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakemukset", {hakuOid:"@hakuOid"}, {
+app.factory('ErillisHakuSijoitteluajoHakukohde', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/erillissijoittelu/:hakuOid/sijoitteluajo/:sijoitteluajoId/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid", sijoitteluajoId: "@sijoitteluajoId"}, {
         get: {method: "GET"}
     });
 });
 
 
+app.factory('Valintatulos', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakemukset", {hakuOid:"@hakuOid"}, {
+        get: {method: "GET"}
+    });
+});
 
 
 // Valintakoetulokset

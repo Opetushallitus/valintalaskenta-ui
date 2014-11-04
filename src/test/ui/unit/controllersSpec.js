@@ -216,6 +216,7 @@ describe('Testing SijoitteluntulosController', function(){
         for (var i = 0; i < 8; i++) {
             $httpBackend.expectGET('/localisation?category=valintalaskenta').respond("");
         }
+
         $httpBackend.expectGET('organisaatio/undefined/parentoids')
             .respond(201,'1.2.246.562.10.00000000001/undefined');
 
@@ -235,8 +236,6 @@ describe('Testing SijoitteluntulosController', function(){
             .respond(201,'1.2.246.562.10.00000000001/1.2.246.562.10.47941294986/1.2.246.562.10.98873174761/1.2.246.562.10.60222091211');
         $httpBackend.expectGET('resources/tila/hakukohde/'+routeParams.hakukohdeOid+'/1397647295344-8565235898154713515')
             .respond(201,hakukohdetilajson);
-
-
 
 
 
@@ -289,16 +288,6 @@ describe('Testing SijoitteluntulosController', function(){
         scope.selectIlmoitettuToAll(valintatapajonoOid);
         expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[0].muokattuVastaanottoTila).toBe("KESKEN");
         expect(scope.model.sijoitteluTulokset.valintatapajonot[0].hakemukset[3].muokattuVastaanottoTila).toBe("KESKEN");
-    });
-
-    it('isKorkeakoulu', function() {
-        scope.model.haku.kohdejoukkoUri = "uri_1";
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
-        scope.isKorkeakoulu();
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
-        scope.model.haku.kohdejoukkoUri = "uri_12";
-        scope.isKorkeakoulu();
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(6);
     });
 
     it('filterChangedValues', function() {
@@ -605,12 +594,12 @@ describe('Testing ValinnanhallintaController', function(){
 describe('Testing ValintakoetulosController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hakukohdeModel, valintakoetulosModel,
         hakukohdejson,latausikkuna,ilmoitus, koekutsukirjeet, osoitetarrat, valintakoeXls,
-        ilmoitusTila, valintakoejson, hakukohdenimijson;
+        ilmoitusTila, valintakoejson, hakukohdenimijson, hakeneetfulljson;
     var routeParams = {"hakuOid": "oid",
         "hakukohdeOid" : "oid2"};
     beforeEach(module('valintalaskenta','testData'));
 
-    beforeEach(inject(function($injector, hakukohdeJSON, valintakoeJSON, hakukohdenimiJSON) {
+    beforeEach(inject(function($injector, hakukohdeJSON, valintakoeJSON, hakukohdenimiJSON, hakeneetFullJSON) {
         $httpBackend = $injector.get('$httpBackend');
         $rootScope = $injector.get('$rootScope');
         $location = $injector.get('$location');
@@ -627,6 +616,7 @@ describe('Testing ValintakoetulosController', function(){
         hakukohdejson = hakukohdeJSON;
         valintakoejson = valintakoeJSON;
         hakukohdenimijson = hakukohdenimiJSON;
+        hakeneetfulljson = hakeneetFullJSON;
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
@@ -646,7 +636,8 @@ describe('Testing ValintakoetulosController', function(){
             .respond(201,hakukohdenimijson);
         $httpBackend.expectGET('resources/valintakoe/hakutoive/'+routeParams.hakukohdeOid)
             .respond(201,"[]");
-
+        $httpBackend.expectGET('haku-app/applications/listfull?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
+            .respond(201,hakeneetfulljson);
         ctrl = $controller('ValintakoetulosController', {'$scope' : scope, '$routeParams': routeParams, 'Ilmoitus': ilmoitus,
             'Latausikkuna': latausikkuna, 'ValintakoetulosModel': valintakoetulosModel, 'HakukohdeModel': hakukohdeModel,
             'Koekutsukirjeet': koekutsukirjeet, 'Osoitetarrat': osoitetarrat, 'ValintakoeXls': valintakoeXls, 'IlmoitusTila': ilmoitusTila});
@@ -1427,10 +1418,15 @@ describe('Testing LisahakuhyvaksytytController', function(){
 
     it('should get LisahakuhyvaksytytController', function() {
         scope = $rootScope.$new();
+
+
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
             .respond(201,hakukohdejson);
-        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+
+        $httpBackend.expectGET('haku/'+routeParams.hakuOid)
             .respond(201,{});
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
         $httpBackend.expectGET('haku-app/applications?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
             .respond(201,hakeneetjson);
         for (var i = 0; i < 8; i++) {
@@ -1460,7 +1456,6 @@ describe('Testing LisahakuhyvaksytytController', function(){
         expect(scope.hakuOid).toBe(routeParams.hakuOid);
         expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
         expect(scope.hakemuksenMuokattuIlmoittautumisTilat.length).toBe(8);
-        expect(scope.hakemuksenMuokattuVastaanottoTilat.length).toBe(5);
         expect(scope.muutettu).toBeFalsy();
         expect(scope.predicate).toBe("sukunimi");
         expect(scope.model.hakeneet.length).toBe(17);
@@ -1474,11 +1469,6 @@ describe('Testing LisahakuhyvaksytytController', function(){
         expect(scope.hakemuksenMuokattuIlmoittautumisTilat[6].value).toBe("LASNA");
         expect(scope.hakemuksenMuokattuIlmoittautumisTilat[7].value).toBe("POISSA");
 
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[0].value).toBe("KESKEN");
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[1].value).toBe("VASTAANOTTANUT");
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[2].value).toBe("EI_VASTAANOTETTU_MAARA_AIKANA");
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[3].value).toBe("PERUNUT");
-        expect(scope.hakemuksenMuokattuVastaanottoTilat[4].value).toBe("PERUUTETTU");
 
     });
 

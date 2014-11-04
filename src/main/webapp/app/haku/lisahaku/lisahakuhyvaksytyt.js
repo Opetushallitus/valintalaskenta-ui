@@ -13,6 +13,7 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
         this.latestSijoitteluajo = {};
         this.sijoitteluTulokset = {};
         this.sijoitteluMap = {};
+        this.haku = {};
 
         this.getJonoOid = function(hakukohdeOid, hakuOid) {
             LatestSijoitteluajoHakukohde.get({
@@ -38,6 +39,17 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
             model.latestSijoitteluajo = {};
             model.sijoitteluTulokset = {};
             model.sijoitteluMap = {};
+            model.haku = {};
+
+            HaunTiedot.get({hakuOid: hakuOid}, function (result) {
+                model.haku = result;
+                var hakutyyppi = model.haku.hakutyyppiUri;
+                var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
+                var match = lisahakutyyppiRegExp.exec(hakutyyppi);
+                match ? model.haku.lisahaku = true : model.haku.lisahaku = false;
+
+            });
+
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.tarjoajaOid = result.tarjoajaOid;
             });
@@ -197,15 +209,6 @@ angular.module('valintalaskenta').
         {value: "POISSA", text: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"}
     ];
     LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat);
-
-    //korkeakoulujen 'ehdollisesti vastaanotettu' lisätään isKorkeakoulu() -funktiossa
-    $scope.hakemuksenMuokattuVastaanottoTilat = [
-        {value: "KESKEN", text: "Kesken"},
-        {value: "VASTAANOTTANUT", text: "Vastaanottanut"},
-        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text: "Ei vastaanotettu määräaikana"},
-        {value: "PERUNUT", text: "Perunut"},
-        {value: "PERUUTETTU", text: "Peruutettu"}
-    ];
 
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);

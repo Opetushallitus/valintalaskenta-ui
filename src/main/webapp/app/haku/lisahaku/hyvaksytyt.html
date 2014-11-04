@@ -63,8 +63,7 @@
 
                                         <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="hakija.julkaistavissa" ng-change="setIlmoittautumisTila(hakija)"> <br/></div>
                                         <div ng-show="hakija.julkaistavissa">
-                                            <select ng-change="resetIlmoittautumisTila(hakija)" ng-model="hakija.muokattuVastaanottoTila" ng-options="tila.value as tila.text for tila in hakemuksenMuokattuVastaanottoTilat">
-                                            </select>
+                                            <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakija"/>
                                         </div>
                                     </div>
                                 </td>

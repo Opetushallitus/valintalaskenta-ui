@@ -1,0 +1,3 @@
+<select ng-disabled="!isEditable()" ng-change="$parent.resetIlmoittautumisTila(hakemus)" ng-model="hakemus.muokattuVastaanottoTila"
+        ng-options="tila.value as tila.default_text for tila in (hakemuksenMuokattuVastaanottoTilat | vastaanottoTila:isKorkeakoulu())">
+</select>

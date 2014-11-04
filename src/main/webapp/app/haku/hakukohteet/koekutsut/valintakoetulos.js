@@ -45,7 +45,7 @@
 		            				e.osallistuminen = "OSALLISTUU";
 		            				e.hakuOid = $routeParams.hakuOid;
 	                                e.hakemusOid = hakija.oid;
-	                                e.hakijaOid = hakija.applicationSystemId;
+	                                e.hakijaOid = hakija.personOid;
 	                                e.etunimi = hakija.answers.henkilotiedot.Etunimet;
 	                                e.sukunimi = hakija.answers.henkilotiedot.Sukunimi;
                                     e.asiointikieli = hakija.answers.lisatiedot.asiointikieli;
@@ -129,56 +129,63 @@
 		// helpommin käsiteltävään muotoon tulokset. samoin privaattina
 		// funktiona, niin ei turhaan pysty kutsumaan tätä suoraan ulkopuolelta.
 		function flatKoetulokset() {
-            
-            model.koetulokset.forEach(function(koetulos){
-                koetulos.hakutoiveet.forEach(function(hakutoive) {
-                    if(hakutoive.hakukohdeOid === model.hakukohdeOid) {
-                        hakutoive.valinnanVaiheet.forEach(function(valinnanvaihe) {
-                            valinnanvaihe.valintakokeet.forEach(function(valintakoe) {
-                            	if (model.valintakokeet[valintakoe.valintakoeOid] === undefined ) {
-                                	model.errors.push("tunnistamaton valintakoe " + valintakoe.valintakoeTunniste);
-                                	return;
-                                }
-                                if(model.valintakokeet[valintakoe.valintakoeOid].kutsutaankoKaikki) {
-                                	return;
-                                }
+            HakukohdeHenkilotFull.get({aoOid: model.hakukohdeOid, rows: 100000}, function(hakuResult) {
+                model.koetulokset.forEach(function (koetulos) {
+                    koetulos.hakutoiveet.forEach(function (hakutoive) {
+                        if (hakutoive.hakukohdeOid === model.hakukohdeOid) {
+                            hakutoive.valinnanVaiheet.forEach(function (valinnanvaihe) {
+                                valinnanvaihe.valintakokeet.forEach(function (valintakoe) {
+                                    if (model.valintakokeet[valintakoe.valintakoeOid] === undefined) {
+                                        model.errors.push("tunnistamaton valintakoe " + valintakoe.valintakoeTunniste);
+                                        return;
+                                    }
+                                    if (model.valintakokeet[valintakoe.valintakoeOid].kutsutaankoKaikki) {
+                                        return;
+                                    }
 
-                                var entry = {};
-                                entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
-                                entry.hakuOid = koetulos.hakueOid;
-                                entry.hakemusOid = koetulos.hakemusOid;
-                                entry.hakijaOid = koetulos.hakijaOid;
-                                entry.createdAt = koetulos.createdAt;
-                                entry.etunimi = koetulos.etunimi;
-                                entry.sukunimi = koetulos.sukunimi;
-                                entry.valittu = true;
-                                entry.aktiivinen = valintakoe.aktiivinen;
-                                entry.valintakoeOid = valintakoe.valintakoeOid;
-                                entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
-                                // OVT-6961
-                                if(valintakoe.nimi !== undefined) {
-                                	entry.valintakoeTunniste = valintakoe.nimi;
-                                } else {
-                                	entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
-                                }
+                                    var entry = {};
+                                    entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
+                                    entry.hakuOid = koetulos.hakueOid;
+                                    entry.hakemusOid = koetulos.hakemusOid;
+                                    entry.hakijaOid = koetulos.hakijaOid;
+                                    entry.createdAt = koetulos.createdAt;
+                                    entry.etunimi = koetulos.etunimi;
+                                    entry.sukunimi = koetulos.sukunimi;
+                                    entry.valittu = true;
+                                    entry.aktiivinen = valintakoe.aktiivinen;
+                                    entry.valintakoeOid = valintakoe.valintakoeOid;
+                                    entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
+                                    for (var i = 0; i < hakuResult.length; i++) {
+                                        if (hakuResult[i].personOid === entry.hakijaOid) {
+                                            entry.asiointikieli = hakuResult[i].answers.lisatiedot.asiointikieli;
+                                            break;
+                                        }
+                                    }
+                                    // OVT-6961
+                                    if (valintakoe.nimi !== undefined) {
+                                        entry.valintakoeTunniste = valintakoe.nimi;
+                                    } else {
+                                        entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
+                                    }
 
-								model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
-                                if (model.valintakokeetHakijoittain[entry.hakemusOid] === undefined ) {
-                                    model.valintakokeetHakijoittain[entry.hakemusOid] = {hakemusOid: entry.hakemusOid, etunimi: entry.etunimi, sukunimi: entry.sukunimi};
-                                    model.valintakokeetHakijoittain[entry.hakemusOid].kokeet = [];
-                                    model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
-                                } else {
-                                    model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
-                                }
+                                    model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
+                                    if (model.valintakokeetHakijoittain[entry.hakemusOid] === undefined) {
+                                        model.valintakokeetHakijoittain[entry.hakemusOid] = {hakemusOid: entry.hakemusOid, etunimi: entry.etunimi, sukunimi: entry.sukunimi};
+                                        model.valintakokeetHakijoittain[entry.hakemusOid].kokeet = [];
+                                        model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
+                                    } else {
+                                        model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
+                                    }
 
-                                //add identifier to list
-                               if(model.koetyypit.indexOf(entry.valintakoeTunniste) === -1) {
-                                   model.koetyypit.push(entry.valintakoeTunniste);
-                               }
+                                    //add identifier to list
+                                    if (model.koetyypit.indexOf(entry.valintakoeTunniste) === -1) {
+                                        model.koetyypit.push(entry.valintakoeTunniste);
+                                    }
 
+                                });
                             });
-                        });
-                    }
+                        }
+                    });
                 });
             });
 

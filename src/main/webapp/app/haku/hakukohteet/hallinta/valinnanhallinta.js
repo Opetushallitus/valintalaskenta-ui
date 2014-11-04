@@ -38,9 +38,9 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
 angular.module('valintalaskenta').
     controller('ValinnanhallintaController',['$scope', '$routeParams', '$modal', 'Latausikkuna', 'Ilmoitus',
         'ValinnanhallintaModel', 'HakukohdeModel', 
-        'ParametriService', 'IlmoitusTila',
+        'ParametriService', 'IlmoitusTila', 'HakuModel',
     function ($scope, $routeParams, $modal, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel,
-              ParametriService, IlmoitusTila) {
+              ParametriService, IlmoitusTila, HakuModel) {
     "use strict";
 
     $scope.model = ValinnanhallintaModel;
@@ -49,6 +49,7 @@ angular.module('valintalaskenta').
     $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
 
     $scope.kaikkiKerralla = function() {
+        var erillishaku = HakuModel.hakuOid.erillishaku;
     	var valintalaskentaInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/hakukohdeseurantaikkuna.html',
@@ -58,6 +59,7 @@ angular.module('valintalaskenta').
                 oids: function () {
                     return {
                         hakuOid: $routeParams.hakuOid,
+                        erillishaku: erillishaku,
                         nimentarkennus: $scope.hakukohdeModel.getHakukohdeNimi(),
                         tyyppi: "HAKUKOHDE",
                         hakukohteet: [$routeParams.hakukohdeOid]
@@ -67,6 +69,7 @@ angular.module('valintalaskenta').
         });
     };
     $scope.kaynnistaValintalaskenta = function (valinnanvaihe) {
+        var erillishaku = HakuModel.hakuOid.erillishaku;
         var valintalaskentaInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/hakukohdeseurantaikkuna.html',
@@ -76,6 +79,7 @@ angular.module('valintalaskenta').
                 oids: function () {
                     return {
                         hakuOid: $routeParams.hakuOid,
+                        erillishaku: erillishaku,
                         valinnanvaihe: valinnanvaihe,
                         valintakoelaskenta: false,
                         tyyppi: "HAKUKOHDE",
@@ -89,6 +93,7 @@ angular.module('valintalaskenta').
     $scope.kaynnistaValintakoelaskenta = function () {
         var hakuOid = $routeParams.hakuOid;
         var hakukohdeOid = $routeParams.hakukohdeOid;
+        var erillishaku = HakuModel.hakuOid.erillishaku;
         var valintalaskentaInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/valintakoelaskenta.html',
@@ -98,6 +103,7 @@ angular.module('valintalaskenta').
                 oids: function () {
                     return {
                         hakuOid: $routeParams.hakuOid,
+                        erillishaku: erillishaku,
                         valinnanvaihe: null,
                         valintakoelaskenta: true,
                         tyyppi: "HAKUKOHDE",
