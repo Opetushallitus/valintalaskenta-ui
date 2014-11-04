@@ -2,33 +2,34 @@
 <div ng-if="model.hakutoiveet.length">
     <table class="virkailija-table-1">
         <thead>
-        <tr>
+        <tr ng-if="!model.haku.lisahaku">
             <th colspan="2"></th>
-            <th colspan="3">{{ t('valintalaskenta.valintalaskenta') || 'Valintalaskenta' }}</th>
-            <th colspan="3">{{ t('valintalaskenta.sijoittelu') || 'Sijoittelu' }}</th>
+            <th colspan="3" ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.valintalaskenta') || 'Valintalaskenta' }}</th>
+            <th colspan="3" ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.sijoittelu') || 'Sijoittelu' }}</th>
         </tr>
         <tr>
-            <th>{{ t('valintalaskenta.hakutoive') || 'Hakutoive' }}</th>
-            <th>{{ t('valintalaskenta.valintatapajono') || 'Valintatapajono' }}
+            <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.hakutoive') || 'Hakutoive' }}</th>
+            <th colspan="8" ng-if="model.haku.lisahaku">{{ t('valintalaskenta.hakutoive') || 'Hakutoive' }}</th>
+            <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.valintatapajono') || 'Valintatapajono' }}
                 <a href="" ng-model="filter" ng-init="false" ng-click="filter = !filter">({{filter ? 'Näytä viimeinen' :
                     'Näytä kaikki'}})</a>
             </th>
-            <th>{{ t('valintalaskenta.yhteispisteet') || 'Yhteispisteet' }}</th>
-            <th colspan="2">{{ t('valintalaskenta.valintatieto') || 'Valintatieto' }}</th>
-            <th>{{ t('valintalaskenta.tila') || 'Tila' }}</th>
-            <th colspan="2">{{ t('valintalaskenta.vastaanottotila') || 'Vastaanottotila' }}</th>
+            <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.yhteispisteet') || 'Yhteispisteet' }}</th>
+            <th colspan="2" ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.valintatieto') || 'Valintatieto' }}</th>
+            <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.tila') || 'Tila' }}</th>
+            <th colspan="2" ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.vastaanottotila') || 'Vastaanottotila' }}</th>
 
         </tr>
         </thead>
         <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'">
-        <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot">
+        <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot && !model.haku.lisahaku">
             <td colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                 <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                     {{hakutoive.oppilaitos}}
                 </a>
             </td>
         </tr>
-        <tr ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="filter || (!filter && isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
+        <tr ng-if="!model.haku.lisahaku" ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="filter || (!filter && isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
             <td>
                 <div ng-if="isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
