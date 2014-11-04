@@ -229,9 +229,9 @@
                             <td>{{tulos.tuloksenTila}}</td>
                             <td>
 
-                                <span ng-if="userLang=='fi' && tulos.tilanKuvaukset.FI">{{tulos.tilanKuvaukset.FI}}</span>
-                                <span ng-if="userLang=='sv' && tulos.tilanKuvaukset.FI">{{tulos.tilanKuvaukset.SV}}</span>
-                                <span ng-if="userLang=='en' && tulos.tilanKuvaukset.FI">{{tulos.tilanKuvaukset.EN}}</span>
+                                <span ng-if="userLang=='fi' && tulos.jarjestyskriteerit[0].kuvaus.FI">{{tulos.jarjestyskriteerit[0].kuvaus.FI}}</span>
+                                <span ng-if="userLang=='sv' && tulos.jarjestyskriteerit[0].kuvaus.FI">{{tulos.jarjestyskriteerit[0].kuvaus.SV}}</span>
+                                <span ng-if="userLang=='en' && tulos.jarjestyskriteerit[0].kuvaus.FI">{{tulos.jarjestyskriteerit[0].kuvaus.EN}}</span>
                             </td>
                             <td>
                                 <jarjestyskriteeri-muokkaus
@@ -247,7 +247,11 @@
                             <td></td>
                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>
                             <td>{{hakijanSijoitteluTulos.tila}}</td>
-                            <td></td>
+                            <td>
+                                <span ng-if="userLang=='fi' && tulos.tilanKuvaukset.FI">{{tulos.tilanKuvaukset.FI}}</span>
+                                <span ng-if="userLang=='sv' && tulos.tilanKuvaukset.SV">{{tulos.tilanKuvaukset.SV}}</span>
+                                <span ng-if="userLang=='en' && tulos.tilanKuvaukset.EN">{{tulos.tilanKuvaukset.EN}}</span>
+                            </td>
                             <td>
                                 <sijoittelu-vastaanotto-tila hakemus="tulos"
                                                              valintatapajono-oid="valintatapajono.oid"
