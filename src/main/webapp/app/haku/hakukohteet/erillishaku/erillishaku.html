@@ -24,7 +24,7 @@
     <accordion close-others="true">
         <accordion-group
                 ng-repeat="valinnanvaihe in model.ilmanlaskentaa | orderBy:['nimi']:false track by $index"
-                is-open="$first" ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
+                is-open="$first">
 
             <accordion-heading>
                 <h3>{{ t('valintalaskentatulos.valinnanvaihe') || 'Valinnanvaihe' }}: <span
@@ -59,41 +59,16 @@
 									    {{ t('erillishaku.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input
                                             type="file" ng-file-select="erillishaunTuontiXlsx($files, valintatapajono.oid)">
 									</span>
-                        <button ng-disabled="!crudOrg"
-                                ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun"
-                                ng-click="muutaSijoittelunStatus(valintatapajono, 'true')"
-                                class="btn btn-primary btn-sm">{{ t('valintalaskentatulos.hyvaksy') ||
-                            'Siirrä jono sijoitteluun' }}
-                        </button>
-                        <button ng-disabled="!crudOrg"
-                                ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun"
-                                ng-click="muutaSijoittelunStatus(valintatapajono, 'false')"
-                                class="btn btn-default btn-sm ">{{ t('valintalaskentatulos.hylkaa') ||
-                            'Poista jono sijoittelusta' }}
-                        </button>
                         <table class="virkailija-table-1">
                             <thead>
                             <tr>
-                                <th><a href="" ng-click="reverse=!reverse">{{
-                                    t('valintalaskentatulos.jonosija') || 'Jonosija' }}
-                                    ({{valintatapajono.jonosijat.length}})</a></th>
                                 <th>{{ t('valintalaskentatulos.hakija') || 'Hakija' }}</th>
-                                <th>{{ t('valintalaskentatulos.valintatieto') || 'Valintatieto' }}</th>
-                                <th>{{ t('valintalaskentatulos.kuvausfi') || 'Kuvaus (FI)' }}</th>
-                                <th>{{ t('valintalaskentatulos.kuvaussv') || 'Kuvaus (SV)' }}</th>
-                                <th>{{ t('valintalaskentatulos.kuvausen') || 'Kuvaus (EN)' }}</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            <tr colspan="3" ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe"
+                            <tr colspan="3"
                                 ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
-                                <td><input type="number"
-                                           ng-model="tulos.jonosija"
-                                           min="1"
-                                           max="{{valintatapajono.jonosijat.length}}"
-                                           ng-change="changeTila(tulos, tulos.jonosija)" ng-debounce="1000"
-                                           ng-disabled="tulos.tuloksenTila == 'HYLATTY'"></td>
                                 <td class="leftorientedcolumn">
                                     <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                              etunimi="{{tulos.etunimi}}"
@@ -101,31 +76,6 @@
                                                              haku-oid="{{hakuOid}}"
                                                              henkilo-oid="{{tulos.hakijaOid}}"/>
                                 </td>
-                                <td>
-                                    <select ng-model="tulos.tuloksenTila"
-                                            ng-change="changeSija(tulos, tulos.tuloksenTila)">
-                                        <option value="HYVAKSYTTAVISSA">{{
-                                            t('valintalaskentatulos.hyvaksyttavissa') || 'Hyväksyttävissä'
-                                            }}
-                                        </option>
-                                        <option value="HYLATTY">{{ t('valintalaskentatulos.hylatty') ||
-                                            'Hylätty' }}
-                                        </option>
-                                        <option value="">{{ t('valintalaskentatulos.maarittalematon') ||
-                                            'Määrittelemätön' }}
-                                        </option>
-                                        <option value="HYVAKSYTTY_HARKINNANVARAISESTI">{{
-                                            t('valintalaskentatulos.harkinnanvaraisesti') || 'Hyväksytty
-                                            harkinnanvaraisesti' }}
-                                        </option>
-                                    </select>
-                                </td>
-                                <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.FI"
-                                           size="20"/></td>
-                                <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.SV"
-                                           size="20"/></td>
-                                <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.EN"
-                                           size="20"/></td>
                             </tr>
                             </tbody>
 
