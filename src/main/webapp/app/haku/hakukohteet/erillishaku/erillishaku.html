@@ -13,13 +13,6 @@
 
 <div ng-include="'../common/html/errors.html'"></div>
 
-<a ng-show="model.valinnanvaiheet" ng-click="erillishaunVientiXlsx(); $event.stopPropagation();"
-   class="btn btn-default btn-sm excel">{{ t('erillishaku.vietaulukkolaskentaan') || 'Vie
-    taulukkolaskentaan' }}</a>
-<span class="btn btn-primary btn-sm margin-bottom-2 btn-file">
-	    {{ t('erillishaku.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input type="file" ng-file-select="erillishaunTuontiXlsx($files)" >
-</span>
-<br/>
 <input type="text" class="search margin-vertical-2"
        placeholder="{{ t('valintalaskentatulos.suodatahakijoita') || 'Suodata hakijoita' }}"
        ng-model="hakijaFilter"/>
@@ -31,7 +24,7 @@
     <accordion close-others="true">
         <accordion-group
                 ng-repeat="valinnanvaihe in model.ilmanlaskentaa | orderBy:['nimi']:false track by $index"
-                is-open="$first">
+                is-open="$first" ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
 
             <accordion-heading>
                 <h3>{{ t('valintalaskentatulos.valinnanvaihe') || 'Valinnanvaihe' }}: <span
@@ -50,21 +43,21 @@
                             t('valintalaskentatulos.tallenna') || 'Tallenna' }}
                         </button>
                         <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                                ng-click="valintatapajonoVientiXlsx(valintatapajono.oid)"
+                                ng-click="erillishaunVientiXlsx(valintatapajono.oid)"
                                 class="btn btn-default btn-sm margin-bottom-2">{{
-                            t('valintalaskentatulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
+                            t('erillishaku.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
                         </button>
 				                    <span ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                                           class="btn btn-primary btn-sm margin-bottom-2 btn-file">
-									    {{ t('valintalaskentatulos.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input
+									    {{ t('erillishaku.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input
                                             type="file"
-                                            ng-file-select="valintatapajonoTuontiXlsx(valintatapajono.oid, $files)">
+                                            ng-file-select="erillishaunTuontiXlsx(valintatapajono.oid, $files)">
 									</span>
 				                    <span ng-hide="true"
                                           ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                                           class="btn btn-primary btn-sm margin-bottom-2 btn-file">
-									    {{ t('valintalaskentatulos.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input
-                                            type="file" ng-file-select="valintatapajonoTuontiXlsx($files)">
+									    {{ t('erillishaku.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input
+                                            type="file" ng-file-select="erillishaunTuontiXlsx($files, valintatapajono.oid)">
 									</span>
                         <button ng-disabled="!crudOrg"
                                 ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun"

@@ -518,12 +518,12 @@
             }
 
         };
-        $scope.erillishaunVientiXlsx = function() {
+        $scope.erillishaunVientiXlsx = function(valintatapajonoOid) {
         	ErillishakuVienti.vie({
         		hakukohdeOid: $scope.hakukohdeOid,
         		hakuOid: $routeParams.hakuOid,
         		tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOid,
-        		valintatapajonoOid: $scope.model.valintatapajonoOid,
+        		valintatapajonoOid: valintatapajonoOid
         	},
         		{}, function (id) {
                 Latausikkuna.avaa(id, "Erillishaun hakukohteen vienti taulukkolaskentaan", "");
@@ -531,14 +531,13 @@
                 Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
             });
         };
-        $scope.erillishaunTuontiXlsx = function($files) {
+        $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid) {
     		var file = $files[0];
     		var fileReader = new FileReader();
     	    fileReader.readAsArrayBuffer(file);
     	    var hakukohdeOid = $scope.hakukohdeOid;
     	    var hakuOid = $routeParams.hakuOid;
     	    var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOid;
-    	    var valintatapajonoOid = $scope.model.valintatapajonoOid;
     	    fileReader.onload = function(e) {
     			$scope.upload = $upload.http({
     	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid
