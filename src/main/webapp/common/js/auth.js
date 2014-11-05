@@ -249,7 +249,7 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
             };
             if (attrs.authKkUser) {
                 UserModel.organizationsDeferred.promise.then(function () {
-                    if (UserModel.isKKUser) {
+                    if (UserModel.isKKUser || UserModel.isOphUser) {
                         $animate.removeClass(element, 'ng-hide');
                     } else {
                         $timeout(function () {
