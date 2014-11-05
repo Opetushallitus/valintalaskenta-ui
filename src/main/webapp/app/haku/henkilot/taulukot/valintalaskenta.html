@@ -11,7 +11,7 @@
             <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.hakutoive') || 'Hakutoive' }}</th>
             <th colspan="8" ng-if="model.haku.lisahaku">{{ t('valintalaskenta.hakutoive') || 'Hakutoive' }}</th>
             <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.valintatapajono') || 'Valintatapajono' }}
-                <a href="" ng-model="filter" ng-init="false" ng-click="filter = !filter">({{filter ? 'Näytä viimeinen' :
+                <a href="" ng-model="model.filter" ng-init="false" ng-click="model.filter = !model.filter">({{model.filter ? 'Näytä viimeinen' :
                     'Näytä kaikki'}})</a>
             </th>
             <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.yhteispisteet') || 'Yhteispisteet' }}</th>
@@ -21,7 +21,7 @@
 
         </tr>
         </thead>
-        <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
+        <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'" >
         <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot && !model.haku.lisahaku">
             <td colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                 <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
@@ -43,7 +43,7 @@
         <tr ng-show="false" ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" >
         </tr>
 
-        <tr ng-class-even="'tableEven'" ng-hide="hakutoive.valintalaskenta.$hideRows" ng-repeat-end ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajonot | orderBy: 'prioriteetti'" ng-show="filter || !filter && isValinnanvaiheVisible($index,hakutoive.valintalaskenta)">
+        <tr ng-if="!hakutoive.valintalaskenta.$hideRows" ng-repeat-end ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajonot | orderBy: 'prioriteetti'" ng-show="model.filter || !model.filter && isValinnanvaiheVisible($index,hakutoive.valintalaskenta)">
 
             <td></td>
             <td >
