@@ -1,6 +1,6 @@
-<div ng-if="model.hakutoiveet.length">
 
-    <table ng-table="tableParams" class="virkailija-table-1">
+<div ng-if="model.hakutoiveet.length">
+    <table class="virkailija-table-1">
         <thead>
         <tr ng-if="!model.haku.lisahaku">
             <th colspan="2"></th>
@@ -29,24 +29,16 @@
                 </a>
             </td>
         </tr>
-        <tr ng-if="!model.haku.lisahaku && hakutoive.valintalaskenta">
-            <td colspan="8">
-                <div class="table-group" ng-click="hakutoive.valintalaskenta.$hideRows = !hakutoive.valintalaskenta.$hideRows">
-                    <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': hakutoive.valintalaskenta.$hideRows, 'glyphicon-chevron-down': !hakutoive.valintalaskenta.$hideRows }"></span>
-                    <strong>{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -</strong>
+        <tr ng-if="!model.haku.lisahaku" ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="filter || (!filter && isValinnanvaiheVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
+            <td>
+                <div ng-if="isValinnanvaiheVisible($index,hakutoive.valintalaskenta)">
+                    {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                     <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
-                        <strong>{{hakutoive.oppilaitos}}</strong>
+                        {{hakutoive.oppilaitos}}
                     </a>
                 </div>
             </td>
-        </tr>
-        <tr  ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="filter || (!filter && isValinnanvaiheVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
-        </tr>
-        <tr ng-hide="hakutoive.valintalaskenta.$hideRows" ng-repeat-end ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajonot | orderBy: 'prioriteetti'" ng-if="valinnanvaihe.valintatapajonot">
-
-            <td></td>
-            <td >
-                {{valintatapajono.nimi}}<br/>
+            <td ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajonot | orderBy: 'prioriteetti'">{{valintatapajono.nimi}}</span><br/>
                 <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'"></span>
             </td>
             <!-- jonosijoja pitäisi olla hakemuksella vain yksi per jono -->
@@ -80,7 +72,6 @@
         </tr>
         <!-- rivien väritys pitäisi hoitaa jotenkin, tai sitten muokata alkuperäinen data helpommin esitettävään muotoon -->
         <tr ng-repeat-end ng-show="false"></tr>
-
         </tbody>
     </table>
 </div>
