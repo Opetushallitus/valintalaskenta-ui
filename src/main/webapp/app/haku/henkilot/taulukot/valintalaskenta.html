@@ -1,6 +1,6 @@
-
 <div ng-if="model.hakutoiveet.length">
-    <table class="virkailija-table-1">
+
+    <table ng-table="tableParams" class="virkailija-table-1">
         <thead>
         <tr ng-if="!model.haku.lisahaku">
             <th colspan="2"></th>
@@ -21,7 +21,7 @@
 
         </tr>
         </thead>
-        <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'">
+        <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
         <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot && !model.haku.lisahaku">
             <td colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                 <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
@@ -29,16 +29,25 @@
                 </a>
             </td>
         </tr>
-        <tr ng-if="!model.haku.lisahaku" ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="filter || (!filter && isValinnanvaiheVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
-            <td>
-                <div ng-if="isValinnanvaiheVisible($index,hakutoive.valintalaskenta)">
-                    {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
+        <tr ng-if="!model.haku.lisahaku && hakutoive.valintalaskenta">
+            <td colspan="8">
+                <div class="table-group" ng-click="hakutoive.valintalaskenta.$hideRows = !hakutoive.valintalaskenta.$hideRows">
+                    <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': hakutoive.valintalaskenta.$hideRows, 'glyphicon-chevron-down': !hakutoive.valintalaskenta.$hideRows }"></span>
+                    <strong>{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -</strong>
                     <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
-                        {{hakutoive.oppilaitos}}
+                        <strong>{{hakutoive.oppilaitos}}</strong>
                     </a>
                 </div>
             </td>
-            <td ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajonot | orderBy: 'prioriteetti'">{{valintatapajono.nimi}}</span><br/>
+        </tr>
+        <tr ng-show="false" ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" >
+        </tr>
+
+        <tr ng-class-even="'tableEven'" ng-hide="hakutoive.valintalaskenta.$hideRows" ng-repeat-end ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajonot | orderBy: 'prioriteetti'" ng-show="filter || !filter && isValinnanvaiheVisible($index,hakutoive.valintalaskenta)">
+
+            <td></td>
+            <td >
+                {{valintatapajono.nimi}}<br/>
                 <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'"></span>
             </td>
             <!-- jonosijoja pitäisi olla hakemuksella vain yksi per jono -->
@@ -60,7 +69,7 @@
                 <span ng-if="model.sijoittelu[valintatapajono.valintatapajonooid].varasijanNumero != undefined">({{model.sijoittelu[valintatapajono.valintatapajonooid].varasijanNumero}})</span>
             </td>
             <td>{{model.sijoittelu[valintatapajono.valintatapajonooid].vastaanottoTila}}</td>
-            <td ng-repeat-end>
+            <td>
                 <sijoittelu-vastaanotto-tila hakemus="model.sijoittelu[valintatapajono.valintatapajonooid]"
                                              valintatapajono-oid="valintatapajono.valintatapajonooid"
                                              haku-oid="model.hakuOid"
@@ -72,6 +81,7 @@
         </tr>
         <!-- rivien väritys pitäisi hoitaa jotenkin, tai sitten muokata alkuperäinen data helpommin esitettävään muotoon -->
         <tr ng-repeat-end ng-show="false"></tr>
+
         </tbody>
     </table>
 </div>
