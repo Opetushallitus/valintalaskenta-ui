@@ -50,7 +50,6 @@ angular.module('valintalaskenta').
                 $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
                 HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat) {
     "use strict";
-
     
     $scope.aktivoiValintalaskentaKerralla = function () {
     	var hakuoid = $routeParams.hakuOid;
@@ -93,7 +92,9 @@ angular.module('valintalaskenta').
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
     $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
+    if(_.isEmpty(HakuModel.deferred)) { HakuModel.init($routeParams.hakuOid) }
     $scope.hakumodel = HakuModel;
+
     $scope.virheet = VirheModel;
     $scope.naytaKokeita = 50;
     // KELA TAULUKON CHECKBOXIT ALKAA

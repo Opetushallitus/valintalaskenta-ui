@@ -629,8 +629,3 @@ angular.module('valintalaskenta')
         return $resource(KOODISTO_URL_BASE + "codeelement/codes/kausi/1");
     }]);
 
-// Koodisto
-// https://itest-virkailija.oph.ware.fi/koodisto-service/rest/codeelement/codes/hakutyyppi/1
-// https://itest-virkailija.oph.ware.fi/koodisto-service/rest/codeelement/codes/haunkohdejoukko/1
-// https://itest-virkailija.oph.ware.fi/koodisto-service/rest/codeelement/codes/hakutapa/1
-// https://itest-virkailija.oph.ware.fi/koodisto-service/rest/codeelement/codes/kausi/1
