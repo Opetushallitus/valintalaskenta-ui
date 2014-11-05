@@ -4,6 +4,9 @@
 
 <div class="tabsheets">
 
+
+
+<!-- HAUN TIEDOT -->
 <collapsible show="false" heading="{{ t('yhteisvalinnanhallinta.tiedot') || 'Haun tiedot' }}">
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.nimi.kieli_fi}}</div>
@@ -29,6 +32,8 @@
 
 
 </collapsible>
+
+<!-- VALINTALASKENTA JA SIJOITTELU -->
 <collapsible ng-if="!hakumodel.hakuOid.lisahaku" heading="{{ t('yhteisvalinnanhallinta.valintalaskentajasijoittelu') || 'Valintalaskenta ja sijoittelu' }}" is-open="false">
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Valintalaskenta' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
@@ -42,16 +47,18 @@
                 class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskentajavalintakoelaskentahaulle') || 'Suorita valintalaskenta ja valintakoelaskenta haulle' }}
         </button>
     </div>
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoittelu') || 'Sijoittelu' }}</strong></div>
-    <div class="col-md-10 margin-bottom-2">
-        <button ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritasijoittelu') || 'Suorita sijoittelu' }}
-        </button>
-        <button ng-hide="jatkuva.ajossa" ng-click="kaynnistaJatkuvaSijoittelu()"
-                class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.kayttoonajastettu') || 'Ota käyttöön ajastettu sijoittelu' }}
-        </button>
-        <button ng-hide="!jatkuva.ajossa" ng-click="pysaytaJatkuvaSijoittelu()"
-                class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.poistaajastettu') || 'Poista käytöstä ajastettu sijoittelu' }}
-        </button>
+    <div ng-if="!hakumodel.hakuOid.erillishaku">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoittelu') || 'Sijoittelu' }}</strong></div>
+        <div class="col-md-10 margin-bottom-2">
+            <button ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritasijoittelu') || 'Suorita sijoittelu' }}
+            </button>
+            <button ng-hide="jatkuva.ajossa" ng-click="kaynnistaJatkuvaSijoittelu()"
+                    class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.kayttoonajastettu') || 'Ota käyttöön ajastettu sijoittelu' }}
+            </button>
+            <button ng-hide="!jatkuva.ajossa" ng-click="pysaytaJatkuvaSijoittelu()"
+                    class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.poistaajastettu') || 'Poista käytöstä ajastettu sijoittelu' }}
+            </button>
+        </div>
     </div>
 
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.ajotiheys') || 'Sijoittelun ajotiheys (t)' }}</strong></div>
@@ -85,9 +92,9 @@
         <div class="col-md-2"><strong>{{ t('yhteisvalinnanhallinta.ajastettuvirhe') || 'Ajastetun sijoittelun virhe' }}</strong></div>
         <div class="col-md-10">{{jatkuva.virhe}}</div>
     </div>
-
-
 </collapsible>
+
+<!-- VALINTALASKENNAN SEURANTA -->
 <collapsible ng-if="!hakumodel.hakuOid.lisahaku" heading="{{ t('yhteisvalinnanhallinta.valintalaskennanseuranta') || 'Valintalaskennan seuranta' }}" ng-click="updateHaunLaskennat();" is-open="naytaHaunLaskennat">
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Haun valintalaskennat' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
@@ -115,6 +122,8 @@
 		</div>
     </div>
 </collapsible>
+
+<!-- SIJOITTELUN TULOKSET -->
 <collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Sijoittelun tulokset' }}">
     <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
@@ -146,6 +155,8 @@
     </button>
 </collapsible>
 
+
+<!--KELAN TIEDONSIIRTO-->
 <collapsible heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}">
 
     <div class="form-horizontal">
@@ -205,6 +216,9 @@
         </table>
     </div>
 </collapsible>
+
+
+<!-- VIRHEET VALINTAKOKEISSA JA LASKENNOISSA -->
 <collapsible heading="Virheet valintakokeissa ja laskennoissa" privileges="valintalaskenta" ng-click="showErrors()">
     <div ng-show="virheet.valintakoe.length > 0 || virheet.valintalaskenta.length > 0 || virheet.eiKoeVirheita || virheet.eiLaskentaVirheita">
         <div class="tabs">
