@@ -29,9 +29,9 @@
                 </a>
             </td>
         </tr>
-        <tr ng-if="!model.haku.lisahaku" ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="filter || (!filter && isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
+        <tr ng-if="!model.haku.lisahaku" ng-repeat-start="valinnanvaihe in hakutoive.valintalaskenta | orderBy: 'jarjestysnumero' : true" ng-show="filter || (!filter && isValinnanvaiheVisible($index,hakutoive.valintalaskenta))" ng-if="valinnanvaihe.valintatapajonot">
             <td>
-                <div ng-if="isValinnanvaiheNameVisible($index,hakutoive.valintalaskenta)">
+                <div ng-if="isValinnanvaiheVisible($index,hakutoive.valintalaskenta)">
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                     <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                         {{hakutoive.oppilaitos}}

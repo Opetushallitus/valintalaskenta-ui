@@ -361,7 +361,7 @@ angular.module('valintalaskenta').
         $scope.updateOph = true;
     });
 
-    $scope.isValinnanvaiheNameVisible = function (index, valinnanvaiheet) {
+    $scope.isValinnanvaiheVisible = function (index, valinnanvaiheet) {
         var orderBy = $filter('orderBy');
         valinnanvaiheet = orderBy(valinnanvaiheet, 'jarjestysnumero', true);
         for (var i = 0; i < valinnanvaiheet.length; i++) {

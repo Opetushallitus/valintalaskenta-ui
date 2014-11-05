@@ -151,3 +151,8 @@ collapsible > div > div {
 .well {
     margin-bottom: 0;
 }
+
+.table-group {
+    cursor: pointer;
+    text-align: left;
+}
