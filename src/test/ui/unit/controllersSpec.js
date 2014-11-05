@@ -1239,13 +1239,13 @@ describe('Testing YhteisvalinnanHallintaController', function(){
         jalkiohjauskirjepohjat,jalkiohjauskirjeet,ilmoitus,ilmoitusTila,sijoittelunTulosTaulukkolaskenta,
         sijoittelunTulosOsoitetarrat,sijoittelunTulosHyvaksymiskirjeet,aktivoiKelaFtp,
         kelaDokumentti,sijoitteluAjo,jalkiohjausXls,sijoitteluAktivointi,hakuModel,virheModel,jatkuvaSijoittelu,
-        $interval,$log,$timeout,$http,$route,$window,sijoitteluajolatestalljson;
+        $interval,$log,$timeout,$http,$route,$window,sijoitteluajolatestalljson, findalljson;
     var routeParams = {"hakuOid": "oid1",
         "hakukohdeOid" : "oid2"};
 
     beforeEach(module('valintalaskenta','testData'));
 
-    beforeEach(inject(function($injector,sijoitteluajolatestallJSON) {
+    beforeEach(inject(function($injector,sijoitteluajolatestallJSON, findallJSON) {
         $window = $injector.get('$window');
         $route = $injector.get('$route');
         $http = $injector.get('$http');
@@ -1275,7 +1275,7 @@ describe('Testing YhteisvalinnanHallintaController', function(){
         virheModel = $injector.get('VirheModel');
         jatkuvaSijoittelu = $injector.get('JatkuvaSijoittelu');
         sijoitteluajolatestalljson = sijoitteluajolatestallJSON;
-
+        findalljson = findallJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
@@ -1287,6 +1287,10 @@ describe('Testing YhteisvalinnanHallintaController', function(){
 
     it('should get YhteisvalinnanHallintaController', function() {
         scope = $rootScope.$new();
+
+
+        $httpBackend.expectGET('haku/findAll')
+            .respond(201,findalljson);
         $httpBackend.expectGET('resources/sijoittelu/' + routeParams.hakuOid + '/sijoitteluajo/latest')
             .respond(201,sijoitteluajolatestalljson);
         $httpBackend.expectGET('resources/koostesijoittelu/jatkuva?hakuOid=' + routeParams.hakuOid)
