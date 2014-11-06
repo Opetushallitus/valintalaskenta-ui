@@ -51,13 +51,7 @@
                                           class="btn btn-primary btn-sm margin-bottom-2 btn-file">
 									    {{ t('erillishaku.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input
                                             type="file"
-                                            ng-file-select="erillishaunTuontiXlsx(valintatapajono.oid, $files)">
-									</span>
-				                    <span ng-hide="true"
-                                          ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                                          class="btn btn-primary btn-sm margin-bottom-2 btn-file">
-									    {{ t('erillishaku.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input
-                                            type="file" ng-file-select="erillishaunTuontiXlsx($files, valintatapajono.oid)">
+                                            ng-file-select="erillishaunTuontiXlsx($files,valintatapajono.oid)">
 									</span>
                         <table class="virkailija-table-1">
                             <thead>
