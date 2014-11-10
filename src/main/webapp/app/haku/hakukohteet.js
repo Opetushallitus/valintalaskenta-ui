@@ -25,7 +25,9 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
 
                 for (var lang in kielet) {
                     if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]] &&
-                        hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]]) {
+                        !_.isEmpty(hakukohde.tarjoajaNimi[kielet[lang]]) &&
+                        hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]] &&
+                        !_.isEmpty(hakukohde.hakukohdeNimi[kielet[lang]])) {
                         return kielet[lang];
                     }
                 }
@@ -35,29 +37,27 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
 
 
         this.getTarjoajaNimi = function (hakukohde) {
-            var kielet = ["fi", "sv", "en"];
             var kieli = this.getKieli(hakukohde);
 
-            if (kieli !== "") {
+            if (!_.isEmpty(kieli)) {
                 return hakukohde.tarjoajaNimi[kieli];
             } else {
                 for (var lang in hakukohde.tarjoajaNimi) {
-                    return hakukohde.tarjoajaNimi[kielet[lang]];
+                    if (!_.isEmpty(hakukohde.tarjoajaNimi[lang]))
+                        return hakukohde.tarjoajaNimi[lang];
                 }
             }
         };
 
         this.getHakukohdeNimi = function (hakukohde) {
-
-            var kielet = ["fi", "sv", "en"];
-
             var kieli = this.getKieli(hakukohde);
 
-            if (kieli !== "") {
+            if (!_.isEmpty(kieli)) {
                 return hakukohde.hakukohdeNimi[kieli];
             } else {
                 for (var lang in hakukohde.hakukohdeNimi) {
-                    return hakukohde.hakukohdeNimi[kielet[lang]];
+                    if (!_.isEmpty(hakukohde.hakukohdeNimi[lang]))
+                        return hakukohde.hakukohdeNimi[lang];
                 }
             }
         };

@@ -20,7 +20,9 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
 
                 for (var lang in kielet) {
                     if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]] &&
-                        hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]]) {
+                        !_.isEmpty(hakukohde.tarjoajaNimi[kielet[lang]]) &&
+                        hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]] &&
+                        !_.isEmpty(hakukohde.hakukohdeNimi[kielet[lang]])) {
                         return kielet[lang];
                     }
                 }
@@ -42,29 +44,28 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
 		};
 
         this.getTarjoajaNimi = function () {
-            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
             var kieli = this.getKieli(model.hakukohde);
 
-            if (kieli !== "") {
+            if (!_.isEmpty(kieli)) {
                 return model.hakukohde.tarjoajaNimi[kieli];
             } else {
                 for (var lang in model.hakukohde.tarjoajaNimi) {
-                    return model.hakukohde.tarjoajaNimi[kielet[lang]];
+                    if (!_.isEmpty(model.hakukohde.tarjoajaNimi[lang]))
+                        return model.hakukohde.tarjoajaNimi[lang];
                 }
             }
         };
 
         this.getHakukohdeNimi = function () {
 
-            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
-
             var kieli = this.getKieli(model.hakukohde);
 
-            if (kieli !== "") {
+            if (!_.isEmpty(kieli)) {
                 return model.hakukohde.hakukohdeNimi[kieli];
             } else {
                 for (var lang in model.hakukohde.hakukohdeNimi) {
-                    return model.hakukohde.hakukohdeNimi[kielet[lang]];
+                    if (!_.isEmpty(model.hakukohde.hakukohdeNimi[lang]))
+                        return model.hakukohde.hakukohdeNimi[lang];
                 }
             }
         };
