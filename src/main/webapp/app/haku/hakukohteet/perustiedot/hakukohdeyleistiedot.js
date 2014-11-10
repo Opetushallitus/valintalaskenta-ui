@@ -13,26 +13,24 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
         this.refreshingModel = false;
 
         // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
-        this.getKieli = function () {
-            // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
-            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
+        this.getKieli = function (hakukohde) {
+            if (hakukohde) {
+                // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
+                var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
 
-            for (var lang in kielet) {
-                if (model.hakukohde.tarjoajaNimi && model.hakukohde.tarjoajaNimi[kielet[lang]] &&
-                    model.hakukohde.hakukohdeNimi && model.hakukohde.hakukohdeNimi[kielet[lang]]) {
-                    return kielet[lang];
+                for (var lang in kielet) {
+                    if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]] &&
+                        hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]]) {
+                        return kielet[lang];
+                    }
                 }
             }
-            for (var lang in kielet) {
-                if (model.hakukohde.tarjoajaNimi && model.hakukohde.tarjoajaNimi[kielet[lang]] ||
-                    model.hakukohde.hakukohdeNimi && model.hakukohde.hakukohdeNimi[kielet[lang]]) {
-                    return kielet[lang];
-                }
-            }
-            return kielet[0];
+            return "";
         };
+
+
 		this.getKieliCode = function () {
-			var kieli = this.getKieli();
+			var kieli = this.getKieli(model.hakukohde);
 			if(kieli === "kieli_fi") {
 				return "FI";
 			} else if(kieli === "kieli_sv") {
@@ -42,25 +40,32 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
 			}
 			return "FI";
 		};
+
         this.getTarjoajaNimi = function () {
+            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
+            var kieli = this.getKieli(model.hakukohde);
 
-            if (model.hakukohde.tarjoajaNimi && model.hakukohde.tarjoajaNimi[this.getKieli()]) {
-                return model.hakukohde.tarjoajaNimi[this.getKieli()];
-            }
-
-            for (var lang in model.hakukohde.tarjoajaNimi) {
-                return model.hakukohde.tarjoajaNimi[lang];
+            if (kieli !== "") {
+                return model.hakukohde.tarjoajaNimi[kieli];
+            } else {
+                for (var lang in model.hakukohde.tarjoajaNimi) {
+                    return model.hakukohde.tarjoajaNimi[kielet[lang]];
+                }
             }
         };
 
         this.getHakukohdeNimi = function () {
 
-            if (model.hakukohde.hakukohdeNimi && model.hakukohde.hakukohdeNimi[this.getKieli()]) {
-                return model.hakukohde.hakukohdeNimi[this.getKieli()];
-            }
+            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
 
-            for (var lang in model.hakukohde.tarjoajaNimi) {
-                return model.hakukohde.hakukohdeNimi[lang];
+            var kieli = this.getKieli(model.hakukohde);
+
+            if (kieli !== "") {
+                return model.hakukohde.hakukohdeNimi[kieli];
+            } else {
+                for (var lang in model.hakukohde.hakukohdeNimi) {
+                    return model.hakukohde.hakukohdeNimi[kielet[lang]];
+                }
             }
         };
 
