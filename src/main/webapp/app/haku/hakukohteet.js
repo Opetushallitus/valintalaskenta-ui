@@ -19,10 +19,17 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
         // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
         this.getKieli = function (hakukohde) {
             // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
-            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
+            var kielet = ["fi", "sv", "en"];
 
             for (var lang in kielet) {
-                if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]]) {
+                if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]] &&
+                    hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]]) {
+                    return kielet[lang];
+                }
+            }
+            for (var lang in kielet) {
+                if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]] ||
+                    hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]]) {
                     return kielet[lang];
                 }
             }
