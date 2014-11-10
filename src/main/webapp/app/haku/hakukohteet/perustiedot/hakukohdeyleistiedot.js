@@ -15,7 +15,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
         // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
         this.getKieli = function () {
             // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
-            var kielet = ["fi", "sv", "en"];
+            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
 
             for (var lang in kielet) {
                 if (model.hakukohde.tarjoajaNimi && model.hakukohde.tarjoajaNimi[kielet[lang]] &&
@@ -33,11 +33,11 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
         };
 		this.getKieliCode = function () {
 			var kieli = this.getKieli();
-			if (kieli === "fi") {
+			if(kieli === "kieli_fi") {
 				return "FI";
-			} else if(kieli === "sv") {
+			} else if(kieli === "kieli_sv") {
 				return "SV";
-			} else if(kieli === "ev") {
+			} else if(kieli === "kieli_en") {
 				return "EN";
 			}
 			return "FI";
