@@ -16,44 +16,54 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
         this.valmiitHakukohteet = "JULKAISTU";
         this.readyToQueryForNextPage = true;
 
+
         // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
         this.getKieli = function (hakukohde) {
-            // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
-            var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
+            if (hakukohde) {
+                // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
+                var kielet = ["fi", "sv", "en"];
 
-            for (var lang in kielet) {
-                if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]]) {
-                    return kielet[lang];
+                for (var lang in kielet) {
+                    if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]] &&
+                        !_.isEmpty(hakukohde.tarjoajaNimi[kielet[lang]]) &&
+                        hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]] &&
+                        !_.isEmpty(hakukohde.hakukohdeNimi[kielet[lang]])) {
+                        return kielet[lang];
+                    }
                 }
             }
-            return kielet[0];
+            return "";
         };
 
-        this.getKieliCode = function() {
-        };
-        
+
         this.getTarjoajaNimi = function (hakukohde) {
+            var kieli = this.getKieli(hakukohde);
 
-            if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[this.getKieli(hakukohde)]) {
-                return hakukohde.tarjoajaNimi[this.getKieli(hakukohde)];
-            }
-
-            for (var lang in hakukohde.tarjoajaNimi) {
-                return hakukohde.tarjoajaNimi[lang];
+            if (!_.isEmpty(kieli)) {
+                return hakukohde.tarjoajaNimi[kieli];
+            } else {
+                for (var lang in hakukohde.tarjoajaNimi) {
+                    if (!_.isEmpty(hakukohde.tarjoajaNimi[lang]))
+                        return hakukohde.tarjoajaNimi[lang];
+                }
             }
         };
 
         this.getHakukohdeNimi = function (hakukohde) {
+            var kieli = this.getKieli(hakukohde);
 
-            if (hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[this.getKieli(hakukohde)]) {
-                return hakukohde.hakukohdeNimi[this.getKieli(hakukohde)];
-            }
-
-            for (var lang in hakukohde.tarjoajaNimi) {
-                return hakukohde.hakukohdeNimi[lang];
+            if (!_.isEmpty(kieli)) {
+                return hakukohde.hakukohdeNimi[kieli];
+            } else {
+                for (var lang in hakukohde.hakukohdeNimi) {
+                    if (!_.isEmpty(hakukohde.hakukohdeNimi[lang]))
+                        return hakukohde.hakukohdeNimi[lang];
+                }
             }
         };
 
+        this.getKieliCode = function() {
+        };
         this.getCount = function () {
             if (this.hakukohteet === undefined) {
                 return 0;

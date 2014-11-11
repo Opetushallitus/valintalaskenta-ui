@@ -49,7 +49,6 @@
             });
             ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.valinnanvaiheet = result;
-                console.log(result);
                 var found = false;
                 _.some(model.valinnanvaiheet, function (valinnanvaihe) {
                     _.some(valinnanvaihe.valintatapajonot, function (valintatapajono) {
