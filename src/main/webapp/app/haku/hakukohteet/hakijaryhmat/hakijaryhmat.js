@@ -41,8 +41,8 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
                         }, function (error) {
                         });
 
-
                     });
+                    model.hakijaryhmat[0].jonosijat[0].jarjestyskriteerit[0].tila="HYLATTY";
                 });
             }, function(error) {
                 model.errors.push(error);
@@ -76,6 +76,19 @@ angular.module('valintalaskenta').
             var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
             var promise = $scope.model.refresh($scope.hakuOid, $scope.hakukohdeOid);
+
+            var order = {
+                "HYVAKSYTTAVISSA": 1,
+                "HYVAKSYTTY_HARKINNANVARAISESTI": 2,
+                "HYLATTY": 3,
+                "VIRHE": 4,
+                "MAARITTELEMATON": 5
+            };
+
+            $scope.jarjesta = function(value) {
+                var i = order[value.jarjestyskriteerit[0].tila];
+                return i;
+            };
 
             AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
                 $scope.updateOph = true;
