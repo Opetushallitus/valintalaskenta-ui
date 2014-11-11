@@ -4,6 +4,7 @@
 	var model;
 	model = new function() {
 
+		this.hakuOid = undefined;
 		this.hakukohdeOid = {};
 		this.koetulokset = [];
 		this.valintakokeet = {};
@@ -13,7 +14,7 @@
         this.filter = "OSALLISTUU";
         this.filterImmutable = "OSALLISTUU";
 		
-		this.refresh = function(hakukohdeOid) {
+		this.refresh = function(hakukohdeOid, hakuOid) {
 		    model.hakukohdeOid = {};
             model.koetulokset = [];
             model.valintakokeet = {};
@@ -23,6 +24,7 @@
             model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
+			model.hakuOid = hakuOid;
 
             HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid}, function(hakukohteenValintakokeet) {
             	Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(result) {
@@ -39,7 +41,7 @@
 	            			hakijat: []
 	            		};
 	            		if(entry.kutsutaankoKaikki) {
-                            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function(hakuResult) {
+                            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}, function(hakuResult) {
 	            				_.each(hakuResult, function(hakija) {
 	            					var e = {};
 		            				e.osallistuminen = "OSALLISTUU";
@@ -129,7 +131,7 @@
 		// helpommin käsiteltävään muotoon tulokset. samoin privaattina
 		// funktiona, niin ei turhaan pysty kutsumaan tätä suoraan ulkopuolelta.
 		function flatKoetulokset() {
-            HakukohdeHenkilotFull.get({aoOid: model.hakukohdeOid, rows: 100000}, function(hakuResult) {
+            HakukohdeHenkilotFull.get({aoOid: model.hakukohdeOid, rows: 100000, asId: model.hakuOid}, function(hakuResult) {
                 model.koetulokset.forEach(function (koetulos) {
                     koetulos.hakutoiveet.forEach(function (hakutoive) {
                         if (hakutoive.hakukohdeOid === model.hakukohdeOid) {
@@ -405,7 +407,7 @@ angular.module('valintalaskenta').
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 
-    $scope.model.refresh($scope.hakukohdeOid);
+    $scope.model.refresh($scope.hakukohdeOid, $routeParams.hakuOid);
 
 
     $scope.nakymanTila = "Kokeittain";
