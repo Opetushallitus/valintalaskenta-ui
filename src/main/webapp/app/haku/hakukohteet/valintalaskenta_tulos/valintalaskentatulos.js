@@ -42,7 +42,7 @@
             	ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
                     if(result.length > 0) {
-                        HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
+                        HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}, function (result) {
                             model.hakeneet = result;
 
                             model.ilmanlaskentaa.forEach(function (vaihe) {

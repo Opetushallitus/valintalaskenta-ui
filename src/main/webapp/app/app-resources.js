@@ -398,7 +398,7 @@ app.factory('HakukohdeHenkilot', function($resource) {
 });
 
 app.factory('HakukohdeHenkilotFull', function($resource) {
-    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/listfull",{aoOid: "@aoOid", appState:["ACTIVE","INCOMPLETE"], rows: 100000}, {
+    return $resource(HAKEMUS_URL_BASE + "haku-app/applications/listfull",{aoOid: "@aoOid", asId: "@asId", appState:["ACTIVE","INCOMPLETE"], rows: 100000}, {
         get: {method: "GET", isArray: true}
     });
 });
