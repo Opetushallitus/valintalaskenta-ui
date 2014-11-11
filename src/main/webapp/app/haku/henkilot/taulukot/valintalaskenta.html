@@ -1,6 +1,6 @@
 <div ng-if="model.hakutoiveet.length">
 
-    <table ng-table="tableParams" class="virkailija-table-1">
+    <table class="virkailija-table-1">
         <thead>
         <tr ng-if="!model.haku.lisahaku">
             <th colspan="2"></th>
@@ -46,7 +46,7 @@
         <tr ng-if="!hakutoive.valintalaskenta.$hideRows" ng-repeat-end ng-repeat-start="valintatapajono in valinnanvaihe.valintatapajonot | orderBy: 'prioriteetti'" ng-show="model.filter || !model.filter && isValinnanvaiheVisible($index,hakutoive.valintalaskenta)">
 
             <td></td>
-            <td >
+            <td>
                 {{valintatapajono.nimi}}<br/>
                 <span ng-bind="valinnanvaihe.createdAt | date:'dd.MM.yyyy HH:mm:ss'"></span>
             </td>

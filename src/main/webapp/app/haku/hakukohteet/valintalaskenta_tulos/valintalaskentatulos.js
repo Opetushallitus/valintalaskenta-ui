@@ -241,8 +241,6 @@ angular.module('valintalaskenta').
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
     $scope.pageSize = 50;
-    $scope.currentPage = [];
-    $scope.filteredResults = [];
 
     var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
         AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
@@ -261,14 +259,6 @@ angular.module('valintalaskenta').
             $scope.jkmuokkaus = UserModel.isKKUser;
         });
 
-
-    for (var i = 0; i < 1000; i++) {
-        $scope.currentPage[i] = [];
-        $scope.filteredResults[i] = [];
-        for (var j = 0; j < 1000; j++) {
-            $scope.currentPage[i][j] = 1;
-        }
-    }
 
     $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
     	ValintatapajonoVienti.vie({
