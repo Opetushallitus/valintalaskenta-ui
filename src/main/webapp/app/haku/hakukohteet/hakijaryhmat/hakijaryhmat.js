@@ -72,12 +72,6 @@ angular.module('valintalaskenta').
             $scope.hakukohdeModel = HakukohdeModel;
 
             $scope.pageSize = 50;
-            $scope.currentPage = [];
-            $scope.filteredResults = [];
-
-            for (var i = 0; i < 1000; i++) {
-                $scope.currentPage[i] = 1;
-            }
 
             var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
