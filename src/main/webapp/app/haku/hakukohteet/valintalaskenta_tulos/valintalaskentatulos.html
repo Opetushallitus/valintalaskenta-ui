@@ -93,8 +93,8 @@
 				                    		class="btn btn-primary btn-sm margin-bottom-2 btn-file">
 									    {{ t('valintalaskentatulos.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input type="file" ng-file-select="valintatapajonoTuontiXlsx($files)" >
 									</span>
-                                    <button ng-disabled="!crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
-                                    <button ng-disabled="!crudOrg" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
+                                    <button ng-disabled="!crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
+                                    <button ng-disabled="!crudOrg" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
                                     <table class="virkailija-table-1">
                                         <thead>
                                         <tr>
@@ -107,7 +107,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
+                                        <tr ng-repeat="tulos in valintatapajono.filteredResults = (valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:((valintatapajono.currentPage)-1)*pageSize | limitTo:pageSize">
                                             <td><input type="number"
                                                        ng-model="tulos.jonosija"
                                                        min="1"
@@ -138,7 +138,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[$parent.$parent.$index][$parent.$index].length" ng-model="currentPage[$parent.$parent.$index][$parent.$index]" items-per-page="pageSize"></pagination>
+                                    <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}" ng-init="valintatapajono.currentPage=1" total-items="valintatapajono.filteredResults.length" ng-model="valintatapajono.currentPage" items-per-page="pageSize"></pagination>
                                 </form>
                             </div>
                         </div>
@@ -177,7 +177,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="tulos in filteredResults[$parent.$parent.$index][$parent.$index] = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:(currentPage[$parent.$parent.$index][$parent.$index]-1)*pageSize | limitTo:pageSize">
+                                    <tr ng-repeat="tulos in valintatapajono.filteredResults = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:((valintatapajono.currentPage)-1)*pageSize | limitTo:pageSize">
                                         <td>{{tulos.jonosija}}</td>
                                         <td class="leftorientedcolumn">
                                             <show-person-information sukunimi="{{tulos.sukunimi}}"
@@ -218,7 +218,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[$parent.$parent.$index][$parent.$index].length" ng-model="currentPage[$parent.$parent.$index][$parent.$index]" items-per-page="pageSize"></pagination>
+                                <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}" total-items="valintatapajono.filteredResults.length" ng-init="valintatapajono.currentPage=1" ng-model="valintatapajono.currentPage" items-per-page="pageSize"></pagination>
                             </div>
                         </div>
                     </accordion-group>
