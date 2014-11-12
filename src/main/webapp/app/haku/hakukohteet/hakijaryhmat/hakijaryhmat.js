@@ -42,7 +42,6 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
                         });
 
                     });
-                    model.hakijaryhmat[0].jonosijat[0].jarjestyskriteerit[0].tila="HYLATTY";
                 });
             }, function(error) {
                 model.errors.push(error);

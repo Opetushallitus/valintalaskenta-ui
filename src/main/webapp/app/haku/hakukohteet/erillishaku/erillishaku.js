@@ -339,26 +339,11 @@
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
     $scope.pageSize = 50;
-    $scope.currentPage = [];
-    $scope.filteredResults = [];
 
     $scope.model.erillishakuDefer.promise.then(function () {
         $scope.fetch = true;
     });
 
-/*
-    var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
-    AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
-        $scope.updateOph = true;
-        $scope.jkmuokkaus = true;
-    });
-
-    hakukohdeModelpromise.then(function () {
-        AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
-            $scope.crudOrg = true;
-        });
-    });
-    */
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
@@ -407,14 +392,6 @@
                 });
             }
         };
-
-        for (var i = 0; i < 1000; i++) {
-            $scope.currentPage[i] = [];
-            $scope.filteredResults[i] = [];
-            for (var j = 0; j < 1000; j++) {
-                $scope.currentPage[i][j] = 1;
-            }
-        }
 
         $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
             ValintatapajonoVienti.vie({
