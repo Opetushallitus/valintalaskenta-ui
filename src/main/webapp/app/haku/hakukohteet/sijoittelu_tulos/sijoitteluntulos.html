@@ -60,7 +60,7 @@
                 <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
                 <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="model.naytaVainMuuttuneet"> <br/></div>
 
-                <table class="virkailija-table-1" style="width: 900px;" ng-repeat="hakija in filteredResults[0] = (model.sijoitteluntulosHakijoittainArray | orderBy:predicate:reverse | filter:hakijaFilter) | startFrom:(currentPage[0]-1)*pageSize | limitTo:pageSize">
+                <table class="virkailija-table-1" style="width: 900px;" ng-repeat="hakija in filteredResults = (model.sijoitteluntulosHakijoittainArray | orderBy:predicate:reverse | filter:hakijaFilter) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                     <thead>
                         <tr>
                             <th style="background-color:#f1f6f7;font-size: medium;width:300px">
@@ -97,7 +97,7 @@
                         </td>
                     </tr>
                 </table>
-                <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[0].length" ng-model="currentPage[0]" items-per-page="pageSize"></pagination>
+                <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults.length" ng-model="currentPage" ng-init="currentPage=1" items-per-page="pageSize"></pagination>
                 <br/>
                 <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
             </div>
@@ -135,7 +135,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="hakemus in filteredResults[$index] = (jono.hakemukset | orderBy:[jarjesta,'varasijanNumero', 'sija'] | filter:hakijaFilter | tilaFilter: tilaFilterValue | filter:filterChangedValues) | startFrom:(currentPage[$index]-1)*pageSize | limitTo:pageSize">
+                        <tr ng-repeat="hakemus in jono.filteredResults = (jono.hakemukset | orderBy:[jarjesta,'varasijanNumero', 'sija'] | filter:hakijaFilter | tilaFilter: tilaFilterValue | filter:filterChangedValues) | startFrom:(jono.currentPage-1)*pageSize | limitTo:pageSize">
                             <td><span ng-if="hakemus.sija > 0">{{hakemus.sija}}</span></td>
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{hakemus.sukunimi}}"
@@ -206,7 +206,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <pagination previous-text="{{ t('sijoitteluntulos.edellinen') || 'Edellinen' }}" next-text="{{ t('sijoitteluntulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[$index].length" ng-model="currentPage[$index]" items-per-page="pageSize"></pagination>
+                    <pagination previous-text="{{ t('sijoitteluntulos.edellinen') || 'Edellinen' }}" next-text="{{ t('sijoitteluntulos.seuraava') || 'Seuraava' }}" total-items="jono.filteredResults.length" ng-model="jono.currentPage" ng-init="jono.currentPage=1" items-per-page="pageSize"></pagination>
                     <br/>
                     <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
                 </div>

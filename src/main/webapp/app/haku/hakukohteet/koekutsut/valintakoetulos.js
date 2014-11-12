@@ -25,8 +25,10 @@
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
 			model.hakuOid = hakuOid;
+			model.hakukohteenValintakokeet = [];
 
             HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid}, function(hakukohteenValintakokeet) {
+				model.hakukohteenValintakokeet = hakukohteenValintakokeet;
             	Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function(result) {
 				    model.koetulokset = result;
 	                _.each(hakukohteenValintakokeet, function(entry) {
@@ -217,13 +219,6 @@ angular.module('valintalaskenta').
 	
 	// kayttaa dokumenttipalvelua
 	
-
-    $scope.currentPage = [];
-    $scope.filteredResults = [];
-    for (var i = 0; i < 1000; i++) {
-        $scope.currentPage[i] = 1;
-        $scope.filteredResults[i] = 0;
-    }
 
     $scope.pageSize = 50;
 
@@ -421,8 +416,9 @@ angular.module('valintalaskenta').
     };
 
     $scope.updateNakymanTila = function() {
-        $scope.currentPage.forEach(function(page){
-            page = 1;
-        });
+		$scope.currentPage = 1;
+		$scope.model.hakukohteenValintakokeet.forEach(function (v) {
+			$scope.model.valintakokeet[v.oid].currentPage = 1;
+		});
     }
 }]);

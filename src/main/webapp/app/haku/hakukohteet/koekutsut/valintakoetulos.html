@@ -47,7 +47,7 @@
                     </tr>
                     </thead>
 
-                    <tr ng-repeat="hakemus in filteredResults[0] = (model.valintakokeetHakijoittainArray | filter:model.filter | orderBy:predicate:reverse) | startFrom:(currentPage[0]-1)*pageSize | limitTo:pageSize">
+                    <tr ng-repeat="hakemus in filteredResults = (model.valintakokeetHakijoittainArray | filter:model.filter | orderBy:predicate:reverse) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                         <td class="leftorientedcolumn">
                             <show-person-information sukunimi="{{hakemus.sukunimi}}"
                                                      etunimi="{{hakemus.etunimi}}"
@@ -68,7 +68,7 @@
                         </td>
                     </tr>
                 </table>
-                <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[0].length" ng-model="currentPage[0]" items-per-page="pageSize"></pagination>
+                <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults.length" ng-model="currentPage" ng-init="currentPage=1" items-per-page="pageSize"></pagination>
             </div>
 
             <div ng-if="nakymanTila == 'Kokeittain'">
@@ -124,7 +124,7 @@
 	                            </thead>
 	                            <tbody>
 
-	                            <tr ng-repeat="koe in filteredResults[$index] = (valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter) | startFrom:(currentPage[$index]-1)*pageSize | limitTo:pageSize">
+	                            <tr ng-repeat="koe in valintakoe.filteredResults = (valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter) | startFrom:(valintakoe.currentPage-1)*pageSize | limitTo:pageSize">
 	                                 <td><input ng-if="koe.osallistuminen == 'OSALLISTUU'" type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
 	                                </td>
 	                                <td class="leftorientedcolumn">
@@ -146,7 +146,7 @@
 	
 	                            </tbody>
 	                        </table>
-                            <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults[$index].length" ng-model="currentPage[$index]" items-per-page="pageSize"></pagination>
+                            <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="valintakoe.filteredResults.length" ng-model="valintakoe.currentPage" ng-init="valintakoe.currentPage=1" items-per-page="pageSize"></pagination>
 	                    </div>
 	                </div>
                 </div>
