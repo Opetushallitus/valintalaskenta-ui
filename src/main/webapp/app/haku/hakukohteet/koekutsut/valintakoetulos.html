@@ -23,8 +23,8 @@
 
                     <pagination-pagesize page-size="pageSize"></pagination-pagesize>
 
-                    <input id="osallistuu" type="checkbox" ng-model="model.filter" ng-true-value="OSALLISTUU"
-                           ng-false-value="" ng-change="updateNakymanTila()"/>
+                    <input id="osallistuu" type="checkbox" ng-model="model.filter" ng-true-value="'OSALLISTUU'"
+                           ng-false-value="''" ng-change="updateNakymanTila()"/>
                     <label for="osallistuu">{{ t('valintakoetulos.vainkutsuttavat') || 'Vain kutsuttavat' }}</label>
 
                 </div>

@@ -1,5 +1,7 @@
-//domain .. this is both, service & domain layer
-app.factory('ValintaryhmaLista', function ($resource, $q, ValintaryhmatJaHakukohteet, AuthService, HakuModel) {
+
+angular.module('valintalaskenta')
+.factory('ValintaryhmaLista', ['$resource', '$q', 'ValintaryhmatJaHakukohteet', 'AuthService', 'HakuModel',
+        function ($resource, $q, ValintaryhmatJaHakukohteet, AuthService, HakuModel) {
 
     //and return interface for manipulating the model
     var modelInterface = {
@@ -101,9 +103,10 @@ app.factory('ValintaryhmaLista', function ($resource, $q, ValintaryhmatJaHakukoh
         }
     };
     return modelInterface;
-});
+}])
 
-function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, ValintaryhmaLista) {
+.controller('ValintaryhmaController', ['$scope', '$routeParams', '$modal', '_', 'HakuModel', 'ValintaryhmaLista',
+    function($scope, $routeParams, $modal, _, HakuModel, ValintaryhmaLista) {
     $scope.predicate = 'nimi';
     $scope.domain = ValintaryhmaLista;
 
@@ -249,6 +252,6 @@ function ValintaryhmaController($scope, $routeParams, $modal, _, HakuModel, Vali
     };
 
 
-}
+}]);
 
 

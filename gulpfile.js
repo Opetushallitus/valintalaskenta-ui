@@ -9,6 +9,7 @@ var gulp = require('gulp'),
 	sass = require('gulp-sass');
 
 var paths = {
+	testSources: 'src/test/ui/',
 	bower_components: [
 		'bower_components/angular/angular.js',
 		'bower_components/angular/angular.min.js',
@@ -59,6 +60,10 @@ var paths = {
         'src/test/ui/angular-mocks.js',
         'src/test/ui/unit/**/*.js'
 	],
+	testLibs: [
+		'bower_components/angular-mocks/angular-mocks.js',
+		'bower_components/angular-scenario/angular-scenario.js'
+	],
 	jslib: 'src/main/webapp/common/jslib',
 	sources: [
 		'src/main/webapp/app/**',
@@ -93,9 +98,15 @@ gulp.task('scripts', function () {
 		.pipe(gulp.dest(paths.jslib));
 });
 
+gulp.task('testscripts', function () {
+	return gulp
+		.src(paths.testLibs)
+		.pipe(gulp.dest(paths.testSources));
+});
+
 // Update libs & run tests
 gulp.task('build', function (callback) {
-	runSequence(['scripts'], callback);
+	runSequence(['scripts', 'testscripts'], callback);
 });
 
 // Run tests

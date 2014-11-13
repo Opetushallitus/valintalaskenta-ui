@@ -1,6 +1,8 @@
 
+angular.module('valintalaskenta')
 
-function navigationController($scope, $location, $routeParams, HakukohdeModel, HakuModel) {
+.controller('navigationController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
+        function($scope, $location, $routeParams, HakukohdeModel, HakuModel) {
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuModel = HakuModel;
@@ -12,5 +14,5 @@ function navigationController($scope, $location, $routeParams, HakukohdeModel, H
         var currentRoute = $location.path().split('/')[level];
         return page === currentRoute ? 'current' : '';
     };
-};
+}]);
 
