@@ -346,13 +346,6 @@ angular.module('valintalaskenta').
     ];
 
     $scope.pageSize = 50;
-    $scope.currentPage = [];
-    $scope.filteredResults = [];
-
-    for (var i = 0; i < 1000; i++) {
-        $scope.currentPage[i] = 1;
-    }
-
 
 
     $scope.updateVastaanottoTila = function (hakemus, valintatapajonoOid) {

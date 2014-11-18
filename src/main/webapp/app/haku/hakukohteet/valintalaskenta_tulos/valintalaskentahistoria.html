@@ -8,8 +8,7 @@
 <div class="clear"></div>
 
 <div class="tabsheets">
-	<ul class="valintalaskentaHistoria" ng-repeat="historia in model.get()" ng-include="'historia_node.html'">
-	</ul>
+	<ul class="valintalaskentaHistoria" ng-repeat="historia in model.get()" ng-include="'historia_node.html'"></ul>
 </div>
 
 <script type="text/ng-template" id="historia_node.html">
@@ -19,7 +18,7 @@
 		</li>
 		<li><h2 class="margin-top-0">{{ t('valintalaskentahistoria.tulos') || 'Tulos' }}: <span fast-bind-once="historia.tulos"></span></h2></li>
 
-		<button class="small margin-top-2" ng-init="keys = false" ng-click="keys = !keys">{{ t('valintalaskentahistoria.naytapiilota') || 'Näytä/Piilota avaimet' }}</button>
+		<button class="btn btn-sm btn-default margin-top-2" ng-init="keys = false" ng-click="keys = !keys">{{ t('valintalaskentahistoria.naytapiilota') || 'Näytä/Piilota avaimet' }}</button>
 		<ul ng-show="keys" class="avaimet">
 			<li class="padding-vertical-1" ng-repeat="(key, value) in historia.avaimet track by $index">
 				<strong>{{key}}</strong> - <span>{{value}}</span><strong> and index: {{$index}}</strong>
@@ -38,20 +37,16 @@
 <script type="text/ng-template" id="alikaava_node.html">
 	<li>
 		<span class="funktio" ng-if="!model.hasNimettyLukuarvo(kaava)"></span>
-
 		<span ng-click="openTree(kaava)" ng-class="kaava.show ? 'folder-open' : 'folder-closed'" ng-if="kaava.folder"></span>
-		<span ng-show="kaava.show" ng-click="keys = !keys" ng-class="keys ? 'keys-open' : 'keys-closed'"></span>
-		<h3 class="inline-block padding-left-2" fast-bind-once="kaava.avaimet.nimi"><span ng-if="!model.hasNimettyLukuarvo(kaava)" fast-bind-once="kaava.funktio"></span><span style="font-weight: normal" ng-if="!isUndefined(kaava.tulos)" > ({{ t('valintalaskentahistoria.tulos') || 'Tulos' }}: {{kaava.tulos}}) - {{kaava.funktio}}</span></h3>
+		<h3 class="inline-block padding-left-2" ng-click="openFunktioKeys(kaava)" fast-bind-once="kaava.avaimet.nimi">
+			<span ng-if="!model.hasNimettyLukuarvo(kaava)" fast-bind-once="kaava.funktio"></span>
+			<span style="font-weight: normal" ng-if="!isUndefined(kaava.tulos)" > ({{ t('valintalaskentahistoria.tulos') || 'Tulos' }}: {{kaava.tulos}}) - {{kaava.funktio}}</span>
+		</h3>
 	</li>
 
-	<ul ng-show="keys" ng-init="keys = false" class="avaimet">
-		<li class="padding-vertical-1" ng-repeat="(key, value) in kaava.avaimet track by $index">
-			<strong fast-bind-once="key"></strong> - <span fast-bind-once="value"></span>
-		</li>
-	</ul>
-
 	<li ng-if="kaava.funktio !== 'Nimetty lukuarvo'" fast-bind-once="kaava.avaimet.nimi"></li>
-
+	<li ng-if="kaava.funktio === 'Nimetty lukuarvo' || kaava.funktio === 'Nimetty totuusarvo'">
+	</li>
 	<ul ng-if="kaava.show" class="alikaavat">
 		<li ng-repeat="kaava in kaava.historiat" ng-include="'alikaava_node.html'"></li>
 	</ul>

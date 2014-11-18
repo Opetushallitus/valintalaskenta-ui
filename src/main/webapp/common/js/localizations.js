@@ -1,8 +1,8 @@
 
 
 
-
-app.config(function ($translateProvider) {
+angular.module('valintalaskenta')
+.config(function ($translateProvider) {
 
     $translateProvider.translations('fi', {
         sijoitteluntulos: {

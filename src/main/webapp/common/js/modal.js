@@ -1,6 +1,8 @@
 "use strict";
 
-app.directive('modal', function ($modal) {
+angular.module('valintalaskenta')
+
+.directive('modal', ['$modal', function ($modal) {
 
     return {
         scope: true,
@@ -31,9 +33,9 @@ app.directive('modal', function ($modal) {
             $scope.windowClass = $attrs.windowClass;
         }
     };
-});
+}])
 
-app.directive('modalOpen', function () {
+.directive('modalOpen', [ function () {
     return {
         require: '^modal', // We need this directive to be inside an accordion
         restrict: 'E',
@@ -46,12 +48,12 @@ app.directive('modalOpen', function () {
         },
         template: '<a href="" ng-click="show()" ng-transclude></a>'
     };
-});
+}])
 
 
 
 //MODAALISET IKKUNAT
-app.factory('Ilmoitus', function($modal, IlmoitusTila) {
+.factory('Ilmoitus', ['$modal', 'IlmoitusTila', function($modal, IlmoitusTila) {
     return {
         avaa: function(otsikko, ilmoitus, tila) {
             $modal.open({
@@ -77,8 +79,9 @@ app.factory('Ilmoitus', function($modal, IlmoitusTila) {
 
         }
     };
-});
-app.factory('Latausikkuna', function($log, $modal, DokumenttiProsessinTila) {
+}])
+.factory('Latausikkuna', ['$log', '$modal', 'DokumenttiProsessinTila',
+        function($log, $modal, DokumenttiProsessinTila) {
     return {
 
         avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli) {
@@ -164,4 +167,4 @@ app.factory('Latausikkuna', function($log, $modal, DokumenttiProsessinTila) {
             this.avaaKustomoitu(id,otsikko,lisatiedot,'../common/modaalinen/latausikkuna.html',{});
         }
     };
-});
+}]);

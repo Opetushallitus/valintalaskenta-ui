@@ -1558,3 +1558,85 @@ describe('Testing LisahakuhyvaksytytController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
+
+
+
+describe('Häviääko koetulokset', function(){
+    var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakeneetModel, hakukohdeModel,
+        hakukohdejson,additionaljson,hakukohdenimijson,avaimetjson,osallistumisetjson;
+    var routeParams = {"hakuOid": "1.2.246.562.29.173465377510",
+        "hakukohdeOid" : "1.2.246.562.20.81959342411"};
+    beforeEach(module('valintalaskenta','testData'));
+
+    beforeEach(inject(function($injector, hakukohdeJSON, pisteAdditionalJSON, hakukohdenimiJSON, pisteAvaimetJSON, pisteOsallistuminenJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        hakeneetModel = $injector.get('HakeneetModel');
+        hakukohdeModel = $injector.get('HakukohdeModel');
+        hakukohdejson = hakukohdeJSON;
+        additionaljson = pisteAdditionalJSON;
+        hakukohdenimijson = hakukohdenimiJSON;
+        avaimetjson = pisteAvaimetJSON;
+        osallistumisetjson = pisteOsallistuminenJSON;
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('/localisation?category=valintalaskenta').respond("");
+
+        $httpBackend.flush();
+    }));
+
+    it('should get AlaHavitaPistesyottoController', function() {
+        scope = $rootScope.$new();
+
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
+            .respond(201,hakukohdejson);
+        $httpBackend.expectGET('resources/valintakoe/hakutoive/'+routeParams.hakukohdeOid)
+            .respond(201,osallistumisetjson);
+        $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid+'/nimi')
+            .respond(201,hakukohdenimijson);
+        $httpBackend.expectGET('haku-app/applications/additionalData/'+routeParams.hakuOid+"/"+routeParams.hakukohdeOid)
+            .respond(201,additionaljson);
+        $httpBackend.expectGET('resources/hakukohde/avaimet/'+routeParams.hakukohdeOid)
+            .respond(201,avaimetjson);
+        ctrl = $controller('PistesyottoController', {'$scope' : scope,'$location': location, '$routeParams': routeParams,
+            'HakeneetModel': hakeneetModel, 'HakukohdeModel': hakukohdeModel});
+
+        $httpBackend.flush();
+    });
+
+    it('haviaakoPisteet', function() {
+        expect(scope.model.hakeneet[0].additionalData["SOTE1_kaikkiosiot-OSALLISTUMINEN"]).toBe("OSALLISTUI");
+        expect(scope.model.hakeneet[0].additionalData["SOTE1_kaikkiosiot"]).toBe("1");
+        expect(scope.model.hakeneet[0].additionalData["SOTEKOE_VK_RYHMA1-OSALLISTUMINEN"]).toBe("OSALLISTUI");
+        expect(scope.model.hakeneet[0].additionalData["SOTEKOE_VK_RYHMA1"]).toBe("59");
+
+        expect(scope.model.hakeneet[1].additionalData["SOTE1_kaikkiosiot-OSALLISTUMINEN"]).toBe("OSALLISTUI");
+        expect(scope.model.hakeneet[1].additionalData["SOTE1_kaikkiosiot"]).toBe("1");
+        expect(scope.model.hakeneet[1].additionalData["SOTEKOE_VK_RYHMA1-OSALLISTUMINEN"]).toBe("OSALLISTUI");
+        expect(scope.model.hakeneet[1].additionalData["SOTEKOE_VK_RYHMA1"]).toBe("59");
+
+        var hakeneet = angular.copy(scope.model.hakeneet);
+        hakeneet.forEach(function(hakija){
+            hakija.filterData = undefined;
+            hakija.osallistuu = undefined;
+        });
+
+        expect(hakeneet[0].additionalData["SOTE1_kaikkiosiot-OSALLISTUMINEN"]).toBe("OSALLISTUI");
+        expect(hakeneet[0].additionalData["SOTE1_kaikkiosiot"]).toBe("1");
+        expect(hakeneet[0].additionalData["SOTEKOE_VK_RYHMA1-OSALLISTUMINEN"]).toBe("OSALLISTUI");
+        expect(hakeneet[0].additionalData["SOTEKOE_VK_RYHMA1"]).toBe("59");
+
+        expect(hakeneet[1].additionalData["SOTE1_kaikkiosiot-OSALLISTUMINEN"]).toBe("OSALLISTUI");
+        expect(hakeneet[1].additionalData["SOTE1_kaikkiosiot"]).toBe("1");
+        expect(hakeneet[1].additionalData["SOTEKOE_VK_RYHMA1-OSALLISTUMINEN"]).toBe("OSALLISTUI");
+        expect(hakeneet[1].additionalData["SOTEKOE_VK_RYHMA1"]).toBe("59");
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});

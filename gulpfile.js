@@ -9,6 +9,7 @@ var gulp = require('gulp'),
 	sass = require('gulp-sass');
 
 var paths = {
+	testSources: 'src/test/ui/',
 	bower_components: [
 		'bower_components/angular/angular.js',
 		'bower_components/angular/angular.min.js',
@@ -26,11 +27,9 @@ var paths = {
 		'bower_components/angular-animate/angular-animate.min.js',
 		'bower_components/angular-animate/angular-animate.min.js.map',
 
-        'bower_components/angular-translate/angular-translate.js',
-
 		'bower_components/jquery/dist/jquery.js',
 		'bower_components/jquery/dist/jquery.min.js',
-		'bower_components/jquery/dist/jquery.min.js.map',
+		'bower_components/jquery/dist/jquery.min.map',
 
 		'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
 
@@ -58,6 +57,10 @@ var paths = {
         'src/main/webapp/common/jslib/static/tinymce-4.0.12/*.js',
         'src/test/ui/angular-mocks.js',
         'src/test/ui/unit/**/*.js'
+	],
+	testLibs: [
+		'bower_components/angular-mocks/angular-mocks.js',
+		'bower_components/angular-scenario/angular-scenario.js'
 	],
 	jslib: 'src/main/webapp/common/jslib',
 	sources: [
@@ -93,9 +96,15 @@ gulp.task('scripts', function () {
 		.pipe(gulp.dest(paths.jslib));
 });
 
+gulp.task('testscripts', function () {
+	return gulp
+		.src(paths.testLibs)
+		.pipe(gulp.dest(paths.testSources));
+});
+
 // Update libs & run tests
 gulp.task('build', function (callback) {
-	runSequence(['scripts'], callback);
+	runSequence(['scripts', 'testscripts'], callback);
 });
 
 // Run tests

@@ -75,8 +75,8 @@ angular.module('valintalaskenta')
             return model;
         }])
 
-    .controller('HakuController', ['$log', '$scope', '$location', '$routeParams', '$modal', 'HakuModel', 'ParametriService', 'UserModel', 'CustomHakuUtil',
-        function ($log, $scope, $location, $routeParams, $modal, HakuModel, ParametriService, UserModel, CustomHakuUtil) {
+    .controller('HakuController', ['$log', '$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService', 'UserModel', 'CustomHakuUtil',
+        function ($log, $scope, $location, $routeParams, HakuModel, ParametriService, UserModel, CustomHakuUtil) {
             "use strict";
             $scope.hakumodel = HakuModel;
             HakuModel.init($routeParams.hakuOid);

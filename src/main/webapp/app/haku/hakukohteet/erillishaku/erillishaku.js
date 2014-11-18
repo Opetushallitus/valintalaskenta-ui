@@ -269,7 +269,6 @@
 
             });
 
-            console.log('muokatut hakemukset', muokatutHakemukset);
             model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function(error){
@@ -301,8 +300,6 @@
                     hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta
                 };
             });
-
-            console.log('tilaObj', tilaObj);
 
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
