@@ -478,4 +478,498 @@ angular.module('testData', [])
     {"sijoitteluajoId":1403096795055,"hakuOid":"1.2.246.562.5.2013080813081926341927","startMils":1403096795136,"endMils":1403096795569,"hakukohteet":[{"oid":"1.2.246.562.5.40944924683"},{"oid":"1.2.246.562.14.2013091610240621938663"},{"oid":"1.2.246.562.5.98920138249"},{"oid":"1.2.246.562.5.625574970710"},{"oid":"1.2.246.562.5.16205205723"},{"oid":"1.2.246.562.14.2013100114372894819704"},{"oid":"1.2.246.562.5.94699783018"},{"oid":"1.2.246.562.5.61803280769"},{"oid":"1.2.246.562.5.12517376633"},{"oid":"1.2.246.562.5.92951274569"},{"oid":"1.2.246.562.14.2013082612160484783044"},{"oid":"1.2.246.562.5.33329201355"},{"oid":"1.2.246.562.5.55087965665"},{"oid":"1.2.246.562.5.99958386189"},{"oid":"1.2.246.562.5.51123074778"},{"oid":"1.2.246.562.5.67244742697"},{"oid":"1.2.246.562.5.14307911165"},{"oid":"1.2.246.562.5.98853468548"},{"oid":"1.2.246.562.5.63894794575"},{"oid":"1.2.246.562.5.16931580803"},{"oid":"1.2.246.562.5.94161822831"},{"oid":"1.2.246.562.14.2013091911581790511923"},{"oid":"1.2.246.562.14.2013101710561311802498"},{"oid":"1.2.246.562.5.15188450181"}]}
 ).value('hakeneetFullJSON',
     [{"_id":{"new":false,"time":1411104893000,"inc":705179917,"machine":-458170825,"timeSecond":1411104893},"type":"Application","applicationSystemId":"1.2.246.562.29.173465377510","answers":{"henkilotiedot":{"koulusivistyskieli":"XX","kansalaisuus":"FIN","asuinmaa":"FIN","Sukunimi":"Tanssija","matkapuhelinnumero1":"","Henkilotunnus":"280489-572P","Henkilotunnus_digest":"83b1cf890055983ee22165416bc16ac36b305464eee1474aed4b81119ad72d46","Postinumero":"02010","sukupuoli":"2","lahiosoite":"Joku osoite jossain","turvakielto":"false","Kutsumanimi":"Tanja","Sähköposti":"","Etunimet":"Tuija       Tanja","kotikunta":"046","onkoSinullaSuomalainenHetu":"true","aidinkieli":"FI","syntymaaika":"28.04.1989"},"lisatiedot":{"asiointikieli":"suomi"},"hakutoiveet":{"preference4-Koulutus-id-aoIdentifier":"","preference4-Koulutus-id-educationcode":"","preference1-Koulutus-id-ao-groups":"1.2.246.562.28.11347982643,1.2.246.562.28.28738790866","preference3-Koulutus-id-ao-groups":"","preference4-Opetuspiste-id":"","preference1-Opetuspiste":"Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta","preference3-Koulutus-id-athlete":"","preference5-Opetuspiste-id":"","preference2-Koulutus-id-attachmentgroups":"","preference4-Koulutus-id-athlete":"","5406a5e2e4b0bf956c2e42d9":"option_0","preference2-Koulutus-id-aoIdentifier":"","preference2-Koulutus-id-attachments":"false","preference2-Koulutus":"Matematiikka (aineenopettaja), luonnontieteiden kandidaatti ja filosofian maisteri","preference3-Opetuspiste-id":"","preference6-Koulutus-id-lang":"","preference4-Koulutus-id-attachmentgroups":"","preference6-Koulutus-id-vocational":"","preference2-Koulutus-id-ao-groups":"1.2.246.562.28.11347982643,1.2.246.562.28.28738790866","preference1-Koulutus-educationDegree":"koulutusasteoph2002_72","preference6-Koulutus-id-educationcode":"","preference6-Koulutus-id-ao-groups":"","preference5-Koulutus-educationDegree":"","preference2-Koulutus-id-sora":"false","preference4-Koulutus-id-vocational":"","preference1-yoLiite":"true","preference3-Koulutus-id":"","preference5-Koulutus-id-lang":"","preference1-Opetuspiste-id":"1.2.246.562.10.94639300915","preference2-Koulutus-educationDegree":"koulutusasteoph2002_72","preference1-Koulutus-id-sora":"false","preference5-Koulutus-id-sora":"","preference1-Koulutus-id-aoIdentifier":"","preference6-Koulutus-id-kaksoistutkinto":"","preference1-Koulutus-id-educationcode":"koulutus_742301","preference5-Koulutus-id-ao-groups":"","preference3-Koulutus-id-attachmentgroups":"","preference6-Koulutus-id-sora":"","preference5-Koulutus-id-athlete":"","preference5-Koulutus-id-attachments":"","preference2-Koulutus-id":"1.2.246.562.20.63231645142","preference1-Koulutus-id-vocational":"false","preference3-Koulutus-id-vocational":"","preference6-Koulutus-id-athlete":"","preference4-Koulutus-educationDegree":"","preference6-Koulutus-id-attachments":"","preference6-Koulutus-educationDegree":"","preference4-Koulutus-id-kaksoistutkinto":"","preference1-Koulutus-id-athlete":"false","preference6-Koulutus-id-aoIdentifier":"","preference5-Koulutus-id-kaksoistutkinto":"","preference6-Koulutus-id-attachmentgroups":"","53e47429e4b0d272fdc5d865":"option_0","preference5-Koulutus-id":"","preference2-Opetuspiste":"Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta","preference2-Koulutus-id-athlete":"false","preference1-Koulutus-id-attachments":"false","preference3-Koulutus-educationDegree":"","preference5-Opetuspiste":"","preference2-Koulutus-id-kaksoistutkinto":"false","preference5-Koulutus-id-educationcode":"","preference3-Koulutus-id-kaksoistutkinto":"","preference1-Koulutus-id-attachmentgroups":"","preference4-Koulutus-id-sora":"","preference5-Koulutus-id-vocational":"","preference3-Koulutus-id-lang":"","preference2-Opetuspiste-id":"1.2.246.562.10.94639300915","preference3-Opetuspiste":"","preference4-Koulutus-id-lang":"","preference6-Koulutus-id":"","preference5-Koulutus-id-attachmentgroups":"","preference2-Koulutus-id-vocational":"false","preference1-Koulutus-id":"1.2.246.562.20.645785477510","preference3-Koulutus-id-attachments":"","preference3-Koulutus-id-sora":"","preference4-Koulutus-id":"","preference4-Koulutus-id-attachments":"","preference2-Koulutus-id-lang":"SV","preference4-Opetuspiste":"","preference1-Koulutus":"Fysiikka (aineenopettaja), luonnontieteiden kandidaatti ja filosofian maisteri","preference1-Koulutus-id-kaksoistutkinto":"false","preference3-Koulutus-id-educationcode":"","preference2-yoLiite":"true","preference3-Koulutus-id-aoIdentifier":"","preference5-Koulutus-id-aoIdentifier":"","preference1-Koulutus-id-lang":"SV","preference6-Opetuspiste":"","preference4-Koulutus-id-ao-groups":"","preference2-Koulutus-id-educationcode":"koulutus_742101","preference6-Opetuspiste-id":"","preference2-Opetuspiste-id-parents":"1.2.246.562.10.53814745062,1.2.246.562.10.39218317368,1.2.246.562.10.94639300915,1.2.246.562.10.00000000001","preference1-Opetuspiste-id-parents":"1.2.246.562.10.53814745062,1.2.246.562.10.39218317368,1.2.246.562.10.94639300915,1.2.246.562.10.00000000001"},"koulutustausta":{"pohjakoulutus_yo_vuosi":"1920","pohjakoulutus_yo_tutkinto":"eb","pohjakoulutus_yo":"true","suoritusoikeus":"false","aiempitutkinto":"false"},"osaaminen":{}},"additionalInfo":{"de2ba1e8-4ef2-dddb-a2ca-82ee791a90bb":"29","de2ba1e8-4ef2-dddb-a2ca-82ee791a90bb-OSALLISTUMINEN":"EI_VAADITA"},"oid":"1.2.246.562.11.00000000013","state":"INCOMPLETE","personOid":"1.2.246.562.24.82350169004","received":1411104893612,"preferenceEligibilities":[{"aoId":"1.2.246.562.20.645785477510","status":"NOT_CHECKED","source":"UNKNOWN"},{"aoId":"1.2.246.562.20.63231645142","status":"NOT_CHECKED","source":"UNKNOWN"}]},{"_id":{"new":false,"time":1411111948000,"inc":-940790498,"machine":-458216511,"timeSecond":1411111948},"type":"Application","applicationSystemId":"1.2.246.562.29.173465377510","answers":{"henkilotiedot":{"koulusivistyskieli":"SV","kansalaisuus":"FIN","asuinmaa":"FIN","Sukunimi":"Tanssija","matkapuhelinnumero1":"","Henkilotunnus":"120589-238D","Henkilotunnus_digest":"3414f3af4a38362b5e170f52db0c3f9d7b450945651e898786e861bd8a0fcfed","Postinumero":"02010","sukupuoli":"2","lahiosoite":"Joku osoite jossain","turvakielto":"false","Kutsumanimi":"Tanja","Sähköposti":"joojoo@dev.null","Etunimet":"Tanja","kotikunta":"060","onkoSinullaSuomalainenHetu":"true","aidinkieli":"FI","syntymaaika":"12.05.1989"},"lisatiedot":{"asiointikieli":"suomi","lupaMarkkinointi":"true"},"hakutoiveet":{"preference4-Koulutus-id-aoIdentifier":"","preference4-Koulutus-id-educationcode":"","preference1-Koulutus-id-ao-groups":"1.2.246.562.28.11347982643,1.2.246.562.28.28738790866,1.2.246.562.28.67566397840","preference3-Koulutus-id-ao-groups":"","preference4-Opetuspiste-id":"","preference1-Opetuspiste":"Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta","preference3-Koulutus-id-athlete":"","preference5-Opetuspiste-id":"","preference2-Koulutus-id-attachmentgroups":"","preference4-Koulutus-id-athlete":"","5406a5e2e4b0bf956c2e42d9":"option_0","preference2-Koulutus-id-aoIdentifier":"","preference2-Koulutus-id-attachments":"false","preference2-Koulutus":"Fysiikka (aineenopettaja), luonnontieteiden kandidaatti ja filosofian maisteri","preference3-Opetuspiste-id":"","preference6-Koulutus-id-lang":"","preference4-Koulutus-id-attachmentgroups":"","preference6-Koulutus-id-vocational":"","preference2-Koulutus-id-ao-groups":"1.2.246.562.28.11347982643,1.2.246.562.28.28738790866","preference1-Koulutus-educationDegree":"koulutusasteoph2002_72","preference6-Koulutus-id-educationcode":"","preference6-Koulutus-id-ao-groups":"","preference5-Koulutus-educationDegree":"","preference2-Koulutus-id-sora":"false","preference4-Koulutus-id-vocational":"","preference1-yoLiite":"true","preference3-Koulutus-id":"","preference5-Koulutus-id-lang":"","preference1-Opetuspiste-id":"1.2.246.562.10.94639300915","preference2-Koulutus-educationDegree":"koulutusasteoph2002_72","preference1-Koulutus-id-sora":"false","preference5-Koulutus-id-sora":"","preference1-Koulutus-id-aoIdentifier":"","preference6-Koulutus-id-kaksoistutkinto":"","preference1-Koulutus-id-educationcode":"koulutus_742401","preference5-Koulutus-id-ao-groups":"","preference3-Koulutus-id-attachmentgroups":"","preference6-Koulutus-id-sora":"","preference5-Koulutus-id-athlete":"","preference5-Koulutus-id-attachments":"","preference2-Koulutus-id":"1.2.246.562.20.645785477510","preference1-Koulutus-id-vocational":"false","preference3-Koulutus-id-vocational":"","preference6-Koulutus-id-athlete":"","preference4-Koulutus-educationDegree":"","preference6-Koulutus-id-attachments":"","preference6-Koulutus-educationDegree":"","preference4-Koulutus-id-kaksoistutkinto":"","preference1-Koulutus-id-athlete":"false","preference6-Koulutus-id-aoIdentifier":"","preference5-Koulutus-id-kaksoistutkinto":"","preference6-Koulutus-id-attachmentgroups":"","53e47429e4b0d272fdc5d865":"option_1","preference5-Koulutus-id":"","preference2-Opetuspiste":"Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta","preference2-Koulutus-id-athlete":"false","preference1-Koulutus-id-attachments":"false","preference3-Koulutus-educationDegree":"","preference5-Opetuspiste":"","preference2-Koulutus-id-kaksoistutkinto":"false","preference5-Koulutus-id-educationcode":"","preference3-Koulutus-id-kaksoistutkinto":"","preference1-Koulutus-id-attachmentgroups":"","preference4-Koulutus-id-sora":"","preference5-Koulutus-id-vocational":"","preference3-Koulutus-id-lang":"","preference2-Opetuspiste-id":"1.2.246.562.10.94639300915","preference3-Opetuspiste":"","preference4-Koulutus-id-lang":"","preference6-Koulutus-id":"","preference5-Koulutus-id-attachmentgroups":"","preference2-Koulutus-id-vocational":"false","preference1-Koulutus-id":"1.2.246.562.20.56448265241","preference3-Koulutus-id-attachments":"","preference3-Koulutus-id-sora":"","preference4-Koulutus-id":"","preference4-Koulutus-id-attachments":"","preference2-Koulutus-id-lang":"SV","preference4-Opetuspiste":"","preference1-Koulutus":"Kemia (aineenopettaja), luonnontieteiden kandidaatti ja filosofian maisteri","preference1-Koulutus-id-kaksoistutkinto":"false","preference3-Koulutus-id-educationcode":"","preference2-yoLiite":"true","preference3-Koulutus":" ","preference3-Koulutus-id-aoIdentifier":"","preference5-Koulutus-id-aoIdentifier":"","preference1-Koulutus-id-lang":"SV","preference6-Opetuspiste":"","preference4-Koulutus-id-ao-groups":"","preference2-Koulutus-id-educationcode":"koulutus_742301","preference6-Opetuspiste-id":"","preference2-Opetuspiste-id-parents":"1.2.246.562.10.94639300915,1.2.246.562.10.39218317368,1.2.246.562.10.53814745062,1.2.246.562.10.00000000001","preference1-Opetuspiste-id-parents":"1.2.246.562.10.94639300915,1.2.246.562.10.39218317368,1.2.246.562.10.53814745062,1.2.246.562.10.00000000001"},"koulutustausta":{"pohjakoulutus_yo_vuosi":"1920","pohjakoulutus_yo_tutkinto":"eb","pohjakoulutus_yo":"true","suoritusoikeus":"false","aiempitutkinto":"false"},"osaaminen":{}},"additionalInfo":{"de2ba1e8-4ef2-dddb-a2ca-82ee791a90bb":"29","de2ba1e8-4ef2-dddb-a2ca-82ee791a90bb-OSALLISTUMINEN":"EI_VAADITA"},"oid":"1.2.246.562.11.00000000026","state":"ACTIVE","personOid":"1.2.246.562.24.59107908085","received":1411111948396,"preferenceEligibilities":[{"aoId":"1.2.246.562.20.56448265241","status":"NOT_CHECKED","source":"UNKNOWN"},{"aoId":"1.2.246.562.20.645785477510","status":"NOT_CHECKED","source":"UNKNOWN"}]},{"_id":{"new":false,"time":1412172384000,"inc":48833079,"machine":-458169981,"timeSecond":1412172384},"type":"Application","applicationSystemId":"1.2.246.562.29.173465377510","answers":{"henkilotiedot":{"koulusivistyskieli":"FI","kansalaisuus":"FIN","asuinmaa":"FIN","Sukunimi":"Roivas","matkapuhelinnumero1":"","Henkilotunnus":"250584-341U","Henkilotunnus_digest":"7e6032c02439c46946dff3a5728e20228826795cb401f36d1570e7c1535f8627","Postinumero":"86300","sukupuoli":"1","lahiosoite":"rihitie 3","turvakielto":"false","Kutsumanimi":"Veli","Sähköposti":"","Etunimet":"veli neljäs","kotikunta":"563","onkoSinullaSuomalainenHetu":"false","aidinkieli":"FI","syntymaaika":"25.05.1984"},"lisatiedot":{"asiointikieli":"suomi"},"hakutoiveet":{"preference3-yoLiite":"true","preference4-Koulutus-id-aoIdentifier":"","preference4-Koulutus-id-educationcode":"koulutus_742301","preference1-Koulutus-id-ao-groups":"","preference3-Koulutus-id-ao-groups":"1.2.246.562.28.11347982643,1.2.246.562.28.28738790866","preference4-Opetuspiste-id":"1.2.246.562.10.94639300915","preference1-Opetuspiste":"Itä-Suomen yliopisto, Luonnontieteiden ja metsätieteiden tiedekunta, Joensuun kampus","preference3-Koulutus-id-athlete":"false","preference5-Opetuspiste-id":"","preference2-Koulutus-id-attachmentgroups":"1.2.246.562.28.24712637358","5406a5e2e4b0bf956c2e42d9":"option_1","preference4-Koulutus-id-athlete":"false","preference2-Koulutus-id-aoIdentifier":"","preference2-Koulutus-id-attachments":"true","preference2-Koulutus":"Insinööri (AMK), tieto- ja viestintätekniikka, päivätoteutus","preference3-Opetuspiste-id":"1.2.246.562.10.94639300915","preference6-Koulutus-id-lang":"","preference4-Koulutus-id-attachmentgroups":"","preference6-Koulutus-id-vocational":"","preference2-Koulutus-id-ao-groups":"1.2.246.562.28.82550511548,1.2.246.562.28.55575526841,1.2.246.562.28.96829962449,1.2.246.562.28.85557110211,1.2.246.562.28.84829874814,1.2.246.562.28.38943652080,1.2.246.562.28.24712637358,1.2.246.562.28.13426998195,1.2.246.562.28.85192816478,1.2.246.562.28.22486413674,1.2.246.562.28.69544034414,1.2.246.562.28.25885744583,1.2.246.562.28.64674125595,1.2.246.562.28.31780035977,1.2.246.562.28.73789724481","preference1-Koulutus-educationDegree":"koulutusasteoph2002_72","preference6-Koulutus-id-educationcode":"","preference6-Koulutus-id-ao-groups":"","preference5-Koulutus-educationDegree":"","preference2-Koulutus-id-sora":"false","preference4-Koulutus-id-vocational":"false","preference1-yoLiite":"true","preference3-Koulutus-id":"1.2.246.562.20.63231645142","preference5-Koulutus-id-lang":"","preference1-Opetuspiste-id":"1.2.246.562.10.2014041814420657444022","preference2-Koulutus-educationDegree":"koulutusasteoph2002_62","preference1-Koulutus-id-sora":"false","preference5-Koulutus-id-sora":"","preference1-Koulutus-id-aoIdentifier":"","preference6-Koulutus-id-kaksoistutkinto":"","preference1-Koulutus-id-educationcode":"koulutus_742101","preference5-Koulutus-id-ao-groups":"","preference3-Koulutus-id-attachmentgroups":"","preference6-Koulutus-id-sora":"","preference5-Koulutus-id-athlete":"","preference5-Koulutus-id-attachments":"","preference2-Koulutus-id":"1.2.246.562.20.36464992456","preference1-Koulutus-id-vocational":"false","preference3-Koulutus-id-vocational":"false","preference6-Koulutus-id-athlete":"","preference4-Koulutus-educationDegree":"koulutusasteoph2002_72","preference6-Koulutus-id-attachments":"","preference6-Koulutus-educationDegree":"","preference4-Koulutus-id-kaksoistutkinto":"false","preference1-Koulutus-id-athlete":"false","preference6-Koulutus-id-aoIdentifier":"","preference5-Koulutus-id-kaksoistutkinto":"","preference6-Koulutus-id-attachmentgroups":"","53e47429e4b0d272fdc5d865":"option_0","preference5-Koulutus-id":"","preference2-Opetuspiste":"Metropolia AMK, Helsinki, Bulevardi","preference2-Koulutus-id-athlete":"false","preference1-Koulutus-id-attachments":"false","preference3-Koulutus-educationDegree":"koulutusasteoph2002_72","preference5-Opetuspiste":"","preference2-Koulutus-id-kaksoistutkinto":"false","preference5-Koulutus-id-educationcode":"","preference3-Koulutus-id-kaksoistutkinto":"false","preference1-Koulutus-id-attachmentgroups":"","preference4-yoLiite":"true","preference4-Koulutus-id-sora":"false","preference5-Koulutus-id-vocational":"","preference2-amkLiite":"true","preference3-Koulutus-id-lang":"SV","preference2-Opetuspiste-id":"1.2.246.562.10.14858298327","preference3-Opetuspiste":"Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta","preference4-Koulutus-id-lang":"SV","preference6-Koulutus-id":"","preference5-Koulutus-id-attachmentgroups":"","preference4-Koulutus":"Fysiikka (aineenopettaja), luonnontieteiden kandidaatti ja filosofian maisteri","preference2-Koulutus-id-vocational":"false","preference1-Koulutus-id":"1.2.246.562.20.34997734529","preference3-Koulutus-id-attachments":"false","preference3-Koulutus-id-sora":"false","preference4-Koulutus-id":"1.2.246.562.20.645785477510","preference4-Koulutus-id-attachments":"false","preference2-Koulutus-id-lang":"FI","preference4-Opetuspiste":"Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta","preference1-Koulutus":"Matematiikka, Joensuu","preference1-Koulutus-id-kaksoistutkinto":"false","preference3-Koulutus-id-educationcode":"koulutus_742101","preference3-Koulutus":"Matematiikka (aineenopettaja), luonnontieteiden kandidaatti ja filosofian maisteri","preference3-Koulutus-id-aoIdentifier":"","preference5-Koulutus-id-aoIdentifier":"","preference1-Koulutus-id-lang":"FI","preference6-Opetuspiste":"","preference4-Koulutus-id-ao-groups":"1.2.246.562.28.11347982643,1.2.246.562.28.28738790866","preference2-Koulutus-id-educationcode":"koulutus_651999","preference6-Opetuspiste-id":"","preference3-Opetuspiste-id-parents":"1.2.246.562.10.94639300915,1.2.246.562.10.39218317368,1.2.246.562.10.00000000001,1.2.246.562.10.53814745062","preference2-Opetuspiste-id-parents":"1.2.246.562.10.60198812368,1.2.246.562.10.14858298327,1.2.246.562.10.00000000001,1.2.246.562.10.67476956288","preference1-Opetuspiste-id-parents":"1.2.246.562.10.240484683010,1.2.246.562.10.38515028629,1.2.246.562.10.00000000001,1.2.246.562.10.665851030310,1.2.246.562.10.2014041814420657444022","preference4-Opetuspiste-id-parents":"1.2.246.562.10.94639300915,1.2.246.562.10.39218317368,1.2.246.562.10.00000000001,1.2.246.562.10.53814745062"},"koulutustausta":{"pohjakoulutus_yo_vuosi":"1920","pohjakoulutus_yo_tutkinto":"fi","pohjakoulutus_yo":"true","suoritusoikeus":"false","aiempitutkinto":"false"},"osaaminen":{"lukion-paattotodistuksen-keskiarvo":"8,55"}},"oid":"1.2.246.562.11.00000000385","state":"ACTIVE","personOid":"1.2.246.562.24.35812450509","received":1412172384543,"preferenceEligibilities":[{"aoId":"1.2.246.562.20.34997734529","status":"NOT_CHECKED","source":"UNKNOWN"},{"aoId":"1.2.246.562.20.63231645142","status":"NOT_CHECKED","source":"UNKNOWN"},{"aoId":"1.2.246.562.20.36464992456","status":"NOT_CHECKED","source":"UNKNOWN"},{"aoId":"1.2.246.562.20.645785477510","status":"NOT_CHECKED","source":"UNKNOWN"}]}]
+).value('pisteAvaimetJSON',
+        [
+            {
+                "tunniste": "SOTE1_kaikkiosiot",
+                "kuvaus": "Kokeen pakollinen (0 = hylätty, 1 = hyväksytty)",
+                "funktiotyyppi": "LUKUARVOFUNKTIO",
+                "lahde": "SYOTETTAVA_ARVO",
+                "onPakollinen": false,
+                "min": null,
+                "max": null,
+                "arvot": ["0", "1"],
+                "osallistuminenTunniste": "SOTE1_kaikkiosiot-OSALLISTUMINEN",
+                "vaatiiOsallistumisen": true
+            },
+            {
+                "tunniste": "SOTEKOE_VK_RYHMA1",
+                "kuvaus": "Sosiaali- ja terveysalan valintakoe (0-70)",
+                "funktiotyyppi": "LUKUARVOFUNKTIO",
+                "lahde": "SYOTETTAVA_ARVO",
+                "onPakollinen": true,
+                "min": "0",
+                "max": "70",
+                "arvot": null,
+                "osallistuminenTunniste": "SOTEKOE_VK_RYHMA1-OSALLISTUMINEN",
+                "vaatiiOsallistumisen": true
+            }
+        ]
+).value('pisteAdditionalJSON',
+        [
+            {
+                "oid": "1.2.246.562.11.00001204847",
+                "personOid": "1.2.246.562.24.82665625974",
+                "firstNames": "Maryam Osman",
+                "lastName": "Abucar",
+                "additionalData": {
+                    "SOTEKOE_VK_RYHMA3-OSALLISTUMINEN": "MERKITSEMATTA",
+                    "SOTE_kaikkiosiot_ryhma3": "",
+                    "SOTE_kaikkiosiot_ryhma3-OSALLISTUMINEN": "MERKITSEMATTA",
+                    "HUM_kaikkiosiot-OSALLISTUMINEN": "EI_OSALLISTUNUT",
+                    "KOE_LIIKETALOUS_PAIVA2-OSALLISTUMINEN": "EI_OSALLISTUNUT",
+                    "SOTEKOE_VK_RYHMA3": "",
+                    "KOE_LIIKETALOUS_PAIVA3-OSALLISTUMINEN": "EI_OSALLISTUNUT",
+                    "amk_humanistinen_koe": "",
+                    "KOE_LIIKETALOUS_PAIVA2": "",
+                    "KOE_LIIKETALOUS_PAIVA3": "",
+                    "HUM_kaikkiosiot": "",
+                    "KOE_LIIKETALOUS_PAIVA1": "",
+                    "KOE_LIIKETALOUS_PAIVA1-OSALLISTUMINEN": "EI_OSALLISTUNUT",
+                    "amk_humanistinen_koe-OSALLISTUMINEN": "EI_OSALLISTUNUT",
+                    "SOTE1_kaikkiosiot": "1",
+                    "SOTE1_kaikkiosiot-OSALLISTUMINEN": "OSALLISTUI",
+                    "SOTEKOE_VK_RYHMA1": "59",
+                    "SOTEKOE_VK_RYHMA1-OSALLISTUMINEN": "OSALLISTUI"
+                }
+            },
+            {
+                "oid": "1.2.246.562.11.00001179176",
+                "personOid": "1.2.246.562.24.30201794211",
+                "firstNames": "Tiina Elisa",
+                "lastName": "Ahonen",
+                "additionalData": {
+                    "SOTE1_kaikkiosiot": "1",
+                    "SOTE1_kaikkiosiot-OSALLISTUMINEN": "OSALLISTUI",
+                    "SOTEKOE_VK_RYHMA1": "59",
+                    "SOTEKOE_VK_RYHMA1-OSALLISTUMINEN": "OSALLISTUI"
+                }
+            }
+        ]
+
+).value('pisteOsallistuminenJSON',
+    [
+        {
+            "etunimi": "Tiina Elisa",
+            "hakemusOid": "1.2.246.562.11.00001179176",
+            "hakijaOid": "1.2.246.562.24.30201794211",
+            "hakuOid": "1.2.246.562.29.173465377510",
+            "hakutoiveet": [
+                {
+                    "hakukohdeOid": "1.2.246.562.20.59182608469",
+                    "valinnanVaiheet": [
+                        {
+                            "valinnanVaiheJarjestysluku": 2,
+                            "valinnanVaiheOid": "14132858995834746208422355321127",
+                            "valintakokeet": [
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Valintakokeen pakollinen osio",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": ""
+                                        },
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "14132858996828975467064177363906",
+                                    "valintakoeTunniste": "SOTE1_kaikkiosiot"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": true,
+                                    "nimi": "Sosiaali- ja terveysalan valintakoe valintaryhm\u00e4ss\u00e4 1",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": "Hakemus ei mahtunut aloituspaikkojen sis\u00e4\u00e4n v\u00e4lisijoittelussa"
+                                        },
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "1413285899685-3864260789406492429",
+                                    "valintakoeTunniste": "SOTEKOE_VK_RYHMA1"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "hakukohdeOid": "1.2.246.562.20.58826231811",
+                    "valinnanVaiheet": [
+                        {
+                            "valinnanVaiheJarjestysluku": 2,
+                            "valinnanVaiheOid": "14132865449606245049318759497601",
+                            "valintakokeet": [
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Valintakokeen pakollinen osio",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": null,
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": true,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "14132865451182596975707310874075",
+                                    "valintakoeTunniste": "SOTE1_kaikkiosiot"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": true,
+                                    "nimi": "Sosiaali- ja terveysalan valintakoe valintaryhm\u00e4ss\u00e4 1",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": null,
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": true,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "1413286545120-1645683962075538454",
+                                    "valintakoeTunniste": "SOTEKOE_VK_RYHMA1"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "hakukohdeOid": "1.2.246.562.20.81959342411",
+                    "valinnanVaiheet": [
+                        {
+                            "valinnanVaiheJarjestysluku": 2,
+                            "valinnanVaiheOid": "14132834355682263684623178160914",
+                            "valintakokeet": [
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Valintakokeen pakollinen osio",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": "Hakemus hyv\u00e4ksyttiin korkeammalle hakutoiveelle"
+                                        },
+                                        "laskentaTila": "HYVAKSYTTAVISSA",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "OSALLISTUU"
+                                    },
+                                    "valintakoeOid": "1413283435690-5425327518541641810",
+                                    "valintakoeTunniste": "SOTE1_kaikkiosiot"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": true,
+                                    "nimi": "Sosiaali- ja terveysalan valintakoe valintaryhm\u00e4ss\u00e4 1",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": "Hakemus hyv\u00e4ksyttiin korkeammalle hakutoiveelle"
+                                        },
+                                        "laskentaTila": "HYVAKSYTTAVISSA",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "OSALLISTUU"
+                                    },
+                                    "valintakoeOid": "1413283435692-8716121065471896316",
+                                    "valintakoeTunniste": "SOTEKOE_VK_RYHMA1"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "sukunimi": "Ahonen"
+        },
+        {
+            "etunimi": "Maryam Osman",
+            "hakemusOid": "1.2.246.562.11.00001204847",
+            "hakijaOid": "1.2.246.562.24.82665625974",
+            "hakuOid": "1.2.246.562.29.173465377510",
+            "hakutoiveet": [
+                {
+                    "hakukohdeOid": "1.2.246.562.20.30922131005",
+                    "valinnanVaiheet": [
+                        {
+                            "valinnanVaiheJarjestysluku": 1,
+                            "valinnanVaiheOid": "14123263865978087873159496800389",
+                            "valintakokeet": [
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": true,
+                                    "nimi": "Humanistisen ja kasvatusalan valintakoe",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": null,
+                                        "laskentaTila": "HYVAKSYTTAVISSA",
+                                        "laskentaTulos": true,
+                                        "osallistuminen": "OSALLISTUU"
+                                    },
+                                    "valintakoeOid": "14133195740821247120645178795288",
+                                    "valintakoeTunniste": "amk_humanistinen_koe"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Valintakokeen pakollinen osio",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": null,
+                                        "laskentaTila": "HYVAKSYTTAVISSA",
+                                        "laskentaTulos": true,
+                                        "osallistuminen": "OSALLISTUU"
+                                    },
+                                    "valintakoeOid": "14133196019807148333385527861568",
+                                    "valintakoeTunniste": "HUM_kaikkiosiot"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "hakukohdeOid": "1.2.246.562.20.81959342411",
+                    "valinnanVaiheet": [
+                        {
+                            "valinnanVaiheJarjestysluku": 2,
+                            "valinnanVaiheOid": "14132834355682263684623178160914",
+                            "valintakokeet": [
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Valintakokeen pakollinen osio",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": "Hakemus hyv\u00e4ksyttiin korkeammalle hakutoiveelle"
+                                        },
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "1413283435690-5425327518541641810",
+                                    "valintakoeTunniste": "SOTE1_kaikkiosiot"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": true,
+                                    "nimi": "Sosiaali- ja terveysalan valintakoe valintaryhm\u00e4ss\u00e4 1",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": "Hakemus hyv\u00e4ksyttiin korkeammalle hakutoiveelle"
+                                        },
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "1413283435692-8716121065471896316",
+                                    "valintakoeTunniste": "SOTEKOE_VK_RYHMA1"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "hakukohdeOid": "1.2.246.562.20.93258129167",
+                    "valinnanVaiheet": [
+                        {
+                            "valinnanVaiheJarjestysluku": 2,
+                            "valinnanVaiheOid": "14132869788504554939136314347871",
+                            "valintakokeet": [
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Valintakokeen pakollinen osio",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": null,
+                                        "laskentaTila": "HYVAKSYTTAVISSA",
+                                        "laskentaTulos": true,
+                                        "osallistuminen": "OSALLISTUU"
+                                    },
+                                    "valintakoeOid": "1413286979019-1352529564096963601",
+                                    "valintakoeTunniste": "SOTE1_kaikkiosiot"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": true,
+                                    "nimi": "Sosiaali- ja terveysalan valintakoe valintaryhm\u00e4ss\u00e4 1",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": null,
+                                        "laskentaTila": "HYVAKSYTTAVISSA",
+                                        "laskentaTulos": true,
+                                        "osallistuminen": "OSALLISTUU"
+                                    },
+                                    "valintakoeOid": "1413286979022-1524554277697202959",
+                                    "valintakoeTunniste": "SOTEKOE_VK_RYHMA1"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "hakukohdeOid": "1.2.246.562.20.16403849991",
+                    "valinnanVaiheet": [
+                        {
+                            "valinnanVaiheJarjestysluku": 2,
+                            "valinnanVaiheOid": "14132837140011356789497476229507",
+                            "valintakokeet": [
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Valintakokeen pakollinen osio",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": "Hakemus hyv\u00e4ksyttiin korkeammalle hakutoiveelle"
+                                        },
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "14132837141045320103422723746486",
+                                    "valintakoeTunniste": "SOTE1_kaikkiosiot"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": true,
+                                    "nimi": "Sosiaali- ja terveysalan valintakoe valintaryhm\u00e4ss\u00e4 1",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": "Hakemus hyv\u00e4ksyttiin korkeammalle hakutoiveelle"
+                                        },
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "14132837141065733217482419454552",
+                                    "valintakoeTunniste": "SOTEKOE_VK_RYHMA1"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "hakukohdeOid": "1.2.246.562.20.241484471710",
+                    "valinnanVaiheet": [
+                        {
+                            "valinnanVaiheJarjestysluku": 2,
+                            "valinnanVaiheOid": "1413284332261-3496241373974950719",
+                            "valintakokeet": [
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Valintakokeen pakollinen osio",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": "Hakemus ei mahtunut aloituspaikkojen sis\u00e4\u00e4n v\u00e4lisijoittelussa"
+                                        },
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "1413286531838-1596387313432413253",
+                                    "valintakoeTunniste": "SOTE_kaikkiosiot_ryhma3"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": true,
+                                    "nimi": "Sosiaali- ja terveysalan valintakoe valintaryhm\u00e4ss\u00e4 3",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": {
+                                            "FI": "Hakemus ei mahtunut aloituspaikkojen sis\u00e4\u00e4n v\u00e4lisijoittelussa"
+                                        },
+                                        "laskentaTila": "HYLATTY",
+                                        "laskentaTulos": null,
+                                        "osallistuminen": "EI_OSALLISTU"
+                                    },
+                                    "valintakoeOid": "14132843323734888600352456444570",
+                                    "valintakoeTunniste": "SOTEKOE_VK_RYHMA3"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "hakukohdeOid": "1.2.246.562.20.80737829715",
+                    "valinnanVaiheet": [
+                        {
+                            "valinnanVaiheJarjestysluku": 1,
+                            "valinnanVaiheOid": "1413805450034-4597267630782075760",
+                            "valintakokeet": [
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Liiketalouden valtakunnallinen valintakoe, osio 2",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": null,
+                                        "laskentaTila": "HYVAKSYTTAVISSA",
+                                        "laskentaTulos": true,
+                                        "osallistuminen": "OSALLISTUU"
+                                    },
+                                    "valintakoeOid": "14138054501498842574929365156060",
+                                    "valintakoeTunniste": "KOE_LIIKETALOUS_PAIVA2"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": false,
+                                    "nimi": "Liiketalouden valtakunnallinen valintakoe, osio 3",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": null,
+                                        "laskentaTila": "HYVAKSYTTAVISSA",
+                                        "laskentaTulos": true,
+                                        "osallistuminen": "OSALLISTUU"
+                                    },
+                                    "valintakoeOid": "14138054501507396146014780375613",
+                                    "valintakoeTunniste": "KOE_LIIKETALOUS_PAIVA3"
+                                },
+                                {
+                                    "aktiivinen": true,
+                                    "kutsutaankoKaikki": null,
+                                    "kutsuttavienMaara": null,
+                                    "lahetetaankoKoekutsut": true,
+                                    "nimi": "Liiketalouden valtakunnallinen valintakoe",
+                                    "osallistuminenTulos": {
+                                        "kuvaus": null,
+                                        "laskentaTila": "HYVAKSYTTAVISSA",
+                                        "laskentaTulos": true,
+                                        "osallistuminen": "OSALLISTUU"
+                                    },
+                                    "valintakoeOid": "1413805450146-1710729009983584450",
+                                    "valintakoeTunniste": "KOE_LIIKETALOUS_PAIVA1"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "sukunimi": "Abucar"
+        }
+    ]
 );
