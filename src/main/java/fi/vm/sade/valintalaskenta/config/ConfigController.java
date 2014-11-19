@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ConfigController {
 
-	@Value("${localisation.rest:https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1}")
+	@Value("${localisation.rest}")
 	private String localisationUrl;
 
 	@Value("${valintalaskenta-ui.tarjona-service-url.rest}")
