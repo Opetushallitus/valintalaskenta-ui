@@ -1,5 +1,5 @@
 app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus,
-                                          IlmoitusTila) {
+                                          IlmoitusTila, _) {
     "use strict";
 
     var model;
@@ -9,6 +9,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
         this.avaimet = [];
         this.errors = [];
         this.filter = "OSALLISTUU";
+        this.tunnisteet = [];
 
         this.refresh = function (hakukohdeOid, hakuOid) {
 
@@ -17,6 +18,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             model.hakuOid = hakuOid;
+            model.tunnisteet.length = 0;
 
             Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function (tulos) {
                 var tulokset = {};
@@ -54,6 +56,8 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                         };
 
                         model.avaimet.forEach(function (avain) {
+                            model.tunnisteet.push(avain.tunniste);
+                            model.tunnisteet.push(avain.osallistuminenTunniste);
                             avain.tyyppi = function () {
                                 if(avain.vaatiiOsallistumisen === false) {
                                     if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO" || onkoVainTrueFalseArvo(avain.arvot)) {
@@ -135,6 +139,19 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                 // haku-app ei halua ylimääräistä tietoa
                 var hakeneet = angular.copy(model.hakeneet);
                 hakeneet.forEach(function(hakija){
+                    // Filteröidään pois arvot, joita ei voi syöttää, koska haku-app mergaa
+                    model.avaimet.forEach(function(avain) {
+                        if(hakija.osallistuu[avain.tunniste] != 'OSALLISTUU') {
+                            delete hakija.additionalData[avain.tunniste];
+                            delete hakija.additionalData[avain.osallistuminenTunniste];
+                        }
+                    });
+                    var keys = _.keys(hakija.additionalData);
+                    keys.forEach(function(tunniste) {
+                        if(!_.contains(model.tunnisteet, tunniste)) {
+                            delete hakija.additionalData[tunniste];
+                        }
+                    });
                     hakija.filterData = undefined;
                     hakija.osallistuu = undefined;
                 });
