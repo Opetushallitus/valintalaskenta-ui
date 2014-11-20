@@ -304,14 +304,21 @@ angular.module('valintalaskenta').
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta,LocalisationService,HakuModel) {
     "use strict";
-
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.model = SijoitteluntulosModel;
-
+    
     $scope.nakymanTila = "Jonottain";
+
+    $scope.hakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
+        $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
+            AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
+                $scope.updateOrg = true;
+            });
+        });
+    });
 
     //
     // pikalatauslinkit on harmaannettuna jos ei ensimmaistakaan generointia 
@@ -504,12 +511,7 @@ angular.module('valintalaskenta').
         });
     };
 
-    $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
-        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
-            $scope.updateOrg = true;
-        });
 
-    });
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
