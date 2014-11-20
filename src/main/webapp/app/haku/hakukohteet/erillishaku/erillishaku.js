@@ -318,9 +318,9 @@
 
     .controller('ErillishakuController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ErillishakuModel',
-        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
+        'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
+              ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
               ErillishakuVienti) {
     "use strict";
 
@@ -330,6 +330,7 @@
     $scope.model = ErillishakuModel;
     ErillishakuModel.refresh($scope.hakukohdeOid, $scope.hakuOid);
     $scope.hakukohdeModel = HakukohdeModel;
+    $scope.hakuModel = HakuModel;
     SijoitteluntulosModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
 
@@ -492,8 +493,17 @@
             }
 
         };
+        $scope.getHakutyyppi = function() {
+        	if($scope.hakuModel.korkeakoulu) {
+        		return "KORKEAKOULU";
+        	} else {
+        		return "TOISEN_ASTEEN_OPPILAITOS";
+        	}
+        }
         $scope.erillishaunVientiXlsx = function(valintatapajonoOid) {
+        	var hakutyyppi = $scope.getHakutyyppi();
         	ErillishakuVienti.vie({
+        		hakutyyppi: hakutyyppi,
         		hakukohdeOid: $scope.hakukohdeOid,
         		hakuOid: $routeParams.hakuOid,
         		tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOid,
@@ -512,10 +522,12 @@
     	    var hakukohdeOid = $scope.hakukohdeOid;
     	    var hakuOid = $routeParams.hakuOid;
     	    var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOid;
+    	    var hakutyyppi = $scope.getHakutyyppi();
     	    fileReader.onload = function(e) {
     			$scope.upload = $upload.http({
     	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid
-    	    		+"&tarjoajaOid="+ tarjoajaOid+"&valintatapajonoOid="+valintatapajonoOid, //upload.php script, node.js route, or servlet url
+    	    		+"&tarjoajaOid="+ tarjoajaOid+"&valintatapajonoOid="+valintatapajonoOid
+    	    		+"&hakutyyppi="+hakutyyppi, //upload.php script, node.js route, or servlet url
     				method: "POST",
     				headers: {'Content-Type': 'application/octet-stream'},
     				data: e.target.result
