@@ -14,6 +14,14 @@
             <input type="text" class="search margin-vertical-2" placeholder="{{ t('valintalaskentatulos.suodatahakijoita') || 'Suodata hakijoita' }}"
                    ng-model="hakijaFilter"/>
             <pagination-pagesize page-size="pageSize"></pagination-pagesize>
+
+
+            <select ng-model="kuuluuFilterValue">
+                <option value="">{{ t('hakijaryhmat.alasuodata') || 'Älä suodata' }}</option>
+                <option value="HYVAKSYTTAVISSA">{{ t('hakijaryhmat.HYVAKSYTTAVISSA') || 'Kuuluu' }}</option>
+                <option value="HYLATTY">{{ t('hakijaryhmat.HYLATTY') || 'Ei kuulu' }}</option>
+            </select>
+
             <accordion close-others="true">
                 <accordion-group ng-repeat="hakijaryhma in model.hakijaryhmat track by $index"
                         is-open="$first">
@@ -35,7 +43,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="tulos in hakijaryhma.filteredResults = (hakijaryhma.jonosijat | orderBy: [jarjesta] | filter:hakijaFilter)">
+                        <tr ng-repeat="tulos in hakijaryhma.filteredResults = (hakijaryhma.jonosijat | orderBy: [jarjesta] | kuuluuFilter: kuuluuFilterValue | filter:hakijaFilter)">
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                          etunimi="{{tulos.etunimi}}"
