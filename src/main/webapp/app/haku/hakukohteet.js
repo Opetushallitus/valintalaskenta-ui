@@ -1,4 +1,4 @@
-app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeChildren, HakukohdeNimi, AuthService,
+app.factory('HakukohteetModel', function ($q, $routeParams, Haku, AuthService,
                                           TarjontaHaku) {
     "use strict";
 
@@ -107,8 +107,8 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, HakuHakukohdeC
                         searchParams.hakukohdeTilas = model.valmiitHakukohteet;
 
 
-                        TarjontaHaku.query(searchParams, function (result) {
-
+                        TarjontaHaku.query(searchParams, function (resultWrapper) {
+                            var result = resultWrapper.result;
                             if (restart) { // eka sivu
                                 self.hakukohteet = result.tulokset;
                                 self.totalCount = result.kokonaismaara;

@@ -41,17 +41,16 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
             model.sijoitteluMap = {};
             model.haku = {};
 
-            HaunTiedot.get({hakuOid: hakuOid}, function (result) {
-                model.haku = result;
+            HaunTiedot.get({hakuOid: hakuOid}, function (resultWrapper) {
+                model.haku = resultWrapper.result;
                 var hakutyyppi = model.haku.hakutyyppiUri;
                 var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
                 var match = lisahakutyyppiRegExp.exec(hakutyyppi);
                 match ? model.haku.lisahaku = true : model.haku.lisahaku = false;
-
             });
 
-            TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
-                model.tarjoajaOid = result.tarjoajaOid;
+            TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(resultWrapper) {
+                model.tarjoajaOid = resultWrapper.result.tarjoajaOid;
             });
             HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows:100000}, function(result) {
                 model.hakeneet = result.results;

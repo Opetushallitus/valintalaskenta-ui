@@ -182,7 +182,7 @@ angular.module('valintalaskenta')
             Koekutsukirjeet.post({
             	hakuOid: $routeParams.hakuOid,
 				hakukohdeOid:$routeParams.hakukohdeOid,
-				tarjoajaOid: hakukohde.tarjoajaOid,
+				tarjoajaOid: hakukohde.tarjoajaOids[0],
 				templateName: "koekutsukirje",
                     valintakoeOids: null}, {
                     tag: "harkinnanvaraiset",

@@ -86,15 +86,18 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
         this.refresh = function (hakukohdeOid) {
 
             var defer = $q.defer();
+            console.log('resfresh');
+            TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (resultWrapper) {
+                model.hakukohde = resultWrapper.result;
 
-            TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (result) {
-                model.hakukohde = result;
-                HakukohdeNimi.get({hakukohdeoid: hakukohdeOid}, function (hakukohdeObject) {
-                    model.hakukohde.tarjoajaOid = hakukohdeObject.tarjoajaOid;
-                    defer.resolve();
-                }, function(error) {
-                    defer.reject("hakukohteen nimen hakeminen epäonnistui");
-                });
+                console.log('tarjontahakukohde', model.hakukohde);
+                //HakukohdeNimi.get({hakukohdeoid: hakukohdeOid}, function (hakukohdeObject) {
+                //    console.log('hakukohdenimi', hakukohdeObject);
+                //    model.hakukohde.tarjoajaOid = hakukohdeObject.tarjoajaOid;
+                //    defer.resolve();
+                //}, function(error) {
+                //    defer.reject("hakukohteen nimen hakeminen epäonnistui");
+                //});
             }, function(error) {
                 defer.reject("hakukohteen tietojen hakeminen epäonnistui");
             });

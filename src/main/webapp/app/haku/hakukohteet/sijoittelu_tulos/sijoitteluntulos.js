@@ -61,8 +61,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             model.sijoitteluntulosHakijoittain = {};
             model.sijoitteluntulosHakijoittainArray = [];
 
-            HaunTiedot.get({hakuOid: hakuOid}, function(result) {
-                model.haku = result;
+            HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
+                model.haku = resultWrapper.result;
             });
 
             LatestSijoitteluajoHakukohde.get({
@@ -382,7 +382,7 @@ angular.module('valintalaskenta').
                     		Hyvaksymiskirjeet.post({
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
-					        	tarjoajaOid: hakukohde.tarjoajaOid,
+					        	tarjoajaOid: hakukohde.tarjoajaOids[0],
 					        	templateName: templateName,
 					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
@@ -393,9 +393,9 @@ angular.module('valintalaskenta').
                     	},
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
-                        tarjoajaOid: hakukohde.tarjoajaOid,
+                        tarjoajaOid: hakukohde.tarjoajaOids[0],
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag, hakuOid: hakuOid});
+                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
@@ -473,7 +473,7 @@ angular.module('valintalaskenta').
                     		Hyvaksymiskirjeet.post({
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
-					        	tarjoajaOid: hakukohde.tarjoajaOid,
+					        	tarjoajaOid: hakukohde.tarjoajaOids[0],
 					        	templateName: templateName,
 					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit,letterBodyText:sisalto} , function (id) {
@@ -484,9 +484,9 @@ angular.module('valintalaskenta').
                     	},
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
-                        tarjoajaOid: hakukohde.tarjoajaOid,
+                        tarjoajaOid: hakukohde.tarjoajaOids[0],
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag, hakuOid: hakuOid});
+                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
@@ -505,7 +505,7 @@ angular.module('valintalaskenta').
     };
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
-        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
+        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
             $scope.updateOrg = true;
         });
 

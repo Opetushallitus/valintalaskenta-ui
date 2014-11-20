@@ -16,8 +16,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             model.errors.length = 0;
             model.haku = {};
 
-            HaunTiedot.get({hakuOid: hakuOid}, function (result) {
-                model.haku = result;
+            HaunTiedot.get({hakuOid: hakuOid}, function (resultWrapper) {
+                model.haku = resultWrapper.result;
                 var hakutyyppi = model.haku.hakutyyppiUri;
                 var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
                 var match = lisahakutyyppiRegExp.exec(hakutyyppi);

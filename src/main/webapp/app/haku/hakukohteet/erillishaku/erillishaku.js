@@ -40,8 +40,8 @@
             model.vastaanottoTilat = [];
             model.lastValinnanVaihe = "";
 
-            HaunTiedot.get({hakuOid: hakuOid}, function(result) {
-                model.haku = result;
+            HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
+                model.haku = resultWrapper.result;
             });
 
             ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
@@ -344,7 +344,7 @@
 
 
     $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
-        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
+        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
             $scope.updateOrg = true;
 
         });
@@ -506,7 +506,7 @@
         		hakutyyppi: hakutyyppi,
         		hakukohdeOid: $scope.hakukohdeOid,
         		hakuOid: $routeParams.hakuOid,
-        		tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOid,
+        		tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
         		valintatapajonoOid: valintatapajonoOid
         	},
         		{}, function (id) {
@@ -521,7 +521,7 @@
     	    fileReader.readAsArrayBuffer(file);
     	    var hakukohdeOid = $scope.hakukohdeOid;
     	    var hakuOid = $routeParams.hakuOid;
-    	    var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOid;
+    	    var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
     	    var hakutyyppi = $scope.getHakutyyppi();
     	    fileReader.onload = function(e) {
     			$scope.upload = $upload.http({
