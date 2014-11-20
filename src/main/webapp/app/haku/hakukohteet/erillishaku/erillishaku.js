@@ -342,13 +342,12 @@
         $scope.fetch = true;
     });
 
-
-    $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
-        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
-            $scope.updateOrg = true;
-
+    $scope.hakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
+        $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOids', function () {
+            AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
+                $scope.updateOrg = true;
+            });
         });
-
     });
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
