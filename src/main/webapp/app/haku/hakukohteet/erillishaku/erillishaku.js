@@ -1,9 +1,9 @@
 ﻿angular.module('valintalaskenta')
 
-.factory('ErillishakuModel', ['$routeParams', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
+.factory('ErillishakuModel', ['$routeParams', '$log', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
         'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde',
         'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'VastaanottoTilat','VastaanottoTila', 'HaunTiedot',
-        function($routeParams, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
+        function($routeParams, $log, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
     ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde,
     ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde, VastaanottoTilat,VastaanottoTila,HaunTiedot) {
     "use strict";
@@ -66,7 +66,7 @@
                                         });
                                     });
                                 });
-
+                                
                                 model.erillishakuDefer.resolve();
                             });
                             found = true;
@@ -316,10 +316,10 @@
 
 
 
-    .controller('ErillishakuController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
+    .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ErillishakuModel',
         'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
-    function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
+    function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
               ErillishakuVienti) {
     "use strict";
@@ -331,7 +331,8 @@
     ErillishakuModel.refresh($scope.hakukohdeOid, $scope.hakuOid);
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.hakuModel = HakuModel;
-    SijoitteluntulosModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
+    $scope.sijoitteluModel = SijoitteluntulosModel; 
+    $scope.sijoitteluModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
@@ -349,7 +350,7 @@
             });
         });
     });
-
+    
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
         $scope.jkmuokkaus = true;
@@ -390,9 +391,10 @@
             }
         };
 
-        $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
+        $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
             ValintatapajonoVienti.vie({
                     valintatapajonoOid: valintatapajonoOid,
+                    valintatapajononNimi: valintatapajononNimi,
                     hakukohdeOid: $scope.hakukohdeOid,
                     hakuOid: $routeParams.hakuOid},
                 {}, function (id) {
@@ -402,7 +404,7 @@
                 });
         };
 
-        $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files) {
+        $scope.valintatapajonoTuontiXlsx = function($files, valintatapajonoOid, valintatapajononNimi) {
             var file = $files[0];
             var fileReader = new FileReader();
             fileReader.readAsArrayBuffer(file);
@@ -410,7 +412,10 @@
             var hakuOid = $routeParams.hakuOid;
             fileReader.onload = function(e) {
                 $scope.upload = $upload.http({
-                    url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid + "&valintatapajonoOid="+ valintatapajonoOid, //upload.php script, node.js route, or servlet url
+                    url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + 
+                    "&hakukohdeOid=" +hakukohdeOid + 
+                    "&valintatapajonoOid="+ valintatapajonoOid +
+                    "&valintatapajononNimi="+ valintatapajononNimi, //upload.php script, node.js route, or servlet url
                     method: "POST",
                     headers: {'Content-Type': 'application/octet-stream'},
                     data: e.target.result
