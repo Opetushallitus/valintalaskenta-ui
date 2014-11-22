@@ -404,7 +404,7 @@
                 });
         };
 
-        $scope.valintatapajonoTuontiXlsx = function($files, valintatapajonoOid, valintatapajononNimi) {
+        $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files, valintatapajononNimi) {
             var file = $files[0];
             var fileReader = new FileReader();
             fileReader.readAsArrayBuffer(file);
@@ -504,12 +504,13 @@
         		return "TOISEN_ASTEEN_OPPILAITOS";
         	}
         }
-        $scope.erillishaunVientiXlsx = function(valintatapajonoOid) {
+        $scope.erillishaunVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
         	var hakutyyppi = $scope.getHakutyyppi();
         	ErillishakuVienti.vie({
         		hakutyyppi: hakutyyppi,
         		hakukohdeOid: $scope.hakukohdeOid,
         		hakuOid: $routeParams.hakuOid,
+                valintatapajononNimi: valintatapajononNimi,
         		tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
         		valintatapajonoOid: valintatapajonoOid
         	},
@@ -519,7 +520,7 @@
                 Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
             });
         };
-        $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid) {
+        $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid, valintatapajononNimi) {
     		var file = $files[0];
     		var fileReader = new FileReader();
     	    fileReader.readAsArrayBuffer(file);
@@ -531,6 +532,7 @@
     			$scope.upload = $upload.http({
     	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid
     	    		+"&tarjoajaOid="+ tarjoajaOid+"&valintatapajonoOid="+valintatapajonoOid
+    	    		+"&valintatapajononNimi="+ valintatapajononNimi
     	    		+"&hakutyyppi="+hakutyyppi, //upload.php script, node.js route, or servlet url
     				method: "POST",
     				headers: {'Content-Type': 'application/octet-stream'},
