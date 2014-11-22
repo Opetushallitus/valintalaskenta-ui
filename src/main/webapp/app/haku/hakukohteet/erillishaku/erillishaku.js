@@ -544,6 +544,7 @@
     	            function(dokumenttiId) {
     	            	// tee paivitys
     	            	$scope.model.refresh(hakukohdeOid, hakuOid);
+    	            	$scope.sijoitteluModel.refresh(hakuOid, hakukohdeOid);
     	            }
     	            );
     			}).error(function(data) {
