@@ -7,6 +7,7 @@ angular.module('valintalaskenta')
 
         var modelInterface = {
             model: [],
+            valuesToAdd: ["Nimetty lukuarvo", "Nimetty totuusarvo"],
             get: function () {
                 return this.model;
             },
@@ -23,8 +24,31 @@ angular.module('valintalaskenta')
 
                     self.model = result;
                     self.prepareHistoryForUi();
+                    self.prepareValuesForUi();
                     deferred.resolve(modelInterface);
                 });
+            },
+            prepareValuesForUi: function () {
+                var self = this;
+                var valueArray = [];
+                var jarjestyskriteerit = this.get();
+
+                jarjestyskriteerit.forEach(function (node) {
+                    self.addValuesToArray(node, valueArray);
+                });
+
+                self.model.valueArray = valueArray;
+            },
+            addValuesToArray: function(node, valueArray) {
+                var self = this;
+                if (node.tulos && _.indexOf(self.valuesToAdd, node.funktio) > -1) {
+                    valueArray.push(node);
+                }
+                if (node.historiat) {
+                    node.historiat.forEach(function (childNode) {
+                        self.addValuesToArray(childNode, valueArray);
+                    });
+                }
             },
             prepareHistoryForUi: function () {
                 var self = this;

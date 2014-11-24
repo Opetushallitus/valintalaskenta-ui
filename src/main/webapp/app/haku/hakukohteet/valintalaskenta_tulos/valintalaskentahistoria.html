@@ -25,6 +25,14 @@
 			</li>
 		</ul>
 
+		<button class="btn btn-sm btn-default margin-top-2" ng-init="showArvot = false" ng-click="showArvot = !showArvot">{{ t('valintalaskentahistoria.naytapiilotaarvot') || 'Näytä/Piilota arvot' }}</button>
+
+		<ul ng-show="showArvot" class="avaimet">
+			<li class="padding-vertical-1" ng-repeat="value in model.get().valueArray track by $index">
+				<strong>{{$index+1}}.&nbsp;</strong><strong>{{value.funktio}}&nbsp;</strong><span>({{ t('valintalaskentahistoria.tulos') || 'Tulos' }}:{{value.tulos}})</span>
+			</li>
+		</ul>
+
 		<ul class="alikaavat margin-top-4" ng-init="show = 'true'" ng-show="show">
 			<li ng-repeat="kaava in historia.historiat" ng-include="'alikaava_node.html'"></li>
 		</ul>
