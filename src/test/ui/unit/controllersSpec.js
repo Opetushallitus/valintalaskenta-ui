@@ -1206,6 +1206,35 @@ describe('Testing ValintalaskentaHistoriaController', function(){
 
     });
 
+    it('check initialized variables', function() {
+        expect(scope.model.valuesToAdd.length).toBe(2);
+        expect(scope.model.valuesToAdd[0]).toBe("Nimetty lukuarvo");
+        expect(scope.model.valuesToAdd[1]).toBe("Nimetty totuusarvo");
+    });
+
+    it('check prepareValuesForUi', function() {
+        scope.model.model.push(
+            {
+                funktio : "Nimetty lukuarvo",
+                tulos: "1"
+            });
+        scope.model.model.push(
+            {
+                funktio : "Nimetty 3totuusarvo",
+                tulos: "2"
+            });
+        scope.model.model.push(
+            {
+                funktio : "Nimetty totuusarvo",
+                tulos: "3"
+            });
+
+        scope.model.prepareValuesForUi();
+        expect(scope.model.model.valueArray.length).toBe(2);
+        expect(scope.model.model.valueArray[0].tulos).toBe("1");
+        expect(scope.model.model.valueArray[1].tulos).toBe("3");
+    });
+
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
