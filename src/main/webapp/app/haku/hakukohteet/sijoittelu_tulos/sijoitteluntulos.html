@@ -79,8 +79,8 @@
                             </th>
                         </tr>
                         <tr>
-                            <th>{{ t('sijoitteluntulos.jononnimi') || 'Jonon nimi' }}</th>
                             <th>{{ t('sijoitteluntulos.jonosija') || 'Jonosija' }}</th>
+                            <th>{{ t('sijoitteluntulos.jononnimi') || 'Jonon nimi' }}</th>
                             <th>{{ t('sijoitteluntulos.yhteispisteet') || 'Pisteet' }}</th>
                             <th>{{ t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila' }}</th>
                         </tr>
@@ -88,10 +88,10 @@
 
                     <tr ng-repeat="jono in (hakija.jonot | orderBy: 'prioriteetti' | tilaFilter: tilaFilterValue | filter:filterChangedValues)">
                         <td>
-                            {{jono.nimi}}
+                            {{hakija.sija > 0?hakija.sija:""}}
                         </td>
                         <td>
-                            <span ng-if="hakija.sija > 0">{{hakija.sija}}</span>
+                            {{jono.nimi}}
                         </td>
                         <td>
                             {{jono.pisteet}}
