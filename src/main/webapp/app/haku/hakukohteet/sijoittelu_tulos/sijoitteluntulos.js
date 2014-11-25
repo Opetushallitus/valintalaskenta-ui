@@ -112,8 +112,10 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                     sukunimi: hakemus.sukunimi,
                                     hakemusOid: hakemus.hakemusOid,
                                     hakijaOid: hakemus.hakijaOid,
+                                    tilanKuvaukset: hakemus.tilanKuvaukset,
+                                    hyvaksyttyHarkinnanvaraisesti: hakemus.hyvaksyttyHarkinnanvaraisesti,
+                                    varasijanNumero: hakemus.varasijanNumero,
                                     tila: hakemus.tila,
-                                    sija: hakemus.jonosija,
                                     vastaanottoTila: 'KESKEN',
                                     ilmoittautumisTila: 'EI_TEHTY',
                                     jonot: []
@@ -127,10 +129,12 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                 hakemus.valittu = true;
                                 hakemuserittely.hyvaksytyt.push(hakemus);
                                 hakemus.sija = sija;
+                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].sija = sija;
                             }
 
                             if ((hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && hakemus.hyvaksyttyHarkinnanvaraisesti) {
                                 hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
+                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].sija = sija;
                             }
 
 
@@ -138,6 +142,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                 sija++;
                                 hakemuserittely.varasijoilla.push(hakemus);
                                 hakemus.sija = sija;
+                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].sija = sija;
                             }
 
                             lastTasaSija = hakemus.tasasijaJonosija;

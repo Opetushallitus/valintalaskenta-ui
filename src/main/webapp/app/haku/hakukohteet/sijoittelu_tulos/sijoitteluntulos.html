@@ -91,13 +91,18 @@
                             {{jono.nimi}}
                         </td>
                         <td>
-                            {{jono.jonosija}}
+                            <span ng-if="hakija.sija > 0">{{hakija.sija}}</span>
                         </td>
                         <td>
                             {{jono.pisteet}}
                         </td>
                         <td>
-                            {{jono.tila}}
+                            <span ng-if="!hakija.tilanKuvaukset.FI || hakija.tila == 'HYLATTY'">{{hakija.tila}}</span>
+                            <span ng-if="userLang=='fi' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.FI}}</span>
+                            <span ng-if="userLang=='sv' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.SV}}</span>
+                            <span ng-if="userLang=='en' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.EN}}</span>
+                            <span ng-if="(hakija.tila == 'HYVAKSYTTY' || hakija.tila == 'VARASIJALTA_HYVAKSYTTY') && hakija.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
+                            <span ng-if="hakija.varasijanNumero != undefined">({{hakija.varasijanNumero}})</span>
                         </td>
                     </tr>
                 </table>
