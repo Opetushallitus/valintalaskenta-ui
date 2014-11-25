@@ -334,8 +334,6 @@
     $scope.sijoitteluModel = SijoitteluntulosModel; 
     $scope.sijoitteluModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
-    $log.info($scope.sijoitteluModel);
-
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
     $scope.pageSize = 50;

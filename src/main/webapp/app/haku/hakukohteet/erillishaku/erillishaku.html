@@ -37,7 +37,7 @@
                 <div 	ng-if="!sijoitteluModel.sijoitteluTulokset.valintatapajonot" 
                 		ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index">
                     <form name="form">
-                        <h3>Z{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}:
+                        <h3>{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}:
                             {{valintatapajono.nimi}}</h3>
                         <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                                 ng-click="erillishaunVientiXlsx(valintatapajono.oid, valintatapajono.nimi)"
