@@ -60,10 +60,10 @@
                 <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
                 <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="model.naytaVainMuuttuneet"> <br/></div>
 
-                <table class="virkailija-table-1" style="width: 900px;" ng-repeat="hakija in filteredResults = (model.sijoitteluntulosHakijoittainArray | orderBy:predicate:reverse | filter:hakijaFilter) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
+                <table class="virkailija-table-1" style="width: 900px;" ng-repeat="hakija in filteredResults = (model.sijoitteluntulosHakijoittainArray | orderBy:[jarjesta,'varasijanNumero', 'sija'] | filter:hakijaFilter) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                     <thead>
                         <tr>
-                            <th style="background-color:#f1f6f7;font-size: medium;width:300px">
+                            <th colspan="2" style="background-color:#f1f6f7;font-size: medium;width:300px">
                                 <show-person-information sukunimi="{{hakija.sukunimi}}"
                                                          etunimi="{{hakija.etunimi}}"
                                                          hakemus-oid="{{hakija.hakemusOid}}"
@@ -80,6 +80,7 @@
                         </tr>
                         <tr>
                             <th>{{ t('sijoitteluntulos.jononnimi') || 'Jonon nimi' }}</th>
+                            <th>{{ t('sijoitteluntulos.jonosija') || 'Jonosija' }}</th>
                             <th>{{ t('sijoitteluntulos.yhteispisteet') || 'Pisteet' }}</th>
                             <th>{{ t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila' }}</th>
                         </tr>
@@ -88,6 +89,9 @@
                     <tr ng-repeat="jono in (hakija.jonot | orderBy: 'prioriteetti' | tilaFilter: tilaFilterValue | filter:filterChangedValues)">
                         <td>
                             {{jono.nimi}}
+                        </td>
+                        <td>
+                            {{jono.jonosija}}
                         </td>
                         <td>
                             {{jono.pisteet}}

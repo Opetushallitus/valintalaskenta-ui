@@ -102,6 +102,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                 nimi: valintatapajono.nimi,
                                 pisteet: hakemus.pisteet,
                                 tila: hakemus.tila,
+                                jonosija: hakemus.jonosija,
                                 prioriteetti: valintatapajono.prioriteetti,
                                 tilaHistoria: hakemus.tilaHistoria
                             };
@@ -111,6 +112,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                     sukunimi: hakemus.sukunimi,
                                     hakemusOid: hakemus.hakemusOid,
                                     hakijaOid: hakemus.hakijaOid,
+                                    tila: hakemus.tila,
+                                    sija: hakemus.jonosija,
                                     vastaanottoTila: 'KESKEN',
                                     ilmoittautumisTila: 'EI_TEHTY',
                                     jonot: []
@@ -178,7 +181,6 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakijaOid].vastaanottoTila=currentHakemus.vastaanottoTila;
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakijaOid].ilmoittautumisTila=currentHakemus.ilmoittautumisTila;
-
                                             return true;
                                         }
                                     });
