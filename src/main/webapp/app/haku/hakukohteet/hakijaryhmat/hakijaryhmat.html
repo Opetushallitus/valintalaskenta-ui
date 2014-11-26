@@ -43,7 +43,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="tulos in hakijaryhma.filteredResults = (hakijaryhma.jonosijat | orderBy: [jarjesta] | kuuluuFilter: kuuluuFilterValue | filter:hakijaFilter)">
+                        <tr ng-repeat="tulos in hakijaryhma.filteredResults = (hakijaryhma.jonosijat | orderBy: [jarjesta] | kuuluuFilter: kuuluuFilterValue | filter:hakijaFilter) | startFrom:(hakijaryhma.currentPage-1)*pageSize | limitTo:pageSize">
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                          etunimi="{{tulos.etunimi}}"
