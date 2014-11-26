@@ -60,7 +60,7 @@
                             </tr>
                             </thead>
                             <tbody >
-							<tr  ng-repeat="tulos in valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse">
+                            <tr ng-repeat="tulos in valintatapajono.filteredResults = (valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
                                 <td class="leftorientedcolumn">
                                     <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                              etunimi="{{tulos.etunimi}}"
@@ -76,10 +76,16 @@
                             </tr>
                             </tbody>
                         </table>
-                        
+                        <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}"
+                                    next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}"
+                                    total-items="valintatapajono.filteredResults.length"
+                                    ng-model="valintatapajono.currentPage"
+                                    ng-init="valintatapajono.currentPage=1"
+                                    items-per-page="pageSize"></pagination>
                     </form>
                 </div>
-                <div ng-repeat="valintatapajono in sijoitteluModel.sijoitteluTulokset.valintatapajonot">
+                <div 	ng-if="!sijoitteluModel.sijoitteluTulokset.valintatapajonot"
+                        ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index">
                     <form name="form">
                         <h3>{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}:
                             {{valintatapajono.nimi}}</h3>
@@ -104,7 +110,7 @@
                             </tr>
                             </thead>
                             <tbody >
-	                            <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse">
+	                            <tr ng-repeat="tulos in valintatapajono.hakemukset.filteredResults = (valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:(valintatapajono.hakemukset.currentPage-1)*pageSize | limitTo:pageSize">
 	                                <td class="leftorientedcolumn">
 	                                    <show-person-information sukunimi="{{tulos.sukunimi}}"
 	                                                             etunimi="{{tulos.etunimi}}"
@@ -124,6 +130,12 @@
 	                            </tr>
                             </tbody>
                         </table>
+                        <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}"
+                                    next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}"
+                                    total-items="valintatapajono.hakemukset.filteredResults.length"
+                                    ng-model="valintatapajono.hakemukset.currentPage"
+                                    ng-init="valintatapajono.hakemukset.currentPage=1"
+                                    items-per-page="pageSize"></pagination>
                     </form>
                 </div>
             </div>
