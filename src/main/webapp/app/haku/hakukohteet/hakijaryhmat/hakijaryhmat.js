@@ -28,20 +28,25 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
                         };
                         HakemuksenVastaanottoTilat.get(tilaParams, function (result) {
                             var valintatapajonoOid = "";
+
                             result.forEach(function (entry) {
                                 if (entry.hakukohdeOid === hakukohdeOid) {
                                     jonosija.vastaanottoTila = entry.tila;
+                                    valintatapajonoOid = entry.valintatapajonoOid;
                                 }
                             });
 
                             LatestSijoittelunTilat.get({hakemusOid: jonosija.hakemusOid, hakuOid: hakuOid}, function (latest) {
+
                                 latest.hakutoiveet.forEach(function (hakutoive) {
                                     if (hakutoive.hakukohdeOid === hakukohdeOid) {
                                         hakutoive.hakutoiveenValintatapajonot.forEach(function (jono) {
-                                            jonosija.sijoittelunTila = jono.tila;
-                                            jonosija.tilanKuvaukset = jono.tilanKuvaukset;
-                                            jonosija.varasijanNumero = jono.varasijanNumero;
-                                            jonosija.hyvaksyttyHarkinnanvaraisesti = jono.hyvaksyttyHarkinnanvaraisesti;
+                                            if (jono.valintatapajonoOid === valintatapajonoOid) {
+                                                jonosija.sijoittelunTila = jono.tila;
+                                                jonosija.tilanKuvaukset = jono.tilanKuvaukset;
+                                                jonosija.varasijanNumero = jono.varasijanNumero;
+                                                jonosija.hyvaksyttyHarkinnanvaraisesti = jono.hyvaksyttyHarkinnanvaraisesti;
+                                            }
                                         });
                                     }
                                 });
