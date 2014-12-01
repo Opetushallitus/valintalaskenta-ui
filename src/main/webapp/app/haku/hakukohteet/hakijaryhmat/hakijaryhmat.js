@@ -1,5 +1,5 @@
 app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeHakijaryhma, Ilmoitus, IlmoitusTila, $q,
-                                                        HakemuksenVastaanottoTila,HakemuksenVastaanottoTilat) {
+                                                        HakemuksenVastaanottoTila,HakemuksenVastaanottoTilat,LatestSijoittelunTilat) {
     "use strict";
 
     var model;
@@ -27,16 +27,24 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
                             hakemusOid: jonosija.hakemusOid
                         };
                         HakemuksenVastaanottoTilat.get(tilaParams, function (result) {
-                            var tilaParams = {
-                                hakuoid: hakuOid,
-                                hakukohdeOid: hakukohdeOid,
-                                valintatapajonoOid: result[0].valintatapajonoOid,
-                                hakemusOid: jonosija.hakemusOid
-                            };
+                            var valintatapajonoOid = "";
+                            result.forEach(function (entry) {
+                                if (entry.hakukohdeOid === hakukohdeOid) {
+                                    jonosija.vastaanottoTila = entry.tila;
+                                }
+                            });
 
-                            HakemuksenVastaanottoTila.get(tilaParams, function (result) {
-                                model.errors.push('');
-                            }, function (error) {
+                            LatestSijoittelunTilat.get({hakemusOid: jonosija.hakemusOid, hakuOid: hakuOid}, function (latest) {
+                                latest.hakutoiveet.forEach(function (hakutoive) {
+                                    if (hakutoive.hakukohdeOid === hakukohdeOid) {
+                                        hakutoive.hakutoiveenValintatapajonot.forEach(function (jono) {
+                                            jonosija.sijoittelunTila = jono.tila;
+                                            jonosija.tilanKuvaukset = jono.tilanKuvaukset;
+                                            jonosija.varasijanNumero = jono.varasijanNumero;
+                                            jonosija.hyvaksyttyHarkinnanvaraisesti = jono.hyvaksyttyHarkinnanvaraisesti;
+                                        });
+                                    }
+                                });
                             });
                         }, function (error) {
                         });
@@ -94,7 +102,7 @@ angular.module('valintalaskenta').
             });
 
             hakukohdeModelpromise.then(function () {
-                AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
+                AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
                     $scope.crudOrg = true;
                 });
             });
