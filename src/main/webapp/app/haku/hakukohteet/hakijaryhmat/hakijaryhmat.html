@@ -36,7 +36,6 @@
                         <thead>
                         <tr>
                             <th>{{ t('hakijaryhmat.hakija') || 'Hakija' }}</th>
-                            <th>{{ t('hakijaryhmat.hakemuksentila') || 'Hakijaryhmään kuuluminen' }}</th>
                             <th>{{ t('hakijaryhmat.valinnantila') || 'Valinnan tila' }}</th>
                             <th>{{ t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila' }}</th>
                             <th>{{ t('hakijaryhmat.vastaanottotila') || 'Vastaanottotila' }}</th>
@@ -52,7 +51,6 @@
                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
                             </td>
                             <td>{{ t('hakijaryhmat.'+tulos.jarjestyskriteerit[0].tila) || tulos.jarjestyskriteerit[0].tila}}</td>
-                            <td>{{tulos.tuloksenTila}}</td>
                             <td>
                                 <span ng-if="!tulos.tilanKuvaukset.FI || tulos.sijoittelunTila == 'HYLATTY'">{{tulos.sijoittelunTila}}</span>
                                 <span ng-if="userLang=='fi' && tulos.tilanKuvaukset.FI && tulos.sijoittelunTila != 'HYLATTY'">{{tulos.tilanKuvaukset.FI}}</span>
