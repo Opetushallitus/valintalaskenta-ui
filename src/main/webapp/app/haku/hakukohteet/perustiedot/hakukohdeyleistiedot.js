@@ -148,7 +148,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
 
 .controller('HakukohdeNimiController', ['$scope', '$routeParams', 'HakukohdeModel', function ($scope, $routeParams, HakukohdeModel) {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-        $scope.tarjoajaNimi = HakukohdeModel.tarjoajaNimi;
-        $scope.hakukohdeNimi = HakukohdeModel.hakukohdeNimi;
-    }])
+        $scope.hakukohdeModel = HakukohdeModel;
+    }]);
 
