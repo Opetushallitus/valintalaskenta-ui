@@ -16,7 +16,7 @@ app.factory('HakuHakukohdeChildren', function($resource) {
     });
 });
 app.factory('TarjontaHaku', function($resource) {
-    return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohdeTulos", {},{
+    return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde", {},{
         query:  {method:'GET', isArray:false, cache: true}
     });
 });
@@ -629,5 +629,17 @@ angular.module('valintalaskenta')
 
     .factory('HakujenHakukaudet', ['$resource', function ($resource) {
         return $resource(KOODISTO_URL_BASE + "codeelement/codes/kausi/1");
+    }])
+
+    .factory('HakukohteenNimi', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE +  "hakukohdenimi/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"});
+    }])
+
+    .factory('HakukohdeKoodistoNimi', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE + "json/hakukohteet/koodi/:hakukohteenNimiUri", {hakukohteenNimiUri: "@hakukohteenNimiUri"});
     }]);
+    
+    
+    
+
 

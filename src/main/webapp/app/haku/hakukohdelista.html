@@ -8,14 +8,14 @@
                 <p class="margin-vertical-2">{{ t('hakukohdelista.hakukohteitahaettu') || 'Hakukohteita haettu' }} {{model.getCount()}} / {{model.getTotalCount()}}</p>
 			</div>
 			<ul  class="selectlist" lazy-loading>
-			    <li ng-class="hakukohdeOid === hakukohde.hakukohdeOid ? 'selected' : ''" ng-repeat="hakukohde in model.hakukohteet">
+
+			    <li ng-class="hakukohdeOid === hakukohde.oid ? 'selected' : ''" ng-repeat="hakukohde in model.hakukohteet">
+
 			        <a ng-click="showHakukohde(hakukohde, hakuModel.hakuOid.lisahaku)">
 			            <span class="icon file"></span>
-			            <span class="node" fast-bind-once="model.getTarjoajaNimi(hakukohde)">
-			            </span>
+			            <span class="node">{{model.getTarjoajaNimi(hakukohde)}}</span>
 			            <br>
-		                <span class="node" fast-bind-once="model.getHakukohdeNimi(hakukohde)">
-			            </span>
+		                <span class="node">{{model.getHakukohdeNimi(hakukohde)}}</span>
 			        </a>
 			    </li>
 			</ul>

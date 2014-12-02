@@ -1,5 +1,8 @@
-app.factory('HakukohteetModel', function ($q, $routeParams, Haku, AuthService,
-                                          TarjontaHaku) {
+
+angular.module('valintalaskenta')
+
+    .factory('HakukohteetModel', ['$q', '$routeParams', '$log', 'Haku', 'AuthService', 'TarjontaHaku', 'TarjontaHakukohde', 'HakukohdeKoodistoNimi', '_',
+        function ($q, $routeParams, $log, Haku, AuthService, TarjontaHaku, TarjontaHakukohde, HakukohdeKoodistoNimi, _) {
     "use strict";
 
     var model;
@@ -16,13 +19,20 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, AuthService,
         this.valmiitHakukohteet = "JULKAISTU";
         this.readyToQueryForNextPage = true;
 
-
         // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
         this.getKieli = function (hakukohde) {
             if (hakukohde) {
                 // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
-                var kielet = ["fi", "sv", "en"];
+                var languages = ["kieli_fi", "kieli_sv", "kieli_en"];
 
+
+                    var result = _.find(languages, function (language) {
+                        return _.contains(hakukohde.opetusKielet, language);
+                    });
+
+                return result;
+                
+                /*
                 for (var lang in kielet) {
                     if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]] &&
                         !_.isEmpty(hakukohde.tarjoajaNimi[kielet[lang]]) &&
@@ -31,35 +41,29 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, AuthService,
                         return kielet[lang];
                     }
                 }
+                */
             }
             return "";
         };
 
-
         this.getTarjoajaNimi = function (hakukohde) {
-            var kieli = this.getKieli(hakukohde);
-
-            if (!_.isEmpty(kieli)) {
-                return hakukohde.tarjoajaNimi[kieli];
-            } else {
-                for (var lang in hakukohde.tarjoajaNimi) {
-                    if (!_.isEmpty(hakukohde.tarjoajaNimi[lang]))
-                        return hakukohde.tarjoajaNimi[lang];
-                }
-            }
+            var language = model.getKieli(hakukohde);
+            var languageId = _.last(language.split("_"));
+            return hakukohde.tarjoajaNimet[languageId];
         };
 
         this.getHakukohdeNimi = function (hakukohde) {
-            var kieli = this.getKieli(hakukohde);
-
-            if (!_.isEmpty(kieli)) {
-                return hakukohde.hakukohdeNimi[kieli];
+            var result;
+            var language = model.getKieli(hakukohde);
+            var languageId = _.last(language.split("_"));
+            if(hakukohde.hakukohdeKoodistoNimi) {
+                result = _.find(hakukohde.hakukohdeKoodistoNimi.metadata, function (item) {
+                    return item.kieli === languageId.toUpperCase();
+                }).nimi;
             } else {
-                for (var lang in hakukohde.hakukohdeNimi) {
-                    if (!_.isEmpty(hakukohde.hakukohdeNimi[lang]))
-                        return hakukohde.hakukohdeNimi[lang];
-                }
+                result = hakukohde.hakukohteenNimet[language];
             }
+            return result;
         };
 
         this.getKieliCode = function() {
@@ -77,10 +81,9 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, AuthService,
             return this.hakukohteet;
         };
         this.getNextPage = function (restart) {
-
             var hakuOid = $routeParams.hakuOid;
             if (restart) {
-                this.hakukohteet = [];
+                model.hakukohteet.length = 0;
                 this.filtered = [];
             }
             var startIndex = this.getCount();
@@ -106,8 +109,42 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, AuthService,
 
                         searchParams.hakukohdeTilas = model.valmiitHakukohteet;
 
-
                         TarjontaHaku.query(searchParams, function (resultWrapper) {
+                            var promises = [];
+                            var hakukohteet = [];
+                            _.forEach(resultWrapper.result, function (resultObj) {
+                                var hakukohdeOid = resultObj.oid;
+
+                                var hakukohdeDefer = $q.defer();
+                                promises.push(hakukohdeDefer.promise);
+                                TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (resultWrapper) {
+                                    var hakukohde = resultWrapper.result;
+                                    if(hakukohde.hakukohteenNimiUri) {
+                                        var nimiUri = hakukohde.hakukohteenNimiUri;
+                                        var hakukohdeUri = nimiUri.slice(0, nimiUri.indexOf('#'));
+
+                                        HakukohdeKoodistoNimi.get({hakukohteenNimiUri: hakukohdeUri}, function (result) {
+                                            hakukohde.hakukohdeKoodistoNimi = result;
+                                            hakukohdeDefer.resolve();
+                                            hakukohteet.push(hakukohde);
+                                        }, function (error) {
+                                            $log.error('Hakukohteen ' + resultWrapper.result.oid + ' hakukohteenNimiUrille ' + resultWrapper.result.hakukohteenNimiUri + ' ei löytynyt');
+                                            hakukohdeDefer.reject();
+                                        });
+                                    } else {
+                                        hakukohteet.push(hakukohde);
+                                        hakukohdeDefer.resolve();
+                                    }
+                                }, function (error) {
+                                    hakukohdeDefer.reject();
+                                });
+
+                            });
+
+                            $q.all(promises).then(function () {
+                                model.hakukohteet = hakukohteet;
+                            });
+                            /*
                             var result = resultWrapper.result;
                             if (restart) { // eka sivu
                                 self.hakukohteet = result.tulokset;
@@ -130,6 +167,7 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, AuthService,
                                     }
                                 }
                             }
+                            */
                             model.readyToQueryForNextPage = true;
                         });
                     });
@@ -156,13 +194,13 @@ app.factory('HakukohteetModel', function ($q, $routeParams, Haku, AuthService,
     }();
 
     return model;
-});
+}]);
 
 
 angular.module('valintalaskenta').
-    controller('HakukohteetController',['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel',
+    controller('HakukohteetController',['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', 'HakukohdeModel',
         'GlobalStates', 'HakuModel',
-        function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel) {
+        function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel, HakukohdeModel) {
     "use strict";
 
     $scope.hakuOid = $routeParams.hakuOid;
@@ -194,10 +232,11 @@ angular.module('valintalaskenta').
     };
 
     $scope.showHakukohde = function (hakukohde, lisahaku) {
-        $rootScope.selectedHakukohdeNimi = hakukohde.hakukohdeNimi.fi;
+        $rootScope.selectedHakukohdeNimi = $scope.model.getHakukohdeNimi(hakukohde);
         $scope.hakukohteetVisible = false;
         GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
-        $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/perustiedot'));
+        HakukohdeModel.hakukohde = hakukohde;
+        $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.oid + (lisahaku ? '/perustiedot' : '/perustiedot'));
     };
 
     // uuden sivun lataus

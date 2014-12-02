@@ -7,7 +7,10 @@
     <div ng-include="'haku/hakukohdelista.html'"></div>
 
     <div class="toggle-content-container overflow-x-scroll">
-        <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
+
+        <h1>{{model.tarjoajaNimi}}</h1>
+        <h1>{{model.hakukohdeNimi}}</h1>
+
 
         <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"></div>
         <div class="tabsheets">
