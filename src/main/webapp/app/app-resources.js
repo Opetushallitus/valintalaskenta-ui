@@ -340,6 +340,11 @@ app.factory('OsoitetarratHakemuksille', function($resource) {
 
 
 //
+app.factory('HakukohteelleJalkiohjauskirjeet', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hakukohteessahylatyt/aktivoi", {}, {
+        post:  {method:'POST', isArray:false}
+    });
+});
 app.factory('Hyvaksymiskirjeet', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksymiskirjeet/aktivoi", {}, {
         post:  {method:'POST', isArray:false}

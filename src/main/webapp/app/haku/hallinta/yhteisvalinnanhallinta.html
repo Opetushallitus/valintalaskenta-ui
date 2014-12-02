@@ -52,10 +52,10 @@
         <div class="col-md-10 margin-bottom-2">
             <button ng-click="kaynnistaSijoittelu()" class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritasijoittelu') || 'Suorita sijoittelu' }}
             </button>
-            <button ng-hide="jatkuva.ajossa" ng-click="kaynnistaJatkuvaSijoittelu()"
+            <button ng-if="!jatkuva.ajossa" ng-click="kaynnistaJatkuvaSijoittelu()"
                     class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.kayttoonajastettu') || 'Ota käyttöön ajastettu sijoittelu' }}
             </button>
-            <button ng-hide="!jatkuva.ajossa" ng-click="pysaytaJatkuvaSijoittelu()"
+            <button ng-if="jatkuva.ajossa" ng-click="pysaytaJatkuvaSijoittelu()"
                     class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.poistaajastettu') || 'Poista käytöstä ajastettu sijoittelu' }}
             </button>
         </div>

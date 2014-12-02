@@ -305,10 +305,10 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
 angular.module('valintalaskenta').
     controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
-        'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet',
+        'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
         'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel',
         function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
-                                    SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet,
+                                    SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta,LocalisationService,HakuModel) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
@@ -370,7 +370,53 @@ angular.module('valintalaskenta').
     $scope.submit = function (valintatapajonoOid) {
         $scope.model.updateHakemuksienTila(valintatapajonoOid);
     };
-    
+    $scope.luoJalkiohjauskirjeetPDF = function() {
+    	var hakuOid = $routeParams.hakuOid;
+    	var hakukohde = $scope.hakukohdeModel.hakukohde;
+    	var tag = null;
+    	if(hakukohde.hakukohdeNimiUri) {
+    		tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+    	} else {
+    		tag = $routeParams.hakukohdeOid;
+    	}
+    	var langcode = $scope.hakukohdeModel.getKieliCode();
+    	var templateName = "jalkiohjauskirje";
+    	var viestintapalveluInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+            controller: ViestintapalveluIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                    	otsikko: "Hakukohteessa hylätyille jälkiohjauskirjeet",
+                    	toimintoNimi: "Muodosta jälkiohjauskirjeet",
+                    	toiminto: function(sisalto) {
+                    		HakukohteelleJalkiohjauskirjeet.post({
+					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
+					        	hakuOid: $routeParams.hakuOid, 
+					        	tarjoajaOid: hakukohde.tarjoajaOids[0],
+					        	templateName: templateName,
+					        	tag: tag,
+					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
+					            Latausikkuna.avaa(id, "Hakukohteessa hylätyille jälkiohjauskirjeet", "");
+					        }, function () {
+					            
+					        });
+                    	},
+                        hakuOid: $routeParams.hakuOid,
+                        hakukohdeOid: $routeParams.hakukohdeOid,
+                        tarjoajaOid: hakukohde.tarjoajaOids[0],
+                        pohjat: function() {
+                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
+                        },
+                        hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
+                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                    };
+                }
+            }
+        });
+    }
     $scope.luoHyvaksymiskirjeetPDF = function() {
     	var hakuOid = $routeParams.hakuOid;
     	var hakukohde = $scope.hakukohdeModel.hakukohde;
