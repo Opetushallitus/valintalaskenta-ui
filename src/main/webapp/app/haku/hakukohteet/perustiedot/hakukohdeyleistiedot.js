@@ -71,22 +71,23 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (resultWrapper) {
                 var hakukohde = resultWrapper.result;
                 model.hakukohde = hakukohde;
-
                 if(hakukohde.hakukohteenNimiUri) {
                     var nimiUri = hakukohde.hakukohteenNimiUri;
                     var hakukohdeUri = nimiUri.slice(0, nimiUri.indexOf('#'));
-
                     HakukohdeKoodistoNimi.get({hakukohteenNimiUri: hakukohdeUri}, function (result) {
                         hakukohde.hakukohdeKoodistoNimi = result;
                         model.setHakukohdeNames(hakukohde);
                     }, function (error) {
                         $log.error('Hakukohteen ' + resultWrapper.result.oid + ' hakukohteenNimiUrille ' + resultWrapper.result.hakukohteenNimiUri + ' ei löytynyt');
                     });
+                } else {
+                    console.log(hakukohde);
+                    model.setHakukohdeNames(hakukohde);
                 }
             }, function(error) {
+                $log.error('Hakukohteen tietojen hakeminen epäonnistui', error);
                 model.deferred.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
-
             return model.deferred.promise;
 
         };
@@ -121,10 +122,9 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
     }();
 
     return model;
-}]);
-
-angular.module('valintalaskenta').
-    controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
+}])
+    
+.controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
         'SijoitteluntulosModel', 'Korkeakoulu',
         function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu) {
     "use strict";
@@ -144,5 +144,11 @@ angular.module('valintalaskenta').
 
     $scope.sijoitteluntulosModel = SijoitteluntulosModel;
     $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
-}]);
+}])
+
+.controller('HakukohdeNimiController', ['$scope', '$routeParams', 'HakukohdeModel', function ($scope, $routeParams, HakukohdeModel) {
+        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+        $scope.tarjoajaNimi = HakukohdeModel.tarjoajaNimi;
+        $scope.hakukohdeNimi = HakukohdeModel.hakukohdeNimi;
+    }])
 
