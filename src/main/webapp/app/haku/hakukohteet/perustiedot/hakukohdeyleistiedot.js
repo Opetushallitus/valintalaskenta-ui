@@ -81,7 +81,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
                         $log.error('Hakukohteen ' + resultWrapper.result.oid + ' hakukohteenNimiUrille ' + resultWrapper.result.hakukohteenNimiUri + ' ei löytynyt');
                     });
                 } else {
-                    console.log(hakukohde);
                     model.setHakukohdeNames(hakukohde);
                 }
             }, function(error) {
