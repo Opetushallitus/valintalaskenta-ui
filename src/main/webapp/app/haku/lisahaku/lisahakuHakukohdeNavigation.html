@@ -8,7 +8,7 @@
         <span>{{ t('lisahakuhakukohdenavigation.perustiedot') || 'Hakukohteen perustiedot' }}</span>
     </a>
 
-    <a auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOid}}" ng-class="navClass('hyvaksytyt', 5)" href="#/lisahaku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hyvaksytyt" class="tab">
+    <a auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOids[0]}}" ng-class="navClass('hyvaksytyt', 5)" href="#/lisahaku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hyvaksytyt" class="tab">
         <span>{{ t('lisahakuhakukohdenavigation.hakeneet') || 'Hakeneet' }}</span>
     </a>
 
