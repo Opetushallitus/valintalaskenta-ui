@@ -234,17 +234,20 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	}
         };
 
-        this.updateHakemuksienTila = function (valintatapajonoOid) {
-        	var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
-        		return valintatapajono.oid === valintatapajonoOid;
-        	});
+        this.updateHakemuksienTila = function (valintatapajonoOid, uiMuokatutHakemusOids) {
+            var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
+                return valintatapajono.oid === valintatapajonoOid;
+            });
 
             var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
 
-        	var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
-        		return valintatapajono.hakemukset;
-        	}));
-        	model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
+            var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
+                return valintatapajono.hakemukset;
+            })), function (hakemus) {
+                return _.contains(uiMuokatutHakemusOids, hakemus.oid);
+            });
+
+            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function(error){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
@@ -367,9 +370,17 @@ angular.module('valintalaskenta').
         hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
     };
 
-    $scope.submit = function (valintatapajonoOid) {
-        $scope.model.updateHakemuksienTila(valintatapajonoOid);
+    $scope.muokatutHakemukset = [];
+
+    $scope.addMuokattuHakemus = function (hakemus) {
+        $scope.muokatutHakemukset.push(hakemus.oid);
+        $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
     };
+
+    $scope.submit = function (valintatapajonoOid) {
+        $scope.model.updateHakemuksienTila(valintatapajonoOid, $scope.muokatutHakemukset);
+    };
+
     $scope.luoJalkiohjauskirjeetPDF = function() {
     	var hakuOid = $routeParams.hakuOid;
     	var hakukohde = $scope.hakukohdeModel.hakukohde;

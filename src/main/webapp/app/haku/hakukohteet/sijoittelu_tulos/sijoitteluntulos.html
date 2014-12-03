@@ -172,21 +172,20 @@
                             </td>
 
                             <td>
-                                <div ng-show="hakemus.tila == 'VARALLA' && updateOph">{{ t('sijoitteluntulos.varasijahyvaksy') || 'Hyväksytään varasijalta' }}: <input type="checkbox" ng-model="hakemus.hyvaksyttyVarasijalta"></div>
+                                <div ng-show="hakemus.tila == 'VARALLA' && updateOph">{{ t('sijoitteluntulos.varasijahyvaksy') || 'Hyväksytään varasijalta' }}: <input type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.hyvaksyttyVarasijalta"></div>
                             </td>
 
                             <td>
-                                <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="hakemus.julkaistavissa"> <br/></div>
+                                <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"> <br/></div>
                                 <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
                                     <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                         <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakemus"/>
                                     </span>
-                                </div>
                             </td>
 
                             <td>
                                 <div ng-show="hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
-                                      <select ng-model="hakemus.muokattuIlmoittautumisTila"
+                                      <select ng-model="hakemus.muokattuIlmoittautumisTila" ng-change="addMuokattuHakemus(hakemus)"
                                               ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                       </select>
                                  </div>
