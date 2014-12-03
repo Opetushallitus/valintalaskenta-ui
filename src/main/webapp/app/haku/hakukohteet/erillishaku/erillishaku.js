@@ -39,6 +39,7 @@
             model.erillishakuSijoitteluajoTulos = {};
             model.vastaanottoTilat = [];
             model.lastValinnanVaihe = "";
+            model.haku = {};
 
             HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
                 model.haku = resultWrapper.result;
@@ -250,24 +251,18 @@
             });
         };
 
-        this.updateHakemuksienTila = function (valintatapajono) {
-            var jonoonLiittyvat = _.filter(model.erillishakuSijoitteluajoTulos.valintatapajonot, function(jono) {
+        this.updateHakemuksienTila = function (valintatapajono, uiMuokatutHakemusOids, sijoitteluModel) {
+            var jonoonLiittyvat = _.filter(sijoitteluModel.sijoitteluTulokset.valintatapajonot, function(jono) {
                 return jono.oid === valintatapajono.oid;
             });
 
             var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
-            var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function(liittyvaJono) {
+            var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(liittyvaJono) {
                 return liittyvaJono.hakemukset;
-            }));
-
-            _.forEach(muokatutHakemukset, function (mHakemus) {
-                _.extend(
-                    mHakemus,
-                    _.pick(_.findWhere(valintatapajono.jonosijat, {hakemusOid: mHakemus.hakemusOid}),
-                        'julkaistavissa','muokattuIlmoittautumisTila', 'muokattuVastaanottoTila', 'hyvaksyttyVarasijalta')
-                );
-
+            })), function (hakemus) {
+                return _.contains(uiMuokatutHakemusOids, hakemus.hakemusOid);
             });
+
 
             model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function(success){
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
@@ -324,6 +319,7 @@
               ErillishakuVienti) {
     "use strict";
 
+    $scope.muokatutHakemukset = [];
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -458,12 +454,12 @@
 
 
         $scope.submit = function (valintatapajonoOid) {
-            $scope.model.updateHakemuksienTila(valintatapajonoOid);
+            $scope.model.updateHakemuksienTila(valintatapajonoOid, $scope.muokatutHakemukset, $scope.sijoitteluModel);
         };
 
 
         $scope.addMuokattuHakemus = function (hakemus) {
-            $scope.muokatutHakemukset.push(hakemus.oid);
+            $scope.muokatutHakemukset.push(hakemus.hakemusOid);
             $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
         };
 
