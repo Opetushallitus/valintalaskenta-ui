@@ -1,6 +1,6 @@
 
-angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'TarjontaHakukohde', 'HakukohdeNimi', '_', 'HakukohdeKoodistoNimi',
-    function ($q, $log, TarjontaHakukohde, HakukohdeNimi, _, HakukohdeKoodistoNimi) {
+angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'HakukohdeNimi', '_', 'HakukohdeKoodistoNimi',
+    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimi, _, HakukohdeKoodistoNimi) {
     "use strict";
 
 
@@ -74,8 +74,9 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
                 if(hakukohde.hakukohteenNimiUri) {
                     var nimiUri = hakukohde.hakukohteenNimiUri;
                     var hakukohdeUri = nimiUri.slice(0, nimiUri.indexOf('#'));
-                    HakukohdeKoodistoNimi.get({hakukohteenNimiUri: hakukohdeUri}, function (result) {
-                        hakukohde.hakukohdeKoodistoNimi = result;
+                    var koodistoVersio = hakukohdeUri.split('_')[0];
+                    $http.get(KOODISTO_URL_BASE + 'json/' + koodistoVersio + '/koodi/' + hakukohdeUri, {cache: true}).then(function (result) {
+                        hakukohde.hakukohdeKoodistoNimi = result.data;
                         model.setHakukohdeNames(hakukohde);
                     }, function (error) {
                         $log.error('Hakukohteen ' + resultWrapper.result.oid + ' hakukohteenNimiUrille ' + resultWrapper.result.hakukohteenNimiUri + ' ei löytynyt');
