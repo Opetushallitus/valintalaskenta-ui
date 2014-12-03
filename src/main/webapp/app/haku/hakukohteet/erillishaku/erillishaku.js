@@ -252,23 +252,48 @@
         };
 
         this.updateHakemuksienTila = function (valintatapajono, uiMuokatutHakemusOids, sijoitteluModel) {
-            var jonoonLiittyvat = _.filter(sijoitteluModel.sijoitteluTulokset.valintatapajonot, function(jono) {
-                return jono.oid === valintatapajono.oid;
-            });
+            if (sijoitteluModel.sijoitteluTulokset.valintatapajonot) {
+                var jonoonLiittyvat = _.filter(sijoitteluModel.sijoitteluTulokset.valintatapajonot, function (jono) {
+                    return jono.oid === valintatapajono.oid;
+                });
 
-            var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
-            var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(liittyvaJono) {
-                return liittyvaJono.hakemukset;
-            })), function (hakemus) {
-                return _.contains(uiMuokatutHakemusOids, hakemus.hakemusOid);
-            });
+                var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function (liittyvaJono) {
+                    return liittyvaJono.hakemukset;
+                })), function (hakemus) {
+                    return _.contains(uiMuokatutHakemusOids, hakemus.hakemusOid);
+                });
 
+                model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function(success){
+                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+                }, function(error){
+                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+                });
+            }
+            if (model.erillishakuSijoitteluajoTulos.valintatapajonot) {
+                var jonoonLiittyvat = _.filter(model.erillishakuSijoitteluajoTulos.valintatapajonot, function (jono) {
+                    return jono.oid === valintatapajono.oid;
+                });
 
-            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function(success){
-                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
-            }, function(error){
-                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-            });
+                var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
+                var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function (liittyvaJono) {
+                    return liittyvaJono.hakemukset;
+                }));
+
+                _.forEach(muokatutHakemukset, function (mHakemus) {
+                    _.extend(
+                        mHakemus,
+                        _.pick(_.findWhere(valintatapajono.jonosijat, {hakemusOid: mHakemus.hakemusOid}),
+                            'julkaistavissa', 'muokattuIlmoittautumisTila', 'muokattuVastaanottoTila', 'hyvaksyttyVarasijalta')
+                    );
+
+                });
+
+                model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function (success) {
+                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+                }, function (error) {
+                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+                });
+            }
         };
 
         this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid) {
