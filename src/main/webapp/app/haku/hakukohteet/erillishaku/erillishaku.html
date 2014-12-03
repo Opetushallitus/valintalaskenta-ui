@@ -116,10 +116,19 @@
                                                 {{tulos.tila}}
                                             </td>
                                             <td>
-                                                {{tulos.vastaanottoTila}}
+                                                <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
+                                                <div ng-show="tulos.julkaistavissa && (updateOrg && (tulos.tila == 'HYVAKSYTTY' || tulos.tila == 'VARASIJALTA_HYVAKSYTTY' || tulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
+                                                    <span ng-show="(tulos.tila == 'HYVAKSYTTY' || tulos.tila == 'VARASIJALTA_HYVAKSYTTY' || tulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.tila == 'VARALLA'))">
+                                                        <muokattu-vastaanotto-tila haku="model.haku" hakemus="tulos"/>
+                                                    </span>
+                                                </div>
                                             </td>
                                             <td>
-                                                {{tulos.ilmoittautumisTila}}
+                                                <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
+                                                    <select ng-model="tulos.muokattuIlmoittautumisTila" ng-change="addMuokattuHakemus(tulos)"
+                                                            ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
+                                                    </select>
+                                                </div>
                                             </td>
                                         </tr>
                                         </tbody>

@@ -462,7 +462,10 @@
         };
 
 
-
+        $scope.addMuokattuHakemus = function (hakemus) {
+            $scope.muokatutHakemukset.push(hakemus.oid);
+            $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
+        };
 
 
 
