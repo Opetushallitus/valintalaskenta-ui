@@ -107,7 +107,7 @@ angular.module('valintalaskenta').
             });
 
             hakukohdeModelpromise.then(function () {
-                AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
+                AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
                     $scope.crudOrg = true;
                 });
             });

@@ -228,7 +228,7 @@ angular.module('valintalaskenta').
         $scope.model.removeHakemusFromHyvaksytyt(hakemusOid);
     };
 
-    $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
+    $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOids', function () {
         AuthService.updateOrg("APP_SIJOITTELU", $scope.hakukohdeOid).then(function () {
             $scope.updateOrg = true;
         });
