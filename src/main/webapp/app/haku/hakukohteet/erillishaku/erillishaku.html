@@ -124,7 +124,7 @@
                                             <td>
                                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
                                                 <div ng-show="tulos.julkaistavissa && (updateOrg && (tulos.tila == 'HYVAKSYTTY' || tulos.tila == 'VARASIJALTA_HYVAKSYTTY' || tulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
-                                                    <span ng-show="(tulos.tila == 'HYLATTY' || tulos.tila == 'VARASIJALTA_HYVAKSYTTY' || tulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.tila == 'VARALLA'))">
+                                                    <span ng-show="(tulos.tila == 'HYVAKSYTTY' || tulos.tila == 'VARASIJALTA_HYVAKSYTTY' || tulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.tila == 'VARALLA'))">
                                                         <muokattu-vastaanotto-tila haku="model.haku" hakemus="tulos"/>
                                                     </span>
                                                 </div>
@@ -146,7 +146,7 @@
                                                 ng-init="valintatapajono.hakemukset.currentPage=1"
                                                 items-per-page="pageSize"></pagination>
                                     <br/>
-                                    <button ng-click="submit(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
+                                    <button ng-disabled="muokatutHakemukset.length == 0" ng-click="submit(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
 
                                 </form>
                             </div>

@@ -21,7 +21,6 @@
         this.tarjoajaOid = "";
         this.hakeneet = [];
         this.erillishakuDefer = $q.defer();
-        this.vastaanottoTilat = [];
         this.lastValinnanVaihe = "";
 
         this.refresh = function(hakukohdeOid, hakuOid) {
@@ -274,7 +273,6 @@
                     return jono.oid === valintatapajono.oid;
                 });
 
-                var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
                 var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function (liittyvaJono) {
                     return liittyvaJono.hakemukset;
                 }));
@@ -488,11 +486,6 @@
             $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
         };
 
-
-
-        //$scope.submit = function (vaiheoid, jonooid) {
-        //    ValintalaskentatulosModel.submit(vaiheoid, jonooid);
-        //};
 
         $scope.muutaSijoittelunStatus = function (jono, status) {
             ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status);
