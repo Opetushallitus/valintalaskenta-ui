@@ -540,12 +540,14 @@ angular.module('valintalaskenta').
                     return {
                     	otsikko: "Hyväksymiskirjeet",
                     	toimintoNimi: "Muodosta hyväksymiskirjeet",
-                    	toiminto: function(sisalto) {
+                    	toiminto: function(sisalto, palautusPvm, palautusAika) {
                     		Hyvaksymiskirjeet.post({
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOids[0],
 					        	templateName: templateName,
+					        	palautusPvm: palautusPvm,
+					        	palautusAika: palautusAika,
 					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
