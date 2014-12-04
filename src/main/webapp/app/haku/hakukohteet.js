@@ -133,11 +133,9 @@ angular.module('valintalaskenta')
 
 
 angular.module('valintalaskenta').
-    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', 'HakukohdeModel', '_',
-        'GlobalStates', 'HakuModel',
-        function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel, HakukohdeModel, _) {
+    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'GlobalStates', 'HakuModel',
+                                function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, GlobalStates, HakuModel) {
             "use strict";
-
             $scope.hakuOid = $routeParams.hakuOid;
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
             $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;

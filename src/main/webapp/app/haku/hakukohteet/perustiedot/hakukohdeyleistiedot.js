@@ -73,7 +73,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                 model.deferred.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
             return model.deferred;
-
         };
 
 
@@ -87,8 +86,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                 return model.deferred.promise;
             }
         };
-
-
 
         //helper method needed in other controllers
         this.isHakukohdeChanged = function (hakukohdeOid) {
@@ -124,20 +121,22 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu) {
     "use strict";
 
-
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
-    $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+    if($routeParams.hakukohdeOid) {
+        $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+    }
 
     $scope.isKorkeakoulu = function () {
         return Korkeakoulu.isKorkeakoulu($scope.sijoitteluntulosModel.haku.kohdejoukkoUri);
     };
 
-
-    $scope.sijoitteluntulosModel = SijoitteluntulosModel;
-    $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
+    if($routeParams.hakukohdeOid) {
+        $scope.sijoitteluntulosModel = SijoitteluntulosModel;
+        $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
+    }
 }])
 
 .controller('HakukohdeNimiController', ['$scope', '$routeParams', 'HakukohdeModel', function ($scope, $routeParams, HakukohdeModel) {

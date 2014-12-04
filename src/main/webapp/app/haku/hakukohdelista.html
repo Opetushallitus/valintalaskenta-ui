@@ -9,7 +9,7 @@
 			</div>
 			<ul  class="selectlist" lazy-loading>
 
-			    <li ng-class="hakukohdeOid === hakukohde.oid ? 'selected' : ''" ng-repeat="hakukohde in model.hakukohteet">
+			    <li ng-class="hakukohdeOid === hakukohde.oid && hakukohdeOid !== undefined ? 'selected' : ''" ng-repeat="hakukohde in model.hakukohteet">
 
 			        <a ng-click="showHakukohde(hakukohde, hakuModel.hakuOid.lisahaku)">
 			            <span class="icon file"></span>
