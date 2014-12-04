@@ -8,6 +8,7 @@ angular.module('valintalaskenta')
 
             model = new function () {
                 this.hakukohteet = [];
+                this.hakuOid = undefined;
                 this.filtered = [];
                 this.totalCount = 0;
                 this.pageSize = 15;
@@ -17,32 +18,22 @@ angular.module('valintalaskenta')
                 this.omatHakukohteet = true;
                 this.valmiitHakukohteet = "JULKAISTU";
                 this.readyToQueryForNextPage = true;
+                this.deferred = undefined;
 
-                // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
                 this.getKieli = function (hakukohde) {
                     if (hakukohde) {
-                        // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
                         var languages = ["kieli_fi", "kieli_sv", "kieli_en"];
+                        var tarjoajaNimet = hakukohde.tarjoajaNimet;
+                        var hakukohdeNimet = hakukohde.hakukohteenNimet;
 
-
-                        var result = _.find(languages, function (language) {
-                            return _.contains(hakukohde.opetusKielet, language);
+                        var language = _.find(languages, function (lang) {
+                             return (!_.isEmpty(hakukohdeNimet[lang]) && !_.isEmpty(tarjoajaNimet[_.last(lang.split("_"))]));
                         });
 
-                        return result;
+                        return language;
 
-                        /*
-                         for (var lang in kielet) {
-                         if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]] &&
-                         !_.isEmpty(hakukohde.tarjoajaNimi[kielet[lang]]) &&
-                         hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]] &&
-                         !_.isEmpty(hakukohde.hakukohdeNimi[kielet[lang]])) {
-                         return kielet[lang];
-                         }
-                         }
-                         */
                     }
-                    return "";
+                    return "kieli_fi";
                 };
 
                 this.getTarjoajaNimi = function (hakukohde) {
@@ -52,48 +43,35 @@ angular.module('valintalaskenta')
                 };
 
                 this.getHakukohdeNimi = function (hakukohde) {
-                    var result;
                     var language = model.getKieli(hakukohde);
-                    if(language != undefined) {
-                        var languageId = _.last(language.split("_"));
-                        if (hakukohde.hakukohdeKoodistoNimi) {
-                            result = _.find(hakukohde.hakukohdeKoodistoNimi.metadata, function (item) {
-                                return item.kieli === languageId.toUpperCase();
-                            }).nimi;
-                        } else {
-                            result = hakukohde.hakukohteenNimet[language];
-                        }
-                        return result;
-                    }
+                    return hakukohde.hakukohteenNimet[language];
+
                 };
 
-                this.getKieliCode = function () {
-                };
                 this.getCount = function () {
                     if (this.hakukohteet === undefined) {
                         return 0;
                     }
-                    return this.hakukohteet.length;
+                    return model.hakukohteet.length;
                 };
                 this.getTotalCount = function () {
-                    return this.totalCount;
+                    return model.totalCount;
                 };
                 this.getHakukohteet = function () {
-                    return this.hakukohteet;
+                    return model.hakukohteet;
                 };
                 this.getNextPage = function (restart) {
+                    
                     var hakuOid = $routeParams.hakuOid;
                     if (restart) {
                         model.hakukohteet.length = 0;
                         this.filtered = [];
                     }
-                    var startIndex = this.getCount();
-                    var lastTotalCount = this.getTotalCount();
+                    var startIndex = model.getCount();
+                    var lastTotalCount = model.getTotalCount();
                     var notLastPage = startIndex < lastTotalCount;
-
                     if (notLastPage || restart) {
 
-                        var self = this;
                         if (model.readyToQueryForNextPage) {
                             model.readyToQueryForNextPage = false;
                             AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN", ['READ', 'READ_UPDATE', 'CRUD']).then(function (roleModel) {
@@ -112,6 +90,7 @@ angular.module('valintalaskenta')
                                 searchParams.hakukohdeTilas = model.valmiitHakukohteet;
 
                                 TarjontaHaku.query(searchParams, function (resultWrapper) {
+                                    console.log('tarjontahaku', searchParams, resultWrapper.result);
                                     var promises = [];
                                     var hakukohteet = [];
                                     _.forEach(resultWrapper.result, function (resultObj) {
@@ -121,22 +100,8 @@ angular.module('valintalaskenta')
                                         promises.push(hakukohdeDefer.promise);
                                         TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (resultWrapper) {
                                             var hakukohde = resultWrapper.result;
-                                            if (hakukohde.hakukohteenNimiUri) {
-                                                var nimiUri = hakukohde.hakukohteenNimiUri;
-                                                var hakukohdeUri = nimiUri.slice(0, nimiUri.indexOf('#'));
-                                                var koodistoVersio = hakukohdeUri.split('_')[0];
-                                                $http.get(KOODISTO_URL_BASE + 'json/' + koodistoVersio + '/koodi/' + hakukohdeUri, {cache: true}).then(function (result) {
-                                                    hakukohde.hakukohdeKoodistoNimi = result.data;
-                                                    hakukohdeDefer.resolve();
-                                                    hakukohteet.push(hakukohde);
-                                                }, function (error) {
-                                                    $log.error('Hakukohteen ' + resultWrapper.result.oid + ' hakukohteenNimiUrille ' + resultWrapper.result.hakukohteenNimiUri + ' ei löytynyt');
-                                                    hakukohdeDefer.reject();
-                                                });
-                                            } else {
-                                                hakukohteet.push(hakukohde);
-                                                hakukohdeDefer.resolve();
-                                            }
+                                            hakukohteet.push(hakukohde);
+                                            hakukohdeDefer.resolve();
                                         }, function (error) {
                                             hakukohdeDefer.reject();
                                         });
@@ -144,34 +109,30 @@ angular.module('valintalaskenta')
                                     });
 
                                     $q.all(promises).then(function () {
-                                        model.hakukohteet = hakukohteet;
+
+                                        if (restart) { // eka sivu
+                                            model.hakukohteet = hakukohteet;
+                                            model.totalCount = hakukohteet.length;
+                                        } else { // seuraava sivu
+                                            if (startIndex !== model.getCount()) {
+                                                //
+                                                // Ei tehda mitaan
+                                                //
+                                                model.readyToQueryForNextPage = true;
+                                                return;
+                                            } else {
+                                                model.hakukohteet = model.hakukohteet.concat(result.tulokset);
+                                                if (model.getTotalCount() !== result.kokonaismaara) {
+                                                    model.lastSearch = null;
+                                                    model.readyToQueryForNextPage = true;
+                                                    model.getNextPage(true);
+                                                }
+                                            }
+                                        }
                                     });
-                                    /*
-                                     var result = resultWrapper.result;
-                                     if (restart) { // eka sivu
-                                     self.hakukohteet = result.tulokset;
-                                     self.totalCount = result.kokonaismaara;
-                                     } else { // seuraava sivu
-                                     if (startIndex !== self.getCount()) {
-                                     //
-                                     // Ei tehda mitaan
-                                     //
-                                     model.readyToQueryForNextPage = true;
-                                     return;
-                                     } else {
-                                     self.hakukohteet = self.hakukohteet.concat(result.tulokset);
-                                     if (self.getTotalCount() !== result.kokonaismaara) {
-                                     // palvelimen tietomalli on paivittynyt joten koko lista on ladattava uudestaan!
-                                     // ... tai vaihtoehtoisesti kayttajalle naytetaan epasynkassa olevaa listaa!!!!!
-                                     self.lastSearch = null;
-                                     model.readyToQueryForNextPage = true;
-                                     self.getNextPage(true);
-                                     }
-                                     }
-                                     }
-                                     */
-                                    model.readyToQueryForNextPage = true;
+
                                 });
+
                             });
                         }
                     }
@@ -200,9 +161,9 @@ angular.module('valintalaskenta')
 
 
 angular.module('valintalaskenta').
-    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', 'HakukohdeModel',
+    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', 'HakukohdeModel', '_',
         'GlobalStates', 'HakuModel',
-        function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel, HakukohdeModel) {
+        function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, GlobalStates, HakuModel, HakukohdeModel, _) {
             "use strict";
 
             $scope.hakuOid = $routeParams.hakuOid;

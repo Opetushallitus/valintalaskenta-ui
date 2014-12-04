@@ -407,14 +407,14 @@ xdescribe('Testing SijoitteluntulosController', function(){
 describe('Testing HakukohdeController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hakukohdeModel, hakuModel,
         sijoitteluntulosModel, location, hakukohdejson, hakujson, sijoitteluajojson, hakukohdenimijson,
-        hakukohdetilajson, korkeakoulu, tarjontaHakukohde, koodistoHakukohde;
+        hakukohdetilajson, korkeakoulu, tarjontaHakukohde;
 
     var routeParams = {"hakuOid": "oid",
         "hakukohdeOid" : "oid2"};
     beforeEach(module('valintalaskenta','testData'));
 
     beforeEach(inject(function($injector, hakukohdeJSON, hakuJSON, sijoitteluajoJSON, hakukohdenimiJSON,
-                               hakukohdetilaJSON, HakukohdeTarjonnasta, HakukohdeKoodistosta) {
+                               hakukohdetilaJSON, HakukohdeTarjonnasta) {
         $httpBackend = $injector.get('$httpBackend');
         $rootScope = $injector.get('$rootScope');
         $location = $injector.get('$location');
@@ -428,7 +428,6 @@ describe('Testing HakukohdeController', function(){
         hakukohdenimijson = hakukohdenimiJSON;
         sijoitteluajojson = sijoitteluajoJSON;
         hakukohdetilajson = hakukohdetilaJSON;
-        koodistoHakukohde = HakukohdeKoodistosta;
         tarjontaHakukohde = HakukohdeTarjonnasta;
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
@@ -449,8 +448,6 @@ describe('Testing HakukohdeController', function(){
             .respond(201,hakujson);
         $httpBackend.expectGET('resources/sijoittelu/'+routeParams.hakuOid+'/sijoitteluajo/latest/hakukohde/'+routeParams.hakukohdeOid)
             .respond(201,sijoitteluajojson);
-        $httpBackend.expectGET('json/hakukohteet/koodi/hakukohteet_475')
-            .respond(201, koodistoHakukohde);
         $httpBackend.expectGET('resources/tila/hakukohde/'+routeParams.hakukohdeOid+'/1397647295344-8565235898154713515')
             .respond(201,hakukohdetilajson);
 
@@ -565,7 +562,7 @@ xdescribe('Testing HakeneetController', function(){
 describe('Testing ValinnanhallintaController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, hakukohdeModel, $modal,
         hakukohdejson,latausikkuna,ilmoitus,valinnanhallintaModel, 
-            parametriService, ilmoitusTila, valinnanvaihejson, hakukohdenimijson, tarjontaHakukohde, koodistoHakukohde;
+            parametriService, ilmoitusTila, valinnanvaihejson, hakukohdenimijson, tarjontaHakukohde;
     var routeParams = {"hakuOid": "oid",
         "hakukohdeOid" : "oid2"};
     beforeEach(module('valintalaskenta','testData'));
@@ -585,7 +582,6 @@ describe('Testing ValinnanhallintaController', function(){
         hakukohdejson = hakukohdeJSON;
         valinnanvaihejson = valinnanvaiheJSON;
         hakukohdenimijson = hakukohdenimiJSON;
-        koodistoHakukohde = HakukohdeKoodistosta;
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
@@ -601,8 +597,6 @@ describe('Testing ValinnanhallintaController', function(){
             .respond(201,tarjontaHakukohde);
         $httpBackend.expectGET('resources/hakukohde/'+routeParams.hakukohdeOid+'/valinnanvaihe')
             .respond(201,valinnanvaihejson);
-        $httpBackend.expectGET('json/hakukohteet/koodi/hakukohteet_475')
-            .respond(201, koodistoHakukohde);
         ctrl = $controller('ValinnanhallintaController', {'$scope' : scope, '$routeParams': routeParams, '$modal': $modal,
             'Latausikkuna': latausikkuna, 'Ilmoitus': ilmoitus, 'ValinnanhallintaModel': valinnanhallintaModel,
             'HakukohdeModel': hakukohdeModel, 
@@ -762,7 +756,7 @@ xdescribe('Testing ValintakoetulosController', function(){
 
 describe('Testing PistesyottoController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakeneetModel, hakukohdeModel,
-        hakukohdejson,additionaljson,hakukohdenimijson,avaimetjson, tarjontaHakukohde, koodistoHakukohde;
+        hakukohdejson,additionaljson,hakukohdenimijson,avaimetjson, tarjontaHakukohde;
     var routeParams = {"hakuOid": "oid1",
         "hakukohdeOid" : "oid2"};
     beforeEach(module('valintalaskenta','testData'));
@@ -778,7 +772,6 @@ describe('Testing PistesyottoController', function(){
         additionaljson = additionaldataJSON;
         hakukohdenimijson = hakukohdenimiJSON;
         avaimetjson = avaimetJSON;
-        koodistoHakukohde = HakukohdeKoodistosta
         tarjontaHakukohde = $injector.get('HakukohdeTarjonnasta');
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
@@ -795,8 +788,6 @@ describe('Testing PistesyottoController', function(){
             .respond(201,tarjontaHakukohde);
         $httpBackend.expectGET('resources/valintakoe/hakutoive/'+routeParams.hakukohdeOid)
             .respond(201,"[]");
-        $httpBackend.expectGET('json/hakukohteet/koodi/hakukohteet_475')
-            .respond(201, koodistoHakukohde);
         $httpBackend.expectGET('haku-app/applications/additionalData/'+routeParams.hakuOid+"/"+routeParams.hakukohdeOid)
             .respond(201,additionaljson);
         $httpBackend.expectGET('resources/hakukohde/avaimet/'+routeParams.hakukohdeOid)
@@ -862,7 +853,7 @@ describe('Testing PistesyottoController', function(){
 describe('Testing HarkinnanvaraisetController', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, $log, ilmoitus, ilmoitusTila, latausikkuna,
         koekutsukirjeet, osoitetarratHakemuksille, harkinnanvaraisetModel, pohjakoulutukset, hakukohdeModel, hakeneetModel,
-        hakukohdejson,hakeneetjson,hakukohdenimijson, hakutoiveetjson, tarjontaHakukohde, koodistoHakukohde;
+        hakukohdejson,hakeneetjson,hakukohdenimijson, hakutoiveetjson, tarjontaHakukohde;
     var routeParams = {"hakuOid": "oid1",
         "hakukohdeOid" : "oid2"};
 
@@ -884,7 +875,6 @@ describe('Testing HarkinnanvaraisetController', function(){
         harkinnanvaraisetModel = $injector.get('HarkinnanvaraisetModel');
         pohjakoulutukset = $injector.get('Pohjakoulutukset');
         tarjontaHakukohde = HakukohdeTarjonnasta;
-        koodistoHakukohde = HakukohdeKoodistosta;
         hakukohdejson = hakukohdeJSON;
         hakeneetjson = hakeneetJSON;
         hakukohdenimijson = hakukohdenimiJSON;
@@ -906,8 +896,6 @@ describe('Testing HarkinnanvaraisetController', function(){
 
         $httpBackend.expectGET('haku-app/applications?aoOid='+routeParams.hakukohdeOid+'&appState=ACTIVE&appState=INCOMPLETE&rows=100000')
             .respond(201,hakeneetjson);
-        $httpBackend.expectGET('json/hakukohteet/koodi/hakukohteet_475')
-            .respond(201, koodistoHakukohde);
         $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000827076?appState=ACTIVE&appState=INCOMPLETE')
             .respond(201,hakutoiveetjson);
         $httpBackend.expectGET('haku-app/applications/1.2.246.562.11.00000840202?appState=ACTIVE&appState=INCOMPLETE')
@@ -1570,12 +1558,12 @@ xdescribe('Testing LisahakuhyvaksytytController', function(){
 
 describe('Häviääko koetulokset', function(){
     var scope, ctrl, $rootScope, $controller, $httpBackend, $location, location, hakeneetModel, hakukohdeModel,
-        hakukohdejson,additionaljson,hakukohdenimijson,avaimetjson,osallistumisetjson, tarjontaHakukohde, koodistoHakukohde;
+        hakukohdejson,additionaljson,hakukohdenimijson,avaimetjson,osallistumisetjson, tarjontaHakukohde;
     var routeParams = {"hakuOid": "1.2.246.562.29.173465377510",
         "hakukohdeOid" : "1.2.246.562.20.81959342411"};
     beforeEach(module('valintalaskenta','testData'));
 
-    beforeEach(inject(function($injector, hakukohdeJSON, pisteAdditionalJSON, HakukohdeTarjonnasta, hakukohdenimiJSON, pisteAvaimetJSON, pisteOsallistuminenJSON, HakukohdeKoodistosta) {
+    beforeEach(inject(function($injector, hakukohdeJSON, pisteAdditionalJSON, HakukohdeTarjonnasta, hakukohdenimiJSON, pisteAvaimetJSON, pisteOsallistuminenJSON) {
         $httpBackend = $injector.get('$httpBackend');
         $rootScope = $injector.get('$rootScope');
         $location = $injector.get('$location');
@@ -1586,7 +1574,6 @@ describe('Häviääko koetulokset', function(){
         additionaljson = pisteAdditionalJSON;
         hakukohdenimijson = hakukohdenimiJSON;
         avaimetjson = pisteAvaimetJSON;
-        koodistoHakukohde = HakukohdeKoodistosta;
         tarjontaHakukohde = HakukohdeTarjonnasta;
         osallistumisetjson = pisteOsallistuminenJSON;
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
@@ -1604,8 +1591,6 @@ describe('Häviääko koetulokset', function(){
             .respond(201,tarjontaHakukohde);
         $httpBackend.expectGET('resources/valintakoe/hakutoive/'+routeParams.hakukohdeOid)
             .respond(201,osallistumisetjson);
-        $httpBackend.expectGET('json/hakukohteet/koodi/hakukohteet_475')
-            .respond(201, koodistoHakukohde);
         $httpBackend.expectGET('haku-app/applications/additionalData/'+routeParams.hakuOid+"/"+routeParams.hakukohdeOid)
             .respond(201,additionaljson);
         $httpBackend.expectGET('resources/hakukohde/avaimet/'+routeParams.hakukohdeOid)

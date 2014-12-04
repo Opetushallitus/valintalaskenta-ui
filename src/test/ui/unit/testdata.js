@@ -272,72 +272,75 @@ angular.module('testData', [])
         } ]
     })
     .value('HakukohdeTarjonnasta', {
-        "result" : {
-            "modified" : 1380452679137,
-            "modifiedBy" : "1.2.246.562.24.84378943116",
-            "oid" : "1.2.246.562.14.2013092914043907981385",
-            "version" : 2,
-            "hakukohteenNimi" : "Kotityö- ja puhdistuspalvelujen perustutkinto, pk, Kevät 2014, valmis",
-            "hakukohteenNimiUri" : "hakukohteet_475#1",
-            "tarjoajaNimet" : {
-                "fi" : "Etelä-Kymenlaakson ammattiopisto, Katariinan kampus"
-            },
-            "koulutusmoduuliToteutusTarjoajatiedot" : {
-                "1.2.246.562.5.2013092817191796006268" : {
-                    "tarjoajaOids" : [ "1.2.246.562.10.49065079086" ]
-                }
-            },
-            "tarjoajaOids" : [ "1.2.246.562.10.49065079086" ],
-            "hakuOid" : "1.2.246.562.5.2013080813081926341927",
-            "hakuaikaId" : "5474",
-            "hakukelpoisuusvaatimusUris" : [ "hakukelpoisuusvaatimusta_1#1" ],
-            "hakukohdeKoulutusOids" : [ "1.2.246.562.5.2013092817191796006268" ],
-            "alinHyvaksyttavaKeskiarvo" : 0.0,
-            "alinValintaPistemaara" : 0,
-            "ylinValintapistemaara" : 0,
-            "aloituspaikatLkm" : 18,
-            "edellisenVuodenHakijatLkm" : 0,
-            "valintojenAloituspaikatLkm" : 18,
-            "sahkoinenToimitusOsoite" : "",
-            "tila" : "JULKAISTU",
-            "valintaperustekuvausKoodiUri" : "valintaperustekuvausryhma_2#1",
-            "liitteidenToimitusPvm" : 1394802000000,
-            "koulutusAsteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
-            "toteutusTyyppi" : "AMMATILLINEN_PERUSTUTKINTO",
-            "koulutuslaji" : "N",
-            "lisatiedot" : {
-                "kieli_fi" : ""
-            },
-            "valintaperusteKuvaukset" : { },
-            "hakukelpoisuusVaatimusKuvaukset" : {
-                "kieli_sv" : "Om du har slutfört den grundläggande utbildningens lärokurs eller motsvarande lärokurs kan du söka till grundskolebaserade yrkesinriktade examina. Om du har avlagt din examen utomlands eller avbrutit läroplikten kan du söka till grundskolebaserad yrkesutbildning genom ansökan enligt prövning. Utbildningsanordnaren bedömer då skilt ditt utbildningsbehov och förutsättningar att klara av studierna.\nOm du har slutfört gymnasiets lärokurs eller avlagt studentexamen kan du inte söka till grundskolebaserad yrkesutbildning. Om du har avlagt en yrkesinriktad grundexamen, någon annan yrkesexamen eller en högskoleexamen kan du inte söka till yrkesutbildning i andra stadiets gemensamma ansökan.",
-                "kieli_fi" : "Perusopetuksen tai vastaavan aiemman oppimäärän suorittaneet voivat hakea peruskoulupohjaiseen ammatilliseen perustutkintoon. Jos hakijalla on ulkomailla suoritettu tutkinto tai hänen oppivelvollisuutensa on keskeytynyt, hän voi hakea peruskoulupohjaiseen ammatilliseen koulutukseen harkintaan perustuvan haun kautta. Tällöin koulutuksen järjestäjä arvioi erikseen hakijan koulutustarpeen ja edellytykset suoriutua opinnoista. \nLukion tai ylioppilastutkinnon suorittaneet eivät voi hakea peruskoulupohjaiseen ammatilliseen koulutukseen. Ammatillisen perustutkinnon, muun ammatillisen tutkinnon tai korkeakoulututkinnon suorittaneet eivät voi hakea ammatilliseen koulutukseen toisen asteen yhteishaussa."
-            },
-            "aloituspaikatKuvaukset" : { },
-            "kaytetaanJarjestelmanValintaPalvelua" : false,
-            "kaytetaanHaunPaattymisenAikaa" : false,
-            "kaytetaanHakukohdekohtaistaHakuaikaa" : false,
-            "hakukohteenLiitteet" : [ ],
-            "yhteystiedot" : [ ],
-            "liitteidenToimitusOsoite" : {
-                "version" : 0,
-                "osoiterivi1" : "Lehmustie 4",
-                "postinumero" : "posti_48130",
-                "postinumeroArvo" : "48130",
-                "postitoimipaikka" : "KOTKA"
-            },
-            "valintakokeet" : [ ],
-            "kaksoisTutkinto" : false,
-            "opetusKielet" : [ "kieli_fi" ],
-            "valintaPerusteKuvausKielet" : [ ],
-            "soraKuvausKielet" : [ ],
-            "painotettavatOppiaineet" : [ ],
-            "organisaatioRyhmaOids" : [ ],
-            "lukioKoulutus" : false
-        },
-        "status" : "OK",
-        "accessRights" : { }
-    })
+    "result" : {
+    "modified" : 1377172403713,
+        "modifiedBy" : "1.2.246.562.24.55248599645",
+        "oid" : "1.2.246.562.5.10105_04_255_0102",
+        "version" : 3,
+        "hakukohteenNimi" : "Autoalan perustutkinto, yo, Syksy 2013, valmis",
+        "hakukohteenNimiUri" : "hakukohteet_255#1",
+        "hakukohteenNimet" : {
+        "kieli_sv" : "Grundexamen inom bilbranschen, st",
+            "kieli_fi" : "Autoalan perustutkinto, yo"
+    },
+    "tarjoajaNimet" : {
+        "fi" : "Stadin ammattiopisto, Ilkantien toimipaikka"
+    },
+    "koulutusmoduuliToteutusTarjoajatiedot" : {
+        "1.2.246.562.5.10105_04_255_0102_1528" : {
+            "tarjoajaOids" : [ "1.2.246.562.10.55355715099" ]
+        }
+    },
+    "tarjoajaOids" : [ "1.2.246.562.10.55355715099" ],
+        "hakuOid" : "1.2.246.562.5.2013060313080811526781",
+        "hakuaikaId" : "6",
+        "hakukelpoisuusvaatimusUris" : [ "hakukelpoisuusvaatimusta_3#1" ],
+        "hakukohdeKoulutusOids" : [ "1.2.246.562.5.10105_04_255_0102_1528" ],
+        "alinHyvaksyttavaKeskiarvo" : 0.0,
+        "alinValintaPistemaara" : 0,
+        "ylinValintapistemaara" : 0,
+        "aloituspaikatLkm" : 20,
+        "edellisenVuodenHakijatLkm" : 0,
+        "valintojenAloituspaikatLkm" : 20,
+        "sahkoinenToimitusOsoite" : "",
+        "tila" : "JULKAISTU",
+        "valintaperustekuvausKoodiUri" : "valintaperustekuvausryhma_3#1",
+        "koulutusAsteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutusTyyppi" : "AMMATILLINEN_PERUSTUTKINTO",
+        "koulutuslaji" : "N",
+        "lisatiedot" : {
+        "kieli_fi" : ""
+    },
+    "valintaperusteKuvaukset" : { },
+    "hakukelpoisuusVaatimusKuvaukset" : {
+        "kieli_sv" : "Om du har slutfört gymnasiets lärokurs kan du söka till gymnasiebaserade yrkesinriktade grundexamina. Om du har avlagt din examen utomlands eller avbrutit läroplikten kan du söka till gymnasiebaserad yrkesutbildning genom ansökan enligt prövning. Utbildningsanordnaren bedömer då skilt ditt utbildningsbehov och förutsättningar att klara av studierna.\nOm du har avlagt en yrkesinriktad grundexamen, någon annan yrkesexamen eller en högskoleexamen kan du inte söka till yrkesinriktad grundexamen i andra stadiets gemensamma ansökan.",
+            "kieli_fi" : "Lukiopohjaiseen ammatilliseen perustutkintoon voivat hakea lukion oppimäärän suorittaneet. Ulkomailla tutkintonsa suorittaneet voivat hakea lukiopohjaiseen ammatilliseen koulutukseen harkintaan perustuvan haun kautta. Tällöin koulutuksen järjestäjä arvioi erikseen hakijan koulutustarpeen ja edellytykset suoriutua opinnoista. \nAmmatillisen perustutkinnon, muun ammatillisen tutkinnon tai korkeakoulututkinnon suorittaneet eivät voi hakea ammatilliseen koulutukseen toisen asteen yhteishaussa."
+    },
+    "aloituspaikatKuvaukset" : { },
+    "kaytetaanJarjestelmanValintaPalvelua" : false,
+        "kaytetaanHaunPaattymisenAikaa" : false,
+        "kaytetaanHakukohdekohtaistaHakuaikaa" : false,
+        "hakukohteenLiitteet" : [ ],
+        "yhteystiedot" : [ ],
+        "liitteidenToimitusOsoite" : {
+        "version" : 0,
+            "osoiterivi1" : "PL 3931",
+            "postinumero" : "posti_00099",
+            "postinumeroArvo" : "00099",
+            "postitoimipaikka" : "HELSINGIN KAUPUNKI"
+    },
+    "valintakokeet" : [ ],
+        "kaksoisTutkinto" : false,
+        "opetusKielet" : [ "kieli_fi" ],
+        "valintaPerusteKuvausKielet" : [ ],
+        "soraKuvausKielet" : [ ],
+        "painotettavatOppiaineet" : [ ],
+        "organisaatioRyhmaOids" : [ ],
+        "lukioKoulutus" : false
+},
+    "status" : "OK",
+    "accessRights" : { }
+})
     .value('hakuJSON',
     {
         "modified" : 1403089714414,

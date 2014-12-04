@@ -18,38 +18,35 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.getKieli = function (hakukohde) {
             if (hakukohde) {
                 var languages = ["kieli_fi", "kieli_sv", "kieli_en"];
-                var result = _.find(languages, function (language) {
-                    return _.contains(hakukohde.opetusKielet, language);
+                var tarjoajaNimet = hakukohde.tarjoajaNimet;
+                var hakukohdeNimet = hakukohde.hakukohteenNimet;
+
+                var language = _.find(languages, function (lang) {
+                    var languageId = _.last(lang.split("_"));
+                    return (!_.isEmpty(hakukohdeNimet[lang]) && !_.isEmpty(tarjoajaNimet[languageId]));
                 });
-                return result;
+
+                return language;
+
             }
-            return "";
+            return "kieli_fi";
         };
 
 
-		this.getKieliCode = function () {
-			var language = this.getKieli(model.hakukohde);
+		this.getKieliCode = function (hakukohde) {
+			var language = this.getKieli(hakukohde);
 			return _.last(language.split("_")).toUpperCase();
 		};
 
-        this.getTarjoajaNimi = function () {
-            var language = model.getKieli(model.hakukohde);
+        this.getTarjoajaNimi = function (hakukohde) {
+            var language = model.getKieli(hakukohde);
             var languageId = _.last(language.split("_"));
             return model.hakukohde.tarjoajaNimet[languageId];
         };
 
         this.getHakukohdeNimi = function (hakukohde) {
-            var result;
             var language = model.getKieli(hakukohde);
-            var languageId = _.last(language.split("_"));
-            if(hakukohde.hakukohdeKoodistoNimi) {
-                result = _.find(hakukohde.hakukohdeKoodistoNimi.metadata, function (item) {
-                    return item.kieli === languageId.toUpperCase();
-                }).nimi;
-            } else {
-                result = hakukohde.hakukohteenNimet[language];
-            }
-            return result;
+            return model.hakukohde.hakukohteenNimet[language];
         };
 
         this.haeEnsisijaiset = function(hakemukset, hakukohdeOid) {
@@ -71,32 +68,30 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (resultWrapper) {
                 var hakukohde = resultWrapper.result;
                 model.hakukohde = hakukohde;
-                if(hakukohde.hakukohteenNimiUri) {
-                    var nimiUri = hakukohde.hakukohteenNimiUri;
-                    var hakukohdeUri = nimiUri.slice(0, nimiUri.indexOf('#'));
-                    var koodistoVersio = hakukohdeUri.split('_')[0];
-                    $http.get(KOODISTO_URL_BASE + 'json/' + koodistoVersio + '/koodi/' + hakukohdeUri, {cache: true}).then(function (result) {
-                        hakukohde.hakukohdeKoodistoNimi = result.data;
-                        model.setHakukohdeNames(hakukohde);
-                    }, function (error) {
-                        $log.error('Hakukohteen ' + resultWrapper.result.oid + ' hakukohteenNimiUrille ' + resultWrapper.result.hakukohteenNimiUri + ' ei löytynyt');
-                    });
-                } else {
-                    model.setHakukohdeNames(hakukohde);
-                }
+                model.setHakukohdeNames();
             }, function(error) {
                 $log.error('Hakukohteen tietojen hakeminen epäonnistui', error);
                 model.deferred.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
-            return model.deferred.promise;
+            return model.deferred;
 
         };
 
         this.refreshIfNeeded = function (hakukohdeOid) {
-            if(_.isEmpty(model.deferred) || model.isHakukohdeChanged(hakukohdeOid) && hakukohdeOid !== undefined) {
-                return model.refresh(hakukohdeOid);
+            if(hakukohdeOid !== undefined && model.isHakukohdeChanged(hakukohdeOid) ) {
+                model.refresh(hakukohdeOid);
+                return model.deferred.promise;
             }
-            return model.deferred.promise;
+
+            if(_.isEmpty(model.deferred)) {
+                model.deferred = $q.defer();
+                if(hakukohdeOid !== undefined && model.isHakukohdeChanged(hakukohdeOid) ) {
+                    return model.refresh(hakukohdeOid);
+                }
+            } else {
+                return model.deferred.promise;
+            }
+
         };
 
 
@@ -110,9 +105,9 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
             }
         };
 
-        this.setHakukohdeNames = function (hakukohde) {
-            model.hakukohdeNimi = model.getHakukohdeNimi(hakukohde);
-            model.tarjoajaNimi = model.getTarjoajaNimi(hakukohde);
+        this.setHakukohdeNames = function () {
+            model.hakukohdeNimi = model.getHakukohdeNimi(model.hakukohde);
+            model.tarjoajaNimi = model.getTarjoajaNimi(model.hakukohde);
         };
 
         this.getHakukohdeOid = function () {
