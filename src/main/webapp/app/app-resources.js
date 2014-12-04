@@ -16,7 +16,7 @@ app.factory('HakuHakukohdeChildren', function($resource) {
     });
 });
 app.factory('TarjontaHaku', function($resource) {
-    return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde", {},{
+    return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohdeTulos", {},{
         query:  {method:'GET', isArray:false, cache: true}
     });
 });
