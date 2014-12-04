@@ -55,7 +55,6 @@ angular.module('valintalaskenta')
                     return model.hakukohteet;
                 };
                 this.getNextPage = function (restart) {
-                    console.log(model.readyToQueryForNextPage);
                     var hakuOid = $routeParams.hakuOid;
                     if (restart) {
                         model.hakukohteet.length = 0;
@@ -65,7 +64,6 @@ angular.module('valintalaskenta')
                     var lastTotalCount = model.getTotalCount();
                     var notLastPage = startIndex < lastTotalCount;
                     if (notLastPage || restart) {
-                        console.log('check', notLastPage, restart);
                         if (model.readyToQueryForNextPage) {
                             model.readyToQueryForNextPage = false;
                             AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN", ['READ', 'READ_UPDATE', 'CRUD']).then(function (roleModel) {
