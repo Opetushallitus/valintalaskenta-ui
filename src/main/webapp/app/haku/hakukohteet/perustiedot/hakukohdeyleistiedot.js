@@ -40,6 +40,9 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
 
         this.getHakukohdeNimi = function (hakukohde) {
             var result;
+            if (!hakukohde) {
+                hakukohde = model.hakukohde;
+            }
             var language = model.getKieli(hakukohde);
             var languageId = _.last(language.split("_"));
             if(hakukohde.hakukohdeKoodistoNimi) {
