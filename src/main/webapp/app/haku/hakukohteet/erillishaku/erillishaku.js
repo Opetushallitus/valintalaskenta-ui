@@ -1,9 +1,9 @@
 ﻿angular.module('valintalaskenta')
 
-.factory('ErillishakuModel', ['$routeParams', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
+.factory('ErillishakuModel', ['$routeParams', '$log', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
         'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde',
         'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'VastaanottoTilat','VastaanottoTila', 'HaunTiedot',
-        function($routeParams, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
+        function($routeParams, $log, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
     ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde,
     ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde, VastaanottoTilat,VastaanottoTila,HaunTiedot) {
     "use strict";
@@ -21,7 +21,6 @@
         this.tarjoajaOid = "";
         this.hakeneet = [];
         this.erillishakuDefer = $q.defer();
-        this.vastaanottoTilat = [];
         this.lastValinnanVaihe = "";
 
         this.refresh = function(hakukohdeOid, hakuOid) {
@@ -39,9 +38,10 @@
             model.erillishakuSijoitteluajoTulos = {};
             model.vastaanottoTilat = [];
             model.lastValinnanVaihe = "";
+            model.haku = {};
 
-            HaunTiedot.get({hakuOid: hakuOid}, function(result) {
-                model.haku = result;
+            HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
+                model.haku = resultWrapper.result;
             });
 
             ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
@@ -66,7 +66,7 @@
                                         });
                                     });
                                 });
-
+                                
                                 model.erillishakuDefer.resolve();
                             });
                             found = true;
@@ -250,30 +250,48 @@
             });
         };
 
-        this.updateHakemuksienTila = function (valintatapajono) {
-            var jonoonLiittyvat = _.filter(model.erillishakuSijoitteluajoTulos.valintatapajonot, function(jono) {
-                return jono.oid === valintatapajono.oid;
-            });
+        this.updateHakemuksienTila = function (valintatapajono, uiMuokatutHakemusOids, sijoitteluModel) {
+            if (sijoitteluModel.sijoitteluTulokset.valintatapajonot) {
+                var jonoonLiittyvat = _.filter(sijoitteluModel.sijoitteluTulokset.valintatapajonot, function (jono) {
+                    return jono.oid === valintatapajono.oid;
+                });
 
-            var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
-            var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function(liittyvaJono) {
-                return liittyvaJono.hakemukset;
-            }));
+                var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function (liittyvaJono) {
+                    return liittyvaJono.hakemukset;
+                })), function (hakemus) {
+                    return _.contains(uiMuokatutHakemusOids, hakemus.hakemusOid);
+                });
 
-            _.forEach(muokatutHakemukset, function (mHakemus) {
-                _.extend(
-                    mHakemus,
-                    _.pick(_.findWhere(valintatapajono.jonosijat, {hakemusOid: mHakemus.hakemusOid}),
-                        'julkaistavissa','muokattuIlmoittautumisTila', 'muokattuVastaanottoTila', 'hyvaksyttyVarasijalta')
-                );
+                model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function(success){
+                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+                }, function(error){
+                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+                });
+            }
+            if (model.erillishakuSijoitteluajoTulos.valintatapajonot) {
+                var jonoonLiittyvat = _.filter(model.erillishakuSijoitteluajoTulos.valintatapajonot, function (jono) {
+                    return jono.oid === valintatapajono.oid;
+                });
 
-            });
+                var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function (liittyvaJono) {
+                    return liittyvaJono.hakemukset;
+                }));
 
-            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function(success){
-                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
-            }, function(error){
-                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-            });
+                _.forEach(muokatutHakemukset, function (mHakemus) {
+                    _.extend(
+                        mHakemus,
+                        _.pick(_.findWhere(valintatapajono.jonosijat, {hakemusOid: mHakemus.hakemusOid}),
+                            'julkaistavissa', 'muokattuIlmoittautumisTila', 'muokattuVastaanottoTila', 'hyvaksyttyVarasijalta')
+                    );
+
+                });
+
+                model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function (success) {
+                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+                }, function (error) {
+                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+                });
+            }
         };
 
         this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid) {
@@ -316,14 +334,15 @@
 
 
 
-    .controller('ErillishakuController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
+    .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ErillishakuModel',
         'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
-    function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
+    function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
               ErillishakuVienti) {
     "use strict";
 
+    $scope.muokatutHakemukset = [];
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -331,8 +350,8 @@
     ErillishakuModel.refresh($scope.hakukohdeOid, $scope.hakuOid);
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.hakuModel = HakuModel;
-    SijoitteluntulosModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
-
+    $scope.sijoitteluModel = SijoitteluntulosModel; 
+    $scope.sijoitteluModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
@@ -342,15 +361,14 @@
         $scope.fetch = true;
     });
 
-
-    $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOid', function () {
-        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOid).then(function () {
-            $scope.updateOrg = true;
-
+    $scope.hakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
+        $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOids', function () {
+            AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
+                $scope.updateOrg = true;
+            });
         });
-
     });
-
+    
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
         $scope.jkmuokkaus = true;
@@ -391,9 +409,10 @@
             }
         };
 
-        $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
+        $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
             ValintatapajonoVienti.vie({
                     valintatapajonoOid: valintatapajonoOid,
+                    valintatapajononNimi: valintatapajononNimi,
                     hakukohdeOid: $scope.hakukohdeOid,
                     hakuOid: $routeParams.hakuOid},
                 {}, function (id) {
@@ -403,7 +422,7 @@
                 });
         };
 
-        $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files) {
+        $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files, valintatapajononNimi) {
             var file = $files[0];
             var fileReader = new FileReader();
             fileReader.readAsArrayBuffer(file);
@@ -411,7 +430,10 @@
             var hakuOid = $routeParams.hakuOid;
             fileReader.onload = function(e) {
                 $scope.upload = $upload.http({
-                    url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid + "&valintatapajonoOid="+ valintatapajonoOid, //upload.php script, node.js route, or servlet url
+                    url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + 
+                    "&hakukohdeOid=" +hakukohdeOid + 
+                    "&valintatapajonoOid="+ valintatapajonoOid +
+                    "&valintatapajononNimi="+ valintatapajononNimi, //upload.php script, node.js route, or servlet url
                     method: "POST",
                     headers: {'Content-Type': 'application/octet-stream'},
                     data: e.target.result
@@ -455,17 +477,15 @@
 
 
         $scope.submit = function (valintatapajonoOid) {
-            $scope.model.updateHakemuksienTila(valintatapajonoOid);
+            $scope.model.updateHakemuksienTila(valintatapajonoOid, $scope.muokatutHakemukset, $scope.sijoitteluModel);
         };
 
 
+        $scope.addMuokattuHakemus = function (hakemus) {
+            $scope.muokatutHakemukset.push(hakemus.hakemusOid);
+            $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
+        };
 
-
-
-
-        //$scope.submit = function (vaiheoid, jonooid) {
-        //    ValintalaskentatulosModel.submit(vaiheoid, jonooid);
-        //};
 
         $scope.muutaSijoittelunStatus = function (jono, status) {
             ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status);
@@ -500,13 +520,14 @@
         		return "TOISEN_ASTEEN_OPPILAITOS";
         	}
         }
-        $scope.erillishaunVientiXlsx = function(valintatapajonoOid) {
+        $scope.erillishaunVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
         	var hakutyyppi = $scope.getHakutyyppi();
         	ErillishakuVienti.vie({
         		hakutyyppi: hakutyyppi,
         		hakukohdeOid: $scope.hakukohdeOid,
         		hakuOid: $routeParams.hakuOid,
-        		tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOid,
+                valintatapajononNimi: valintatapajononNimi,
+        		tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
         		valintatapajonoOid: valintatapajonoOid
         	},
         		{}, function (id) {
@@ -515,18 +536,19 @@
                 Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
             });
         };
-        $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid) {
+        $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid, valintatapajononNimi) {
     		var file = $files[0];
     		var fileReader = new FileReader();
     	    fileReader.readAsArrayBuffer(file);
     	    var hakukohdeOid = $scope.hakukohdeOid;
     	    var hakuOid = $routeParams.hakuOid;
-    	    var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOid;
+    	    var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
     	    var hakutyyppi = $scope.getHakutyyppi();
     	    fileReader.onload = function(e) {
     			$scope.upload = $upload.http({
     	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid
     	    		+"&tarjoajaOid="+ tarjoajaOid+"&valintatapajonoOid="+valintatapajonoOid
+    	    		+"&valintatapajononNimi="+ valintatapajononNimi
     	    		+"&hakutyyppi="+hakutyyppi, //upload.php script, node.js route, or servlet url
     				method: "POST",
     				headers: {'Content-Type': 'application/octet-stream'},
@@ -538,6 +560,7 @@
     	            function(dokumenttiId) {
     	            	// tee paivitys
     	            	$scope.model.refresh(hakukohdeOid, hakuOid);
+    	            	$scope.sijoitteluModel.refresh(hakuOid, hakukohdeOid);
     	            }
     	            );
     			}).error(function(data) {

@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakuModel', ['$q', '$log', 'Haku', 'HaunTiedot', 'TarjontaHaut', 'Korkeakoulu',
-        function ($q, $log, Haku, HaunTiedot, TarjontaHaut, Korkeakoulu) {
+    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu',
+        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu) {
             "use strict";
 
             var model;
@@ -31,8 +31,8 @@ angular.module('valintalaskenta')
                     if (model.haut.length === 0 || oid !== model.hakuOid) {
                         model.deferred = $q.defer();
 
-                        TarjontaHaut.query({}, function (result) {
-                            model.haut = result;
+                        TarjontaHaut.get({}, function (resultWrapper) {
+                            model.haut = resultWrapper.result;
                             
                             model.haut.forEach(function (haku) {
                                 if (haku.oid === oid) {

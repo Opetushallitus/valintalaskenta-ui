@@ -263,7 +263,7 @@ angular.module('valintalaskenta').
                     		Koekutsukirjeet.post({
                 				hakuOid: $routeParams.hakuOid,
                 				hakukohdeOid:$routeParams.hakukohdeOid,
-                				tarjoajaOid: hakukohde.tarjoajaOid,
+                				tarjoajaOid: hakukohde.tarjoajaOids[0],
                 				templateName: "koekutsukirje",
                 				valintakoeOids: [valintakoe.valintakoeOid]},{
                 					tag: "valintakoetulos",
@@ -289,9 +289,9 @@ angular.module('valintalaskenta').
                     	},
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
-                        tarjoajaOid: hakukohde.tarjoajaOid,
+                        tarjoajaOid: hakukohde.tarjoajaOids[0],
                         pohjat: function() {
-                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOid, tag: tag, hakuOid: hakuOid});
+                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()

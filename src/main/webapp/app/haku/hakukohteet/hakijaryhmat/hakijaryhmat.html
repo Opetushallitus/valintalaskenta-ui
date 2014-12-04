@@ -14,6 +14,14 @@
             <input type="text" class="search margin-vertical-2" placeholder="{{ t('valintalaskentatulos.suodatahakijoita') || 'Suodata hakijoita' }}"
                    ng-model="hakijaFilter"/>
             <pagination-pagesize page-size="pageSize"></pagination-pagesize>
+
+
+            <select ng-model="kuuluuFilterValue">
+                <option value="">{{ t('hakijaryhmat.alasuodata') || 'Älä suodata' }}</option>
+                <option value="HYVAKSYTTAVISSA">{{ t('hakijaryhmat.HYVAKSYTTAVISSA') || 'Kuuluu' }}</option>
+                <option value="HYLATTY">{{ t('hakijaryhmat.HYLATTY') || 'Ei kuulu' }}</option>
+            </select>
+
             <accordion close-others="true">
                 <accordion-group ng-repeat="hakijaryhma in model.hakijaryhmat track by $index"
                         is-open="$first">
@@ -23,7 +31,7 @@
                         <h3>{{ t('hakijaryhmat.hakijaryhma') || 'Hakijaryhmä' }}: {{hakijaryhma.nimi}}</h3>
 
                     </accordion-heading>
-
+                    {{ t('hakijaryhmat.kiintionkoko') || 'Kiintiön koko' }}: {{hakijaryhma.kiintio}}
                     <table class="virkailija-table-1">
                         <thead>
                         <tr>
@@ -35,7 +43,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="tulos in hakijaryhma.filteredResults = (hakijaryhma.jonosijat | orderBy: [jarjesta] | filter:hakijaFilter)">
+                        <tr ng-repeat="tulos in hakijaryhma.filteredResults = (hakijaryhma.jonosijat | orderBy: ['sukunimi'] | kuuluuFilter: kuuluuFilterValue | filter:hakijaFilter) | startFrom:(hakijaryhma.currentPage-1)*pageSize | limitTo:pageSize">
                             <td class="leftorientedcolumn">
                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                          etunimi="{{tulos.etunimi}}"
@@ -44,9 +52,16 @@
                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
                             </td>
                             <td>{{ t('hakijaryhmat.'+tulos.jarjestyskriteerit[0].tila) || tulos.jarjestyskriteerit[0].tila}}</td>
-                            <td>{{tulos.tuloksenTila}}</td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ tulos.jarjestyskriteerit[0].tila }}</td>
+                            <td>
+                                <span ng-if="!tulos.tilanKuvaukset.FI || tulos.sijoittelunTila == 'HYLATTY'">{{tulos.sijoittelunTila}}</span>
+                                <span ng-if="userLang=='fi' && tulos.tilanKuvaukset.FI && tulos.sijoittelunTila != 'HYLATTY'">{{tulos.tilanKuvaukset.FI}}</span>
+                                <span ng-if="userLang=='sv' && tulos.tilanKuvaukset.FI && tulos.sijoittelunTila != 'HYLATTY'">{{tulos.tilanKuvaukset.SV}}</span>
+                                <span ng-if="userLang=='en' && tulos.tilanKuvaukset.FI && tulos.sijoittelunTila != 'HYLATTY'">{{tulos.tilanKuvaukset.EN}}</span>
+                                <span ng-if="(tulos.sijoittelunTila == 'HYVAKSYTTY' || tulos.sijoittelunTila == 'VARASIJALTA_HYVAKSYTTY') && tulos.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
+                                <span ng-if="tulos.varasijanNumero != undefined">({{tulos.varasijanNumero}})</span>
+                            </td>
+                            <td>{{tulos.vastaanottoTila}}</td>
                         </tr>
                         </tbody>
                     </table>

@@ -1,39 +1,41 @@
 //TARJONTA RESOURCES
 app.factory('Haku', function($resource) {
     return $resource(TARJONTA_URL_BASE + "haku", {}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: true}
     });
 });
 
 app.factory('HaunTiedot', function($resource) {
     return $resource(TARJONTA_URL_BASE + "haku/:hakuOid", {hakuOid: "@hakuOid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: true}
     });
 });
 app.factory('HakuHakukohdeChildren', function($resource) {
     return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde?count=99999", {hakuOid: "@hakuOid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: true}
     });
 });
 app.factory('TarjontaHaku', function($resource) {
     return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohdeTulos", {},{
-        query:  {method:'GET', isArray:false}
+        query:  {method:'GET', isArray:false, cache: true}
     });
 });
 
 app.factory('TarjontaHakukohde', function($resource) {
     return $resource(TARJONTA_URL_BASE + "hakukohde/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: true}
     });
 });
 app.factory('HakukohdeNimi', function($resource) {
     return $resource(TARJONTA_URL_BASE + "hakukohde/:hakukohdeoid/nimi", {hakukohdeoid: "@hakukohdeoid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: true}
     });
 });
 
 app.factory('TarjontaHaut', function($resource) {
-    return $resource(TARJONTA_URL_BASE + "haku/findAll");
+    return $resource(TARJONTA_URL_BASE + "haku/findAll", {}, {
+        get: {method: "GET", cache: true}
+    });
 });
 
 
@@ -338,6 +340,11 @@ app.factory('OsoitetarratHakemuksille', function($resource) {
 
 
 //
+app.factory('HakukohteelleJalkiohjauskirjeet', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hakukohteessahylatyt/aktivoi", {}, {
+        post:  {method:'POST', isArray:false}
+    });
+});
 app.factory('Hyvaksymiskirjeet', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/hyvaksymiskirjeet/aktivoi", {}, {
         post:  {method:'POST', isArray:false}
@@ -627,5 +634,17 @@ angular.module('valintalaskenta')
 
     .factory('HakujenHakukaudet', ['$resource', function ($resource) {
         return $resource(KOODISTO_URL_BASE + "codeelement/codes/kausi/1");
+    }])
+
+    .factory('HakukohteenNimi', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE +  "hakukohdenimi/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"});
+    }])
+
+    .factory('HakukohdeKoodistoNimi', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE + "json/hakukohteet/koodi/:hakukohteenNimiUri", {hakukohteenNimiUri: "@hakukohteenNimiUri"});
     }]);
+    
+    
+    
+
 

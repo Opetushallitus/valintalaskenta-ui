@@ -45,6 +45,7 @@
 
                 <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('sijoitteluntulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
                 <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
+                <a ng-click="luoJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostajalkiohjauskirjeet') || 'Muodosta jälkiohjauskirjeet hakukohteessa hylätyille' }}</a>
                 <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostaosoitetarrat') || 'Muodosta hyväksytyille osoitetarrat' }}</a>
 
                 <br/>
@@ -60,10 +61,10 @@
                 <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
                 <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="model.naytaVainMuuttuneet"> <br/></div>
 
-                <table class="virkailija-table-1" style="width: 900px;" ng-repeat="hakija in filteredResults = (model.sijoitteluntulosHakijoittainArray | orderBy:predicate:reverse | filter:hakijaFilter) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
+                <table class="virkailija-table-1" style="width: 900px;" ng-repeat="hakija in filteredResults = (model.sijoitteluntulosHakijoittainArray | orderBy:[jarjesta,'varasijanNumero', 'sija'] | filter:hakijaFilter) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
                     <thead>
                         <tr>
-                            <th style="background-color:#f1f6f7;font-size: medium;width:300px">
+                            <th colspan="2" style="background-color:#f1f6f7;font-size: medium;width:300px">
                                 <show-person-information sukunimi="{{hakija.sukunimi}}"
                                                          etunimi="{{hakija.etunimi}}"
                                                          hakemus-oid="{{hakija.hakemusOid}}"
@@ -79,6 +80,7 @@
                             </th>
                         </tr>
                         <tr>
+                            <th>{{ t('sijoitteluntulos.jonosija') || 'Jonosija' }}</th>
                             <th>{{ t('sijoitteluntulos.jononnimi') || 'Jonon nimi' }}</th>
                             <th>{{ t('sijoitteluntulos.yhteispisteet') || 'Pisteet' }}</th>
                             <th>{{ t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila' }}</th>
@@ -87,13 +89,21 @@
 
                     <tr ng-repeat="jono in (hakija.jonot | orderBy: 'prioriteetti' | tilaFilter: tilaFilterValue | filter:filterChangedValues)">
                         <td>
+                            {{hakija.sija > 0?hakija.sija:""}}
+                        </td>
+                        <td>
                             {{jono.nimi}}
                         </td>
                         <td>
                             {{jono.pisteet}}
                         </td>
                         <td>
-                            {{jono.tila}}
+                            <span ng-if="!hakija.tilanKuvaukset.FI || hakija.tila == 'HYLATTY'">{{hakija.tila}}</span>
+                            <span ng-if="userLang=='fi' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.FI}}</span>
+                            <span ng-if="userLang=='sv' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.SV}}</span>
+                            <span ng-if="userLang=='en' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.EN}}</span>
+                            <span ng-if="(hakija.tila == 'HYVAKSYTTY' || hakija.tila == 'VARASIJALTA_HYVAKSYTTY') && hakija.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
+                            <span ng-if="hakija.varasijanNumero != undefined">({{hakija.varasijanNumero}})</span>
                         </td>
                     </tr>
                 </table>
@@ -162,11 +172,11 @@
                             </td>
 
                             <td>
-                                <div ng-show="hakemus.tila == 'VARALLA' && updateOph">{{ t('sijoitteluntulos.varasijahyvaksy') || 'Hyväksytään varasijalta' }}: <input type="checkbox" ng-model="hakemus.hyvaksyttyVarasijalta"></div>
+                                <div ng-show="hakemus.tila == 'VARALLA' && updateOph">{{ t('sijoitteluntulos.varasijahyvaksy') || 'Hyväksytään varasijalta' }}: <input type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.hyvaksyttyVarasijalta"></div>
                             </td>
 
                             <td>
-                                <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="hakemus.julkaistavissa"> <br/></div>
+                                <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"> <br/></div>
                                 <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
                                     <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                         <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakemus"/>
@@ -176,7 +186,7 @@
 
                             <td>
                                 <div ng-show="hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
-                                      <select ng-model="hakemus.muokattuIlmoittautumisTila"
+                                      <select ng-model="hakemus.muokattuIlmoittautumisTila" ng-change="addMuokattuHakemus(hakemus)"
                                               ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
                                       </select>
                                  </div>

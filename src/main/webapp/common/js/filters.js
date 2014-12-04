@@ -47,7 +47,18 @@ angular.module('valintalaskenta')
         return result;
     };
 }])
-
+.filter('kuuluuFilter', [function() {
+    return function(input, kuuluuFilterValue) {
+        var result = [];
+        for(var i = 0; i < input.length ; i++) {
+            if(!kuuluuFilterValue || input[i].jarjestyskriteerit[0].tila === kuuluuFilterValue
+                || kuuluuFilterValue === 'HYLATTY' && input[i].jarjestyskriteerit[0].tila !== 'HYVAKSYTTAVISSA') {
+                result.push(input[i]);
+            }
+        }
+        return result;
+    };
+}])
 .filter('ListLength', [function () { // usefull finding out length of a filtered list in template
     return function (list) {
         return list.length;

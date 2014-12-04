@@ -231,7 +231,117 @@ angular.module('testData', [])
     }).value('hakemuksetJSON',
     {"totalCount":5012,"results":[{"oid":"1.2.246.562.11.00000876315","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876810","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876894","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876878","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876603","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876577","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876386","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876593","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876182","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876218","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876289","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000876425","state":"INCOMPLETE"},{"oid":"1.2.246.562.11.00000846497","state":"INCOMPLETE","firstNames":"Anna I","lastName":"Alajoki","ssn":"130956-984U","personOid":"1.2.246.562.24.63603538246"},{"oid":"1.2.246.562.11.00000873965","state":"INCOMPLETE","firstNames":"Arttu IV","lastName":"Alajoki","ssn":"040461-9218","personOid":"1.2.246.562.24.68648364069"},{"oid":"1.2.246.562.11.00000830979","state":"INCOMPLETE","firstNames":"Benjamin VII","lastName":"Alajoki","ssn":"261175-9067","personOid":"1.2.246.562.24.74780548779"},{"oid":"1.2.246.562.11.00000872063","state":"INCOMPLETE","firstNames":"Elli X","lastName":"Alajoki","ssn":"170873-9308","personOid":"1.2.246.562.24.39558358877"},{"oid":"1.2.246.562.11.00000828525","state":"INCOMPLETE","firstNames":"Emma IX","lastName":"Alajoki","ssn":"080386-991R","personOid":"1.2.246.562.24.71349694216"},{"oid":"1.2.246.562.11.00000834438","state":"INCOMPLETE","firstNames":"Leo IX","lastName":"Alajoki","ssn":"170577-961V","personOid":"1.2.246.562.24.94608078411"},{"oid":"1.2.246.562.11.00000832618","state":"INCOMPLETE","firstNames":"Lilja V","lastName":"Alajoki","ssn":"271169-954V","personOid":"1.2.246.562.24.80155803994"},{"oid":"1.2.246.562.11.00000852630","state":"INCOMPLETE","firstNames":"Luukas V","lastName":"Alajoki","ssn":"221064-9071","personOid":"1.2.246.562.24.75274233214"},{"oid":"1.2.246.562.11.00000838706","state":"INCOMPLETE","firstNames":"Matilda III","lastName":"Alajoki","ssn":"150658-935M","personOid":"1.2.246.562.24.54952681264"},{"oid":"1.2.246.562.11.00000852054","state":"INCOMPLETE","firstNames":"Minea II","lastName":"Alajoki","ssn":"140365-997C","personOid":"1.2.246.562.24.48395389317"},{"oid":"1.2.246.562.11.00000866273","state":"INCOMPLETE","firstNames":"Niko III","lastName":"Alajoki","ssn":"260377-9003","personOid":"1.2.246.562.24.67461248897"},{"oid":"1.2.246.562.11.00000866600","state":"INCOMPLETE","firstNames":"Olivia XX","lastName":"Alajoki","ssn":"231062-917F","personOid":"1.2.246.562.24.20327344759"},{"oid":"1.2.246.562.11.00000873509","state":"INCOMPLETE","firstNames":"Onni XX","lastName":"Alajoki","ssn":"250378-924F","personOid":"1.2.246.562.24.63510972005"},{"oid":"1.2.246.562.11.00000862662","state":"INCOMPLETE","firstNames":"Oona IX","lastName":"Alajoki","ssn":"211075-911B","personOid":"1.2.246.562.24.29635386976"},{"oid":"1.2.246.562.11.00000837383","state":"INCOMPLETE","firstNames":"Peetu X","lastName":"Alajoki","ssn":"211252-967U","personOid":"1.2.246.562.24.40796103488"},{"oid":"1.2.246.562.11.00000840396","state":"INCOMPLETE","firstNames":"Peppi X","lastName":"Alajoki","ssn":"250375-946D","personOid":"1.2.246.562.24.86961799445"},{"oid":"1.2.246.562.11.00000831091","state":"INCOMPLETE","firstNames":"Ronja X","lastName":"Alajoki","ssn":"240982-955P","personOid":"1.2.246.562.24.11404115454"},{"oid":"1.2.246.562.11.00000837820","state":"INCOMPLETE","firstNames":"Sakari IX","lastName":"Alajoki","ssn":"231284-984X","personOid":"1.2.246.562.24.19222001690"},
         {"oid":"1.2.246.562.11.00000865575","state":"INCOMPLETE","firstNames":"Viivi II","lastName":"Alajoki","ssn":"081269-962N","personOid":"1.2.246.562.24.22994259424"},{"oid":"1.2.246.562.11.00000837752","state":"INCOMPLETE","firstNames":"Vilma II","lastName":"Alajoki","ssn":"251173-920H","personOid":"1.2.246.562.24.84921714909"},{"oid":"1.2.246.562.11.00000868035","state":"INCOMPLETE","firstNames":"Arttu V","lastName":"Alajärvi","ssn":"170566-9688","personOid":"1.2.246.562.24.97464805980"},{"oid":"1.2.246.562.11.00000857062","state":"INCOMPLETE","firstNames":"Atte VI","lastName":"Alajärvi","ssn":"210458-9081","personOid":"1.2.246.562.24.69658799678"},{"oid":"1.2.246.562.11.00000869490","state":"INCOMPLETE","firstNames":"Aurora I","lastName":"Alajärvi","ssn":"270362-9660","personOid":"1.2.246.562.24.16245226280"},{"oid":"1.2.246.562.11.00000837367","state":"INCOMPLETE","firstNames":"Eevi III","lastName":"Alajärvi","ssn":"281162-975C","personOid":"1.2.246.562.24.13986077872"},{"oid":"1.2.246.562.11.00000854816","state":"INCOMPLETE","firstNames":"Ellen VIII","lastName":"Alajärvi","ssn":"240272-966U","personOid":"1.2.246.562.24.46223677313"},{"oid":"1.2.246.562.11.00000870065","state":"INCOMPLETE","firstNames":"Elli V","lastName":"Alajärvi","ssn":"250970-903K","personOid":"1.2.246.562.24.37368711402"},{"oid":"1.2.246.562.11.00000865876","state":"INCOMPLETE","firstNames":"Elsa VIII","lastName":"Alajärvi","ssn":"270861-9508","personOid":"1.2.246.562.24.89018043740"},{"oid":"1.2.246.562.11.00000847360","state":"INCOMPLETE","firstNames":"Emma XX","lastName":"Alajärvi","ssn":"151172-941F","personOid":"1.2.246.562.24.91877983877"},{"oid":"1.2.246.562.11.00000855666","state":"INCOMPLETE","firstNames":"Iiris VII","lastName":"Alajärvi","ssn":"270177-945K","personOid":"1.2.246.562.24.41456952897"},{"oid":"1.2.246.562.11.00000851628","state":"INCOMPLETE","firstNames":"Isla IV","lastName":"Alajärvi","ssn":"230382-9790","personOid":"1.2.246.562.24.29096199430"},{"oid":"1.2.246.562.11.00000872380","state":"INCOMPLETE","firstNames":"Joel X","lastName":"Alajärvi","ssn":"050658-908A","personOid":"1.2.246.562.24.84317566004"},{"oid":"1.2.246.562.11.00000868006","state":"INCOMPLETE","firstNames":"Joel XX","lastName":"Alajärvi","ssn":"131085-990A","personOid":"1.2.246.562.24.19629692107"},{"oid":"1.2.246.562.11.00000841793","state":"INCOMPLETE","firstNames":"Kalle VII","lastName":"Alajärvi","ssn":"090378-9854","personOid":"1.2.246.562.24.83610341794"},{"oid":"1.2.246.562.11.00000842860","state":"INCOMPLETE","firstNames":"Nea VI","lastName":"Alajärvi","ssn":"010473-9412","personOid":"1.2.246.562.24.85728070133"},{"oid":"1.2.246.562.11.00000848864","state":"INCOMPLETE","firstNames":"Viivi I","lastName":"Alajärvi","ssn":"220754-9159","personOid":"1.2.246.562.24.41440818691"},{"oid":"1.2.246.562.11.00000870874","state":"INCOMPLETE","firstNames":"Aaro VIII","lastName":"Alalahti","ssn":"101166-944T","personOid":"1.2.246.562.24.93782671641"},{"oid":"1.2.246.562.11.00000832142","state":"INCOMPLETE","firstNames":"Aaron II","lastName":"Alalahti","ssn":"271055-987H","personOid":"1.2.246.562.24.44101987101"},{"oid":"1.2.246.562.11.00000855417","state":"INCOMPLETE","firstNames":"Antero IX","lastName":"Alalahti","ssn":"080864-921U","personOid":"1.2.246.562.24.58811392629"},{"oid":"1.2.246.562.11.00000842679","state":"INCOMPLETE","firstNames":"Arttu III","lastName":"Alalahti","ssn":"110981-969H","personOid":"1.2.246.562.24.87473213913"},{"oid":"1.2.246.562.11.00000866079","state":"INCOMPLETE","firstNames":"Elina III","lastName":"Alalahti","ssn":"260684-9830","personOid":"1.2.246.562.24.77655160069"},{"oid":"1.2.246.562.11.00000862934","state":"INCOMPLETE","firstNames":"Kaarina X","lastName":"Alalahti","ssn":"201275-991W","personOid":"1.2.246.562.24.41743714858"},{"oid":"1.2.246.562.11.00000835589","state":"INCOMPLETE","firstNames":"Noora V","lastName":"Alalahti","ssn":"200559-941H","personOid":"1.2.246.562.24.24859517474"},{"oid":"1.2.246.562.11.00000838641","state":"INCOMPLETE","firstNames":"Oona III","lastName":"Alalahti","ssn":"030770-995R","personOid":"1.2.246.562.24.78090384108"},{"oid":"1.2.246.562.11.00000855828","state":"INCOMPLETE","firstNames":"Pinja VI","lastName":"Alalahti","ssn":"121265-905C","personOid":"1.2.246.562.24.93092885745"},{"oid":"1.2.246.562.11.00000840998","state":"INCOMPLETE","firstNames":"Viivi II","lastName":"Alalahti","ssn":"120381-923U","personOid":"1.2.246.562.24.54457167539"},{"oid":"1.2.246.562.11.00000868103","state":"INCOMPLETE","firstNames":"Vilho V","lastName":"Alalahti","ssn":"090751-996R","personOid":"1.2.246.562.24.28030580970"},{"oid":"1.2.246.562.11.00000832883","state":"INCOMPLETE","firstNames":"Vili VII","lastName":"Alalahti","ssn":"060778-931N","personOid":"1.2.246.562.24.43692369006"},{"oid":"1.2.246.562.11.00000834852","state":"INCOMPLETE","firstNames":"Viljami II","lastName":"Alalahti","ssn":"280973-9892","personOid":"1.2.246.562.24.80223432734"}]
-    }).value('hakuJSON',
+    })
+    .value('HakukohdeKoodistosta', {
+        "koodiUri" : "hakukohteet_475",
+        "resourceUri" : "http://koodistopalvelu.opintopolku.fi/hakukohteet/koodi/hakukohteet_475",
+        "version" : 0,
+        "versio" : 1,
+        "koodisto" : {
+            "koodistoUri" : "hakukohteet",
+            "organisaatioOid" : "1.2.246.562.10.00000000001",
+            "koodistoVersios" : [ 1 ]
+        },
+        "koodiArvo" : "475",
+        "paivitysPvm" : 1382966800157,
+        "voimassaAlkuPvm" : "2009-05-13",
+        "voimassaLoppuPvm" : null,
+        "tila" : "LUONNOS",
+        "metadata" : [ {
+            "nimi" : "Grundexamen i hemarbets- och rengöringsservice, gr",
+            "kuvaus" : "Grundexamen i hemarbets- och rengöringsservice, gr",
+            "lyhytNimi" : "Grex i hemarbets- o. rengöringsserv., gr",
+            "kayttoohje" : null,
+            "kasite" : null,
+            "sisaltaaMerkityksen" : null,
+            "eiSisallaMerkitysta" : null,
+            "huomioitavaKoodi" : null,
+            "sisaltaaKoodiston" : null,
+            "kieli" : "SV"
+        }, {
+            "nimi" : "Kotityö- ja puhdistuspalvelujen perustutkinto, pk",
+            "kuvaus" : "Kotityö- ja puhdistuspalvelujen perustutkinto, pk",
+            "lyhytNimi" : "Kotityö- ja puhdistuspalvelujen pt, pk",
+            "kayttoohje" : null,
+            "kasite" : null,
+            "sisaltaaMerkityksen" : null,
+            "eiSisallaMerkitysta" : null,
+            "huomioitavaKoodi" : null,
+            "sisaltaaKoodiston" : null,
+            "kieli" : "FI"
+        } ]
+    })
+    .value('HakukohdeTarjonnasta', {
+    "result" : {
+    "modified" : 1377172403713,
+        "modifiedBy" : "1.2.246.562.24.55248599645",
+        "oid" : "1.2.246.562.5.10105_04_255_0102",
+        "version" : 3,
+        "hakukohteenNimi" : "Autoalan perustutkinto, yo, Syksy 2013, valmis",
+        "hakukohteenNimiUri" : "hakukohteet_255#1",
+        "hakukohteenNimet" : {
+        "kieli_sv" : "Grundexamen inom bilbranschen, st",
+            "kieli_fi" : "Autoalan perustutkinto, yo"
+    },
+    "tarjoajaNimet" : {
+        "fi" : "Stadin ammattiopisto, Ilkantien toimipaikka"
+    },
+    "koulutusmoduuliToteutusTarjoajatiedot" : {
+        "1.2.246.562.5.10105_04_255_0102_1528" : {
+            "tarjoajaOids" : [ "1.2.246.562.10.55355715099" ]
+        }
+    },
+    "tarjoajaOids" : [ "1.2.246.562.10.55355715099" ],
+        "hakuOid" : "1.2.246.562.5.2013060313080811526781",
+        "hakuaikaId" : "6",
+        "hakukelpoisuusvaatimusUris" : [ "hakukelpoisuusvaatimusta_3#1" ],
+        "hakukohdeKoulutusOids" : [ "1.2.246.562.5.10105_04_255_0102_1528" ],
+        "alinHyvaksyttavaKeskiarvo" : 0.0,
+        "alinValintaPistemaara" : 0,
+        "ylinValintapistemaara" : 0,
+        "aloituspaikatLkm" : 20,
+        "edellisenVuodenHakijatLkm" : 0,
+        "valintojenAloituspaikatLkm" : 20,
+        "sahkoinenToimitusOsoite" : "",
+        "tila" : "JULKAISTU",
+        "valintaperustekuvausKoodiUri" : "valintaperustekuvausryhma_3#1",
+        "koulutusAsteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutusTyyppi" : "AMMATILLINEN_PERUSTUTKINTO",
+        "koulutuslaji" : "N",
+        "lisatiedot" : {
+        "kieli_fi" : ""
+    },
+    "valintaperusteKuvaukset" : { },
+    "hakukelpoisuusVaatimusKuvaukset" : {
+        "kieli_sv" : "Om du har slutfört gymnasiets lärokurs kan du söka till gymnasiebaserade yrkesinriktade grundexamina. Om du har avlagt din examen utomlands eller avbrutit läroplikten kan du söka till gymnasiebaserad yrkesutbildning genom ansökan enligt prövning. Utbildningsanordnaren bedömer då skilt ditt utbildningsbehov och förutsättningar att klara av studierna.\nOm du har avlagt en yrkesinriktad grundexamen, någon annan yrkesexamen eller en högskoleexamen kan du inte söka till yrkesinriktad grundexamen i andra stadiets gemensamma ansökan.",
+            "kieli_fi" : "Lukiopohjaiseen ammatilliseen perustutkintoon voivat hakea lukion oppimäärän suorittaneet. Ulkomailla tutkintonsa suorittaneet voivat hakea lukiopohjaiseen ammatilliseen koulutukseen harkintaan perustuvan haun kautta. Tällöin koulutuksen järjestäjä arvioi erikseen hakijan koulutustarpeen ja edellytykset suoriutua opinnoista. \nAmmatillisen perustutkinnon, muun ammatillisen tutkinnon tai korkeakoulututkinnon suorittaneet eivät voi hakea ammatilliseen koulutukseen toisen asteen yhteishaussa."
+    },
+    "aloituspaikatKuvaukset" : { },
+    "kaytetaanJarjestelmanValintaPalvelua" : false,
+        "kaytetaanHaunPaattymisenAikaa" : false,
+        "kaytetaanHakukohdekohtaistaHakuaikaa" : false,
+        "hakukohteenLiitteet" : [ ],
+        "yhteystiedot" : [ ],
+        "liitteidenToimitusOsoite" : {
+        "version" : 0,
+            "osoiterivi1" : "PL 3931",
+            "postinumero" : "posti_00099",
+            "postinumeroArvo" : "00099",
+            "postitoimipaikka" : "HELSINGIN KAUPUNKI"
+    },
+    "valintakokeet" : [ ],
+        "kaksoisTutkinto" : false,
+        "opetusKielet" : [ "kieli_fi" ],
+        "valintaPerusteKuvausKielet" : [ ],
+        "soraKuvausKielet" : [ ],
+        "painotettavatOppiaineet" : [ ],
+        "organisaatioRyhmaOids" : [ ],
+        "lukioKoulutus" : false
+},
+    "status" : "OK",
+    "accessRights" : { }
+})
+    .value('hakuJSON',
     {
         "modified" : 1403089714414,
         "modifiedBy" : "1.2.246.562.24.00000000001",

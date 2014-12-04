@@ -223,7 +223,7 @@ app.directive('privileges', function ($animate, $timeout, ParametriService) {
     };
 });
 
-app.directive('auth', function ($animate, $timeout, AuthService, ParametriService, UserModel) {
+app.directive('auth', function ($animate, $timeout, AuthService, ParametriService, UserModel, _) {
     return {
         link: function ($scope, element, attrs) {
             $animate.addClass(element, 'ng-hide');
@@ -314,23 +314,26 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
 
                 attrs.$observe('authOrg', function () {
                     if (attrs.authOrg) {
-                        switch (attrs.auth) {
-                            case "crud":
-                                AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success);
-                                break;
+                        _.forEach(attrs.auth, function (orgOid) {
+                            switch (attrs.auth) {
+                                case "crud":
+                                    AuthService.crudOrg(attrs.authService, orgOid).then(success);
+                                    break;
 
-                            case "update":
-                                AuthService.updateOrg(attrs.authService, attrs.authOrg).then(success);
-                                break;
+                                case "update":
+                                    AuthService.updateOrg(attrs.authService, orgOid).then(success);
+                                    break;
 
-                            case "read":
-                                AuthService.readOrg(attrs.authService, attrs.authOrg).then(success);
-                                break;
+                                case "read":
+                                    AuthService.readOrg(attrs.authService, orgOid).then(success);
+                                    break;
 
-                            default:
-                                AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrg).then(success);
-                                break;
-                        }
+                                default:
+                                    AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success);
+                                    break;
+                            }
+                        });
+
                     }
                 });
             }

@@ -1,73 +1,51 @@
 
-angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'TarjontaHakukohde', 'HakukohdeNimi',
-    function ($q, $log, TarjontaHakukohde, HakukohdeNimi) {
+angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'HakukohdeNimi', '_', 'HakukohdeKoodistoNimi',
+    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimi, _, HakukohdeKoodistoNimi) {
     "use strict";
 
 
     var model;
 
     model = new function () {
-
+        this.hakukohdeOid = undefined;
+        this.hakukohdeNimi = undefined;
+        this.tarjoajaNimi = undefined;
         this.hakukohde = {};
         this.ensisijaiset = [];
-        this.refreshingModel = false;
+        this.deferred = undefined;
 
-        // Väliaikainen nimikäsittely, koska opetuskieli ei ole tiedossa. Käytetään tarjoajanimen kieltä
+
         this.getKieli = function (hakukohde) {
             if (hakukohde) {
-                // Kovakoodatut kielet, koska tarjonta ei palauta opetuskieltä
-                var kielet = ["kieli_fi", "kieli_sv", "kieli_en"];
+                var languages = ["kieli_fi", "kieli_sv", "kieli_en"];
+                var tarjoajaNimet = hakukohde.tarjoajaNimet;
+                var hakukohdeNimet = hakukohde.hakukohteenNimet;
+                
+                var language = _.find(languages, function (lang) {
+                    var languageId = _.last(lang.split("_"));
+                    return (!_.isEmpty(hakukohdeNimet[lang]) && !_.isEmpty(tarjoajaNimet[languageId]));
+                });
 
-                for (var lang in kielet) {
-                    if (hakukohde.tarjoajaNimi && hakukohde.tarjoajaNimi[kielet[lang]] &&
-                        !_.isEmpty(hakukohde.tarjoajaNimi[kielet[lang]]) &&
-                        hakukohde.hakukohdeNimi && hakukohde.hakukohdeNimi[kielet[lang]] &&
-                        !_.isEmpty(hakukohde.hakukohdeNimi[kielet[lang]])) {
-                        return kielet[lang];
-                    }
-                }
+                return language;
             }
-            return "";
+            return "kieli_fi";
         };
 
 
-		this.getKieliCode = function () {
-			var kieli = this.getKieli(model.hakukohde);
-			if(kieli === "kieli_fi") {
-				return "FI";
-			} else if(kieli === "kieli_sv") {
-				return "SV";
-			} else if(kieli === "kieli_en") {
-				return "EN";
-			}
-			return "FI";
+		this.getKieliCode = function (hakukohde) {
+			var language = this.getKieli(hakukohde);
+			return _.last(language.split("_")).toUpperCase();
 		};
 
-        this.getTarjoajaNimi = function () {
-            var kieli = this.getKieli(model.hakukohde);
-
-            if (!_.isEmpty(kieli)) {
-                return model.hakukohde.tarjoajaNimi[kieli];
-            } else {
-                for (var lang in model.hakukohde.tarjoajaNimi) {
-                    if (!_.isEmpty(model.hakukohde.tarjoajaNimi[lang]))
-                        return model.hakukohde.tarjoajaNimi[lang];
-                }
-            }
+        this.getTarjoajaNimi = function (hakukohde) {
+            var language = model.getKieli(hakukohde);
+            var languageId = _.last(language.split("_"));
+            return model.hakukohde.tarjoajaNimet[languageId];
         };
 
-        this.getHakukohdeNimi = function () {
-
-            var kieli = this.getKieli(model.hakukohde);
-
-            if (!_.isEmpty(kieli)) {
-                return model.hakukohde.hakukohdeNimi[kieli];
-            } else {
-                for (var lang in model.hakukohde.hakukohdeNimi) {
-                    if (!_.isEmpty(model.hakukohde.hakukohdeNimi[lang]))
-                        return model.hakukohde.hakukohdeNimi[lang];
-                }
-            }
+        this.getHakukohdeNimi = function (hakukohde) {
+            var language = model.getKieli(hakukohde);
+            return model.hakukohde.hakukohteenNimet[language];
         };
 
         this.haeEnsisijaiset = function(hakemukset, hakukohdeOid) {
@@ -84,94 +62,85 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', 'Tarj
         };
 
         this.refresh = function (hakukohdeOid) {
-
-            var defer = $q.defer();
-
-            TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (result) {
-                model.hakukohde = result;
-                HakukohdeNimi.get({hakukohdeoid: hakukohdeOid}, function (hakukohdeObject) {
-                    model.hakukohde.tarjoajaOid = hakukohdeObject.tarjoajaOid;
-                    defer.resolve();
-                }, function(error) {
-                    defer.reject("hakukohteen nimen hakeminen epäonnistui");
-                });
+            model.hakukohdeOid = hakukohdeOid;
+            TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (resultWrapper) {
+                var hakukohde = resultWrapper.result;
+                model.hakukohde = hakukohde;
+                model.setHakukohdeNames();
+                model.deferred.resolve();
             }, function(error) {
-                defer.reject("hakukohteen tietojen hakeminen epäonnistui");
+                $log.error('Hakukohteen tietojen hakeminen epäonnistui', error);
+                model.deferred.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
-
-            return defer.promise;
-
+            return model.deferred;
         };
 
+
+        //This will fail if hakukohdeOid -parameter doesn't exist
         this.refreshIfNeeded = function (hakukohdeOid) {
-            var promise;
-            if (model.isHakukohdeChanged(hakukohdeOid) && (hakukohdeOid !== undefined) && !model.refreshing) {
-                model.refreshingModel = true;
-                promise = model.refresh(hakukohdeOid);
-                promise.then(function() {
-                    model.refreshingModel = false;
-                }, function(error) {
-                    model.refreshingModel = false;
-                    $log.error("Error fetching applications");
-                });
-            } else  {
-                var def = $q.defer();
-                promise = def.promise;
-                def.resolve();
+            if(_.isEmpty(model.deferred) || model.isHakukohdeChanged(hakukohdeOid)) {
+                model.deferred = $q.defer();
+                model.refresh(hakukohdeOid);
+                return model.deferred.promise;
+            } else {
+                return model.deferred.promise;
             }
-            return promise;
         };
-
-
 
         //helper method needed in other controllers
         this.isHakukohdeChanged = function (hakukohdeOid) {
-            if (model.hakukohde.oid !== hakukohdeOid) {
+            if (model.hakukohdeOid !== hakukohdeOid) {
                 return true;
             } else {
                 return false;
             }
         };
 
+        this.setHakukohdeNames = function (hakukohdeNimi, tarjoajaNimi) {
+            if(hakukohdeNimi || tarjoajaNimi) {
+                model.hakukohdeNimi = hakukohdeNimi;
+                model.tarjoajaNimi = tarjoajaNimi;
+            } else {
+                model.hakukohdeNimi = model.getHakukohdeNimi(model.hakukohde);
+                model.tarjoajaNimi = model.getTarjoajaNimi(model.hakukohde);
+            }
+
+        };
+
         this.getHakukohdeOid = function () {
-            return model.hakukohde.oid;
+            return model.hakukohdeOid;
         };
 
     }();
 
     return model;
-}]);
-
-angular.module('valintalaskenta').
-    controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
+}])
+    
+.controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
         'SijoitteluntulosModel', 'Korkeakoulu',
         function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu) {
     "use strict";
-
 
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
-
-    $scope.model.refreshIfNeeded($scope.hakukohdeOid);
+    if($routeParams.hakukohdeOid) {
+        $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+    }
 
     $scope.isKorkeakoulu = function () {
         return Korkeakoulu.isKorkeakoulu($scope.sijoitteluntulosModel.haku.kohdejoukkoUri);
     };
 
+    if($routeParams.hakukohdeOid) {
+        $scope.sijoitteluntulosModel = SijoitteluntulosModel;
+        $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
+    }
+}])
 
-    $scope.sijoitteluntulosModel = SijoitteluntulosModel;
-    $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
-}]);
-
-angular.module('valintalaskenta').
-    controller('HakukohdeNimiController', ['$scope', 'HakukohdeModel',
-        function ($scope, HakukohdeModel) {
-    "use strict";
-
-
-    $scope.hakukohdeModel = HakukohdeModel;
-}]);
-
+.controller('HakukohdeNimiController', ['$scope', '$routeParams', 'HakukohdeModel', function ($scope, $routeParams, HakukohdeModel) {
+        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+        $scope.hakukohdeModel = HakukohdeModel;
+    }]);
 

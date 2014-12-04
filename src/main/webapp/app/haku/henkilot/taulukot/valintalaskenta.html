@@ -11,7 +11,7 @@
             <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.hakutoive') || 'Hakutoive' }}</th>
             <th colspan="8" ng-if="model.haku.lisahaku">{{ t('valintalaskenta.hakutoive') || 'Hakutoive' }}</th>
             <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.valintatapajono') || 'Valintatapajono' }}
-                <a href="" ng-model="model.filter" ng-init="false" ng-click="model.filter = !model.filter">({{model.filter ? 'Näytä viimeinen' :
+                <a href="" ng-model="model.filter" ng-init="model.filter = true" ng-click="model.filter = !model.filter">({{model.filter ? 'Näytä viimeinen' :
                     'Näytä kaikki'}})</a>
             </th>
             <th ng-if="!model.haku.lisahaku">{{ t('valintalaskenta.yhteispisteet') || 'Yhteispisteet' }}</th>
