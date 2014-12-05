@@ -223,7 +223,7 @@ app.directive('privileges', function ($animate, $timeout, ParametriService) {
     };
 });
 
-app.directive('auth', function ($animate, $timeout, AuthService, ParametriService, UserModel, _) {
+app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, ParametriService, UserModel, _, HakukohdeModel) {
     return {
         link: function ($scope, element, attrs) {
             $animate.addClass(element, 'ng-hide');
@@ -294,6 +294,48 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
                     }
 
                 });
+            } else if ($routeParams.hakukohdeOid) {
+                HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
+                    $timeout(function () {
+                        switch (attrs.auth) {
+
+                            case "crudOph":
+                                AuthService.crudOph(attrs.authService).then(success);
+                                break;
+
+                            case "updateOph":
+                                AuthService.updateOph(attrs.authService).then(success);
+                                break;
+
+                            case "readOph":
+                                AuthService.readOph(attrs.authService).then(success);
+                                break;
+                        }
+                    }, 0);
+
+                    if(HakukohdeModel.hakukohde.tarjoajaOids) {
+                        _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
+                            switch (attrs.auth) {
+                                case "crud":
+                                    AuthService.crudOrg(attrs.authService, orgOid).then(success);
+                                    break;
+
+                                case "update":
+                                    AuthService.updateOrg(attrs.authService, orgOid).then(success);
+                                    break;
+
+                                case "read":
+                                    AuthService.readOrg(attrs.authService, orgOid).then(success);
+                                    break;
+
+                                default:
+                                    AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success);
+                                    break;
+                            }
+                        });
+                    }
+                });
+
             } else {
                 $timeout(function () {
                     switch (attrs.auth) {
@@ -314,7 +356,7 @@ app.directive('auth', function ($animate, $timeout, AuthService, ParametriServic
 
                 attrs.$observe('authOrg', function () {
                     if (attrs.authOrg) {
-                        _.forEach(attrs.auth, function (orgOid) {
+                        _.forEach(attrs.authOrg, function (orgOid) {
                             switch (attrs.auth) {
                                 case "crud":
                                     AuthService.crudOrg(attrs.authService, orgOid).then(success);
