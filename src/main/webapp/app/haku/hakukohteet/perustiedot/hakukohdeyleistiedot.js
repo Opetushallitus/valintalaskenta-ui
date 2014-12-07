@@ -40,12 +40,14 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.getTarjoajaNimi = function (hakukohde) {
             var language = model.getKieli(hakukohde);
             var languageId = _.last(language.split("_"));
-            return model.hakukohde.tarjoajaNimet[languageId];
+            var tarjoajaNimi = (model.hakukohde && model.hakukohde.tarjoajaNimet && model.hakukohde.tarjoajaNimet[languageId]) ? model.hakukohde.tarjoajaNimet[languageId] : "";
+            return tarjoajaNimi;
         };
 
         this.getHakukohdeNimi = function (hakukohde) {
             var language = model.getKieli(hakukohde);
-            return model.hakukohde.hakukohteenNimet[language];
+            var hakukohteenNimi = (model.hakukohde && model.hakukohde.hakukohteenNimet && model.hakukohde.hakukohteenNimet[language]) ? model.hakukohde.hakukohteenNimet[language] : "";
+            return hakukohteenNimi;
         };
 
         this.haeEnsisijaiset = function(hakemukset, hakukohdeOid) {
