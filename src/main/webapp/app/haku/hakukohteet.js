@@ -133,8 +133,8 @@ angular.module('valintalaskenta')
 
 
 angular.module('valintalaskenta').
-    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'GlobalStates', 'HakuModel',
-                                function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, GlobalStates, HakuModel) {
+    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'GlobalStates', 'HakuModel', '$timeout',
+                                function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, GlobalStates, HakuModel, $timeout) {
             "use strict";
             $scope.hakuOid = $routeParams.hakuOid;
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -144,20 +144,12 @@ angular.module('valintalaskenta').
             $scope.model = HakukohteetModel;
             $scope.model.refreshIfNeeded($routeParams.hakuOid);
 
-            $scope.$watch('model.searchWord', debounce(function () {
-                HakukohteetModel.refresh();
-            }, 500));
 
-            function debounce(fn, delay) {
-                var timer = null;
-                return function () {
-                    var context = this, args = arguments;
-                    clearTimeout(timer);
-                    timer = setTimeout(function () {
-                        fn.apply(context, args);
-                    }, delay);
-                };
-            }
+            $scope.searchWordChanged = function () {
+                if($scope.model.searchWord.length >= 1) {
+                    HakukohteetModel.refresh();
+                }
+            };
 
             $scope.toggleHakukohteetVisible = function () {
                 $scope.hakukohteetVisible = !$scope.hakukohteetVisible;
