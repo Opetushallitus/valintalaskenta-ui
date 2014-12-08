@@ -313,7 +313,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                         }
                     }, 0);
 
-                    if(HakukohdeModel.hakukohde.tarjoajaOids) {
+                    if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
                         _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
                             switch (attrs.auth) {
                                 case "crud":
