@@ -642,9 +642,10 @@ angular.module('valintalaskenta')
 
     .factory('HakukohdeKoodistoNimi', ['$resource', function ($resource) {
         return $resource(KOODISTO_URL_BASE + "json/hakukohteet/koodi/:hakukohteenNimiUri", {hakukohteenNimiUri: "@hakukohteenNimiUri"});
-    }]);
-    
-    
-    
+    }])
 
+
+    .factory('Ohjausparametrit', ['$resource', function ($resource) {
+        return $resource(OHJAUSPARAMETRIT_URL_BASE + "/v1/rest/parametri/:hakuOid", {hakuOid: "@hakuOid"});
+    }]);
 

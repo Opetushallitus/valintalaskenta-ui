@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu',
-        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu) {
+    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu', '_',
+        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu, _) {
             "use strict";
 
             var model;
@@ -13,6 +13,7 @@ angular.module('valintalaskenta')
                 this.nivelvaihe = false;
                 this.korkeakoulu = false;
                 this.erillishaku = false;
+                this.haku = undefined;
 
                 this.getNimi = function () {
                     if (this.hakuOid.nimi.kieli_fi !== undefined) {
@@ -27,13 +28,20 @@ angular.module('valintalaskenta')
                     return "Nimetön hakukohde";
                 };
 
+                this.refreshIfNeeded = function (hakuOid) {
+                    if(_.isEmpty(model.deferred) || (hakuOid !== undefined && model.hakuOid !== hakuOid) ) {
+                        return model.init(hakuOid);
+                    } else {
+                        return model.deferred.promise;
+                    }
+                };
+
                 this.init = function (oid) {
                     if (model.haut.length === 0 || oid !== model.hakuOid) {
                         model.deferred = $q.defer();
 
                         TarjontaHaut.get({}, function (resultWrapper) {
                             model.haut = resultWrapper.result;
-                            
                             model.haut.forEach(function (haku) {
                                 if (haku.oid === oid) {
                                     model.hakuOid = haku;
@@ -58,14 +66,13 @@ angular.module('valintalaskenta')
                                 
                             });
                             model.deferred.resolve();
-
                         }, function (error) {
                             model.deferred.reject('Hakulistan hakeminen epäonnistui');
                             $log.error(error);
                         });
 
-                        return model.deferred.promise;
                     }
+                    return model.deferred.promise;
 
                 };
 
@@ -98,7 +105,14 @@ angular.module('valintalaskenta')
                 }
             });
 
+
+
             ParametriService.refresh($routeParams.hakuOid);
+
+
+            $scope.hakuSelection = function (haku) {
+                $scope.hakumodel.haku = haku;
+            };
 
             $scope.$watch('hakumodel.hakuOid', function () {
 
