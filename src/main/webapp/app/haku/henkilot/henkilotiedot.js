@@ -112,11 +112,13 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             hakukohdeOid: hakutoive.hakukohdeOid,
                                             hakuOid: hakuOid
                                         }, function (result) {
-                                            result.valintatapajonot.forEach(function (jono) {
-                                                if (jono.oid === valintatapajono.valintatapajonoOid) {
-                                                    model.sijoittelu[valintatapajono.valintatapajonoOid].tilaHistoria = jono.hakemukset[0].tilaHistoria;
-                                                }
-                                            });
+                                            if (result.valintatapajonot) {
+                                                result.valintatapajonot.forEach(function (jono) {
+                                                    if (jono.oid === valintatapajono.valintatapajonoOid) {
+                                                        model.sijoittelu[valintatapajono.valintatapajonoOid].tilaHistoria = jono.hakemukset[0].tilaHistoria;
+                                                    }
+                                                });
+                                            }
                                         });
                                     });
                                 }
