@@ -275,7 +275,8 @@ describe('Testing SijoitteluntulosController', function(){
         rootScope = $rootScope;
         location = $location;
 
-
+        $httpBackend.expectGET('undefined/v1/rest/parametri/oid')
+            .respond(201,'');
         $httpBackend.expectGET('hakukohde/'+routeParams.hakukohdeOid)
             .respond(201,hakukohdejson);
         $httpBackend.expectGET('/dokumentit/osoitetarrat/'+routeParams.hakukohdeOid)
