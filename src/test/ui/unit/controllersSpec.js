@@ -454,6 +454,141 @@ describe('Testing SijoitteluntulosController', function(){
         expect(hakemus.muokattuIlmoittautumisTila).toBe("EI_TEHTY");
     });
 
+    it('filterValitut', function() {
+        var hakemukset = [
+            {
+                nimi: 'h1',
+                valittu: false
+            },
+            {
+                nimi: 'h3',
+                valittu: true
+            },
+            {
+                nimi: 'h2',
+                valittu: false
+            }
+        ];
+
+        expect(scope.model.filterValitut(hakemukset).length).toBe(1);
+    });
+
+    it('isAllValittu', function() {
+        var valintatapajono = {
+            hakemukset: [
+                {
+                    tila: "HYVAKSYTTY",
+                    valittu: true
+                },
+                {
+                    tila: "VARASIJALTA_HYVAKSYTTY",
+                    valittu: true
+                }
+            ]
+        };
+
+        expect(scope.model.isAllValittu(valintatapajono)).toBeTruthy();
+        valintatapajono = {
+            hakemukset: [
+                {
+                    tila: "HYVAKSYTTY",
+                    valittu: false
+                },
+                {
+                    tila: "VARASIJALTA_HYVAKSYTTY",
+                    valittu: true
+                }
+            ]
+        };
+
+        expect(scope.model.isAllValittu(valintatapajono)).toBeFalsy();
+        valintatapajono = {
+            hakemukset: [
+                {
+                    tila: "HYLATTY",
+                    valittu: false
+                },
+                {
+                    tila: "VARASIJALTA_HYVAKSYTTY",
+                    valittu: true
+                }
+            ]
+        };
+
+        expect(scope.model.isAllValittu(valintatapajono)).toBeTruthy();
+    });
+
+    it('checkAll', function() {
+        var valintatapajono = {
+            valittu: true,
+            hakemukset: [
+                {
+                    tila: "HYVAKSYTTY",
+                    valittu: true
+                },
+                {
+                    tila: "VARASIJALTA_HYVAKSYTTY",
+                    valittu: true
+                }
+            ]
+        };
+        scope.model.checkAll(valintatapajono);
+        expect(valintatapajono.valittu).toBeTruthy();
+        valintatapajono = {
+            valittu: false,
+            hakemukset: [
+                {
+                    tila: "HYVAKSYTTY",
+                    valittu: false
+                },
+                {
+                    tila: "VARASIJALTA_HYVAKSYTTY",
+                    valittu: true
+                }
+            ]
+        };
+        scope.model.checkAll(valintatapajono);
+        expect(valintatapajono.valittu).toBeFalsy();
+        valintatapajono = {
+            valittu: true,
+            hakemukset: [
+                {
+                    tila: "HYLATTY",
+                    valittu: false
+                },
+                {
+                    tila: "VARASIJALTA_HYVAKSYTTY",
+                    valittu: true
+                }
+            ]
+        };
+        scope.model.checkAll(valintatapajono);
+        expect(valintatapajono.valittu).toBeTruthy();
+    });
+
+    it('addMuokattuHakemus', function() {
+        var hakemus =
+        {
+            oid: 'h1',
+            valittu: false
+        };
+
+        expect(scope.muokatutHakemukset.length).toBe(0);
+
+        scope.addMuokattuHakemus(hakemus);
+
+        expect(scope.muokatutHakemukset.length).toBe(1);
+
+        scope.addMuokattuHakemus(hakemus);
+
+        expect(scope.muokatutHakemukset.length).toBe(1);
+
+        hakemus.oid = 's';
+        scope.addMuokattuHakemus(hakemus);
+
+        expect(scope.muokatutHakemukset.length).toBe(2);
+    });
+
     afterEach(function() {
 
         $httpBackend.verifyNoOutstandingExpectation();
