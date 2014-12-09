@@ -1472,6 +1472,79 @@ describe('Testing HenkiloTiedotController', function(){
         $httpBackend.flush();
     });
 
+
+    it('vastaanottoTilaOptionsToShow', function() {
+        var hakutoive = {
+            hakutoiveenValintatapajonot: [
+                {
+                    tila: 'HYVAKSYTTY',
+                    valintatapajonoPrioriteetti: 1,
+                    valintatapajonoOid: '13964193066528565284441732547687'
+                }
+
+            ]
+        };
+        scope.model.vastaanottoTilaOptionsToShow(hakutoive);
+        expect(scope.model.sijoittelu[hakutoive.hakutoiveenValintatapajonot[0].valintatapajonoOid].showSitovasti).toBeTruthy();
+        expect(scope.model.sijoittelu[hakutoive.hakutoiveenValintatapajonot[0].valintatapajonoOid].showEhdollisesti).toBeFalsy();
+
+        hakutoive.hakutoiveenValintatapajonot[0].valintatapajonoPrioriteetti = 2;
+        scope.model.vastaanottoTilaOptionsToShow(hakutoive);
+        expect(scope.model.sijoittelu[hakutoive.hakutoiveenValintatapajonot[0].valintatapajonoOid].showSitovasti).toBeFalsy();
+        expect(scope.model.sijoittelu[hakutoive.hakutoiveenValintatapajonot[0].valintatapajonoOid].showEhdollisesti).toBeTruthy();
+    });
+
+
+    it('isValinnanvaiheVisible', function() {
+        var index = 1;
+        var valinnanvaiheet = [
+            {
+                valintatapajonot: [
+                    {}
+                ]
+            }
+        ];
+
+        expect(scope.isValinnanvaiheVisible(index, valinnanvaiheet)).toBeFalsy();
+        index = 0;
+
+        expect(scope.isValinnanvaiheVisible(index, valinnanvaiheet)).toBeTruthy();
+    });
+
+
+    it('changeOsallistuminen', function() {
+        var value = undefined;
+        var hakija = {
+            additionalData: []
+        };
+        hakija.additionalData['123'] = "";
+        var tunniste = '123';
+
+        scope.changeOsallistuminen(hakija, tunniste, value);
+        expect(hakija.additionalData['123']).toBe("");
+        value = 1;
+        scope.changeOsallistuminen(hakija, tunniste, value);
+        expect(hakija.additionalData['123']).toBe("OSALLISTUI");
+    });
+
+
+    it('changeArvo', function() {
+        var value = "OSALLISTUI";
+        var hakija = {
+            additionalData: []
+        };
+        hakija.additionalData['123'] = "";
+        var tunniste = '123';
+        var tyyppi = "";
+
+        scope.changeArvo(hakija, tunniste, value, tyyppi);
+        expect(hakija.additionalData['123']).toBeUndefined();
+        tyyppi = "boolean";
+
+        scope.changeArvo(hakija, tunniste, value, tyyppi);
+        expect(hakija.additionalData['123']).toBe("true");
+    });
+
     it('check initialized variables', function() {
         expect(scope.model.hakuOid).toBe(routeParams.hakuOid);
         expect(scope.model.hakutoiveet.length).toBe(2);
