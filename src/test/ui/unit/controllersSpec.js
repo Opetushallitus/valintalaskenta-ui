@@ -624,6 +624,28 @@ describe('Testing HakukohdeController', function(){
         expect(scope.model.getHakukohdeNimi(hakukohde)).toBe('');
     });
 
+    it('isHakukohdeChanged', function() {
+        var hakukohdeOid = '123';
+        expect(scope.model.isHakukohdeChanged(hakukohdeOid)).toBeTruthy();
+        hakukohdeOid = 'oid2';
+        expect(scope.model.isHakukohdeChanged(hakukohdeOid)).toBeFalsy();
+    });
+
+    it('setHakukohdeNames', function() {
+        var hakukohdeNimi = 'hakukohdeNimi';
+        var tarjoajaNimi = 'tarjoajaNimi';
+        scope.model.setHakukohdeNames(hakukohdeNimi, tarjoajaNimi);
+
+        expect(scope.model.hakukohdeNimi).toBe(hakukohdeNimi);
+        expect(scope.model.tarjoajaNimi).toBe(tarjoajaNimi);
+
+        hakukohdeNimi = '';
+        tarjoajaNimi = '';
+        scope.model.setHakukohdeNames(hakukohdeNimi, tarjoajaNimi);
+
+        expect(scope.model.hakukohdeNimi).toBe('Autoalan perustutkinto, yo');
+        expect(scope.model.tarjoajaNimi).toBe('Stadin ammattiopisto, Ilkantien toimipaikka');
+    });
 
     it('check initialized variables', function() {
         expect(scope.hakuOid).toBe(routeParams.hakuOid);

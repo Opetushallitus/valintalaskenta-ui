@@ -1,6 +1,6 @@
 
-angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'HakukohdeNimi', '_', 'HakukohdeKoodistoNimi',
-    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimi, _, HakukohdeKoodistoNimi) {
+angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'HakukohdeNimi', '_',
+    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimi, _) {
     "use strict";
 
 
@@ -11,7 +11,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.hakukohdeNimi = undefined;
         this.tarjoajaNimi = undefined;
         this.hakukohde = {};
-        this.ensisijaiset = [];
         this.deferred = undefined;
 
 
@@ -48,19 +47,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
             var language = model.getKieli(hakukohde);
             var hakukohteenNimi = (model.hakukohde && model.hakukohde.hakukohteenNimet && model.hakukohde.hakukohteenNimet[language]) ? model.hakukohde.hakukohteenNimet[language] : "";
             return hakukohteenNimi;
-        };
-
-        this.haeEnsisijaiset = function(hakemukset, hakukohdeOid) {
-
-            var result = [];
-            _.each(hakemukset, function(hakemus) {
-                var toive = (_.invert(hakemus.answers.hakutoiveet))[hakukohdeOid];
-
-                if(toive && parseInt(toive.substring(10,11)) === 1) {
-                    result.push(hakemus);
-                }
-            });
-            return result;
         };
 
         this.refresh = function (hakukohdeOid) {
@@ -107,10 +93,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                 model.tarjoajaNimi = model.getTarjoajaNimi(model.hakukohde);
             }
 
-        };
-
-        this.getHakukohdeOid = function () {
-            return model.hakukohdeOid;
         };
 
     }();
