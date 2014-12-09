@@ -148,6 +148,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
         scope: {
             hakuOid: '=',
             hakukohdeOid: '=',
+            hakukohdeModel: '=',
             valintatapajonoOid: '=',
             enabled: '=',
             hakemus: '=',
@@ -155,6 +156,9 @@ app.directive('sijoitteluVastaanottoTila', function () {
             haku: '='
         },
         templateUrl: '../common/html/sijoitteluVastaanottoTila.html',
+        link: function ($scope) {
+
+        },
         controller: function ($scope, VastaanottoTila, HakemuksenVastaanottoTila, $modal) {
 
             $scope.show = function () {
@@ -163,7 +167,6 @@ app.directive('sijoitteluVastaanottoTila', function () {
                         scope: $scope,
                         templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
                         controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu, AuthService) {
-
 
                             $scope.update = function () {
                                 if ($scope.hakemus) {
