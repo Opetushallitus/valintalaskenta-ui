@@ -443,12 +443,14 @@ angular.module('valintalaskenta').
                     return {
                     	otsikko: "Hyväksymiskirjeet",
                     	toimintoNimi: "Muodosta hyväksymiskirjeet",
-                    	toiminto: function(sisalto) {
+                    	toiminto: function(sisalto, palautusPvm, palautusAika) {
                     		Hyvaksymiskirjeet.post({
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOids[0],
 					        	templateName: templateName,
+					        	palautusPvm: palautusPvm,
+					        	palautusAika: palautusAika,
 					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
@@ -564,7 +566,10 @@ angular.module('valintalaskenta').
     };
 
     $scope.createJalkiohjauskirjeetPDF = function () {
-        Jalkiohjauskirjeet.post({sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
+        Jalkiohjauskirjeet.post({
+        	sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, 
+        	hakuOid: $routeParams.hakuOid, 
+        	hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
             $window.location.href = resurssi.latausUrl;
         }, function (response) {
             alert(response.data.viesti);
