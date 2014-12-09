@@ -93,6 +93,49 @@ describe('Testing HakukohteetController', function(){
         expect(globalStates.hakukohteetVisible).toBeFalsy();
     });
 
+    it('getKieli', function() {
+        var hakukohde = {
+            hakukohdeNimi : {
+                fi: 'koulufi',
+                sv: '',
+                en: 'kouluen'
+            },
+            tarjoajaNimi : {
+                fi: 'koulufi',
+                sv: '',
+                en: ''
+            }
+        };
+        expect(scope.model.getKieli(hakukohde)).toBe('fi');
+
+        var hakukohde = {
+            hakukohdeNimi : {
+                fi: 'koulufi',
+                sv: '',
+                en: 'kouluen'
+            },
+            tarjoajaNimi : {
+                fi: '',
+                sv: 'koulusv',
+                en: ''
+            }
+        };
+        expect(scope.model.getKieli(hakukohde)).toBeUndefined();
+
+        var hakukohde = {
+            hakukohdeNimi : {
+                fi: '',
+                sv: 'koulusv',
+                en: 'kouluen'
+            },
+            tarjoajaNimi : {
+                fi: '',
+                sv: 'koulusv',
+                en: ''
+            }
+        };
+        expect(scope.model.getKieli(hakukohde)).toBe('sv');
+    });
 
     it('getTarjoajaNimi', function() {
         var hakukohde = {
@@ -152,6 +195,23 @@ describe('Testing HakukohteetController', function(){
             }
         };
         expect(scope.model.getHakukohdeNimi(hakukohde)).toBeUndefined();
+    });
+
+    it('getCount', function() {
+        expect(scope.model.getCount()).toBe(16);
+    });
+
+    it('getTotalCount', function() {
+        expect(scope.model.getTotalCount()).toBe(100);
+    });
+
+    it('getNextPage', function() {
+        scope.model.getNextPage(false);
+        expect(scope.model.hakukohteet.length).toBe(16);
+        expect(scope.model.readyToQueryForNextPage).toBeFalsy();
+        scope.model.getNextPage(true);
+        expect(scope.model.hakukohteet.length).toBe(0);
+        expect(scope.model.readyToQueryForNextPage).toBeFalsy();
     });
 
     afterEach(function() {
@@ -453,13 +513,117 @@ describe('Testing HakukohdeController', function(){
             .respond(201,hakukohdetilajson);
 
 
-
-
         ctrl = $controller('HakukohdeController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
             'HakukohdeModel': hakukohdeModel, 'HakuModel': hakuModel, 'SijoitteluntulosModel': sijoitteluntulosModel, 'KorkeaKoulu': korkeakoulu});
 
         $httpBackend.flush();
     });
+
+
+    it('getKieli', function() {
+        var hakukohde = {
+            hakukohteenNimet : {
+                kieli_fi: 'koulufi',
+                kieli_sv: '',
+                kieli_en: 'kouluen'
+            },
+            tarjoajaNimet : {
+                fi: 'koulufi',
+                sv: '',
+                en: ''
+            }
+        };
+        expect(scope.model.getKieli(hakukohde)).toBe('kieli_fi');
+
+        var hakukohde = {
+            hakukohteenNimet : {
+                kieli_fi: 'koulufi',
+                kieli_sv: '',
+                kieli_en: 'kouluen'
+            },
+            tarjoajaNimet : {
+                fi: '',
+                sv: 'koulusv',
+                en: ''
+            }
+        };
+        expect(scope.model.getKieli(hakukohde)).toBeUndefined();
+
+        var hakukohde = {
+            hakukohteenNimet : {
+                kieli_fi: '',
+                kieli_sv: 'koulusv',
+                kieli_en: 'kouluen'
+            },
+            tarjoajaNimet : {
+                fi: '',
+                sv: 'koulusv',
+                en: ''
+            }
+        };
+        expect(scope.model.getKieli(hakukohde)).toBe('kieli_sv');
+    });
+
+    it('getTarjoajaNimi', function() {
+        var hakukohde = {
+            hakukohteenNimet : {
+                kieli_fi: 'koulufi',
+                kieli_sv: '',
+                kieli_en: 'kouluen'
+            },
+            tarjoajaNimet : {
+                fi: 'koulufi',
+                sv: '',
+                en: ''
+            }
+        };
+        expect(scope.model.getTarjoajaNimi(hakukohde)).toBe('Stadin ammattiopisto, Ilkantien toimipaikka');
+
+        var hakukohde = {
+            hakukohteenNimet : {
+                kieli_fi: 'koulufi',
+                kieli_sv: '',
+                kieli_en: 'kouluen'
+            },
+            tarjoajaNimet : {
+                fi: 'koulufi',
+                sv: 'koulusv',
+                en: ''
+            }
+        };
+        expect(scope.model.getTarjoajaNimi(hakukohde)).toBe('Stadin ammattiopisto, Ilkantien toimipaikka');
+    });
+
+    it('getHakukohdeNimi', function() {
+        var hakukohde = {
+            hakukohteenNimet : {
+                kieli_fi: 'koulufi',
+                kieli_sv: '',
+                kieli_en: 'kouluen'
+            },
+            tarjoajaNimet : {
+                fi: 'koulufi',
+                sv: '',
+                en: ''
+            }
+        };
+        expect(scope.model.getHakukohdeNimi(hakukohde)).toBe('Autoalan perustutkinto, yo');
+
+        var hakukohde = {
+            hakukohteenNimet : {
+                kieli_fi: '',
+                kieli_sv: '',
+                kieli_en: 'kouluen'
+            },
+            tarjoajaNimet : {
+                fi: '',
+                sv: 'koulusv',
+                en: ''
+            }
+        };
+        expect(scope.model.getHakukohdeNimi(hakukohde)).toBe('');
+    });
+
 
     it('check initialized variables', function() {
         expect(scope.hakuOid).toBe(routeParams.hakuOid);
