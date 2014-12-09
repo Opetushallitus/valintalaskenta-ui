@@ -22,11 +22,6 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 			});
 		};
 
-        this.filterHyvaksytty = function(hakemukset) {
-			return _.filter(hakemukset,function(hakemus) {
-				return hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY";
-			});
-		};
 		this.isAllValittu = function(valintatapajono) {
 			return _.reduce(valintatapajono.hakemukset, function(memo, hakemus){
 				if(hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
@@ -35,9 +30,11 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 				return memo;
 			}, true);
 		};
+
 		this.check = function(valintatapajono) {
 			valintatapajono.valittu = this.isAllValittu(valintatapajono);
 		};
+
 		this.checkAll = function(valintatapajono) {
 			var kaikkienUusiTila = valintatapajono.valittu;
 			_.each(valintatapajono.hakemukset, function(hakemus) {
@@ -239,8 +236,6 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                 return valintatapajono.oid === valintatapajonoOid;
             });
 
-            var halututTilat = ["HYVAKSYTTY", "VARLLA", "VARASIJALTA_HYVAKSYTTY", "HYLATTY"];
-
             var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
                 return valintatapajono.hakemukset;
             })), function (hakemus) {
@@ -286,19 +281,6 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             });
         };
 
-        this.valitutOidit = function(){
-            var oidit = [];
-            if(model.sijoitteluTulokset.valintatapajonot) {
-                model.sijoitteluTulokset.valintatapajonot.forEach(function(valintatapajono){
-                    if(valintatapajono.hakemukset) {
-                        model.filterValitut(valintatapajono.hakemukset).forEach(function(hakemus){
-                            oidit.push(hakemus.hakemusOid);
-                        });
-                    }
-                });
-            }
-            return oidit;
-        };
     }();
 
     return model;
@@ -331,9 +313,6 @@ angular.module('valintalaskenta').
             }
         });
     }
-
-
-
 
     $scope.nakymanTila = "Jonottain";
 
