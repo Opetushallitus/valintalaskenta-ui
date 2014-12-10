@@ -1,4 +1,9 @@
-app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus, HakukohdeNimi, ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe, SijoittelunVastaanottotilat, LatestSijoittelunTilat, ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty, HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot) {
+app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus, HakukohdeNimi,
+                                            ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe,
+                                            SijoittelunVastaanottotilat, LatestSijoittelunTilat,
+                                            ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
+                                            HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, VastaanottoTilat,
+                                            LatestSijoitteluajoHakukohde) {
     "use strict";
 
     var model = new function () {
@@ -98,6 +103,23 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                 if (hakutoive.hakutoiveenValintatapajonot) {
                                     hakutoive.hakutoiveenValintatapajonot.forEach(function (valintatapajono) {
                                         model.sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
+
+                                        VastaanottoTilat.get({hakukohdeOid: hakutoive.hakukohdeOid,
+                                            valintatapajonoOid: valintatapajono.valintatapajonoOid}, function (result) {
+                                            model.sijoittelu[valintatapajono.valintatapajonoOid].logEntries = result[0].logEntries;
+                                        });
+                                        LatestSijoitteluajoHakukohde.get({
+                                            hakukohdeOid: hakutoive.hakukohdeOid,
+                                            hakuOid: hakuOid
+                                        }, function (result) {
+                                            if (result.valintatapajonot) {
+                                                result.valintatapajonot.forEach(function (jono) {
+                                                    if (jono.oid === valintatapajono.valintatapajonoOid) {
+                                                        model.sijoittelu[valintatapajono.valintatapajonoOid].tilaHistoria = jono.hakemukset[0].tilaHistoria;
+                                                    }
+                                                });
+                                            }
+                                        });
                                     });
                                 }
                                 model.vastaanottoTilaOptionsToShow(hakutoive);

@@ -61,7 +61,11 @@ angular.module('valintalaskenta')
 }])
 .filter('ListLength', [function () { // usefull finding out length of a filtered list in template
     return function (list) {
-        return list.length;
+        if(list) {
+            return list.length;
+        } else {
+            return 0;
+        }
     };
 }])
 
