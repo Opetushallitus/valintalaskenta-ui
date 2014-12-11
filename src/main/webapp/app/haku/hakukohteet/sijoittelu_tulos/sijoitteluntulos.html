@@ -101,12 +101,8 @@
                             {{jono.pisteet}}
                         </td>
                         <td>
-                            <span ng-if="!hakija.tilanKuvaukset.FI || hakija.tila == 'HYLATTY'">{{hakija.tila}}</span>
-                            <span ng-if="userLang=='fi' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.FI}}</span>
-                            <span ng-if="userLang=='sv' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.SV}}</span>
-                            <span ng-if="userLang=='en' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.EN}}</span>
-                            <span ng-if="(hakija.tila == 'HYVAKSYTTY' || hakija.tila == 'VARASIJALTA_HYVAKSYTTY') && hakija.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
-                            <span ng-if="hakija.varasijanNumero != undefined">({{hakija.varasijanNumero}})</span>
+                            <show-sijoittelun-tila hakemus="hakija" user-lang="userLang"></show-sijoittelun-tila>
+
                         </td>
                     </tr>
                 </table>
@@ -160,12 +156,8 @@
                             <td>{{hakemus.prioriteetti}}</td>
                             <td><span ng-if="hakemus.pisteet >= 0">{{hakemus.pisteet}}</span></td>
                             <td>
-                                <span ng-if="!hakemus.tilanKuvaukset.FI || hakemus.tila == 'HYLATTY'">{{hakemus.tila}}</span>
-                                <span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.FI}}</span>
-                                <span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.SV}}</span>
-                                <span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.EN}}</span>
-                                <span ng-if="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY') && hakemus.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
-                                <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
+                                <show-sijoittelun-tila hakemus="hakemus" user-lang="userLang"></show-sijoittelun-tila>
+
                                 <modal modal-template="sijoitteluTilaHistoriModal.html">
                                     <modal-open>
                                         {{(hakemus.tilaHistoria

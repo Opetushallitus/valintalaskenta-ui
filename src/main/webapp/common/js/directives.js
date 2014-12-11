@@ -665,3 +665,20 @@ app.directive('muokattuVastaanottoTila', function () {
 
     };
 });
+
+
+
+app.directive('showSijoittelunTila', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            hakemus: '=',
+            userLang: '='
+        },
+        templateUrl: '../common/html/showSijoittelunTila.html',
+        controller: function ($modal, $scope) {
+
+
+        }
+    };
+});
