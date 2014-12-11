@@ -46,8 +46,8 @@
                 <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('sijoitteluntulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
                 <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
                 <a ng-click="luoJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">
-                    <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.haku.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostaeihyvaksyttyjenkirjeet') || 'Muodosta kirjeet ei-hyväksytyille'}}</span>
-                    <span ng-if="!korkeakouluService.isKorkeakoulu(hakuModel.haku.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostajalkiohjauskirjeet') || 'Muodosta jälkiohjauskirjeet hakukohteessa hylätyille' }}</span>
+                    <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostaeihyvaksyttyjenkirjeet') || 'Muodosta kirjeet ei-hyväksytyille'}}</span>
+                    <span ng-if="!korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostajalkiohjauskirjeet') || 'Muodosta jälkiohjauskirjeet hakukohteessa hylätyille' }}</span>
                 </a>
                 <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostaosoitetarrat') || 'Muodosta hyväksytyille osoitetarrat' }}</a>
 
