@@ -13,7 +13,6 @@ angular.module('valintalaskenta')
                 this.nivelvaihe = false;
                 this.korkeakoulu = false;
                 this.erillishaku = false;
-                this.haku = undefined;
 
                 this.getNimi = function () {
                     if (this.hakuOid.nimi.kieli_fi !== undefined) {
@@ -45,9 +44,7 @@ angular.module('valintalaskenta')
                             model.haut.forEach(function (haku) {
                                 if (haku.oid === oid) {
                                     model.hakuOid = haku;
-
                                     model.korkeakoulu = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
-
                                 }
                                 var kohdejoukkoUri = haku.kohdejoukkoUri;
                                 var kohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
@@ -105,14 +102,7 @@ angular.module('valintalaskenta')
                 }
             });
 
-
-
             ParametriService.refresh($routeParams.hakuOid);
-
-
-            $scope.hakuSelection = function (haku) {
-                $scope.hakumodel.haku = haku;
-            };
 
             $scope.$watch('hakumodel.hakuOid', function () {
 
