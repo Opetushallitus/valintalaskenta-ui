@@ -41,17 +41,18 @@ angular.module('valintalaskenta').
         '$log', '$timeout', '$q','$location', 
         'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
-        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat',
+        'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat', 'Korkeakoulu',
         function ($scope, $modal, $interval, _, 
         		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, 
         		Jalkiohjauskirjepohjat, AktivoiKelaFtp, 
         		$log, $timeout, $q, $location, 
         		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                 $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
-                HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat) {
+                HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat, Korkeakoulu) {
     "use strict";
 
     $scope.jatkuva = {};
+    $scope.korkeakoulu = Korkeakoulu;
 
     $scope.aktivoiValintalaskentaKerralla = function () {
     	var hakuoid = $routeParams.hakuOid;
@@ -200,8 +201,21 @@ angular.module('valintalaskenta').
 	    }
     };
     $scope.muodostaJalkiohjauskirjeet = function (langcode) {
+        var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakumodel.haku.kohdejoukkoUri);
     	var tag = $routeParams.hakuOid;
     	var templateName = $scope.hakuaVastaavaJalkiohjauskirjeMuotti();
+        var otsikko = "";
+        var toimintoNimi = "";
+        var latausikkunaTeksti = "";
+        if(isKorkeakoulu) {
+            otsikko = "Ei-hyväksyttyjen kirjeet";
+            toimintoNimi = "Muodosta ei-hyväksyttyjen kirjeet";
+            latausikkunaTeksti = "Ei-hyväksyttyjen kirjeet";
+        } else {
+            otsikko = "Jälkiohjauskirjeet";
+            toimintoNimi = "Muodosta jälkiohjauskirjeet";
+            latausikkunaTeksti = "Jälkiohjauskirjeet";
+        }
         var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -210,13 +224,13 @@ angular.module('valintalaskenta').
             resolve: {
                 oids: function () {
                     return {
-                    	otsikko: "Jälkiohjauskirjeet",
-                    	toimintoNimi: "Muodosta jälkiohjauskirjeet",
+                    	otsikko: otsikko,
+                    	toimintoNimi: toimintoNimi,
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
 					        	tag: tag, templateName: templateName}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
-					            Latausikkuna.avaa(id, "Jälkiohjauskirjeet", "");
+					            Latausikkuna.avaa(id, latausikkunaTeksti, "");
 					        }, function () {
 					            
 					        });
