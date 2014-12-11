@@ -291,17 +291,17 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 angular.module('valintalaskenta').
     controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
-        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'KorkeaKoulu',
+        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'NimiService',
         function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
-                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, KorkeaKoulu) {
+                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, NimiService) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.hakuModel = HakuModel;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.model = SijoitteluntulosModel;
-    $scope.korkeakouluService = KorkeaKoulu;
+    $scope.korkeakouluService = Korkeakoulu;
 
     if($routeParams.hakuOid) {
         Ohjausparametrit.get({hakuOid: $routeParams.hakuOid}, function (result) {
@@ -384,7 +384,9 @@ angular.module('valintalaskenta').
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	var langcode = $scope.hakukohdeModel.getKieliCode();
+
+
+    	var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = "jalkiohjauskirje";
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -417,7 +419,7 @@ angular.module('valintalaskenta').
                         	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
-                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                        hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
                     };
                 }
             }
@@ -432,7 +434,7 @@ angular.module('valintalaskenta').
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	var langcode = $scope.hakukohdeModel.getKieliCode();
+    	var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -468,7 +470,7 @@ angular.module('valintalaskenta').
                         	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
-                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                        hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
                     };
                 }
             }
@@ -527,7 +529,7 @@ angular.module('valintalaskenta').
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	var langcode = $scope.hakukohdeModel.getKieliCode();
+    	var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -562,7 +564,7 @@ angular.module('valintalaskenta').
                         	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
-                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                        hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
                     };
                 }
             }
