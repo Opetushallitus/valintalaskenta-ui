@@ -137,7 +137,8 @@
 
 </collapsible>
 
-<collapsible heading="{{ t('yhteisvalinnanhallinta.jalkiohjaus') || 'Jälkiohjaus' }}">
+<!-- Jälkiohjauskirjeet (2. aste) -->
+<collapsible ng-if="!korkeakoulu.isKorkeakoulu(hakumodel.haku.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.jalkiohjaus') || 'Jälkiohjaus' }}">
 
     <button privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viejalkiohjaustuloksettaulukkolaskentaan') || 'Vie jälkiohjaustulokset taulukkolaskentaan' }}
@@ -155,8 +156,28 @@
     </button>
 </collapsible>
 
+<!-- Ei hyväksyttyjen kirjeet (Korkeakoulut) -->
+<collapsible ng-if="korkeakoulu.isKorkeakoulu(hakumodel.haku.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.eihyvaksytyt') || 'Ei-hyväksytyt' }}">
 
-<!--KELAN TIEDONSIIRTO-->
+    <button privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieeihyvaksyttyjentuloksettaulukkolaskentaan') || 'Vie ei-hyväksyttyjen tulokset taulukkolaskentaan' }}
+    </button>
+
+    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('FI')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytsuomeksi') || 'Muodosta ei-hyväksyttyjen kirjeet suomeksi' }}
+    </button>
+    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('SV')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytruotsiksi') || 'Muodosta ei-hyväksyttyjen kirjeet ruotsiksi' }}
+    </button>
+    <button privileges="valintalaskenta"
+            href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
+            class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
+    </button>
+</collapsible>
+
+
+
+    <!--KELAN TIEDONSIIRTO-->
 <collapsible heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}">
 
     <div class="form-horizontal">
