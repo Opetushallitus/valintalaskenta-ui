@@ -1,5 +1,6 @@
 'use strict';
 
+
 describe('Testing HakukohteetController', function(){
     var rootScope,$rootScope, $controller, $httpBackend, $location, location,
         hakukohteetModel,globalStates,hakuModel,scope,ctrl,hakukohteetjson;
@@ -91,110 +92,6 @@ describe('Testing HakukohteetController', function(){
         expect(globalStates.hakukohteetVisible).toBeTruthy();
         scope.toggleHakukohteetVisible();
         expect(globalStates.hakukohteetVisible).toBeFalsy();
-    });
-
-    it('getKieli', function() {
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: ''
-            }
-        };
-        expect(scope.model.getKieli(hakukohde)).toBe('fi');
-
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: '',
-                sv: 'koulusv',
-                en: ''
-            }
-        };
-        expect(scope.model.getKieli(hakukohde)).toBeUndefined();
-
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: '',
-                sv: 'koulusv',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: '',
-                sv: 'koulusv',
-                en: ''
-            }
-        };
-        expect(scope.model.getKieli(hakukohde)).toBe('sv');
-    });
-
-    it('getTarjoajaNimi', function() {
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: ''
-            }
-        };
-        expect(scope.model.getTarjoajaNimi(hakukohde)).toBe('koulufi');
-
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: 'koulufi',
-                sv: 'koulusv',
-                en: ''
-            }
-        };
-        expect(scope.model.getTarjoajaNimi(hakukohde)).toBe('koulufi');
-    });
-
-    it('getHakukohdeNimi', function() {
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: ''
-            }
-        };
-        expect(scope.model.getHakukohdeNimi(hakukohde)).toBe('koulufi');
-
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: '',
-                sv: '',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: '',
-                sv: 'koulusv',
-                en: ''
-            }
-        };
-        expect(scope.model.getHakukohdeNimi(hakukohde)).toBeUndefined();
     });
 
     it('getCount', function() {
