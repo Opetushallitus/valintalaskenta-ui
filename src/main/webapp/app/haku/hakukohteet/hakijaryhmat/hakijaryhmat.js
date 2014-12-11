@@ -42,7 +42,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
                                     if (hakutoive.hakukohdeOid === hakukohdeOid) {
                                         hakutoive.hakutoiveenValintatapajonot.forEach(function (jono) {
                                             if (jono.valintatapajonoOid === valintatapajonoOid) {
-                                                jonosija.sijoittelunTila = jono.tila;
+                                                jonosija.tila = jono.tila;
                                                 jonosija.tilanKuvaukset = jono.tilanKuvaukset;
                                                 jonosija.varasijanNumero = jono.varasijanNumero;
                                                 jonosija.hyvaksyttyHarkinnanvaraisesti = jono.hyvaksyttyHarkinnanvaraisesti;

@@ -291,17 +291,17 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 angular.module('valintalaskenta').
     controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
-        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log',
+        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'KorkeaKoulu',
         function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
-                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log) {
+                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, KorkeaKoulu) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
-
+    $scope.hakuModel = HakuModel;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.model = SijoitteluntulosModel;
-
+    $scope.korkeakouluService = KorkeaKoulu;
 
     if($routeParams.hakuOid) {
         Ohjausparametrit.get({hakuOid: $routeParams.hakuOid}, function (result) {
@@ -409,6 +409,7 @@ angular.module('valintalaskenta').
 					            
 					        });
                     	},
+                        showDateFields: false,
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOids[0],
@@ -445,6 +446,7 @@ angular.module('valintalaskenta').
                     	toimintoNimi: "Muodosta hyväksymiskirjeet",
                     	toiminto: function(sisalto, palautusPvm, palautusAika) {
                     		Hyvaksymiskirjeet.post({
+
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOids[0],
@@ -458,6 +460,7 @@ angular.module('valintalaskenta').
 					            
 					        });
                     	},
+                        showDateFields: true,
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOids[0],
@@ -551,6 +554,7 @@ angular.module('valintalaskenta').
 					            
 					        });
                     	},
+                        showDateFields: true,
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOids[0],

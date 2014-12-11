@@ -90,11 +90,10 @@ angular.module('oph.localisation', [])
                 var promises = [];
 
                 array.forEach(function(item) {
+                    item.text = item.default_text;
                     promises.push(self.getTranslation(item.text).then(function (text) {
                         if (text) {
                             item.text = text;
-                        } else {
-                            item.text = item.default_text;
                         }
                     }));
 

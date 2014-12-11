@@ -54,12 +54,7 @@
                             <td>{{ t('hakijaryhmat.'+tulos.jarjestyskriteerit[0].tila) || tulos.jarjestyskriteerit[0].tila}}</td>
                             <td>{{ tulos.jarjestyskriteerit[0].tila }}</td>
                             <td>
-                                <span ng-if="!tulos.tilanKuvaukset.FI || tulos.sijoittelunTila == 'HYLATTY'">{{tulos.sijoittelunTila}}</span>
-                                <span ng-if="userLang=='fi' && tulos.tilanKuvaukset.FI && tulos.sijoittelunTila != 'HYLATTY'">{{tulos.tilanKuvaukset.FI}}</span>
-                                <span ng-if="userLang=='sv' && tulos.tilanKuvaukset.FI && tulos.sijoittelunTila != 'HYLATTY'">{{tulos.tilanKuvaukset.SV}}</span>
-                                <span ng-if="userLang=='en' && tulos.tilanKuvaukset.FI && tulos.sijoittelunTila != 'HYLATTY'">{{tulos.tilanKuvaukset.EN}}</span>
-                                <span ng-if="(tulos.sijoittelunTila == 'HYVAKSYTTY' || tulos.sijoittelunTila == 'VARASIJALTA_HYVAKSYTTY') && tulos.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
-                                <span ng-if="tulos.varasijanNumero != undefined">({{tulos.varasijanNumero}})</span>
+                                <show-sijoittelun-tila hakemus="tulos" user-lang="userLang"></show-sijoittelun-tila>
                             </td>
                             <td>{{tulos.vastaanottoTila}}</td>
                         </tr>

@@ -19,7 +19,10 @@
                 {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
 			
 			<a ng-show="privileges.showValintalaskenta()" ng-click="muodostaJalkiohjauskirje()"
-       			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('henkilotiedot.jalkiohjauskirje') || 'Muodosta jälkiohjauskirje' }}</a>
+       			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>
+                <span ng-if="!korkeakoulu.isKorkeakoulu(hakuModel.haku.kohdejoukkoUri)">{{ t('henkilotiedot.jalkiohjauskirje') || 'Muodosta jälkiohjauskirje' }}</span>
+                <span ng-if="korkeakoulu.isKorkeakoulu(hakuModel.haku.kohdejoukkoUri)">{{ t('henkilotiedot.eihyvaksytynkirje') || 'Muodosta ei-hyväksytyn kirje'}}</span>
+            </a>
             <button privileges="valintalaskenta" ng-click="valintalaskentaKerrallaHakukohteille()" ng-if="!model.haku.lisahaku"
                     class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskenta') || 'Suorita valintalaskenta' }}
             </button>
