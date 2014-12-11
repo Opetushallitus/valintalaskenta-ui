@@ -12,7 +12,7 @@ angular.module('oph.services', [])
             }
         };
         return service;
-    }]).factory('NimiService',[ function () {
+    }]).factory('NimiService',['_', function (_) {
         "use strict";
         var service =
         {
