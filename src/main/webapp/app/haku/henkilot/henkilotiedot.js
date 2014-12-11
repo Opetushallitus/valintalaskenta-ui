@@ -342,7 +342,7 @@ angular.module('valintalaskenta').
 	    }
     };
     $scope.muodostaJalkiohjauskirje = function () {
-        var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakuModel.haku.kohdejoukkoUri);
+        var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakuModel.hakuOid.kohdejoukkoUri);
         var tag = $routeParams.hakuOid;
         var hakemusOid = $scope.model.hakemus.oid;
         var asiointikieli = $scope.model.hakemus.answers.lisatiedot.asiointikieli;
