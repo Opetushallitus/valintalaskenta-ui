@@ -419,7 +419,7 @@ angular.module('valintalaskenta').
                         	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
-                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                        hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
                     };
                 }
             }
@@ -470,7 +470,7 @@ angular.module('valintalaskenta').
                         	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
-                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                        hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
                     };
                 }
             }
@@ -564,7 +564,7 @@ angular.module('valintalaskenta').
                         	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
-                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                        hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
                     };
                 }
             }

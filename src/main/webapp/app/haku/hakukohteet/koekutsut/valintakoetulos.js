@@ -208,9 +208,9 @@
 
 angular.module('valintalaskenta').
     controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel',
-        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log',
+        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log', 'NimiService',
         function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
-                  Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log) {
+                  Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log,NimiService) {
 
     "use strict";
 
@@ -235,8 +235,9 @@ angular.module('valintalaskenta').
     	} else {
     		tag = hakukohdeOid;
     	}
-    	var langcode = $scope.hakukohdeModel.getKieliCode();
-    	var templateName = "koekutsukirje";
+        var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+
+        var templateName = "koekutsukirje";
     	var otsikko = null;
     	var hakemusOids = null;
     	if($scope.model.isAllValittu(valintakoe)) {
@@ -295,7 +296,7 @@ angular.module('valintalaskenta').
                         	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
-                        hakukohdeNimi: $scope.hakukohdeModel.getHakukohdeNimi()
+                        hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
                     };
                 }
             }

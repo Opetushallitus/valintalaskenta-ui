@@ -60,7 +60,7 @@ angular.module('valintalaskenta').
                     return {
                         hakuOid: $routeParams.hakuOid,
                         erillishaku: erillishaku,
-                        nimentarkennus: $scope.hakukohdeModel.getHakukohdeNimi(),
+                        nimentarkennus: $scope.hakukohdeModel.hakukohdeNimi,
                         tyyppi: "HAKUKOHDE",
                         hakukohteet: [$routeParams.hakukohdeOid]
                     };
