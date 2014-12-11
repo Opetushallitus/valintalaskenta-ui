@@ -239,7 +239,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
             var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
                 return valintatapajono.hakemukset;
             })), function (hakemus) {
-                return _.contains(uiMuokatutHakemusOids, hakemus.oid);
+                return _.contains(uiMuokatutHakemusOids, hakemus.hakemusOid);
             });
 
             model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
@@ -367,7 +367,7 @@ angular.module('valintalaskenta').
     $scope.muokatutHakemukset = [];
 
     $scope.addMuokattuHakemus = function (hakemus) {
-        $scope.muokatutHakemukset.push(hakemus.oid);
+        $scope.muokatutHakemukset.push(hakemus.hakemusOid);
         $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
     };
 
