@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakukohteetModel', ['$q', '$routeParams', '$log', '$http', 'Haku', 'AuthService', 'TarjontaHaku', 'TarjontaHakukohde', 'HakukohdeKoodistoNimi', '_',
-        function ($q, $routeParams, $log, $http, Haku, AuthService, TarjontaHaku, TarjontaHakukohde, HakukohdeKoodistoNimi, _) {
+    .factory('HakukohteetModel', ['$q', '$routeParams', '$log', '$http', 'Haku', 'AuthService', 'TarjontaHaku',
+        function ($q, $routeParams, $log, $http, Haku, AuthService, TarjontaHaku) {
             "use strict";
 
             var model;
@@ -20,27 +20,6 @@ angular.module('valintalaskenta')
                 this.readyToQueryForNextPage = true;
                 this.deferred = undefined;
 
-                this.getKieli = function (hakukohde) {
-                    if (hakukohde) {
-                        var languages = ["fi", "sv", "en"];
-                        var tarjoajaNimet = hakukohde.tarjoajaNimi;
-                        var hakukohdeNimet = hakukohde.hakukohdeNimi;
-
-                        var language = _.find(languages, function (lang) {
-                             return ( !_.isEmpty(hakukohdeNimet[lang]) && !_.isEmpty(tarjoajaNimet[lang]) );
-                        });
-                        return language;
-                    }
-                    return "fi";
-                };
-
-                this.getTarjoajaNimi = function (hakukohde) {
-                    return hakukohde.tarjoajaNimi[model.getKieli(hakukohde)];
-                };
-
-                this.getHakukohdeNimi = function (hakukohde) {
-                    return hakukohde.hakukohdeNimi[model.getKieli(hakukohde)];
-                };
 
                 this.getCount = function () {
                     if (this.hakukohteet === undefined) {
@@ -133,13 +112,16 @@ angular.module('valintalaskenta')
 
 
 angular.module('valintalaskenta').
-    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'GlobalStates', 'HakuModel', '$timeout',
-                                function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, GlobalStates, HakuModel, $timeout) {
+    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'GlobalStates', 'HakuModel',
+        'NimiService',
+                                function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, GlobalStates, HakuModel,
+                                          NimiService) {
             "use strict";
             $scope.hakuOid = $routeParams.hakuOid;
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
             $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
             $scope.hakuModel = HakuModel;
+            $scope.nimiService = NimiService;
 
             $scope.model = HakukohteetModel;
             $scope.model.refreshIfNeeded($routeParams.hakuOid);
@@ -157,7 +139,7 @@ angular.module('valintalaskenta').
             };
 
             $scope.showHakukohde = function (hakukohde, lisahaku) {
-                $rootScope.selectedHakukohdeNimi = $scope.model.getHakukohdeNimi(hakukohde);
+                $rootScope.selectedHakukohdeNimi = NimiService.getHakukohdeNimi(hakukohde);
                 $scope.hakukohteetVisible = false;
                 GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
                 $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/perustiedot'));
