@@ -27,7 +27,7 @@ angular.module('oph.services', [])
                         return ((!_.isEmpty(hakukohdeNimet[lang]) || !_.isEmpty(hakukohdeNimet[languageId])) && !_.isEmpty(tarjoajaNimet[languageId]));
                     });
 
-                    return language;
+                    return (language?language:"kieli_fi");
                 }
                 return "kieli_fi";
             },
