@@ -1,6 +1,6 @@
 
-angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'HakukohdeNimi', '_',
-    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimi, _) {
+angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'NimiService', '_',
+    function ($q, $log, $http, TarjontaHakukohde, NimiService, _) {
     "use strict";
 
 
@@ -13,41 +13,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.hakukohde = {};
         this.deferred = undefined;
 
-
-        this.getKieli = function (hakukohde) {
-            if (hakukohde) {
-                var languages = ["kieli_fi", "kieli_sv", "kieli_en"];
-                var tarjoajaNimet = hakukohde.tarjoajaNimet;
-                var hakukohdeNimet = hakukohde.hakukohteenNimet;
-                
-                var language = _.find(languages, function (lang) {
-                    var languageId = _.last(lang.split("_"));
-                    return (!_.isEmpty(hakukohdeNimet[lang]) && !_.isEmpty(tarjoajaNimet[languageId]));
-                });
-
-                return language;
-            }
-            return "kieli_fi";
-        };
-
-
-		this.getKieliCode = function (hakukohde) {
-			var language = this.getKieli(hakukohde);
-			return _.last(language.split("_")).toUpperCase();
-		};
-
-        this.getTarjoajaNimi = function (hakukohde) {
-            var language = model.getKieli(hakukohde);
-            var languageId = _.last(language.split("_"));
-            var tarjoajaNimi = (model.hakukohde && model.hakukohde.tarjoajaNimet && model.hakukohde.tarjoajaNimet[languageId]) ? model.hakukohde.tarjoajaNimet[languageId] : "";
-            return tarjoajaNimi;
-        };
-
-        this.getHakukohdeNimi = function (hakukohde) {
-            var language = model.getKieli(hakukohde);
-            var hakukohteenNimi = (model.hakukohde && model.hakukohde.hakukohteenNimet && model.hakukohde.hakukohteenNimet[language]) ? model.hakukohde.hakukohteenNimet[language] : "";
-            return hakukohteenNimi;
-        };
 
         this.refresh = function (hakukohdeOid) {
             model.hakukohdeOid = hakukohdeOid;
@@ -89,8 +54,8 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                 model.hakukohdeNimi = hakukohdeNimi;
                 model.tarjoajaNimi = tarjoajaNimi;
             } else {
-                model.hakukohdeNimi = model.getHakukohdeNimi(model.hakukohde);
-                model.tarjoajaNimi = model.getTarjoajaNimi(model.hakukohde);
+                model.hakukohdeNimi = NimiService.getHakukohdeNimi(model.hakukohde);
+                model.tarjoajaNimi = NimiService.getTarjoajaNimi(model.hakukohde);
             }
 
         };
