@@ -409,6 +409,7 @@ angular.module('valintalaskenta').
 					            
 					        });
                     	},
+                        showDateFields: false,
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOids[0],
@@ -445,6 +446,7 @@ angular.module('valintalaskenta').
                     	toimintoNimi: "Muodosta hyväksymiskirjeet",
                     	toiminto: function(sisalto, palautusPvm, palautusAika) {
                     		Hyvaksymiskirjeet.post({
+
 					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
 					        	hakuOid: $routeParams.hakuOid, 
 					        	tarjoajaOid: hakukohde.tarjoajaOids[0],
@@ -458,6 +460,7 @@ angular.module('valintalaskenta').
 					            
 					        });
                     	},
+                        showDateFields: true,
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOids[0],
@@ -551,6 +554,7 @@ angular.module('valintalaskenta').
 					            
 					        });
                     	},
+                        showDateFields: true,
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOids[0],

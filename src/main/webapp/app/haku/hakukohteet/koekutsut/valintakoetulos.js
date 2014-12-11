@@ -287,6 +287,7 @@ angular.module('valintalaskenta').
                 	    	},function() {
                 	    	});
                     	},
+						showDateFields: true,
                         hakuOid: $routeParams.hakuOid,
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOids[0],
