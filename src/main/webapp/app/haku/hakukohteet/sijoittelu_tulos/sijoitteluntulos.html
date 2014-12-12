@@ -102,7 +102,12 @@
                         </td>
                         <td>
                             <show-sijoittelun-tila hakemus="hakija" user-lang="userLang"></show-sijoittelun-tila>
-
+                            <modal modal-template="sijoitteluTilaHistoriaModal.html" hakemus="{{hakija}}">
+                                <modal-open>
+                                    {{(hakija.tilaHistoria
+                                    | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
+                                </modal-open>
+                            </modal>
                         </td>
                     </tr>
                 </table>
@@ -158,7 +163,7 @@
                             <td>
                                 <show-sijoittelun-tila hakemus="hakemus" user-lang="userLang"></show-sijoittelun-tila>
 
-                                <modal modal-template="sijoitteluTilaHistoriModal.html">
+                                <modal modal-template="sijoitteluTilaHistoriaModal.html">
                                     <modal-open>
                                         {{(hakemus.tilaHistoria
                                         | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
@@ -268,7 +273,7 @@
 
 </script>
 
-<script type="text/ng-template" id="sijoitteluTilaHistoriModal.html">
+<script type="text/ng-template" id="sijoitteluTilaHistoriaModal.html">
     <div class="modal-header">
         {{ t('sijoitteluntulos.muutokset') || 'Muutokset' }}
     </div>
@@ -281,7 +286,7 @@
                 <th>{{ t('sijoitteluntulos.tila') || 'Tila' }}</th>
             </tr>
             </thead>
-            <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true">
+            <tr ng-repeat="entry in (hakemus.tilaHistoria.length>0?hakemus.tilaHistoria:hakija.tilaHistoria) | orderBy:'luotu':true">
                 <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
                 <td fast-bind-once="henkiloOid">{{entry.tila}}</td>
             </tr>

@@ -113,6 +113,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                     hyvaksyttyHarkinnanvaraisesti: hakemus.hyvaksyttyHarkinnanvaraisesti,
                                     varasijanNumero: hakemus.varasijanNumero,
                                     tila: hakemus.tila,
+                                    tilaHistoria: hakemus.tilaHistoria,
                                     vastaanottoTila: 'KESKEN',
                                     ilmoittautumisTila: 'EI_TEHTY',
                                     jonot: []
