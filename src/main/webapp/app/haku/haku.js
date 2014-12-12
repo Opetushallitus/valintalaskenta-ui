@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu', '_', 'NimiService',
-        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu, _, NimiService) {
+    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu', '_', 'HakukohdeNimiService',
+        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu, _, HakukohdeNimiService) {
             "use strict";
 
             var model;

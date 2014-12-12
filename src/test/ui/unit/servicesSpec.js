@@ -2,12 +2,12 @@
 
 
 describe('Testing NimiService', function(){
-    var nimiService;
+    var hakukohdeNimiService;
 
     beforeEach(module('valintalaskenta','testData'));
 
-    beforeEach(inject(function($injector, NimiService) {
-        nimiService = $injector.get('NimiService');
+    beforeEach(inject(function($injector) {
+        hakukohdeNimiService = $injector.get('HakukohdeNimiService');
     }));
 
 
@@ -24,7 +24,7 @@ describe('Testing NimiService', function(){
                 en: ''
             }
         };
-        expect(nimiService.getKieli(hakukohde)).toBe('kieli_fi');
+        expect(hakukohdeNimiService.getKieli(hakukohde)).toBe('kieli_fi');
 
         var hakukohde = {
             hakukohdeNimi : {
@@ -38,7 +38,7 @@ describe('Testing NimiService', function(){
                 en: ''
             }
         };
-        expect(nimiService.getKieli(hakukohde)).toBe('kieli_fi');
+        expect(hakukohdeNimiService.getKieli(hakukohde)).toBe('kieli_fi');
 
         var hakukohde = {
             hakukohdeNimi : {
@@ -52,7 +52,7 @@ describe('Testing NimiService', function(){
                 en: ''
             }
         };
-        expect(nimiService.getKieli(hakukohde)).toBe('kieli_sv');
+        expect(hakukohdeNimiService.getKieli(hakukohde)).toBe('kieli_sv');
     });
 
     it('getTarjoajaNimi', function() {
@@ -68,7 +68,7 @@ describe('Testing NimiService', function(){
                 en: ''
             }
         };
-        expect(nimiService.getTarjoajaNimi(hakukohde)).toBe('koulufi');
+        expect(hakukohdeNimiService.getTarjoajaNimi(hakukohde)).toBe('koulufi');
 
         var hakukohde = {
             hakukohdeNimi : {
@@ -82,7 +82,7 @@ describe('Testing NimiService', function(){
                 en: ''
             }
         };
-        expect(nimiService.getTarjoajaNimi(hakukohde)).toBe('koulufi');
+        expect(hakukohdeNimiService.getTarjoajaNimi(hakukohde)).toBe('koulufi');
     });
 
     it('getHakukohdeNimi', function() {
@@ -98,7 +98,7 @@ describe('Testing NimiService', function(){
                 en: ''
             }
         };
-        expect(nimiService.getHakukohdeNimi(hakukohde)).toBe('koulufi');
+        expect(hakukohdeNimiService.getHakukohdeNimi(hakukohde)).toBe('koulufi');
 
         var hakukohde = {
             hakukohdeNimi : {
@@ -112,7 +112,7 @@ describe('Testing NimiService', function(){
                 en: ''
             }
         };
-        expect(nimiService.getHakukohdeNimi(hakukohde)).toBe('');
+        expect(hakukohdeNimiService.getHakukohdeNimi(hakukohde)).toBe('');
     });
 
     afterEach(function() {

@@ -292,10 +292,10 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 angular.module('valintalaskenta').
     controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
-        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'NimiService',
+        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
         function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
-                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, NimiService) {
+                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -387,7 +387,7 @@ angular.module('valintalaskenta').
     	}
 
 
-    	var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = "jalkiohjauskirje";
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -435,7 +435,7 @@ angular.module('valintalaskenta').
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -530,7 +530,7 @@ angular.module('valintalaskenta').
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
