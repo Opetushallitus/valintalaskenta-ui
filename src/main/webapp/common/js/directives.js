@@ -682,3 +682,16 @@ app.directive('showSijoittelunTila', function () {
         }
     };
 });
+
+app.directive('showVastaanottanutTila', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            logEntries: '='
+        },
+        templateUrl: '../common/html/showVastaanottanutTila.html',
+        controller: function ($modal, $scope) {
+
+        }
+    };
+});
