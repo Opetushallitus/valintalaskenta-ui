@@ -138,7 +138,7 @@
 </collapsible>
 
 <!-- Jälkiohjauskirjeet (2. aste) -->
-<collapsible ng-if="!korkeakoulu.isKorkeakoulu(hakumodel.haku.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.jalkiohjaus') || 'Jälkiohjaus' }}">
+<collapsible ng-if="!korkeakoulu.isKorkeakoulu(hakumodel.hakuOid.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.jalkiohjaus') || 'Jälkiohjaus' }}">
 
     <button privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viejalkiohjaustuloksettaulukkolaskentaan') || 'Vie jälkiohjaustulokset taulukkolaskentaan' }}
@@ -157,7 +157,7 @@
 </collapsible>
 
 <!-- Ei hyväksyttyjen kirjeet (Korkeakoulut) -->
-<collapsible ng-if="korkeakoulu.isKorkeakoulu(hakumodel.haku.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.eihyvaksytyt') || 'Ei-hyväksytyt' }}">
+<collapsible ng-if="korkeakoulu.isKorkeakoulu(hakumodel.hakuOid.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.eihyvaksytyt') || 'Ei-hyväksytyt' }}">
 
     <button privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieeihyvaksyttyjentuloksettaulukkolaskentaan') || 'Vie ei-hyväksyttyjen tulokset taulukkolaskentaan' }}

@@ -665,3 +665,47 @@ app.directive('muokattuVastaanottoTila', function () {
 
     };
 });
+
+
+
+app.directive('showSijoittelunTila', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            hakemus: '=',
+            userLang: '='
+        },
+        templateUrl: '../common/html/showSijoittelunTila.html',
+        controller: function ($modal, $scope) {
+
+
+        }
+    };
+});
+
+app.directive('showVastaanottanutTila', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            logEntries: '='
+        },
+        templateUrl: '../common/html/showVastaanottanutTila.html',
+        controller: function ($modal, $scope) {
+
+        }
+    };
+});
+
+app.directive('tilaFilter', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            tilaFilterValue: '=',
+            filterValues: '='
+        },
+        templateUrl: '../common/html/tilaFilter.html',
+        controller: function ($modal, $scope) {
+
+        }
+    };
+});

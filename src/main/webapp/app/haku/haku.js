@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu', '_',
-        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu, _) {
+    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu', '_', 'HakukohdeNimiService',
+        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu, _, HakukohdeNimiService) {
             "use strict";
 
             var model;
@@ -13,7 +13,16 @@ angular.module('valintalaskenta')
                 this.nivelvaihe = false;
                 this.korkeakoulu = false;
                 this.erillishaku = false;
-                this.haku = undefined;
+
+                this.getHakuNimi = function (haku) {
+                    var kielet = ['kieli_fi', 'kieli_sv', 'kieli_en'];
+
+                    var kieli = _.find(kielet, function (kieli) {
+                        return !(_.isEmpty(haku.nimi[kieli]));
+                    });
+
+                    return haku.nimi[kieli];
+                };
 
                 this.getNimi = function () {
                     if (this.hakuOid.nimi.kieli_fi !== undefined) {
@@ -45,10 +54,11 @@ angular.module('valintalaskenta')
                             model.haut.forEach(function (haku) {
                                 if (haku.oid === oid) {
                                     model.hakuOid = haku;
-
                                     model.korkeakoulu = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
-
                                 }
+
+                                haku.uiNimi = model.getHakuNimi(haku);
+
                                 var kohdejoukkoUri = haku.kohdejoukkoUri;
                                 var kohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
                                 var nivelvaihe = kohdejoukkoUriRegExp.exec(kohdejoukkoUri);
@@ -105,14 +115,7 @@ angular.module('valintalaskenta')
                 }
             });
 
-
-
             ParametriService.refresh($routeParams.hakuOid);
-
-
-            $scope.hakuSelection = function (haku) {
-                $scope.hakumodel.haku = haku;
-            };
 
             $scope.$watch('hakumodel.hakuOid', function () {
 

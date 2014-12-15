@@ -113,15 +113,15 @@ angular.module('valintalaskenta')
 
 angular.module('valintalaskenta').
     controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'GlobalStates', 'HakuModel',
-        'NimiService',
+        'HakukohdeNimiService',
                                 function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, GlobalStates, HakuModel,
-                                          NimiService) {
+                                          HakukohdeNimiService) {
             "use strict";
             $scope.hakuOid = $routeParams.hakuOid;
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
             $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
             $scope.hakuModel = HakuModel;
-            $scope.nimiService = NimiService;
+            $scope.hakukohdeNimiService = HakukohdeNimiService;
 
             $scope.model = HakukohteetModel;
             $scope.model.refreshIfNeeded($routeParams.hakuOid);
@@ -139,7 +139,7 @@ angular.module('valintalaskenta').
             };
 
             $scope.showHakukohde = function (hakukohde, lisahaku) {
-                $rootScope.selectedHakukohdeNimi = NimiService.getHakukohdeNimi(hakukohde);
+                $rootScope.selectedHakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(hakukohde);
                 $scope.hakukohteetVisible = false;
                 GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
                 $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/perustiedot'));

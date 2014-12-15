@@ -6,20 +6,17 @@
             <select class="form-control"
                     ng-model="hakumodel.hakuOid"
                     ng-switch-when="all"
-                    ng-change="hakuSelection(haku)"
-                    ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | CustomHakuFilter | julkaistuHaku:haku | orderBy:'nimi.kieli_fi'"></select>
+                    ng-options="haku.uiNimi for haku in hakumodel.haut | CustomHakuFilter | julkaistuHaku:haku | orderBy:'uiNimi'"></select>
 
             <select class="form-control"
                     ng-model="hakumodel.hakuOid"
                     ng-switch-when="toinenAsteUser"
-                    ng-change="hakuSelection(haku)"
-                    ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | CustomHakuFilter | julkaistuHaku:haku | toinenAsteHakuFilter | orderBy:'nimi.kieli_fi' "></select>
+                    ng-options="haku.uiNimi for haku in hakumodel.haut | CustomHakuFilter | julkaistuHaku:haku | toinenAsteHakuFilter | orderBy:'uiNimi' "></select>
 
             <select class="form-control"
                     ng-model="hakumodel.hakuOid"
                     ng-switch-when="kkUser"
-                    ng-change="hakuSelection(haku)"
-                    ng-options="haku.nimi.kieli_fi for haku in hakumodel.haut | CustomHakuFilter | julkaistuHaku:haku | kkHakuFilter | orderBy:'nimi.kieli_fi' "></select>
+                    ng-options="haku.uiNimi for haku in hakumodel.haut | CustomHakuFilter | julkaistuHaku:haku | kkHakuFilter | orderBy:'uiNimi' "></select>
         </div>
         <button ng-click="show = !show" class="btn btn-default btn-sm margin-top-1"><i
                 ng-class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> {{t('hakulista.rajaa') || 'Rajaa hakuja'}}

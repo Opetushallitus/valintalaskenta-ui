@@ -201,7 +201,7 @@ angular.module('valintalaskenta').
 	    }
     };
     $scope.muodostaJalkiohjauskirjeet = function (langcode) {
-        var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakumodel.haku.kohdejoukkoUri);
+        var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakumodel.hakuOid.kohdejoukkoUri);
     	var tag = $routeParams.hakuOid;
     	var templateName = $scope.hakuaVastaavaJalkiohjauskirjeMuotti();
         var otsikko = "";

@@ -32,22 +32,13 @@
                 <input type="text" class="search margin-vertical-2" placeholder="{{ t('sijoitteluntulos.suodatahakijoita') || 'Suodata hakijoita' }}"
                        ng-model="hakijaFilter"/>
 
-                <select ng-model="tilaFilterValue">
-                    <option value="">{{ t('sijoitteluntulos.alasuodatatilan') || 'Älä suodata tilan mukaan' }}</option>
-                    <option value="HYLATTY">{{ t('sijoitteluntulos.hylatty') || 'Hylätty' }}</option>
-                    <option value="VARALLA">{{ t('sijoitteluntulos.varalla') || 'Varalla' }}</option>
-                    <option value="PERUUNTUNUT">{{ t('sijoitteluntulos.peruuntunut') || 'Peruuntunut' }}</option>
-                    <option value="VARASIJALTA_HYVAKSYTTY">{{ t('sijoitteluntulos.varasijalta') || 'Varasijalta hyväksytty' }}</option>
-                    <option value="HYVAKSYTTY">{{ t('sijoitteluntulos.hyvaksytty') || 'Hyväksytty' }}</option>
-                    <option value="PERUNUT">{{ t('sijoitteluntulos.perunut') || 'Perunut' }}</option>
-                    <option value="PERUUTETTU">{{ t('sijoitteluntulos.peruutettu') || 'Peruutettu' }}</option>
-                </select>
+                <tila-filter tila-filter-value="tilaFilterValue"></tila-filter>
 
                 <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('sijoitteluntulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
                 <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
                 <a ng-click="luoJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">
-                    <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.haku.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostaeihyvaksyttyjenkirjeet') || 'Muodosta kirjeet ei-hyväksytyille'}}</span>
-                    <span ng-if="!korkeakouluService.isKorkeakoulu(hakuModel.haku.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostajalkiohjauskirjeet') || 'Muodosta jälkiohjauskirjeet hakukohteessa hylätyille' }}</span>
+                    <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostaeihyvaksyttyjenkirjeet') || 'Muodosta kirjeet ei-hyväksytyille'}}</span>
+                    <span ng-if="!korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostajalkiohjauskirjeet') || 'Muodosta jälkiohjauskirjeet hakukohteessa hylätyille' }}</span>
                 </a>
                 <a ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostaosoitetarrat') || 'Muodosta hyväksytyille osoitetarrat' }}</a>
 
@@ -92,21 +83,22 @@
 
                     <tr ng-repeat="jono in (hakija.jonot | orderBy: 'prioriteetti' | tilaFilter: tilaFilterValue | filter:filterChangedValues)">
                         <td>
-                            {{hakija.sija > 0?hakija.sija:""}}
+                            {{jono.sija > 0?jono.sija:""}}
                         </td>
                         <td>
                             {{jono.nimi}}
                         </td>
                         <td>
-                            {{jono.pisteet}}
+                            {{jono.pisteet >= 0?jono.pisteet:""}}
                         </td>
                         <td>
-                            <span ng-if="!hakija.tilanKuvaukset.FI || hakija.tila == 'HYLATTY'">{{hakija.tila}}</span>
-                            <span ng-if="userLang=='fi' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.FI}}</span>
-                            <span ng-if="userLang=='sv' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.SV}}</span>
-                            <span ng-if="userLang=='en' && hakija.tilanKuvaukset.FI && hakija.tila != 'HYLATTY'">{{hakija.tilanKuvaukset.EN}}</span>
-                            <span ng-if="(hakija.tila == 'HYVAKSYTTY' || hakija.tila == 'VARASIJALTA_HYVAKSYTTY') && hakija.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
-                            <span ng-if="hakija.varasijanNumero != undefined">({{hakija.varasijanNumero}})</span>
+                            <show-sijoittelun-tila hakemus="jono" user-lang="userLang"></show-sijoittelun-tila>
+                            <modal modal-template="sijoitteluTilaHistoriaModal.html" hakemus="{{hakija}}">
+                                <modal-open>
+                                    {{(jono.tilaHistoria
+                                    | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
+                                </modal-open>
+                            </modal>
                         </td>
                     </tr>
                 </table>
@@ -160,13 +152,9 @@
                             <td>{{hakemus.prioriteetti}}</td>
                             <td><span ng-if="hakemus.pisteet >= 0">{{hakemus.pisteet}}</span></td>
                             <td>
-                                <span ng-if="!hakemus.tilanKuvaukset.FI || hakemus.tila == 'HYLATTY'">{{hakemus.tila}}</span>
-                                <span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.FI}}</span>
-                                <span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.SV}}</span>
-                                <span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.EN}}</span>
-                                <span ng-if="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY') && hakemus.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
-                                <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
-                                <modal modal-template="sijoitteluTilaHistoriModal.html">
+                                <show-sijoittelun-tila hakemus="hakemus" user-lang="userLang"></show-sijoittelun-tila>
+
+                                <modal modal-template="sijoitteluTilaHistoriaModal.html">
                                     <modal-open>
                                         {{(hakemus.tilaHistoria
                                         | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
@@ -240,31 +228,7 @@
     </div>
 
     <div class="modal-body">
-        <table class="table table-condensed table-hover table-striped">
-            <thead>
-            <tr>
-                <th>{{ t('sijoitteluntulos.luotu') || 'Luotu' }}</th>
-                <th>{{ t('sijoitteluntulos.muokkaaja') || 'Muokkaaja' }}</th>
-                <th>{{ t('sijoitteluntulos.muutos') || 'Muutos' }}</th>
-                <th>{{ t('sijoitteluntulos.selite') || 'Selite' }}</th>
-            </tr>
-            </thead>
-            <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true">
-                <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
-                <td fast-bind-once="entry.muokkaaja"></td>
-                <td>
-                    <span ng-if="entry.muutos == ''">{{ t('sijoitteluntulos.kesken') || 'Kesken' }}</span>
-                    <span ng-if="entry.muutos == 'ILMOITETTU'">{{ t('sijoitteluntulos.hakijalleilmoitettu') || 'Hakijalle ilmoitettu' }}</span>
-                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">{{ t('sijoitteluntulos.vastaanottanutlasnaolevana') || 'Vastaanottanut läsnäolevana' }}</span>
-                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">{{ t('sijoitteluntulos.vastaanottanutpoissaolevana') || 'Vastaanottanut poissaolevana' }}</span>
-                    <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">{{ t('sijoitteluntulos.eivastaanotettu') || 'Ei vastaanotettu määräaikana' }}</span>
-                    <span ng-if="entry.muutos == 'PERUNUT'">{{ t('sijoitteluntulos.perunut') || 'Perunut' }}</span>
-                    <span ng-if="entry.muutos == 'PERUUTETTU'">{{ t('sijoitteluntulos.peruutettu') || 'Peruutettu' }}</span>
-                    <span ng-if="entry.muutos == 'EHDOLLISESTI_VASTAANOTTANUT'">{{ t('sijoitteluntulos.ehdollisestivastaanottanut') || 'Ehdollisesti vastaanottanut' }}</span>
-                </td>
-                <td fast-bind-once="entry.selite"></td>
-            </tr>
-        </table>
+        <show-vastaanottanut-tila log-entries="hakemus.logEntries"></show-vastaanottanut-tila>
     </div>
 
     <div class="modal-footer">
@@ -276,7 +240,7 @@
 
 </script>
 
-<script type="text/ng-template" id="sijoitteluTilaHistoriModal.html">
+<script type="text/ng-template" id="sijoitteluTilaHistoriaModal.html">
     <div class="modal-header">
         {{ t('sijoitteluntulos.muutokset') || 'Muutokset' }}
     </div>
@@ -289,7 +253,7 @@
                 <th>{{ t('sijoitteluntulos.tila') || 'Tila' }}</th>
             </tr>
             </thead>
-            <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true">
+            <tr ng-repeat="entry in (hakemus.tilaHistoria.length>0?hakemus.tilaHistoria:hakija.tilaHistoria) | orderBy:'luotu':true">
                 <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
                 <td fast-bind-once="henkiloOid">{{entry.tila}}</td>
             </tr>
