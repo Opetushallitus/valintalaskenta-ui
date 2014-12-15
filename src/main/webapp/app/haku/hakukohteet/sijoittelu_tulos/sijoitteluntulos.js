@@ -1,6 +1,10 @@
-app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
+angular.module('valintalaskenta')
+
+.factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila',
+        '$timeout', 'SijoitteluAjo', 'VastaanottoTilat', 'IlmoitusTila', 'HaunTiedot', '_',
+        function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
                                                $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila,
-                                               HaunTiedot) {
+                                               HaunTiedot, _) {
     "use strict";
 
     var model = new function () {
@@ -232,15 +236,18 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	}
         };
 
-        this.updateHakemuksienTila = function (valintatapajonoOid, uiMuokatutHakemusOids) {
+        this.updateHakemuksienTila = function (valintatapajonoOid, uiMuokatutHakemukset) {
             var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
                 return valintatapajono.oid === valintatapajonoOid;
             });
 
+            var muokatutHakemuksetOids = _.pluck(uiMuokatutHakemukset, 'hakemusOid');
+
+
             var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
                 return valintatapajono.hakemukset;
             })), function (hakemus) {
-                return _.contains(uiMuokatutHakemusOids, hakemus.hakemusOid);
+                return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
             });
 
             model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
@@ -286,11 +293,10 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
     return model;
 
-});
+}])
 
 
-angular.module('valintalaskenta').
-    controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
+    .controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
         'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
         function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
@@ -368,8 +374,8 @@ angular.module('valintalaskenta').
     $scope.muokatutHakemukset = [];
 
     $scope.addMuokattuHakemus = function (hakemus) {
-        $scope.muokatutHakemukset.push(hakemus.hakemusOid);
-        $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
+        $scope.muokatutHakemukset.push(hakemus);
+        $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset, 'hakemusOid');
     };
 
     $scope.submit = function (valintatapajonoOid) {
@@ -618,7 +624,10 @@ angular.module('valintalaskenta').
         });
         muokattavatHakemukset.forEach(function (hakemus) {
             hakemus.julkaistavissa = true;
+            $scope.addMuokattuHakemus(hakemus);
         });
+
+
     };
 
 
