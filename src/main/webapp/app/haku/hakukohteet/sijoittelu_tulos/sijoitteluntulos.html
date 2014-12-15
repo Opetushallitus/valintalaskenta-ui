@@ -32,16 +32,7 @@
                 <input type="text" class="search margin-vertical-2" placeholder="{{ t('sijoitteluntulos.suodatahakijoita') || 'Suodata hakijoita' }}"
                        ng-model="hakijaFilter"/>
 
-                <select ng-model="tilaFilterValue">
-                    <option value="">{{ t('sijoitteluntulos.alasuodatatilan') || 'Älä suodata tilan mukaan' }}</option>
-                    <option value="HYLATTY">{{ t('sijoitteluntulos.hylatty') || 'Hylätty' }}</option>
-                    <option value="VARALLA">{{ t('sijoitteluntulos.varalla') || 'Varalla' }}</option>
-                    <option value="PERUUNTUNUT">{{ t('sijoitteluntulos.peruuntunut') || 'Peruuntunut' }}</option>
-                    <option value="VARASIJALTA_HYVAKSYTTY">{{ t('sijoitteluntulos.varasijalta') || 'Varasijalta hyväksytty' }}</option>
-                    <option value="HYVAKSYTTY">{{ t('sijoitteluntulos.hyvaksytty') || 'Hyväksytty' }}</option>
-                    <option value="PERUNUT">{{ t('sijoitteluntulos.perunut') || 'Perunut' }}</option>
-                    <option value="PERUUTETTU">{{ t('sijoitteluntulos.peruutettu') || 'Peruutettu' }}</option>
-                </select>
+                <tila-filter tila-filter-value="tilaFilterValue"></tila-filter>
 
                 <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('sijoitteluntulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
                 <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
