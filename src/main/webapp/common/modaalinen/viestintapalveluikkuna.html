@@ -12,11 +12,11 @@
 		<div class="form-group">
 			<textarea ui-tinymce ng-model="letterbody"></textarea>
 		</div>
-		<div class="form-group">
+		<div class="form-group" ng-if="oids.showDateFields">
 			{{ t('viestintapalveluikkuna.palautuspaivamaara') || 'Palautus päivämäärä' }}:
 			<input type="text" class="form-control" id="palautusPvm" ng-model="palautusPvm" placeholder="palautus päivämäärä">
 		</div>
-		<div class="form-group">
+		<div class="form-group" ng-if="oids.showDateFields">
 			{{ t('viestintapalveluikkuna.palautuskellonaika') || 'Palautus kellonaika' }}:
 		    <input type="text" class="form-control" id="palautusAika" ng-model="palautusAika" placeholder="palautus kellonaika">
 		</div>
