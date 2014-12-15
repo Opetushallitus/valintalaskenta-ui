@@ -614,7 +614,7 @@ angular.module('valintalaskenta')
     };
 
     $scope.selectIlmoitettuToAll = function(valintatapajonoOid) {
-        var jonoonLiittyvat = _.find($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
+        var jonoonLiittyvat = _.filter($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
             return valintatapajono.oid === valintatapajonoOid;
         });
         var muokattavatHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
