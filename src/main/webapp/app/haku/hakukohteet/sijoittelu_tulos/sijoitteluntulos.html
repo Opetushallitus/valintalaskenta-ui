@@ -92,17 +92,22 @@
 
                     <tr ng-repeat="jono in (hakija.jonot | orderBy: 'prioriteetti' | tilaFilter: tilaFilterValue | filter:filterChangedValues)">
                         <td>
-                            {{hakija.sija > 0?hakija.sija:""}}
+                            {{jono.sija > 0?jono.sija:""}}
                         </td>
                         <td>
                             {{jono.nimi}}
                         </td>
                         <td>
-                            {{jono.pisteet}}
+                            {{jono.pisteet >= 0?jono.pisteet:""}}
                         </td>
                         <td>
-                            <show-sijoittelun-tila hakemus="hakija" user-lang="userLang"></show-sijoittelun-tila>
-
+                            <show-sijoittelun-tila hakemus="jono" user-lang="userLang"></show-sijoittelun-tila>
+                            <modal modal-template="sijoitteluTilaHistoriaModal.html" hakemus="{{hakija}}">
+                                <modal-open>
+                                    {{(jono.tilaHistoria
+                                    | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
+                                </modal-open>
+                            </modal>
                         </td>
                     </tr>
                 </table>
@@ -158,7 +163,7 @@
                             <td>
                                 <show-sijoittelun-tila hakemus="hakemus" user-lang="userLang"></show-sijoittelun-tila>
 
-                                <modal modal-template="sijoitteluTilaHistoriModal.html">
+                                <modal modal-template="sijoitteluTilaHistoriaModal.html">
                                     <modal-open>
                                         {{(hakemus.tilaHistoria
                                         | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
@@ -232,31 +237,7 @@
     </div>
 
     <div class="modal-body">
-        <table class="table table-condensed table-hover table-striped">
-            <thead>
-            <tr>
-                <th>{{ t('sijoitteluntulos.luotu') || 'Luotu' }}</th>
-                <th>{{ t('sijoitteluntulos.muokkaaja') || 'Muokkaaja' }}</th>
-                <th>{{ t('sijoitteluntulos.muutos') || 'Muutos' }}</th>
-                <th>{{ t('sijoitteluntulos.selite') || 'Selite' }}</th>
-            </tr>
-            </thead>
-            <tr ng-repeat="entry in hakemus.logEntries | orderBy:'luotu':true">
-                <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
-                <td fast-bind-once="entry.muokkaaja"></td>
-                <td>
-                    <span ng-if="entry.muutos == ''">{{ t('sijoitteluntulos.kesken') || 'Kesken' }}</span>
-                    <span ng-if="entry.muutos == 'ILMOITETTU'">{{ t('sijoitteluntulos.hakijalleilmoitettu') || 'Hakijalle ilmoitettu' }}</span>
-                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">{{ t('sijoitteluntulos.vastaanottanutlasnaolevana') || 'Vastaanottanut läsnäolevana' }}</span>
-                    <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">{{ t('sijoitteluntulos.vastaanottanutpoissaolevana') || 'Vastaanottanut poissaolevana' }}</span>
-                    <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">{{ t('sijoitteluntulos.eivastaanotettu') || 'Ei vastaanotettu määräaikana' }}</span>
-                    <span ng-if="entry.muutos == 'PERUNUT'">{{ t('sijoitteluntulos.perunut') || 'Perunut' }}</span>
-                    <span ng-if="entry.muutos == 'PERUUTETTU'">{{ t('sijoitteluntulos.peruutettu') || 'Peruutettu' }}</span>
-                    <span ng-if="entry.muutos == 'EHDOLLISESTI_VASTAANOTTANUT'">{{ t('sijoitteluntulos.ehdollisestivastaanottanut') || 'Ehdollisesti vastaanottanut' }}</span>
-                </td>
-                <td fast-bind-once="entry.selite"></td>
-            </tr>
-        </table>
+        <show-vastaanottanut-tila log-entries="hakemus.logEntries"></show-vastaanottanut-tila>
     </div>
 
     <div class="modal-footer">
@@ -268,7 +249,7 @@
 
 </script>
 
-<script type="text/ng-template" id="sijoitteluTilaHistoriModal.html">
+<script type="text/ng-template" id="sijoitteluTilaHistoriaModal.html">
     <div class="modal-header">
         {{ t('sijoitteluntulos.muutokset') || 'Muutokset' }}
     </div>
@@ -281,7 +262,7 @@
                 <th>{{ t('sijoitteluntulos.tila') || 'Tila' }}</th>
             </tr>
             </thead>
-            <tr ng-repeat="entry in hakemus.tilaHistoria | orderBy:'luotu':true">
+            <tr ng-repeat="entry in (hakemus.tilaHistoria.length>0?hakemus.tilaHistoria:hakija.tilaHistoria) | orderBy:'luotu':true">
                 <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
                 <td fast-bind-once="henkiloOid">{{entry.tila}}</td>
             </tr>

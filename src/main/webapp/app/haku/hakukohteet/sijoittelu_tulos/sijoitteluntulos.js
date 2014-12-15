@@ -1,6 +1,10 @@
-app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
+angular.module('valintalaskenta')
+
+.factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila',
+        '$timeout', 'SijoitteluAjo', 'VastaanottoTilat', 'IlmoitusTila', 'HaunTiedot', '_',
+        function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
                                                $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila,
-                                               HaunTiedot) {
+                                               HaunTiedot, _) {
     "use strict";
 
     var model = new function () {
@@ -101,10 +105,11 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                 tila: hakemus.tila,
                                 jonosija: hakemus.jonosija,
                                 prioriteetti: valintatapajono.prioriteetti,
-                                tilaHistoria: hakemus.tilaHistoria
+                                tilaHistoria: hakemus.tilaHistoria,
+                                varasijanNumero: hakemus.varasijanNumero
                             };
-                            if (model.sijoitteluntulosHakijoittain[hakemus.hakijaOid] === undefined) {
-                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid] = {
+                            if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
+                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = {
                                     etunimi: hakemus.etunimi,
                                     sukunimi: hakemus.sukunimi,
                                     hakemusOid: hakemus.hakemusOid,
@@ -113,25 +118,24 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                     hyvaksyttyHarkinnanvaraisesti: hakemus.hyvaksyttyHarkinnanvaraisesti,
                                     varasijanNumero: hakemus.varasijanNumero,
                                     tila: hakemus.tila,
+                                    tilaHistoria: hakemus.tilaHistoria,
                                     vastaanottoTila: 'KESKEN',
                                     ilmoittautumisTila: 'EI_TEHTY',
                                     jonot: []
                                 };
 
                             }
-                            model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].jonot.push(jono);
 
                             if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
                                 sija++;
                                 hakemus.valittu = true;
                                 hakemuserittely.hyvaksytyt.push(hakemus);
                                 hakemus.sija = sija;
-                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].sija = sija;
+                                jono.sija = sija;
                             }
 
                             if ((hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && hakemus.hyvaksyttyHarkinnanvaraisesti) {
                                 hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
-                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].sija = sija;
                             }
 
 
@@ -139,8 +143,16 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                 sija++;
                                 hakemuserittely.varasijoilla.push(hakemus);
                                 hakemus.sija = sija;
-                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].sija = sija;
+                                jono.sija = sija;
                             }
+
+                            var found = false;
+                            model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.forEach(function (j) {
+                                if (j.nimi === jono.nimi) found = true;
+                            });
+                            if (!found)
+                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
+
 
                             lastTasaSija = hakemus.tasasijaJonosija;
                         });
@@ -165,7 +177,7 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
-                                            if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT") {
+                                            if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT" || currentHakemus.vastaanottoTila === "VASTAANOTTANUT_SITOVASTI") {
                                                 hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
                                             }
 
@@ -181,8 +193,8 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
                                             currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
                                             currentHakemus.hyvaksyttyVarasijalta = vastaanottotila.hyvaksyttyVarasijalta;
 
-                                            model.sijoitteluntulosHakijoittain[currentHakemus.hakijaOid].vastaanottoTila=currentHakemus.vastaanottoTila;
-                                            model.sijoitteluntulosHakijoittain[currentHakemus.hakijaOid].ilmoittautumisTila=currentHakemus.ilmoittautumisTila;
+                                            model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].vastaanottoTila=currentHakemus.vastaanottoTila;
+                                            model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].ilmoittautumisTila=currentHakemus.ilmoittautumisTila;
                                             return true;
                                         }
                                     });
@@ -231,15 +243,18 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
         	}
         };
 
-        this.updateHakemuksienTila = function (valintatapajonoOid, uiMuokatutHakemusOids) {
+        this.updateHakemuksienTila = function (valintatapajonoOid, uiMuokatutHakemukset) {
             var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
                 return valintatapajono.oid === valintatapajonoOid;
             });
 
+            var muokatutHakemuksetOids = _.pluck(uiMuokatutHakemukset, 'hakemusOid');
+
+
             var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
                 return valintatapajono.hakemukset;
             })), function (hakemus) {
-                return _.contains(uiMuokatutHakemusOids, hakemus.oid);
+                return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
             });
 
             model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
@@ -285,16 +300,15 @@ app.factory('SijoitteluntulosModel', function ($q, Ilmoitus, Sijoittelu, LatestS
 
     return model;
 
-});
+}])
 
 
-angular.module('valintalaskenta').
-    controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
+    .controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
-        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'NimiService',
+        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
         function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
-                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, NimiService) {
+                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -367,8 +381,8 @@ angular.module('valintalaskenta').
     $scope.muokatutHakemukset = [];
 
     $scope.addMuokattuHakemus = function (hakemus) {
-        $scope.muokatutHakemukset.push(hakemus.oid);
-        $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
+        $scope.muokatutHakemukset.push(hakemus);
+        $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset, 'hakemusOid');
     };
 
     $scope.submit = function (valintatapajonoOid) {
@@ -386,7 +400,7 @@ angular.module('valintalaskenta').
     	}
 
 
-    	var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = "jalkiohjauskirje";
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -434,7 +448,7 @@ angular.module('valintalaskenta').
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -529,7 +543,7 @@ angular.module('valintalaskenta').
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -610,14 +624,16 @@ angular.module('valintalaskenta').
         var jonoonLiittyvat = _.filter($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
             return valintatapajono.oid === valintatapajonoOid;
         });
-        var muokattavatHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
+        var muokattavatHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
             return valintatapajono.hakemukset;
-        })), function(hakemus) {
-            return (hakemus.vastaanottoTila === "KESKEN");
-        });
+        }));
+
         muokattavatHakemukset.forEach(function (hakemus) {
             hakemus.julkaistavissa = true;
+            $scope.addMuokattuHakemus(hakemus);
         });
+
+
     };
 
 

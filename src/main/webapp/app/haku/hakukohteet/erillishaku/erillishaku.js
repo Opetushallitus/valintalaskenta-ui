@@ -505,6 +505,14 @@
 
         };
 
+        $scope.resetIlmoittautumisTila = function(hakemus) {
+            if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT' && hakemus.muokattuVastaanottoTila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
+                hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
+            } else if (!hakemus.muokattuIlmoittautumisTila) {
+                hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
+            }
+        };
+
         $scope.changeSija = function (jonosija, value) {
             if (value !== 'HYVAKSYTTAVISSA') {
                 $timeout(function(){

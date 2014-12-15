@@ -208,9 +208,9 @@
 
 angular.module('valintalaskenta').
     controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel',
-        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log', 'NimiService',
+        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log', 'HakukohdeNimiService',
         function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
-                  Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log,NimiService) {
+                  Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log,HakukohdeNimiService) {
 
     "use strict";
 
@@ -235,7 +235,7 @@ angular.module('valintalaskenta').
     	} else {
     		tag = hakukohdeOid;
     	}
-        var langcode = NimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+        var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
 
         var templateName = "koekutsukirje";
     	var otsikko = null;

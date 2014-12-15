@@ -1,6 +1,6 @@
 
-angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'NimiService', '_',
-    function ($q, $log, $http, TarjontaHakukohde, NimiService, _) {
+angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'HakukohdeNimiService', '_',
+    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimiService, _) {
     "use strict";
 
 
@@ -54,8 +54,8 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                 model.hakukohdeNimi = hakukohdeNimi;
                 model.tarjoajaNimi = tarjoajaNimi;
             } else {
-                model.hakukohdeNimi = NimiService.getHakukohdeNimi(model.hakukohde);
-                model.tarjoajaNimi = NimiService.getTarjoajaNimi(model.hakukohde);
+                model.hakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(model.hakukohde);
+                model.tarjoajaNimi = HakukohdeNimiService.getTarjoajaNimi(model.hakukohde);
             }
 
         };
