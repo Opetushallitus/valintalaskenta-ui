@@ -614,14 +614,13 @@ angular.module('valintalaskenta')
     };
 
     $scope.selectIlmoitettuToAll = function(valintatapajonoOid) {
-        var jonoonLiittyvat = _.filter($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
+        var jonoonLiittyvat = _.find($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
             return valintatapajono.oid === valintatapajonoOid;
         });
-        var muokattavatHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
+        var muokattavatHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
             return valintatapajono.hakemukset;
-        })), function(hakemus) {
-            return (hakemus.vastaanottoTila === "KESKEN");
-        });
+        }));
+
         muokattavatHakemukset.forEach(function (hakemus) {
             hakemus.julkaistavissa = true;
             $scope.addMuokattuHakemus(hakemus);
