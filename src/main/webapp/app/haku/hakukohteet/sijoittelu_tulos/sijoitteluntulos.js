@@ -105,7 +105,8 @@ angular.module('valintalaskenta')
                                 tila: hakemus.tila,
                                 jonosija: hakemus.jonosija,
                                 prioriteetti: valintatapajono.prioriteetti,
-                                tilaHistoria: hakemus.tilaHistoria
+                                tilaHistoria: hakemus.tilaHistoria,
+                                varasijanNumero: hakemus.varasijanNumero
                             };
                             if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                 model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = {
