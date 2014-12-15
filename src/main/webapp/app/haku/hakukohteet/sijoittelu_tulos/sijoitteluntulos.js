@@ -170,7 +170,7 @@ angular.module('valintalaskenta')
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
-                                            if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT") {
+                                            if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT" || currentHakemus.vastaanottoTila === "VASTAANOTTANUT_SITOVASTI") {
                                                 hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
                                             }
 
