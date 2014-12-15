@@ -92,19 +92,19 @@
 
                     <tr ng-repeat="jono in (hakija.jonot | orderBy: 'prioriteetti' | tilaFilter: tilaFilterValue | filter:filterChangedValues)">
                         <td>
-                            {{hakija.sija > 0?hakija.sija:""}}
+                            {{jono.sija > 0?jono.sija:""}}
                         </td>
                         <td>
                             {{jono.nimi}}
                         </td>
                         <td>
-                            {{jono.pisteet}}
+                            {{jono.pisteet >= 0?jono.pisteet:""}}
                         </td>
                         <td>
-                            <show-sijoittelun-tila hakemus="hakija" user-lang="userLang"></show-sijoittelun-tila>
+                            <show-sijoittelun-tila hakemus="jono" user-lang="userLang"></show-sijoittelun-tila>
                             <modal modal-template="sijoitteluTilaHistoriaModal.html" hakemus="{{hakija}}">
                                 <modal-open>
-                                    {{(hakija.tilaHistoria
+                                    {{(jono.tilaHistoria
                                     | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
                                 </modal-open>
                             </modal>

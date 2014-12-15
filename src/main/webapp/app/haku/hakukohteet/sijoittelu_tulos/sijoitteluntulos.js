@@ -107,8 +107,8 @@ angular.module('valintalaskenta')
                                 prioriteetti: valintatapajono.prioriteetti,
                                 tilaHistoria: hakemus.tilaHistoria
                             };
-                            if (model.sijoitteluntulosHakijoittain[hakemus.hakijaOid] === undefined) {
-                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid] = {
+                            if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
+                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = {
                                     etunimi: hakemus.etunimi,
                                     sukunimi: hakemus.sukunimi,
                                     hakemusOid: hakemus.hakemusOid,
@@ -124,19 +124,17 @@ angular.module('valintalaskenta')
                                 };
 
                             }
-                            model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].jonot.push(jono);
 
                             if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
                                 sija++;
                                 hakemus.valittu = true;
                                 hakemuserittely.hyvaksytyt.push(hakemus);
                                 hakemus.sija = sija;
-                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].sija = sija;
+                                jono.sija = sija;
                             }
 
                             if ((hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && hakemus.hyvaksyttyHarkinnanvaraisesti) {
                                 hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
-                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].sija = sija;
                             }
 
 
@@ -144,8 +142,16 @@ angular.module('valintalaskenta')
                                 sija++;
                                 hakemuserittely.varasijoilla.push(hakemus);
                                 hakemus.sija = sija;
-                                model.sijoitteluntulosHakijoittain[hakemus.hakijaOid].sija = sija;
+                                jono.sija = sija;
                             }
+
+                            var found = false;
+                            model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.forEach(function (j) {
+                                if (j.nimi === jono.nimi) found = true;
+                            });
+                            if (!found)
+                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
+
 
                             lastTasaSija = hakemus.tasasijaJonosija;
                         });
