@@ -695,3 +695,17 @@ app.directive('showVastaanottanutTila', function () {
         }
     };
 });
+
+app.directive('tilaFilter', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            tilaFilterValue: '=',
+            filterValues: '='
+        },
+        templateUrl: '../common/html/tilaFilter.html',
+        controller: function ($modal, $scope) {
+
+        }
+    };
+});
