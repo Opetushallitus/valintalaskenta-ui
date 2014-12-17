@@ -33,7 +33,7 @@ describe('Testing HakukohteetController', function(){
 
         ctrl = $controller('HakukohteetController', {'$rootScope' : rootScope, '$scope' : scope,
             '$location': location, '$routeParams': routeParams, 'HakukohteetModel': hakukohteetModel,
-            'GlobalStates': globalStates, 'HakuModel': hakuModel});
+            'HakuModel': hakuModel});
         $httpBackend.flush();
     });
 
@@ -63,8 +63,7 @@ describe('Testing HakukohteetController', function(){
         };
         var lisahaku = false;
         scope.showHakukohde(hakukohde, lisahaku);
-        expect(scope.hakukohteetVisible).toBeFalsy();
-        expect(globalStates.hakukohteetVisible).toBeFalsy();
+        expect(scope.model.hakukohteetVisible).toBeFalsy();
         expect(rootScope.selectedHakukohdeNimi).toBe('koulu1');
         expect(location.path()).toMatch('/haku/.*');
     });
@@ -82,16 +81,16 @@ describe('Testing HakukohteetController', function(){
         var lisahaku = true;
         scope.showHakukohde(hakukohde, lisahaku);
         expect(scope.hakukohteetVisible).toBeFalsy();
-        expect(globalStates.hakukohteetVisible).toBeFalsy();
+        expect(scope.model.hakukohteetVisible).toBeFalsy();
         expect(rootScope.selectedHakukohdeNimi).toBe('koulu2');
         expect(location.path()).toMatch('/lisahaku/.*');
     });
 
     it('toggleHakukohteetVisible', function() {
         scope.toggleHakukohteetVisible();
-        expect(globalStates.hakukohteetVisible).toBeTruthy();
+        expect(scope.model.hakukohteetVisible).toBeTruthy();
         scope.toggleHakukohteetVisible();
-        expect(globalStates.hakukohteetVisible).toBeFalsy();
+        expect(scope.model.hakukohteetVisible).toBeFalsy();
     });
 
     it('getCount', function() {
