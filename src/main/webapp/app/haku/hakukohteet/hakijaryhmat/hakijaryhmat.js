@@ -72,9 +72,9 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
 angular.module('valintalaskenta').
 
     controller('HakijaryhmatController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
-        'IlmoitusTila','ValintalaskentaHakijaryhmaModel','HakukohdeModel', '$http', 'AuthService',
+        'IlmoitusTila','ValintalaskentaHakijaryhmaModel','HakukohdeModel', '$http', 'AuthService', 'LocalisationService',
         function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila
-                  ,ValintalaskentaHakijaryhmaModel, HakukohdeModel, $http, AuthService) {
+                  ,ValintalaskentaHakijaryhmaModel, HakukohdeModel, $http, AuthService, LocalisationService) {
             "use strict";
 
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -82,8 +82,18 @@ angular.module('valintalaskenta').
             $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
             $scope.model = ValintalaskentaHakijaryhmaModel;
             $scope.hakukohdeModel = HakukohdeModel;
+            $scope.kuuluuFilterValue = "";
 
             $scope.pageSize = 50;
+
+            $scope.kuuluuFilterValues = [
+                {value: "", text_prop: "hakijaryhmat.alasuodata", default_text:"Älä suodata"},
+                {value: "HYVAKSYTTAVISSA", text_prop: "hakijaryhmat.HYVAKSYTTAVISSA", default_text:"Kuuluu"},
+                {value: "HYLATTY", text_prop: "hakijaryhmat.HYLATTY", default_text:"Ei kuulu"}
+            ];
+
+            LocalisationService.getTranslationsForArray($scope.kuuluuFilterValues).then(function () {
+            });
 
             var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
