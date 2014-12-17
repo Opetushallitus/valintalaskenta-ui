@@ -15,12 +15,7 @@
                    ng-model="hakijaFilter"/>
             <pagination-pagesize page-size="pageSize"></pagination-pagesize>
 
-
-            <select ng-model="kuuluuFilterValue">
-                <option value="">{{ t('hakijaryhmat.alasuodata') || 'Älä suodata' }}</option>
-                <option value="HYVAKSYTTAVISSA">{{ t('hakijaryhmat.HYVAKSYTTAVISSA') || 'Kuuluu' }}</option>
-                <option value="HYLATTY">{{ t('hakijaryhmat.HYLATTY') || 'Ei kuulu' }}</option>
-            </select>
+            <tila-filter tila-filter-value="kuuluuFilterValue" filter-values="kuuluuFilterValues"></tila-filter>
 
             <accordion close-others="true">
                 <accordion-group ng-repeat="hakijaryhma in model.hakijaryhmat track by $index"
