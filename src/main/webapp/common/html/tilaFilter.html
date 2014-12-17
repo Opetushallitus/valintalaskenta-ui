@@ -1,10 +1,2 @@
-<select ng-model="tilaFilterValue">
-    <option value="">{{ t('sijoitteluntulos.alasuodatatilan') || 'Älä suodata tilan mukaan' }}</option>
-    <option value="HYLATTY">{{ t('sijoitteluntulos.hylatty') || 'Hylätty' }}</option>
-    <option value="VARALLA">{{ t('sijoitteluntulos.varalla') || 'Varalla' }}</option>
-    <option value="PERUUNTUNUT">{{ t('sijoitteluntulos.peruuntunut') || 'Peruuntunut' }}</option>
-    <option value="VARASIJALTA_HYVAKSYTTY">{{ t('sijoitteluntulos.varasijalta') || 'Varasijalta hyväksytty' }}</option>
-    <option value="HYVAKSYTTY">{{ t('sijoitteluntulos.hyvaksytty') || 'Hyväksytty' }}</option>
-    <option value="PERUNUT">{{ t('sijoitteluntulos.perunut') || 'Perunut' }}</option>
-    <option value="PERUUTETTU">{{ t('sijoitteluntulos.peruutettu') || 'Peruutettu' }}</option>
+<select ng-model="tilaFilterValue" ng-options="value.value as value.text for value in filterValues">
 </select>
