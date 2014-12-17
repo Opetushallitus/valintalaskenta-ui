@@ -1,6 +1,6 @@
-﻿<div class="toolbarcontainer" ng-class="hakukohteetVisible ? 'grid16-5' : 'grid16-1'" ng-controller="HakukohteetController">
+﻿<div class="toolbarcontainer" ng-class="model.hakukohteetVisible ? 'grid16-5' : 'grid16-1'" ng-controller="HakukohteetController">
 	
-	<div id="toolbarcontent" class="width-90" ng-show="hakukohteetVisible">
+	<div id="toolbarcontent" class="width-90" ng-show="model.hakukohteetVisible">
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
 			    <input type="text" class="search" placeholder="Suodata hakukohteita" ng-change="searchWordChanged()" ng-model="model.searchWord"/>
@@ -25,7 +25,7 @@
 	<div id="toolbartoggle-btn" ng-click="toggleHakukohteetVisible()">
 		<div>
 			<div>
-				<span ng-class="hakukohteetVisible ? '' : 'minimized'">{{ t('hakukohdelista.hakukohdelista') || 'Hakukohdelista' }}</span>
+				<span ng-class="model.hakukohteetVisible ? '' : 'minimized'">{{ t('hakukohdelista.hakukohdelista') || 'Hakukohdelista' }}</span>
 			</div>
 		</div>
 	</div>

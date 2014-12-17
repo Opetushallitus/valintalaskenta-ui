@@ -19,7 +19,7 @@ angular.module('valintalaskenta')
                 this.valmiitHakukohteet = "JULKAISTU";
                 this.readyToQueryForNextPage = true;
                 this.deferred = undefined;
-
+                this.hakukohteetVisible = true;
 
                 this.getCount = function () {
                     if (this.hakukohteet === undefined) {
@@ -112,36 +112,33 @@ angular.module('valintalaskenta')
 
 
 angular.module('valintalaskenta').
-    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'GlobalStates', 'HakuModel',
-        'HakukohdeNimiService',
-                                function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, GlobalStates, HakuModel,
-                                          HakukohdeNimiService) {
+    controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'HakuModel',
+        'HakukohdeNimiService', 'Utility',
+                                function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, HakuModel,
+                                          HakukohdeNimiService, Utility) {
             "use strict";
             $scope.hakuOid = $routeParams.hakuOid;
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
-            $scope.hakukohteetVisible = GlobalStates.hakukohteetVisible;
+
             $scope.hakuModel = HakuModel;
             $scope.hakukohdeNimiService = HakukohdeNimiService;
 
             $scope.model = HakukohteetModel;
             $scope.model.refreshIfNeeded($routeParams.hakuOid);
 
+            $scope.searchWordChanged = Utility.debounce(function () {
+                HakukohteetModel.refresh();
+            }, 500);
 
-            $scope.searchWordChanged = function () {
-                if($scope.model.searchWord.length >= 1) {
-                    HakukohteetModel.refresh();
-                }
-            };
 
             $scope.toggleHakukohteetVisible = function () {
-                $scope.hakukohteetVisible = !$scope.hakukohteetVisible;
-                GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
+                $scope.model.hakukohteetVisible = !$scope.model.hakukohteetVisible;
             };
 
             $scope.showHakukohde = function (hakukohde, lisahaku) {
                 $rootScope.selectedHakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(hakukohde);
-                $scope.hakukohteetVisible = false;
-                GlobalStates.hakukohteetVisible = $scope.hakukohteetVisible;
+                $scope.model.hakukohteetVisible = false;
+                HakukohteetModel.hakukohteetVisible = $scope.hakukohteetVisible;
                 $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/perustiedot'));
             };
 
@@ -149,14 +146,7 @@ angular.module('valintalaskenta').
             $scope.lazyLoading = function () {
                 $scope.model.getNextPage(false);
             };
+
+
         }]);
 
-
-app.factory('GlobalStates', function () {
-    "use strict";
-
-    var model = new function () {
-        this.hakukohteetVisible = true;
-    }();
-    return model;
-});
