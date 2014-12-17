@@ -32,7 +32,7 @@
                 <input type="text" class="search margin-vertical-2" placeholder="{{ t('sijoitteluntulos.suodatahakijoita') || 'Suodata hakijoita' }}"
                        ng-model="hakijaFilter"/>
 
-                <tila-filter tila-filter-value="tilaFilterValue"></tila-filter>
+                <tila-filter tila-filter-value="tilaFilterValue" filter-values="tilaFilterValues"></tila-filter>
 
                 <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('sijoitteluntulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
                 <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>

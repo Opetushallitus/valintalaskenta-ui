@@ -91,7 +91,7 @@ angular.module('oph.localisation', [])
 
                 array.forEach(function(item) {
                     item.text = item.default_text;
-                    promises.push(self.getTranslation(item.text).then(function (text) {
+                    promises.push(self.getTranslation(item.text_prop).then(function (text) {
                         if (text) {
                             item.text = text;
                         }

@@ -633,13 +633,13 @@ app.directive('muokattuVastaanottoTila', function () {
         templateUrl: '../common/html/muokattuvastaanottotila.html',
         controller: function ($scope, AuthService, Korkeakoulu) {
             $scope.hakemuksenMuokattuVastaanottoTilat = [
-                {value: "KESKEN", text: "sijoitteluntulos.kesken", default_text:"Kesken"},
-                {value: "VASTAANOTTANUT", text: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanottanut"},
-                {value: "EHDOLLISESTI_VASTAANOTTANUT", text: "sijoitteluntulos.ehdollisesti", default_text:"Ehdollisesti vastaanottanut"},
-                {value: "VASTAANOTTANUT_SITOVASTI", text: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
-                {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-                {value: "PERUNUT", text: "sijoitteluntulos.perunut", default_text:"Perunut"},
-                {value: "PERUUTETTU", text: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
+                {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
+                {value: "VASTAANOTTANUT", text_prop: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanottanut"},
+                {value: "EHDOLLISESTI_VASTAANOTTANUT", text_prop: "sijoitteluntulos.ehdollisesti", default_text:"Ehdollisesti vastaanottanut"},
+                {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
+                {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
+                {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
             ];
 
 
