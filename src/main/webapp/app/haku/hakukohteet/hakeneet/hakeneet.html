@@ -17,41 +17,28 @@
             <div ng-include="'../common/html/errors.html'"></div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
-                <input type="text" class="search margin-vertical-2" placeholder="Suodata hakijoita" ng-model="hakijaFilter" />
-                <pagination-pagesize page-size="pageSize"></pagination-pagesize>
                 <form name="form" ng-submit="submit()">
-                    <table class="virkailija-table-1">
-                        <thead>
-                        <tr>
-                            <th>{{ t('hakukohteethakeneet.nimi') || 'Nimi' }}</th>
-                            <th>{{ t('hakukohteethakeneet.tila') || 'Tila' }}</th>
-                            <th>{{ t('hakukohteethakeneet.hakukelpoisuustieto') || 'Hakukelpoisuustieto' }}</th>
-                            <th>{{ t('hakukohteethakeneet.hakutoiveennumero') || 'Hakutoiveen numero' }}</th>
+                    <table ng-table="tableParams" show-filter="true" class="virkailija-table-1">
+                        <tr ng-repeat="hakija in $data">
+                            <td class="leftorientedcolumn" data-title="(t('hakukohteethakeneet.nimi') || 'Nimi')"
+                                sortable="'answers.henkilotiedot.Sukunimi'" filter="{ 'answers.henkilotiedot.Sukunimi' : 'text' }">
+                                <show-person-information sukunimi="{{hakija.answers.henkilotiedot.Sukunimi}}"
+                                                         etunimi="{{hakija.answers.henkilotiedot.Etunimet}}"
+                                                         hakemus-oid="{{hakija.oid}}"
+                                                         haku-oid="{{hakuOid}}"
+                                                         henkilo-oid="{{hakija.personOid}}" />
+                            </td>
+                            <td data-title="(t('hakukohteethakeneet.tila') || 'Tila')" sortable="'tila[hakija.state]'">
+                                {{tila[hakija.state]}}
+                            </td>
+                            <td data-title="(t('hakukohteethakeneet.hakukelpoisuustieto') || 'Hakukelpoisuustieto')" sortable="'hakukelpoisuus'">
+                                {{ t(hakija.hakukelpoisuus) || hakija.hakukelpoisuus }}
+                            </td>
+                            <td data-title="(t('hakukohteethakeneet.hakutoiveennumero') || 'Hakutoiveen numero')" sortable="'hakutoiveNumero'">
+                                {{hakija.hakutoiveNumero}}
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="hakija in filteredResult=(model.hakeneet | orderBy:'answers.henkilotiedot.Sukunimi' | filter:hakijaFilter)| startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
-                                <td class="leftorientedcolumn">
-                                    <show-person-information sukunimi="{{hakija.answers.henkilotiedot.Sukunimi}}"
-                                                             etunimi="{{hakija.answers.henkilotiedot.Etunimet}}"
-                                                             hakemus-oid="{{hakija.oid}}"
-                                                             haku-oid="{{hakuOid}}"
-                                                             henkilo-oid="{{hakija.personOid}}" />
-
-                                </td>
-                                <td>
-                                    {{tila[hakija.state]}}
-                                </td>
-                                <td>
-                                    {{ t(hakija.hakukelpoisuus) || hakija.hakukelpoisuus }}
-                                </td>
-                                <td>
-                                    {{hakija.hakutoiveNumero}}
-                                </td>
-                            </tr>
-                        </tbody>
                     </table>
-                    <pagination previous-text="{{ t('hakukohteethakeneet.edellinen') || 'Edellinen' }}" next-text="{{ t('hakukohteethakeneet.seuraava') || 'Seuraava' }}" total-items="filteredResult.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
                 </form>
             </div>
         </div>
