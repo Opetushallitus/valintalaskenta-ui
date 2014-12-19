@@ -66,8 +66,8 @@
 
 angular.module('valintalaskenta').
     controller('HakeneetController', ['$scope', '$location', '$routeParams', 'HakeneetModel', 'HakukohdeModel',
-        'ngTableParams','$filter',
-        function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel, ngTableParams, $filter) {
+        'ngTableParams','$filter','FilterService',
+        function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel, ngTableParams, $filter, FilterService) {
     'use strict';
 
 
@@ -80,7 +80,7 @@ angular.module('valintalaskenta').
 
     HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
     $scope.model = HakeneetModel;
-    $scope.hakeneetPromise = $scope.model.loaded.promise;
+    $scope.promise = $scope.model.loaded.promise;
 
     // Kielistys joskus
     $scope.tila = {
@@ -100,37 +100,8 @@ angular.module('valintalaskenta').
     }, {
         total: $scope.model.hakeneet.length, // length of data
         getData: function ($defer, params) {
-            $scope.hakeneetPromise.then(function (result) {
-                var filters = {};
-
-                angular.forEach(params.filter(), function(value, key) {
-                    if (key.indexOf('.') === -1) {
-                        filters[key] = value;
-                        return;
-                    }
-
-                    var createObjectTree = function (tree, properties, value) {
-                        if (!properties.length) {
-                            return value;
-                        }
-
-                        var prop = properties.shift();
-
-                        if (!prop || !/^[a-zA-Z]/.test(prop)) {
-                            throw new Error('invalid nested property name for filter');
-                        }
-
-                        tree[prop] = createObjectTree({}, properties, value);
-
-                        return tree;
-                    };
-
-                    var filter = createObjectTree({}, key.split('.'), value);
-
-                    angular.extend(filters, filter);
-                });
-
-
+            $scope.promise.then(function (result) {
+                var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
                 var orderedData = params.sorting() ?
                     $filter('orderBy')($scope.model.hakeneet, params.orderBy()) :
