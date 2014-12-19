@@ -1,7 +1,9 @@
 angular.module('valintalaskenta')
 
-.factory('HarkinnanvaraisetModel', ['$log', '_', 'HakukohdeHenkilot', 'Ilmoitus', 'Hakemus', 'HarkinnanvarainenHyvaksynta', 'HarkinnanvaraisestiHyvaksytyt', 'IlmoitusTila',
-        function ($log, _, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta, HarkinnanvaraisestiHyvaksytyt, IlmoitusTila) {
+.factory('HarkinnanvaraisetModel', ['$log', '_', 'HakukohdeHenkilot', 'Ilmoitus', 'Hakemus',
+        'HarkinnanvarainenHyvaksynta', 'HarkinnanvaraisestiHyvaksytyt', 'IlmoitusTila', '$q',
+        function ($log, _, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta,
+                  HarkinnanvaraisestiHyvaksytyt, IlmoitusTila, $q) {
     "use strict";
     var model;
     model = new function () {
@@ -9,47 +11,18 @@ angular.module('valintalaskenta')
 
         this.valittu = true;
         this.hakeneet = [];
-        this.harkinnanvaraisestiHyvaksytyt = [];
         this.avaimet = [];
         this.errors = [];
-        this.filterHarkinnanvaraiset = function () {
-            return _.filter(model.hakeneet, function (hakija) {
-                return "true" === hakija.hakenutHarkinnanvaraisesti;
-            });
-        };
-        this.filterValitut = function () {
-            return _.filter(model.filterHarkinnanvaraiset(), function (hakija) {
-                return hakija.valittu;
-            });
-        };
-        this.isAllValittu = function () {
-            return model.filterHarkinnanvaraiset().length === model.filterValitut().length;
-        };
-        this.check = function () {
-            model.valittu = model.isAllValittu();
-        };
-        this.checkAll = function () {
-            var kaikkienUusiTila = model.valittu;
-            _.each(model.filterHarkinnanvaraiset(), function (hakija) {
-                hakija.valittu = kaikkienUusiTila;
-            });
-            model.valittu = model.isAllValittu();
-        };
-        this.valitutHakemusOids = function () {
-            return _.map(model.filterValitut(), function (hakija) {
-                return hakija.oid;
-            });
-        };
-
 
         this.refresh = function (hakukohdeOid, hakuOid) {
             model.valittu = true;
             model.hakeneet = [];
-            model.harkinnanvaraisestiHyvaksytyt = [];
             model.errors = [];
             model.errors.length = 0;
             model.hakuOid = hakuOid;
             model.hakukohdeOid = hakukohdeOid;
+            this.loaded = $q.defer();
+
             HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
                 model.hakeneet = result.results;
 
@@ -80,6 +53,7 @@ angular.module('valintalaskenta')
                                 }
                             }
                         });
+                        model.loaded.resolve();
                     }, function (error) {
                         model.errors.push(error);
                     });
@@ -123,9 +97,10 @@ angular.module('valintalaskenta')
 
     .controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
         'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel',
-        'Pohjakoulutukset',
+        'Pohjakoulutukset','ngTableParams','$filter','FilterService',
         function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,
-            OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset) {
+            OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset, ngTableParams, $filter,
+            FilterService) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -143,9 +118,7 @@ angular.module('valintalaskenta')
 
     HarkinnanvaraisetModel.refreshIfNeeded($scope.hakukohdeOid, $routeParams.hakuOid);
 
-    $scope.predicate = 'sukunimi';
-    $scope.pageSize = 50;
-    $scope.currentPage = 1;
+    $scope.promise = $scope.model.loaded.promise;
 
     $scope.submit = function () {
         $scope.model.submit();
@@ -157,7 +130,7 @@ angular.module('valintalaskenta')
             },
             {
                 tag: "harkinnanvaraiset",
-                hakemusOids: $scope.model.valitutHakemusOids()
+                hakemusOids: valitutHakemusOids()
             },
             function (id) {
                 Latausikkuna.avaa(id, "Osoitetarrat valituille harkinnanvaraisille", "");
@@ -186,7 +159,7 @@ angular.module('valintalaskenta')
 				templateName: "koekutsukirje",
                     valintakoeOids: null}, {
                     tag: "harkinnanvaraiset",
-                    hakemusOids: $scope.model.valitutHakemusOids(),
+                    hakemusOids: valitutHakemusOids(),
                     letterBodyText: letterBodyText
                 },
                 function (id) {
@@ -198,4 +171,76 @@ angular.module('valintalaskenta')
             Ilmoitus.avaa("Koekutsuja ei voida muodostaa!", "Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.", IlmoitusTila.WARNING);
         }
     };
+
+    $scope.tableParams = new ngTableParams({
+        page: 1,            // show first page
+        count: 50,          // count per page
+        filters: {
+            'lastName' : ''
+        },
+        sorting: {
+            'lastName': 'asc'     // initial sorting
+        }
+    }, {
+        total: $scope.model.hakeneet.length, // length of data
+        getData: function ($defer, params) {
+            $scope.promise.then(function (result) {
+                var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                var orderedData = params.sorting() ?
+                    $filter('orderBy')($scope.model.hakeneet, params.orderBy()) :
+                    $scope.model.hakeneet;
+                orderedData = params.filter() ?
+                    $filter('filter')(orderedData, filters) :
+                    orderedData;
+
+                params.total(orderedData.length); // set total for recalc pagination
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+            });
+        }
+    });
+
+    function valitutHakemusOids() {
+        var oids = [];
+        angular.forEach($scope.model.hakeneet, function(item) {
+            if (angular.isDefined(item.oid)) {
+                if ($scope.checkboxes.items[item.oid]) {
+                    oids.push(item.oid);
+                }
+            }
+        });
+        return oids;
+    }
+
+    $scope.checkboxes = { 'checked': false, items: {} };
+
+    // watch for check all checkbox
+    $scope.$watch('checkboxes.checked', function(value) {
+        angular.forEach($scope.model.hakeneet, function(item) {
+            if (angular.isDefined(item.oid)) {
+                $scope.checkboxes.items[item.oid] = value;
+            }
+        });
+    });
+
+    // watch for data checkboxes
+    $scope.$watch('checkboxes.items', function(values) {
+        if (!$scope.model.hakeneet) {
+            return;
+        }
+        var checked = 0, unchecked = 0,
+            total = $scope.model.hakeneet.length;
+        if (total === 0)
+            return;
+        angular.forEach($scope.model.hakeneet, function(item) {
+            checked   +=  ($scope.checkboxes.items[item.oid]) || 0;
+            unchecked += (!$scope.checkboxes.items[item.oid]) || 0;
+        });
+        if ((unchecked == 0) || (checked == 0)) {
+            $scope.checkboxes.checked = (checked == total);
+        }
+        // grayed checkbox
+        angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
+    }, true);
 }]);
