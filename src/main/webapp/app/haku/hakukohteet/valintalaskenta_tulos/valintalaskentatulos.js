@@ -297,7 +297,7 @@ angular.module('valintalaskenta').
               ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel,
               LocalisationService) {
     "use strict";
-        $scope.pageSize = 50;
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
