@@ -56,10 +56,7 @@
             <a ng-show="model.valinnanvaiheet" ng-click="valintalaskentaTulosXLS(); $event.stopPropagation();"
                class="btn btn-default btn-sm excel">{{ t('valintalaskentatulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
             <br/>
-            <input type="text" class="search margin-vertical-2" placeholder="{{ t('valintalaskentatulos.suodatahakijoita') || 'Suodata hakijoita' }}"
-                   ng-model="hakijaFilter"/>
 
-            <pagination-pagesize page-size="pageSize"></pagination-pagesize>
             <div ng-if="model.ilmanlaskentaa.length > 0">
                 <h2>{{ t('valintalaskentatulos.valinnanvaiheet') || 'Valinnanvaiheet, jossa ei käytetä laskentaa' }}</h2>
                 <accordion close-others="true">
@@ -78,7 +75,7 @@
                                     <h3>{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{valintatapajono.nimi}}</h3>
                                     <button ng-disabled="!form.$valid"
                                             class="btn btn-primary btn-sm margin-bottom-2"
-                                             ng-click="submit(vaihe.oid, valintatapajono.oid)">{{ t('valintalaskentatulos.tallenna') || 'Tallenna' }}
+                                             ng-click="submit(valinnanvaihe.oid, valintatapajono.oid)">{{ t('valintalaskentatulos.tallenna') || 'Tallenna' }}
                                     </button>
                                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
 				                    		ng-click="valintatapajonoVientiXlsx(valintatapajono.oid)"
@@ -95,33 +92,27 @@
 									</span>
                                     <button ng-disabled="(valintatapajono.valmisSijoiteltavaksi && !updateOph) || !crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
                                     <button ng-disabled="!crudOrg" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
-                                    <table class="virkailija-table-1">
-                                        <thead>
-                                        <tr>
-                                            <th><a href="" ng-click="reverse=!reverse">{{ t('valintalaskentatulos.jonosija') || 'Jonosija' }} ({{valintatapajono.jonosijat.length}})</a></th>
-                                            <th>{{ t('valintalaskentatulos.hakija') || 'Hakija' }}</th>
-                                            <th>{{ t('valintalaskentatulos.valintatieto') || 'Valintatieto' }}</th>
-                                            <th>{{ t('valintalaskentatulos.kuvausfi') || 'Kuvaus (FI)' }}</th>
-                                            <th>{{ t('valintalaskentatulos.kuvaussv') || 'Kuvaus (SV)' }}</th>
-                                            <th>{{ t('valintalaskentatulos.kuvausen') || 'Kuvaus (EN)' }}</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="tulos in valintatapajono.filteredResults = (valintatapajono.jonosijat | filter:hakijaFilter | orderBy:['jonosija', 'sukunimi']:reverse) | startFrom:((valintatapajono.currentPage)-1)*pageSize | limitTo:pageSize">
-                                            <td><input type="number"
+
+
+                                    <table ng-table="valintatapajono.tableParams" show-filter="true" class="virkailija-table-1">
+                                        <tr ng-repeat="tulos in $data">
+                                            <td data-title="jonoLength(valintatapajono.jonosijat.length)" sortable="'jonosija'">
+                                                <input type="number"
                                                        ng-model="tulos.jonosija"
                                                        min="1"
                                                        max="{{valintatapajono.jonosijat.length}}"
                                                        ng-change="changeTila(tulos, tulos.jonosija)" ng-debounce="1000"
-                                                       ng-disabled="tulos.tuloksenTila == 'HYLATTY'"></td>
-                                            <td class="leftorientedcolumn">
+                                                       ng-disabled="tulos.tuloksenTila == 'HYLATTY'">
+                                            </td>
+                                            <td class="leftorientedcolumn" data-title="(t('valintalaskentatulos.hakija') || 'Hakija')"
+                                                sortable="'sukunimi'" filter="{ 'sukunimi' : 'text' }">
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"
                                                                          hakemus-oid="{{tulos.hakemusOid}}"
                                                                          haku-oid="{{hakuOid}}"
                                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
                                             </td>
-                                            <td>
+                                            <td data-title="(t('valintalaskentatulos.valintatieto') || 'Valintatieto')" sortable="'tuloksenTila'">
                                                 <select ng-model="tulos.tuloksenTila" ng-change="changeSija(tulos, tulos.tuloksenTila)">
                                                     <option value="HYVAKSYTTAVISSA">{{ t('valintalaskentatulos.hyvaksyttavissa') || 'Hyväksyttävissä' }}</option>
                                                     <option value="HYLATTY">{{ t('valintalaskentatulos.hylatty') || 'Hylätty' }}</option>
@@ -129,16 +120,18 @@
                                                     <option value="HYVAKSYTTY_HARKINNANVARAISESTI">{{ t('valintalaskentatulos.harkinnanvaraisesti') || 'Hyväksytty harkinnanvaraisesti' }}</option>
                                                 </select>
                                             </td>
-                                            <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.FI"
-                                                       size="20"/></td>
-                                            <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.SV"
-                                                       size="20"/></td>
-                                            <td><input ng-model="tulos.jarjestyskriteerit[0].kuvaus.EN"
-                                                       size="20"/></td>
+                                            <td data-title="(t('valintalaskentatulos.kuvausfi') || 'Kuvaus (FI)')" sortable="'jarjestyskriteerit[0].kuvaus.FI'">
+                                                <input ng-model="tulos.jarjestyskriteerit[0].kuvaus.FI" size="20"/>
+                                            </td>
+                                            <td data-title="(t('valintalaskentatulos.kuvaussv') || 'Kuvaus (SV)')" sortable="'jarjestyskriteerit[0].kuvaus.SV'">
+                                                <input ng-model="tulos.jarjestyskriteerit[0].kuvaus.SV" size="20"/>
+                                            </td>
+                                            <td data-title="(t('valintalaskentatulos.kuvausen') || 'Kuvaus (EN)')" sortable="'jarjestyskriteerit[0].kuvaus.EN'">
+                                                <input ng-model="tulos.jarjestyskriteerit[0].kuvaus.EN" size="20"/>
+                                            </td>
                                         </tr>
-                                        </tbody>
                                     </table>
-                                    <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}" ng-init="valintatapajono.currentPage=1" total-items="valintatapajono.filteredResults.length" ng-model="valintatapajono.currentPage" items-per-page="pageSize"></pagination>
+
                                 </form>
                             </div>
                         </div>
@@ -164,61 +157,49 @@
                                 <h3>{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{valintatapajono.nimi}}</h3>
                                 <button ng-disabled="!crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
                                 <button ng-disabled="!crudOrg" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
-                                <table class="virkailija-table-1">
-                                    <thead>
-                                    <tr>
-                                        <th>{{valintatapajono.jonosijat.length}}</th>
-                                        <th>{{ t('valintalaskentatulos.hakija') || 'Hakija' }}</th>
-                                        <th>{{ t('valintalaskentatulos.yhteispisteet') || 'Yhteispisteet' }}</th>
-                                        <th>{{ t('valintalaskentatulos.hakutoive') || 'Hakutoive' }}</th>
-                                        <th>{{ t('valintalaskentatulos.valintatieto') || 'Valintatieto' }}</th>
-                                        <th>{{ t('valintalaskentatulos.syy') || 'Syy' }}</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="tulos in valintatapajono.filteredResults = (valintatapajono.jonosijat  | filter:hakijaFilter) | startFrom:((valintatapajono.currentPage)-1)*pageSize | limitTo:pageSize">
-                                        <td>{{tulos.jonosija}}</td>
-                                        <td class="leftorientedcolumn">
+
+
+                                <table ng-table="valintatapajono.tableParams" show-filter="true" class="virkailija-table-1">
+                                    <tr ng-repeat="tulos in $data">
+                                        <td data-title="jonoLength(valintatapajono.jonosijat.length)" sortable="'jonosija'">
+                                            {{tulos.jonosija}}
+                                        </td>
+                                        <td class="leftorientedcolumn" data-title="(t('valintalaskentatulos.hakija') || 'Hakija')"
+                                            sortable="'sukunimi'" filter="{ 'sukunimi' : 'text' }">
                                             <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                      etunimi="{{tulos.etunimi}}"
                                                                      hakemus-oid="{{tulos.hakemusOid}}"
                                                                      haku-oid="{{hakuOid}}"
                                                                      henkilo-oid="{{tulos.hakijaOid}}"/>
                                         </td>
-                                        <td>
+                                        <td data-title="(t('valintalaskentatulos.yhteispisteet') || 'Yhteispisteet')" sortable="'jarjestyskriteerit[0].arvo'">
                                             {{tulos.jarjestyskriteerit[0].arvo}}
                                             <a href="#/valintatapajono/{{valintatapajono.oid}}/hakemus/{{tulos.hakemusOid}}/valintalaskentahistoria"
                                                target="_blank" class="historylink">
                                                 {{ t('valintalaskentatulos.lisatietoja') || 'Lisätietoja' }}
                                             </a>
                                         </td>
-                                        <td>
+                                        <td data-title="(t('valintalaskentatulos.hakutoive') || 'Hakutoive')" sortable="'prioriteetti'">
                                             {{tulos.prioriteetti}}
                                         </td>
-                                        <td>
-
+                                        <td data-title="(t('valintalaskentatulos.valintatieto') || 'Valintatieto')" sortable="'tuloksenTila'">
                                             <modal modal-template="modal.html" window-class="wide">
                                                 <modal-open>
                                                     {{tulos.tuloksenTila}}
                                                 </modal-open>
-
                                             </modal>
-
                                         </td>
-                                        <td>
+                                        <td data-title="(t('valintalaskentatulos.syy') || 'Syy')" sortable="'jarjestyskriteerit[0].kuvaus.FI'">
                                             {{tulos.jarjestyskriteerit[0].kuvaus.FI}}
                                         </td>
-                                        <td>
+                                        <td data-title="">
                                             <jarjestyskriteeri-muokkaus jonosija="tulos"
                                                                         valintatapajono-oid="valintatapajono.valintatapajonooid"
                                                                         hakemus-oid="tulos.hakemusOid"
                                                                         enabled="jkmuokkaus"/>
                                         </td>
                                     </tr>
-                                    </tbody>
                                 </table>
-                                <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}" total-items="valintatapajono.filteredResults.length" ng-init="valintatapajono.currentPage=1" ng-model="valintatapajono.currentPage" items-per-page="pageSize"></pagination>
                             </div>
                         </div>
                     </accordion-group>

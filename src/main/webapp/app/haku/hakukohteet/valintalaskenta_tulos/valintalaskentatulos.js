@@ -1,5 +1,6 @@
 ﻿app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus) {
+    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus,
+    ngTableParams, FilterService, $filter) {
     "use strict";
 
     var model;
@@ -39,6 +40,7 @@
             });
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			    model.valinnanvaiheet = result;
+
             	ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
                     model.ilmanlaskentaa = result;
                     if(result.length > 0) {
@@ -138,6 +140,35 @@
                                         }
 
                                     });
+
+                                    tulosjono.tableParams = new ngTableParams({
+                                        page: 1,            // show first page
+                                        count: 50,          // count per page
+                                        filters: {
+                                            'sukunimi' : ''
+                                        },
+                                        sorting: {
+                                            'jonosija' : 'asc',
+                                            'sukunimi': 'asc'
+                                        }
+                                    }, {
+                                        total: tulosjono.jonosijat.length, // length of data
+                                        getData: function ($defer, params) {
+                                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                                            var orderedData = params.sorting() ?
+                                                $filter('orderBy')(tulosjono.jonosijat, params.orderBy()) :
+                                                tulosjono.jonosijat;
+                                            orderedData = params.filter() ?
+                                                $filter('filter')(orderedData, filters) :
+                                                orderedData;
+
+                                            params.total(orderedData.length); // set total for recalc pagination
+                                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+                                        }
+                                    });
+
                                     vaihe.valintatapajonot.push(tulosjono);
 
                                 });
@@ -147,10 +178,44 @@
                                     if(jono.kaytetaanValintalaskentaa == false) {
                                         vaihe.valintatapajonot.splice(i, 1);
                                     }
+
                                 });
                                 if(vaihe.valintatapajonot.length <= 0) {
                                     model.valinnanvaiheet.splice(index, 1);
                                 }
+                            });
+
+                            model.valinnanvaiheet.forEach(function(vaihe, index) {
+                                vaihe.valintatapajonot.forEach(function(jono, i) {
+                                    jono.tableParams = new ngTableParams({
+                                        page: 1,            // show first page
+                                        count: 50,          // count per page
+                                        filters: {
+                                            'sukunimi' : ''
+                                        },
+                                        sorting: {
+                                            'jonosija' : 'asc',
+                                            'sukunimi': 'asc'
+                                        }
+                                    }, {
+                                        total: jono.jonosijat.length, // length of data
+                                        getData: function ($defer, params) {
+                                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                                            var orderedData = params.sorting() ?
+                                                $filter('orderBy')(jono.jonosijat, params.orderBy()) :
+                                                jono.jonosijat;
+                                            orderedData = params.filter() ?
+                                                $filter('filter')(orderedData, filters) :
+                                                orderedData;
+
+                                            params.total(orderedData.length); // set total for recalc pagination
+                                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+                                        }
+                                    });
+
+                                });
                             });
                             defer.resolve();
                         }, function (error) {
@@ -171,7 +236,7 @@
 		};
 
         this.submit = function (vaiheoid, jonooid) {
-            var vv = _.findWhere(model.ilmanlaskentaa, {valinnanvaiheoid:vaiheoid});
+            var vv = _.findWhere(model.ilmanlaskentaa, {oid:vaiheoid});
             if(vv) {
                 var vaihe = {};
                 angular.copy(vv, vaihe);
@@ -227,11 +292,12 @@
 angular.module('valintalaskenta').
     controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ValintalaskentatulosModel',
-        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel',
+        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel', 'LocalisationService',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel) {
+              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel,
+              LocalisationService) {
     "use strict";
-
+        $scope.pageSize = 50;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -239,8 +305,6 @@ angular.module('valintalaskenta').
     $scope.hakukohdeModel = HakukohdeModel;
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-
-    $scope.pageSize = 50;
 
     var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
         AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
@@ -298,7 +362,11 @@ angular.module('valintalaskenta').
 			});
 	    };
     };
-    
+
+    $scope.jonoLength = function(length) {
+        return LocalisationService.tl('valintalaskentatulos.jonosija') ? LocalisationService.tl('valintalaskentatulos.jonosija') +  " ("+length+")" : 'Jonosija' +  " ("+length+")";
+    };
+
     $scope.valintalaskentaTulosXLS = function() {
     	TulosXls.query({hakukohdeOid:$routeParams.hakukohdeOid});
     };
@@ -321,12 +389,6 @@ angular.module('valintalaskenta').
             valintatulos.showHenkiloPartial = false;
         }
     };
-
-
-
-
-
-
 
 
 
