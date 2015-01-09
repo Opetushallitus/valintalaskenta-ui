@@ -1773,7 +1773,6 @@ describe('Häviääko koetulokset', function(){
     });
 
     it('haviaakoPisteet', function() {
-        console.log('-----------------------------',scope.model);
         expect(scope.model.hakeneet[0].additionalData["SOTE1_kaikkiosiot-OSALLISTUMINEN"]).toBe("OSALLISTUI");
         expect(scope.model.hakeneet[0].additionalData["SOTE1_kaikkiosiot"]).toBe("1");
         expect(scope.model.hakeneet[0].additionalData["SOTEKOE_VK_RYHMA1-OSALLISTUMINEN"]).toBe("OSALLISTUI");
