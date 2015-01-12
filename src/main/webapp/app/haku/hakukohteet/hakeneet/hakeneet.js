@@ -1,4 +1,4 @@
-﻿app.factory('HakeneetModel', function (HakukohdeHenkilotFull) {
+﻿app.factory('HakeneetModel', function (HakukohdeHenkilotFull, $q) {
     'use strict';
     var model;
     model = new function () {
@@ -12,6 +12,7 @@
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             model.hakuOid = hakuOid;
+            this.loaded = $q.defer();
 
             HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: model.hakuOid}, function (result) {
                 model.hakeneet = result;
@@ -41,8 +42,8 @@
                                 }
                                 break;
                             }
-
                         }
+                        model.loaded.resolve();
                     }
                 });
 
@@ -65,8 +66,10 @@
 
 angular.module('valintalaskenta').
     controller('HakeneetController', ['$scope', '$location', '$routeParams', 'HakeneetModel', 'HakukohdeModel',
-        function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel) {
+        'ngTableParams','$filter','FilterService',
+        function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel, ngTableParams, $filter, FilterService) {
     'use strict';
+
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid = $routeParams.hakuOid;
@@ -77,11 +80,41 @@ angular.module('valintalaskenta').
 
     HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
     $scope.model = HakeneetModel;
-    $scope.pageSize = 50;
-    $scope.currentPage = 1;
+    $scope.promise = $scope.model.loaded.promise;
+
     // Kielistys joskus
     $scope.tila = {
         "ACTIVE": "Aktiivinen",
         "INCOMPLETE": "Puutteellinen"
     };
+
+    $scope.tableParams = new ngTableParams({
+        page: 1,            // show first page
+        count: 50,          // count per page
+        filters: {
+            'answers.henkilotiedot.Sukunimi' : ''
+        },
+        sorting: {
+            'answers.henkilotiedot.Sukunimi': 'asc'     // initial sorting
+        }
+    }, {
+        total: $scope.model.hakeneet.length, // length of data
+        getData: function ($defer, params) {
+            $scope.promise.then(function (result) {
+                var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                var orderedData = params.sorting() ?
+                    $filter('orderBy')($scope.model.hakeneet, params.orderBy()) :
+                    $scope.model.hakeneet;
+                orderedData = params.filter() ?
+                    $filter('filter')(orderedData, filters) :
+                    orderedData;
+
+                params.total(orderedData.length); // set total for recalc pagination
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+            });
+        }
+    });
+
 }]);

@@ -115,8 +115,8 @@
         {{ t('valvomo.kayttaja') || 'Käyttäjä' }}: <span>{{prosessi.prosessi.createdBy}}</span><br/>
         {{ t('valvomo.aika') || 'Aika' }}: <span>{{prosessi.prosessi.createdAt | date:'dd.MM.yyyy HH:mm'}}</span><br/>
         <br/>
-        {{ t('valvomo.hakukohteitaimportoitu') || 'Hakukohteita importoitu' }}: <span>{{prosessi.prosessi.importoitu}} / {{prosessi.prosessi.hakukohteita}}</span><br/>
-        {{ t('valvomo.hakukohteitatuotu') || 'Hakukohteita tuotu' }}: <span>{{prosessi.prosessi.tuonti}} / {{prosessi.prosessi.hakukohteita}}</span><br/>
+        {{ t('valvomo.hakukohteitaimportoitu') || 'Hakukohteita luettu tarjonnasta' }}: <span>{{prosessi.prosessi.importoitu}} / {{prosessi.prosessi.hakukohteita}}</span><br/>
+        {{ t('valvomo.hakukohteitatuotu') || 'Hakukohteita tuotu valintaperusteisiin' }}: <span>{{prosessi.prosessi.tuonti}} / {{prosessi.prosessi.hakukohteita}}</span><br/>
 
         <div ng-repeat="virhe in prosessi.prosessi.exceptions">{{virhe}}</div>
 
