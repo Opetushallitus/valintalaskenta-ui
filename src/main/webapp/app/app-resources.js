@@ -292,10 +292,8 @@ app.factory('KoekutsukirjeetSahkopostita', function($resource) {
     });
 });
 app.factory('AktivoiKelaFtp', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/laheta/:documentId", {
-        documentId: "@documentId"
-    }, {
-        put: {method: "PUT", isArray:false}
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/kela/laheta", {}, {
+        post: {method: "POST", isArray:false}
     });
 });
 

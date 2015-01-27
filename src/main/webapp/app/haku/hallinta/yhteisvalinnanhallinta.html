@@ -185,24 +185,45 @@
             <label class="col-md-2 control-label" for="aineistonnimi">{{ t('yhteisvalinnanhallinta.keladokumentinmuodostus') || 'Kela-dokumentin muodostus' }}</label>
 
             <div class="col-md-2">
-                <input class="form-control" id="aineistonnimi" placeholder="{{ t('yhteisvalinnanhallinta.aineistonnimi') || 'Aineistonnimi' }}"
-                       ng-model="aineistonnimi"/>
-
+                <input class="form-control" id="aineistonnimi" placeholder="{{ t('yhteisvalinnanhallinta.aineistonnimi') || 'Aineistonnimi' }}" 
+                       ng-model="aineistonnimi"  maxlength="26"/>
             </div>
 
+            <div class="col-md-2">
+	             <button style="margin-top: 5px" ng-if="!isNotBlank(aineistonnimi) || !aineistoAlkupvm || !aineistoLoppupvm" privileges="valintalaskenta"
+	                    popover="{{ t('yhteisvalinnanhallinta.kirjoitanimi') || 'Kirjoita aineistolle nimi.' }}" popover-trigger="mouseenter"
+	                    class="btn btn-default btn-sm disabled"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
+	            </button>
+	
+	            <button style="margin-top: 5px" ng-if="isNotBlank(aineistonnimi)  && aineistoAlkupvm && aineistoLoppupvm" privileges="valintalaskenta"
+	                    ng-click="muodostaKelaDokumentti(aineistoAlkupvm,aineistoLoppupvm,aineistonnimi);$event.preventDefault();"
+	                    class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
+	            </button>
+            </div>            
             <div class="col-md-12">
             </div>
-
-            <button style="margin-top: 5px" ng-if="!isNotBlank(aineistonnimi)" privileges="valintalaskenta"
-                    popover="{{ t('yhteisvalinnanhallinta.kirjoitanimi') || 'Kirjoita aineistolle nimi.' }}" popover-trigger="mouseenter"
-                    class="btn btn-default btn-sm disabled"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
-            </button>
-
-            <button style="margin-top: 5px" ng-if="isNotBlank(aineistonnimi)" privileges="valintalaskenta"
-                    ng-click="muodostaKelaDokumentti();$event.preventDefault();"
-                    class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
-            </button>
-        </div>
+       </div>        
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group"> 
+            <label class="col-md-2 control-label" for="aineistoAlkupvm">{{ t('yhteisvalinnanhallinta.alkujaloppupvm') || 'Alku- ja loppupvm' }}</label>
+            <div class="col-md-2">
+                <input class="form-control" id="aineistoAlkupvm" placeholder="{{ t('yhteisvalinnanhallinta.alkupvm') || 'Alkupvm' }}"
+                       ng-model="aineistoAlkupvm" datepicker-popup="dd.MM.yyyy" is-open="aineistoAlkupvm_open" 
+       				   ng-click = "aineistoAlkupvm_open = true" datepicker-options="dateOptions" ng-blur="visitedDate = true" 
+       				   max-date="maxdate" show-button-bar="false" 
+       				  />
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="aineistoLoppupvm" placeholder="{{ t('yhteisvalinnanhallinta.loppupvm') || 'Loppupvm' }}"
+                       ng-model="aineistoLoppupvm" datepicker-popup="dd.MM.yyyy" is-open="aineistoLoppupvm_open" 
+       				   ng-click = "aineistoLoppupvm_open = true" datepicker-options="dateOptions"
+   					   ng-blur="visitedDate = true" max-date="maxdate" min-date="aineistoAlkupvm" show-button-bar="false" 
+   					   />
+            </div>
+            <div class="col-md-12">
+            </div>
+       </div>        
     </div>
     <div class="col-md-12 margin-bottom-2" ng-hide="naytetaanHaut">
         <button class="btn btn-default btn-sm" ng-click="naytaHaut();$event.preventDefault();"><i class="fa fa-eye"></i>

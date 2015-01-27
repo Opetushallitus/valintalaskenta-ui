@@ -101,6 +101,9 @@ angular.module('valintalaskenta').
     $scope.virheet = VirheModel;
     $scope.naytaKokeita = 50;
     // KELA TAULUKON CHECKBOXIT ALKAA
+
+    $scope.maxdate =  new Date();
+    $scope.maxdate.setDate($scope.maxdate.getDate()-1);
     $scope.aineistonnimi = "";
     $scope.isNotBlank = function (str) {
         if (!str || str.length === 0 || str === "" || typeof str === 'undefined' || !/[^\s]/.test(str) || /^\s*$/.test(str) || str.replace(/\s/g, "") === "") {
@@ -164,20 +167,24 @@ angular.module('valintalaskenta').
     $scope.checkAll = function () {
         $scope.checkAllWith($scope.kaikkiHautValittu);
     };
-    $scope.muodostaKelaDokumentti = function () {
+    $scope.muodostaKelaDokumentti = function (alku,loppu,nimi) {
+    	alku.setHours(0,0,0,0);
+    	loppu.setHours(23,59,59,999);
         var hakuOids = _.map($scope.filterValitut(), function (haku) {
             return haku.oid;
         });
         KelaDokumentti.post({},
             {
-                hakuOids: hakuOids,
-                aineisto: $scope.aineistonnimi
+                aineisto: nimi,
+                alkupvm: alku,
+                loppupvm: loppu,
+                hakuOids: hakuOids
             },
             function (id) {
                 Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html",
                     function (dokumenttiId) {
 
-                        AktivoiKelaFtp.put(dokumenttiId, function (success) {
+                        AktivoiKelaFtp.post({}, dokumenttiId, function (success) {
                             Ilmoitus.avaa("Kela-dokumentin ftp-siirto onnistui", "Ftp-siirto onnistui");
                         }, function () {
                             Ilmoitus.avaa("Kela-dokumentin ftp-siirto epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
