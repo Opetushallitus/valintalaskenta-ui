@@ -50,7 +50,7 @@ angular.module('valintalaskenta')
                         model.deferred = $q.defer();
 
                         TarjontaHaut.get({}, function (resultWrapper) {
-                            model.haut = resultWrapper.result;
+                            model.haut = resultWrapper;
                             model.haut.forEach(function (haku) {
                                 if (haku.oid === oid) {
                                     model.hakuOid = haku;
