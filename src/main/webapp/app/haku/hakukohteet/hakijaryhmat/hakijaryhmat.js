@@ -1,5 +1,6 @@
 app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeHakijaryhma, Ilmoitus, IlmoitusTila, $q,
-                                                        HakemuksenVastaanottoTila,HakemuksenVastaanottoTilat,LatestSijoittelunTilat) {
+                                                        HakemuksenVastaanottoTila,HakemuksenVastaanottoTilat,LatestSijoittelunTilat,
+                                                        ngTableParams, $filter, FilterService) {
     "use strict";
 
     var model;
@@ -10,19 +11,47 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
         this.errors = [];
 
         this.refresh = function(hakuOid, hakukohdeOid) {
-            var defer = $q.defer();
 
             model.hakijaryhmat = [];
             model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             model.hakeneet = [];
+            this.loaded = $q.defer();
 
             HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.hakijaryhmat = result;
 
                 model.hakijaryhmat.forEach(function (hakijaryhma) {
+                    hakijaryhma.tableParams = new ngTableParams({
+                        page: 1,            // show first page
+                        count: 50,          // count per page
+                        filters: {
+                            'sukunimi' : '',
+                            'jarjestyskriteerit[0].tila': ''
+                        },
+                        sorting: {
+                            'sukunimi': 'asc'     // initial sorting
+                        }
+                    }, {
+                        total: hakijaryhma.jonosijat.length, // length of data
+                        getData: function ($defer, params) {
+                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                            var orderedData = params.sorting() ?
+                                $filter('orderBy')(hakijaryhma.jonosijat, params.orderBy()) :
+                                hakijaryhma.jonosijat;
+                            orderedData = params.filter() ?
+                                $filter('filter')(orderedData, filters) :
+                                orderedData;
+
+                            params.total(orderedData.length); // set total for recalc pagination
+                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+                        }
+                    });
                     hakijaryhma.jonosijat.forEach(function (jonosija) {
+
                         var tilaParams = {
                             hakemusOid: jonosija.hakemusOid
                         };
@@ -50,6 +79,8 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
                                         });
                                     }
                                 });
+
+                                model.loaded.resolve();
                             });
                         }, function (error) {
                         });
@@ -58,10 +89,8 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
                 });
             }, function(error) {
                 model.errors.push(error);
-                defer.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
 
-            return defer.promise;
         };
 
     }();
@@ -72,9 +101,9 @@ app.factory('ValintalaskentaHakijaryhmaModel', function($routeParams, HakukohdeH
 angular.module('valintalaskenta').
 
     controller('HakijaryhmatController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
-        'IlmoitusTila','ValintalaskentaHakijaryhmaModel','HakukohdeModel', '$http', 'AuthService',
+        'IlmoitusTila','ValintalaskentaHakijaryhmaModel','HakukohdeModel', '$http', 'AuthService', 'LocalisationService',
         function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila
-                  ,ValintalaskentaHakijaryhmaModel, HakukohdeModel, $http, AuthService) {
+                  ,ValintalaskentaHakijaryhmaModel, HakukohdeModel, $http, AuthService, LocalisationService) {
             "use strict";
 
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -83,11 +112,20 @@ angular.module('valintalaskenta').
             $scope.model = ValintalaskentaHakijaryhmaModel;
             $scope.hakukohdeModel = HakukohdeModel;
 
-            $scope.pageSize = 50;
+            $scope.kuuluuFilterValue = "";
+
+            $scope.kuuluuFilterValues = [
+                {value: "", text_prop: "hakijaryhmat.alasuodata", default_text:"Älä suodata"},
+                {value: "HYVAKSYTTAVISSA", text_prop: "hakijaryhmat.HYVAKSYTTAVISSA", default_text:"Kuuluu"},
+                {value: "HYLATTY", text_prop: "hakijaryhmat.HYLATTY", default_text:"Ei kuulu"}
+            ];
+
+            LocalisationService.getTranslationsForArray($scope.kuuluuFilterValues).then(function () {
+            });
 
             var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
-            var promise = $scope.model.refresh($scope.hakuOid, $scope.hakukohdeOid);
+            $scope.model.refresh($scope.hakuOid, $scope.hakukohdeOid);
 
             var order = {
                 "HYVAKSYTTAVISSA": 1,
@@ -111,4 +149,8 @@ angular.module('valintalaskenta').
                     $scope.crudOrg = true;
                 });
             });
+
+            $scope.promise = $scope.model.loaded.promise;
+
+
     }]);

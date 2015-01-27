@@ -39,9 +39,11 @@ angular.module('valintalaskenta')
 .filter('tilaFilter', [function() {
     return function(input, tilaFilterValue) {
         var result = [];
-        for(var i = 0; i < input.length ; i++) {
-            if(!tilaFilterValue || input[i].tila === tilaFilterValue) {
-                result.push(input[i]);
+        if (input) {
+            for(var i = 0; i < input.length ; i++) {
+                if(!tilaFilterValue || input[i].tila === tilaFilterValue) {
+                    result.push(input[i]);
+                }
             }
         }
         return result;
@@ -50,10 +52,12 @@ angular.module('valintalaskenta')
 .filter('kuuluuFilter', [function() {
     return function(input, kuuluuFilterValue) {
         var result = [];
-        for(var i = 0; i < input.length ; i++) {
-            if(!kuuluuFilterValue || input[i].jarjestyskriteerit[0].tila === kuuluuFilterValue
-                || kuuluuFilterValue === 'HYLATTY' && input[i].jarjestyskriteerit[0].tila !== 'HYVAKSYTTAVISSA') {
-                result.push(input[i]);
+        if (input) {
+            for (var i = 0; i < input.length; i++) {
+                if (!kuuluuFilterValue || input[i].jarjestyskriteerit[0].tila === kuuluuFilterValue
+                    || kuuluuFilterValue === 'HYLATTY' && input[i].jarjestyskriteerit[0].tila !== 'HYVAKSYTTAVISSA') {
+                    result.push(input[i]);
+                }
             }
         }
         return result;

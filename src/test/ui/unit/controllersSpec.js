@@ -33,7 +33,7 @@ describe('Testing HakukohteetController', function(){
 
         ctrl = $controller('HakukohteetController', {'$rootScope' : rootScope, '$scope' : scope,
             '$location': location, '$routeParams': routeParams, 'HakukohteetModel': hakukohteetModel,
-            'GlobalStates': globalStates, 'HakuModel': hakuModel});
+            'HakuModel': hakuModel});
         $httpBackend.flush();
     });
 
@@ -63,8 +63,7 @@ describe('Testing HakukohteetController', function(){
         };
         var lisahaku = false;
         scope.showHakukohde(hakukohde, lisahaku);
-        expect(scope.hakukohteetVisible).toBeFalsy();
-        expect(globalStates.hakukohteetVisible).toBeFalsy();
+        expect(scope.model.hakukohteetVisible).toBeFalsy();
         expect(rootScope.selectedHakukohdeNimi).toBe('koulu1');
         expect(location.path()).toMatch('/haku/.*');
     });
@@ -82,16 +81,16 @@ describe('Testing HakukohteetController', function(){
         var lisahaku = true;
         scope.showHakukohde(hakukohde, lisahaku);
         expect(scope.hakukohteetVisible).toBeFalsy();
-        expect(globalStates.hakukohteetVisible).toBeFalsy();
+        expect(scope.model.hakukohteetVisible).toBeFalsy();
         expect(rootScope.selectedHakukohdeNimi).toBe('koulu2');
         expect(location.path()).toMatch('/lisahaku/.*');
     });
 
     it('toggleHakukohteetVisible', function() {
         scope.toggleHakukohteetVisible();
-        expect(globalStates.hakukohteetVisible).toBeTruthy();
+        expect(scope.model.hakukohteetVisible).toBeTruthy();
         scope.toggleHakukohteetVisible();
-        expect(globalStates.hakukohteetVisible).toBeFalsy();
+        expect(scope.model.hakukohteetVisible).toBeFalsy();
     });
 
     it('getCount', function() {
@@ -1044,8 +1043,6 @@ describe('Testing HarkinnanvaraisetController', function(){
         expect(scope.hakuOid).toBe(routeParams.hakuOid);
         expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
         expect(scope.muutettu).toBeFalsy();
-        expect(scope.predicate).toBe("sukunimi");
-        expect(scope.model.harkinnanvaraisestiHyvaksytyt.length).toBe(0);
         expect(scope.pohjakoulutukset[0]).toBe("Ulkomailla suoritettu koulutus");
         expect(scope.pohjakoulutukset[1]).toBe("Perusopetuksen oppimäärä");
         expect(scope.pohjakoulutukset[2]).toBe("Perusopetuksen osittain yksilöllistetty oppimäärä");
@@ -1053,30 +1050,6 @@ describe('Testing HarkinnanvaraisetController', function(){
         expect(scope.pohjakoulutukset[6]).toBe("Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä");
         expect(scope.pohjakoulutukset[7]).toBe("Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)");
         expect(scope.pohjakoulutukset[9]).toBe("Lukion päättötodistus, ylioppilastutkinto tai abiturientti");
-    });
-
-    it('filterHarkinnanvaraiset', function() {
-        expect(scope.model.filterHarkinnanvaraiset().length).toBe(0);
-        scope.model.hakeneet[1].hakenutHarkinnanvaraisesti = "true";
-        expect(scope.model.filterHarkinnanvaraiset().length).toBe(1);
-    });
-
-    it('filterValitut', function() {
-        expect(scope.model.filterValitut().length).toBe(1);
-        scope.model.hakeneet[2].hakenutHarkinnanvaraisesti = "true";
-        expect(scope.model.filterValitut().length).toBe(2);
-    });
-
-    it('isAllValittu', function() {
-        expect(scope.model.isAllValittu()).toBeTruthy();
-        scope.model.hakeneet[2].valittu = null;
-        expect(scope.model.isAllValittu()).toBeFalsy();
-    });
-
-    it('valitutHakemusOids', function() {
-        expect(scope.model.valitutHakemusOids().length).toBe(1);
-        scope.model.hakeneet[2].valittu = "true";
-        expect(scope.model.valitutHakemusOids().length).toBe(2);
     });
 
     afterEach(function() {
@@ -1800,7 +1773,6 @@ describe('Häviääko koetulokset', function(){
     });
 
     it('haviaakoPisteet', function() {
-        console.log('-----------------------------',scope.model);
         expect(scope.model.hakeneet[0].additionalData["SOTE1_kaikkiosiot-OSALLISTUMINEN"]).toBe("OSALLISTUI");
         expect(scope.model.hakeneet[0].additionalData["SOTE1_kaikkiosiot"]).toBe("1");
         expect(scope.model.hakeneet[0].additionalData["SOTEKOE_VK_RYHMA1-OSALLISTUMINEN"]).toBe("OSALLISTUI");
