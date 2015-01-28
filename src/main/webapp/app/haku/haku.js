@@ -50,8 +50,8 @@ angular.module('valintalaskenta')
                         model.deferred = $q.defer();
 
                         TarjontaHaut.get({}, function (resultWrapper) {
-                            model.haut = resultWrapper;
-                            model.haut.result.forEach(function (haku) {
+                            model.haut = resultWrapper.result;
+                            model.haut.forEach(function (haku) {
                                 if (haku.oid === oid) {
                                     model.hakuOid = haku;
                                     model.korkeakoulu = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
