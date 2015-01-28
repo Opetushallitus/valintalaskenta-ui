@@ -77,13 +77,16 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td>{{tulos.valintatuloksentila}}
+                                            <td>
                                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
-                                                <div ng-show="tulos.julkaistavissa && (updateOrg && (tulos.tila == 'HYVAKSYTTY' || tulos.tila == 'VARASIJALTA_HYVAKSYTTY' || tulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
-                                                    <span ng-show="(tulos.tila == 'HYVAKSYTTY' || tulos.tila == 'VARASIJALTA_HYVAKSYTTY' || tulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.tila == 'VARALLA'))">
-                                                        <muokattu-vastaanotto-tila haku="model.haku" hakemus="tulos"/>
-                                                    </span>
-                                                </div>
+                                                <select
+                                                        ng-show="tulos.julkaistavissa && (updateOrg && (tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))) || tulos.julkaistavissa && updateOph"
+                                                        ng-model="tulos.valintatuloksentila"
+                                                        ng-options="opt as opt for opt in valintatuloksentilat"/>
+                                                </select>
+                                                <span ng-hide="tulos.julkaistavissa && (updateOrg && (tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
+                                                {{tulos.valintatuloksentila}}
+                                                </span>
                                             </td>
                                             <td>{{tulos.ilmoittautumistila}}</td>
                                         </tr>

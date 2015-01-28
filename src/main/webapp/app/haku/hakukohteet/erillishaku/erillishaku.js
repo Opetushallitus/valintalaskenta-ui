@@ -1,345 +1,11 @@
 ﻿angular.module('valintalaskenta')
 
-.factory('ErillishakuModel', ['$routeParams', '$log', '_', 'ValinnanvaiheListByHakukohde', 'JarjestyskriteeriMuokattuJonosija',
-        'ValinnanVaiheetIlmanLaskentaa', 'HakukohdeHenkilotFull', 'Ilmoitus', 'IlmoitusTila', '$q', 'ValintaperusteetHakukohde',
-        'ValintatapajonoSijoitteluStatus', 'ErillisHakuSijoitteluajoHakukohde', 'VastaanottoTilat','VastaanottoTila', 'HaunTiedot',
-        function($routeParams, $log, _, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde,
-    ValintatapajonoSijoitteluStatus, ErillisHakuSijoitteluajoHakukohde, VastaanottoTilat,VastaanottoTila,HaunTiedot) {
-    "use strict";
-
-    var model;
-	model = new function() {
-
-        this.hakuOid = "";
-        this.hakukohdeOid = {};
-        this.valintatapajonoOid = "";
-        this.valinnanvaiheet = [];
-        this.ilmanlaskentaa = [];
-        this.errors = [];
-        this.hakukohdeOid = "";
-        this.tarjoajaOid = "";
-        this.hakeneet = [];
-        this.erillishakuDefer = $q.defer();
-        this.lastValinnanVaihe = "";
-
-        this.refresh = function(hakukohdeOid, hakuOid) {
-            var defer = $q.defer();
-
-            model.hakuOid = hakuOid;
-            model.hakukohdeOid = {};
-            model.valinnanvaiheet = [];
-            model.ilmanlaskentaa = [];
-            model.errors = [];
-            model.errors.length = 0;
-            model.hakukohdeOid = hakukohdeOid;
-            model.tarjoajaOid = "";
-            model.hakeneet = [];
-            model.erillishakuSijoitteluajoTulos = {};
-            model.vastaanottoTilat = [];
-            model.lastValinnanVaihe = "";
-            model.haku = {};
-
-            HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
-                model.haku = resultWrapper.result;
-            });
-
-            ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
-                model.tarjoajaOid = result.tarjoajaOid;
-            });
-            ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
-                model.valinnanvaiheet = result;
-                var found = false;
-                _.some(model.valinnanvaiheet, function (valinnanvaihe) {
-                    _.some(valinnanvaihe.valintatapajonot, function (valintatapajono) {
-                        if(_.has(valintatapajono, 'sijoitteluajoId') && valintatapajono.sijoitteluajoId !== null) {
-
-                            ErillisHakuSijoitteluajoHakukohde.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid, sijoitteluajoId: valintatapajono.sijoitteluajoId}, function (result) {
-                                model.erillishakuSijoitteluajoTulos = result;
-
-                                _.forEach(model.erillishakuSijoitteluajoTulos.valintatapajonot, function (sijoitteluJono) {
-                                    _.forEach(sijoitteluJono.hakemukset, function (sijoitteluHakemus) {
-                                        _.forEach(valinnanvaihe.valintatapajonot, function (jono) {
-                                            _.extend(_.find(jono.jonosijat, function (hakemus) {
-                                                return hakemus.hakemusOid === sijoitteluHakemus.hakemusOid;
-                                            }), {tilanKuvaukset: sijoitteluHakemus.tilanKuvaukset});
-                                        });
-                                    });
-                                });
-                                
-                                model.erillishakuDefer.resolve();
-                            });
-                            found = true;
-                            model.lastValinnanVaihe = valinnanvaihe.valinnanvaiheoid;
-                        }
-                        return found;
-                    });
-                    return found;
-                });
-
-                _.forEach(model.valinnanvaiheet, function (valinnanvaihe) {
-                    _.forEach(valinnanvaihe.valintatapajonot, function (valintatapajono) {
-                        VastaanottoTilat.get({
-                            hakukohdeOid: hakukohdeOid,
-                            valintatapajonoOid: valintatapajono.oid
-                        }, function (result) {
-                            _.forEach(result, function (vastaanottotila) {
-                                var jonosija = _.findWhere(valintatapajono.jonosijat, {hakemusOid: vastaanottotila.hakemusOid});
-                                _.extend( jonosija, {
-                                    muokattuVastaanottoTila: vastaanottotila.tila,
-                                    muokattuIlmoittautumisTila: vastaanottotila.ilmoittautumisTila,
-                                    hyvaksyttyVarasijalta: vastaanottotila.hyvaksyttyVarasijalta,
-                                    julkaistavissa: vastaanottotila.julkaistavissa
-                                });
-                            });
-                        });
-                    });
-                });
-
-                ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}, function(result) {
-                    model.ilmanlaskentaa = result;
-
-                    if(result.length > 0) {
-                        HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: model.hakuOid}, function (result) {
-                            model.hakeneet = result;
-                            model.ilmanlaskentaa.forEach(function (vaihe) {
-                                vaihe.valintatapajonot = [];
-                                vaihe.hakuOid = hakuOid;
-                                vaihe.jonot.forEach(function(jono) {
-                                    var tulosjono = {};
-                                    tulosjono.oid = jono.oid;
-                                    tulosjono.valintatapajonooid = jono.oid;
-                                    tulosjono.prioriteetti = jono.prioriteetti;
-                                    tulosjono.aloituspaikat = jono.aloituspaikat;
-
-                                    if(jono.siirretaanSijoitteluun == null) {
-                                        tulosjono.siirretaanSijoitteluun = true;
-                                    } else {
-                                        tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
-                                    }
-                                    if(jono.valmisSijoiteltavaksi == null) {
-                                        tulosjono.siirretaanSijoitteluun = true;
-                                    } else {
-                                        tulosjono.siirretaanSijoitteluun = jono.valmisSijoiteltavaksi;
-                                    }
-                                    if(jono.tasapistesaanto == null) {
-                                        tulosjono.tasasijasaanto = 'ARVONTA'
-                                    } else {
-                                        tulosjono.tasasijasaanto = jono.tasapistesaanto;
-                                    }
-                                    if(jono.eiVarasijatayttoa == null) {
-                                        tulosjono.eiVarasijatayttoa = false;
-                                    } else {
-                                        tulosjono.eiVarasijatayttoa = jono.eiVarasijatayttoa;
-                                    }
-                                    if(jono.kaikkiEhdonTayttavatHyvaksytaan == null) {
-                                        tulosjono.kaikkiEhdonTayttavatHyvaksytaan = false;
-                                    } else {
-                                        tulosjono.kaikkiEhdonTayttavatHyvaksytaan = jono.kaikkiEhdonTayttavatHyvaksytaan;
-                                    }
-                                    if(jono.poissaOlevaTaytto == null) {
-                                        tulosjono.poissaOlevaTaytto = false;
-                                    } else {
-                                        tulosjono.poissaOlevaTaytto = jono.poissaOlevaTaytto;
-                                    }
-                                    if(jono.kaytetaanValintalaskentaa == null) {
-                                        tulosjono.kaytetaanValintalaskentaa = true;
-                                    } else {
-                                        tulosjono.kaytetaanValintalaskentaa = jono.kaytetaanValintalaskentaa;
-                                    }
-
-                                    tulosjono.nimi = jono.nimi;
-                                    tulosjono.jonosijat = [];
-
-                                    var jonosijat = _.chain(model.valinnanvaiheet)
-                                        .filter(function(current) {return current.valinnanvaiheoid == vaihe.oid})
-                                        .map(function(current) {return current.valintatapajonot})
-                                        .first()
-                                        .filter(function(tulosjono) {return tulosjono.oid == jono.oid})
-                                        .map(function(tulosjono) {return tulosjono.jonosijat})
-                                        .first()
-                                        .value();
-
-                                    model.hakeneet.forEach(function(hakija) {
-                                        var jonosija = _.findWhere(jonosijat, {hakemusOid : hakija.oid});
-                                        if(jonosija) {
-                                            var krit = jonosija.jarjestyskriteerit[0];
-                                            if(krit.tila != 'HYVAKSYTTAVISSA') {
-                                                delete jonosija.jonosija
-                                            } else {
-                                                jonosija.jonosija = -(krit.arvo);
-                                            }
-                                            tulosjono.jonosijat.push(jonosija);
-                                        } else {
-                                            jonosija = {};
-                                            jonosija.hakemusOid = hakija.oid;
-                                            jonosija.hakijaOid = null;
-                                            jonosija.prioriteetti = model.hakutoivePrioriteetti(hakija.oid);
-                                            jonosija.harkinnanvarainen = false;
-                                            jonosija.historiat = null;
-                                            jonosija.syotetytArvot = [];
-                                            jonosija.funktioTulokset = [];
-                                            jonosija.muokattu = false;
-                                            jonosija.sukunimi = hakija.answers.henkilotiedot.Sukunimi;
-                                            jonosija.etunimi = hakija.answers.henkilotiedot.Etunimet;
-                                            jonosija.jarjestyskriteerit = [
-                                                {
-                                                    arvo: null,
-                                                    tila: "",
-                                                    kuvaus: { },
-                                                    prioriteetti: 0,
-                                                    nimi: ""
-                                                }
-                                            ];
-                                            tulosjono.jonosijat.push(jonosija);
-                                        }
-
-                                    });
-                                    vaihe.valintatapajonot.push(tulosjono);
-
-                                });
-                            });
-                            model.valinnanvaiheet.forEach(function(vaihe, index) {
-                                vaihe.valintatapajonot.forEach(function(jono, i) {
-                                    if(jono.kaytetaanValintalaskentaa == false) {
-                                        vaihe.valintatapajonot.splice(i, 1);
-                                    }
-                                });
-                                if(vaihe.valintatapajonot.length <= 0) {
-                                    model.valinnanvaiheet.splice(index, 1);
-                                }
-                            });
-                            defer.resolve();
-                        }, function (error) {
-                            model.errors.push(error);
-                            defer.reject("hakukohteen tietojen hakeminen epäonnistui");
-                        });
-                    }
-                }, function(error) {
-                    model.errors.push(error);
-                    defer.reject("hakukohteen tietojen hakeminen epäonnistui");
-                });
-            }, function(error) {
-                model.errors.push(error);
-                defer.reject("hakukohteen tietojen hakeminen epäonnistui");
-            });
-
-            return defer.promise;
-        };
-
-        this.hakutoivePrioriteetti = function(hakemusoid) {
-            var hakija = _.findWhere(model.hakeneet, {oid:hakemusoid});
-            if (!hakija) {
-                return -1;
-            }
-            var toive = (_.invert(hakija.answers.hakutoiveet))[model.hakukohdeOid];
-
-            if(toive) {
-                return parseInt(toive.substring(10,11));
-            } else {
-                return -1;
-            }
-        };
-
-        this.muutaSijoittelunStatus = function(jono, status) {
-            ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status},function(result) {
-                jono.valmisSijoiteltavaksi = status;
-                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-            }, function(error) {
-                Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
-            });
-        };
-
-        this.updateHakemuksienTila = function (valintatapajono, uiMuokatutHakemusOids, sijoitteluModel) {
-            if (sijoitteluModel.sijoitteluTulokset.valintatapajonot) {
-                var jonoonLiittyvat = _.filter(sijoitteluModel.sijoitteluTulokset.valintatapajonot, function (jono) {
-                    return jono.oid === valintatapajono.oid;
-                });
-
-                var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function (liittyvaJono) {
-                    return liittyvaJono.hakemukset;
-                })), function (hakemus) {
-                    return _.contains(uiMuokatutHakemusOids, hakemus.hakemusOid);
-                });
-
-                model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function(success){
-                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
-                }, function(error){
-                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-                });
-            }
-            if (model.erillishakuSijoitteluajoTulos.valintatapajonot) {
-                var jonoonLiittyvat = _.filter(model.erillishakuSijoitteluajoTulos.valintatapajonot, function (jono) {
-                    return jono.oid === valintatapajono.oid;
-                });
-
-                var muokatutHakemukset = _.flatten(_.map(jonoonLiittyvat, function (liittyvaJono) {
-                    return liittyvaJono.hakemukset;
-                }));
-
-                _.forEach(muokatutHakemukset, function (mHakemus) {
-                    _.extend(
-                        mHakemus,
-                        _.pick(_.findWhere(valintatapajono.jonosijat, {hakemusOid: mHakemus.hakemusOid}),
-                            'julkaistavissa', 'muokattuIlmoittautumisTila', 'muokattuVastaanottoTila', 'hyvaksyttyVarasijalta')
-                    );
-
-                });
-
-                model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajono.oid, function (success) {
-                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
-                }, function (error) {
-                    Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-                });
-            }
-        };
-
-        this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid) {
-            model.errors.length = 0;
-            var tilaParams = {
-                hakuoid: model.hakuOid,
-                hakukohdeOid: model.hakukohdeOid,
-                selite: selite
-            };
-
-            var tilaObj = _.map(muokatutHakemukset, function(hakemus) {
-                if (hakemus.muokattuVastaanottoTila === '' || hakemus.muokattuVastaanottoTila === undefined) {
-                    hakemus.muokattuVastaanottoTila = 'KESKEN';
-                }
-                if (hakemus.muokattuIlmoittautumisTila === '' || hakemus.muokattuIlmoittautumisTila === undefined) {
-                    hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
-                }
-                return {
-                    tila: hakemus.muokattuVastaanottoTila,
-                    ilmoittautumisTila: hakemus.muokattuIlmoittautumisTila,
-                    valintatapajonoOid: valintatapajonoOid,
-                    hakemusOid: hakemus.hakemusOid,
-                    julkaistavissa: hakemus.julkaistavissa,
-                    hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta
-                };
-            });
-
-            VastaanottoTila.post(tilaParams, tilaObj, function (result) {
-                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
-            }, function (error) {
-                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-            });
-        };
-
-
-	};
-
-	return model;
-}])
-
-
-
     .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
-        'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ErillishakuModel',
+        'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
         'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
         'ErillishakuProxy',
     function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
+              ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
               ErillishakuVienti,ErillishakuProxy) {
     "use strict";
 
@@ -347,24 +13,32 @@
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
-    $scope.model = ErillishakuModel;
-    ErillishakuModel.refresh($scope.hakukohdeOid, $scope.hakuOid);
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.hakuModel = HakuModel;
     $scope.sijoitteluModel = SijoitteluntulosModel; 
     $scope.sijoitteluModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
+        $scope.getTilatForHaku = function() {
+            if($scope.hakuModel.korkeakoulu) {
+                return ["EI_VASTAANOTETTU_MAARA_AIKANA",
+                    "PERUNUT",
+                    "PERUUTETTU",
+                    "VASTAANOTTANUT_SITOVASTI",
+                    "KESKEN"];
+            } else {
+                return ["VASTAANOTTANUT",
+                    "EI_VASTAANOTETTU_MAARA_AIKANA",
+                    "PERUNUT",
+                    "KESKEN"];
+            }
+        }
+
+    $scope.valintatuloksentilat = $scope.getTilatForHaku();
     $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
-
-
     $scope.pageSize = 50;
-
-    $scope.model.erillishakuDefer.promise.then(function () {
-        $scope.fetch = true;
-    });
 
     $scope.hakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
         $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOids', function () {
