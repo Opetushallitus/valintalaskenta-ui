@@ -337,9 +337,10 @@
     .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ErillishakuModel',
         'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
+        'ErillishakuProxy',
     function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,ErillishakuModel, TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
-              ErillishakuVienti) {
+              ErillishakuVienti,ErillishakuProxy) {
     "use strict";
 
     $scope.muokatutHakemukset = [];
@@ -353,7 +354,11 @@
     $scope.sijoitteluModel = SijoitteluntulosModel; 
     $scope.sijoitteluModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
+    $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
+
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+
+
 
     $scope.pageSize = 50;
 

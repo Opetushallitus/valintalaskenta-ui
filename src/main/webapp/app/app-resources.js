@@ -307,7 +307,14 @@ app.factory('ErillishakuVienti', function($resource) {
         vie: {method:'POST', isArray:false}
     });
 });
-
+app.factory('ErillishakuProxy', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/erillishaku/haku/:hakuOid/hakukohde/:hakukohdeOid", {
+        hakuOid: "@hakuOid",
+        hakukohdeOid: "@hakukohdeOid"
+    }, {
+        hae: {method:'GET', isArray:true}
+    });
+});
 app.factory('PistesyottoVienti', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/pistesyotto/vienti", {}, {
         vie: {method:'POST', isArray:false}
