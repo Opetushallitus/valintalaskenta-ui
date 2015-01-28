@@ -17,8 +17,8 @@
             {{ t('latausikkuna.suoritusetenee') || 'Dokumentin luonti epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.' }}
 			<div class="bs-callout bs-callout-danger" ng-repeat="poikkeus in prosessi.poikkeukset">
 		    	<h4>{{poikkeus.palvelu}}</h4>
-		    	<p ng-repeat="oid in poikkeus.oidit">{{oid.tyyppi}} {{oid.tunniste}}</p>
-		    	<p>{{poikkeus.palvelukutsu}} {{poikkeus.viesti}}</p>
+				<p>{{poikkeus.palvelukutsu}} {{poikkeus.viesti}}</p>
+		    	<p ng-repeat="oid in poikkeus.tunnisteet"><strong>{{oid.tyyppi}}</strong>&nbsp;{{oid.tunniste}}</p>
 		  	</div>
 		</div>
 		<div ng-if="prosessi.varoitukset">
