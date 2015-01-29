@@ -100,9 +100,16 @@
                                         </tfoot>
                                     </table>
                                     <table ng-show="valintatapajono.kaytetaanValintalaskentaa" class="virkailija-table-1">
-
+                                        <thead>
+                                        <tr>
+                                            <th>{{ t('valintalaskentatulos.jonosija') || 'Jonosija' }}</th>
+                                            <th>{{ t('valintalaskentatulos.hakija') || 'Hakija' }}</th>
+                                            <th>{{ t('sijoitteluntulos.hakemuksentila') || 'Hakemuksentila'}}</th>
+                                            <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}</th>
+                                            <th>{{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}</th>
+                                        </tr>
+                                        </thead>
                                         <tbody ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
-
 
                                         <!-- HAKIJAN TIEDOT -->
                                         <tr class="active">
@@ -119,20 +126,18 @@
                                                 {{tulos.jarjestyskriteerit[0].arvo}}
                                             </td>
                                             <td>
-                                                <div ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
+                                                <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
                                                     <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tulos.julkaistavissa"></div>
                                                     <div ng-show="tulos.julkaistavissa && (updateOrg && (hakijanSijoitteluTulos.tila == 'HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'VARASIJALTA_HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakijanSijoitteluTulos.tila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
-                                        <span ng-show="(hakijanSijoitteluTulos.tila == 'HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'VARASIJALTA_HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakijanSijoitteluTulos.tila == 'VARALLA'))">
-                                            <muokattu-vastaanotto-tila haku="model.haku" hakemus="tulos"/>
-                                        </span>
+                                                    <span ng-show="(hakijanSijoitteluTulos.tila == 'HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'VARASIJALTA_HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakijanSijoitteluTulos.tila == 'VARALLA'))">
+                                                        <muokattu-vastaanotto-tila haku="model.haku" hakemus="tulos"/>
+                                                    </span>
                                                     </div>
                                                 </div>
-
-
                                             </td>
                                             <td>
-                                                <div ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
+                                                <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
                                                     <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
                                                         <select ng-model="tulos.muokattuIlmoittautumisTila"
@@ -164,7 +169,7 @@
                                         </tr>
 
                                         <!-- SIJOITTELUN TULOS -->
-                                        <tr ng-if="valinnanvaihe.valinnanvaiheoid == model.lastValinnanVaihe">
+                                        <tr ng-if="valinnanvaihe.viimeinenVaihe">
                                             <td></td>
                                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>
                                             <td>{{hakijanSijoitteluTulos.tila}}</td>
@@ -182,6 +187,7 @@
                                                                              enabled="jkmuokkaus"/>
                                             </td>
                                         </tr>
+
                                         </tbody>
                                         <tfoot>
                                         <tr>
