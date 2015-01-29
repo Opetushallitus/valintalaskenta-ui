@@ -3,10 +3,10 @@
     .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
         'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
-        'ErillishakuProxy','ErillishakuTuonti',
+        'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila',
     function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
-              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti) {
+              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,VastaanottoTila) {
     "use strict";
 
     $scope.muokatutHakemukset = [];

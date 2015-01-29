@@ -55,6 +55,7 @@
                                             <th>{{ t('sijoitteluntulos.hakemuksentila') || 'Hakemuksentila'}}</th>
                                             <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}</th>
                                             <th>{{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}</th>
+                                            <th>{{ t('sijoitteluntulos.lisatiedot') || 'Lisätiedot'}}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -97,6 +98,15 @@
                                                     <span ng-switch-default>{{tulos.ilmoittautumistila}}</span>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item" ng-if="!tulos.loytyiHakemuksista">
+                                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                        {{ t('sijoitteluntulos.hakemustaeiloytynyt') || 'Hakemusta ei löytynyt'}}
+                                                    </li>
+                                                    <li class="list-group-item" ng-if="!tulos.loytyiSijoittelusta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Sijoittelun tulosta ei löytynyt'}}</li>
+                                                </ul>
+                                            </td>
                                         </tr>
                                         </tbody>
                                         <tfoot>
@@ -115,13 +125,14 @@
                                             <th>{{ t('sijoitteluntulos.hakemuksentila') || 'Hakemuksentila'}}</th>
                                             <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}</th>
                                             <th>{{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}</th>
+                                            <th>{{ t('sijoitteluntulos.lisatiedot') || 'Lisätiedot'}}</th>
                                         </tr>
                                         </thead>
                                         <tbody ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
 
                                         <!-- HAKIJAN TIEDOT -->
                                         <tr class="active">
-                                            <td>{{tulos.jonosija}}</td>
+                                            <td rowspan="3">{{tulos.jonosija}}</td>
                                             <td>
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"
@@ -158,7 +169,8 @@
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
                                                     <div ng-switch="updateOrg">
-                                                        <select ng-model="tulos.ilmoittautumistilat"
+                                                        <select ng-switch-when="true"
+                                                                ng-model="tulos.ilmoittautumistilat"
                                                                 ng-options="opt as opt for opt in ilmoittautumistilat"
                                                                 ng-change="addMuokattuHakemus(tulos)">
                                                         </select>
@@ -166,11 +178,20 @@
                                                     </div>
                                                 </div>
                                             </td>
+                                            <td rowspan="3" ng-class="{'bg-danger': !tulos.loytyiHakemuksista}">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item" ng-if="!tulos.loytyiHakemuksista">
+                                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                        {{ t('sijoitteluntulos.hakemustaeiloytynyt') || 'Hakemusta ei löytynyt'}}
+                                                    </li>
+                                                    <li class="list-group-item" ng-if="!tulos.loytyiSijoittelusta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Sijoittelun tulosta ei löytynyt'}}</li>
+                                                    <li class="list-group-item" ng-if="!tulos.loytyiLaskennasta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Laskennan tulosta ei löytynyt'}}</li>
+                                                </ul>
+                                            </td>
                                         </tr>
 
                                         <!-- LASKENNAN TULOS -->
                                         <tr>
-                                            <td></td>
                                             <td>{{t('erillishaku.laskennantulos') || 'Laskennan tulos'}}</td>
                                             <td>{{tulos.tuloksenTila}}</td>
                                             <td>
@@ -190,7 +211,6 @@
 
                                         <!-- SIJOITTELUN TULOS -->
                                         <tr ng-if="valinnanvaihe.viimeinenVaihe">
-                                            <td></td>
                                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>
                                             <td>{{tulos.hakemuksentila}}</td>
                                             <td>
