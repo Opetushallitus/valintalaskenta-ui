@@ -154,7 +154,7 @@
                                             <td>
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
-                                                    <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tulos.julkaistavissa"></div>
+                                                    <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"></div>
                                                     <div ng-switch="updateOrg">
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.valintatuloksentila"
