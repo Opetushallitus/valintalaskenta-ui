@@ -165,7 +165,21 @@
                 personOid: hakemus.hakijaOid,
                 hakemuksenTila: hakemus.hakemuksentila,
                 vastaanottoTila: hakemus.valintatuloksentila,
-                ilmoittautumisTila: hakemus.ilmoittautumistila
+                ilmoittautumisTila: hakemus.ilmoittautumistila,
+                julkaistaankoTiedot: hakemus.julkaistavissa
+            };
+        };
+
+        $scope.hakemusToValintatulos = function (valintatapajono) {
+            return function(hakemus) {
+                return {
+                    tila: hakemus.hakemuksentila,
+                    ilmoittautumisTila: hakemus.ilmoittautumistila,
+                    valintatapajonoOid: valintatapajono.oid,
+                    hakemusOid: hakemus.hakemusOid,
+                    julkaistavissa: hakemus.julkaistavissa,
+                    hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta
+                };
             };
         };
 
@@ -174,7 +188,15 @@
         };
 
         $scope.submitLaskennalla = function (valintatapajono) {
-            $scope.model.updateHakemuksienTila(valintatapajono.oid, $scope.muokatutHakemukset, $scope.sijoitteluModel);
+            VastaanottoTila.post({
+             hakuoid: $routeParams.hakuOid,
+             hakukohdeOid: $routeParams.hakukohdeOid,
+             selite: "Massamuokkaus"
+             }, _.map($scope.muokatutHakemukset,$scope.hakemusToValintatulos(valintatapajono)), function (result) {
+                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+            }, function (error) {
+                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+            });
         };
 
 
