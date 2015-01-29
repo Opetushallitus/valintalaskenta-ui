@@ -129,10 +129,13 @@
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
                                                     <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tulos.julkaistavissa"></div>
-                                                    <div ng-show="tulos.julkaistavissa && (updateOrg && (hakijanSijoitteluTulos.tila == 'HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'VARASIJALTA_HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakijanSijoitteluTulos.tila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
-                                                    <span ng-show="(hakijanSijoitteluTulos.tila == 'HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'VARASIJALTA_HYVAKSYTTY' || hakijanSijoitteluTulos.tila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && hakijanSijoitteluTulos.tila == 'VARALLA'))">
-                                                        <muokattu-vastaanotto-tila haku="model.haku" hakemus="tulos"/>
-                                                    </span>
+                                                    <div ng-show="tulos.julkaistavissa && (updateOrg && (tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
+                                                    <select
+                                                            ng-show="(tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))"
+                                                            ng-model="tulos.valintatuloksentila"
+                                                            ng-options="opt as opt for opt in valintatuloksentilat"
+                                                            ng-change="addMuokattuHakemus(tulos)"/>
+                                                    </select>
                                                     </div>
                                                 </div>
                                             </td>
@@ -172,7 +175,7 @@
                                         <tr ng-if="valinnanvaihe.viimeinenVaihe">
                                             <td></td>
                                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>
-                                            <td>{{hakijanSijoitteluTulos.tila}}</td>
+                                            <td>{{tulos.hakemuksentila}}</td>
                                             <td>
                                                 <span ng-if="userLang=='fi' && tulos.tilanKuvaukset.FI">{{tulos.tilanKuvaukset.FI}}</span>
                                                 <span ng-if="userLang=='sv' && tulos.tilanKuvaukset.SV">{{tulos.tilanKuvaukset.SV}}</span>
@@ -181,9 +184,9 @@
                                             <td>
                                                 <sijoittelu-vastaanotto-tila hakemus="tulos"
                                                                              valintatapajono-oid="valintatapajono.oid"
-                                                                             haku-oid="model.hakuOid"
-                                                                             hakukohde-oid="model.hakukohdeOid"
-                                                                             haku="model.haku"
+                                                                             haku-oid="valinnanvaihe.hakuOid"
+                                                                             hakukohde-oid="valinnanvaihe.hakukohdeOid"
+                                                                             haku="hakuModel"
                                                                              enabled="jkmuokkaus"/>
                                             </td>
                                         </tr>
