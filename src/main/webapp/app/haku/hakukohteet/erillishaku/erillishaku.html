@@ -51,7 +51,6 @@
                                     <table ng-hide="valintatapajono.kaytetaanValintalaskentaa" class="virkailija-table-1">
                                         <thead>
                                         <tr>
-                                            <th>{{ t('valintalaskentatulos.jonosija') || 'Jonosija' }}</th>
                                             <th>{{ t('valintalaskentatulos.hakija') || 'Hakija' }}</th>
                                             <th>{{ t('sijoitteluntulos.hakemuksentila') || 'Hakemuksentila'}}</th>
                                             <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}</th>
@@ -59,9 +58,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize"
-                                            class="">
-                                            <td>{{tulos.jonosija}}</td>
+                                        <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
                                             <td class="leftorientedcolumn">
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"
@@ -69,26 +66,37 @@
                                                                          haku-oid="{{hakuOid}}"
                                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
                                             </td>
-                                            <td>{{tulos.hakemuksentila}}
-                                                <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
-                                                    <select ng-model="tulos.muokattuIlmoittautumisTila" ng-change="addMuokattuHakemus(tulos)"
-                                                            ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
+                                            <td>
+                                                <div ng-switch="updateOrg">
+                                                    <select ng-switch-when="true"
+                                                            ng-model="tulos.hakemuksentila"
+                                                            ng-options="opt as opt for opt in hakemuksentilat"
+                                                            ng-change="addMuokattuHakemus(tulos)">
                                                     </select>
+                                                    <span ng-switch-default>{{tulos.hakemuksentila}}</span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
-                                                <select
-                                                        ng-show="tulos.julkaistavissa && (updateOrg && (tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))) || tulos.julkaistavissa && updateOph"
-                                                        ng-model="tulos.valintatuloksentila"
-                                                        ng-options="opt as opt for opt in valintatuloksentilat"
-                                                        ng-change="addMuokattuHakemus(tulos)"/>
-                                                </select>
-                                                <span ng-hide="tulos.julkaistavissa && (updateOrg && (tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
-                                                {{tulos.valintatuloksentila}}
-                                                </span>
+                                                <div ng-switch="updateOrg">
+                                                    <select ng-switch-when="true"
+                                                            ng-model="tulos.valintatuloksentila"
+                                                            ng-options="opt as opt for opt in valintatuloksentilat"
+                                                            ng-change="addMuokattuHakemus(tulos)"/>
+                                                    </select>
+                                                    <span ng-switch-default>{{tulos.valintatuloksentila}}</span>
+                                                </div>
                                             </td>
-                                            <td>{{tulos.ilmoittautumistila}}</td>
+                                            <td>
+                                                <div ng-switch="updateOrg">
+                                                    <select ng-switch-when="true"
+                                                            ng-model="tulos.ilmoittautumistila"
+                                                            ng-options="opt as opt for opt in ilmoittautumistilat"
+                                                            ng-change="addMuokattuHakemus(tulos)"/>
+                                                    </select>
+                                                    <span ng-switch-default>{{tulos.ilmoittautumistila}}</span>
+                                                </div>
+                                            </td>
                                         </tr>
                                         </tbody>
                                         <tfoot>
@@ -123,29 +131,38 @@
 
                                             </td>
                                             <td>
-                                                {{tulos.jarjestyskriteerit[0].arvo}}
+                                                <div ng-switch="updateOrg">
+                                                    <select ng-switch-when="true"
+                                                            ng-model="tulos.hakemuksentila"
+                                                            ng-options="opt as opt for opt in hakemuksentilat"
+                                                            ng-change="addMuokattuHakemus(tulos)">
+                                                    </select>
+                                                    <span ng-switch-default>{{tulos.hakemuksentila}}</span>
+                                                </div>
                                             </td>
                                             <td>
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
                                                     <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="tulos.julkaistavissa"></div>
-                                                    <div ng-show="tulos.julkaistavissa && (updateOrg && (tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
-                                                    <select
-                                                            ng-show="(tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))"
-                                                            ng-model="tulos.valintatuloksentila"
-                                                            ng-options="opt as opt for opt in valintatuloksentilat"
-                                                            ng-change="addMuokattuHakemus(tulos)"/>
-                                                    </select>
+                                                    <div ng-switch="updateOrg">
+                                                        <select ng-switch-when="true"
+                                                                ng-model="tulos.valintatuloksentila"
+                                                                ng-options="opt as opt for opt in valintatuloksentilat"
+                                                                ng-change="addMuokattuHakemus(tulos)"/>
+                                                        </select>
+                                                        <span ng-switch-default>{{tulos.valintatuloksentila}}</span>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
-                                                    <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
-                                                        <select ng-model="tulos.muokattuIlmoittautumisTila"
-                                                                ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">
+                                                    <div ng-switch="updateOrg">
+                                                        <select ng-model="tulos.ilmoittautumistilat"
+                                                                ng-options="opt as opt for opt in ilmoittautumistilat"
+                                                                ng-change="addMuokattuHakemus(tulos)">
                                                         </select>
+                                                        <span ng-switch-default>{{tulos.ilmoittautumistilat}}</span>
                                                     </div>
                                                 </div>
                                             </td>

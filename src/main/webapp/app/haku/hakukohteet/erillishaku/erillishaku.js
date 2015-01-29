@@ -18,22 +18,25 @@
     $scope.sijoitteluModel = SijoitteluntulosModel; 
     $scope.sijoitteluModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
-        $scope.getTilatForHaku = function() {
-            if($scope.hakuModel.korkeakoulu) {
-                return ["EI_VASTAANOTETTU_MAARA_AIKANA",
-                    "PERUNUT",
-                    "PERUUTETTU",
-                    "VASTAANOTTANUT_SITOVASTI",
-                    "KESKEN"];
-            } else {
-                return ["VASTAANOTTANUT",
-                    "EI_VASTAANOTETTU_MAARA_AIKANA",
-                    "PERUNUT",
-                    "KESKEN"];
-            }
+    $scope.getTilatForHaku = function() {
+        if ($scope.hakuModel.korkeakoulu) {
+            return ["EI_VASTAANOTETTU_MAARA_AIKANA",
+                "PERUNUT",
+                "PERUUTETTU",
+                "VASTAANOTTANUT_SITOVASTI",
+                "KESKEN", ""];
+        } else {
+            return ["VASTAANOTTANUT",
+                "EI_VASTAANOTETTU_MAARA_AIKANA",
+                "PERUNUT",
+                "KESKEN", ""];
         }
+    };
 
-    $scope.valintatuloksentilat = $scope.getTilatForHaku();
+        $scope.hakemuksentilat = ["HYVAKSYTTY","VARASIJALTA_HYVAKSYTTY","VARALLA","PERUNUT","PERUUTETTU","PERUUNTUNUT","HYLATTY"];
+        $scope.valintatuloksentilat = $scope.getTilatForHaku();
+        $scope.ilmoittautumistilat = ["EI_TEHTY","LASNA_KOKO_LUKUVUOSI","POISSA_KOKO_LUKUVUOSI","EI_ILMOITTAUTUNUT","LASNA_SYKSY","POISSA_SYKSY","LASNA","POISSA", ""];
+
     $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
