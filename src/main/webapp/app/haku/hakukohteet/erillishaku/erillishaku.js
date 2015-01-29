@@ -304,8 +304,7 @@
     				Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
     	            function(dokumenttiId) {
     	            	// tee paivitys
-    	            	$scope.model.refresh(hakukohdeOid, hakuOid);
-    	            	$scope.sijoitteluModel.refresh(hakuOid, hakukohdeOid);
+                        $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
     	            }
     	            );
     			}).error(function(data) {
