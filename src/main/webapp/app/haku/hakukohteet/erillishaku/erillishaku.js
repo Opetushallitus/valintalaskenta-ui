@@ -3,10 +3,10 @@
     .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
         'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
-        'ErillishakuProxy',
+        'ErillishakuProxy','ErillishakuTuonti',
     function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
-              ErillishakuVienti,ErillishakuProxy) {
+              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti) {
     "use strict";
 
     $scope.muokatutHakemukset = [];
@@ -154,14 +154,32 @@
             }
         };
 
+        $scope.hakemusToErillishakuRivi = function (hakemus) {
+            //$log.info(hakemus);
+            return {
+                etunimi: hakemus.etunimi,
+                sukunimi: hakemus.sukunimi,
+                henkilotunnus: hakemus.henkilotunnus,
+                sahkoposti: hakemus.sahkoposti,
+                syntymaAika: hakemus.syntymaaika,
+                personOid: hakemus.hakijaOid,
+                hakemuksenTila: hakemus.hakemuksentila,
+                vastaanottoTila: hakemus.valintatuloksentila,
+                ilmoittautumisTila: hakemus.ilmoittautumistila
+            };
+        };
 
-        $scope.submit = function (valintatapajonoOid) {
-            $scope.model.updateHakemuksienTila(valintatapajonoOid, $scope.muokatutHakemukset, $scope.sijoitteluModel);
+        $scope.submitIlmanLaskentaa = function (valintatapajono) {
+            $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map($scope.muokatutHakemukset,$scope.hakemusToErillishakuRivi));
+        };
+
+        $scope.submitLaskennalla = function (valintatapajono) {
+            $scope.model.updateHakemuksienTila(valintatapajono.oid, $scope.muokatutHakemukset, $scope.sijoitteluModel);
         };
 
 
         $scope.addMuokattuHakemus = function (hakemus) {
-            $scope.muokatutHakemukset.push(hakemus.hakemusOid);
+            $scope.muokatutHakemukset.push(hakemus);
             $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
         };
 
@@ -207,6 +225,24 @@
         		return "TOISEN_ASTEEN_OPPILAITOS";
         	}
         }
+        $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
+
+            var hakutyyppi = $scope.getHakutyyppi();
+            ErillishakuTuonti.tuo({
+                hakutyyppi: hakutyyppi,
+                hakukohdeOid: $scope.hakukohdeOid,
+                hakuOid: $routeParams.hakuOid,
+                valintatapajononNimi: valintatapajononNimi,
+                tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
+                valintatapajonoOid: valintatapajonoOid
+            },
+                {rivit: json}, function (id) {
+                Latausikkuna.avaa(id, "Erillishaun hakukohteen vienti taulukkolaskentaan", "");
+            }, function () {
+                Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+            });
+
+        };
         $scope.erillishaunVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
         	var hakutyyppi = $scope.getHakutyyppi();
         	ErillishakuVienti.vie({

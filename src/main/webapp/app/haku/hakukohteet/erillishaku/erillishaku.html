@@ -60,7 +60,8 @@
                                         </tr>
                                         </thead>
                                         <tbody >
-                                        <tr  ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
+                                        <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize"
+                                            class="danger">
                                             <td>{{tulos.jonosija}}</td>
                                             <td class="leftorientedcolumn">
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
@@ -68,7 +69,6 @@
                                                                          hakemus-oid="{{tulos.hakemusOid}}"
                                                                          haku-oid="{{hakuOid}}"
                                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
-
                                             </td>
                                             <td>{{tulos.hakemuksentila}}
                                                 <div ng-show="tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT' || tulos.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI'">
@@ -82,7 +82,8 @@
                                                 <select
                                                         ng-show="tulos.julkaistavissa && (updateOrg && (tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))) || tulos.julkaistavissa && updateOph"
                                                         ng-model="tulos.valintatuloksentila"
-                                                        ng-options="opt as opt for opt in valintatuloksentilat"/>
+                                                        ng-options="opt as opt for opt in valintatuloksentilat"
+                                                        ng-change="addMuokattuHakemus(tulos)"/>
                                                 </select>
                                                 <span ng-hide="tulos.julkaistavissa && (updateOrg && (tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY' || tulos.hakemuksentila == 'PERUNUT' || (valintatapajono.eiVarasijatayttoa && tulos.hakemuksentila == 'VARALLA'))) || tulos.julkaistavissa && updateOph">
                                                 {{tulos.valintatuloksentila}}
@@ -94,7 +95,8 @@
 
                                         </tbody>
                                     </table>
-                                    <button ng-disabled="muokatutHakemukset.length == 0" ng-click="submit(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
+                                    <button ng-hide="valintatapajono.kaytetaanValintalaskentaa" ng-disabled="muokatutHakemukset.length == 0" ng-click="submitIlmanLaskentaa(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
+                                    <button ng-show="valintatapajono.kaytetaanValintalaskentaa" ng-disabled="muokatutHakemukset.length == 0" ng-click="submitLaskennalla(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
                                     <br>
                                     <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}"
                                                 next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}"
