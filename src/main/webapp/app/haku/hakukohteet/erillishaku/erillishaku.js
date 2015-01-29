@@ -259,7 +259,12 @@
                 valintatapajonoOid: valintatapajonoOid
             },
                 {rivit: json}, function (id) {
-                Latausikkuna.avaa(id, "Erillishaun hakukohteen vienti taulukkolaskentaan", "");
+                Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
+                    function(dokumenttiId) {
+                        // tee paivitys
+                        $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
+                    }
+                );
             }, function () {
                 Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
             });
@@ -302,10 +307,10 @@
     				//console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
     			}).success(function(id, status, headers, config) {
     				Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
-    	            function(dokumenttiId) {
-    	            	// tee paivitys
-                        $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
-    	            }
+                        function(dokumenttiId) {
+                            // tee paivitys
+                            $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
+                        }
     	            );
     			}).error(function(data) {
     			    //error
