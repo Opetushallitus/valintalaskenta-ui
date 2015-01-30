@@ -51,13 +51,13 @@
                                             ng-file-select="erillishaunTuontiXlsx($files,valintatapajono.oid, valintatapajono.nimi)">
                                     </span>
                                     <button ng-show="valintatapajono.kaytetaanValintalaskentaa"
-                                            ng-disabled="!crudOrg && !crudOph"
+                                            ng-disabled="!crudOrg && !updateOph"
                                             ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun"
                                             ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm">{{
                                         t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}
                                     </button>
                                     <button ng-show="valintatapajono.kaytetaanValintalaskentaa"
-                                            ng-disabled="!crudOph"
+                                            ng-disabled="!updateOph"
                                             ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun"
                                             ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">
                                         {{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}
@@ -100,7 +100,7 @@
                                             </td>
                                             <td>
                                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
-                                                <div ng-switch="updateOrg">
+                                                <div ng-show="tulos.julkaistavissa" ng-switch="updateOrg">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.valintatuloksentila"
                                                             ng-options="opt.value as opt.text for opt in valintatuloksentilat"
@@ -164,7 +164,7 @@
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
                                                     <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
                                                     <div ng-switch="updateOrg">
-                                                        <select ng-switch-when="true"
+                                                        <select ng-show="tulos.julkaistavissa" ng-switch-when="true"
                                                                 ng-model="tulos.valintatuloksentila"
                                                                 ng-options="opt.value as opt.text for opt in valintatuloksentilat"
                                                                 ng-change="addMuokattuHakemus(tulos)"/>

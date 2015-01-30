@@ -90,8 +90,8 @@
 				                    		class="btn btn-primary btn-sm margin-bottom-2 btn-file">
 									    {{ t('valintalaskentatulos.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input type="file" ng-file-select="valintatapajonoTuontiXlsx($files)" >
 									</span>
-                                    <button ng-disabled="(valintatapajono.valmisSijoiteltavaksi && !updateOph) || !crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
-                                    <button ng-disabled="!crudOrg" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
+                                    <button ng-disabled="!updateOph && !crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
+                                    <button ng-disabled="!updateOph" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
 
 
                                     <table ng-table="valintatapajono.tableParams" show-filter="true" class="virkailija-table-1">
@@ -155,8 +155,8 @@
                         <div>
                             <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index"  ng-if="!valintatapajono.ilmanLaskentaa">
                                 <h3>{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{valintatapajono.nimi}}</h3>
-                                <button ng-disabled="!crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
-                                <button ng-disabled="!crudOrg" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
+                                <button ng-disabled="!crudOrg && !updateOph" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
+                                <button ng-disabled="!updateOph" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
 
 
                                 <table ng-table="valintatapajono.tableParams" show-filter="true" class="virkailija-table-1">

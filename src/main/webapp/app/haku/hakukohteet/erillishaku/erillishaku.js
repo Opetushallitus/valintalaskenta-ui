@@ -216,7 +216,7 @@
         $scope.hakemusToValintatulos = function (valintatapajono) {
             return function(hakemus) {
                 return {
-                    tila: hakemus.hakemuksentila,
+                    tila: hakemus.valintatuloksentila,
                     ilmoittautumisTila: hakemus.ilmoittautumistila,
                     valintatapajonoOid: valintatapajono.oid,
                     hakemusOid: hakemus.hakemusOid,
@@ -267,10 +267,10 @@
         };
 
         $scope.resetIlmoittautumisTila = function(hakemus) {
-            if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT' && hakemus.muokattuVastaanottoTila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
-                hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
-            } else if (!hakemus.muokattuIlmoittautumisTila) {
-                hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
+            if(hakemus.valintatuloksentila !== 'VASTAANOTTANUT' && hakemus.valintatuloksentila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
+                hakemus.ilmoittautumistila = 'EI_TEHTY';
+            } else if (!hakemus.ilmoittautumistila) {
+                hakemus.ilmoittautumistila = 'EI_TEHTY';
             }
         };
 
