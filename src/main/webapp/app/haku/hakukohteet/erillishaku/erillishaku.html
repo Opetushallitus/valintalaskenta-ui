@@ -19,7 +19,7 @@
 
             <pagination-pagesize page-size="pageSize"></pagination-pagesize>
             <div>
-                <h2>{{ t('valintalaskentatulos.valinnanvaiheet') || 'Valinnanvaiheet, jossa ei käytetä laskentaa'
+                <h2>{{ t('valintalaskentatulos.valinnanvaiheet') || 'Valinnanvaiheet'
                     }}</h2>
                 <accordion close-others="true">
                     <accordion-group
@@ -50,6 +50,18 @@
                                             type="file"
                                             ng-file-select="erillishaunTuontiXlsx($files,valintatapajono.oid, valintatapajono.nimi)">
                                     </span>
+                                    <button ng-show="valintatapajono.kaytetaanValintalaskentaa"
+                                            ng-disabled="!crudOrg && !crudOph"
+                                            ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun"
+                                            ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm">{{
+                                        t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}
+                                    </button>
+                                    <button ng-show="valintatapajono.kaytetaanValintalaskentaa"
+                                            ng-disabled="!crudOph"
+                                            ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun"
+                                            ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">
+                                        {{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}
+                                    </button>
                                     <table ng-hide="valintatapajono.kaytetaanValintalaskentaa" class="virkailija-table-1">
                                         <thead>
                                         <tr>
@@ -62,6 +74,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+
                                         <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
                                             <td ng-show="updateOrg">
                                                 <input type="checkbox"
@@ -97,7 +110,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div ng-switch="updateOrg">
+                                                <div ng-show="tulos.valintatuloksentila == 'VASTAANOTTANUT' || tulos.valintatuloksentila == 'VASTAANOTTANUT_SITOVASTI'" ng-switch="updateOrg">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.ilmoittautumistila"
                                                             ng-options="opt.value as opt.text for opt in ilmoittautumistilat"
@@ -130,21 +143,11 @@
                                         </tfoot>
                                     </table>
                                     <table ng-show="valintatapajono.kaytetaanValintalaskentaa" class="virkailija-table-1">
-                                        <thead>
-                                        <tr>
-                                            <th>{{ t('valintalaskentatulos.jonosija') || 'Jonosija' }}</th>
-                                            <th>{{ t('valintalaskentatulos.hakija') || 'Hakija' }}</th>
-                                            <th>{{ t('sijoitteluntulos.hakemuksentila') || 'Hakemuksentila'}}</th>
-                                            <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}</th>
-                                            <th>{{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}</th>
-                                            <th>{{ t('sijoitteluntulos.lisatiedot') || 'Lisätiedot'}}</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
 
+                                        <tbody ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
                                         <!-- HAKIJAN TIEDOT -->
                                         <tr class="active">
-                                            <td rowspan="3">{{tulos.jonosija}}</td>
+                                            <td>{{tulos.jonosija}}</td>
                                             <td>
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"
@@ -154,39 +157,34 @@
 
                                             </td>
                                             <td>
-                                                <div ng-switch="updateOrg">
-                                                    <select ng-switch-when="true"
-                                                            ng-model="tulos.hakemuksentila"
-                                                            ng-options="opt as opt for opt in hakemuksentilat"
-                                                            ng-change="addMuokattuHakemus(tulos)">
-                                                    </select>
-                                                    <span ng-switch-default>{{tulos.hakemuksentila}}</span>
-                                                </div>
+                                                {{tulos.jarjestyskriteerit[0].arvo}}
                                             </td>
                                             <td>
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
-                                                    <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"></div>
+                                                    <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
                                                     <div ng-switch="updateOrg">
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.valintatuloksentila"
-                                                                ng-options="opt as opt for opt in valintatuloksentilat"
+                                                                ng-options="opt.value as opt.text for opt in valintatuloksentilat"
                                                                 ng-change="addMuokattuHakemus(tulos)"/>
                                                         </select>
                                                         <span ng-switch-default>{{tulos.valintatuloksentila}}</span>
                                                     </div>
                                                 </div>
+
+
                                             </td>
                                             <td>
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
-                                                    <div ng-switch="updateOrg">
+                                                    <div ng-show="tulos.valintatuloksentila == 'VASTAANOTTANUT' || tulos.valintatuloksentila == 'VASTAANOTTANUT_SITOVASTI'" ng-switch="updateOrg">
                                                         <select ng-switch-when="true"
-                                                                ng-model="tulos.ilmoittautumistilat"
-                                                                ng-options="opt as opt for opt in ilmoittautumistilat"
-                                                                ng-change="addMuokattuHakemus(tulos)">
+                                                                ng-model="tulos.ilmoittautumistila"
+                                                                ng-options="opt.value as opt.text for opt in ilmoittautumistilat"
+                                                                ng-change="addMuokattuHakemus(tulos)"/>
                                                         </select>
-                                                        <span ng-switch-default>{{tulos.ilmoittautumistilat}}</span>
+                                                        <span ng-switch-default>{{tulos.ilmoittautumistila}}</span>
                                                     </div>
                                                 </div>
                                             </td>
@@ -205,7 +203,7 @@
                                         <!-- LASKENNAN TULOS -->
                                         <tr>
                                             <td>{{t('erillishaku.laskennantulos') || 'Laskennan tulos'}}</td>
-                                            <td>{{tulos.tuloksenTila}}</td>
+                                            <td>{{tulos.jarjestyskriteerit[0].tila}}</td>
                                             <td>
 
                                                 <span ng-if="userLang=='fi' && tulos.jarjestyskriteerit[0].kuvaus.FI">{{tulos.jarjestyskriteerit[0].kuvaus.FI}}</span>
