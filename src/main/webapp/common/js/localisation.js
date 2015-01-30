@@ -84,21 +84,21 @@ angular.module('oph.localisation', [])
                 if(array === undefined) {
 
                 } else {
-                var self = this;
-                var promises = [];
+                    var self = this;
+                    var promises = [];
 
-                array.forEach(function(item) {
-                    item.text = item.default_text;
-                    promises.push(self.getTranslation(item.text_prop).then(function (text) {
-                        if (text) {
-                            item.text = text;
-                        }
-                    }));
+                    array.forEach(function(item) {
+                        item.text = item.default_text;
+                        promises.push(self.getTranslation(item.text_prop).then(function (text) {
+                            if (text) {
+                                item.text = text;
+                            }
+                        }));
 
-                });
-                $q.all(promises).then(function () {
-                    deferred.resolve();
-                });
+                    });
+                    $q.all(promises).then(function () {
+                        deferred.resolve();
+                    });
                 }
                 return deferred.promise;
             };

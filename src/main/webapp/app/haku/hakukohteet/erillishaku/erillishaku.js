@@ -21,45 +21,56 @@
     $scope.getTilatForHaku = function() {
         if ($scope.hakuModel.korkeakoulu) {
             return [
-                {value:"EI_VASTAANOTETTU_MAARA_AIKANA", text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-                {value:"PERUNUT",   text:"Perunut"},
-                {value:"PERUUTETTU",text:"Peruutettu"},
-                {value:"VASTAANOTTANUT_SITOVASTI", text:"Vastaanotettu sitovasti"},
-                {value:"KESKEN",    text:"Kesken"},
-                {value:"",text:""}
+                {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                {value:"PERUNUT",   default_text:"Perunut"},
+                {value:"PERUUTETTU",default_text:"Peruutettu"},
+                {value:"VASTAANOTTANUT_SITOVASTI", default_text:"Vastaanotettu sitovasti"},
+                {value:"KESKEN",    default_text:"Kesken"},
+                {value:"",default_text:""}
             ];
         } else {
             return [
-                {value:"VASTAANOTTANUT", text: "Vastaanottanut"},
-                {value:"EI_VASTAANOTETTU_MAARA_AIKANA", text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-                {value:"PERUNUT",   text:"Perunut"},
-                {value:"KESKEN",    text:"Kesken"},
-                {value:"",text:""}
+                {value:"VASTAANOTTANUT", default_text: "Vastaanottanut"},
+                {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                {value:"PERUNUT",   default_text:"Perunut"},
+                {value:"KESKEN",    default_text:"Kesken"},
+                {value:"",default_text:""}
             ];
         }
     };
 
         $scope.hakemuksentilat = [
-            {value:"HYVAKSYTTY",text:"Hyv\u00E4ksytty"},
-            {value:"VARASIJALTA_HYVAKSYTTY",text:"Varasijalta hyv\u00E4ksytty"},
-            {value:"VARALLA",text:"Varalla"},
-            {value:"PERUNUT",text:"Perunut"},
-            {value:"PERUUTETTU",text:"Peruutettu"},
-            {value:"PERUUNTUNUT",text:"Peruuntunut"},
-            {value:"HYLATTY",text:"Hyl\u00E4tty"}
+            {value:"HYVAKSYTTY",default_text:"Hyv\u00E4ksytty"},
+            {value:"VARASIJALTA_HYVAKSYTTY",default_text:"Varasijalta hyv\u00E4ksytty"},
+            {value:"VARALLA",default_text:"Varalla"},
+            {value:"PERUNUT",default_text:"Perunut"},
+            {value:"PERUUTETTU",default_text:"Peruutettu"},
+            {value:"PERUUNTUNUT",default_text:"Peruuntunut"},
+            {value:"HYLATTY",default_text:"Hyl\u00E4tty"}
         ];
+        LocalisationService.getTranslationsForArray($scope.hakemuksentilat).then(function () {
+            HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+        });
 
         $scope.valintatuloksentilat = $scope.getTilatForHaku();
+        LocalisationService.getTranslationsForArray($scope.valintatuloksentilat).then(function () {
+            HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+        });
+
         $scope.ilmoittautumistilat = [
-            {value:"EI_TEHTY",text:"Ei tehty"},
-            {value:"LASNA_KOKO_LUKUVUOSI",text:"L\u00E4sna koko lukuvuosi"},
-            {value:"POISSA_KOKO_LUKUVUOSI",text:"Poissa koko lukuvuosi"},
-            {value:"EI_ILMOITTAUTUNUT",text:"Ei ilmoittautunut"},
-            {value:"LASNA_SYKSY",text:"L\u00E4sna syksy"},
-            {value:"POISSA_SYKSY",text:"Poissa syksy"},
-            {value:"LASNA",text:"L*sna"},
-            {value:"POISSA",text:"Poissa"},
-            {value:"",text:""}];
+            {value:"EI_TEHTY",default_text:"Ei tehty"},
+            {value:"LASNA_KOKO_LUKUVUOSI",default_text:"L\u00E4sna koko lukuvuosi"},
+            {value:"POISSA_KOKO_LUKUVUOSI",default_text:"Poissa koko lukuvuosi"},
+            {value:"EI_ILMOITTAUTUNUT",default_text:"Ei ilmoittautunut"},
+            {value:"LASNA_SYKSY",default_text:"L\u00E4sna syksy"},
+            {value:"POISSA_SYKSY",default_text:"Poissa syksy"},
+            {value:"LASNA",default_text:"L*sna"},
+            {value:"POISSA",default_text:"Poissa"},
+            {value:"",default_text:""}];
+
+        LocalisationService.getTranslationsForArray($scope.ilmoittautumistilat).then(function () {
+            HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+        });
 
     $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
 
@@ -98,12 +109,6 @@
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
         $scope.jkmuokkaus = true;
-    });
-
-    LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat).then(function () {
-
-        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-
     });
 
     $scope.user = UserModel;
