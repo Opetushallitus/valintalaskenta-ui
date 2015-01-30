@@ -12,7 +12,7 @@ angular.module('oph.localisation', [])
                 },
                 isArray: true
             }
-        }).query().$promise;
+        });
         /**
          * Haetaan lokalisoinnit käännöspalvelusta
          * palauttaa käännösten objekti taulukon.
@@ -20,7 +20,7 @@ angular.module('oph.localisation', [])
          */
         localisations.getLocalisations = function(){
             var deferred = $q.defer();
-            locals.then(function(data){
+            locals.query().$promise.then(function(data){
                 deferred.resolve(data);
             });
             return deferred.promise;
