@@ -147,7 +147,7 @@
                                         <tbody ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
                                         <!-- HAKIJAN TIEDOT -->
                                         <tr class="active">
-                                            <td>{{tulos.jonosija}}</td>
+                                            <td rowspan="3">{{tulos.jonosija}}</td>
                                             <td>
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"
