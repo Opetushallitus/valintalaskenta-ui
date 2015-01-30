@@ -81,7 +81,9 @@ angular.module('oph.localisation', [])
 
             this.getTranslationsForArray = function(array){
                 var deferred = $q.defer();
+                if(array === undefined) {
 
+                } else {
                 var self = this;
                 var promises = [];
 
@@ -97,6 +99,7 @@ angular.module('oph.localisation', [])
                 $q.all(promises).then(function () {
                     deferred.resolve();
                 });
+                }
                 return deferred.promise;
             };
 
