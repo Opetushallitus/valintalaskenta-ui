@@ -3,7 +3,6 @@
  */
 angular.module('oph.localisation', [])
     .factory('Localisations',[ '$resource','$q', function ($resource, $q) {
-        var localisations ={};
         var locals = $resource(LOCALISATION_URL_BASE+'/localisation',{},{
             query: {
                 method:'GET',
@@ -12,20 +11,17 @@ angular.module('oph.localisation', [])
                 },
                 isArray: true
             }
-        });
+        }).query().$promise;
         /**
          * Haetaan lokalisoinnit käännöspalvelusta
          * palauttaa käännösten objekti taulukon.
          * @returns {promise}
          */
-        localisations.getLocalisations = function(){
-            var deferred = $q.defer();
-            locals.query().$promise.then(function(data){
-                deferred.resolve(data);
-            });
-            return deferred.promise;
+        return {
+            getLocalisations: function() {
+                return locals;
+            }
         };
-        return localisations;
     }])
 
 
