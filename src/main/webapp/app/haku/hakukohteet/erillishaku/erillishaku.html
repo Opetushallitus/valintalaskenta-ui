@@ -53,6 +53,7 @@
                                     <table ng-hide="valintatapajono.kaytetaanValintalaskentaa" class="virkailija-table-1">
                                         <thead>
                                         <tr>
+                                            <th ng-show="updateOrg">{{ t('valintalaskentatulos.rivinpoisto') || 'Rivin poisto' }}</th>
                                             <th>{{ t('valintalaskentatulos.hakija') || 'Hakija' }}</th>
                                             <th>{{ t('sijoitteluntulos.hakemuksentila') || 'Hakemuksentila'}}</th>
                                             <th>{{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}</th>
@@ -62,6 +63,11 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
+                                            <td ng-show="updateOrg">
+                                                <input type="checkbox"
+                                                       ng-model="tulos.poistetaankoRivi"
+                                                       ng-change="addMuokattuHakemus(tulos)"> <br/>
+                                            </td>
                                             <td class="leftorientedcolumn">
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"

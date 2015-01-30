@@ -169,6 +169,7 @@
                 hakemuksenTila: hakemus.hakemuksentila,
                 vastaanottoTila: hakemus.valintatuloksentila,
                 ilmoittautumisTila: hakemus.ilmoittautumistila,
+                poistetaankoRivi: hakemus.poistetaankoRivi,
                 julkaistaankoTiedot: hakemus.julkaistavissa
             };
         };
@@ -207,7 +208,6 @@
             $scope.muokatutHakemukset.push(hakemus);
             $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
         };
-
 
         $scope.muutaSijoittelunStatus = function (jono, status) {
             ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status);
