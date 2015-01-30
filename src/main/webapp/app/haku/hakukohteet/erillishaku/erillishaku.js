@@ -197,6 +197,7 @@
              hakukohdeOid: $routeParams.hakukohdeOid,
              selite: "Massamuokkaus"
              }, _.map($scope.muokatutHakemukset,$scope.hakemusToValintatulos(valintatapajono)), function (result) {
+                $scope.muokatutHakemukset = [];
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function (error) {
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
@@ -265,6 +266,7 @@
                 Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
                     function(dokumenttiId) {
                         // tee paivitys
+                        $scope.muokatutHakemukset = [];
                         $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
                     }
                 );
