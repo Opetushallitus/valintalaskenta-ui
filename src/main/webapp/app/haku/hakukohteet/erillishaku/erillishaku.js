@@ -20,26 +20,70 @@
 
     $scope.getTilatForHaku = function() {
         if ($scope.hakuModel.korkeakoulu) {
-            return ["EI_VASTAANOTETTU_MAARA_AIKANA",
-                "PERUNUT",
-                "PERUUTETTU",
-                "VASTAANOTTANUT_SITOVASTI",
-                "KESKEN", ""];
+            return [
+                {value:"EI_VASTAANOTETTU_MAARA_AIKANA", text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                {value:"PERUNUT",   text:"Perunut"},
+                {value:"PERUUTETTU",text:"Peruutettu"},
+                {value:"VASTAANOTTANUT_SITOVASTI", text:"Vastaanotettu sitovasti"},
+                {value:"KESKEN",    text:"Kesken"},
+                {value:"",text:""}
+            ];
         } else {
-            return ["VASTAANOTTANUT",
-                "EI_VASTAANOTETTU_MAARA_AIKANA",
-                "PERUNUT",
-                "KESKEN", ""];
+            return [
+                {value:"VASTAANOTTANUT", text: "Vastaanottanut"},
+                {value:"EI_VASTAANOTETTU_MAARA_AIKANA", text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                {value:"PERUNUT",   text:"Perunut"},
+                {value:"KESKEN",    text:"Kesken"},
+                {value:"",text:""}
+            ];
         }
     };
 
-        $scope.hakemuksentilat = ["HYVAKSYTTY","VARASIJALTA_HYVAKSYTTY","VARALLA","PERUNUT","PERUUTETTU","PERUUNTUNUT","HYLATTY"];
+        $scope.hakemuksentilat = [
+            {value:"HYVAKSYTTY",text:"Hyv\u00E4ksytty"},
+            {value:"VARASIJALTA_HYVAKSYTTY",text:"Varasijalta hyv\u00E4ksytty"},
+            {value:"VARALLA",text:"Varalla"},
+            {value:"PERUNUT",text:"Perunut"},
+            {value:"PERUUTETTU",text:"Peruutettu"},
+            {value:"PERUUNTUNUT",text:"Peruuntunut"},
+            {value:"HYLATTY",text:"Hyl\u00E4tty"}
+        ];
+
         $scope.valintatuloksentilat = $scope.getTilatForHaku();
-        $scope.ilmoittautumistilat = ["EI_TEHTY","LASNA_KOKO_LUKUVUOSI","POISSA_KOKO_LUKUVUOSI","EI_ILMOITTAUTUNUT","LASNA_SYKSY","POISSA_SYKSY","LASNA","POISSA", ""];
+        $scope.ilmoittautumistilat = [
+            {value:"EI_TEHTY",text:"Ei tehty"},
+            {value:"LASNA_KOKO_LUKUVUOSI",text:"L\u00E4sna koko lukuvuosi"},
+            {value:"POISSA_KOKO_LUKUVUOSI",text:"Poissa koko lukuvuosi"},
+            {value:"EI_ILMOITTAUTUNUT",text:"Ei ilmoittautunut"},
+            {value:"LASNA_SYKSY",text:"L\u00E4sna syksy"},
+            {value:"POISSA_SYKSY",text:"Poissa syksy"},
+            {value:"LASNA",text:"L*sna"},
+            {value:"POISSA",text:"Poissa"},
+            {value:"",text:""}];
 
     $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+
+        $scope.virheellisetTilat = function(tulos) {
+            var virhe = "";
+            if(undefined === _.find($scope.valintatuloksentilat, {'value': tulos.valintatuloksentila})) {
+                virhe = virhe + ", " + tulos.valintatuloksentila;
+            }
+            if(undefined === _.find($scope.hakemuksentilat, {'value': tulos.hakemuksentila})) {
+                virhe = virhe + ", " + tulos.hakemuksentila;
+            }
+            if(undefined === _.find($scope.ilmoittautumistilat, {'value': tulos.ilmoittautumistila})) {
+                virhe = virhe + ", " + tulos.ilmoittautumistila;
+            }
+            return virhe;
+        };
+
+        $scope.tarkistaTilat = function(tulos) {
+            return undefined === _.find($scope.valintatuloksentilat, {'value': tulos.valintatuloksentila})
+                || undefined === _.find($scope.hakemuksentilat, {'value':tulos.hakemuksentila})
+                || undefined === _.find($scope.ilmoittautumistilat, {'value':tulos.ilmoittautumistila});
+        };
 
     $scope.pageSize = 50;
 
@@ -203,7 +247,6 @@
                 Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
             });
         };
-
 
         $scope.addMuokattuHakemus = function (hakemus) {
             $scope.muokatutHakemukset.push(hakemus);

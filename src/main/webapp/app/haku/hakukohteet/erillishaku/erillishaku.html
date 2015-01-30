@@ -79,7 +79,7 @@
                                                 <div ng-switch="updateOrg">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.hakemuksentila"
-                                                            ng-options="opt as opt for opt in hakemuksentilat"
+                                                            ng-options="opt.value as opt.text for opt in hakemuksentilat"
                                                             ng-change="addMuokattuHakemus(tulos)">
                                                     </select>
                                                     <span ng-switch-default>{{tulos.hakemuksentila}}</span>
@@ -90,7 +90,7 @@
                                                 <div ng-switch="updateOrg">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.valintatuloksentila"
-                                                            ng-options="opt as opt for opt in valintatuloksentilat"
+                                                            ng-options="opt.value as opt.text for opt in valintatuloksentilat"
                                                             ng-change="addMuokattuHakemus(tulos)"/>
                                                     </select>
                                                     <span ng-switch-default>{{tulos.valintatuloksentila}}</span>
@@ -100,7 +100,7 @@
                                                 <div ng-switch="updateOrg">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.ilmoittautumistila"
-                                                            ng-options="opt as opt for opt in ilmoittautumistilat"
+                                                            ng-options="opt.value as opt.text for opt in ilmoittautumistilat"
                                                             ng-change="addMuokattuHakemus(tulos)"/>
                                                     </select>
                                                     <span ng-switch-default>{{tulos.ilmoittautumistila}}</span>
@@ -113,6 +113,10 @@
                                                         {{ t('sijoitteluntulos.hakemustaeiloytynyt') || 'Hakemusta ei löytynyt'}}
                                                     </li>
                                                     <li class="list-group-item" ng-if="!tulos.loytyiSijoittelusta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Sijoittelun tulosta ei löytynyt'}}</li>
+                                                    <li class="list-group-item" ng-if="tarkistaTilat(tulos)">
+                                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                        {{ t('sijoitteluntulos.virheellisiatiloja') || 'Virheellisiä tiloja'}}{{virheellisetTilat(tulos)}}
+                                                    </li>
                                                 </ul>
                                             </td>
                                         </tr>
