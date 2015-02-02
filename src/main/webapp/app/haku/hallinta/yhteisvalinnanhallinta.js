@@ -184,7 +184,7 @@ angular.module('valintalaskenta').
                 Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html",
                     function (dokumenttiId) {
 
-                        AktivoiKelaFtp.put(dokumenttiId, function (success) {
+                        AktivoiKelaFtp.post({}, dokumenttiId, function (success) {
                             Ilmoitus.avaa("Kela-dokumentin ftp-siirto onnistui", "Ftp-siirto onnistui");
                         }, function () {
                             Ilmoitus.avaa("Kela-dokumentin ftp-siirto epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);

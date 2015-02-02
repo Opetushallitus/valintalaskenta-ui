@@ -3,7 +3,6 @@
  */
 angular.module('oph.localisation', [])
     .factory('Localisations',[ '$resource','$q', function ($resource, $q) {
-        var localisations ={};
         var locals = $resource(LOCALISATION_URL_BASE+'/localisation',{},{
             query: {
                 method:'GET',
@@ -12,20 +11,17 @@ angular.module('oph.localisation', [])
                 },
                 isArray: true
             }
-        });
+        }).query().$promise;
         /**
          * Haetaan lokalisoinnit käännöspalvelusta
          * palauttaa käännösten objekti taulukon.
          * @returns {promise}
          */
-        localisations.getLocalisations = function(){
-            var deferred = $q.defer();
-            locals.query().$promise.then(function(data){
-                deferred.resolve(data);
-            });
-            return deferred.promise;
+        return {
+            getLocalisations: function() {
+                return locals;
+            }
         };
-        return localisations;
     }])
 
 
@@ -85,22 +81,25 @@ angular.module('oph.localisation', [])
 
             this.getTranslationsForArray = function(array){
                 var deferred = $q.defer();
+                if(array === undefined) {
 
-                var self = this;
-                var promises = [];
+                } else {
+                    var self = this;
+                    var promises = [];
 
-                array.forEach(function(item) {
-                    item.text = item.default_text;
-                    promises.push(self.getTranslation(item.text_prop).then(function (text) {
-                        if (text) {
-                            item.text = text;
-                        }
-                    }));
+                    array.forEach(function(item) {
+                        item.text = item.default_text;
+                        promises.push(self.getTranslation(item.text_prop).then(function (text) {
+                            if (text) {
+                                item.text = text;
+                            }
+                        }));
 
-                });
-                $q.all(promises).then(function () {
-                    deferred.resolve();
-                });
+                    });
+                    $q.all(promises).then(function () {
+                        deferred.resolve();
+                    });
+                }
                 return deferred.promise;
             };
 

@@ -68,12 +68,12 @@ angular.module('valintalaskenta')
                                 var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
                                 var match = lisahakutyyppiRegExp.exec(hakutyyppi);
                                 match ? haku.lisahaku = true : haku.lisahaku = false;
-                                
+
                                 var hakutapa = haku.hakutapaUri;
                                 var erillishakutapaRegExp = /(hakutapa_02).*/;
                                 var matchErillishaku = erillishakutapaRegExp.exec(hakutapa);
                                 matchErillishaku ? haku.erillishaku = true : haku.erillishaku = false;
-                                
+
                             });
                             model.deferred.resolve();
                         }, function (error) {
