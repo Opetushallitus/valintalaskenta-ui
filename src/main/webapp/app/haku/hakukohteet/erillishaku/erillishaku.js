@@ -64,7 +64,7 @@
             {value:"EI_ILMOITTAUTUNUT",default_text:"Ei ilmoittautunut"},
             {value:"LASNA_SYKSY",default_text:"L\u00E4sna syksy"},
             {value:"POISSA_SYKSY",default_text:"Poissa syksy"},
-            {value:"LASNA",default_text:"L*sna"},
+            {value:"LASNA",default_text:"L\u00E4sna"},
             {value:"POISSA",default_text:"Poissa"},
             {value:"",default_text:""}];
 
