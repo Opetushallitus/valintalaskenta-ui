@@ -6,7 +6,8 @@ angular.module('valintalaskenta')
 
             var model;
             model = new function () {
-                this.deferred = undefined;
+                this.deferred = $q.defer();
+                this.promise = this.deferred.promise;
                 this.hakuOid = "";
                 this.haut = [];
                 this.lisahaku = false;
@@ -47,8 +48,6 @@ angular.module('valintalaskenta')
 
                 this.init = function (oid) {
                     if (model.haut.length === 0 || oid !== model.hakuOid) {
-                        model.deferred = $q.defer();
-
                         TarjontaHaut.get({}, function (resultWrapper) {
                             model.haut = resultWrapper.result;
                             model.haut.forEach(function (haku) {
@@ -75,7 +74,7 @@ angular.module('valintalaskenta')
                                 matchErillishaku ? haku.erillishaku = true : haku.erillishaku = false;
 
                             });
-                            model.deferred.resolve();
+                            model.deferred.resolve(model);
                         }, function (error) {
                             model.deferred.reject('Hakulistan hakeminen epäonnistui');
                             $log.error(error);
@@ -231,7 +230,7 @@ angular.module('valintalaskenta')
                     that.hakuvuodetOpts = _.uniq(_.pluck(HakuModel.haut, 'hakukausiVuosi'));
                 });
 
-                that.deferred.resolve();
+                that.deferred.resolve(that);
             };
 
             this.refreshIfNeeded = function (hakuOid) {

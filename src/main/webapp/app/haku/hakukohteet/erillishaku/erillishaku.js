@@ -15,29 +15,37 @@
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.hakuModel = HakuModel;
+
+        $scope.valintatuloksentilat = [];
+        $scope.korkeakoulu;
+
+        HakuModel.promise.then(function(model) {
+            $scope.korkeakoulu = model.korkeakoulu;
+            if ($scope.korkeakoulu) {
+                $scope.valintatuloksentilat = [
+                    {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                    {value:"KESKEN",    default_text:"Kesken"},
+                    {value:"PERUNUT",   default_text:"Perunut"},
+                    {value:"PERUUTETTU",default_text:"Peruutettu"},
+                    {value:"VASTAANOTTANUT_SITOVASTI", default_text:"Vastaanotettu sitovasti"},
+                    {value:"",default_text:""}
+                ];
+            } else {
+                $scope.valintatuloksentilat = [
+                    {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                    {value:"KESKEN",    default_text:"Kesken"},
+                    {value:"PERUNUT",   default_text:"Perunut"},
+                    {value:"VASTAANOTTANUT", default_text: "Vastaanottanut"},
+                    {value:"",default_text:""}
+                ];
+            }
+            LocalisationService.getTranslationsForArray($scope.valintatuloksentilat).then(function () {
+                HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+            });
+        });
+
     $scope.sijoitteluModel = SijoitteluntulosModel; 
     $scope.sijoitteluModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
-
-    $scope.getTilatForHaku = function() {
-        if ($scope.hakuModel.korkeakoulu) {
-            return [
-                {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-                {value:"PERUNUT",   default_text:"Perunut"},
-                {value:"PERUUTETTU",default_text:"Peruutettu"},
-                {value:"VASTAANOTTANUT_SITOVASTI", default_text:"Vastaanotettu sitovasti"},
-                {value:"KESKEN",    default_text:"Kesken"},
-                {value:"",default_text:""}
-            ];
-        } else {
-            return [
-                {value:"VASTAANOTTANUT", default_text: "Vastaanottanut"},
-                {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-                {value:"PERUNUT",   default_text:"Perunut"},
-                {value:"KESKEN",    default_text:"Kesken"},
-                {value:"",default_text:""}
-            ];
-        }
-    };
 
         $scope.hakemuksentilat = [
             {value:"HYVAKSYTTY",default_text:"Hyv\u00E4ksytty"},
@@ -48,14 +56,12 @@
             {value:"PERUUNTUNUT",default_text:"Peruuntunut"},
             {value:"HYLATTY",default_text:"Hyl\u00E4tty"}
         ];
+
         LocalisationService.getTranslationsForArray($scope.hakemuksentilat).then(function () {
             HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
         });
 
-        $scope.valintatuloksentilat = $scope.getTilatForHaku();
-        LocalisationService.getTranslationsForArray($scope.valintatuloksentilat).then(function () {
-            HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-        });
+
 
         $scope.ilmoittautumistilat = [
             {value:"EI_TEHTY",default_text:"Ei tehty"},
@@ -71,30 +77,18 @@
         LocalisationService.getTranslationsForArray($scope.ilmoittautumistilat).then(function () {
             HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
         });
+        $scope.isVaaraVastaanottotila = function(tila) {
+            return ($scope.korkeakoulu && tila === 'VASTAANOTTANUT')
+                || (!$scope.korkeakoulu && tila === 'VASTAANOTTANUT_SITOVASTI');
+        }
+        $scope.isVastaanottanut = function(tila) {
+            return ($scope.korkeakoulu && tila === 'VASTAANOTTANUT_SITOVASTI')
+            || (!$scope.korkeakoulu && tila === 'VASTAANOTTANUT');
+        }
 
     $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
 
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-
-        $scope.virheellisetTilat = function(tulos) {
-            var virhe = "";
-            if(undefined === _.find($scope.valintatuloksentilat, {'value': tulos.valintatuloksentila})) {
-                virhe = virhe + ", " + tulos.valintatuloksentila;
-            }
-            if(undefined === _.find($scope.hakemuksentilat, {'value': tulos.hakemuksentila})) {
-                virhe = virhe + ", " + tulos.hakemuksentila;
-            }
-            if(undefined === _.find($scope.ilmoittautumistilat, {'value': tulos.ilmoittautumistila})) {
-                virhe = virhe + ", " + tulos.ilmoittautumistila;
-            }
-            return virhe;
-        };
-
-        $scope.tarkistaTilat = function(tulos) {
-            return undefined === _.find($scope.valintatuloksentilat, {'value': tulos.valintatuloksentila})
-                || undefined === _.find($scope.hakemuksentilat, {'value':tulos.hakemuksentila})
-                || undefined === _.find($scope.ilmoittautumistilat, {'value':tulos.ilmoittautumistila});
-        };
 
     $scope.pageSize = 50;
 
