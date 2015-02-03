@@ -220,6 +220,10 @@
                                                     </li>
                                                     <li class="list-group-item" ng-if="!tulos.loytyiSijoittelusta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Sijoittelun tulosta ei löytynyt'}}</li>
                                                     <li class="list-group-item" ng-if="!tulos.loytyiLaskennasta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Laskennan tulosta ei löytynyt'}}</li>
+                                                    <li class="list-group-item" ng-if="isVaaraVastaanottotila(tulos.valintatuloksentila)">
+                                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                        {{ t('sijoitteluntulos.vaaravalintatuloksentila') || 'Virheellinen vastaanottotieto'}}
+                                                    </li>
                                                 </ul>
                                             </td>
                                         </tr>
