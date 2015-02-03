@@ -35,6 +35,7 @@
             model.hakukohdeOid = hakukohdeOid;
             model.tarjoajaOid = "";
             model.hakeneet = [];
+            model.ilmanLaskentaaOids = [];
             ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.tarjoajaOid = result.tarjoajaOid;
             });
@@ -51,6 +52,7 @@
                                 vaihe.valintatapajonot = [];
                                 vaihe.hakuOid = hakuOid;
                                 vaihe.jonot.forEach(function(jono) {
+                                    model.ilmanLaskentaaOids.push(jono.oid);
                                     var tulosjono = {};
                                     tulosjono.oid = jono.oid;
                                     tulosjono.valintatapajonooid = jono.oid;
@@ -175,12 +177,10 @@
                             });
 
                             model.valinnanvaiheet.forEach(function(vaihe, index) {
-                                vaihe.valintatapajonot.forEach(function(jono, i) {
-                                    if(jono.kaytetaanValintalaskentaa == false) {
-                                        vaihe.valintatapajonot.splice(i, 1);
-                                    }
-
+                                vaihe.valintatapajonot = _.filter(vaihe.valintatapajonot, function(jono) {
+                                    return _.indexOf(model.ilmanLaskentaaOids, jono.oid) == -1;
                                 });
+
                                 if(vaihe.valintatapajonot.length <= 0) {
                                     model.valinnanvaiheet.splice(index, 1);
                                 }
