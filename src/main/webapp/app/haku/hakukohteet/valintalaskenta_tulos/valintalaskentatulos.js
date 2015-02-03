@@ -173,6 +173,7 @@
 
                                 });
                             });
+
                             model.valinnanvaiheet.forEach(function(vaihe, index) {
                                 vaihe.valintatapajonot.forEach(function(jono, i) {
                                     if(jono.kaytetaanValintalaskentaa == false) {
@@ -185,43 +186,15 @@
                                 }
                             });
 
-                            model.valinnanvaiheet.forEach(function(vaihe, index) {
-                                vaihe.valintatapajonot.forEach(function(jono, i) {
-                                    jono.tableParams = new ngTableParams({
-                                        page: 1,            // show first page
-                                        count: 50,          // count per page
-                                        filters: {
-                                            'sukunimi' : ''
-                                        },
-                                        sorting: {
-                                            'jonosija' : 'asc',
-                                            'sukunimi': 'asc'
-                                        }
-                                    }, {
-                                        total: jono.jonosijat.length, // length of data
-                                        getData: function ($defer, params) {
-                                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
-
-                                            var orderedData = params.sorting() ?
-                                                $filter('orderBy')(jono.jonosijat, params.orderBy()) :
-                                                jono.jonosijat;
-                                            orderedData = params.filter() ?
-                                                $filter('filter')(orderedData, filters) :
-                                                orderedData;
-
-                                            params.total(orderedData.length); // set total for recalc pagination
-                                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-
-                                        }
-                                    });
-
-                                });
-                            });
+                            model.renderTulokset();
                             defer.resolve();
                         }, function (error) {
                             model.errors.push(error);
                             defer.reject("hakukohteen tietojen hakeminen epäonnistui");
                         });
+                    } else {
+                        model.renderTulokset();
+                        defer.resolve();
                     }
                 }, function(error) {
                     model.errors.push(error);
@@ -234,6 +207,42 @@
 			
             return defer.promise;
 		};
+
+        this.renderTulokset = function() {
+            model.valinnanvaiheet.forEach(function(vaihe, index) {
+
+                vaihe.valintatapajonot.forEach(function(jono, i) {
+                    jono.tableParams = new ngTableParams({
+                        page: 1,            // show first page
+                        count: 50,          // count per page
+                        filters: {
+                            'sukunimi' : ''
+                        },
+                        sorting: {
+                            'jonosija' : 'asc',
+                            'sukunimi': 'asc'
+                        }
+                    }, {
+                        total: jono.jonosijat.length, // length of data
+                        getData: function ($defer, params) {
+                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                            var orderedData = params.sorting() ?
+                                $filter('orderBy')(jono.jonosijat, params.orderBy()) :
+                                jono.jonosijat;
+                            orderedData = params.filter() ?
+                                $filter('filter')(orderedData, filters) :
+                                orderedData;
+
+                            params.total(orderedData.length); // set total for recalc pagination
+                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+                        }
+                    });
+
+                });
+            });
+        };
 
         this.submit = function (vaiheoid, jonooid) {
             var vv = _.findWhere(model.ilmanlaskentaa, {oid:vaiheoid});
