@@ -316,21 +316,25 @@ angular.module('valintalaskenta').
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
     var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
+
+    promise.then(function() {
         AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
             $scope.updateOph = true;
             $scope.jkmuokkaus = true;
         });
+    });
 
-        hakukohdeModelpromise.then(function () {
-            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
-                $scope.crudOrg = true;
-            });
-        });
 
-        $scope.user = UserModel;
-        UserModel.refreshIfNeeded().then(function(){
-            $scope.jkmuokkaus = UserModel.isKKUser;
+    hakukohdeModelpromise.then(function () {
+        AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
+            $scope.crudOrg = true;
         });
+    });
+
+    $scope.user = UserModel;
+    UserModel.refreshIfNeeded().then(function(){
+        $scope.jkmuokkaus = UserModel.isKKUser;
+    });
 
 
     $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
