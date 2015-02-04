@@ -35,6 +35,7 @@
             model.hakukohdeOid = hakukohdeOid;
             model.tarjoajaOid = "";
             model.hakeneet = [];
+            model.ilmanLaskentaaOids = [];
             ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.tarjoajaOid = result.tarjoajaOid;
             });
@@ -51,6 +52,7 @@
                                 vaihe.valintatapajonot = [];
                                 vaihe.hakuOid = hakuOid;
                                 vaihe.jonot.forEach(function(jono) {
+                                    model.ilmanLaskentaaOids.push(jono.oid);
                                     var tulosjono = {};
                                     tulosjono.oid = jono.oid;
                                     tulosjono.valintatapajonooid = jono.oid;
@@ -173,55 +175,26 @@
 
                                 });
                             });
-                            model.valinnanvaiheet.forEach(function(vaihe, index) {
-                                vaihe.valintatapajonot.forEach(function(jono, i) {
-                                    if(jono.kaytetaanValintalaskentaa == false) {
-                                        vaihe.valintatapajonot.splice(i, 1);
-                                    }
 
+                            model.valinnanvaiheet.forEach(function(vaihe, index) {
+                                vaihe.valintatapajonot = _.filter(vaihe.valintatapajonot, function(jono) {
+                                    return _.indexOf(model.ilmanLaskentaaOids, jono.oid) == -1;
                                 });
+
                                 if(vaihe.valintatapajonot.length <= 0) {
                                     model.valinnanvaiheet.splice(index, 1);
                                 }
                             });
 
-                            model.valinnanvaiheet.forEach(function(vaihe, index) {
-                                vaihe.valintatapajonot.forEach(function(jono, i) {
-                                    jono.tableParams = new ngTableParams({
-                                        page: 1,            // show first page
-                                        count: 50,          // count per page
-                                        filters: {
-                                            'sukunimi' : ''
-                                        },
-                                        sorting: {
-                                            'jonosija' : 'asc',
-                                            'sukunimi': 'asc'
-                                        }
-                                    }, {
-                                        total: jono.jonosijat.length, // length of data
-                                        getData: function ($defer, params) {
-                                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
-
-                                            var orderedData = params.sorting() ?
-                                                $filter('orderBy')(jono.jonosijat, params.orderBy()) :
-                                                jono.jonosijat;
-                                            orderedData = params.filter() ?
-                                                $filter('filter')(orderedData, filters) :
-                                                orderedData;
-
-                                            params.total(orderedData.length); // set total for recalc pagination
-                                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-
-                                        }
-                                    });
-
-                                });
-                            });
+                            model.renderTulokset();
                             defer.resolve();
                         }, function (error) {
                             model.errors.push(error);
                             defer.reject("hakukohteen tietojen hakeminen epäonnistui");
                         });
+                    } else {
+                        model.renderTulokset();
+                        defer.resolve();
                     }
                 }, function(error) {
                     model.errors.push(error);
@@ -234,6 +207,42 @@
 			
             return defer.promise;
 		};
+
+        this.renderTulokset = function() {
+            model.valinnanvaiheet.forEach(function(vaihe, index) {
+
+                vaihe.valintatapajonot.forEach(function(jono, i) {
+                    jono.tableParams = new ngTableParams({
+                        page: 1,            // show first page
+                        count: 50,          // count per page
+                        filters: {
+                            'sukunimi' : ''
+                        },
+                        sorting: {
+                            'jonosija' : 'asc',
+                            'sukunimi': 'asc'
+                        }
+                    }, {
+                        total: jono.jonosijat.length, // length of data
+                        getData: function ($defer, params) {
+                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                            var orderedData = params.sorting() ?
+                                $filter('orderBy')(jono.jonosijat, params.orderBy()) :
+                                jono.jonosijat;
+                            orderedData = params.filter() ?
+                                $filter('filter')(orderedData, filters) :
+                                orderedData;
+
+                            params.total(orderedData.length); // set total for recalc pagination
+                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+                        }
+                    });
+
+                });
+            });
+        };
 
         this.submit = function (vaiheoid, jonooid) {
             var vv = _.findWhere(model.ilmanlaskentaa, {oid:vaiheoid});
@@ -307,21 +316,25 @@ angular.module('valintalaskenta').
     var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
     var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
+
+    promise.then(function() {
         AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
             $scope.updateOph = true;
             $scope.jkmuokkaus = true;
         });
+    });
 
-        hakukohdeModelpromise.then(function () {
-            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
-                $scope.crudOrg = true;
-            });
-        });
 
-        $scope.user = UserModel;
-        UserModel.refreshIfNeeded().then(function(){
-            $scope.jkmuokkaus = UserModel.isKKUser;
+    hakukohdeModelpromise.then(function () {
+        AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
+            $scope.crudOrg = true;
         });
+    });
+
+    $scope.user = UserModel;
+    UserModel.refreshIfNeeded().then(function(){
+        $scope.jkmuokkaus = UserModel.isKKUser;
+    });
 
 
     $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {

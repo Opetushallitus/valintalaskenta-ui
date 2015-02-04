@@ -197,14 +197,14 @@
                                             <td>
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto'}}:
-                                                    <div ng-switch="updateOrg && isVastaanottanut(tulos.valintatuloksentila)">
+                                                    <div ng-switch="updateOrg && isVastaanottanut(tulos.valintatuloksentila) && tulos.julkaistavissa">
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.ilmoittautumistila"
                                                                 ng-options="opt.value as opt.text for opt in ilmoittautumistilat"
                                                                 ng-change="addMuokattuHakemus(tulos)"/>
                                                         </select>
                                                         <select disabled="disabled"
-                                                                ng-switch-defaul
+                                                                ng-switch-default
                                                                 ng-model="tulos.ilmoittautumistila"
                                                                 ng-options="opt.value as opt.text for opt in ilmoittautumistilat"
                                                                 ng-change="addMuokattuHakemus(tulos)"/>
@@ -220,6 +220,10 @@
                                                     </li>
                                                     <li class="list-group-item" ng-if="!tulos.loytyiSijoittelusta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Sijoittelun tulosta ei löytynyt'}}</li>
                                                     <li class="list-group-item" ng-if="!tulos.loytyiLaskennasta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Laskennan tulosta ei löytynyt'}}</li>
+                                                    <li class="list-group-item" ng-if="isVaaraVastaanottotila(tulos.valintatuloksentila)">
+                                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                        {{ t('sijoitteluntulos.vaaravalintatuloksentila') || 'Virheellinen vastaanottotieto'}}
+                                                    </li>
                                                 </ul>
                                             </td>
                                         </tr>
