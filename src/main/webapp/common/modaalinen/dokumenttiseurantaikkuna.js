@@ -1,23 +1,18 @@
-function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
+function DokumenttiSeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		$interval, $routeParams, HakuModel,
 		ValintalaskentaKerrallaHakukohteille,
 		ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila,
-		SeurantaPalvelu, ValintalaskentaKerrallaUudelleenYrita,
+		DokumenttiSeurantaPalvelu, ValintalaskentaKerrallaUudelleenYrita,
 		SeurantaPalveluLataa) {
 	$scope.uuid = oids.uuid;
 	$scope.kaynnissa = false;
 	$scope.nimi = HakuModel.getNimi();
 	$scope.nimentarkennus = oids.nimentarkennus;
-	$scope.lisaa = false;
-	$scope.ohitettu = 0;
-	$scope.tehty = 0;
-	$scope.kaikkityot = 0;
 	$scope.disabloikeskeyta = false;
 	$scope.source = null;
-	$scope.kokonaanvalmis = false;
-	$scope.valinnanvaihe = oids.valinnanvaihe;
-	$scope.valintakoelaskenta = oids.valintakoelaskenta;
-	
+	$scope.dokumenttiId = null;
+	$scope.virheilmoitukset = null;
+
 	var timer = undefined;
 	$scope.paivitaPollaten = function(uuid) {
 		$scope.uuid = uuid;
@@ -38,20 +33,9 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		}
 	};
 	$scope.paivitaMuuttujat = function(r) {
-		$scope.ohitettu = r.hakukohteitaKeskeytetty;
-		$scope.tehty = r.hakukohteitaValmiina;
-		$scope.kaikkityot = r.hakukohteitaYhteensa;
-		if(r.tila == "VALMIS") {
-			if ($scope.ohitettu + $scope.tehty == $scope.kaikkityot) {
-				$scope.kaynnissa = false;
-			}
-		}
-		//$scope.kaynnissa = (r.tila == "MENEILLAAN");
-		if ($scope.kaikkityot) {
-			if ($scope.tehty == $scope.kaikkityot) {
-				$scope.kokonaanvalmis = true;
-			}
-		}
+		$scope.kuvaus = r.kuvaus;
+		$scope.dokumenttiId = r.dokumenttiId;
+		$scope.virheilmoitukset = r.virheilmoitukset;
 	};
 
 	$scope.hideUudelleenYritys = function() {
@@ -59,8 +43,11 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		return $scope.isKokonaanValmis() || $scope.isKaynnissa();
 	};
 	$scope.isKokonaanValmis = function() {
-		return $scope.kokonaanvalmis;
+		return $scope.dokumenttiId;
 	};
+	$scope.isKokonaanKeskeytetty = function() {
+		return $scope.virheilmoitukset;
+	}
 	$scope.isKaynnissa = function() { // onko ajossa tai onko mielekasta enaa
 		// ajaakkaan
 		return $scope.uuid == null || $scope.kaynnissa;
@@ -68,7 +55,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	$scope.reconnect = function(uuid) {
 		$log.info("Yhdistetaan! " + uuid);
 		$scope.source = new EventSource(SEURANTA_URL_BASE
-				+ '/seuranta/yhteenveto/' + uuid + '/sse');
+				+ '/dokumentinseuranta/' + uuid + '/sse');
 		$scope.source.addEventListener('message', function(e) {
 			$scope.$apply(function() {
 				var r = angular.fromJson(e.data);
@@ -105,6 +92,8 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		$scope.paivitaPollaten(uuid);
 	};
 	$scope.uudelleenyritaForce = function() {
+		$log.info("Toteuttamatta");
+		/*
 		ValintalaskentaKerrallaUudelleenYrita
 				.uudelleenyrita(
 						{
@@ -121,13 +110,14 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 											"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. " + err.data,
 											IlmoitusTila.ERROR);
 						});
+		*/
 	};
 	$scope.uudelleenyrita = function() {
 		if ($scope.isKaynnissa()) {
 			Ilmoitus
 					.avaa(
-							"Laskenta on vielä käynnissä",
-							"Uudelleen yritystä voidaan yrittää vasta kun vanha laskenta on päättynyt",
+							"Toiminto on vielä käynnissä",
+							"Uudelleen yritystä voidaan yrittää vasta kun vanha toiminto on päättynyt",
 							IlmoitusTila.ERROR);
 		} else {
 			$scope.kaynnissa = true;
@@ -151,6 +141,9 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		if (!hakukohteet) {
 			hakukohteet = [];
 		}
+		$scope.kaynnissa = true;
+		$scope.paivitaForce(oids.id);
+		/*
 		ValintalaskentaKerrallaHakukohteille
 				.aktivoi(
 						{
@@ -163,8 +156,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 						},
 						hakukohteet,
 						function(uuid) {
-							$scope.kaynnissa = true;
-							$scope.paivitaForce(uuid.latausUrl);
+
 						},
 						function(err) {
 							Ilmoitus
@@ -173,41 +165,20 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 											"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. " + err.data,
 											IlmoitusTila.ERROR);
 						});
+		*/
 	}
-
-	$scope.yhteenveto = function() {
-		$window.open(VALINTALASKENTAKOOSTE_URL_BASE
-				+ "resources/valintalaskentakerralla/status/" + $scope.uuid
-				+ "/xls");
-	};
-	$scope.vieJsoniksi = function() {
-		$window.open(SEURANTA_URL_BASE + "/seuranta/lataa/" + $scope.uuid);
-	};
 
 	var update = function() {
 		if ($scope.uuid != null) {
-			SeurantaPalvelu.hae({
+			DokumenttiSeurantaPalvelu.hae({
 				uuid : $scope.uuid
 			}, function(r) {
 				$scope.paivitaMuuttujat(r);
-				if ($scope.tehty + $scope.ohitettu == $scope.kaikkityot) {
+				if ($scope.isKokonaanValmis() || $scope.isKokonaanKeskeytetty()) {
 					$interval.cancel(timer);
 				}
 			});
 		}
-	};
-
-	$scope.peruuta = function() {
-		if (!$scope.disabloikeskeyta) {
-			$scope.disabloikeskeyta = true;
-			ValintalaskentaKerrallaAktivointi.keskeyta({
-				hakuoid : $scope.uuid
-			});
-		}
-	};
-
-	$scope.naytaLisaa = function() {
-		$scope.lisaa = !$scope.lisaa;
 	};
 
 	$scope.ok = function() {
@@ -218,6 +189,21 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			$log.info("SSE "+$scope.uuid+" suljetaan selaimen pyynnosta!");
 			$scope.source.close();
 		}
+		oids.ok();
+		$log.info("TODO Peruuta keskenerainen");
+		/*
+		 $scope.peruuta = function() {
+		 if (!$scope.disabloikeskeyta) {
+		 $scope.disabloikeskeyta = true;
+		 $log.info("Keskeytyspyynto TODO");
+
+		 ValintalaskentaKerrallaAktivointi.keskeyta({
+		 hakuoid : $scope.uuid
+		 });
+
+		 }
+		 };
+		 */
 		$modalInstance.close(); // $scope.selected.item);
 	};
 
@@ -230,28 +216,19 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			$scope.source.close();
 		}
 		$modalInstance.dismiss('cancel');
-
 	};
 	$scope.getOnnistuneetProsentit = function() {
-		if ($scope.kaikkityot == 0) {
-			return 0;
+		if ($scope.isKokonaanValmis()) {
+			return 100;
 		} else {
-			return Math.round(($scope.tehty / $scope.kaikkityot) * 100);
+			return 0;
 		}
 	};
 	$scope.getOhitetutProsentit = function() {
-		if ($scope.kaikkityot == 0) {
-			return 0;
+		if ($scope.isKokonaanKeskeytetty()) {
+			return 100;
 		} else {
-			return Math.round(($scope.ohitettu / $scope.kaikkityot) * 100);
-		}
-	};
-	$scope.getProsentit = function() {
-		if ($scope.kaikkityot == 0) {
 			return 0;
-		} else {
-			return Math
-					.round((($scope.tehty + $scope.ohitettu) / $scope.kaikkityot) * 100);
 		}
 	};
 };
