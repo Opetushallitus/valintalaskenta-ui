@@ -301,9 +301,9 @@
 angular.module('valintalaskenta').
     controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ValintalaskentatulosModel',
-        'TulosXls', 'HakukohdeModel', '$http', 'AuthService', 'UserModel', 'LocalisationService',
+        'TulosXls', 'HakukohdeModel', '$http','$log','$modal', 'AuthService', 'UserModel', 'LocalisationService',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, AuthService, UserModel,
+              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, $log, $modal, AuthService, UserModel,
               LocalisationService) {
     "use strict";
 
@@ -350,30 +350,57 @@ angular.module('valintalaskenta').
     };
 
     $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files) {
-		var file = $files[0];
-		var fileReader = new FileReader();
-	    fileReader.readAsArrayBuffer(file);
-	    var hakukohdeOid = $scope.hakukohdeOid;
-	    var hakuOid = $routeParams.hakuOid;
-	    fileReader.onload = function(e) {
-			$scope.upload = $upload.http({
-	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid + "&valintatapajonoOid="+ valintatapajonoOid, //upload.php script, node.js route, or servlet url
-				method: "POST",
-				headers: {'Content-Type': 'application/octet-stream'},
-				data: e.target.result
-			}).progress(function(evt) {
-				//console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-			}).success(function(id, status, headers, config) {
-				Latausikkuna.avaaKustomoitu(id, "Valintatapajonon tuonti", "", "../common/modaalinen/tuontiikkuna.html",
-	            function(dokumenttiId) {
-	            	// tee paivitys
-	            	$scope.model.refresh(hakukohdeOid, hakuOid);
-	            }
-	            );
-			}).error(function(data) {
-			    //error
-			});
-	    };
+		$log.info("dfsga");
+        var file = $files[0];
+        var fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(file);
+        var hakukohdeOid = $scope.hakukohdeOid;
+        var hakuOid = $routeParams.hakuOid;
+        fileReader.onload = function(e) {
+            $scope.upload = $upload.http({
+                url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid + "&valintatapajonoOid="+ valintatapajonoOid,
+                method: "POST",
+                headers: {'Content-Type': 'application/octet-stream'},
+                data: e.target.result
+            }).progress(function(evt) {
+                //console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+            }).success(function(id, status, headers, config) {
+                /*
+                Latausikkuna.avaaKustomoitu(id, "Valintatapajonon tuonti", "", "../common/modaalinen/tuontiikkuna.html",
+                    function(dokumenttiId) {
+                        // tee paivitys
+                        $scope.model.refresh(hakukohdeOid, hakuOid);
+                    }
+                );
+                */
+                var valintatulostentuonti = $modal.open({
+                    backdrop: 'static',
+                    templateUrl: '../common/modaalinen/dokumenttiseurantaikkuna.html',
+                    controller: DokumenttiSeurantaIkkunaCtrl,
+                    size: 'lg',
+                    resolve: {
+                        oids: function () {
+                            return {
+                                hakuOid: $routeParams.hakuOid,
+                                tyyppi: "HAKUKOHDE",
+                                hakukohteet: [$routeParams.hakukohdeOid],
+                                id: id,
+                                kaynnista: function() {
+                                    $log.info("Käynnistetään");
+                                },
+                                ok: function() {
+                                    $scope.model.refresh(hakukohdeOid, hakuOid);
+                                }
+                            };
+                        }
+                    }
+                });
+            }).error(function(data) {
+                //error
+                Ilmoitus.avaa("Tuonti epäonnistui", "Valintatulosten tuonti epäonnistui. "+ data + ". Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+            });
+        };
+
     };
 
     $scope.jonoLength = function(length) {

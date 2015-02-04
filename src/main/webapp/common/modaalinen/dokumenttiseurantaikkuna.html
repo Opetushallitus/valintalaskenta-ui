@@ -1,0 +1,27 @@
+<div class="modal-header">
+	<h2 style="margin-top: -12px;">{{ t('dokumenttiseurantaikkuna.header') || 'Asiakirjan tuonti' }}</h2>
+</div>
+<div class="modal-body">
+	<h3 style="margin-top: -12px;">{{nimi}}</h3>
+	<br>
+	<div class="progress">
+	  <div class="progress-bar" ng-style="{width:getOnnistuneetProsentit()+'%'}">
+	    {{getOnnistuneetProsentit()}}%
+	  </div>
+	  <div class="progress-bar progress-bar-danger" ng-style="{width:getOhitetutProsentit()+'%'}">
+	    {{getOhitetutProsentit()}}%
+	  </div>
+	</div>
+	<div ng-if="uuid">
+		<div class="col-sm-4">{{kuvaus}}</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<div class="row">
+		<a ng-hide="hideUudelleenYritys()" class="btn btn-default" ng-click="uudelleenyrita()">{{ t('dokumenttiseurantaikkuna.uudelleenyrita') || 'Yritä uudelleen ohitettuja hakukohteita' }}</a>
+		<a class="btn btn-default" ng-click="ok()"  role="button">
+			<span ng-hide="isKokonaanValmis()">{{ t('dokumenttiseurantaikkuna.sulje') || 'Peruuta' }}</span>
+			<span ng-show="isKokonaanValmis()">{{ t('dokumenttiseurantaikkuna.paivita_nakyma') || 'Päivitä näkymä' }}</span>
+		</a>
+	</div>
+</div>

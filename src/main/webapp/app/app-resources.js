@@ -216,6 +216,11 @@ app.factory('ValintalaskentaKerrallaUudelleenYrita', function($resource) {
         uudelleenyrita: {method: "POST"}
     });
 });
+app.factory('DokumenttiSeurantaPalvelu', function($resource) {
+    return $resource(SEURANTA_URL_BASE + "/dokumenttiseuranta/:uuid", {uuid: "@uuid"}, {
+        hae: {method: "GET", isArray:false}
+    });
+});
 app.factory('SeurantaPalvelu', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/seuranta/yhteenveto/:uuid", {uuid: "@uuid"}, {
         hae: {method: "GET", isArray:false}
