@@ -341,7 +341,9 @@ angular.module('valintalaskenta').
     	ValintatapajonoVienti.vie({
     		valintatapajonoOid: valintatapajonoOid,
     		hakukohdeOid: $scope.hakukohdeOid,
-    		hakuOid: $routeParams.hakuOid},
+    		hakuOid: $routeParams.hakuOid,
+                tarjoajaOid: hakukohdeModel.hakukohde.tarjoajaOids[0]
+            },
     		{}, function (id) {
             Latausikkuna.avaa(id, "Valintatapajonon vienti taulukkolaskentaan", "");
         }, function () {
@@ -350,15 +352,15 @@ angular.module('valintalaskenta').
     };
 
     $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files) {
-		$log.info("dfsga");
         var file = $files[0];
         var fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
         var hakukohdeOid = $scope.hakukohdeOid;
         var hakuOid = $routeParams.hakuOid;
+        var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
         fileReader.onload = function(e) {
             $scope.upload = $upload.http({
-                url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid + "&valintatapajonoOid="+ valintatapajonoOid,
+                url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?tarjoajaOid="+tarjoajaOid+"&hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid + "&valintatapajonoOid="+ valintatapajonoOid,
                 method: "POST",
                 headers: {'Content-Type': 'application/octet-stream'},
                 data: e.target.result
