@@ -77,18 +77,11 @@
                                             class="btn btn-primary btn-sm margin-bottom-2"
                                              ng-click="submit(valinnanvaihe.oid, valintatapajono.oid)">{{ t('valintalaskentatulos.tallenna') || 'Tallenna' }}
                                     </button>
-                                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
-				                    		ng-click="valintatapajonoVientiXlsx(valintatapajono.oid)"
+                                    <button ng-click="valintatapajonoVientiXlsx(valintatapajono.oid)"
 				                            class="btn btn-default btn-sm margin-bottom-2">{{ t('valintalaskentatulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
 				                    </button>
-				                    <span	ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
-				                    		class="btn btn-primary btn-sm margin-bottom-2 btn-file">
+				                    <span class="btn btn-primary btn-sm margin-bottom-2 btn-file">
 									    {{ t('valintalaskentatulos.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input type="file" ng-file-select="valintatapajonoTuontiXlsx(valintatapajono.oid, $files)" >
-									</span>
-				                    <span ng-hide="true"	
-				                    		ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
-				                    		class="btn btn-primary btn-sm margin-bottom-2 btn-file">
-									    {{ t('valintalaskentatulos.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }} <input type="file" ng-file-select="valintatapajonoTuontiXlsx($files)" >
 									</span>
                                     <button ng-disabled="!updateOph && !crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
                                     <button ng-disabled="!updateOph" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>

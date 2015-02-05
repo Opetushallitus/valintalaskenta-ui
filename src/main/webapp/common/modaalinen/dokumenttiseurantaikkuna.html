@@ -12,8 +12,9 @@
 	    {{getOhitetutProsentit()}}%
 	  </div>
 	</div>
-	<div ng-if="uuid">
-		<div class="col-sm-4">{{kuvaus}}</div>
+	<div ng-switch="isKokonaanKeskeytetty()">
+		<div ng-switch-default class="col-sm-4">{{kuvaus}}</div>
+		<div ng-switch-when="true" class="col-sm-4" ng-repeat="virheilmoitus in virheilmoitukset">{{virheilmoitus.ilmoitus}}</div>
 	</div>
 </div>
 <div class="modal-footer">
