@@ -342,7 +342,7 @@ angular.module('valintalaskenta').
     		valintatapajonoOid: valintatapajonoOid,
     		hakukohdeOid: $scope.hakukohdeOid,
     		hakuOid: $routeParams.hakuOid,
-                tarjoajaOid: hakukohdeModel.hakukohde.tarjoajaOids[0]
+                tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0]
             },
     		{}, function (id) {
             Latausikkuna.avaa(id, "Valintatapajonon vienti taulukkolaskentaan", "");
