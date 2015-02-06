@@ -52,6 +52,14 @@
                                 vaihe.valintatapajonot = [];
                                 vaihe.hakuOid = hakuOid;
                                 vaihe.jonot.forEach(function(jono) {
+
+                                    var laskentaJono = _.chain(model.valinnanvaiheet)
+                                        .filter(function(current) {return current.valinnanvaiheoid == vaihe.oid})
+                                        .map(function(current) {return current.valintatapajonot})
+                                        .first()
+                                        .find(function(tulosjono) {return tulosjono.oid == jono.oid})
+                                        .value();
+
                                     model.ilmanLaskentaaOids.push(jono.oid);
                                     var tulosjono = {};
                                     tulosjono.oid = jono.oid;
@@ -59,16 +67,29 @@
                                     tulosjono.prioriteetti = jono.prioriteetti;
                                     tulosjono.aloituspaikat = jono.aloituspaikat;
 
+                                    var valmisSijoitteluun;
+                                    if(laskentaJono) {
+                                        if(_.isBoolean(laskentaJono.valmisSijoiteltavaksi)) {
+                                            valmisSijoitteluun = laskentaJono.valmisSijoiteltavaksi;
+                                        } else {
+                                            valmisSijoitteluun = false;
+                                        }
+                                    } else {
+                                        if(_.isBoolean(laskentaJono.automaattinenLaskentaanSiirto)) {
+                                            valmisSijoitteluun = laskentaJono.automaattinenLaskentaanSiirto;
+                                        }  else {
+                                            valmisSijoitteluun = false;
+                                        }
+                                    }
+
                                     if(jono.siirretaanSijoitteluun == null) {
                                         tulosjono.siirretaanSijoitteluun = true;
                                     } else {
                                         tulosjono.siirretaanSijoitteluun = jono.siirretaanSijoitteluun;
                                     }
-                                    if(jono.valmisSijoiteltavaksi == null) {
-                                        tulosjono.siirretaanSijoitteluun = true;
-                                    } else {
-                                        tulosjono.siirretaanSijoitteluun = jono.valmisSijoiteltavaksi;
-                                    }
+
+                                    tulosjono.valmisSijoiteltavaksi = valmisSijoitteluun;
+
                                     if(jono.tasapistesaanto == null) {
                                         tulosjono.tasasijasaanto = 'ARVONTA'
                                     } else {
