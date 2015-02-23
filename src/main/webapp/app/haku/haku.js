@@ -71,7 +71,7 @@ angular.module('valintalaskenta')
                                 var hakutapa = haku.hakutapaUri;
                                 var erillishakutapaRegExp = /(hakutapa_02).*/;
                                 var matchErillishaku = erillishakutapaRegExp.exec(hakutapa);
-                                matchErillishaku ? haku.erillishaku = true : haku.erillishaku = false;
+                                (matchErillishaku && !haku.sijoittelu) ? haku.erillishaku = true : haku.erillishaku = false;
 
                             });
                             model.deferred.resolve(model);
