@@ -21,6 +21,24 @@ angular.module('valintalaskenta')
         this.sijoitteluntulosHakijoittain = {};
         this.sijoitteluntulosHakijoittainArray = [];
 
+        var order = {
+            "HYVAKSYTTY": 1,
+            "VARASIJALTA_HYVAKSYTTY": 1,
+            "VARALLA": 2,
+            "PERUNUT": 3,
+            "PERUUTETTU": 4,
+            "PERUUNTUNUT": 5,
+            "HYLATTY": 6
+        };
+
+        this.jarjesta = function(value) {
+            var i = order[value.tila];
+            if(i == order["HYVAKSYTTY"] && value.hyvaksyttyHarkinnanvaraisesti) {
+                i = 0;
+            }
+            return i;
+        };
+
         this.filterValitut = function(hakemukset) {
 			return _.filter(hakemukset,function(hakemus) {
 				return hakemus.valittu;
@@ -147,6 +165,8 @@ angular.module('valintalaskenta')
                                 jono.sija = sija;
                             }
 
+                            hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
+
                             var found = false;
                             model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.forEach(function (j) {
                                 if (j.nimi === jono.nimi) found = true;
@@ -213,7 +233,7 @@ angular.module('valintalaskenta')
                                 'sukunimi' : ''
                             },
                             sorting: {
-                                'jarjesta': 'asc',     // initial sorting
+                                'tilaPrioriteetti': 'asc',     // initial sorting
                                 'varasijanNumero': 'asc',
                                 'sija': 'asc'
                             }
@@ -267,7 +287,7 @@ angular.module('valintalaskenta')
                         'sukunimi' : ''
                     },
                     sorting: {
-                        'jarjesta': 'asc',     // initial sorting
+                        'tilaPrioriteetti': 'asc',     // initial sorting
                         'varasijanNumero': 'asc',
                         'sija': 'asc'
                     }
@@ -673,22 +693,8 @@ angular.module('valintalaskenta')
         $scope.updateOph = true;
     });
 
-    var order = {
-        "HYVAKSYTTY": 1,
-        "VARASIJALTA_HYVAKSYTTY": 1,
-        "VARALLA": 2,
-        "PERUNUT": 3,
-        "PERUUTETTU": 4,
-        "PERUUNTUNUT": 5,
-        "HYLATTY": 6
-    };
-
     $scope.jarjesta = function(value) {
-        var i = order[value.tila];
-        if(i == order["HYVAKSYTTY"] && value.hyvaksyttyHarkinnanvaraisesti) {
-            i = 0;
-        }
-        return i;
+        return $scope.model.jarjesta(value);
     };
 
     $scope.selectIlmoitettuToAll = function(valintatapajonoOid) {
