@@ -33,7 +33,7 @@ app.factory('HakukohdeNimi', function($resource) {
 });
 
 app.factory('TarjontaHaut', function($resource) {
-    return $resource(TARJONTA_URL_BASE + "haku/findAll", {}, {
+    return $resource(TARJONTA_URL_BASE + "haku/find?addHakukohdes=false", {}, {
         get: {method: "GET", cache: true}
     });
 });
