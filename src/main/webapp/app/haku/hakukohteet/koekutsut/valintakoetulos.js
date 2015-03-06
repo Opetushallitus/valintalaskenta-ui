@@ -355,7 +355,9 @@ angular.module('valintalaskenta').
 		if(!$scope.model.isAllValittu(valintakoe)) {
     		hakemusOids = $scope.model.valitutHakemusOids(valintakoe);
 		}
-    	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid},{hakemusOids: hakemusOids, valintakoeOids:[valintakoe.valintakoeOid]}, function(id) {
+    	ValintakoeXls.lataa({
+			hakuOid:$routeParams.hakuOid,
+			hakukohdeOid:$routeParams.hakukohdeOid},{hakemusOids: hakemusOids, valintakoeOids:[valintakoe.valintakoeOid]}, function(id) {
     		Latausikkuna.avaa(id, "Muodostetaan valintakoetuloksille taulukkolaskentatiedosto", valintakoe.valintakoeTunniste);
     	});
     };
