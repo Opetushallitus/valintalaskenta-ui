@@ -363,9 +363,7 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
                                 var name =  numero + ". " + kriteerit[i].nimi;
                                 var obj = {name: name, value: i};
                                 if (i == 0) {
-                                    //var obj = {name: "Yhteispisteet", value: i};
                                     $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti = obj;
-                                    //$scope.jonosija.muokkaus.prioriteetit.push(obj);
                                 }
                                 $scope.jonosija.muokkaus.prioriteetit.push(obj);
                             }
