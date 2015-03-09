@@ -156,3 +156,7 @@ collapsible > div > div {
     cursor: pointer;
     text-align: left;
 }
+
+#jk-select {
+    width: 300px;
+}

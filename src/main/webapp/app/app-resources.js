@@ -599,7 +599,8 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
             jarjestyskriteeriprioriteetti:"@jarjestyskriteeriprioriteetti"
         },
         {
-            post: {method: "POST"}
+            post: {method: "POST"},
+            remove: {method: "DELETE"}
         });
 });
 

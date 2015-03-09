@@ -357,20 +357,36 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
 
                             $scope.jonosija.muokkaus = {};
                             $scope.jonosija.muokkaus.prioriteetit = [];
-                            for (var i in $scope.jonosija.jarjestyskriteerit) {
+                            var kriteerit = $scope.jonosija.jarjestyskriteerit;
+                            for (var i = 0; i < kriteerit.length; i++) {
+                                var numero = Number(i + 1);
+                                var name =  numero + ". " + kriteerit[i].nimi;
+                                var obj = {name: name, value: i};
                                 if (i == 0) {
-                                    var obj = {name: "Yhteispisteet", value: i};
+                                    //var obj = {name: "Yhteispisteet", value: i};
                                     $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti = obj;
-                                    $scope.jonosija.muokkaus.prioriteetit.push(obj);
+                                    //$scope.jonosija.muokkaus.prioriteetit.push(obj);
                                 }
-                                else {
-                                    var obj = {name: i, value: i};
-                                    $scope.jonosija.muokkaus.prioriteetit.push(obj);
-                                }
+                                $scope.jonosija.muokkaus.prioriteetit.push(obj);
                             }
 
                             $scope.jonosija.muokkaus.tila = $scope.jonosija.tuloksenTila;
                             $scope.jonosija.muokkaus.arvo = $scope.jonosija.jarjestyskriteerit[0].arvo;
+                            if($scope.jonosija.jarjestyskriteerit[0].kuvaus.FI) {
+                                $scope.jonosija.muokkaus.selite = $scope.jonosija.jarjestyskriteerit[0].kuvaus.FI;
+                            }
+
+
+                            $scope.alustaTilat = function() {
+                                var prio = $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti.value;
+                                $scope.jonosija.muokkaus.tila = $scope.jonosija.jarjestyskriteerit[prio].tila;
+                                $scope.jonosija.muokkaus.arvo = $scope.jonosija.jarjestyskriteerit[prio].arvo;
+                                if($scope.jonosija.jarjestyskriteerit[prio].kuvaus.FI) {
+                                    $scope.jonosija.muokkaus.selite = $scope.jonosija.jarjestyskriteerit[prio].kuvaus.FI;
+                                } else {
+                                    $scope.jonosija.muokkaus.selite = "";
+                                }
+                            }
 
                             $scope.update = function () {
 
@@ -390,6 +406,23 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
                                     $modalInstance.close(result)
                                     Ilmoitus.avaa("Tallennus onnistui", "Järjestyskriteerin tila muutettu.");
                                     // resurssi palauttaa hakemukset muutoksen jälkeen todennäköisesti eri järjestyksessä
+                                    $route.reload();
+                                }, function (error) {
+                                    $scope.error = error;
+                                });
+                            }
+
+                            $scope.remove = function () {
+
+                                var updateParams = {
+                                    valintatapajonoOid: $scope.valintatapajonoOid,
+                                    hakemusOid: $scope.hakemusOid,
+                                    jarjestyskriteeriprioriteetti: $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti.value
+                                };
+
+                                JarjestyskriteeriMuokattuJonosija.remove(updateParams, function (result) {
+                                    $modalInstance.close(result);
+                                    Ilmoitus.avaa("Poisto onnistui", "Muokattu järjestyskritteri on poistettu.");
                                     $route.reload();
                                 }, function (error) {
                                     $scope.error = error;
