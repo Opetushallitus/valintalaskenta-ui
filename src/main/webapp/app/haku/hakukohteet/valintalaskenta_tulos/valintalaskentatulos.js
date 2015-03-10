@@ -75,8 +75,8 @@
                                             valmisSijoitteluun = false;
                                         }
                                     } else {
-                                        if(_.isBoolean(laskentaJono.automaattinenLaskentaanSiirto)) {
-                                            valmisSijoitteluun = laskentaJono.automaattinenLaskentaanSiirto;
+                                        if(_.isBoolean(jono.automaattinenLaskentaanSiirto)) {
+                                            valmisSijoitteluun = jono.automaattinenLaskentaanSiirto;
                                         }  else {
                                             valmisSijoitteluun = false;
                                         }
