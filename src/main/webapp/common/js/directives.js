@@ -91,7 +91,8 @@ app.directive('arvovalidaattori', function () {
                 if (viewValue) {
                     viewValue = viewValue.replace(",", ".");
                 }
-                var osallistui = scope.$eval(attrs.osallistuminen) == 'OSALLISTUI';
+                var osallistuminen = scope.$eval(attrs.osallistuminen);
+                var osallistui = (osallistuminen == 'OSALLISTUI' || (osallistuminen == 'EI_VAADITA' && !_.isEmpty(viewValue)));
 
                 if (osallistui && FLOAT_REGEXP.test(viewValue)) {
                     var min = parseFloat($(elm).attr("min"));
