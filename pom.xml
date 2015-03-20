@@ -128,6 +128,13 @@
           <artifactId>jgroups</artifactId>
       </dependency>
 
+      <!-- testing -->
+      <dependency>
+          <groupId>fi.vm.sade</groupId>
+          <artifactId>embedded-tomcat</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <scope>test</scope>
+      </dependency>
     </dependencies>
 
 
