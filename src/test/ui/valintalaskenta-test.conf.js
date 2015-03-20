@@ -30,15 +30,30 @@ module.exports = function(config) {
     exclude: [
     ],
 
+    plugins: [
+        'karma-jasmine',
+        'karma-chrome-launcher',
+        'karma-phantomjs-launcher',
+        'karma-junit-reporter',
+        'karma-coverage'
+    ],
 
     // test results reporter to use
-    // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    // possible values: 'dots', 'progress'
+    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    reporters: ['progress', 'junit', 'coverage'],
 
+    junitReporter: {
+        outputFile: '../target/karma_out/unit.xml'
+    },
+
+    coverageReporter: {
+      type : 'html',
+      dir : '../target/karma_out/coverage/'
+    },
 
     // web server port
     port: 9876,
-
 
     // enable / disable colors in the output (reporters and logs)
     colors: true,
@@ -72,9 +87,5 @@ module.exports = function(config) {
     // if true, it capture browsers, run tests and exit
     singleRun: true,
 
-      plugins : [
-          'karma-jasmine',
-          'karma-phantomjs-launcher'
-      ]
   });
 };
