@@ -10,7 +10,7 @@ public class ValintaLaskentaUiTomcat extends EmbeddedTomcat {
     static final String MODULE_ROOT = ProjectRootFinder.findProjectRoot() + "/ui/valintaLaskenta-ui";
     static final String CONTEXT_PATH = "/valintalaskenta-ui";
     static final int DEFAULT_PORT = 9096;
-    static final int DEFAULT_AJP_PORT = 8530;
+    static final int DEFAULT_AJP_PORT = 28530;
 
     public ValintaLaskentaUiTomcat(int port, int ajpPort) {
         super(port, ajpPort, MODULE_ROOT, CONTEXT_PATH);
