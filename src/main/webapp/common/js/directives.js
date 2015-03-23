@@ -741,3 +741,18 @@ app.directive('tilaFilter', function () {
         }
     };
 });
+
+app.directive('pisteidenSyottaminen', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      hakija: '=',
+      avain: '='
+    },
+    templateUrl: '../common/html/pisteidenSyottaminen.html',
+    controller: function ($scope, $modal) {
+
+
+    }
+  };
+})

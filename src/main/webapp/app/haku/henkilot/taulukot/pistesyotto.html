@@ -24,64 +24,8 @@
                     <tbody>
                     <tr>
                         <td ng-repeat="avain in hakutoive.avaimet | filter:{'lahde': arvoFilter} | orderBy:'kuvaus'">
-
-                            <div ng-show="hakutoive.osallistuu[avain.tunniste] == 'OSALLISTUU'" ng-switch
-                                 on="avain.lahde">
-                                <div ng-switch-when="SYOTETTAVA_ARVO">
-                                    <div ng-switch on="avain.tyyppi()">
-                                        <div ng-switch-when="input">
-                                            <!-- input -->
-                                            <input ng-show="hakutoive.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
-                                                   min="{{avain.min}}"
-                                                   max="{{avain.max}}"
-                                                   size="2"
-                                                   ng-model="hakutoive.additionalData[avain.tunniste]"
-                                                   osallistuminen="hakutoive.additionalData[avain.osallistuminenTunniste]"
-                                                   arvovalidaattori
-                                                   ng-change="changeOsallistuminen(hakutoive, avain.osallistuminenTunniste, hakutoive.additionalData[avain.tunniste], avain.tunniste)"/>
-
-
-                                            <select ng-model="hakutoive.additionalData[avain.osallistuminenTunniste]"
-                                                    ng-show="avain.osallistuminenTunniste"
-                                                    ng-change="changeArvo(hakutoive, avain.tunniste, hakutoive.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
-                                                    >
-                                                <option value="MERKITSEMATTA">{{ t('pistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
-                                                <option value="OSALLISTUI">{{ t('pistesyotto.osallistui') || 'Osallistui' }}</option>
-                                                <option value="EI_OSALLISTUNUT">{{ t('pistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
-                                            </select>
-                                            <br/>
-                                            <span style="color: red;"></span>
-                                        </div>
-
-                                        <div ng-switch-when="boolean">
-                                            <!-- input -->
-                                            <select ng-show="hakutoive.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
-                                                    ng-model="hakutoive.additionalData[avain.tunniste]"
-                                                    ng-change="changeOsallistuminen(hakutoive, avain.osallistuminenTunniste, hakutoive.additionalData[avain.tunniste])">
-                                                <option value="">{{ t('pistesyotto.tyhja') || 'Tyhjä' }}</option>
-                                                <option value="true">{{ t('pistesyotto.kylla') || 'Kyllä' }}</option>
-                                                <option value="false">{{ t('pistesyotto.ei') || 'Ei' }}</option>
-                                            </select>
-
-
-                                            <select ng-model="hakutoive.additionalData[avain.osallistuminenTunniste]"
-                                                    ng-show="avain.osallistuminenTunniste"
-                                                    ng-change="changeArvo(hakutoive, avain.tunniste, hakutoive.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
-                                                    >
-                                                <option value="MERKITSEMATTA">{{ t('pistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
-                                                <option value="OSALLISTUI">{{ t('pistesyotto.osallistui') || 'Osallistui' }}</option>
-                                                <option value="EI_OSALLISTUNUT">{{ t('pistesyotto.eiosallistui') || 'Ei osallistunut' }}</option>
-                                            </select>
-                                            <span style="color: red;"></span>
-                                        </div>
-
-
-                                    </div>
-                                    <div ng-switch-default>
-                                        {{ t('pistesyotto.syotetty') || 'Syötetty muualla' }}: {{hakutoive.additionalData[avain.tunniste]}}
-                                    </div>
-                                </div>
-                            </div>
+                          <pisteiden-syottaminen hakija="hakutoive"
+                                                 avain="avain"/>
                         </td>
                     </tr>
 
