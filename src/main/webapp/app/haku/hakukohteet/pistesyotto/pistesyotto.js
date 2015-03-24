@@ -82,8 +82,11 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                                         hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
                                     }
 
-                                    if(avain.vaatiiOsallistumisen == false) {
+                                    if(avain.syotettavissaKaikille == true) {
                                         hakija.osallistuu[avain.tunniste] = 'OSALLISTUU';
+                                    }
+
+                                    if(avain.vaatiiOsallistumisen == false  && !hakija.additionalData[avain.osallistuminenTunniste]) {
                                         hakija.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
                                     }
 
@@ -226,27 +229,6 @@ angular.module('valintalaskenta').
     
     $scope.showTiedotPartial = function (hakija) {
         hakija.showTiedotPartial = !hakija.showTiedotPartial;
-    };
-
-    $scope.changeOsallistuminen = function (hakija, tunniste, value) {
-        if (value) {
-            $timeout(function(){
-                hakija.additionalData[tunniste] = "OSALLISTUI";
-            });
-        }
-
-    };
-
-    $scope.changeArvo = function (hakija, tunniste, value, tyyppi) {
-        hakija.additionalData[tunniste] = "";
-        if (value === "OSALLISTUI") {
-            if (tyyppi === "boolean") {
-                hakija.additionalData[tunniste] = "true";
-            } else {
-                hakija.additionalData[tunniste] = undefined;
-            }
-        }
-
     };
 
     $scope.osallistuvatFilter = function (actual) {

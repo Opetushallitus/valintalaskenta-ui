@@ -210,8 +210,17 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 	                                        if (!hakukohde.additionalData[avain.tunniste]) {
 	                                            hakukohde.additionalData[avain.tunniste] = "";
 	                                        }
-	
-	                                        if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
+
+	                                        if(avain.vaatiiOsallistumisen == false && !hakukohde.additionalData[avain.osallistuminenTunniste]) {
+	                                            hakukohde.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
+	                                        }
+
+
+	                                        if(avain.syotettavissaKaikille == true) {
+	                                            hakukohde.osallistuu[avain.tunniste] = 'OSALLISTUU';
+	                                        }
+
+                                          if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
 	                                            hakukohde.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
 	                                        }
 	
@@ -414,23 +423,6 @@ angular.module('valintalaskenta').
         }, function () {
             Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
         });
-    };
-
-    $scope.changeOsallistuminen = function (hakija, tunniste, value) {
-        if (value) {
-            hakija.additionalData[tunniste] = "OSALLISTUI";
-        }
-    };
-    $scope.changeArvo = function (hakija, tunniste, value, tyyppi) {
-        hakija.additionalData[tunniste] = "";
-        if (value === "OSALLISTUI") {
-            if (tyyppi === "boolean") {
-                hakija.additionalData[tunniste] = "true";
-            } else {
-                hakija.additionalData[tunniste] = undefined;
-            }
-        }
-
     };
 
     $scope.valintalaskentaKerrallaHakukohteille = function() {

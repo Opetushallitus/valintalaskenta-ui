@@ -17,25 +17,13 @@
         <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
                 ng-if="avain.osallistuminenTunniste"
                 ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
+                data-vaatii-osallistumisen="{{avain.vaatiiOsallistumisen}}"
             >
           <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
           <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
           <option value="EI_OSALLISTUNUT">{{ t('hakukohteetpistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
+          <option ng-if="avain.vaatiiOsallistumisen  == false" value="EI_VAADITA">{{ t('hakukohteetpistesyotto.eivaadita') || 'Ei vaadita' }}</option>
         </select>
-        <br/>
-        <span style="color: red;"></span>
-      </div>
-
-      <div ng-switch-when="kutsuton-input">
-        <!-- input -->
-        <input min="{{avain.min}}"
-               max="{{avain.max}}"
-               size="2"
-               ng-model="hakija.additionalData[avain.tunniste]"
-               osallistuminen="hakija.additionalData[avain.osallistuminenTunniste]"
-               arvovalidaattori/>
-
-
         <br/>
         <span style="color: red;"></span>
       </div>
@@ -55,10 +43,12 @@
         <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
                 ng-if="avain.osallistuminenTunniste"
                 ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
+                data-vaatii-osallistumisen="{{avain.vaatiiOsallistumisen}}"
             >
           <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
           <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
           <option value="EI_OSALLISTUNUT">{{ t('hakukohteetpistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
+          <option ng-if="avain.vaatiiOsallistumisen == false" value="EI_VAADITA">{{ t('hakukohteetpistesyotto.eivaadita') || 'Ei vaadita' }}</option>
         </select>
         <br/>
         <span style="color: red;"></span>
@@ -92,38 +82,15 @@
         <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
                 ng-if="avain.osallistuminenTunniste"
                 ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
+                data-vaatii-osallistumisen="{{avain.vaatiiOsallistumisen}}"
             >
           <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
           <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
           <option value="EI_OSALLISTUNUT">{{ t('hakukohteetpistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
+          <option ng-if="avain.vaatiiOsallistumisen == false" value="EI_VAADITA">{{ t('hakukohteetpistesyotto.eivaadita') || 'Ei vaadita' }}</option>
         </select>
         <span style="color: red;"></span>
       </div>
-
-      <div ng-switch-when="kutsuton-boolean" class="input-group">
-        <!-- input -->
-                                                <span ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
-                                                    <select ng-model="hakija.additionalData[avain.tunniste]">
-
-                                                      <option value="">{{ t('hakukohteetpistesyotto.tyhja') || 'Tyhjä' }}</option>
-                                                      <option value="true">{{ t('hakukohteetpistesyotto.kylla') || 'Kyllä' }}</option>
-                                                      <option value="false">{{ t('hakukohteetpistesyotto.ei') || 'Ei' }}</option>
-
-                                                    </select>
-                                                </span>
-
-                                                <span ng-if="(avain.tunniste.indexOf('kielikoe') > -1)">
-                                                    <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
-                                                            ng-model="hakija.additionalData[avain.tunniste]">
-                                                      <option value="">{{ t('hakukohteetpistesyotto.tyhja') || 'Tyhjä' }}</option>
-                                                      <option value="true">{{ t('hakukohteetpistesyotto.hyvaksytty') || 'Hyväksytty / Kyllä / Tosi' }}</option>
-                                                      <option value="false">{{ t('hakukohteetpistesyotto.hylatty') || 'Hylätty / Ei / Epätosi' }}</option>
-                                                    </select>
-                                                </span>
-
-        <span style="color: red;"></span>
-      </div>
-
 
     </div>
     <div ng-switch-default>

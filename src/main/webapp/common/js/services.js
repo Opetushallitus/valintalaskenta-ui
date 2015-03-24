@@ -133,13 +133,6 @@ angular.module('oph.services', [])
                     tunnisteet.push(avain.tunniste);
                     tunnisteet.push(avain.osallistuminenTunniste);
                     avain.tyyppi = function () {
-                        if(avain.vaatiiOsallistumisen === false) {
-                            if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO" || onkoVainTrueFalseArvo(avain.arvot)) {
-                                return "kutsuton-boolean";
-                            } else {
-                                return "kutsuton-input";
-                            }
-                        }
                         if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO" || onkoVainTrueFalseArvo(avain.arvot)) {
                             return "boolean";
                         }

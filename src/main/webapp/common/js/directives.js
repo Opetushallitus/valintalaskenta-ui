@@ -751,8 +751,22 @@ app.directive('pisteidenSyottaminen', function () {
     },
     templateUrl: '../common/html/pisteidenSyottaminen.html',
     controller: function ($scope, $modal) {
+        $scope.changeOsallistuminen = function (hakija, tunniste, value) {
+            if (value) {
+                hakija.additionalData[tunniste] = "OSALLISTUI";
+            }
+        };
 
-
+        $scope.changeArvo = function (hakija, tunniste, value, tyyppi) {
+          hakija.additionalData[tunniste] = "";
+          if (value === "OSALLISTUI") {
+            if (tyyppi === "boolean") {
+              hakija.additionalData[tunniste] = "true";
+            } else {
+              hakija.additionalData[tunniste] = undefined;
+            }
+          }
+        };
     }
   };
 })
