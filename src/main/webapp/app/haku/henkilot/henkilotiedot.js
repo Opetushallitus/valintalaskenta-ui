@@ -3,7 +3,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             SijoittelunVastaanottotilat, LatestSijoittelunTilat,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, VastaanottoTilat,
-                                            LatestSijoitteluajoHakukohde) {
+                                            LatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService) {
     "use strict";
 
     var model = new function () {
@@ -187,16 +187,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 	                                HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (result) {
 	
 	                                    hakukohde.avaimet = result;
-	
-	                                    hakukohde.avaimet.forEach(function (avain) {
-	                                        avain.tyyppi = function () {
-	                                            if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO") {
-	                                                return "boolean";
-	                                            }
-	                                            return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
-	                                        };
-	                                    });
-	
+	                                    HakukohdeAvainTyyppiService.createAvainTyyppiValues(hakukohde.avaimet, [])
 	                                    hakukohde.osallistuu = {};
 	
 	                                    if (!hakukohde.additionalData) {

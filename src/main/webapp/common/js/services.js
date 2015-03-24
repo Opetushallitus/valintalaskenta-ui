@@ -118,4 +118,35 @@ angular.module('oph.services', [])
             }
         };
         return service;
+    }])
+    .factory('HakukohdeAvainTyyppiService',[ function () {
+        "use strict";
+
+        var onkoVainTrueFalseArvo = function(arvot) {
+            return arvot && arvot.length == 2 && arvot.indexOf("true") != -1 && arvot.indexOf("false") != -1
+        };
+
+        var service =
+        {
+            createAvainTyyppiValues: function(avaimet, tunnisteet) {
+                avaimet.forEach(function (avain) {
+                    tunnisteet.push(avain.tunniste);
+                    tunnisteet.push(avain.osallistuminenTunniste);
+                    avain.tyyppi = function () {
+                        if(avain.vaatiiOsallistumisen === false) {
+                            if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO" || onkoVainTrueFalseArvo(avain.arvot)) {
+                                return "kutsuton-boolean";
+                            } else {
+                                return "kutsuton-input";
+                            }
+                        }
+                        if (avain.funktiotyyppi === "TOTUUSARVOFUNKTIO" || onkoVainTrueFalseArvo(avain.arvot)) {
+                            return "boolean";
+                        }
+                        return avain.arvot && avain.arvot.length > 0 ? "combo" : "input";
+                    };
+                });
+            }
+        };
+        return service;
     }]);
