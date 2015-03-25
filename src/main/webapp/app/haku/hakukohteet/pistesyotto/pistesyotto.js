@@ -79,16 +79,16 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                                         hakija.additionalData[avain.tunniste] = "";
                                     }
 
+                                    if(avain.vaatiiOsallistumisen == false  && !hakija.additionalData[avain.osallistuminenTunniste]) {
+                                        hakija.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
+                                    }
+
                                     if (!hakija.additionalData[avain.osallistuminenTunniste]) {
                                         hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
                                     }
 
                                     if(avain.syotettavissaKaikille == true) {
                                         hakija.osallistuu[avain.tunniste] = 'OSALLISTUU';
-                                    }
-
-                                    if(avain.vaatiiOsallistumisen == false  && !hakija.additionalData[avain.osallistuminenTunniste]) {
-                                        hakija.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
                                     }
 
                                     if (hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
