@@ -66,7 +66,7 @@
 					</span>
 
                   <input id="laskentaonly" type="checkbox" ng-model="model.laskentaonly" />
-                  <label for="laskentaonly">{{ t('hakukohteetpistesyotto.naytavainlaskentaanvaikuttavat') || 'Näytä vain laskentaan vaikuttavat osallistumistiedot' }}</label>
+                  <label for="laskentaonly">{{ t('hakukohteetpistesyotto.naytavainlaskentaanvaikuttavat') || 'Näytä vain laskentaan vaikuttavat osallistumistiedot' }} (<span class="glyphicon glyphicon-asterisk text-danger small" aria-hidden="true"></span>)</label>
 
                   <div>
                         <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">{{ t('hakukohteetpistesyotto.tarkistavirheet') || 'Tarkista virheet!' }}
@@ -80,7 +80,8 @@
                                 {{avain.kuvaus}}
                                 <span ng-if="avain.min !== undefined && avain.min !== null|| avain.max !== null && avain.max !== undefined">
                                 ({{avain.min}} - {{avain.max}})
-                            </span>
+                                </span>
+                                <span ng-if="avain.vaatiiOsallistumisen">(<span class="glyphicon glyphicon-asterisk text-danger small" aria-hidden="true"></span>)</span>
                             </th>
                         </tr>
                         </thead>
