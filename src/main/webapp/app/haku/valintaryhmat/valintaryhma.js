@@ -229,9 +229,11 @@ angular.module('valintalaskenta')
 
     };
 
-    $scope.kaynnistaValintakoelaskenta = function () {
-        var hakuOid = $routeParams.hakuOid;
-        var hakukohdeOid = $routeParams.hakukohdeOid;
+    $scope.kaynnistaValintakoelaskenta = function (valintaryhma) {
+        var hakukohdeOids = [];
+        _.forEach($scope.hakukohteet, function (hakukohde) {
+            hakukohdeOids.push(hakukohde.oid);
+        });
         var valintalaskentaInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/valintakoelaskenta.html',
@@ -243,8 +245,9 @@ angular.module('valintalaskenta')
                         hakuOid: $routeParams.hakuOid,
                         valinnanvaihe: null,
                         valintakoelaskenta: true,
+                        nimentarkennus: valintaryhma.nimi,
                         tyyppi: "VALINTARYHMA",
-                        hakukohteet: [$routeParams.hakukohdeOid]
+                        hakukohteet: hakukohdeOids
                     };
                 }
             }
