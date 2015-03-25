@@ -747,7 +747,8 @@ app.directive('pisteidenSyottaminen', function () {
     restrict: 'E',
     scope: {
       hakija: '=',
-      avain: '='
+      avain: '=',
+      laskentaonly: '='
     },
     templateUrl: '../common/html/pisteidenSyottaminen.html',
     controller: function ($scope, $modal) {

@@ -17,7 +17,7 @@
         <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
                 ng-if="avain.osallistuminenTunniste"
                 ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
-                data-vaatii-osallistumisen="{{avain.vaatiiOsallistumisen}}"
+                ng-show="avain.vaatiiOsallistumisen == true || (avain.vaatiiOsallistumisen == false && laskentaonly == false)"
             >
           <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
           <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
@@ -43,7 +43,7 @@
         <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
                 ng-if="avain.osallistuminenTunniste"
                 ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
-                data-vaatii-osallistumisen="{{avain.vaatiiOsallistumisen}}"
+                ng-show="avain.vaatiiOsallistumisen == true || (avain.vaatiiOsallistumisen == false && laskentaonly == false)"
             >
           <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
           <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
@@ -82,7 +82,7 @@
         <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
                 ng-if="avain.osallistuminenTunniste"
                 ng-change="changeArvo(hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
-                data-vaatii-osallistumisen="{{avain.vaatiiOsallistumisen}}"
+                ng-show="avain.vaatiiOsallistumisen == true || (avain.vaatiiOsallistumisen == false && laskentaonly == false)"
             >
           <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
           <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
