@@ -2514,3 +2514,29 @@ div.tilaParial {
     .tabs .tab.disabled span, .tabs .tab.disabled:hover span {
       background: #f6f6f6;
       background-image: url("../img/texture-45dg-lines-96ccdb.gif"); }
+
+.hakukohteet-pistesyotto {
+  overflow-x: scroll;  }
+  .hakukohteet-pistesyotto .virkailija-table-1 td {
+    min-width: 185px;
+  }
+  .hakukohteet-pistesyotto .virkailija-table-1 td.leftorientedcolumn {
+    vertical-align: top;
+  }
+  .hakukohteet-pistesyotto .virkailija-table-1 tr th {
+    line-height: 100%;
+    text-align: left;
+    vertical-align: top;
+    padding: 0.5em 0.5em;
+    font-weight: normal;
+  }
+  .hakukohteet-pistesyotto #laskentaonly {
+    margin-left: 10px;
+  }
+  .hakukohteet-pistesyotto table input {
+    width: 43px;
+  }
+
+.henkilotiedot-pistesyotto table input {
+  width: 43px;
+}

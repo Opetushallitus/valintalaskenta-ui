@@ -30,7 +30,7 @@
         <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
 
         <div auth="LISATIETORU LISATIETOCRUD READ_UPDATE CRUD" auth-service="APP_HAKEMUS"
-             auth-org="{{hakukohdeModel.hakukohde.tarjoajaOids[0]}}" class="tabsheets">
+             auth-org="{{hakukohdeModel.hakukohde.tarjoajaOids[0]}}" class="tabsheets hakukohteet-pistesyotto">
 
             <div ng-include="'../common/html/errors.html'"></div>
 
@@ -95,7 +95,7 @@
                                                          haku-oid="{{hakuOid}}"
                                                          henkilo-oid="{{hakemus.personOid}}"/>
                             </td>
-                            <td class="rightorientedcolumn" ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
+                            <td class="leftorientedcolumn" ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
                                 <pisteiden-syottaminen hakija="hakija"
                                                        avain="avain"
                                                        laskentaonly="model.laskentaonly"/>
