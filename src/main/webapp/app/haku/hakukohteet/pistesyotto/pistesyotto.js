@@ -10,7 +10,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
         this.errors = [];
         this.filter = "OSALLISTUU";
         this.tunnisteet = [];
-        this.laskentaonly = false;
+        this.laskentaonly = true;
 
         this.refresh = function (hakukohdeOid, hakuOid) {
 
