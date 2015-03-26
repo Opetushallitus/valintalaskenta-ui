@@ -10,7 +10,7 @@
                ng-model="hakija.additionalData[avain.tunniste]"
                osallistuminen="hakija.additionalData[avain.osallistuminenTunniste]"
                arvovalidaattori
-               ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste)"/>
+               ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)"/>
 
 
         <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
@@ -32,7 +32,7 @@
 
         <select ng-model="hakija.additionalData[avain.tunniste]"
                 osallistuminen="hakija.additionalData[avain.osallistuminenTunniste]"
-                ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste)"
+                ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste, avain.vaatiiOsallistumisen)"
                 ng-options="a as a for a in avain.arvot"
             >
           <option value=""></option>
@@ -58,7 +58,7 @@
                                                 <span ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
                                                     <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                                             ng-model="hakija.additionalData[avain.tunniste]"
-                                                            ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
+                                                            ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)">
 
                                                       <option value="">{{ t('hakukohteetpistesyotto.tyhja') || 'Tyhjä' }}</option>
                                                       <option value="true">{{ t('hakukohteetpistesyotto.kylla') || 'Kyllä' }}</option>
@@ -70,7 +70,7 @@
                                                 <span ng-if="(avain.tunniste.indexOf('kielikoe') > -1)">
                                                     <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                                             ng-model="hakija.additionalData[avain.tunniste]"
-                                                            ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste])">
+                                                            ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)">
                                                       <option value="">{{ t('hakukohteetpistesyotto.tyhja') || 'Tyhjä' }}</option>
                                                       <option value="true">{{ t('hakukohteetpistesyotto.hyvaksytty') || 'Hyväksytty' }}</option>
                                                       <option value="false">{{ t('hakukohteetpistesyotto.hylatty') || 'Hylätty' }}</option>

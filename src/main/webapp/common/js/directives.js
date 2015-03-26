@@ -752,9 +752,15 @@ app.directive('pisteidenSyottaminen', function () {
     },
     templateUrl: '../common/html/pisteidenSyottaminen.html',
     controller: function ($scope, $modal) {
-        $scope.changeOsallistuminen = function (hakija, tunniste, value) {
+        $scope.changeOsallistuminen = function (hakija, tunniste, value, vaatiiOsallistumisen) {
             if (value) {
                 hakija.additionalData[tunniste] = "OSALLISTUI";
+            } else {
+              if (vaatiiOsallistumisen) {
+                hakija.additionalData[tunniste] = "MERKITSEMATTA";
+              } else {
+                hakija.additionalData[tunniste] = "EI_VAADITA";
+              }
             }
         };
 
