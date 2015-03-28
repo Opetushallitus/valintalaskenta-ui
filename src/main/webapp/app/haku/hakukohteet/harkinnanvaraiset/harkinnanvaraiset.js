@@ -1,8 +1,8 @@
 angular.module('valintalaskenta')
 
-.factory('HarkinnanvaraisetModel', ['$log', '_', 'HakukohdeHenkilot', 'Ilmoitus', 'Hakemus',
+.factory('HarkinnanvaraisetModel', ['$log', '_', 'HakukohdeHenkilotFull', 'Ilmoitus', 'Hakemus',
         'HarkinnanvarainenHyvaksynta', 'HarkinnanvaraisestiHyvaksytyt', 'IlmoitusTila', '$q',
-        function ($log, _, HakukohdeHenkilot, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta,
+        function ($log, _, HakukohdeHenkilotFull, Ilmoitus, Hakemus, HarkinnanvarainenHyvaksynta,
                   HarkinnanvaraisestiHyvaksytyt, IlmoitusTila, $q) {
     "use strict";
     var model;
@@ -23,25 +23,42 @@ angular.module('valintalaskenta')
             model.hakukohdeOid = hakukohdeOid;
             this.loaded = $q.defer();
 
-            HakukohdeHenkilot.get({aoOid: hakukohdeOid, rows: 100000}, function (result) {
-                model.hakeneet = result.results;
+            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}, function (result) {
+                model.hakeneet = [];
+                var hakijat = result;
 
-                if (model.hakeneet) {
-                    model.hakeneet.forEach(function (hakija) {
+                if (hakijat) {
+                    hakijat.forEach(function (hakija) {
                         hakija.valittu = true;
-                        Hakemus.get({oid: hakija.oid}, function (result) {
-                            hakija.hakemus = result;
-                            if (hakija.hakemus.answers) {
-                                for (var i = 0; i < 10; i++) {
-                                    var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
-                                    if (oid === model.hakukohdeOid) {
-                                        var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
-                                        var discretionary = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
-                                        hakija.hakenutHarkinnanvaraisesti = harkinnanvarainen || discretionary;
-                                    }
-                                }
+
+                        for (var i = 0; i < 10; i++) {
+                            var oid = hakija.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                            if (oid === model.hakukohdeOid) {
+                                var harkinnanvarainen = hakija.answers.hakutoiveet["preference" + i + "-discretionary"];
+                                var discretionary = hakija.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
+                                hakija.hakenutHarkinnanvaraisesti = harkinnanvarainen || discretionary;
                             }
-                        });
+                        }
+
+                        if(hakija.hakenutHarkinnanvaraisesti == "true") {
+                            hakija.firstNames = hakija.answers.henkilotiedot.Etunimet;
+                            hakija.lastName = hakija.answers.henkilotiedot.Sukunimi;
+                            model.hakeneet.push(hakija);
+                        }
+
+//                        Hakemus.get({oid: hakija.oid}, function (result) {
+//                            hakija.hakemus = result;
+//                            if (hakija.hakemus.answers) {
+//                                for (var i = 0; i < 10; i++) {
+//                                    var oid = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+//                                    if (oid === model.hakukohdeOid) {
+//                                        var harkinnanvarainen = hakija.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
+//                                        var discretionary = hakija.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
+//                                        hakija.hakenutHarkinnanvaraisesti = harkinnanvarainen || discretionary;
+//                                    }
+//                                }
+//                            }
+//                        });
                     });
                     HarkinnanvaraisestiHyvaksytyt.get({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function (result) {
                         model.hakeneet.forEach(function (hakija) {
