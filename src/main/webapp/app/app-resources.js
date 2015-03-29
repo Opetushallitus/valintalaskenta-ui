@@ -427,7 +427,7 @@ app.factory('HakukohdeHenkilotFull', function($resource) {
 
 app.factory('Henkilot', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications", {appState:["ACTIVE","INCOMPLETE"], rows: 100000},{
-        query:  {method:'GET', isArray:false}
+        query:  {method:'GET', isArray:false, cache: true}
     });
 });
 app.factory('HakemusKey', function($resource) {

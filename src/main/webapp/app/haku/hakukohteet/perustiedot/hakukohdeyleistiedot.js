@@ -73,12 +73,11 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
 
-    // Haetaan henkilöt kakkuun
-    HakukohdeHenkilotFull.get({aoOid: $scope.hakukohdeOid, rows: 100000, asId: $scope.hakuOid}, function (result) {});
-
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
     if($routeParams.hakukohdeOid) {
+        // Haetaan henkilöt kakkuun
+        HakukohdeHenkilotFull.get({aoOid: $scope.hakukohdeOid, rows: 100000, asId: $scope.hakuOid}, function (result) {});
         $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
     }
 
