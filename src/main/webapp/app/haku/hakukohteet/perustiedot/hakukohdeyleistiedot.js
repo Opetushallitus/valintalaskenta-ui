@@ -66,12 +66,16 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
 }])
     
 .controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
-        'SijoitteluntulosModel', 'Korkeakoulu',
-        function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu) {
+        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull',
+        function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull) {
     "use strict";
 
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
+
+    // Haetaan henkilöt kakkuun
+    HakukohdeHenkilotFull.get({aoOid: $scope.hakukohdeOid, rows: 100000, asId: $scope.hakuOid}, function (result) {});
+
     $scope.model = HakukohdeModel;
     $scope.hakumodel = HakuModel;
     if($routeParams.hakukohdeOid) {
