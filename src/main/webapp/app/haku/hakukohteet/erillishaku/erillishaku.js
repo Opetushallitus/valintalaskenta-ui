@@ -3,10 +3,10 @@
     .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
         'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
-        'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila',
+        'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window',
     function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
-              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,VastaanottoTila) {
+              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,VastaanottoTila, $window) {
     "use strict";
 
     $scope.muokatutHakemukset = [];
@@ -352,7 +352,7 @@
     				Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
                         function(dokumenttiId) {
                             // tee paivitys
-                            $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
+                            $window.location.reload();
                         }
     	            );
     			}).error(function(data) {
