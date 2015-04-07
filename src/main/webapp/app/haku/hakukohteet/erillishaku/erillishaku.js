@@ -2,10 +2,10 @@
 
     .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
-        'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','SijoitteluntulosModel', '_', 'LocalisationService','ErillishakuVienti',
+        'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','_', 'LocalisationService','ErillishakuVienti',
         'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window',
     function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, SijoitteluntulosModel, _, LocalisationService,
+              ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, _, LocalisationService,
               ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,VastaanottoTila, $window) {
     "use strict";
 
@@ -43,9 +43,6 @@
                 HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
             });
         });
-
-    $scope.sijoitteluModel = SijoitteluntulosModel; 
-    $scope.sijoitteluModel.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
 
         $scope.hakemuksentilat = [
             {value:"HYVAKSYTTY",default_text:"Hyv\u00E4ksytty"},
