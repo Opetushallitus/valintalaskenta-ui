@@ -133,35 +133,7 @@
                 });
         };
 
-        $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files, valintatapajononNimi) {
-            var file = $files[0];
-            var fileReader = new FileReader();
-            fileReader.readAsArrayBuffer(file);
-            var hakukohdeOid = $scope.hakukohdeOid;
-            var hakuOid = $routeParams.hakuOid;
-            fileReader.onload = function(e) {
-                $scope.upload = $upload.http({
-                    url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + 
-                    "&hakukohdeOid=" +hakukohdeOid + 
-                    "&valintatapajonoOid="+ valintatapajonoOid +
-                    "&valintatapajononNimi="+ valintatapajononNimi, //upload.php script, node.js route, or servlet url
-                    method: "POST",
-                    headers: {'Content-Type': 'application/octet-stream'},
-                    data: e.target.result
-                }).progress(function(evt) {
-                    //console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                }).success(function(id, status, headers, config) {
-                    Latausikkuna.avaaKustomoitu(id, "Valintatapajonon tuonti", "", "../common/modaalinen/tuontiikkuna.html",
-                        function(dokumenttiId) {
-                            // tee paivitys
-                            $scope.model.refresh(hakukohdeOid, hakuOid);
-                        }
-                    );
-                }).error(function(data) {
-                    //error
-                });
-            };
-        };
+
 
         $scope.valintalaskentaTulosXLS = function() {
             TulosXls.query({hakukohdeOid:$routeParams.hakukohdeOid});
@@ -325,6 +297,40 @@
                 Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
             });
         };
+        $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files, valintatapajononNimi) {
+            var file = $files[0];
+            var fileReader = new FileReader();
+            fileReader.readAsArrayBuffer(file);
+            var hakukohdeOid = $scope.hakukohdeOid;
+            var hakuOid = $routeParams.hakuOid;
+            var url =
+                VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid;
+            if(valintatapajonoOid) {
+                url = url + "&valintatapajonoOid="+valintatapajonoOid;
+            }
+            if(valintatapajononNimi) {
+                url = url + "&valintatapajononNimi=" + valintatapajononNimi;
+            }
+            fileReader.onload = function(e) {
+                $scope.upload = $upload.http({
+                    url: url,
+                    method: "POST",
+                    headers: {'Content-Type': 'application/octet-stream'},
+                    data: e.target.result
+                }).progress(function(evt) {
+                    //console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                }).success(function(id, status, headers, config) {
+                    Latausikkuna.avaaKustomoitu(id, "Valintatapajonon tuonti", "", "../common/modaalinen/tuontiikkuna.html",
+                        function(dokumenttiId) {
+                            // tee paivitys
+                            $scope.model.refresh(hakukohdeOid, hakuOid);
+                        }
+                    );
+                }).error(function(data) {
+                    //error
+                });
+            };
+        };
         $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid, valintatapajononNimi) {
     		var file = $files[0];
     		var fileReader = new FileReader();
@@ -333,12 +339,17 @@
     	    var hakuOid = $routeParams.hakuOid;
     	    var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
     	    var hakutyyppi = $scope.getHakutyyppi();
+            var url =
+                VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" + hakukohdeOid +"&hakutyyppi="+hakutyyppi;
+            if(valintatapajonoOid) {
+                url = url + "&valintatapajonoOid="+valintatapajonoOid;
+            }
+            if(valintatapajononNimi) {
+                url = url + "&valintatapajononNimi=" + valintatapajononNimi;
+            }
     	    fileReader.onload = function(e) {
     			$scope.upload = $upload.http({
-    	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid
-    	    		+"&tarjoajaOid="+ tarjoajaOid+"&valintatapajonoOid="+valintatapajonoOid
-    	    		+"&valintatapajononNimi="+ valintatapajononNimi
-    	    		+"&hakutyyppi="+hakutyyppi, //upload.php script, node.js route, or servlet url
+    	    		url: url,
     				method: "POST",
     				headers: {'Content-Type': 'application/octet-stream'},
     				data: e.target.result
