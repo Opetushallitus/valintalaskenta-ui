@@ -62,7 +62,9 @@
         });
     </script>
 </head>
-<body ng-controller="RootCtrl" style="margin: 20px">
+<body ng-controller="RootCtrl" style="margin-left: 20px">
+<input type="text" class="search margin-vertical-2" placeholder="{{ t('hakukohteetpistesyotto.suodatahakijoita') || 'Suodata hakijoita' }}"
+       ng-model="hakijaFilter"/>
 <table class="virkailija-table-1" stay-on-focus>
     <thead>
     <tr>
