@@ -1,69 +1,5 @@
-<!DOCTYPE html>
-<html ng-app="app">
-<head>
-    <title>Valintojen toteuttaminen</title>
-    <!-- libs -->
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/jquery.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/lodash.underscore.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-file-upload-html5-shim.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-locale_fi-fi.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-resource.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-route.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-cache.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-animate.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-file-upload.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-translate.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/static/jquery.nestable.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/ui-bootstrap-tpls.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12/tinymce.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12/ui-tinymce.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/ng-table.min.js"></script>
-
-    <!--conf - generoidaan palvelimen käynnistyksen yhteydessä -->
-    <script type="text/javascript"  src="/valintalaskenta-ui/configuration/configuration.js"></script>
-
-    <link href="/valintalaskenta-ui/common/css/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="/valintalaskenta-ui/common/css/font-awesome-4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="/valintalaskenta-ui/common/css/ng-table.min.css" rel="stylesheet" type="text/css" />
-    <link href="/valintalaskenta-ui/common/css/virkailija.css" rel="stylesheet" type="text/css" />
-    <link href="/valintalaskenta-ui/common/css/other.css" rel="stylesheet" type="text/css" />
-
-    <script type="text/javascript" src="/valintalaskenta-ui/app/app.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/app/app-routes.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/app/app-resources.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/js/lodash-module.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/app/app-urls.js"></script>
-
-    <script type="text/javascript" src="/valintalaskenta-ui/common/js/topnavigation/navigation.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/js/loading.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/js/services.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/js/directives.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/js/modal.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/js/collapsible.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/js/user.js"></script>
-    <script type="text/javascript">
-        var app = angular.module("app", []);
-        app.controller("RootCtrl", function($scope, $http, $log) {
-            //$log.info("Hello");//  filter:{'tunniste': arvoFilter.tunniste} |
-            $http.get("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/avaimet.json").success(function(a) {
-                $log.info(a);
-                $scope.avaimet = a;
-            });
-            $http.get("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/additional.json").success(function(a) {
-                $log.info(a);
-                $scope.hakeneet = a;
-            });
-            // | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'
-            //$log.info($scope.avaimet);
-            //$scope.hakeneet = $resource.get("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/additional.json");
-            $scope.hakijaFilter = "";
-        });
-    </script>
-</head>
-<body ng-controller="RootCtrl" style="margin-left: 20px">
-<input type="text" class="search margin-vertical-2" placeholder="{{ t('hakukohteetpistesyotto.suodatahakijoita') || 'Suodata hakijoita' }}"
+<div ng-controller="RootCtrl">
+    <input type="text" class="search margin-vertical-2" placeholder="{{ t('hakukohteetpistesyotto.suodatahakijoita') || 'Suodata hakijoita' }}"
        ng-model="hakijaFilter"/>
 <table class="virkailija-table-1" stay-on-focus>
     <thead>
@@ -80,16 +16,15 @@
     </thead>
     <tbody>
 
-    <tr ng-repeat="hakija in filteredResult = (hakeneet | filter:hakijaFilter)">
+    <tr ng-repeat="hakija in filteredResult = (hakeneet | orderBy:predicate:reverse | filter:hakijaFilter)">
         <td class="leftorientedcolumn">
-            {{hakija.firstNames}}&nbsp;{{hakija.lastName}}
+            {{hakija.lastName}}&nbsp;{{hakija.firstNames}}
         </td>
         <td class="leftorientedcolumn" ng-repeat="avain in avaimet">
-            A
+            {{hakija.additionalData[avain.tunniste]}}
         </td>
     </tr>
 
     </tbody>
     </table>
-</body>
-</html>
+</div>
