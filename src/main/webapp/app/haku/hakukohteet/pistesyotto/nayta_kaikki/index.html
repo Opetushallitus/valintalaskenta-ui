@@ -35,7 +35,6 @@
     <script type="text/javascript" src="/valintalaskenta-ui/app/app-resources.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/lodash-module.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/app/app-urls.js"></script>
-
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/topnavigation/navigation.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/loading.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/services.js"></script>
@@ -43,9 +42,17 @@
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/modal.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/collapsible.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/user.js"></script>
-    <script type="text/javascript">
-        var app = angular.module("app", ["ngResource","ngRoute"]);
 
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/localisation.js"></script>
+
+    <script type="text/javascript">
+        var app = angular.module("app", ["ngResource","ngRoute","oph.localisation"]);
+        //
+        app.factory('MyRolesModel', function ($q, $http, $timeout) {
+            var deferred = $q.defer();
+            deferred.resolve([]);
+            return deferred.promise;
+        });
         app.config(function($routeProvider){
             $routeProvider.when("/haku/:hakuOid/hakukohde/:hakukohdeOid",
                     {
@@ -66,22 +73,37 @@
                 put: {method: "PUT", isArray: true}
             });
         });
-        app.controller("RootCtrl", function($scope, $http, $log, $resource, HakemusAdditionalData, HakukohdeAvaimet, $routeParams) { // HakemusAdditionalData
-            $scope.predicate = ['lastName','firstNames'];
 
-            HakemusAdditionalData.get({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (result) {
-                $scope.avaimet = result;
-            });
-            HakukohdeAvaimet.get({hakukohdeOid: $routeParams.hakukohdeOid}, function (result) {
-                $scope.hakeneet = result;
-            });
+        /*
+        "MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
+        <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
+        <option value="EI_OSALLISTUNUT">{{ t('hakukohteetpistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
+        <option ng-if="avain.vaatiiOsallistumisen  == false" value="EI_VAADITA">{{ t('hakukohteetpistesyotto.eivaadita') || 'Ei vaadita' }}</option>
+        */
+        app.controller("RootCtrl", function($scope, $http, $log, $resource, HakemusAdditionalData, HakukohdeAvaimet, $routeParams, LocalisationService) { // , LocalisationServic
+            $scope.predicate = ['lastName','firstNames'];
+            $scope.osallistumistilat = {
+                "MERKITSEMATTA":"Merkitsem\u00E4tt\u00E4",
+                "OSALLISTUI":"Osallistui",
+                "EI_OSALLISTUNUT":"Ei osallistunut",
+                "EI_VAADITA":"Ei vaadita",
+                "": ""
+                };
+
+            /*LocalisationService.getTranslationsForArray($scope.osallistumistilat).then(function () {
+                //HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+            });*/
+
+            $scope.avaimet = HakukohdeAvaimet.get({hakukohdeOid: $routeParams.hakukohdeOid});
+            $scope.hakeneet = HakemusAdditionalData.get({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
             /*
             $http.get("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/avaimet.json").success(function(a) {
                 $scope.avaimet = a;
             });
             $http.get("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/additional.json").success(function(a) {
                 $scope.hakeneet = a;
-            });*/
+            });
+            */
             $scope.hakijaFilter = "";
         });
     </script>
