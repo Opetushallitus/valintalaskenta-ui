@@ -17,8 +17,6 @@
     <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-translate.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/static/jquery.nestable.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/ui-bootstrap-tpls.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12/tinymce.min.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12/ui-tinymce.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/ng-table.min.js"></script>
 
     <!--conf - generoidaan palvelimen käynnistyksen yhteydessä -->
@@ -46,9 +44,9 @@
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/localisation.js"></script>
 
     <script type="text/javascript">
-        var app = angular.module("app", ["ngResource","ngRoute","oph.localisation"]);
+        var app = angular.module("app", ["ngResource","ngRoute","oph.localisation","lodash"]);
         //
-        app.factory('MyRolesModel', function ($q, $http, $timeout) {
+        app.factory('MyRolesModel', function ($q) {
             var deferred = $q.defer();
             deferred.resolve([]);
             return deferred.promise;
@@ -82,20 +80,26 @@
         */
         app.controller("RootCtrl", function($scope, $http, $log, $resource, HakemusAdditionalData, HakukohdeAvaimet, $routeParams, LocalisationService) { // , LocalisationServic
             $scope.predicate = ['lastName','firstNames'];
+            $scope.osallistumislokaalit = [
+                {value:"hakukohteetpistesyotto.merkitsematta",default_text:"Merkitsem\u00E4tt\u00E4"},
+                {value:"hakukohteetpistesyotto.osallistui",default_text:"Osallistui"},
+                {value:"hakukohteetpistesyotto.eiosallistunut",default_text:"Ei osallistunut"},
+                {value:"hakukohteetpistesyotto.eivaadita",default_text:"Ei vaadita"}
+            ];
+            $scope.lokaali = function(avain) {
+                return _.find($scope.osallistumislokaalit, function(o) { return o.value == avain; }).default_text;
+            };
+            LocalisationService.getTranslationsForArray($scope.osallistumislokaalit);
             $scope.osallistumistilat = {
-                "MERKITSEMATTA":"Merkitsem\u00E4tt\u00E4",
-                "OSALLISTUI":"Osallistui",
-                "EI_OSALLISTUNUT":"Ei osallistunut",
-                "EI_VAADITA":"Ei vaadita",
-                "": ""
+                "MERKITSEMATTA": $scope.lokaali("hakukohteetpistesyotto.merkitsematta"),
+                "OSALLISTUI": $scope.lokaali("hakukohteetpistesyotto.osallistui"),
+                "EI_OSALLISTUNUT": $scope.lokaali("hakukohteetpistesyotto.eiosallistunut"),
+                "EI_VAADITA": $scope.lokaali("hakukohteetpistesyotto.eivaadita")
                 };
-
-            /*LocalisationService.getTranslationsForArray($scope.osallistumistilat).then(function () {
-                //HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-            });*/
-
+            ;
             $scope.avaimet = HakukohdeAvaimet.get({hakukohdeOid: $routeParams.hakukohdeOid});
             $scope.hakeneet = HakemusAdditionalData.get({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
+
             /*
             $http.get("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/avaimet.json").success(function(a) {
                 $scope.avaimet = a;
@@ -103,7 +107,7 @@
             $http.get("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/additional.json").success(function(a) {
                 $scope.hakeneet = a;
             });
-            */
+             */
             $scope.hakijaFilter = "";
         });
     </script>
