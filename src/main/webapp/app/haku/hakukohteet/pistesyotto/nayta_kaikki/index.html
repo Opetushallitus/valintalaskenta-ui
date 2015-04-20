@@ -45,15 +45,7 @@
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/localisation.js"></script>
 
     <script type="text/javascript">
-        var app = angular.module("app", ["ngResource","ngRoute","oph.localisation","lodash", "ngMockE2E"]).run(function($httpBackend) {
-            window.httpBackend = $httpBackend
-            httpBackend.when('GET', /.*\/valintalaskenta-ui\/.*/).passThrough();
-            httpBackend.when('GET', /.*\/lokalisointi\/.*/).respond([]);
-            if(window.runTestHooks) {
-
-                window.runTestHooks();
-            }
-        });
+        var app = angular.module("app", ["ngResource","ngRoute","oph.localisation","lodash"])
 
         app.factory('MyRolesModel', function ($q) {
             var deferred = $q.defer();
