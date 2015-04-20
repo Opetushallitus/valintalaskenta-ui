@@ -43,7 +43,7 @@ app.factory('TarjontaHaut', function($resource) {
 // Hakuparametrit
 app.factory('Parametrit', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/parametrit/:hakuOid", {}, {
-        list: {method: "GET"}
+        list: {method: "GET", cache: false}
     });
 });
 
@@ -51,7 +51,7 @@ app.factory('Parametrit', function($resource) {
 //Valintalaskenta
 app.factory('HakukohdeValinnanvaihe', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/hakukohde/:parentOid/valinnanvaihe", {parentOid: "@parentOid"}, {
-        get: {method: "GET", isArray: true },
+        get: {method: "GET", isArray: true, cache: false },
         post:{method: "POST"},
         insert: {method: "PUT"}
     });
@@ -59,26 +59,26 @@ app.factory('HakukohdeValinnanvaihe', function($resource) {
 
 app.factory('HakuVirheet', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/haku/:parentOid/:virhetyyppi", {parentOid: "@parentOid", virhetyyppi: "@virhetyyppi"}, {
-        get: {method: "GET", isArray: true }
+        get: {method: "GET", isArray: true, cache: false }
     });
 });
 
 app.factory('ValinnanvaiheListByHakukohde', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe?tarjoajaOid=:tarjoajaOid", {hakukohdeoid: "@hakukohdeoid", tarjoajaOid: "@tarjoajaOid"}, {
-        get: {method: "GET", isArray: true},
+        get: {method: "GET", isArray: true, cache: false},
         post:{method: "POST"}
     });
 });
 
 app.factory('Valintatapajono', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoid/jarjestyskriteeritulos", {valintatapajonoid: "@valintatapajonoid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 
 app.factory('ValintatapajonoListByValinnanvaihe', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:valinnanvaiheoid/valintatapajono", {valinnanvaiheoid: "@valinnanvaiheoid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 
@@ -93,7 +93,7 @@ app.factory('HarkinnanvaraisestiHyvaksytyt', function($resource) {
             hakukohdeOid: "@hakukohdeOid"
 
         }, {
-            get: {method: "GET", isArray: true}
+            get: {method: "GET", isArray: true, cache: false}
         });
 });
 app.factory('HarkinnanvaraisestiHyvaksytty', function($resource) {
@@ -103,43 +103,43 @@ app.factory('HarkinnanvaraisestiHyvaksytty', function($resource) {
             hakemusOid: "@hakemusOid"
 
         }, {
-            get: {method: "GET", isArray: true}
+            get: {method: "GET", isArray: true, cache: false}
         });
 });
 
 app.factory('HakukohdeHakijaryhma', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeoid/hakijaryhma", {hakukohdeoid: "@hakukohdeoid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 
 //valintaperusteet
 app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 app.factory('Valintatapajono', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/valintatapajono/:valintatapajonoOid", {valintatapajonoOid: "@valintatapajonoOid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 app.factory('ValinnanVaiheetIlmanLaskentaa', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid/ilmanlaskentaa", {hakukohdeoid: "@hakukohdeoid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 
 app.factory('ValintaperusteetHakukohde', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
-        get: {method: "GET", isArray: false}
+        get: {method: "GET", isArray: false, cache: false}
     });
 });
 
 // d
 app.factory('DokumenttiProsessinTila', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/dokumenttiprosessi/:id", {id: "@id"}, {
-        lue: {method: "GET"},
+        lue: {method: "GET", cache: false},
         ilmoita: {method: "POST"}
     });
 });
@@ -162,7 +162,7 @@ app.factory('Dokumenttiprosessi', function($http, $log, $rootScope, $resource, $
 });
 app.factory('HaeDokumenttipalvelusta', function($resource) {
     return $resource(DOKUMENTTIPALVELU_URL_BASE + "/dokumentit/:tyyppi/:hakukohdeoid", {tyyppi: "@tyyppi", hakukohdeoid: "@hakukohdeoid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $window, Poller) {
@@ -181,7 +181,7 @@ app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $w
         },
         _timer: null,
         paivita: function(callback) {
-            $http({method: "GET", url: DOKUMENTTIPALVELU_URL_BASE + "/dokumentit/hae"}).
+            $http({method: "GET", cache: false, url: DOKUMENTTIPALVELU_URL_BASE + "/dokumentit/hae"}).
                 success(function(data) {
                     callback(data);
                 });
@@ -218,27 +218,27 @@ app.factory('ValintalaskentaKerrallaUudelleenYrita', function($resource) {
 });
 app.factory('DokumenttiSeurantaPalvelu', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/dokumenttiseuranta/:uuid", {uuid: "@uuid"}, {
-        hae: {method: "GET", isArray:false}
+        hae: {method: "GET", isArray:false, cache: false}
     });
 });
 app.factory('SeurantaPalvelu', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/seuranta/yhteenveto/:uuid", {uuid: "@uuid"}, {
-        hae: {method: "GET", isArray:false}
+        hae: {method: "GET", isArray:false, cache: false}
     });
 });
 app.factory('SeurantaPalveluHaunLaskennat', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/seuranta/hae/:hakuoid/tyyppi/:tyyppi", {hakuoid: "@hakuoid", tyyppi: "@tyyppi"}, {
-        hae: {method: "GET", isArray:true}
+        hae: {method: "GET", isArray:true, cache: false}
     });
 });
 app.factory('SeurantaPalveluLataa', function($resource) {
     return $resource(SEURANTA_URL_BASE + "/seuranta/lataa/:uuid", {uuid: "@uuid"}, {
-        hae: {method: "GET", isArray:false}
+        hae: {method: "GET", isArray:false, cache: false}
     });
 });
 app.factory('ValintalaskentaStatus', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/status/:uuid", {uuid: "@uuid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 app.factory('SijoitteluAktivointi', function($resource) {
@@ -248,7 +248,7 @@ app.factory('SijoitteluAktivointi', function($resource) {
 });
 app.factory('SijoittelunValvonta', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/status/:hakuoid", {hakuoid: "@hakuoid"}, {
-        hae: {method: "GET"}
+        hae: {method: "GET", cache: false}
     });
 });
 app.factory('OsoitetarratSijoittelussaHyvaksytyille', function($resource) {
@@ -286,7 +286,7 @@ app.factory('KoekutsukirjeetEsikatseleSahkopostita', function($resource) {
     return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/letter/previewLetterBatchEmail/:documentId", {
         documentId: "@documentId"
     }, {
-        put: {method: "GET", isArray:false}
+        put: {method: "GET", isArray:false, cache: false}
     });
 });
 app.factory('KoekutsukirjeetSahkopostita', function($resource) {
@@ -322,7 +322,7 @@ app.factory('ErillishakuProxy', function($resource) {
         hakuOid: "@hakuOid",
         hakukohdeOid: "@hakukohdeOid"
     }, {
-        hae: {method:'GET', isArray:true}
+        hae: {method:'GET', isArray:true, cache: false}
     });
 });
 app.factory('PistesyottoVienti', function($resource) {
@@ -393,23 +393,23 @@ app.factory('Jalkiohjauskirjeet', function($resource) {
 
 app.factory('Kirjepohjat', function($resource) {
     return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=:templateName&languageCode=:languageCode&oid=:tarjoajaOid&tag=:tag&applicationPeriod=:hakuOid", {templateName: "@templateName", languageCode:"@languageCode", tarjoajaOid: "@tarjoajaOid", tag:"@tag", hakuOid: "@hakuOid"}, {
-        get: {method: "GET", isArray:true}
+        get: {method: "GET", isArray:true, cache: false}
     });
 });
 app.factory('Jalkiohjauskirjepohjat', function($resource) {
     return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=jalkiohjauskirje&languageCode=:languageCode&tag=:tag", {languageCode:"@languageCode", tag:"@tag"}, {
-        get: {method: "GET", isArray:true}
+        get: {method: "GET", isArray:true, cache: false}
     });
 });
 //hakuapp related
 app.factory('Hakemus', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid", {oid: "@oid", appState:["ACTIVE","INCOMPLETE"]}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 app.factory('HakemusAdditionalData', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/additionalData/:hakuOid/:hakukohdeOid", {hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
-        get: {method: "GET", isArray: true},
+        get: {method: "GET", isArray: true, cache: false},
         put: {method: "PUT", isArray: true}
     });
 });
@@ -432,7 +432,7 @@ app.factory('Henkilot', function($resource) {
 });
 app.factory('HakemusKey', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid/:key", {oid: "@oid", key: "@key", value: "@value"}, {
-        get: {method: "GET", isArray: false},
+        get: {method: "GET", isArray: false, cache: false},
         put: {method: "PUT", isArray: false}
     });
 });
@@ -445,7 +445,7 @@ app.factory('VastaanottoTilat', function($resource) {
             hakukohdeOid: "@hakukohdeoid",
             valintatapajonoOid: "@valintatapajonoOid"
         }, {
-            get: {method: "GET", isArray:true}
+            get: {method: "GET", isArray:true, cache: false}
         });
 });
 
@@ -481,7 +481,7 @@ app.factory('HakemuksenVastaanottoTila', function($resource) {
             valintatapajonoOid: "@valintatapajonoOid",
             hakemusOid: "@hakemusOid"
         }, {
-            get: {method: "GET"}
+            get: {method: "GET", cache: false}
         });
 });
 
@@ -490,49 +490,49 @@ app.factory('HakemuksenVastaanottoTilat', function($resource) {
         {
             hakemusOid: "@hakemusOid"
         }, {
-            get: {method: "GET", isArray: true}
+            get: {method: "GET", isArray: true, cache: false}
         });
 });
 
 app.factory('SijoittelunVastaanottotilat', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/:hakemusOid/", {hakemusOid: "@hakemusOid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 
 app.factory('Sijoittelu', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/", {hakuOid: "@hakuOid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 app.factory('SijoitteluAjo', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/:sijoitteluajoOid", {hakuOid: "@hakuOid", sijoitteluajoOid:"@sijoitteluajoOid" }, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 
 app.factory('LatestSijoittelunTilat', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakemus/:hakemusOid", {hakemusOid: "@hakemusOid", hakuOid:"@hakuOid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 
 app.factory('LatestSijoitteluajoHakukohde', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 
 app.factory('ErillisHakuSijoitteluajoHakukohde', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/erillissijoittelu/:hakuOid/sijoitteluajo/:sijoitteluajoId/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid", sijoitteluajoId: "@sijoitteluajoId"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 
 
 app.factory('Valintatulos', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakemukset", {hakuOid:"@hakuOid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 
@@ -540,53 +540,53 @@ app.factory('Valintatulos', function($resource) {
 // Valintakoetulokset
 app.factory('Valintakoetulokset', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintakoe/hakutoive/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 
 app.factory('Valintakoe', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/valintakoe/:valintakoeOid", {valintakoeOid: "@valintakoeOid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 app.factory('HakukohdeValintakoe', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeOid/valintakoe", {hakukohdeOid: "@hakukohdeOid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 
 app.factory('ValintakoetuloksetHakemuksittain', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintakoe/hakemus/:hakemusOid", {hakemusOid: "@hakemusOid"}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 
 app.factory('HakukohdeAvaimet', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/avaimet/:hakukohdeOid",{hakukohdeOid: "@hakukohdeOid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 
 
 app.factory('ValintalaskentaHistoria', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/jonosijahistoria/:valintatapajonoOid/:hakemusOid", {valintatapajonoOid: "@valintatapajonoOid", hakemusOid:"@hakemusOid"}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 app.factory('ValintalaskentaHakemus', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/hakemus/:hakuoid/:hakemusoid", {hakuoid: "@hakuoid", hakemusoid:"@hakemusoid"}, {
-        get: {method: "GET", isArray: false}
+        get: {method: "GET", isArray: false, cache: false}
     });
 });
 app.factory('MyRoles', function($resource) {
     return $resource(CAS_URL, {}, {
-        get: {method: "GET", isArray: true}
+        get: {method: "GET", isArray: true, cache: false}
     });
 });
 
 app.factory('JatkuvaSijoittelu', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/koostesijoittelu/jatkuva/:method", {}, {
-        get: {method: "GET"}
+        get: {method: "GET", cache: false}
     });
 });
 
@@ -622,7 +622,7 @@ app.factory('ValintaryhmatJaHakukohteet', function($resource) {
         tila: "@tila",
         kohdejoukko: "@kohdejoukko"
     }, {
-        get: {method: "GET", isArray: true  }
+        get: {method: "GET", isArray: true, cache: false  }
     });
 });
 
