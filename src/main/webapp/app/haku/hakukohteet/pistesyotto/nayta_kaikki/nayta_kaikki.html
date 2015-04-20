@@ -20,7 +20,7 @@
         <td class="leftorientedcolumn">
             {{hakija.lastName}}&nbsp;{{hakija.firstNames}}
         </td>
-        <td class="leftorientedcolumn" ng-repeat="avain in avaimet">
+        <td class="leftorientedcolumn" ng-repeat="avain in avaimet | orderBy:'kuvaus'">
             {{hakija.additionalData[avain.tunniste]}}&nbsp;<span class="pull-right">{{osallistumistilat[hakija.additionalData[avain.osallistuminenTunniste]]}}</span>
         </td>
     </tr>

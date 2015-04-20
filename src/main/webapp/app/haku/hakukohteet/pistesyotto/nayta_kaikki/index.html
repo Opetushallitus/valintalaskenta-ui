@@ -45,7 +45,7 @@
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/localisation.js"></script>
 
     <script type="text/javascript">
-        var app = angular.module("app", ["ngResource","ngRoute","oph.localisation","lodash"])
+        var app = angular.module("app", ["ngResource","ngRoute","oph.localisation","lodash"]);
 
         app.factory('MyRolesModel', function ($q) {
             var deferred = $q.defer();
@@ -96,8 +96,8 @@
                 "OSALLISTUI": $scope.lokaali("hakukohteetpistesyotto.osallistui"),
                 "EI_OSALLISTUNUT": $scope.lokaali("hakukohteetpistesyotto.eiosallistunut"),
                 "EI_VAADITA": $scope.lokaali("hakukohteetpistesyotto.eivaadita")
-                };
-            ;
+            };
+
             $scope.avaimet = HakukohdeAvaimet.get({hakukohdeOid: $routeParams.hakukohdeOid});
             $scope.hakeneet = HakemusAdditionalData.get({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
 
