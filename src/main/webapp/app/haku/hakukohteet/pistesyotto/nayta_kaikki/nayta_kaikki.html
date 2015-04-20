@@ -1,0 +1,30 @@
+<div>
+    <input id="search" type="text" class="search margin-vertical-2" placeholder="{{ t('hakukohteetpistesyotto.suodatahakijoita') || 'Suodata hakijoita' }}"
+       ng-model="hakijaFilter"/>
+<table class="virkailija-table-1" stay-on-focus>
+    <thead>
+    <tr>
+        <th><a href="" ng-click="reverse=!reverse">{{ t('hakukohteetpistesyotto.tiedot') || 'Tiedot' }}</a></th>
+        <th ng-repeat="avain in avaimet | orderBy:'kuvaus'">
+            {{avain.kuvaus}}
+                                <span ng-if="avain.min !== undefined && avain.min !== null|| avain.max !== null && avain.max !== undefined">
+                                ({{avain.min}} - {{avain.max}})
+                                </span>
+            <span ng-if="avain.vaatiiOsallistumisen">(<span class="glyphicon glyphicon-asterisk text-danger small" aria-hidden="true"></span>)</span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr ng-repeat="hakija in filteredResult = (hakeneet | orderBy:predicate:reverse | filter:hakijaFilter)">
+        <td class="leftorientedcolumn">
+            {{hakija.lastName}}&nbsp;{{hakija.firstNames}}
+        </td>
+        <td class="leftorientedcolumn" ng-repeat="avain in avaimet">
+            {{hakija.additionalData[avain.tunniste]}}&nbsp;<span class="pull-right">{{osallistumistilat[hakija.additionalData[avain.osallistuminenTunniste]]}}</span>
+        </td>
+    </tr>
+
+    </tbody>
+    </table>
+</div>

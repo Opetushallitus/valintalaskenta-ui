@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>Valintojen toteuttaminen</title>
+    <!-- libs -->
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/jquery.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/lodash.underscore.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-file-upload-html5-shim.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-locale_fi-fi.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-route.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-cache.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-mocks.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-animate.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-file-upload.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/angular-translate.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/static/jquery.nestable.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/jslib/ng-table.min.js"></script>
+
+    <!--conf - generoidaan palvelimen käynnistyksen yhteydessä -->
+    <script type="text/javascript"  src="/valintalaskenta-ui/configuration/configuration.js"></script>
+
+    <link href="/valintalaskenta-ui/common/css/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/valintalaskenta-ui/common/css/font-awesome-4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/valintalaskenta-ui/common/css/ng-table.min.css" rel="stylesheet" type="text/css" />
+    <link href="/valintalaskenta-ui/common/css/virkailija.css" rel="stylesheet" type="text/css" />
+    <link href="/valintalaskenta-ui/common/css/other.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="/valintalaskenta-ui/app/app.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/app/app-routes.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/app/app-resources.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/lodash-module.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/app/app-urls.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/topnavigation/navigation.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/loading.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/services.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/directives.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/modal.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/collapsible.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/user.js"></script>
+
+    <script type="text/javascript" src="/valintalaskenta-ui/common/js/localisation.js"></script>
+
+    <script type="text/javascript">
+        var app = angular.module("app", ["ngResource","ngRoute","oph.localisation","lodash"])
+
+        app.factory('MyRolesModel', function ($q) {
+            var deferred = $q.defer();
+            deferred.resolve([]);
+            return deferred.promise;
+        });
+        app.config(function($routeProvider){
+            $routeProvider.when("/haku/:hakuOid/hakukohde/:hakukohdeOid",
+                    {
+                        templateUrl: "/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/nayta_kaikki/nayta_kaikki.html",
+                        controller: "RootCtrl",
+                        controllerAs: "app"
+                    }
+            );
+        });
+        app.factory('HakukohdeAvaimet', function($resource) {
+            return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/avaimet/:hakukohdeOid",{hakukohdeOid: "@hakukohdeOid"}, {
+                get: {method: "GET", isArray: true}
+            });
+        });
+        app.factory('HakemusAdditionalData', function($resource) {
+            return $resource(HAKEMUS_URL_BASE + "haku-app/applications/additionalData/:hakuOid/:hakukohdeOid", {hakuOid: "@hakuOid", hakukohdeOid: "@hakukohdeOid"}, {
+                get: {method: "GET", isArray: true},
+                put: {method: "PUT", isArray: true}
+            });
+        });
+
+        /*
+        "MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
+        <option value="OSALLISTUI">{{ t('hakukohteetpistesyotto.osallistui') || 'Osallistui' }}</option>
+        <option value="EI_OSALLISTUNUT">{{ t('hakukohteetpistesyotto.eiosallistunut') || 'Ei osallistunut' }}</option>
+        <option ng-if="avain.vaatiiOsallistumisen  == false" value="EI_VAADITA">{{ t('hakukohteetpistesyotto.eivaadita') || 'Ei vaadita' }}</option>
+        */
+        app.controller("RootCtrl", function($scope, $http, $log, $resource, HakemusAdditionalData, HakukohdeAvaimet, $routeParams, LocalisationService) { // , LocalisationServic
+            $scope.predicate = ['lastName','firstNames'];
+            $scope.osallistumislokaalit = [
+                {value:"hakukohteetpistesyotto.merkitsematta",default_text:"Merkitsem\u00E4tt\u00E4"},
+                {value:"hakukohteetpistesyotto.osallistui",default_text:"Osallistui"},
+                {value:"hakukohteetpistesyotto.eiosallistunut",default_text:"Ei osallistunut"},
+                {value:"hakukohteetpistesyotto.eivaadita",default_text:"Ei vaadita"}
+            ];
+            $scope.lokaali = function(avain) {
+                return _.find($scope.osallistumislokaalit, function(o) { return o.value == avain; }).default_text;
+            };
+            LocalisationService.getTranslationsForArray($scope.osallistumislokaalit);
+            $scope.osallistumistilat = {
+                "MERKITSEMATTA": $scope.lokaali("hakukohteetpistesyotto.merkitsematta"),
+                "OSALLISTUI": $scope.lokaali("hakukohteetpistesyotto.osallistui"),
+                "EI_OSALLISTUNUT": $scope.lokaali("hakukohteetpistesyotto.eiosallistunut"),
+                "EI_VAADITA": $scope.lokaali("hakukohteetpistesyotto.eivaadita")
+                };
+            ;
+            $scope.avaimet = HakukohdeAvaimet.get({hakukohdeOid: $routeParams.hakukohdeOid});
+            $scope.hakeneet = HakemusAdditionalData.get({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
+
+            /*
+            $http.get("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/avaimet.json").success(function(a) {
+                $scope.avaimet = a;
+            });
+            $http.get("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/additional.json").success(function(a) {
+                $scope.hakeneet = a;
+            });
+             */
+            $scope.hakijaFilter = "";
+        });
+    </script>
+</head>
+<body ng-app="myApp" style="margin-left: 20px">
+<ng-view></ng-view>
+</body>
+</html>

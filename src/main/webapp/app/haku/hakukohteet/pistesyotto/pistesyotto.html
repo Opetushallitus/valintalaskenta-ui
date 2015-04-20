@@ -33,7 +33,7 @@
              auth-org="{{hakukohdeModel.hakukohde.tarjoajaOids[0]}}" class="tabsheets hakukohteet-pistesyotto">
 
             <div ng-include="'../common/html/errors.html'"></div>
-
+            <div ng-show="model.hakeneet.length > 0" class="pull-right"><a href="haku/hakukohteet/pistesyotto/nayta_kaikki/index.html#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}" target="_blank">Näytä kaikki <i class="fa fa-external-link"></i></a></div>
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
 
                 <a ng-if="arvonta" href="" ng-click="arvoPisteet()">{{ t('hakukohteetpistesyotto.arvopisteet') || 'Arvo pisteet' }}</a>
@@ -99,7 +99,7 @@
                                 <pisteiden-syottaminen hakija="hakija"
                                                        avain="avain"
                                                        laskentaonly="model.laskentaonly"/>
-                              <td>
+                            </td>
                         </tr>
 
                         </tbody>
