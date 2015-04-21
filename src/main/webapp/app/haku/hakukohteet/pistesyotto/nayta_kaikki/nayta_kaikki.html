@@ -20,8 +20,11 @@
         <td class="leftorientedcolumn">
             {{hakija.lastName}}&nbsp;{{hakija.firstNames}}
         </td>
-        <td class="leftorientedcolumn" ng-repeat="avain in avaimet | orderBy:'kuvaus'">
-            {{hakija.additionalData[avain.tunniste]}}&nbsp;<span class="pull-right">{{osallistumistilat[hakija.additionalData[avain.osallistuminenTunniste]]}}</span>
+        <td class="leftorientedcolumn" ng-repeat="avain in avaimet | orderBy:'kuvaus'" ng-init="arvo=hakija.additionalData[avain.tunniste]">
+            <span ng-if="arvo == true || arvo == 'true'">Kyllä / Hyväksytty</span>
+            <span ng-if="arvo == false || arvo == 'false'">Ei / Hylätty</span>
+            <span ng-if="arvo != false && arvo != 'false' && arvo != true && arvo != 'true'">{{arvo}}</span>&nbsp;
+            <span class="pull-right">{{osallistumistilat[hakija.additionalData[avain.osallistuminenTunniste]]}}</span>
         </td>
     </tr>
 
