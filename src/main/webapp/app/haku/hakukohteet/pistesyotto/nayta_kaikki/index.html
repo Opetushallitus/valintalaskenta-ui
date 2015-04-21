@@ -29,11 +29,8 @@
     <link href="/valintalaskenta-ui/common/css/virkailija.css" rel="stylesheet" type="text/css" />
     <link href="/valintalaskenta-ui/common/css/other.css" rel="stylesheet" type="text/css" />
 
-    <script type="text/javascript" src="/valintalaskenta-ui/app/app.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/app/app-routes.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/app/app-resources.js"></script>
+    <script type="text/javascript" src="/valintalaskenta-ui/test/e2e-mocks.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/lodash-module.js"></script>
-    <script type="text/javascript" src="/valintalaskenta-ui/app/app-urls.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/topnavigation/navigation.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/loading.js"></script>
     <script type="text/javascript" src="/valintalaskenta-ui/common/js/services.js"></script>
@@ -46,6 +43,10 @@
 
     <script type="text/javascript">
         var app = angular.module("app", ["ngResource","ngRoute","oph.localisation","lodash"]);
+
+        if (window.mocksOn) {
+            angular.module('app').requires.push('e2e-mocks')
+        }
 
         app.factory('MyRolesModel', function ($q) {
             var deferred = $q.defer();
