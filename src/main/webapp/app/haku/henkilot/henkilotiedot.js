@@ -343,7 +343,7 @@ angular.module('valintalaskenta').
     };
     $scope.muodostaJalkiohjauskirje = function () {
         var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakuModel.hakuOid.kohdejoukkoUri);
-        var tag = $routeParams.hakuOid;
+        var applicationPeriod = $routeParams.hakuOid;
         var hakemusOid = $scope.model.hakemus.oid;
         var asiointikieli = $scope.model.hakemus.answers.lisatiedot.asiointikieli;
         var langcode = "FI";
@@ -377,7 +377,7 @@ angular.module('valintalaskenta').
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
-					        	tag: tag, templateName: templateName}, {hakemusOids: [hakemusOid],
+					        	applicationPeriod: applicationPeriod, templateName: templateName}, {hakemusOids: [hakemusOid],
 					        	letterBodyText: sisalto} , function (id) {
 					            Latausikkuna.avaa(id, latausikkunaTeksti, "");
 					        }, function () {
@@ -387,7 +387,7 @@ angular.module('valintalaskenta').
                         showDateFields: true,
                         hakuOid: $routeParams.hakuOid,
                         pohjat: function() {
-                        	return Jalkiohjauskirjepohjat.get({templateName: templateName,languageCode: langcode, tag: tag});
+                        	return Jalkiohjauskirjepohjat.get({templateName: templateName,languageCode: langcode, applicationPeriod: applicationPeriod});
                         }
                     };
                 }
