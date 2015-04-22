@@ -1,3 +1,5 @@
+<script type="text/javascript" src="/valintalaskenta-ui/test/e2e-mocks.js"></script>
+<link href="/valintalaskenta-ui/common/css/hide-frames.css" rel="stylesheet" type="text/css" />
 <div>
     <input id="search" type="text" class="search margin-vertical-2" placeholder="{{ t('hakukohteetpistesyotto.suodatahakijoita') || 'Suodata hakijoita' }}"
        ng-model="hakijaFilter"/>
@@ -5,7 +7,7 @@
     <thead>
     <tr>
         <th><a href="" ng-click="reverse=!reverse">{{ t('hakukohteetpistesyotto.tiedot') || 'Tiedot' }}</a></th>
-        <th ng-repeat="avain in avaimet | orderBy:'kuvaus'">
+        <th ng-repeat="avain in model.avaimet | orderBy:'kuvaus'">
             {{avain.kuvaus}}
                                 <span ng-if="avain.min !== undefined && avain.min !== null|| avain.max !== null && avain.max !== undefined">
                                 ({{avain.min}} - {{avain.max}})
@@ -16,11 +18,11 @@
     </thead>
     <tbody>
 
-    <tr ng-repeat="hakija in filteredResult = (hakeneet | orderBy:predicate:reverse | filter:hakijaFilter)">
+    <tr ng-repeat="hakija in filteredResult = (model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter)">
         <td class="leftorientedcolumn">
             {{hakija.lastName}}&nbsp;{{hakija.firstNames}}
         </td>
-        <td class="leftorientedcolumn" ng-repeat="avain in avaimet | orderBy:'kuvaus'" ng-init="arvo=hakija.additionalData[avain.tunniste]">
+        <td class="leftorientedcolumn" ng-repeat="avain in model.avaimet | orderBy:'kuvaus'" ng-init="arvo=hakija.additionalData[avain.tunniste]">
             <span ng-if="arvo === true || arvo === 'true'">Kyllä / Hyväksytty</span>
             <span ng-if="arvo === false || arvo === 'false'">Ei / Hylätty</span>
             <span ng-if="arvo !== false && arvo !== 'false' && arvo !== true && arvo !== 'true'">{{arvo}}</span>&nbsp;
