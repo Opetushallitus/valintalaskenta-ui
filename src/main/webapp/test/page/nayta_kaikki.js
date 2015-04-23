@@ -4,9 +4,9 @@ function nayta_kaikkiPage() {
     return location.host.indexOf('localhost') > -1
   }
 
-  var opiskelijatiedotPage = openPage("/valintalaskenta-ui/app/haku/hakukohteet/pistesyotto/nayta_kaikki/index.html#/haku/h/hakukohde/h0", function () {
+  var opiskelijatiedotPage = openPage("/valintalaskenta-ui/app/index.html#/haku/h/hakukohde/h0/pistesyotto/naytakaikki", function () {
     return S(".virkailija-table-1").length === 1
-  })
+  });
 
   var pageFunctions = {
     search: function() {
@@ -21,7 +21,7 @@ function nayta_kaikkiPage() {
     openPage: function (done) {
       return opiskelijatiedotPage()
         .then(wait.until(function () {
-          var pageReady = pageFunctions.allStudentsTable().length === 1
+          var pageReady = pageFunctions.allStudentsTable().length === 1;
           if (pageReady) {
             done()
           }

@@ -5,8 +5,8 @@ var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute',
     'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation', 'oph.services', 'ngTable', 'angular-cache'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel, LocalisationService, CacheFactory){
-	// ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
-  	tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12';
+    // ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
+    tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12';
     MyRolesModel;
     $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
     LocalisationService.getTranslation("");
@@ -18,6 +18,11 @@ var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute',
     });
 
 });
+
+if (window.mocksOn) {
+    angular.module('valintalaskenta').requires.push('e2e-mocks');
+}
+
 
 
 //MODAALISET IKKUNAT

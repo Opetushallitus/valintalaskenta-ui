@@ -1,10 +1,6 @@
 app.factory('PistesyottoNaytaKaikkiModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, _) {
     "use strict";
 
-    if (window.mocksOn) {
-        angular.module('valintalaskenta').requires.push('e2e-mocks');
-    }
-
     var model;
     model = new function () {
 

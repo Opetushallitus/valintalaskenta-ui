@@ -5,19 +5,19 @@ function asyncPrint(s) {
 }
 
 describe('Näytä kaikki', function() {
-  var page = nayta_kaikkiPage()
+  var page = nayta_kaikkiPage();
 
   beforeEach(function(done) {
-    addTestHook(hakuAppKaksiHenkiloaFixtures)()
-    addTestHook(avaimetFixtures)()
+    addTestHook(hakuAppKaksiHenkiloaFixtures)();
+    addTestHook(avaimetFixtures)();
     page.openPage(done)
-  })
+  });
 
   afterEach(function() {
     if (this.currentTest.state == 'failed') {
       takeScreenshot()
     }
-  })
+  });
 
   describe('Näyttää', function() {
     it('kaikki tiedot', seqDone(
