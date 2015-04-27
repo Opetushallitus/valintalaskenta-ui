@@ -426,6 +426,10 @@ angular.module('valintalaskenta')
             AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
                 $scope.updateOrg = true;
             });
+
+            AuthService.updateOrg("APP_TOISEN_ASTEEN_MUSIIKKIALAN_VALINTAKAYTTAJA", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
+                $scope.updateVarasijaltaHyvaksytty = true;
+            });
         });
     });
 

@@ -146,7 +146,7 @@
                                     </modal>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.varasijatoiminto') || 'Varasijalta hyväksyminen')" sortable="'tila'">
-                                    <div ng-show="hakemus.tila == 'VARALLA' && updateOph">{{ t('sijoitteluntulos.varasijahyvaksy') || 'Hyväksytään varasijalta' }}: <input type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.hyvaksyttyVarasijalta"></div>
+                                    <div ng-show="hakemus.tila == 'VARALLA' && (updateOph || updateVarasijaltaHyvaksytty)">{{ t('sijoitteluntulos.varasijahyvaksy') || 'Hyväksytään varasijalta' }}: <input type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.hyvaksyttyVarasijalta"></div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto')" sortable="'vastaanottoTila'">
                                     <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"> <br/></div>
