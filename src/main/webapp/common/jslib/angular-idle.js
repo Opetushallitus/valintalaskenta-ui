@@ -9,11 +9,13 @@
 angular.module('ngIdle', ['ngIdle.keepalive', 'ngIdle.idle', 'ngIdle.countdown', 'ngIdle.title', 'ngIdle.localStorage']);
 angular.module('ngIdle.keepalive', [])
   .provider('Keepalive', function() {
+
     var options = {
-      http: null,
+      http: [],
       interval: 10 * 60
     };
 
+    /*
     this.http = function(value) {
       if (!value) throw new Error('Argument must be a string containing a URL, or an object containing the HTTP request configuration.');
       if (angular.isString(value)) {
@@ -27,6 +29,22 @@ angular.module('ngIdle.keepalive', [])
 
       options.http = value;
     };
+    */
+
+    this.http = function(value) {
+      if (!value) throw new Error('Argument must be a string containing a URL, or an object containing the HTTP request configuration.');
+      if (angular.isString(value)) {
+        value = {
+          url: value,
+          method: 'GET'
+        };
+      }
+
+      value.cache = false;
+
+      options.http.push(value);
+    };
+
 
     var setInterval = this.interval = function(seconds) {
       seconds = parseInt(seconds);
@@ -47,6 +65,7 @@ angular.module('ngIdle.keepalive', [])
           $rootScope.$broadcast('KeepaliveResponse', data, status);
         }
 
+        /*
         function ping() {
           $rootScope.$broadcast('Keepalive');
 
@@ -56,6 +75,28 @@ angular.module('ngIdle.keepalive', [])
               .error(handleResponse);
           }
         }
+        */
+        function ping() {
+
+            console.log('options: ' + options);
+            console.log('options.http.length: ' + options.http.length);
+            console.log('options.http: ' + options.http);
+
+            for(var i in options.http) {
+
+              var http = options.http[i];
+              console.log('http: ' + http);
+              $rootScope.$broadcast('Keepalive');
+
+              if (angular.isObject(http)) {
+                $http(http)
+                  .success(handleResponse)
+                  .error(handleResponse);
+              }
+            }
+        }
+
+
 
         return {
           _options: function() {
