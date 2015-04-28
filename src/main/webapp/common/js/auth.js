@@ -282,7 +282,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                                         break;
 
                                     case "update":
-                                        AuthService.updateOrg(attrs.authService, attrs.authOrg).then(success);
+                                        AuthService.updateOrg(attrs.authService, attrs.authHakukohdeOrg).then(success);
                                         break;
 
                                     case "read":
@@ -296,6 +296,33 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                             }
                         });
 
+                    }
+
+                    if ($routeParams.hakukohdeOid) {
+                        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
+
+                            if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
+                                _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
+                                    switch (attrs.auth) {
+                                        case "crud":
+                                            AuthService.crudOrg(attrs.authService, orgOid).then(success);
+                                            break;
+
+                                        case "update":
+                                            AuthService.updateOrg(attrs.authService, orgOid).then(success);
+                                            break;
+
+                                        case "read":
+                                            AuthService.readOrg(attrs.authService, orgOid).then(success);
+                                            break;
+
+                                        default:
+                                            AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success);
+                                            break;
+                                    }
+                                });
+                            }
+                        });
                     }
 
                 });
