@@ -37,9 +37,7 @@ app.directive('idle', ['Idle', '$timeout', '$interval', function(Idle, $timeout,
 app.controller('SessionExpiresCtrl', ['Idle', '$scope', '$modalInstance', '$window', 'LocalisationService', function( Idle, $scope, $modalInstance, $window, LocalisationService) {
     $scope.timeoutMessage = function() {
     var duration = Math.floor(MAX_SESSION_IDLE_TIME_IN_SECONDS / 60);
-    //return "Istuntosi on vanhentunut" + " " + duration +  " " + "minuutin käyttämättömyyden johdosta.";
-    //return LocalisationService.getTranslation("session.expired.text1.part1") + " " + duration +  " " + LocalisationService.getTranslation("session.expired.text1.part2");
-    return (LocalisationService.tl("session.expired.text1.part1") || "Istuntosi on vanhentunut") + " " + duration +  " " + (LocalisationService.tl("session.expired.text1.part2") || "minuutin käyttämättömyyden johdosta.");
+    return LocalisationService.tl("session.expired.text1.part1") + " " + duration +  " " + LocalisationService.tl("session.expired.text1.part2");
     };
 
     $scope.okConfirm = function() {
@@ -78,7 +76,7 @@ app.controller('EventsCtrl', ['$scope','Idle', '$modal', '$http', function($scop
 .config(['IdleProvider', 'KeepaliveProvider', function(IdleProvider, KeepaliveProvider) {
     var warningDuration = 300;
     IdleProvider.idle(MAX_SESSION_IDLE_TIME_IN_SECONDS - warningDuration);
-    IdleProvider.timeout(warningDuration - 290);
+    IdleProvider.timeout(warningDuration);
 
     KeepaliveProvider.interval(SESSION_KEEPALIVE_INTERVAL_IN_SECONDS);
     KeepaliveProvider.http(SIJOITTELU_URL_BASE + "resources/session/maxinactiveinterval");
