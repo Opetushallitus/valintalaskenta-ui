@@ -5,6 +5,7 @@ angular.module('valintalaskenta')
     .constant('READ', 'READ')
     .constant('UPDATE', 'READ_UPDATE')
     .constant('CRUD', 'CRUD')
+    .constant('MUSIIKKI', 'TOISEN_ASTEEN_MUSIIKKIALAN_VALINTAKAYTTAJA')
     .constant('OPH_ORG', "1.2.246.562.10.00000000001");
 
 
@@ -98,7 +99,7 @@ app.factory('ParametriService', function ($q, Parametrit) {
 });
 
 
-app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _, CRUD, READ, UPDATE, OPH_ORG) {
+app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _, CRUD, READ, UPDATE, OPH_ORG, MUSIIKKI) {
 
     // organisation check
     var roleCheck = function (service, org, model, roles) {
@@ -158,6 +159,10 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _, CRUD,
 
         updateOrg: function (service, orgOid) {
             return accessCheck(service, orgOid, [UPDATE, CRUD]);
+        },
+
+        musiikkiOrg: function (service, orgOid) {
+            return accessCheck(service, orgOid, [MUSIIKKI]);
         },
 
         crudOrg: function (service, orgOid) {

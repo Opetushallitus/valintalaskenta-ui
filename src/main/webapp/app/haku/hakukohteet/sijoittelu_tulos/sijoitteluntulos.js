@@ -427,7 +427,7 @@ angular.module('valintalaskenta')
                 $scope.updateOrg = true;
             });
 
-            AuthService.updateOrg("APP_TOISEN_ASTEEN_MUSIIKKIALAN_VALINTAKAYTTAJA", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
+            AuthService.musiikkiOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
                 $scope.updateVarasijaltaHyvaksytty = true;
             });
         });
