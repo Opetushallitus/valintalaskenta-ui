@@ -2,7 +2,8 @@
 
 
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
-    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation', 'oph.services', 'ngTable', 'angular-cache'], function($rootScopeProvider) {
+    'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation', 'oph.services', 'ngTable', 'angular-cache',
+    'ngIdle'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
 }).run(function($http, MyRolesModel, LocalisationService, CacheFactory){
     // ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
@@ -163,3 +164,5 @@ app.constant('IlmoitusTila', {
 	ERROR: 'danger'
 });
 
+var SESSION_KEEPALIVE_INTERVAL_IN_SECONDS = SESSION_KEEPALIVE_INTERVAL_IN_SECONDS || 30;
+var MAX_SESSION_IDLE_TIME_IN_SECONDS = MAX_SESSION_IDLE_TIME_IN_SECONDS || 1800;

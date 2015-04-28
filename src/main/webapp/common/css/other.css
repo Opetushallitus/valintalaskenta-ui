@@ -160,3 +160,7 @@ collapsible > div > div {
 #jk-select {
     width: 300px;
 }
+
+.modal-warning {
+  z-index: 120050 !important;
+}

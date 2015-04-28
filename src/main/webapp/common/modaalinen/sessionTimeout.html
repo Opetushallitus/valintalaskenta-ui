@@ -1,0 +1,25 @@
+<script type="text/ng-template" id="sessionWarning.html">
+    <div class="modal-header">
+        <h3>{{ t('session.warning.header') || 'Istunto vanhenee' }}</h3>
+    </div>
+    <div class="modal-body">
+        <p>{{ t('session.warning.text1') || 'Istuntosi vanhenee 5 minuutin sisällä käyttämättömyyden johdosta.' }}</p>
+        <p>{{ t('session.warning.text2') || 'Istuntoaikoja on rajoitettu turvallisuuden vuoksi.' }}</p>
+    </div>
+    <div id="sessionWarning" class="modal-footer">
+        <button class="btn btn-primary" ng-click="okConfirm()">{{ t('session.warning.button') || 'Palaa palveluun' }}</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="sessionExpired.html">
+    <div class="modal-header">
+        <h3>{{ t('session.expired.header') || 'Istunto vanhentunut' }}</h3>
+    </div>
+    <div class="modal-body">
+        <p>{{timeoutMessage()}}</p>
+        <p>{{ t('session.expired.text2') || 'Istuntoaikoja on rajoitettu turvallisuuden vuoksi. Ole hyvä ja päivitä sivu jatkaaksesi.' }}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="redirectToLogin()">{{ t('session.expired.button') || 'Päivitä sivu' }}</button>
+    </div>
+</script>
