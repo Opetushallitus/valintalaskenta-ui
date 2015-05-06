@@ -374,7 +374,8 @@ angular.module('valintalaskenta').
 			}
 			otsikko = "Muodostetaan osoitetarrat valituille hakemuksille";
 		}
-    	Osoitetarrat.post({ 
+    	Osoitetarrat.post({
+			hakuOid:$routeParams.hakuOid,
     		hakukohdeOid:$routeParams.hakukohdeOid, 
     		valintakoeOid:[valintakoe.valintakoeOid]},{
     			tag: "valintakoetulos",
@@ -386,7 +387,8 @@ angular.module('valintalaskenta').
     $scope.allAddressLabelPDF = function() {
     	var kokeet = $scope.model.aktiivisetJaLahetettavatValintakoeOids();
     	Osoitetarrat.post({
-    		hakukohdeOid:$routeParams.hakukohdeOid, 
+			hakuOid:$routeParams.hakuOid,
+			hakukohdeOid:$routeParams.hakukohdeOid,
     		valintakoeOid:kokeet},{
     			tag: "valintakoetulos",
         		hakemusOids: null
