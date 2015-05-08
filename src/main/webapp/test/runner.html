@@ -17,12 +17,18 @@
     mocha.reporter('html');
     mocha.timeout(30000);
 </script>
+<script src="fixtures/valintalaskenta.js"></script>
+<script src="fixtures/koodisto.js"></script>
+<script src="fixtures/tarjonta.js"></script>
+<script src="fixtures/valintalaskentakoostepalvelu.js"></script>
 <script src="fixtures/valintaperusteet.js"></script>
 <script src="fixtures/hakuApp.js"></script>
 <script src="util/testHelpers.js"></script>
 <script src="util/test-dsl.js"></script>
 <script src="page/nayta_kaikki.js"></script>
 <script src="spec/naytakaikkiSpec.js"></script>
+<script src="page/valintakoetulos.js"></script>
+<script src="spec/valintakoetulosSpec.js"></script>
 <script>
     $(document).ready(function() {
         if (window.mochaPhantomJS) {

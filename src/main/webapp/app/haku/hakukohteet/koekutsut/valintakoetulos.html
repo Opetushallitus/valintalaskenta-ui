@@ -16,7 +16,7 @@
 
                 <div>
                     <span>{{ t('valintakoetulos.nayta') || 'Näytä' }}</span>
-                    <select ng-model="nakymanTila" ng-change="updateNakymanTila()">
+                    <select id="nakymaDropDown" ng-model="nakymanTila" ng-change="updateNakymanTila()">
                         <option value="Kokeittain" selected="selected">{{ t('valintakoetulos.kokeittain') || 'Kokeittain' }}</option>
                         <option value="Hakijoittain">{{ t('valintakoetulos.hakijoittain') || 'Hakijoittain' }}</option>
                     </select>
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div ng-if="nakymanTila == 'Hakijoittain'">
+            <div id="hakijoittainNakyma" ng-if="nakymanTila == 'Hakijoittain'">
                 <h2>{{ t('valintakoetulos.hakijoittain') || 'Hakijoittain' }}</h2>
                 <a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('valintakoetulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
                 <a ng-click="allAddressLabelPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('valintakoetulos.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
@@ -71,7 +71,7 @@
                 <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults.length" ng-model="currentPage" ng-init="currentPage=1" items-per-page="pageSize"></pagination>
             </div>
 
-            <div ng-if="nakymanTila == 'Kokeittain'">
+            <div id="kokeittainNakyma" ng-if="nakymanTila == 'Kokeittain'">
                 <div ng-repeat="valintakoe in model.valintakokeet track by $index">
                 	<div ng-if="valintakoe.hakijat && valintakoe.lahetetaankoKoekutsut && valintakoe.aktiivinen" class="panel panel-default">
 
