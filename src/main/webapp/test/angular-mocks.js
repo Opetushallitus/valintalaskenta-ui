@@ -1,3 +1,3 @@
-<!--
-Placeholder. See file under src/test/webapp/test
--->
+/*
+ Placeholder. See file under src/test/webapp/test
+ */
