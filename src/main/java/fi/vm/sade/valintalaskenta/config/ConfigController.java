@@ -66,7 +66,14 @@ public class ConfigController {
     @Value("${valintalaskentakoostepalvelu.parametriservice.rest.url}")
     private String ohjausparametripalveluRestUrl;
 
-	/**
+    @Value("${valintalaskenta-ui.session-keepalive-interval.seconds:100000}")
+    private Integer sessionKeepAliveIntervalInSeconds;
+
+    @Value("${valintalaskenta-ui.session-max-idle-time.seconds:100000}")
+    private Integer maxSessionIdleTimeInSeconds;
+
+
+    /**
 	 * Generoi javascriptia propertiesseista
 	 * 
 	 * @return
@@ -94,6 +101,8 @@ public class ConfigController {
 		append(b, "KOODISTO_URL_BASE", koodistoServiceRestURL);
         append(b, "OHJAUSPARAMETRIT_URL_BASE", ohjausparametripalveluRestUrl);
 		append(b, "CAS_URL", casUrl);
+        append(b, "SESSION_KEEPALIVE_INTERVAL_IN_SECONDS", Integer.toString(sessionKeepAliveIntervalInSeconds));
+        append(b, "MAX_SESSION_IDLE_TIME_IN_SECONDS", Integer.toString(maxSessionIdleTimeInSeconds));
 		if (!authMode.isEmpty()) {
 			append(b, "AUTH_MODE", authMode);
 
