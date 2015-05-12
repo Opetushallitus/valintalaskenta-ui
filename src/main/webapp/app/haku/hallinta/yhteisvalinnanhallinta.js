@@ -50,10 +50,22 @@ angular.module('valintalaskenta').
                 $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
                 HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat, Korkeakoulu) {
     "use strict";
-
+    $scope.naytetaanHaut = false;
+    $scope.kaikkiHautValittu = false;
+    //console.log(CustomHakuUtil.hakuvuodetOpts);
+    $scope.hakuvuodet = [];
+    HakuModel.deferred.promise.then(function () {
+        $scope.hakuvuodet = _.map(_.uniq(_.pluck(HakuModel.haut, 'hakukausiVuosi')), function(vuosi) {
+            $log.info("mapping " + vuosi);
+            return {hakuvuosi: vuosi};
+        });
+    });
+    $scope.kelaVuosiUpdate = function(kv) {
+        $scope.kelavuosi = kv;
+    }
+    $scope.kelavuosi = null;
     $scope.jatkuva = {};
     $scope.korkeakoulu = Korkeakoulu;
-
     $scope.aktivoiValintalaskentaKerralla = function () {
     	var hakuoid = $routeParams.hakuOid;
     	var valintalaskentaInstance = $modal.open({
@@ -125,8 +137,7 @@ angular.module('valintalaskenta').
 	    	});
     	}
     };
-    $scope.naytetaanHaut = false;
-    $scope.kaikkiHautValittu = false;
+
     $scope.isValittu = function (haku) {
         if (haku.oid === $routeParams.hakuOid) {
             return true;
@@ -136,22 +147,31 @@ angular.module('valintalaskenta').
         }
 
     }
-    $scope.isAllValittu = function () {
-        return _.reduce($scope.hakumodel.haut, function (memo, haku) {
-            if ($scope.isValittu(haku)) {
-                return memo;
-            }
-            return memo && haku.valittu;
-        }, true);
-    };
     $scope.checkAllWith = function (kaikkienTila) {
         _.each($scope.hakumodel.haut, function (haku) {
             haku.valittu = kaikkienTila;
         });
-        $scope.kaikkiHautValittu = kaikkienTila;
     };
+    $scope.checkAllWithSelectedYear = function (kaikkienTila) {
+        _.each($scope.hakumodel.haut, function (haku) {
+            if(haku.hakukausiVuosi == $scope.kelavuosi) {
+                haku.valittu = kaikkienTila;
+            }
+        });
+    };
+    $scope.switchChecked = function() {
+        $scope.kaikkiHautValittu = !$scope.kaikkiHautValittu;
+        if($scope.kelavuosi) {
+            $log.info("valitulla vuodella " + $scope.kelavuosi);
+            $log.info("2013" == 2013);
+            $scope.checkAllWithSelectedYear($scope.kaikkiHautValittu);
+        } else {
+            $log.info("checkataan kaikki " + $scope.kelavuosi);
+            $log.info("2013" == 2013);
+            $scope.checkAllWith($scope.kaikkiHautValittu);
+        }
+    }
     $scope.checkAllWith(false);
-
     $scope.naytaHaut = function () {
         $scope.naytetaanHaut = true;
     };
@@ -160,13 +180,7 @@ angular.module('valintalaskenta').
             return $scope.isValittu(haku);
         });
     };
-    $scope.check = function (oid) {
-        $scope.kaikkiHautValittu = $scope.isAllValittu();
-    };
 
-    $scope.checkAll = function () {
-        $scope.checkAllWith($scope.kaikkiHautValittu);
-    };
     $scope.muodostaKelaDokumentti = function (alku,loppu,nimi) {
     	alku.setHours(0,0,0,0);
     	loppu.setHours(23,59,59,999);

@@ -226,9 +226,25 @@
        </div>        
     </div>
     <div class="col-md-12 margin-bottom-2" ng-hide="naytetaanHaut">
-        <button class="btn btn-default btn-sm" ng-click="naytaHaut();$event.preventDefault();"><i class="fa fa-eye"></i>
+        <button class="btn btn-default btn-sm" ng-click="kelalimit=10;naytaHaut();$event.preventDefault();"><i class="fa fa-eye"></i>
             {{ t('yhteisvalinnanhallinta.naytahaut') || 'Näytä haut' }}
         </button>
+    </div>
+    <div ng-show="naytetaanHaut" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="kvuosi">{{t('hakulista.hakuvuosi') || 'Hakuvuosi'}}</label>
+
+            <div class="col-md-2">
+                <select class="form-control input-sm"
+                        id="kvuosi"
+                        ng-options="item.hakuvuosi as item.hakuvuosi for item in hakuvuodet"
+                        ng-model="kelavuosi"
+                        ng-change="kelaVuosiUpdate(kelavuosi)"
+                        placeholder="Hakuvuosi">
+                    <option></option>
+                </select>
+            </div>
+        </div>
     </div>
     <div class="col-md-12">
         <table class="virkailija-table-1">
@@ -237,7 +253,7 @@
                 <th colspan="3">{{ t('yhteisvalinnanhallinta.muodostavalituista') || 'Kela-dokumentti muodostetaan valituista hauista' }}</th>
             </tr>
             <tr>
-                <th class="col-sm-1"><input type="checkbox" ng-model="kaikkiHautValittu" ng-change="checkAll();"></th>
+                <th class="col-sm-1"><input type="checkbox" ng-checked="kaikkiHautValittu" ng-click="switchChecked()"></th>
                 <th>{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</th>
                 <th>{{ t('yhteisvalinnanhallinta.oid') || 'Oid' }}</th>
             </tr>
@@ -249,10 +265,24 @@
                 </td>
                 <td>{{hakumodel.hakuOid.oid}}</td>
             </tr>
-            <tr ng-show="naytetaanHaut" ng-repeat="haku in hakumodel.haut | filter:notThisHaku">
-                <td><input type="checkbox" ng-model="haku.valittu" ng-change="check();"></td>
+            <tr ng-show="naytetaanHaut" ng-repeat="haku in hakumodel.haut | filter:notThisHaku | filter:{hakukausiVuosi:kelavuosi} | limitTo:kelalimit">
+                <td><input type="checkbox" ng-model="haku.valittu" ></td>
                 <td>{{haku.nimi.kieli_fi}}<span ng-hide="haku.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span></td>
                 <td>{{haku.oid}}</td>
+            </tr>
+            <tr ng-show="kelalimit == 10">
+                <td span="3">
+                    <button class="btn btn-default btn-sm" ng-click="kelalimit = 100000;"><i class="fa fa-eye"></i>
+                        {{ t('yhteisvalinnanhallinta.naytahaut.laajenna') || 'Laajenna' }}
+                    </button>
+                </td>
+            </tr>
+            <tr ng-hide="kelalimit == 10">
+                <td span="3">
+                    <button class="btn btn-default btn-sm" ng-click="kelalimit = 10;"><i class="fa fa-eye"></i>
+                        {{ t('yhteisvalinnanhallinta.naytahaut.piilota') || 'Piilota' }}
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>
