@@ -143,58 +143,69 @@
 
         <plugins>
             <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>0.0.23</version>
-
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>performance-parser-service-it</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
 
                     <execution>
-                        <id>install node and npm</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
+                        <id>test-nodejs</id>
+                        <phase>integration-test</phase>
                         <configuration>
-                            <nodeVersion>v0.12.1</nodeVersion>
-                            <npmVersion>2.7.3</npmVersion>
+                            <tasks name="Run mocha tests">
+                                <exec dir="${basedir}"
+                                      executable="npm"
+                                      failonerror="true">
+                                    <arg value="test"/>
+                                </exec>
+                            </tasks>
                         </configuration>
-                    </execution>
 
-                    <execution>
-                        <id>npm install</id>
-                        <phase>generate-resources</phase>
                         <goals>
-                            <goal>npm</goal>
+                            <goal>run</goal>
                         </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
                     </execution>
-
-                    <execution>
-                        <id>javascript tests</id>
-                        <goals>
-                            <goal>karma</goal>
-                        </goals>
-
-                        <!-- optional: the default plase is "test". Some developers
-                        choose to run karma in the "integration-test" phase. -->
-                        <phase>test</phase>
-
-                        <configuration>
-                            <!-- optional: the default is "karma.conf.js" in your working directory -->
-                            <karmaConfPath>src/test/ui/valintalaskenta-test.conf.js</karmaConfPath>
-                        </configuration>
-                    </execution>
-
                 </executions>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.2.10.v20150310</version>
-
+                <executions>
+                    <execution>
+                        <id>start-jetty</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <scanIntervalSeconds>0</scanIntervalSeconds>
+                            <daemon>true</daemon>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <systemProperties>
                         <systemProperty>
@@ -205,24 +216,13 @@
                     <webAppConfig>
                         <contextPath>/${project.artifactId}</contextPath>
                     </webAppConfig>
+                    <stopPort>21079</stopPort>
+                    <stopKey>STOP</stopKey>
                     <httpConnector>
-                        <port>8180</port>
+                        <port>18180</port>
                         <idleTimeout>30000000</idleTimeout>
                     </httpConnector>
                     <contextHandlers>
-                        <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-                            <contextPath>/valintalaskenta-ui</contextPath>
-                            <resourceBase>${basedir}/target/valintalaskenta-ui</resourceBase>
-                            <configurationClasses>
-                                <configurationClass>org.eclipse.jetty.webapp.WebInfConfiguration</configurationClass>
-                                <configurationClass>org.eclipse.jetty.webapp.WebXmlConfiguration</configurationClass>
-                                <configurationClass>org.eclipse.jetty.webapp.MetaInfConfiguration</configurationClass>
-                                <configurationClass>org.eclipse.jetty.webapp.FragmentConfiguration</configurationClass>
-                                <configurationClass>org.eclipse.jetty.plus.webapp.EnvConfiguration</configurationClass>
-                                <configurationClass>org.eclipse.jetty.plus.webapp.PlusConfiguration</configurationClass>
-                                <configurationClass>org.eclipse.jetty.webapp.JettyWebXmlConfiguration</configurationClass>
-                            </configurationClasses>
-                        </contextHandler>
                         <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
                             <contextPath>/valintalaskenta-ui/app</contextPath>
                             <resourceBase>${basedir}/src/main/webapp/app</resourceBase>
@@ -252,6 +252,45 @@
                         <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
                             <contextPath>/valintalaskenta-ui/test</contextPath>
                             <resourceBase>${basedir}/src/test/webapp/test</resourceBase>
+                            <configurationClasses>
+                                <configurationClass>org.eclipse.jetty.webapp.WebInfConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.WebXmlConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.MetaInfConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.FragmentConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.plus.webapp.EnvConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.plus.webapp.PlusConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.JettyWebXmlConfiguration</configurationClass>
+                            </configurationClasses>
+                        </contextHandler>
+                        <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+                            <contextPath>/virkailija-raamit</contextPath>
+                            <resourceBase>${basedir}/src/test/webapp/virkailija-raamit</resourceBase>
+                            <configurationClasses>
+                                <configurationClass>org.eclipse.jetty.webapp.WebInfConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.WebXmlConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.MetaInfConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.FragmentConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.plus.webapp.EnvConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.plus.webapp.PlusConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.JettyWebXmlConfiguration</configurationClass>
+                            </configurationClasses>
+                        </contextHandler>
+                        <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+                            <contextPath>/valintalaskenta-ui</contextPath>
+                            <resourceBase>${basedir}/src/test/webapp</resourceBase>
+                            <configurationClasses>
+                                <configurationClass>org.eclipse.jetty.webapp.WebInfConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.WebXmlConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.MetaInfConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.FragmentConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.plus.webapp.EnvConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.plus.webapp.PlusConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.JettyWebXmlConfiguration</configurationClass>
+                            </configurationClasses>
+                        </contextHandler>
+                        <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+                            <contextPath>/valintalaskenta-ui/configuration</contextPath>
+                            <resourceBase>${basedir}/src/test/webapp/configuration</resourceBase>
                             <configurationClasses>
                                 <configurationClass>org.eclipse.jetty.webapp.WebInfConfiguration</configurationClass>
                                 <configurationClass>org.eclipse.jetty.webapp.WebXmlConfiguration</configurationClass>
