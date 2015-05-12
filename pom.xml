@@ -199,21 +199,10 @@
                     <systemProperties>
                         <systemProperty>
                             <name>log4j.configuration</name>
-                            <!-- have to use file:/// url since -->
-                            <!-- Jetty is using classloader -->
-                            <!-- before the webapp classloader is ready -->
                             <value>file:///${basedir}/src/test/resources/log4j.properties</value>
                         </systemProperty>
                     </systemProperties>
-                    <!--<connectors>-->
-                    <!--&lt;!&ndash; work around file locking on windows &ndash;&gt;-->
-                    <!--<connector implementation="org.eclipse.jetty.server.bio.SocketConnector">-->
-                    <!--<port>8180</port>-->
-                    <!--<maxIdleTime>30000000</maxIdleTime>-->
-                    <!--</connector>-->
-                    <!--</connectors>-->
                     <webAppConfig>
-                        <jettyEnvXml>src/test/webapp/META-INF/jetty-env.xml</jettyEnvXml>
                         <contextPath>/${project.artifactId}</contextPath>
                     </webAppConfig>
                     <httpConnector>
@@ -260,7 +249,19 @@
                                 <configurationClass>org.eclipse.jetty.webapp.JettyWebXmlConfiguration</configurationClass>
                             </configurationClasses>
                         </contextHandler>
-
+                        <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+                            <contextPath>/valintalaskenta-ui/test</contextPath>
+                            <resourceBase>${basedir}/src/test/webapp/test</resourceBase>
+                            <configurationClasses>
+                                <configurationClass>org.eclipse.jetty.webapp.WebInfConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.WebXmlConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.MetaInfConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.FragmentConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.plus.webapp.EnvConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.plus.webapp.PlusConfiguration</configurationClass>
+                                <configurationClass>org.eclipse.jetty.webapp.JettyWebXmlConfiguration</configurationClass>
+                            </configurationClasses>
+                        </contextHandler>
                     </contextHandlers>
                 </configuration>
                 <dependencies>
