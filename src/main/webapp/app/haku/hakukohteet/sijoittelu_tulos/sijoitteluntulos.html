@@ -114,7 +114,8 @@
                                     <!---Valintatapajono OID: {{jono.oid}}-->
                                     {{ t('sijoitteluntulos.aloituspaikat') || 'Aloituspaikat' }}: {{jono.aloituspaikat}} /
                                     {{ t('sijoitteluntulos.tasasijasaanto') || 'Tasasijasääntö' }}: {{jono.tasasijasaanto}} /
-                                    {{jono.eiVarasijatayttoa ? 'Ei varasijatäyttöä' : 'Varasijatäyttö'}}
+                                    {{jono.eiVarasijatayttoa ? 'Ei varasijatäyttöä' : 'Varasijatäyttö'}} /
+                                    {{ t('sijoitteluntulos.jononprioriteetti') || 'Prioriteetti' }}: {{jono.prioriteetti}}
                                 </th>
                             </tr>
                             <tr ng-repeat="hakemus in ($data | tilaFilter: tilaFilterValue | filter:filterChangedValues)">
