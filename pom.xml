@@ -213,6 +213,9 @@
                             <value>file:///${basedir}/src/test/resources/log4j.properties</value>
                         </systemProperty>
                     </systemProperties>
+                    <webApp>
+                        <descriptor>src/test/webapp/WEB-INF/web.xml</descriptor>
+                    </webApp>
                     <webAppConfig>
                         <contextPath>/${project.artifactId}</contextPath>
                     </webAppConfig>
