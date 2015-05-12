@@ -59,9 +59,13 @@ angular.module('valintalaskenta')
                                 haku.uiNimi = model.getHakuNimi(haku);
 
                                 var kohdejoukkoUri = haku.kohdejoukkoUri;
-                                var kohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
-                                var nivelvaihe = kohdejoukkoUriRegExp.exec(kohdejoukkoUri);
+                                var nivelKohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
+                                var nivelvaihe = nivelKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
                                 nivelvaihe ? haku.nivelvaihe = true : haku.nivelvaihe = false;
+
+                                var erityisKohdejoukkoUriRegExp = /(haunkohdejoukko_20).*/;
+                                var erityis = erityisKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
+                                erityis ? haku.erityisopetus = true : haku.erityisopetus = false;
 
                                 var hakutyyppi = haku.hakutyyppiUri;
                                 var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;

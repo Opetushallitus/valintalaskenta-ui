@@ -110,7 +110,7 @@
                                                     <option value="HYVAKSYTTAVISSA">{{ t('valintalaskentatulos.hyvaksyttavissa') || 'Hyväksyttävissä' }}</option>
                                                     <option value="HYLATTY">{{ t('valintalaskentatulos.hylatty') || 'Hylätty' }}</option>
                                                     <option value="">{{ t('valintalaskentatulos.maarittalematon') || 'Määrittelemätön' }}</option>
-                                                    <option value="HYVAKSYTTY_HARKINNANVARAISESTI">{{ t('valintalaskentatulos.harkinnanvaraisesti') || 'Hyväksytty harkinnanvaraisesti' }}</option>
+                                                    <option ng-hide="erityisopetus" value="HYVAKSYTTY_HARKINNANVARAISESTI">{{ t('valintalaskentatulos.harkinnanvaraisesti') || 'Hyväksytty harkinnanvaraisesti' }}</option>
                                                 </select>
                                             </td>
                                             <td data-title="(t('valintalaskentatulos.kuvausfi') || 'Kuvaus (FI)')" sortable="'jarjestyskriteerit[0].kuvaus.FI'">

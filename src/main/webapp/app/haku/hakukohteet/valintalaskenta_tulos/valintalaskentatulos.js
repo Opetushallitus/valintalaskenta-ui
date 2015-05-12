@@ -322,12 +322,12 @@
 angular.module('valintalaskenta').
     controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ValintalaskentatulosModel',
-        'TulosXls', 'HakukohdeModel', '$http','$log','$modal', 'AuthService', 'UserModel', 'LocalisationService',
+        'TulosXls', 'HakukohdeModel', 'HakuModel', '$http','$log','$modal', 'AuthService', 'UserModel', 'LocalisationService',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, $http, $log, $modal, AuthService, UserModel,
+              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, HakuModel, $http, $log, $modal, AuthService, UserModel,
               LocalisationService) {
     "use strict";
-
+    $scope.erityisopetus = HakuModel.hakuOid.erityisopetus;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
