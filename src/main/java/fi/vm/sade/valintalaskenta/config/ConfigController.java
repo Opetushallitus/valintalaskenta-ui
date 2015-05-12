@@ -66,10 +66,10 @@ public class ConfigController {
     @Value("${valintalaskentakoostepalvelu.parametriservice.rest.url}")
     private String ohjausparametripalveluRestUrl;
 
-    @Value("${valintalaskenta-ui.session-keepalive-interval.seconds}")
+    @Value("${valintalaskenta-ui.session-keepalive-interval.seconds:10000}")
     private Integer sessionKeepAliveIntervalInSeconds;
 
-    @Value("${valintalaskenta-ui.session-max-idle-time.seconds}")
+    @Value("${valintalaskenta-ui.session-max-idle-time.seconds:10000}")
     private Integer maxSessionIdleTimeInSeconds;
 
 
