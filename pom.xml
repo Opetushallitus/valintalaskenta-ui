@@ -161,8 +161,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
+                <!--
                 <executions>
-
                     <execution>
                         <id>test-nodejs</id>
                         <phase>integration-test</phase>
@@ -181,6 +181,7 @@
                         </goals>
                     </execution>
                 </executions>
+                -->
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
