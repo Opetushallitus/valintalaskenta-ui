@@ -231,16 +231,73 @@
         </button>
     </div>
     <div ng-show="naytetaanHaut" class="form-horizontal">
+
         <div class="form-group">
-            <label class="col-md-2 control-label" for="kvuosi">{{t('hakulista.hakuvuosi') || 'Hakuvuosi'}}</label>
+            <label class="col-md-2 control-label" for="hakuvuosi">{{t('hakulista.hakuvuosi') || 'Hakuvuosi'}}</label>
 
             <div class="col-md-2">
                 <select class="form-control input-sm"
-                        id="kvuosi"
-                        ng-options="item.hakuvuosi as item.hakuvuosi for item in hakuvuodet"
-                        ng-model="kelavuosi"
-                        ng-change="kelaVuosiUpdate(kelavuosi)"
-                        placeholder="Hakuvuosi">
+                        id="hakuvuosi"
+                        ng-model="kelafilter.hakuvuosi"
+                        ng-change="kelaUpdate(kelafilter)"
+                        ng-options="hakuvuosi for hakuvuosi in customHakuUtil.hakuvuodetOpts">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="hakukausi">{{t('hakulista.hakukausi') || 'Hakukausi'}}</label>
+
+            <div class="col-md-2">
+                <select class="form-control input-sm"
+                        id="hakukausi"
+                        ng-model="kelafilter.hakukausi"
+                        ng-change="kelaUpdate(kelafilter)"
+                        ng-options="hakukausi.koodiUri as hakukausi.nimi for hakukausi in customHakuUtil.hakukausiOpts"
+                        placeholder="Hakukausi">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="hakutapa">{{t('hakulista.hakutapa') || 'Hakutapa'}}</label>
+
+            <div class="col-md-2">
+                <select class="form-control input-sm"
+                        id="hakutapa"
+                        ng-model="kelafilter.hakutapa"
+                        ng-change="kelaUpdate(kelafilter)"
+                        ng-options="hakutapa.koodiUri as hakutapa.nimi for hakutapa in customHakuUtil.hakutapaOpts">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="kohdejoukko">{{t('hakulista.kohdejoukko') || 'Kohdejoukko'}}</label>
+
+            <div class="col-md-2">
+                <select class="form-control input-sm"
+                        id="kohdejoukko"
+                        ng-model="kelafilter.kohdejoukko"
+                        ng-change="kelaUpdate(kelafilter)"
+                        ng-options="kohdejoukko.koodiUri as kohdejoukko.nimi for kohdejoukko in customHakuUtil.kohdejoukkoOpts">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="hakutyyppi">{{t('hakulista.hakutyyppi') || 'Hakutyyppi'}}</label>
+
+            <div class="col-md-2">
+                <select class="form-control input-sm"
+                        id="hakutyyppi"
+                        ng-model="kelafilter.hakutyyppi"
+                        ng-change="kelaUpdate(kelafilter)"
+                        ng-options="hakutyyppi.koodiUri as hakutyyppi.nimi for hakutyyppi in customHakuUtil.hakutyyppiOpts">
                     <option></option>
                 </select>
             </div>
@@ -265,7 +322,7 @@
                 </td>
                 <td>{{hakumodel.hakuOid.oid}}</td>
             </tr>
-            <tr ng-show="naytetaanHaut" ng-repeat="haku in hakumodel.haut | filter:notThisHaku | filter:{hakukausiVuosi:kelavuosi} | limitTo:kelalimit">
+            <tr ng-show="naytetaanHaut" ng-repeat="haku in hakumodel.haut | filter:notThisHaku | filter:{hakukausiVuosi:nullIsUndefined(kelafilter.hakuvuosi),hakukausiUri:nullIsUndefined(kelafilter.hakukausi),hakutapaUri:nullIsUndefined(kelafilter.hakutapa),kohdejoukkoUri:nullIsUndefined(kelafilter.kohdejoukko),hakutyyppiUri:nullIsUndefined(kelafilter.hakutyyppi)} | limitTo:kelalimit">
                 <td><input type="checkbox" ng-model="haku.valittu" ></td>
                 <td>{{haku.nimi.kieli_fi}}<span ng-hide="haku.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span></td>
                 <td>{{haku.oid}}</td>

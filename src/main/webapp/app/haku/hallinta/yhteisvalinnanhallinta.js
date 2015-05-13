@@ -42,30 +42,31 @@ angular.module('valintalaskenta').
         'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
         'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat', 'Korkeakoulu',
+        'CustomHakuUtil',
         function ($scope, $modal, $interval, _, 
         		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, 
         		Jalkiohjauskirjepohjat, AktivoiKelaFtp, 
         		$log, $timeout, $q, $location, 
         		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                 $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
-                HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat, Korkeakoulu) {
+                HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat, Korkeakoulu,
+                CustomHakuUtil) {
     "use strict";
     $scope.naytetaanHaut = false;
     $scope.kaikkiHautValittu = false;
-    //console.log(CustomHakuUtil.hakuvuodetOpts);
+    $scope.customHakuUtil = CustomHakuUtil;
     $scope.hakuvuodet = [];
-    HakuModel.deferred.promise.then(function () {
-        $scope.hakuvuodet = _.map(_.uniq(_.pluck(HakuModel.haut, 'hakukausiVuosi')), function(vuosi) {
-            $log.info("mapping " + vuosi);
-            return {hakuvuosi: vuosi};
-        });
-    });
-    $scope.kelaVuosiUpdate = function(kv) {
-        $scope.kelavuosi = kv;
+    $scope.kelafilter = null;
+    $scope.kelaUpdate = function(kelafilter) {
+        $scope.kelafilter = kelafilter;
     }
-    $scope.kelavuosi = null;
     $scope.jatkuva = {};
     $scope.korkeakoulu = Korkeakoulu;
+    $scope.nullIsUndefined = function(value) {
+        if(value) {
+            return value;
+        }
+    };
     $scope.aktivoiValintalaskentaKerralla = function () {
     	var hakuoid = $routeParams.hakuOid;
     	var valintalaskentaInstance = $modal.open({
@@ -152,24 +153,51 @@ angular.module('valintalaskenta').
             haku.valittu = kaikkienTila;
         });
     };
-    $scope.checkAllWithSelectedYear = function (kaikkienTila) {
+    $scope.checkAllWithFilter = function () {
         _.each($scope.hakumodel.haut, function (haku) {
-            if(haku.hakukausiVuosi == $scope.kelavuosi) {
-                haku.valittu = kaikkienTila;
+            var ok = true;
+            //{hakuvuosi: 2013, hakukausi: "kausi_s", hakutapa: "hakutapa_01", kohdejoukko: "haunkohdejoukko_10", hakutyyppi: "hakutyyppi_03"}
+            if($scope.kelafilter.hakuvuosi) {
+                if(haku.hakukausiVuosi != $scope.kelafilter.hakuvuosi) {
+                    ok = false;
+                }
+            }
+            if($scope.kelafilter.hakukausi) {
+                if(haku.hakukausiUri.indexOf($scope.kelafilter.hakukausi) === 0) {
+
+                } else {
+                    ok = false;
+                }
+            }
+            if($scope.kelafilter.hakutapa) {
+                if(haku.hakutapaUri.indexOf($scope.kelafilter.hakutapa) === 0) {
+
+                } else {
+                    ok = false;
+                }
+            }
+            if($scope.kelafilter.kohdejoukko) {
+                if(haku.kohdejoukkoUri.indexOf($scope.kelafilter.kohdejoukko) === 0) {
+
+                } else {
+                    ok = false;
+                }
+            }
+            if($scope.kelafilter.hakutyyppi) {
+                if(haku.hakutyyppiUri.indexOf($scope.kelafilter.hakutyyppi) === 0) {
+
+                } else {
+                    ok = false;
+                }
+            }
+            if(ok) {
+                haku.valittu = $scope.kaikkiHautValittu;
             }
         });
     };
     $scope.switchChecked = function() {
         $scope.kaikkiHautValittu = !$scope.kaikkiHautValittu;
-        if($scope.kelavuosi) {
-            $log.info("valitulla vuodella " + $scope.kelavuosi);
-            $log.info("2013" == 2013);
-            $scope.checkAllWithSelectedYear($scope.kaikkiHautValittu);
-        } else {
-            $log.info("checkataan kaikki " + $scope.kelavuosi);
-            $log.info("2013" == 2013);
-            $scope.checkAllWith($scope.kaikkiHautValittu);
-        }
+        $scope.checkAllWithFilter();
     }
     $scope.checkAllWith(false);
     $scope.naytaHaut = function () {
