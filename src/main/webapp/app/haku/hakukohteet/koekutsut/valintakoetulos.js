@@ -48,7 +48,7 @@
 			model.haeHakukohteenValintakokeet(hakukohdeOid).then(function(valintakokeet) {
 				model.hakukohteenValintakokeet = valintakokeet;
 				_.each(valintakokeet, function(entry) {
-					model.valintakokeet[entry.oid] = {
+					model.valintakokeet[entry.nimi] = {
 						aktiivinen: entry.aktiivinen != false,
 						valittu: true,
 						valintakoeOid: entry.oid,
@@ -99,7 +99,7 @@
 										e.valintakoeOid = entry.oid;
 										e.lahetetaankoKoekutsut = true;
 										e.valintakoeTunniste = entry.nimi; // OVT-6961?
-										model.valintakokeet[entry.oid].hakijat.push(e);
+										model.valintakokeet[entry.valintakoeTunniste].hakijat.push(e);
 										if (model.valintakokeetHakijoittain[e.hakemusOid] === undefined) {
 											model.valintakokeetHakijoittain[e.hakemusOid] = {
 												hakemusOid: e.hakemusOid,
@@ -123,11 +123,11 @@
 									if (hakutoive.hakukohdeOid === model.hakukohdeOid) {
 										_.each(hakutoive.valinnanVaiheet, function (valinnanvaihe) {
 											_.each(valinnanvaihe.valintakokeet, function (valintakoe) {
-												if (model.valintakokeet[valintakoe.valintakoeOid] === undefined) {
+												if (model.valintakokeet[valintakoe.valintakoeTunniste] === undefined) {
 													model.errors.push("tunnistamaton valintakoe " + valintakoe.valintakoeTunniste);
 													return;
 												}
-												if (model.valintakokeet[valintakoe.valintakoeOid].kutsutaankoKaikki) {
+												if (model.valintakokeet[valintakoe.valintakoeTunniste].kutsutaankoKaikki) {
 													return;
 												}
 
@@ -150,13 +150,17 @@
 													entry.asiointikieli = hakija.answers.lisatiedot.asiointikieli;
 												}
 												// OVT-6961
+												/*
 												if (valintakoe.nimi !== undefined) {
 													entry.valintakoeTunniste = valintakoe.nimi;
 												} else {
 													entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
 												}
+												*/
 
-												model.valintakokeet[entry.valintakoeOid].hakijat.push(entry);
+												entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
+
+												model.valintakokeet[entry.valintakoeTunniste].hakijat.push(entry);
 												if (model.valintakokeetHakijoittain[entry.hakemusOid] === undefined) {
 													model.valintakokeetHakijoittain[entry.hakemusOid] = {hakemusOid: entry.hakemusOid, etunimi: entry.etunimi, sukunimi: entry.sukunimi};
 													model.valintakokeetHakijoittain[entry.hakemusOid].kokeet = [];
