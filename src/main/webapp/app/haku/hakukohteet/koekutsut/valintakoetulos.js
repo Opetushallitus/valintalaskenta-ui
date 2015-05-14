@@ -48,7 +48,7 @@
 			model.haeHakukohteenValintakokeet(hakukohdeOid).then(function(valintakokeet) {
 				model.hakukohteenValintakokeet = valintakokeet;
 				_.each(valintakokeet, function(entry) {
-					model.valintakokeet[entry.nimi] = {
+					model.valintakokeet[entry.tunniste] = {
 						aktiivinen: entry.aktiivinen != false,
 						valittu: true,
 						valintakoeOid: entry.oid,
