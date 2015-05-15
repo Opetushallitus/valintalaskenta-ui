@@ -1,4 +1,4 @@
-app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, Valintakoetulokset, Ilmoitus,
+app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalDataByOids, Valintakoetulokset, Ilmoitus,
                                           IlmoitusTila, HakukohdeAvainTyyppiService, _) {
     "use strict";
 
@@ -21,6 +21,8 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
             model.hakuOid = hakuOid;
             model.tunnisteet.length = 0;
 
+            var hakemusOids = [];
+
             Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function (tulos) {
                 var tulokset = {};
 
@@ -41,12 +43,13 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                     });
 
                     tulokset[vkt.hakemusOid] = hakutoiveet;
+                    hakemusOids.push(vkt.hakemusOid);
                 }, function (error) {
                     model.errors.push(error);
                 });
 
 
-                HakemusAdditionalData.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, function (result) {
+                HakemusAdditionalDataByOids.post({}, angular.toJson(hakemusOids), function (result) {
 
                     model.hakeneet = result;
                     HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}, function (result) {
