@@ -298,7 +298,7 @@ angular.module('valintalaskenta').
                 				hakukohdeOid:$routeParams.hakukohdeOid,
                 				tarjoajaOid: hakukohde.tarjoajaOids[0],
                 				templateName: "koekutsukirje",
-                				valintakoeOids: [valintakoe.valintakoeOid]},{
+								valintakoeTunnisteet: [valintakoe.valintakoeTunniste]},{
                 					tag: "valintakoetulos",
                 					hakemusOids: hakemusOids,
                 					letterBodyText: sisalto
@@ -334,54 +334,7 @@ angular.module('valintalaskenta').
             }
         });
 	};
-	$scope.tulostaKoekutsukirjeet = function(valintakoe) {
-		/*
-		var hakemusOids = null;
-		var otsikko = null;
-		var letterBodyText = $scope.tinymceModel[valintakoe.valintakoeOid];
-		if(!$scope.isBlank(letterBodyText)) {
-			if($scope.model.isAllValittu(valintakoe)) {
-				// luodaan uusimmasta kannan datasta. kayttoliittama voi olla epasynkassa
-				otsikko = "Muodostetaan koekutsukirjeet valintakokeelle";
-			} else {
-				hakemusOids =  $scope.model.valitutHakemusOids(valintakoe);
-				if(hakemusOids.length == 0) {
-					return; // ei tehda tyhjalle joukolle
-				}
-				otsikko = "Muodostetaan koekutsukirjeet valituille hakemuksille";
-			}
-			var hakukohde = $scope.hakukohdeModel.hakukohde;
-			Koekutsukirjeet.post({
-				hakuOid: $routeParams.hakuOid,
-				hakukohdeOid:$routeParams.hakukohdeOid,
-				tarjoajaOid: hakukohde.tarjoajaOid,
-				templateName: "koekutsukirje",
-				valintakoeOids: [valintakoe.valintakoeOid]},{
-					tag: "valintakoetulos",
-					hakemusOids: hakemusOids,
-					letterBodyText: letterBodyText
-				},
-				function(id) {
-					Latausikkuna.avaaKustomoitu(id, otsikko, valintakoe.valintakoeTunniste, "haku/hakukohteet/koekutsut/modaalinen/valintakoe.html",
-		                    function (dokumenttiId) {
-								$window.open(VIESTINTAPALVELU_URL_BASE + "/api/v1/letter/previewLetterBatchEmail/" + dokumenttiId);
-		                    },
-		                    function (dokumenttiId) {
-		                        KoekutsukirjeetSahkopostita.put(dokumenttiId, function (success) {
-		                            Ilmoitus.avaa("Sähköpostilla lähetys onnistui", "Koekutsukirjeiden lähetys sähköpostilla onnistui");
-		                        }, function () {
-		                            Ilmoitus.avaa("Sähköpostilla lähetys epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-		                        });
 
-		                    }
-		                );
-	    	},function() {
-	    	});
-		} else {
-			Ilmoitus.avaa("Koekutsuja ei voida muodostaa!","Koekutsuja ei voida muodostaa, ennen kuin kutsun sisältö on annettu. Kirjoita kutsun sisältö ensin yllä olevaan kenttään.", IlmoitusTila.WARNING);
-		}
-		*/
-	};
 	$scope.valintakoeTulosXLS = function(valintakoe) {
 		var hakemusOids = null;
 		if(!$scope.model.isAllValittu(valintakoe)) {
@@ -408,8 +361,8 @@ angular.module('valintalaskenta').
 		}
     	Osoitetarrat.post({
 			hakuOid:$routeParams.hakuOid,
-    		hakukohdeOid:$routeParams.hakukohdeOid, 
-    		valintakoeOid:[valintakoe.valintakoeOid]},{
+    		hakukohdeOid:$routeParams.hakukohdeOid,
+			valintakoeTunnisteet:[valintakoe.valintakoeTunniste]},{
     			tag: "valintakoetulos",
     			hakemusOids: hakemusOids
     		},function(id) {

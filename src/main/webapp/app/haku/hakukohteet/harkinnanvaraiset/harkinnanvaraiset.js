@@ -161,7 +161,7 @@ angular.module('valintalaskenta')
 				hakukohdeOid:$routeParams.hakukohdeOid,
 				tarjoajaOid: hakukohde.tarjoajaOids[0],
 				templateName: "koekutsukirje",
-                    valintakoeOids: null}, {
+                    valintakoeTunnisteet: null}, {
                     tag: "harkinnanvaraiset",
                     hakemusOids: valitutHakemusOids(),
                     letterBodyText: letterBodyText
