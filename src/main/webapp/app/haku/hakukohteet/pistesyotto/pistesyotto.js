@@ -1,4 +1,4 @@
-app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditionalDataByOids, Valintakoetulokset, Ilmoitus,
+app.factory('PistesyottoModel', function ($q, HakukohdeHenkilotFull, HakukohdeAvaimet, HakemusAdditionalData, HakemusAdditionalDataByOids, Valintakoetulokset, Ilmoitus,
                                           IlmoitusTila, HakukohdeAvainTyyppiService, _) {
     "use strict";
 
@@ -23,7 +23,14 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
 
             var hakemusOids = [];
 
-            Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function (tulos) {
+            //Haetaan hakukohteelle hakeneet ja lisätään niiden oidit arrayhin jolla haetaan additionalData
+            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}, function (result) {
+                result.forEach( function(hakemus) {
+                    hakemusOids.push(hakemus.oid);
+                });
+
+
+                Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function (tulos) {
                 var tulokset = {};
 
                 // Haetaan osallistuuko hakija kokeeseen
@@ -43,12 +50,18 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                     });
 
                     tulokset[vkt.hakemusOid] = hakutoiveet;
-                    hakemusOids.push(vkt.hakemusOid);
+
+                    // Jos hakija ei ole hakenut hakukohteelle mutta valintakoetulos kuitenkin löytyy
+                    // haetaan myös tälle hakemukselle additionalData
+                    if(hakemusOids.indexOf(vkt.hakemusOid) == -1) {
+                        hakemusOids.push(vkt.hakemusOid);
+                    }
                 }, function (error) {
                     model.errors.push(error);
                 });
 
-
+                // Haetaan additionalData kaikkille niille hakemuksille jotka ovat hakeneet hakukohteelle
+                // tai joille löytyy valintakoetulos
                 HakemusAdditionalDataByOids.post({}, angular.toJson(hakemusOids), function (result) {
 
                     model.hakeneet = result;
@@ -108,6 +121,10 @@ app.factory('PistesyottoModel', function ($q, HakukohdeAvaimet, HakemusAdditiona
                 });
 
             });
+
+            }, function (error) {
+                            model.errors.push(error);
+                        });
         };
 
         this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {
