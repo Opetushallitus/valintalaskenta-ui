@@ -47,13 +47,13 @@
 			model.hakemuksetPromise = $q.defer();
 			model.haeHakukohteenValintakokeet(hakukohdeOid).then(function(valintakokeet) {
 				model.hakukohteenValintakokeet = valintakokeet;
-				console.log(valintakokeet);
 				_.each(valintakokeet, function(entry) {
 					model.valintakokeet[entry.selvitettyTunniste] = {
 						aktiivinen: entry.aktiivinen != false,
 						valittu: true,
 						valintakoeOid: entry.oid,
 						valintakoeTunniste: entry.nimi,
+						tunniste: entry.selvitettyTunniste,
 						kutsutaankoKaikki: entry.kutsutaankoKaikki,
 						lahetetaankoKoekutsut: entry.lahetetaankoKoekutsut,
 						hakijat: []
