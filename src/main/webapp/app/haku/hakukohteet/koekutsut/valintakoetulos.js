@@ -361,7 +361,7 @@ angular.module('valintalaskenta').
     	Osoitetarrat.post({
 			hakuOid:$routeParams.hakuOid,
     		hakukohdeOid:$routeParams.hakukohdeOid,
-			valintakoeTunnisteet:[valintakoe.valintakoeTunniste]},{
+			valintakoeTunnisteet:[valintakoe.tunniste]},{
     			tag: "valintakoetulos",
     			hakemusOids: hakemusOids
     		},function(id) {
