@@ -4,6 +4,7 @@ function valintakokeetFixtures(valintakokeet) {
         var kokeet = _.map(valintakokeet, function(valintakoe){
             return {
                 tunniste: valintakoe.valintakoeOid,
+                selvitettyTunniste: valintakoe.valintakoeOid,
                 laskentakaavaId: 579,
                 nimi: valintakoe.valintakoeOid,
                 kuvaus: valintakoe.valintakoeOid,

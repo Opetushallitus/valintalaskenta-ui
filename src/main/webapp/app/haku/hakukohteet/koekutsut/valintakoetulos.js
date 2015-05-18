@@ -47,6 +47,7 @@
 			model.hakemuksetPromise = $q.defer();
 			model.haeHakukohteenValintakokeet(hakukohdeOid).then(function(valintakokeet) {
 				model.hakukohteenValintakokeet = valintakokeet;
+				console.log(valintakokeet);
 				_.each(valintakokeet, function(entry) {
 					model.valintakokeet[entry.selvitettyTunniste] = {
 						aktiivinen: entry.aktiivinen != false,
@@ -99,8 +100,8 @@
 										e.valintakoeOid = entry.oid;
 										e.lahetetaankoKoekutsut = true;
 										e.valintakoeTunniste = entry.nimi; // OVT-6961?
-										e.tunniste = entry.tunniste; // OVT-6961?
-										model.valintakokeet[entry.valintakoeTunniste].hakijat.push(e);
+										e.tunniste = entry.selvitettyTunniste; // OVT-6961?
+										model.valintakokeet[entry.selvitettyTunniste].hakijat.push(e);
 										if (model.valintakokeetHakijoittain[e.hakemusOid] === undefined) {
 											model.valintakokeetHakijoittain[e.hakemusOid] = {
 												hakemusOid: e.hakemusOid,
@@ -142,7 +143,7 @@
 												entry.hakijaOid = koetulos.hakijaOid;
 												entry.createdAt = koetulos.createdAt;
 												entry.valittu = true;
-												entry.tunniste = valintakoe.tunniste;
+												entry.tunniste = valintakoe.valintakoeTunniste;
 												entry.aktiivinen = valintakoe.aktiivinen;
 												entry.valintakoeOid = valintakoe.valintakoeOid;
 												entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
@@ -151,15 +152,6 @@
 												if(hakija) {
 													entry.asiointikieli = hakija.answers.lisatiedot.asiointikieli;
 												}
-												// OVT-6961
-												/*
-												if (valintakoe.nimi !== undefined) {
-													entry.valintakoeTunniste = valintakoe.nimi;
-												} else {
-													entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
-												}
-												*/
-
 												entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
 
 												model.valintakokeet[entry.valintakoeTunniste].hakijat.push(entry);

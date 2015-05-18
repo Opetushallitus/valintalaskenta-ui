@@ -63,6 +63,7 @@ describe('Valintakoetulos', function() {
     });
 
     describe('Hakukohteen ulkopuolinen hakija', function() {
+
         it('Hakija1 valintakokeessa VALINTAKOE1', seqDone(
             wait.forAngular,
             function() {
@@ -75,6 +76,7 @@ describe('Valintakoetulos', function() {
                 expect(page.findNthHakijaWithPanelTitle(1, VALINTAKOE2)).to.contain('Hakija2');
             }
         ))
+
         it('Hakijat näkyy hakijoittain näkymässä ja kutsutaan oikeisiin valintakokeisiin', seqDone(
             wait.forAngular,
             select(page.nakymaDropDown, "Hakijoittain"),
