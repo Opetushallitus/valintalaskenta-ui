@@ -99,6 +99,7 @@
 										e.valintakoeOid = entry.oid;
 										e.lahetetaankoKoekutsut = true;
 										e.valintakoeTunniste = entry.nimi; // OVT-6961?
+										e.tunniste = entry.tunniste; // OVT-6961?
 										model.valintakokeet[entry.valintakoeTunniste].hakijat.push(e);
 										if (model.valintakokeetHakijoittain[e.hakemusOid] === undefined) {
 											model.valintakokeetHakijoittain[e.hakemusOid] = {
@@ -141,6 +142,7 @@
 												entry.hakijaOid = koetulos.hakijaOid;
 												entry.createdAt = koetulos.createdAt;
 												entry.valittu = true;
+												entry.tunniste = valintakoe.tunniste;
 												entry.aktiivinen = valintakoe.aktiivinen;
 												entry.valintakoeOid = valintakoe.valintakoeOid;
 												entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
@@ -223,7 +225,7 @@
 		};
 		this.valintakoeTunnisteet = function() {
 			return _.map(model.valintakokeet, function(valintakoe){
-				return valintakoe.valintakoeTunniste;
+				return valintakoe.tunniste;
 			});
 		};
 		this.aktiivisetJaLahetettavatValintakoeOids = function() {
@@ -303,7 +305,7 @@ angular.module('valintalaskenta').
                 				hakukohdeOid:$routeParams.hakukohdeOid,
                 				tarjoajaOid: hakukohde.tarjoajaOids[0],
                 				templateName: "koekutsukirje",
-								valintakoeTunnisteet: [valintakoe.valintakoeTunniste]},{
+								valintakoeTunnisteet: [valintakoe.tunniste]},{
                 					tag: "valintakoetulos",
                 					hakemusOids: hakemusOids,
                 					letterBodyText: sisalto
@@ -347,7 +349,7 @@ angular.module('valintalaskenta').
 		}
     	ValintakoeXls.lataa({
 			hakuOid:$routeParams.hakuOid,
-			hakukohdeOid:$routeParams.hakukohdeOid},{hakemusOids: hakemusOids, valintakoeTunnisteet:[valintakoe.valintakoeTunniste]}, function(id) {
+			hakukohdeOid:$routeParams.hakukohdeOid},{hakemusOids: hakemusOids, valintakoeTunnisteet:[valintakoe.tunniste]}, function(id) {
     		Latausikkuna.avaa(id, "Muodostetaan valintakoetuloksille taulukkolaskentatiedosto", valintakoe.valintakoeTunniste);
     	});
     };
