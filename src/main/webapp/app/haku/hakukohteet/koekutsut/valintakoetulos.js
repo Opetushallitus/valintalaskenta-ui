@@ -221,6 +221,11 @@
 				return valintakoe.valintakoeOid;
 			});
 		};
+		this.valintakoeTunnisteet = function() {
+			return _.map(model.valintakokeet, function(valintakoe){
+				return valintakoe.valintakoeTunniste;
+			});
+		};
 		this.aktiivisetJaLahetettavatValintakoeOids = function() {
 			return _.map(_.filter(model.valintakokeet, function(valintakoe){
 				return valintakoe.aktiivinen && valintakoe.lahetetaankoKoekutsut;
@@ -342,7 +347,7 @@ angular.module('valintalaskenta').
 		}
     	ValintakoeXls.lataa({
 			hakuOid:$routeParams.hakuOid,
-			hakukohdeOid:$routeParams.hakukohdeOid},{hakemusOids: hakemusOids, valintakoeOids:[valintakoe.valintakoeOid]}, function(id) {
+			hakukohdeOid:$routeParams.hakukohdeOid},{hakemusOids: hakemusOids, valintakoeTunnisteet:[valintakoe.valintakoeTunniste]}, function(id) {
     		Latausikkuna.avaa(id, "Muodostetaan valintakoetuloksille taulukkolaskentatiedosto", valintakoe.valintakoeTunniste);
     	});
     };
@@ -401,7 +406,7 @@ angular.module('valintalaskenta').
     $scope.predicate = ['sukunimi','etunimi'];
 
     $scope.allValintakoeTulosXLS = function() {
-    	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid},{valintakoeOids:$scope.model.valintakoeOids(),hakemusOids: []}, function(id) {
+    	ValintakoeXls.lataa({hakukohdeOid:$routeParams.hakukohdeOid},{valintakoeTunnisteet:$scope.model.valintakoeTunnisteet(),hakemusOids: []}, function(id) {
     		Latausikkuna.avaa(id, "Muodostetaan valintakoetuloksille taulukkolaskentatiedosto", "");
     	});
     };
