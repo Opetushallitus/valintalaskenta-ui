@@ -3,6 +3,7 @@ angular.module("e2e-mocks", ["ngMockE2E"]).config(function ($routeProvider) {
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto/naytakaikki', {controller:'PistesyottoNaytaKaikkiController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/nayta_kaikki/nayta_kaikki.html'})
 }).run(function($httpBackend) {
     window.httpBackend = $httpBackend;
+    httpBackend.when('GET', /.*maxinactiveinterval.*/).respond();
     httpBackend.when('GET', /.*buildversion.txt.*/).respond();
     httpBackend.when('GET', /.*\/valintalaskenta-ui\/.*/).passThrough();
     httpBackend.when('GET', /.*\/lokalisointi\/.*/).respond([]);

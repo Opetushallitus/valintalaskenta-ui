@@ -25,15 +25,18 @@
 <script src="fixtures/hakuApp.js"></script>
 <script src="util/testHelpers.js"></script>
 <script src="util/test-dsl.js"></script>
-<!--
 <script src="page/nayta_kaikki.js"></script>
 <script src="spec/naytakaikkiSpec.js"></script>
--->
 <script src="page/valintakoetulos.js"></script>
 <script src="spec/valintakoetulosSpec.js"></script>
+<script src="page/pistesyotto.js"></script>
+<script src="spec/pistesyottoSpec.js"></script>
 
 <script>
     $(document).ready(function() {
+        if(window.location.hash) {
+            mocha.options.grep = new RegExp(window.location.href.split('#')[1] + ".*");
+        }
         if (window.mochaPhantomJS) {
             mochaPhantomJS.run()
         } else {
