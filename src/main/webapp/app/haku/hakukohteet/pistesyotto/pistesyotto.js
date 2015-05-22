@@ -62,9 +62,9 @@ app.factory('PistesyottoModel', function ($q, HakukohdeHenkilotFull, HakukohdeAv
 
                 // Haetaan additionalData kaikkille niille hakemuksille jotka ovat hakeneet hakukohteelle
                 // tai joille löytyy valintakoetulos
-                HakemusAdditionalDataByOids.post({}, angular.toJson(hakemusOids), function (result) {
+                HakemusAdditionalDataByOids.post({}, angular.toJson(hakemusOids), function (haetut) {
 
-                    model.hakeneet = result;
+                    model.hakeneet = haetut;
                     HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}, function (result) {
                         model.avaimet = result;
 
