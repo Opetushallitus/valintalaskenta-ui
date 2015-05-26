@@ -24,8 +24,8 @@
         <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'" >
         <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot && !model.haku.lisahaku">
             <td colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
-                <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
-                    {{hakutoive.oppilaitos}}
+                <a target="_blank" href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                    {{hakutoive.oppilaitos}} <i class="fa fa-external-link"></i>
                 </a>
             </td>
         </tr>
@@ -34,8 +34,8 @@
                 <div class="table-group" ng-click="hakutoive.valintalaskenta.$hideRows = !hakutoive.valintalaskenta.$hideRows">
                     <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': hakutoive.valintalaskenta.$hideRows, 'glyphicon-chevron-down': !hakutoive.valintalaskenta.$hideRows }"></span>
                     <strong>{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -</strong>
-                    <a href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
-                        <strong>{{hakutoive.oppilaitos}}</strong>
+                    <a target="_blank" href="#/{{ model.haku.lisahaku ? 'lisa' : '' }}haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                        <strong>{{hakutoive.oppilaitos}} </strong><i class="fa fa-external-link"></i>
                     </a>
                 </div>
             </td>
