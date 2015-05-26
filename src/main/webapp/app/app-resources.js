@@ -136,6 +136,12 @@ app.factory('ValintaperusteetHakukohde', function($resource) {
     });
 });
 
+app.factory('ValintaperusteetHakukohdeValintaryhma', function($resource) {
+    return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid/valintaryhma", {hakukohdeoid: "@hakukohdeoid"}, {
+        get: {method: "GET", isArray: false, cache: false}
+    });
+});
+
 // d
 app.factory('DokumenttiProsessinTila', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/dokumenttiprosessi/:id", {id: "@id"}, {
