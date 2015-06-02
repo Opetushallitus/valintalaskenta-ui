@@ -50,7 +50,7 @@ angular.module('oph.services', [])
 
                     var language = _.find(languages, function (lang) {
                         var languageId = _.last(lang.split("_"));
-                        return ((!_.isEmpty(hakukohdeNimet[lang]) || !_.isEmpty(hakukohdeNimet[languageId])) && !_.isEmpty(tarjoajaNimet[languageId]));
+                        return (hakukohdeNimet != null && (!_.isEmpty(hakukohdeNimet[lang]) || !_.isEmpty(hakukohdeNimet[languageId])) && !_.isEmpty(tarjoajaNimet[languageId]));
                     });
 
                     return (language?language:"kieli_fi");

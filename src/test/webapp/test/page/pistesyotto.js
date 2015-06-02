@@ -13,10 +13,6 @@ function pistesyottoPage() {
     allStudentsTable: function () {
       return S(".virkailija-table-1").first()
     },
-        /*
-    nthNameInTable: function (n) {
-      return S(".virkailija-table-1 tr:nth-child("+n+") td:nth-child(1)").text().trim();
-    },*/
     openPage: function (done) {
       return _pistesyottoPage()
         .then(wait.until(function () {

@@ -18,13 +18,29 @@ function valintakokeetFixtures(valintakokeet) {
                 funktiokutsu: null
             }
         });
-        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/.*\/valintakoe/).respond(
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/HAKUKOHDE1\/valintakoe/).respond(
             kokeet
         );
     }
 }
-function avaimetFixtures() {
+
+
+function valintaperusteetFixtures() {
     var httpBackend = testFrame().httpBackend
+
+    httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDEOID|HAKUKOHDE1)\/valintaryhma/).respond({
+        "nimi": "Peruskaava",
+        "kohdejoukko": null,
+        "hakuoid": null,
+        "hakuvuosi": null,
+        "organisaatiot": [],
+        "oid": "13959055144092858132438821182002",
+        "hakukohdekoodit": [],
+        "valintakoekoodit": [],
+        "lapsivalintaryhma": false,
+        "lapsihakukohde": false
+    })
+
     httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/avaimet\/.*/).respond([
         {
             "tunniste": "ei_vaikuta",
@@ -104,5 +120,5 @@ function avaimetFixtures() {
             "vaatiiOsallistumisen": true,
             "syotettavissaKaikille": false
         }
-    ]);
+    ])
 }

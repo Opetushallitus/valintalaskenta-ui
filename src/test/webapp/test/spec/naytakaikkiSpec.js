@@ -9,7 +9,7 @@ describe('Näytä kaikki', function() {
 
   beforeEach(function(done) {
     addTestHook(hakuAppKaksiHenkiloaFixtures)();
-    addTestHook(avaimetFixtures)();
+    addTestHook(valintaperusteetFixtures)();
     page.openPage(done)
   });
 

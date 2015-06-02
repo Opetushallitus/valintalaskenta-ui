@@ -15,8 +15,10 @@ describe('Valintakoetulos', function() {
     var HAKEMUS2 = "HAKEMUS2";
     beforeEach(function(done) {
         addTestHook(tarjontaFixtures)();
+        addTestHook(valintaperusteetFixtures)();
         addTestHook(koodistoFixtures)();
         addTestHook(parametritFixtures)();
+        addTestHook(organisaatioFixtures)();
         addTestHook(valintakokeetFixtures([
             {
                 valintakoeOid: VALINTAKOE1

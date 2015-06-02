@@ -36,7 +36,7 @@
     	<span>{{ t('hakukohdenavigation.valintalaskennantulos') || 'Valintalaskennan tulos' }}</span>
     </a>
     <a ng-if="!hakuModel.hakuOid.erillishaku" auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_SIJOITTELU" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('sijoitteluntulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/sijoitteluntulos" class="tab">
-    	<span>{{ t('hakukohdenavigation.sijoitteluntulokset') || 'Sijoittelun tulokset' }}</span>
+    	<span id="test-sijoittelun-tulokset">{{ t('hakukohdenavigation.sijoitteluntulokset') || 'Sijoittelun tulokset' }}</span>
     </a>
 
 	<a ng-if="hakuModel.hakuOid.erillishaku" auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_SIJOITTELU" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('erillishaku', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/erillishaku" class="tab">
