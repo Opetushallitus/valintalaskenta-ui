@@ -42,7 +42,7 @@ describe('Valintakoetulos', function() {
                 hakemusOid: HAKEMUS2
             }]))();
         addTestHook(listfullFixtures([]))();
-        addTestHook(hakemusByOidFixtures([
+        addTestHook(hakemusByOidsFixtures([
             {
                 hakemusOid: HAKEMUS1,
                 etunimi: "Erkki",
