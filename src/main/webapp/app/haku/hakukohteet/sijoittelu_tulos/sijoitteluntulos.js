@@ -438,21 +438,23 @@ angular.module('valintalaskenta')
     $scope.osoitetarratUrl = null;
     $scope.hyvaksymiskirjeetUrl = null;
     $scope.sijoitteluntuloksetUrl = null;
-    HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastaus) {
-		if(vastaus[0]) {
-			$scope.osoitetarratUrl = vastaus[0].documentId;
+    HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausOsoitetarrat) {
+		if(vastausOsoitetarrat[0]) {
+			$scope.osoitetarratUrl = vastausOsoitetarrat[0].documentId;
 		}
+		HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausHyvaksymiskirjeet) {
+            if(vastausHyvaksymiskirjeet[0]) {
+                $scope.hyvaksymiskirjeetUrl = vastausHyvaksymiskirjeet[0].documentId;
+            }
+        });
+        HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}, function(vastausSijoitteluntulokset) {
+            if(vastausSijoitteluntulokset[0]) {
+                $scope.sijoitteluntuloksetUrl = vastausSijoitteluntulokset[0].documentId;
+            }
+        });
 	});
-    HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastaus) {
-		if(vastaus[0]) {
-			$scope.hyvaksymiskirjeetUrl = vastaus[0].documentId;
-		}
-	});
-	HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}, function(vastaus) {
-		if(vastaus[0]) {
-			$scope.sijoitteluntuloksetUrl = vastaus[0].documentId;
-		}	
-	});
+
+
 	
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
         {value: "EI_TEHTY", text_prop: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},
