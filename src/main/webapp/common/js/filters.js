@@ -71,29 +71,4 @@ angular.module('valintalaskenta')
             return 0;
         }
     };
-}])
-
-.filter('vastaanottoTila', [function () {
-    return function (input, isKorkeakoulu) {
-
-        var result = [];
-        for(var i = 0; i < input.length ; i++) {
-            if (input[i].value === "KESKEN") {
-                result.push(input[i]);
-            } else if (input[i].value === "VASTAANOTTANUT" && !isKorkeakoulu) {
-                result.push(input[i]);
-            } else if (input[i].value === "EHDOLLISESTI_VASTAANOTTANUT" && isKorkeakoulu) {
-                result.push(input[i]);
-            } else if (input[i].value === "VASTAANOTTANUT_SITOVASTI" && isKorkeakoulu) {
-                result.push(input[i]);
-            } else if (input[i].value === "EI_VASTAANOTETTU_MAARA_AIKANA") {
-                result.push(input[i]);
-            } else if (input[i].value === "PERUNUT") {
-                result.push(input[i]);
-            } else if (input[i].value === "PERUUTETTU") {
-                result.push(input[i]);
-            }
-        }
-        return result;
-    };
 }]);
