@@ -403,7 +403,7 @@ app.factory('Kirjepohjat', function($resource) {
     });
 });
 app.factory('Jalkiohjauskirjepohjat', function($resource) {
-    return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=jalkiohjauskirje&languageCode=:languageCode&tag=:tag", {languageCode:"@languageCode", tag:"@tag"}, {
+    return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=jalkiohjauskirje&languageCode=:languageCode&tag=:tag&applicationPeriod=:applicationPeriod", {languageCode:"@languageCode", tag:"@tag", applicationPeriod: "@applicationPeriod"}, {
         get: {method: "GET", isArray:true, cache: false}
     });
 });
