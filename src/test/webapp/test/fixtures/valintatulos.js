@@ -9,12 +9,6 @@ function valintatulosFixture() {
         "hakutoiveet": [{
             "hakukohdeOid": "1.2.246.562.20.37731636579",
             "hakukohdeNimi": "Energia- ja LVI-tekniikka, diplomi-insinööri KOULUTUS",
-            "opetuspiste": {
-                "name": "Aallonpohja yliopisto"
-            },
-            "koulutus": {
-                "name": "Yliopisto"
-            },
             "tarjoajaOid": "1.2.246.562.10.72985435253",
             "tarjoajaNimi": "Aalto-yliopisto, Insinööritieteiden korkeakoulu",
             "valintatapajonoOid": "1433334427784-5861045456369717641",

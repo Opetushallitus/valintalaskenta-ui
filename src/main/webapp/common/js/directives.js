@@ -502,17 +502,17 @@ app.directive("valintatulos", function () {
             });
 
             $scope.valintatulosText = function (valintatulos) {
-                var key = underscoreToCamelCase(valintatulos.tila);
+                var key = underscoreToCamelCase(valintatulos.valintatila);
                 if (["VASTAANOTTANUT", "EI_VASTAANOTETTU_MAARA_AIKANA", "EHDOLLISESTI_VASTAANOTTANUT"].indexOf(valintatulos.vastaanottotila) >= 0) {
                     key = underscoreToCamelCase(valintatulos.vastaanottotila)
                     return resultState[key]
                 } else if (!_.isEmpty(valintatulos.tilankuvaus)) {
-                    if (valintatulos.tila === "HYLATTY") {
+                    if (valintatulos.valintatila === "HYLATTY") {
                         return resultState[key] + " " + valintatulos.tilankuvaus
                     } else {
                         return valintatulos.tilankuvaus
                     }
-                } else if (valintatulos.tila === "VARALLA" && valintatulos.varasijojaTaytetaanAsti != null) {
+                } else if (valintatulos.valintatila === "VARALLA" && valintatulos.varasijojaTaytetaanAsti != null) {
                     return valintatulos.varasijanumero + ". varasijalla. Varasijoja täytetään " + $scope.formatDate(valintatulos.varasijojaTaytetaanAsti) + " asti.";
                 } else {
                     return valintatulos.varasijanumero + ". varasijalla";
@@ -520,7 +520,7 @@ app.directive("valintatulos", function () {
             };
 
             $scope.valintatulosStyle = function (valintatulos) {
-                if (valintatulos.tila == "HYVAKSYTTY" || valintatulos.tila == "HYVAKSYTTY_EHDOLLISESTI" || valintatulos.tila == "VARASIJALTA_HYVAKSYTTY")
+                if (valintatulos.valintatila == "HYVAKSYTTY" || valintatulos.valintatila == "HYVAKSYTTY_EHDOLLISESTI" || valintatulos.valintatila == "VARASIJALTA_HYVAKSYTTY")
                     return "accepted"
             }
         }
@@ -528,18 +528,25 @@ app.directive("valintatulos", function () {
 });
 
 app.directive('showPersonInfoWithVtsData', ["ValintaTulosProxy", function (ValintaTulosProxy) {
+    var allResultsAvailable = function(valintatulos) {
+        return !valintatulos.hakutoiveet.reduce(function (acc, h) {
+            return acc || h.valintatila === "KESKEN" || h.valintatila === "VARALLA"
+        }, false);
+    };
+
     var fetchVTSData = function (scope, hakuOid, hakemusOid) {
         ValintaTulosProxy.get(
             {
                 hakuOid: hakuOid,
                 hakemusOid: hakemusOid
-            }, function (res) {
-                scope.valintatulos = res.result;
-
+            }, function (response) {
+                scope.valintatulos = response;
+                scope.isFinal = allResultsAvailable(response);
             }, function (error) {
                 console.log("ValintaTulosProxy error");
             });
     };
+
     return {
         restrict: 'E',
         scope: {
@@ -553,44 +560,7 @@ app.directive('showPersonInfoWithVtsData', ["ValintaTulosProxy", function (Valin
         controller: function ($modal, $scope) {
             $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
             $scope.show = function () {
-                //fetchVTSData($scope, $scope.hakuOid, $scope.hakemusOid);
-                $scope.valintatulos = {
-                    "hakuOid": "1.2.246.562.29.11735171271",
-                    "hakemusOid": "1.2.246.562.11.00003935855",
-                    "hakijaOid": "1.2.246.562.24.28860135980",
-
-                    "aikataulu": {"vastaanottoEnd": "2015-06-30T12:50:55Z"},
-                    "hakutoiveet": [{
-                        "hakukohdeOid": "1.2.246.562.20.37731636579",
-                        "hakukohdeNimi": "Energia- ja LVI-tekniikka, diplomi-insinööri KOULUTUS",
-                        "opetuspiste": {
-                            "name": "Aalto yliopisto"
-                        },
-                        "koulutus": {
-                            "name": "yliopisto"
-                        },
-                        "tila": "KESKEN",
-                        "tarjoajaOid": "1.2.246.562.10.72985435253",
-                        "tarjoajaNimi": "Aalto-yliopisto, Insinööritieteiden korkeakoulu",
-                        "valintatapajonoOid": "1433334427784-5861045456369717641",
-                        "valintatila": "HYVAKSYTTY",
-                        "vastaanottotila": "VASTAANOTTANUT",
-                        "ilmoittautumistila": {
-                            "ilmoittautumisaika": {},
-                            "ilmoittautumistapa": {"nimi": {"fi": "Oili", "sv": "Oili", "en": "Oili"}, "url": "/oili/"},
-                            "ilmoittautumistila": "EI_TEHTY",
-                            "ilmoittauduttavissa": true
-                        },
-                        "vastaanotettavuustila": "EI_VASTAANOTETTAVISSA",
-                        "vastaanottoDeadline": "2015-06-30T12:50:55Z",
-                        "viimeisinHakemuksenTilanMuutos": "2015-06-03T13:05:59Z",
-                        "viimeisinValintatuloksenMuutos": "2015-06-03T13:34:44Z",
-                        "jonosija": 1,
-                        "julkaistavissa": true,
-                        "tilanKuvaukset": {}
-                    }]
-                };
-                $scope.isFinal = false;
+                fetchVTSData($scope, $scope.hakuOid, $scope.hakemusOid);
                 $modal.open({
                     scope: $scope,
                     templateUrl: '../common/html/personInformationModalWithVTSData.html',

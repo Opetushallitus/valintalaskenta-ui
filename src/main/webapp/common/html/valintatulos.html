@@ -7,8 +7,8 @@
     <tr ng-repeat="tulos in valintatulos().hakutoiveet" ng-class="valintatulosStyle(tulos)">
         <td>
             <span class="row-number">{{$index+1}}.</span>
-            <span ng-bind="tulos.opetuspiste.name"></span> -
-            <span ng-bind="tulos.koulutus.name"></span>
+            <span ng-bind="tulos.tarjoajaNimi"></span>
+            <span ng-bind="tulos.hakukohdeNimi"></span>
         </td>
         <td>
             <span ng-bind="valintatulosText(tulos)"></span>

@@ -31,7 +31,7 @@ sijoitteluntulokset = initSelectors({
     tabSheet: ".tabsheets",
     valintaTulokset: "#valintaTulokset",
     iirisHenkilotiedot: "span:contains('Iiris VII')",
-    koulunNimi: "[ng-bind='tulos.opetuspiste.name']",
+    koulunNimi: "[ng-bind='tulos.tarjoajaNimi']",
     modaali: ".modal-content"
 
 })
