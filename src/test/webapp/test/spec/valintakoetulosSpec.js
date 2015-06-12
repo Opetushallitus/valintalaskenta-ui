@@ -6,7 +6,7 @@ function asyncPrint(s) {
 
 describe('Valintakoetulos', function() {
     var page = valintakoetulosPage();
-    var HAKU = "HAKU1";
+    var HAKU = "1.2.246.562.20.37731636579";
     var HAKUKOHDE = "HAKUKOHDE1";
     var VALINTAKOE1 = "VALINTAKOE1";
     var VALINTAKOE2 = "VALINTAKOE2";

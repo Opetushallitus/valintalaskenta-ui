@@ -1,7 +1,7 @@
 function valintakokeetFixtures(valintakokeet) {
-    return function() {
+    return function () {
         var httpBackend = testFrame().httpBackend
-        var kokeet = _.map(valintakokeet, function(valintakoe){
+        var kokeet = _.map(valintakokeet, function (valintakoe) {
             return {
                 tunniste: valintakoe.valintakoeOid,
                 selvitettyTunniste: valintakoe.valintakoeOid,
@@ -18,17 +18,16 @@ function valintakokeetFixtures(valintakokeet) {
                 funktiokutsu: null
             }
         });
-        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/HAKUKOHDE1\/valintakoe/).respond(
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|1\.2\.246\.562\.20\.37731636579)\/valintakoe/).respond(
             kokeet
         );
     }
 }
 
-
 function valintaperusteetFixtures() {
     var httpBackend = testFrame().httpBackend
 
-    httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDEOID|HAKUKOHDE1)\/valintaryhma/).respond({
+    httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|1\.2\.246\.562\.20\.37731636579)\/valintaryhma/).respond({
         "nimi": "Peruskaava",
         "kohdejoukko": null,
         "hakuoid": null,
