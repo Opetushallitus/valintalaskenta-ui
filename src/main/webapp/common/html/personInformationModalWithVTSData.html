@@ -1,0 +1,23 @@
+<div class="modal-header">
+    {{ t('personinformationmodal.nimi') || 'Nimi' }}: <span fast-bind-once="sukunimi + ', ' + etunimi"></span>
+</div>
+
+<div class="modal-body">
+    <dl>
+        <dt>{{ t('personinformationmodal.oid') || 'Hakemuksen tekninen tunniste (OID)' }}</dt>
+        <dd>
+            <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakuOid}}/esikatselu/{{hakemusOid}}" target="_blank"
+               fast-bind-once="hakemusOid"></a>
+        </dd>
+        <dt ng-if="henkiloOid">{{ t('personinformationmodal.numero') || 'Oppijan numero' }}</dt>
+        <dd ng-if="henkiloOid" fast-bind-once="henkiloOid"></dd>
+    </dl>
+    <valintatulos data="valintatulos" final="isFinal"/>
+</div>
+
+<div class="modal-footer">
+    <div class="row">
+        <a class="btn btn-default btn-sm" ng-click="sulje();" role="button">{{ t('personinformationmodal.ok') || 'Ok' }}</a>
+    </div>
+</div>
+

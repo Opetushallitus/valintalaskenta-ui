@@ -447,6 +447,165 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
     };
 });
 
+app.directive("valintatulos", function () {
+    var resultState = {
+        "Hyvaksytty": "Hyväksytty",
+            "Kesken": "Opiskelijavalinta_kesken",
+            "HarkinnanvaraisestiHyvaksytty": "Hyväksytty",
+            "Varalla": "__varasija__. varasijalla",
+            "VarallaPvm": "__varasija__._varasijalla. Varasijoja täytetään __varasijaPvm__ asti.",
+            "Peruutettu": "Peruutettu",
+            "Perunut": "Peruit_opiskelupaikan",
+            "Peruuntunut": "Peruuntunut",
+            "VarasijaltaHyvaksytty": "Hyväksytty_varasijalta",
+            "Vastaanottanut": "Opiskelupaikka_vastaanotettu",
+            "Hylatty": "Et_saanut_opiskelupaikkaa.",
+            "EhdollisestiVastaanottanut": "Opiskelupaikka_vastaanotettu ehdollisesti",
+            "EiVastaanotettuMaaraAikana": "Et_ottanut_opiskelupaikkaa_vastaan määräaikaan mennessä"
+    };
+
+    function underscoreToCamelCase(str) {
+        return str.toLowerCase().replace(/^(.)|_(.)/g, function (match, char1, char2) {
+            return (char1 ? char1 : "" + char2 ? char2 : "").toUpperCase()
+        });
+    }
+
+    return {
+        restrict: 'E',
+        scope: {
+            valintatulos: '&data',
+            isFinal: '&final'
+        },
+        templateUrl: '../common/html/valintatulos.html',
+        link: function ($scope, element) {
+            $scope.formatDate = function (dt) {
+                if (dt == null)
+                    return "";
+                else
+                    return moment(dt).format('LL').replace(/,/g, "")
+            };
+
+            $scope.$watch("isFinal()", function (value) {
+                $scope.status = value ? "Lopullinen" : "Kesken";
+            });
+
+            $scope.$on("hakutoive-vastaanotettu", function (e, hakutoive) {
+                var item = $(_(element.find("tbody tr")).find(function (tr) {
+                    return angular.element(tr).scope().tulos.koulutus.oid === hakutoive.koulutus.oid
+                }));
+
+                item.css({"opacity": 0})
+
+                window.setTimeout(function () {
+                    item.animate({"opacity": 1}, 100)
+                }, 100 * 2)
+            });
+
+            $scope.valintatulosText = function (valintatulos) {
+                var key = underscoreToCamelCase(valintatulos.tila);
+                if (["VASTAANOTTANUT", "EI_VASTAANOTETTU_MAARA_AIKANA", "EHDOLLISESTI_VASTAANOTTANUT"].indexOf(valintatulos.vastaanottotila) >= 0) {
+                    key = underscoreToCamelCase(valintatulos.vastaanottotila)
+                    return resultState[key]
+                } else if (!_.isEmpty(valintatulos.tilankuvaus)) {
+                    if (valintatulos.tila === "HYLATTY") {
+                        return resultState[key] + " " + valintatulos.tilankuvaus
+                    } else {
+                        return valintatulos.tilankuvaus
+                    }
+                } else if (valintatulos.tila === "VARALLA" && valintatulos.varasijojaTaytetaanAsti != null) {
+                    return valintatulos.varasijanumero + ". varasijalla. Varasijoja täytetään " + $scope.formatDate(valintatulos.varasijojaTaytetaanAsti) + " asti.";
+                } else {
+                    return valintatulos.varasijanumero + ". varasijalla";
+                }
+            };
+
+            $scope.valintatulosStyle = function (valintatulos) {
+                if (valintatulos.tila == "HYVAKSYTTY" || valintatulos.tila == "HYVAKSYTTY_EHDOLLISESTI" || valintatulos.tila == "VARASIJALTA_HYVAKSYTTY")
+                    return "accepted"
+            }
+        }
+    }
+});
+
+app.directive('showPersonInfoWithVtsData', ["ValintaTulosProxy", function (ValintaTulosProxy) {
+    var fetchVTSData = function (scope, hakuOid, hakemusOid) {
+        ValintaTulosProxy.get(
+            {
+                hakuOid: hakuOid,
+                hakemusOid: hakemusOid
+            }, function (res) {
+                scope.valintatulos = res.result;
+
+            }, function (error) {
+                console.log("ValintaTulosProxy error");
+            });
+    };
+    return {
+        restrict: 'E',
+        scope: {
+            sukunimi: '@',
+            etunimi: '@',
+            hakemusOid: '@',
+            hakuOid: '@',
+            henkiloOid: '@'
+        },
+        templateUrl: '../common/html/personInformationPartial.html',
+        controller: function ($modal, $scope) {
+            $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+            $scope.show = function () {
+                //fetchVTSData($scope, $scope.hakuOid, $scope.hakemusOid);
+                $scope.valintatulos = {
+                    "hakuOid": "1.2.246.562.29.11735171271",
+                    "hakemusOid": "1.2.246.562.11.00003935855",
+                    "hakijaOid": "1.2.246.562.24.28860135980",
+
+                    "aikataulu": {"vastaanottoEnd": "2015-06-30T12:50:55Z"},
+                    "hakutoiveet": [{
+                        "hakukohdeOid": "1.2.246.562.20.37731636579",
+                        "hakukohdeNimi": "Energia- ja LVI-tekniikka, diplomi-insinööri KOULUTUS",
+                        "opetuspiste": {
+                            "name": "Aalto yliopisto"
+                        },
+                        "koulutus": {
+                            "name": "yliopisto"
+                        },
+                        "tila": "KESKEN",
+                        "tarjoajaOid": "1.2.246.562.10.72985435253",
+                        "tarjoajaNimi": "Aalto-yliopisto, Insinööritieteiden korkeakoulu",
+                        "valintatapajonoOid": "1433334427784-5861045456369717641",
+                        "valintatila": "HYVAKSYTTY",
+                        "vastaanottotila": "VASTAANOTTANUT",
+                        "ilmoittautumistila": {
+                            "ilmoittautumisaika": {},
+                            "ilmoittautumistapa": {"nimi": {"fi": "Oili", "sv": "Oili", "en": "Oili"}, "url": "/oili/"},
+                            "ilmoittautumistila": "EI_TEHTY",
+                            "ilmoittauduttavissa": true
+                        },
+                        "vastaanotettavuustila": "EI_VASTAANOTETTAVISSA",
+                        "vastaanottoDeadline": "2015-06-30T12:50:55Z",
+                        "viimeisinHakemuksenTilanMuutos": "2015-06-03T13:05:59Z",
+                        "viimeisinValintatuloksenMuutos": "2015-06-03T13:34:44Z",
+                        "jonosija": 1,
+                        "julkaistavissa": true,
+                        "tilanKuvaukset": {}
+                    }]
+                };
+                $scope.isFinal = false;
+                $modal.open({
+                    scope: $scope,
+                    templateUrl: '../common/html/personInformationModalWithVTSData.html',
+                    controller: function ($scope, $window, $modalInstance) {
+                        $scope.sulje = function () {
+                            $modalInstance.dismiss('cancel');
+                        };
+                    },
+                    resolve: {}
+                });
+            }
+        }
+    };
+}]);
+
 app.directive('showPersonInformation', function () {
     return {
         restrict: 'E',

@@ -47,6 +47,12 @@ app.factory('Parametrit', function($resource) {
     });
 });
 
+app.factory('ValintaTulosProxy', function ($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulos/haku/:hakuOid/hakemusOid/:hakemusOid", {}, {
+        list: {method: "GET", cache: false}
+    });
+});
+
 
 //Valintalaskenta
 app.factory('HakukohdeValinnanvaihe', function($resource) {
