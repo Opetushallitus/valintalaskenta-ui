@@ -27,6 +27,11 @@ describe('Sijoittelun tulokset välilehti', function () {
             visible(sijoitteluntulokset.modaali),
             function () {
                 expect(sijoitteluntulokset.koulunNimi().is(':visible')).to.equal(true)
+                assertText(sijoitteluntulokset.valintatilanne, "Kesken")
+                assertText(sijoitteluntulokset.valintatulosTableIndex(1, 1), "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
+                assertText(sijoitteluntulokset.valintatulosTableIndex(1, 2), "Energia- ja LVI-tekniikka, diplomi-insinööri KOULUTUS")
+                assertText(sijoitteluntulokset.valintatulosTableIndex(2, 1), "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
+                assertText(sijoitteluntulokset.valintatulosTableIndex(2, 2), "Tietotekniikka, diplomi-insinööri KOULUTUS")
             }
         ))
     })

@@ -450,18 +450,18 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
 app.directive("valintatulos", function () {
     var resultState = {
         "Hyvaksytty": "Hyväksytty",
-            "Kesken": "Opiskelijavalinta_kesken",
+            "Kesken": "Opiskelijavalinta kesken",
             "HarkinnanvaraisestiHyvaksytty": "Hyväksytty",
             "Varalla": "__varasija__. varasijalla",
             "VarallaPvm": "__varasija__._varasijalla. Varasijoja täytetään __varasijaPvm__ asti.",
             "Peruutettu": "Peruutettu",
-            "Perunut": "Peruit_opiskelupaikan",
+            "Perunut": "Peruit opiskelupaikan",
             "Peruuntunut": "Peruuntunut",
-            "VarasijaltaHyvaksytty": "Hyväksytty_varasijalta",
-            "Vastaanottanut": "Opiskelupaikka_vastaanotettu",
-            "Hylatty": "Et_saanut_opiskelupaikkaa.",
-            "EhdollisestiVastaanottanut": "Opiskelupaikka_vastaanotettu ehdollisesti",
-            "EiVastaanotettuMaaraAikana": "Et_ottanut_opiskelupaikkaa_vastaan määräaikaan mennessä"
+            "VarasijaltaHyvaksytty": "Hyväksytty varasijalta",
+            "Vastaanottanut": "Opiskelupaikka vastaanotettu",
+            "Hylatty": "Et saanut opiskelupaikkaa.",
+            "EhdollisestiVastaanottanut": "Opiskelupaikka vastaanotettu ehdollisesti",
+            "EiVastaanotettuMaaraAikana": "Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä"
     };
 
     function underscoreToCamelCase(str) {

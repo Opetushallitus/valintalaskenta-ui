@@ -32,6 +32,9 @@ sijoitteluntulokset = initSelectors({
     valintaTulokset: "#valintaTulokset",
     iirisHenkilotiedot: "span:contains('Iiris VII')",
     koulunNimi: "[ng-bind='tulos.tarjoajaNimi']",
-    modaali: ".modal-content"
-
+    modaali: ".modal-content",
+    valintatilanne: ".result-list tr th span",
+    valintatulosTableIndex: function (trIndex, spanIndex) {
+        return ".result-list tr:eq(" + trIndex + ") td span:eq(" + spanIndex + ")"
+    }
 })
