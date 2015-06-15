@@ -77,7 +77,7 @@
                 class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.paivita') || 'Päivitä' }}
         </button>
     </div>
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoitteluajettu') || 'Sijoittelu ajettu' }}</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoitteluajettu') || 'Edellinen onnistunut sijoittelu' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{sijoitteluModel.startMils | date:'dd.MM.yyyy HH:mm'}} -
         {{sijoitteluModel.endMils |
         date:'dd.MM.yyyy HH:mm'}}
@@ -85,7 +85,7 @@
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoitteluajossa') || 'Sijoittelu ajossa' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{jatkuva.ajossa ? 'Kyllä' : 'Ei'}}</div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.viimeksiajettu') || 'Viimeksi ajettu' }}</strong></div>
+    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.viimeksiajettu') || 'Edellinen ajastetun sijoittelun ajankohta' }}</strong></div>
     <div class="col-md-10 margin-bottom-1">{{jatkuva.viimeksiAjettu | date:'dd.MM.yyyy HH:mm'}}</div>
 
     <div ng-if="jatkuva.virhe">
