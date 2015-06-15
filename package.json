@@ -6,8 +6,5 @@
   "dependencies": {
     "test":  "*",
     "mocha-phantomjs": "*"
-  },
-  "scripts": {
-    "test": "mocha-phantomjs -R dot http://localhost:18180/valintalaskenta-ui/test/runner.html"
   }
 }
