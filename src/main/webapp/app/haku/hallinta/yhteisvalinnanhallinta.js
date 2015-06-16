@@ -249,6 +249,7 @@ angular.module('valintalaskenta').
 	    	return "jalkiohjauskirje";
 	    }
     };
+
     $scope.muodostaJalkiohjauskirjeet = function (langcode) {
         var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakumodel.hakuOid.kohdejoukkoUri);
         var hakuOid = $routeParams.hakuOid;
@@ -307,9 +308,9 @@ angular.module('valintalaskenta').
             Ilmoitus.avaa("Sijoittelun tulokset taulukkolaskentaan epäonnistui", "Sijoittelun tulokset taulukkolaskentaan epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
 	};
-    $scope.sijoittelunTuloksetHyvaksymiskirjeiksi = function() {
+    $scope.sijoittelunTuloksetHyvaksymiskirjeiksi = function(langcode) {
 		var hakuoid = $routeParams.hakuOid;
-        SijoittelunTulosHyvaksymiskirjeet.aktivoi({hakuOid: hakuoid}, {}, function (id) {
+        SijoittelunTulosHyvaksymiskirjeet.aktivoi({hakuOid: hakuoid, asiointikieli: langcode}, {}, function (id) {
             Latausikkuna.avaa(id, "Sijoitteluntulokset hyväksymiskirjeiksi", "", {});
         }, function () {
             Ilmoitus.avaa("Sijoittelun tulokset hyväksymiskirjeiksi epäonnistui", "Sijoittelun tulokset hyväksymiskirjeiksi epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);

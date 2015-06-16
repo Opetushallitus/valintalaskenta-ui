@@ -145,7 +145,7 @@
     </button>
 
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('FI')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostasuomeksi') || 'Muodosta jälkiohjauskirjeet suomeksi' }}
+                     class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostasuomeksi') || 'Muodosta jälkiohjauskirjeet suomeksi' }}
     </button>
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('SV')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaruotsiksi') || 'Muodosta jälkiohjauskirjeet ruotsiksi' }}
@@ -153,6 +153,21 @@
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('EN')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaenglanniksi') || 'Muodosta jälkiohjauskirjeet englanniksi' }}
     </button>
+
+    <br>
+
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('FI')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetsuomeksi') || 'Muodosta hyväksymiskirjeet suomeksi' }}
+    </button>
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('SV')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetruotsiksi') || 'Muodosta hyväksymiskirjeet ruotsiksi' }}
+    </button>
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('EN')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetenglanniksi') || 'Muodosta hyväksymiskirjeet englanniksi' }}
+    </button>
+
+    <br>
+
     <button privileges="valintalaskenta"
             href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
             class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
@@ -172,6 +187,24 @@
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('SV')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytruotsiksi') || 'Muodosta ei-hyväksyttyjen kirjeet ruotsiksi' }}
     </button>
+    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('EN')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytenglanniksi') || 'Muodosta ei-hyväksyttyjen englanniksi' }}
+    </button>
+
+    <br>
+
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('FI')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetsuomeksi') || 'Muodosta hyväksymiskirjeet suomeksi' }}
+    </button>
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('SV')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetruotsiksi') || 'Muodosta hyväksymiskirjeet ruotsiksi' }}
+    </button>
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('EN')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetenglanniksi') || 'Muodosta hyväksymiskirjeet englanniksi' }}
+    </button>
+
+    <br>
+
     <button privileges="valintalaskenta"
             href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
             class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
