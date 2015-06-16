@@ -27,7 +27,7 @@ function valintakokeetFixtures(valintakokeet) {
 function valintaperusteetFixtures() {
     var httpBackend = testFrame().httpBackend
 
-    httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|1\.2\.246\.562\.20\.37731636579)\/valintaryhma/).respond({
+    httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|1\.2\.246\.562\.20\.37731636579|1\.2\.246\.562\.11\.00000000220)\/valintaryhma/).respond({
         "nimi": "Peruskaava",
         "kohdejoukko": null,
         "hakuoid": null,

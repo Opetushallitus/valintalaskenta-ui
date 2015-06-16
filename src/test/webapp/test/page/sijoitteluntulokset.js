@@ -1,10 +1,10 @@
-function sijoitteluntuloksetPage() {
+function sijoitteluntuloksetPage(hakuOid, hakemusOid) {
     function isLocalhost() {
         return location.host.indexOf('localhost') > -1
     }
 
     var openSijoitteluPage = openPage(
-        "/valintalaskenta-ui/app/index.html#/haku/1.2.246.562.29.11735171271/hakukohde/1.2.246.562.20.37731636579/sijoitteluntulos", function () {
+        "/valintalaskenta-ui/app/index.html#/haku/" + hakuOid + "/hakukohde/" + hakemusOid + "/sijoitteluntulos", function () {
             return S(".tabsheets").length === 2
         })
 
