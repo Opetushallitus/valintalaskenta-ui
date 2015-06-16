@@ -5,6 +5,6 @@
   },
   "dependencies": {
     "test":  "*",
-    "mocha-phantomjs": "*"
+    "mocha-phantomjs": "3.5.3"
   }
 }
