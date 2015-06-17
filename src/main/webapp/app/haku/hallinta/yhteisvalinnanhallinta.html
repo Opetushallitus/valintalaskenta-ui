@@ -129,11 +129,26 @@
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
     </button>
     <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viehyvaksymiskirjeiksi') || 'Vie hyväksymiskirjeiksi' }}
+            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viehyvaksymiskirjeiksi') || 'Muodosta hyväksymiskirjeet koko haulle' }}
     </button>
     <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetOsoitetarrat()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieosoitetarroiksi') || 'Vie osoitetarroiksi' }}
     </button>
+
+    <br>
+    <hr>
+
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('FI')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetsuomeksi') || 'Muodosta hyväksymiskirjeet suomeksi' }}
+    </button>
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('SV')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetruotsiksi') || 'Muodosta hyväksymiskirjeet ruotsiksi' }}
+    </button>
+    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('EN')"
+            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetenglanniksi') || 'Muodosta hyväksymiskirjeet englanniksi' }}
+    </button>
+
+    <br>
 
 </collapsible>
 
@@ -153,20 +168,6 @@
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('EN')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaenglanniksi') || 'Muodosta jälkiohjauskirjeet englanniksi' }}
     </button>
-
-    <br>
-
-    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('FI')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetsuomeksi') || 'Muodosta hyväksymiskirjeet suomeksi' }}
-    </button>
-    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('SV')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetruotsiksi') || 'Muodosta hyväksymiskirjeet ruotsiksi' }}
-    </button>
-    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('EN')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetenglanniksi') || 'Muodosta hyväksymiskirjeet englanniksi' }}
-    </button>
-
-    <br>
 
     <button privileges="valintalaskenta"
             href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
@@ -190,20 +191,6 @@
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('EN')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytenglanniksi') || 'Muodosta ei-hyväksyttyjen englanniksi' }}
     </button>
-
-    <br>
-
-    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('FI')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetsuomeksi') || 'Muodosta hyväksymiskirjeet suomeksi' }}
-    </button>
-    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('SV')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetruotsiksi') || 'Muodosta hyväksymiskirjeet ruotsiksi' }}
-    </button>
-    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi('EN')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetenglanniksi') || 'Muodosta hyväksymiskirjeet englanniksi' }}
-    </button>
-
-    <br>
 
     <button privileges="valintalaskenta"
             href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
