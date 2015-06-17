@@ -515,7 +515,11 @@ app.directive("valintatulos", function () {
                 } else if (valintatulos.valintatila === "VARALLA" && valintatulos.varasijojaTaytetaanAsti != null) {
                     return valintatulos.varasijanumero + ". varasijalla. Varasijoja täytetään " + $scope.formatDate(valintatulos.varasijojaTaytetaanAsti) + " asti.";
                 } else {
-                    return valintatulos.varasijanumero + ". varasijalla";
+                    if(valintatulos.valintatila === 'VARALLA') {
+                        return valintatulos.varasijanumero + ". varasijalla";
+                    } else {
+                        return resultState[key];
+                    }
                 }
             };
 

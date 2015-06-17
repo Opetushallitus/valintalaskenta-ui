@@ -6,7 +6,6 @@ describe('Sijoittelun tulokset välilehti', function () {
     })
 
     describe('Opiskelijan valintatulokset sijoittelu välilehdellä', function () {
-
         var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.20.37731636579");
         before(function (done) {
             addTestHook(tarjontaFixtures)()
@@ -33,6 +32,8 @@ describe('Sijoittelun tulokset välilehti', function () {
                 assertText(sijoitteluntulokset.valintatulosTableIndex(1, 2), "Energia- ja LVI-tekniikka, diplomi-insinööri KOULUTUS")
                 assertText(sijoitteluntulokset.valintatulosTableIndex(2, 1), "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
                 assertText(sijoitteluntulokset.valintatulosTableIndex(2, 2), "Tietotekniikka, diplomi-insinööri KOULUTUS")
+                assertText(sijoitteluntulokset.valintatulosTilaIndex(1), "Opiskelupaikka vastaanotettu")
+                assertText(sijoitteluntulokset.valintatulosTilaIndex(2), "Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä")
             }
         ))
     })
@@ -61,7 +62,14 @@ describe('Sijoittelun tulokset välilehti', function () {
 
         it('sijoittelu kesken', seqDone(
             wait.forAngular(),
-            expect(true).to.equal(true)
+            click(sijoitteluntulokset.teppoHenkilotiedot),
+            visible(sijoitteluntulokset.modaali),
+            function () {
+                expect(true).to.equal(true)
+                assertText(sijoitteluntulokset.valintatulosTableIndex(1, 1), "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
+                assertText(sijoitteluntulokset.valintatulosTilaIndex(1), "Hyväksytty")
+                assertText(sijoitteluntulokset.valintatulosTilaIndex(2), "Peruuntunut")
+            }
         ))
     })
 })

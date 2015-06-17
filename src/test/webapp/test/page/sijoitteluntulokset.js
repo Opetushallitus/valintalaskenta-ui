@@ -31,10 +31,16 @@ sijoitteluntulokset = initSelectors({
     tabSheet: ".tabsheets",
     valintaTulokset: "#valintaTulokset",
     iirisHenkilotiedot: "span:contains('Iiris VII')",
+    teppoHenkilotiedot: "span:contains('Testaaja')",
+    teponOtaniemenHyvaksymymisTila: "span:contains('Hyvaksytty')",
+    teponAmisHyvaksymymisTila: "span:contains('Peruuntunut')",
     koulunNimi: "[ng-bind='tulos.tarjoajaNimi']",
     modaali: ".modal-content",
     valintatilanne: ".result-list tr th span",
     valintatulosTableIndex: function (trIndex, spanIndex) {
         return ".result-list tr:eq(" + trIndex + ") td span:eq(" + spanIndex + ")"
+    },
+    valintatulosTilaIndex: function (trIndex) {
+        return ".result-list tr:eq(" + trIndex + ") td:eq(1) span"
     }
 })
