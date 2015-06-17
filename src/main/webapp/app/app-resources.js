@@ -407,6 +407,11 @@ app.factory('Jalkiohjauskirjepohjat', function($resource) {
         get: {method: "GET", isArray:true, cache: false}
     });
 });
+app.factory('Hyvaksymiskirjepohjat', function($resource) {
+    return $resource(VIESTINTAPALVELU_URL_BASE + "/api/v1/template/getHistory?templateName=hyvaksymiskirje&languageCode=:languageCode&tag=:tag&applicationPeriod=:applicationPeriod", {languageCode:"@languageCode", tag:"@tag", applicationPeriod: "@applicationPeriod"}, {
+        get: {method: "GET", isArray:true, cache: false}
+    });
+});
 //hakuapp related
 app.factory('Hakemus', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/:oid", {oid: "@oid", appState:["ACTIVE","INCOMPLETE"]}, {
