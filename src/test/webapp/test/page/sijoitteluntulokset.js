@@ -1,10 +1,10 @@
-function sijoitteluntuloksetPage(hakuOid, hakemusOid) {
+function sijoitteluntuloksetPage(hakuOid, hakukohdeOid) {
     function isLocalhost() {
         return location.host.indexOf('localhost') > -1
     }
 
     var openSijoitteluPage = openPage(
-        "/valintalaskenta-ui/app/index.html#/haku/" + hakuOid + "/hakukohde/" + hakemusOid + "/sijoitteluntulos", function () {
+        "/valintalaskenta-ui/app/index.html#/haku/" + hakuOid + "/hakukohde/" + hakukohdeOid + "/sijoitteluntulos", function () {
             return S(".tabsheets").length === 2
         })
 
@@ -42,5 +42,10 @@ sijoitteluntulokset = initSelectors({
     },
     valintatulosTilaIndex: function (trIndex) {
         return ".result-list tr:eq(" + trIndex + ") td:eq(1) span"
+    },
+    hyvaksyValintaesitys: "a.btn:nth-child(2)",
+    vastaanottotieto: ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select",
+    vastaanottotietoOption: function(i) {
+        return ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select option:eq(" + i + ")";
     }
 })

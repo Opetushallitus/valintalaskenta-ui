@@ -331,4 +331,410 @@ function sijoitteluAjoFixtures() {
 
     httpBackend.when('GET', /.*\/sijoittelu\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.11\.00000000220/)
         .respond(sijoitteluKesken);
+    httpBackend.when('GET', /.*\/sijoittelu\/1\.2\.246\.562\.29\.90697286251\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.18097797874/).respond({
+        "kaikkiJonotSijoiteltu": true,
+        "valintatapajonot": [
+            {
+                "tayttojono": null,
+                "varasijojaTaytetaanAsti": null,
+                "varasijojaKaytetaanAlkaen": null,
+                "varasijaTayttoPaivat": 0,
+                "varasijat": 0,
+                "varalla": 0,
+                "hyvaksytty": 2,
+                "hakeneet": 4,
+                "hakemukset": [
+                    {
+                        "todellinenJonosija": 1,
+                        "pistetiedot": [],
+                        "hakuOid": null,
+                        "valintatapajonoOid": "1427374494574-2003796769000462860",
+                        "tarjoajaOid": "1.2.246.562.10.10464399921",
+                        "hakukohdeOid": "1.2.246.562.20.18097797874",
+                        "sijoitteluajoId": 1433854337781,
+                        "varasijanNumero": null,
+                        "hyvaksyttyHarkinnanvaraisesti": false,
+                        "tilaHistoria": [
+                            {
+                                "luotu": 1433331089168,
+                                "tila": "HYLATTY"
+                            }
+                        ],
+                        "tilanKuvaukset": {
+                            "FI": "Hylk\u00e4\u00e4misfunktion sy\u00f6te on tyhj\u00e4. Hylk\u00e4yst\u00e4 ei voida tulkita."
+                        },
+                        "tila": "HYLATTY",
+                        "tasasijaJonosija": 1,
+                        "jonosija": 1,
+                        "prioriteetti": 2,
+                        "sukunimi": "Kelpo-Suonio",
+                        "etunimi": "Veikko VIII",
+                        "paasyJaSoveltuvuusKokeenTulos": null,
+                        "pisteet": null,
+                        "hakemusOid": "1.2.246.562.11.00002071778",
+                        "hakijaOid": "1.2.246.562.24.96271318661"
+                    },
+                    {
+                        "todellinenJonosija": 2,
+                        "pistetiedot": [],
+                        "hakuOid": null,
+                        "valintatapajonoOid": "1427374494574-2003796769000462860",
+                        "tarjoajaOid": "1.2.246.562.10.10464399921",
+                        "hakukohdeOid": "1.2.246.562.20.18097797874",
+                        "sijoitteluajoId": 1433854337781,
+                        "varasijanNumero": null,
+                        "hyvaksyttyHarkinnanvaraisesti": false,
+                        "tilaHistoria": [
+                            {
+                                "luotu": 1433331089168,
+                                "tila": "HYLATTY"
+                            }
+                        ],
+                        "tilanKuvaukset": {
+                            "FI": "Hylk\u00e4\u00e4misfunktion sy\u00f6te on tyhj\u00e4. Hylk\u00e4yst\u00e4 ei voida tulkita."
+                        },
+                        "tila": "HYLATTY",
+                        "tasasijaJonosija": 1,
+                        "jonosija": 2,
+                        "prioriteetti": 5,
+                        "sukunimi": "Sallilahti",
+                        "etunimi": "Emma V",
+                        "paasyJaSoveltuvuusKokeenTulos": null,
+                        "pisteet": null,
+                        "hakemusOid": "1.2.246.562.11.00002380171",
+                        "hakijaOid": "1.2.246.562.24.27210964812"
+                    },
+                    {
+                        "todellinenJonosija": 3,
+                        "pistetiedot": [],
+                        "hakuOid": null,
+                        "valintatapajonoOid": "1427374494574-2003796769000462860",
+                        "tarjoajaOid": "1.2.246.562.10.10464399921",
+                        "hakukohdeOid": "1.2.246.562.20.18097797874",
+                        "sijoitteluajoId": 1433854337781,
+                        "varasijanNumero": null,
+                        "hyvaksyttyHarkinnanvaraisesti": false,
+                        "tilaHistoria": [
+                            {
+                                "luotu": 1433331089168,
+                                "tila": "HYVAKSYTTY"
+                            }
+                        ],
+                        "tilanKuvaukset": null,
+                        "tila": "HYVAKSYTTY",
+                        "tasasijaJonosija": 1,
+                        "jonosija": 3,
+                        "prioriteetti": 1,
+                        "sukunimi": "Hippim\u00e4ki",
+                        "etunimi": "Nelli X",
+                        "paasyJaSoveltuvuusKokeenTulos": null,
+                        "pisteet": 9.92,
+                        "hakemusOid": "1.2.246.562.11.00002227962",
+                        "hakijaOid": "1.2.246.562.24.79882755575"
+                    },
+                    {
+                        "todellinenJonosija": 4,
+                        "pistetiedot": [],
+                        "hakuOid": null,
+                        "valintatapajonoOid": "1427374494574-2003796769000462860",
+                        "tarjoajaOid": "1.2.246.562.10.10464399921",
+                        "hakukohdeOid": "1.2.246.562.20.18097797874",
+                        "sijoitteluajoId": 1433854337781,
+                        "varasijanNumero": null,
+                        "hyvaksyttyHarkinnanvaraisesti": false,
+                        "tilaHistoria": [
+                            {
+                                "luotu": 1433331089169,
+                                "tila": "HYLATTY"
+                            },
+                            {
+                                "luotu": 1433489226226,
+                                "tila": "HYVAKSYTTY"
+                            }
+                        ],
+                        "tilanKuvaukset": null,
+                        "tila": "HYVAKSYTTY",
+                        "tasasijaJonosija": 1,
+                        "jonosija": 4,
+                        "prioriteetti": 2,
+                        "sukunimi": "Hoppuvirta",
+                        "etunimi": "Kristiina XX",
+                        "paasyJaSoveltuvuusKokeenTulos": null,
+                        "pisteet": 9.75,
+                        "hakemusOid": "1.2.246.562.11.00001941430",
+                        "hakijaOid": "1.2.246.562.24.14015124844"
+                    }
+                ],
+                "poissaOlevaTaytto": true,
+                "kaikkiEhdonTayttavatHyvaksytaan": false,
+                "eiVarasijatayttoa": false,
+                "alinHyvaksyttyPistemaara": 6.58,
+                "aloituspaikat": 108,
+                "prioriteetti": 0,
+                "nimi": "Varsinaisen valinnanvaiheen valintatapajono",
+                "oid": "1427374494574-2003796769000462860",
+                "tila": null,
+                "tasasijasaanto": "ARVONTA"
+            }
+        ],
+        "tarjoajaOid": "1.2.246.562.10.10464399921",
+        "tila": null,
+        "oid": "1.2.246.562.20.18097797874",
+        "sijoitteluajoId": 1433854337781
+    })
+    httpBackend.when('GET', /.*\/sijoittelu\/1\.2\.246\.562\.29\.95390561488\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.44161747595/).respond({
+      "kaikkiJonotSijoiteltu": false,
+      "valintatapajonot": [
+        {
+          "tayttojono": null,
+          "varasijojaTaytetaanAsti": null,
+          "varasijojaKaytetaanAlkaen": null,
+          "varasijaTayttoPaivat": 0,
+          "varasijat": 0,
+          "varalla": 0,
+          "hyvaksytty": 5,
+          "hakeneet": 8,
+          "hakemukset": [
+            {
+              "todellinenJonosija": 1,
+              "pistetiedot": [],
+              "hakuOid": null,
+              "valintatapajonoOid": "1425545626196-6437662849831338165",
+              "tarjoajaOid": "1.2.246.562.10.72985435253",
+              "hakukohdeOid": "1.2.246.562.20.44161747595",
+              "sijoitteluajoId": 1434513756673,
+              "varasijanNumero": null,
+              "hyvaksyttyHarkinnanvaraisesti": false,
+              "tilaHistoria": [
+                {
+                  "luotu": 1434427283518,
+                  "tila": "HYVAKSYTTY"
+                }
+              ],
+              "tilanKuvaukset": null,
+              "tila": "HYVAKSYTTY",
+              "tasasijaJonosija": 1,
+              "jonosija": 1,
+              "prioriteetti": 4,
+              "sukunimi": "Alajoki",
+              "etunimi": "Benjamin",
+              "paasyJaSoveltuvuusKokeenTulos": null,
+              "pisteet": -1,
+              "hakemusOid": "1.2.246.562.11.00003194447",
+              "hakijaOid": "1.2.246.562.24.55536433785"
+            },
+            {
+              "todellinenJonosija": 2,
+              "pistetiedot": [],
+              "hakuOid": null,
+              "valintatapajonoOid": "1425545626196-6437662849831338165",
+              "tarjoajaOid": "1.2.246.562.10.72985435253",
+              "hakukohdeOid": "1.2.246.562.20.44161747595",
+              "sijoitteluajoId": 1434513756673,
+              "varasijanNumero": null,
+              "hyvaksyttyHarkinnanvaraisesti": false,
+              "tilaHistoria": [
+                {
+                  "luotu": 1434427283518,
+                  "tila": "HYVAKSYTTY"
+                }
+              ],
+              "tilanKuvaukset": null,
+              "tila": "HYVAKSYTTY",
+              "tasasijaJonosija": 1,
+              "jonosija": 2,
+              "prioriteetti": 6,
+              "sukunimi": "Alajoki",
+              "etunimi": "Eero",
+              "paasyJaSoveltuvuusKokeenTulos": null,
+              "pisteet": -2,
+              "hakemusOid": "1.2.246.562.11.00002857141",
+              "hakijaOid": "1.2.246.562.24.59123585000"
+            },
+            {
+              "todellinenJonosija": 3,
+              "pistetiedot": [],
+              "hakuOid": null,
+              "valintatapajonoOid": "1425545626196-6437662849831338165",
+              "tarjoajaOid": "1.2.246.562.10.72985435253",
+              "hakukohdeOid": "1.2.246.562.20.44161747595",
+              "sijoitteluajoId": 1434513756673,
+              "varasijanNumero": null,
+              "hyvaksyttyHarkinnanvaraisesti": false,
+              "tilaHistoria": [
+                {
+                  "luotu": 1434427283518,
+                  "tila": "HYVAKSYTTY"
+                }
+              ],
+              "tilanKuvaukset": null,
+              "tila": "HYVAKSYTTY",
+              "tasasijaJonosija": 1,
+              "jonosija": 3,
+              "prioriteetti": 3,
+              "sukunimi": "Alajoki",
+              "etunimi": "Olavi",
+              "paasyJaSoveltuvuusKokeenTulos": null,
+              "pisteet": -3,
+              "hakemusOid": "1.2.246.562.11.00003297742",
+              "hakijaOid": "1.2.246.562.24.68014983799"
+            },
+            {
+              "todellinenJonosija": 4,
+              "pistetiedot": [],
+              "hakuOid": null,
+              "valintatapajonoOid": "1425545626196-6437662849831338165",
+              "tarjoajaOid": "1.2.246.562.10.72985435253",
+              "hakukohdeOid": "1.2.246.562.20.44161747595",
+              "sijoitteluajoId": 1434513756673,
+              "varasijanNumero": null,
+              "hyvaksyttyHarkinnanvaraisesti": false,
+              "tilaHistoria": [
+                {
+                  "luotu": 1434427283518,
+                  "tila": "HYVAKSYTTY"
+                }
+              ],
+              "tilanKuvaukset": null,
+              "tila": "HYVAKSYTTY",
+              "tasasijaJonosija": 1,
+              "jonosija": 4,
+              "prioriteetti": 3,
+              "sukunimi": "Alalahti",
+              "etunimi": "Akseli",
+              "paasyJaSoveltuvuusKokeenTulos": null,
+              "pisteet": -5,
+              "hakemusOid": "1.2.246.562.11.00003216642",
+              "hakijaOid": "1.2.246.562.24.77495737092"
+            },
+            {
+              "todellinenJonosija": 5,
+              "pistetiedot": [],
+              "hakuOid": null,
+              "valintatapajonoOid": "1425545626196-6437662849831338165",
+              "tarjoajaOid": "1.2.246.562.10.72985435253",
+              "hakukohdeOid": "1.2.246.562.20.44161747595",
+              "sijoitteluajoId": 1434513756673,
+              "varasijanNumero": null,
+              "hyvaksyttyHarkinnanvaraisesti": false,
+              "tilaHistoria": [
+                {
+                  "luotu": 1434427283518,
+                  "tila": "HYVAKSYTTY"
+                }
+              ],
+              "tilanKuvaukset": null,
+              "tila": "HYVAKSYTTY",
+              "tasasijaJonosija": 1,
+              "jonosija": 5,
+              "prioriteetti": 3,
+              "sukunimi": "Alalahti",
+              "etunimi": "Maija",
+              "paasyJaSoveltuvuusKokeenTulos": null,
+              "pisteet": -7,
+              "hakemusOid": "1.2.246.562.11.00002766342",
+              "hakijaOid": "1.2.246.562.24.96931075215"
+            },
+            {
+              "todellinenJonosija": 6,
+              "pistetiedot": [],
+              "hakuOid": null,
+              "valintatapajonoOid": "1425545626196-6437662849831338165",
+              "tarjoajaOid": "1.2.246.562.10.72985435253",
+              "hakukohdeOid": "1.2.246.562.20.44161747595",
+              "sijoitteluajoId": 1434513756673,
+              "varasijanNumero": null,
+              "hyvaksyttyHarkinnanvaraisesti": false,
+              "tilaHistoria": [
+                {
+                  "luotu": 1434427283518,
+                  "tila": "HYLATTY"
+                }
+              ],
+              "tilanKuvaukset": null,
+              "tila": "HYLATTY",
+              "tasasijaJonosija": 1,
+              "jonosija": 6,
+              "prioriteetti": 2,
+              "sukunimi": "Alaj\u00e4rvi",
+              "etunimi": "Ilona",
+              "paasyJaSoveltuvuusKokeenTulos": null,
+              "pisteet": -4,
+              "hakemusOid": "1.2.246.562.11.00003086173",
+              "hakijaOid": "1.2.246.562.24.88000104119"
+            },
+            {
+              "todellinenJonosija": 7,
+              "pistetiedot": [],
+              "hakuOid": null,
+              "valintatapajonoOid": "1425545626196-6437662849831338165",
+              "tarjoajaOid": "1.2.246.562.10.72985435253",
+              "hakukohdeOid": "1.2.246.562.20.44161747595",
+              "sijoitteluajoId": 1434513756673,
+              "varasijanNumero": null,
+              "hyvaksyttyHarkinnanvaraisesti": false,
+              "tilaHistoria": [
+                {
+                  "luotu": 1434427283518,
+                  "tila": "HYLATTY"
+                }
+              ],
+              "tilanKuvaukset": null,
+              "tila": "HYLATTY",
+              "tasasijaJonosija": 1,
+              "jonosija": 7,
+              "prioriteetti": 2,
+              "sukunimi": "Alalahti",
+              "etunimi": "Atte",
+              "paasyJaSoveltuvuusKokeenTulos": null,
+              "pisteet": -6,
+              "hakemusOid": "1.2.246.562.11.00003600601",
+              "hakijaOid": "1.2.246.562.24.72070423946"
+            },
+            {
+              "todellinenJonosija": 8,
+              "pistetiedot": [],
+              "hakuOid": null,
+              "valintatapajonoOid": "1425545626196-6437662849831338165",
+              "tarjoajaOid": "1.2.246.562.10.72985435253",
+              "hakukohdeOid": "1.2.246.562.20.44161747595",
+              "sijoitteluajoId": 1434513756673,
+              "varasijanNumero": null,
+              "hyvaksyttyHarkinnanvaraisesti": false,
+              "tilaHistoria": [
+                {
+                  "luotu": 1434427283518,
+                  "tila": "HYLATTY"
+                }
+              ],
+              "tilanKuvaukset": null,
+              "tila": "HYLATTY",
+              "tasasijaJonosija": 1,
+              "jonosija": 8,
+              "prioriteetti": 2,
+              "sukunimi": "Alaniemi",
+              "etunimi": "Isla",
+              "paasyJaSoveltuvuusKokeenTulos": null,
+              "pisteet": -8,
+              "hakemusOid": "1.2.246.562.11.00002651295",
+              "hakijaOid": "1.2.246.562.24.99005406636"
+            }
+          ],
+          "poissaOlevaTaytto": false,
+          "kaikkiEhdonTayttavatHyvaksytaan": false,
+          "eiVarasijatayttoa": false,
+          "alinHyvaksyttyPistemaara": -7,
+          "aloituspaikat": 6,
+          "prioriteetti": 0,
+          "nimi": "DIA-DI valintaryhm\u00e4 1",
+          "oid": "1425545626196-6437662849831338165",
+          "tila": null,
+          "tasasijasaanto": "ALITAYTTO"
+        }
+      ],
+      "tarjoajaOid": "1.2.246.562.10.72985435253",
+      "tila": null,
+      "oid": "1.2.246.562.20.44161747595",
+      "sijoitteluajoId": 1434513756673
+    });
 }

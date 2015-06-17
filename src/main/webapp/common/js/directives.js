@@ -797,47 +797,54 @@ app.directive('muokattuVastaanottoTila', function () {
         },
         templateUrl: '../common/html/muokattuvastaanottotila.html',
         controller: function ($scope, AuthService, Korkeakoulu) {
-            $scope.isKorkeakoulu = function () {
-                return Korkeakoulu.isKorkeakoulu($scope.haku.kohdejoukkoUri);
+            var updateEditable = function(hakemus, isKk, updateOph) {
+                $scope.isEditable =
+                    (isKk ||
+                     updateOph ||
+                     hakemus.muokattuVastaanottoTila !== "PERUUTETTU");
             };
-
-            AuthService.updateOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
-                $scope.updateOph = true;
-                if (!$scope.isKorkeakoulu()) {
-                    $scope.hakemuksenMuokattuVastaanottoTilat.push(
+            var updateTilat = function(isKk, updateOph) {
+                if (isKk) {
+                    $scope.hakemuksenMuokattuVastaanottoTilat = [
+                        {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
+                        {value: "EHDOLLISESTI_VASTAANOTTANUT", text_prop: "sijoitteluntulos.ehdollisesti", default_text:"Ehdollisesti vastaanottanut"},
+                        {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
+                        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                        {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
                         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
-                    );
+                    ];
+                } else {
+                    $scope.hakemuksenMuokattuVastaanottoTilat = [
+                        {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
+                        {value: "VASTAANOTTANUT", text_prop: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanottanut"},
+                        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                        {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"}
+                    ];
+                    if (updateOph) {
+                        $scope.hakemuksenMuokattuVastaanottoTilat.push(
+                            {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
+                        );
+                    }
                 }
-            });
-
-            $scope.isEditable = function () {
-                var returnValue = false;
-
-                if ($scope.isKorkeakoulu() || !$scope.hakemus || !$scope.isKorkeakoulu() &&
-                    $scope.hakemus.muokattuVastaanottoTila === "PERUUTETTU" && $scope.updateOph ||
-                    !$scope.isKorkeakoulu() && $scope.hakemus.muokattuVastaanottoTila !== "PERUUTETTU") {
-                    returnValue = true;
-                }
-                return returnValue;
             };
-
-            if ($scope.isKorkeakoulu()) {
-                $scope.hakemuksenMuokattuVastaanottoTilat = [
-                    {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
-                    {value: "EHDOLLISESTI_VASTAANOTTANUT", text_prop: "sijoitteluntulos.ehdollisesti", default_text:"Ehdollisesti vastaanottanut"},
-                    {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
-                    {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-                    {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
-                    {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
-                ];
-            } else {
-                $scope.hakemuksenMuokattuVastaanottoTilat = [
-                    {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
-                    {value: "VASTAANOTTANUT", text_prop: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanottanut"},
-                    {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-                    {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"}
-                ];
-            }
+            $scope.isEditable = false;
+            $scope.hakemuksenMuokattuVastaanottoTilat = [];
+            AuthService.updateOph("APP_VALINTOJENTOTEUTTAMINEN")
+                .then(function() { return true; },
+                      function() { return false; })
+                .then(function(updateOph) {
+                    $scope.$watchGroup(
+                        ['haku', 'hakemus'],
+                        function(newVals, oldVals, scope) {
+                            var haku = newVals[0];
+                            var hakemus = newVals[1];
+                            if (haku !== undefined && hakemus !== undefined) {
+                                var isKk = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
+                                updateEditable(hakemus, isKk, updateOph);
+                                updateTilat(isKk, updateOph);
+                            }
+                        });
+                });
         }
     };
 });
