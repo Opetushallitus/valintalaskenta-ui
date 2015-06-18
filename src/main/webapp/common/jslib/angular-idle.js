@@ -77,11 +77,6 @@ angular.module('ngIdle.keepalive', [])
         }
         */
         function ping() {
-
-            console.log('options: ' + options);
-            console.log('options.http.length: ' + options.http.length);
-            console.log('options.http: ' + options.http);
-
             for(var i in options.http) {
 
               var http = options.http[i];
