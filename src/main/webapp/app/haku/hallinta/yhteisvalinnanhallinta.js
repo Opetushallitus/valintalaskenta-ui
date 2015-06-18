@@ -276,7 +276,7 @@ angular.module('valintalaskenta').
                             SijoittelunTulosHyvaksymiskirjeet.aktivoi({
                                 hakuOid: hakuOid,
                                 asiointikieli: langcode,
-                                letterBodyText: templateName
+                                letterBodyText: sisalto
                             }, {}, function (id) {
                                 Latausikkuna.avaa(id, "Hyväksymiskirjeet", "");
                             }, function () {
