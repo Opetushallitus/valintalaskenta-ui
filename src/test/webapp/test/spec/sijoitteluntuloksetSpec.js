@@ -18,6 +18,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(organisaatioFixtures)()
             addTestHook(valintaperusteetFixtures)()
             addTestHook(valintatulosFixture)()
+            addTestHook(commonFixtures)()
             page.openPage(done);
         })
 
@@ -51,6 +52,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(organisaatioFixtures)()
             addTestHook(valintaperusteetFixtures)()
             addTestHook(valintatulosFixture)()
+            addTestHook(commonFixtures)()
             page.openPage(done);
         })
 

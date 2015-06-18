@@ -19,6 +19,7 @@ describe('Valintakoetulos', function() {
         addTestHook(koodistoFixtures)();
         addTestHook(parametritFixtures)();
         addTestHook(organisaatioFixtures)();
+        addTestHook(commonFixtures)();
         addTestHook(valintakokeetFixtures([
             {
                 valintakoeOid: VALINTAKOE1
