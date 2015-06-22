@@ -69,6 +69,10 @@ function visible(fn) {
     return waitJqueryIs(fn, ':visible')
 }
 
+function enabled(fn) {
+    return waitJqueryIs(fn, ':enabled')
+}
+
 function input1(fn, value) {
     return seq(
         visible(fn),

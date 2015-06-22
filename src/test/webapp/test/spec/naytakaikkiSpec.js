@@ -11,7 +11,7 @@ describe('Näytä kaikki', function () {
         addTestHook(hakuAppKaksiHenkiloaFixtures)();
         addTestHook(valintaperusteetFixtures)();
         addTestHook(organisaatioFixtures)();
-        addTestHook(commonFixtures)();
+        addTestHook(commonFixtures())();
         page.openPage(done)
     });
 

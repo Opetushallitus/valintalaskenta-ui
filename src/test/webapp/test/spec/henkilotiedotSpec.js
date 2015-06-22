@@ -17,7 +17,7 @@ describe('Henkilötiedot', function() {
       addTestHook(listfullFixtures([]))();
       addTestHook(sijoitteluAjoFixtures)();
       addTestHook(harkinnanvarainenhyvaksyntaFixtures)();
-      addTestHook(commonFixtures)();
+      addTestHook(commonFixtures())();
 
       addTestHook(hakemusByOidFixtures(
           {

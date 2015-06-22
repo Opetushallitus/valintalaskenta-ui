@@ -18,7 +18,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(organisaatioFixtures)()
             addTestHook(valintaperusteetFixtures)()
             addTestHook(valintatulosFixture)()
-            addTestHook(commonFixtures)()
+            addTestHook(commonFixtures())()
             page.openPage(done);
         })
 
@@ -52,7 +52,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(organisaatioFixtures)()
             addTestHook(valintaperusteetFixtures)()
             addTestHook(valintatulosFixture)()
-            addTestHook(commonFixtures)()
+            addTestHook(commonFixtures())()
             page.openPage(done);
         })
 
@@ -63,7 +63,7 @@ describe('Sijoittelun tulokset välilehti', function () {
         })
 
         it('sijoittelu kesken', seqDone(
-            wait.forAngular(),
+            wait.forAngular,
             click(sijoitteluntulokset.teppoHenkilotiedot),
             visible(sijoitteluntulokset.modaali),
             function () {

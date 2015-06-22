@@ -15,7 +15,7 @@ describe('Pistesyöttö', function() {
         addTestHook(koodistoFixtures)();
         addTestHook(parametritFixtures)();
         addTestHook(listfullFixtures([]))();
-        addTestHook(commonFixtures)();
+        addTestHook(commonFixtures())();
         addTestHook(valintalaskentaValintakokeetFixtures([
             {
                 hakuOid: HAKU,
