@@ -42,6 +42,7 @@ angular.module('oph.services', [])
         "use strict";
         var service =
         {
+
             getKieli:  function(hakukohde) {
                 if (hakukohde) {
                     var languages = ["kieli_fi", "kieli_sv", "kieli_en"];
@@ -58,9 +59,28 @@ angular.module('oph.services', [])
                 return "kieli_fi";
             },
 
+            getOpetusKieli:  function(hakukohde) {
+                if (hakukohde) {
+
+                    var opetuskielet = hakukohde.opetusKielet;
+
+                    if(opetuskielet) {
+                        if(opetuskielet.indexOf("kieli_fi") != -1) return "kieli_fi";
+                        else if(opetuskielet.indexOf("kieli_sv") != -1) return "kieli_sv";
+                        else if(opetuskielet.indexOf("kieli_en") != -1) return "kieli_en";
+                    }
+
+                }
+                return "kieli_fi";
+            },
 
             getKieliCode: function(hakukohde) {
                 var language = this.getKieli(hakukohde);
+                return _.last(language.split("_")).toUpperCase();
+            },
+
+            getOpetusKieliCode: function(hakukohde) {
+                var language = this.getOpetusKieli(hakukohde);
                 return _.last(language.split("_")).toUpperCase();
             },
 

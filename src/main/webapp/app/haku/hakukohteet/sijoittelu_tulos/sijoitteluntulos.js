@@ -497,7 +497,7 @@ angular.module('valintalaskenta')
     	}
 
 
-    	var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = "jalkiohjauskirje";
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -545,7 +545,7 @@ angular.module('valintalaskenta')
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
@@ -640,7 +640,8 @@ angular.module('valintalaskenta')
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	//var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
+    	var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
