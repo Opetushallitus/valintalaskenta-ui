@@ -482,7 +482,8 @@ app.directive("valintatulos", function () {
                 if (dt == null)
                     return "";
                 else
-                    return moment(dt).format('LL').replace(/,/g, "")
+                    //return moment(dt).format('LL').replace(/,/g, "")
+                    return moment(dt).format('D.M.YYYY ').replace(/,/g, "")
             };
 
             $scope.$watch("isFinal()", function (value) {
