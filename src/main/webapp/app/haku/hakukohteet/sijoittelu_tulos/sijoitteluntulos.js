@@ -372,7 +372,11 @@ angular.module('valintalaskenta')
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
             	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function (error) {
-            	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+
+                function getMessage(error) {
+                    return error.status == 409 ? "Tietoihin on tehty samanaikaisia muutoksia, päivitä sivu ja yritä uudelleen" : "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon."
+                }
+                Ilmoitus.avaa("Sijoittelun tulosten tallennus", getMessage(error), IlmoitusTila.ERROR)
             });
         };
 
