@@ -213,7 +213,7 @@ angular.module('valintalaskenta')
                                             currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
                                             currentHakemus.hyvaksyttyVarasijalta = vastaanottotila.hyvaksyttyVarasijalta;
-
+                                            currentHakemus.read = vastaanottotila.read;
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].vastaanottoTila=currentHakemus.vastaanottoTila;
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].ilmoittautumisTila=currentHakemus.ilmoittautumisTila;
                                             return true;
@@ -364,7 +364,8 @@ angular.module('valintalaskenta')
             		valintatapajonoOid: valintatapajonoOid,
                 	hakemusOid: hakemus.hakemusOid,
                     julkaistavissa: hakemus.julkaistavissa,
-                    hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta
+                    hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
+                    read: hakemus.read
             	};
             });
 
