@@ -58,8 +58,7 @@ public class JettyTestRunner {
             socket.close();
             return port;
         } catch (IOException e) {
-            e.printStackTrace();
-            return -1;
+            throw new RuntimeException(e);
         }
     }
 }
