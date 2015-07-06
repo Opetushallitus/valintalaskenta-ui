@@ -3,10 +3,10 @@
     .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
         'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
         'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','_', 'LocalisationService','ErillishakuVienti',
-        'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window',
+        'ErillishakuProxy','ErillishakuTuonti','ErillishaunVastaanottoTila', '$window',
     function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, _, LocalisationService,
-              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,VastaanottoTila, $window) {
+              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,ErillishaunVastaanottoTila, $window) {
     "use strict";
 
     $scope.muokatutHakemukset = [];
@@ -194,7 +194,7 @@
         };
 
         $scope.submitLaskennalla = function (valintatapajono) {
-            VastaanottoTila.post({
+            ErillishaunVastaanottoTila.post({
              hakuoid: $routeParams.hakuOid,
              hakukohdeOid: $routeParams.hakukohdeOid,
              selite: "Massamuokkaus"
