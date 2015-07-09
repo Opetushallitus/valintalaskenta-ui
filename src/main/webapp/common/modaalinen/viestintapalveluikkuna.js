@@ -4,10 +4,7 @@ function ViestintapalveluIkkunaCtrl($scope, $modalInstance, oids, $log,
 	//$scope.letterbody = "";
 	$scope.pohjat = oids.pohjat();
     $scope.pohja = $scope.pohjat[0];
-    
-    $scope.palautusPvm = "";
-    $scope.palautusAika = "";
-    
+    $scope.palautus = {aika: "", pvm: ""};
 	$scope.oids = oids;
 	$scope.pohjaVaihtui = function(p) {
 		//console.log(p);
