@@ -1,4 +1,11 @@
 <span ng-if="!hakemus.tilanKuvaukset.FI || hakemus.tila == 'HYLATTY'">{{hakemus.tila}}</span>
+<div ng-if="showHyvaksyPeruuntunut">
+    <label for="hyvaksyPeruuntunut-{{hakemusOidWODots}}">Hyväksy peruuntunut</label>
+    <input id="hyvaksyPeruuntunut-{{hakemusOidWODots}}"
+           ng-model="hakemus.hyvaksyPeruuntunut"
+           type="checkbox"
+           ng-change="onEdit({hakemus: hakemus})"></input>
+</div>
 <span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.FI}}</span>
 <span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.SV}}</span>
 <span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.EN}}</span>

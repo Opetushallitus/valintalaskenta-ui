@@ -9,6 +9,22 @@ function dslDebug() {
     }
 }
 
+function expectPost(url, triggerFn) {
+    var d = Q.defer();
+    return seq(
+        function() {
+            testFrame().httpBackend
+                .when("POST", url)
+                .respond(function (method, url, data) {
+                    d.resolve(data);
+                    return [200, {}, {}]
+                });
+        },
+        triggerFn,
+        function() { return d.promise; }
+    );
+}
+
 function wrap(elementDefinition) {
     switch (typeof(elementDefinition)) {
         case 'string':
@@ -71,6 +87,14 @@ function visible(fn) {
 
 function enabled(fn) {
     return waitJqueryIs(fn, ':enabled')
+}
+
+function checked(fn) {
+    return waitJqueryIs(fn, ":checked")
+}
+
+function unchecked(fn) {
+    return waitJqueryIs(fn, ":checked", false)
 }
 
 function input1(fn, value) {

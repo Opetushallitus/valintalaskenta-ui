@@ -37,12 +37,16 @@ sijoitteluntulokset = initSelectors({
     koulunNimi: "[ng-bind='tulos.tarjoajaNimi']",
     modaali: ".modal-content",
     valintatilanne: ".result-list tr th span",
+    hyvaksyPeruuntunut: function(hakemusOid) {
+        return "#hyvaksyPeruuntunut-" + hakemusOid.replace(/\./g, "")
+    },
     valintatulosTableIndex: function (trIndex, spanIndex) {
         return ".result-list tr:eq(" + trIndex + ") td span:eq(" + spanIndex + ")"
     },
     valintatulosTilaIndex: function (trIndex) {
         return ".result-list tr:eq(" + trIndex + ") td:eq(1) span"
     },
+    tallenna: "a.btn-primary:nth-child(1)",
     hyvaksyValintaesitys: "a.btn:nth-child(2)",
     vastaanottotieto: ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select",
     vastaanottotietoOption: function(i) {

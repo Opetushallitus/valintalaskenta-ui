@@ -181,4 +181,37 @@ describe('Sijoittelun tulokset välilehti', function () {
             }
         ))
     })
+
+    describe('Hakemuksen tila sijoittelun tulokset -välilehdellä PERUUNTUNUT', function () {
+        var page = sijoitteluntuloksetPage("1.2.246.562.29.90697286251", "1.2.246.562.20.18097797874");
+        beforeEach(function (done) {
+            addTestHook(tarjontaFixtures)()
+            addTestHook(koodistoFixtures)()
+            addTestHook(parametritFixtures)()
+            addTestHook(koodistoFixtures)()
+            addTestHook(sijoitteluAjoFixtures)()
+            addTestHook(ohjausparametritFixtures)()
+            addTestHook(dokumenttipalveluFixtures)()
+            addTestHook(organisaatioFixtures)()
+            addTestHook(valintaperusteetFixtures)()
+            addTestHook(commonFixtures())()
+            page.openPage(done);
+        })
+
+        var hakemusOid = "1.2.246.562.11.00002380171";
+        it('voidaan hyväksyä', seqDone(
+            wait.forAngular,
+            visible(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            click(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            checked(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            expectPost(
+                /.*resources\/tila\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=Massamuokkaus/,
+                click(sijoitteluntulokset.tallenna)
+            ),
+            function(data) {
+                expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.true
+            }
+        ))
+    })
 })

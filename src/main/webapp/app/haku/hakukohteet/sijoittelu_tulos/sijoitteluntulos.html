@@ -85,7 +85,7 @@
                                 {{jono.pisteet >= 0?jono.pisteet:""}}
                             </td>
                             <td data-title="(t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila')" sortable="'tila'">
-                                <show-sijoittelun-tila hakemus="jono" user-lang="userLang"></show-sijoittelun-tila>
+                                <show-sijoittelun-tila hakemus="jono" user-lang="userLang" on-edit="addMuokattuHakemus(hakemus)"></show-sijoittelun-tila>
                                 <modal modal-template="sijoitteluTilaHistoriaModal.html" hakemus="{{hakija}}">
                                     <modal-open>
                                         {{(jono.tilaHistoria
@@ -139,7 +139,7 @@
                                     <span ng-if="hakemus.pisteet >= 0">{{hakemus.pisteet}}</span>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila')" sortable="'tilaPrioriteetti'">
-                                    <show-sijoittelun-tila hakemus="hakemus" user-lang="userLang"></show-sijoittelun-tila>
+                                    <show-sijoittelun-tila hakemus="hakemus" user-lang="userLang" on-edit="addMuokattuHakemus(hakemus)"></show-sijoittelun-tila>
 
                                     <modal modal-template="sijoitteluTilaHistoriaModal.html">
                                         <modal-open>

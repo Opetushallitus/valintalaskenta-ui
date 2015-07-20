@@ -349,6 +349,7 @@ angular.module('valintalaskenta')
                 	hakemusOid: hakemus.hakemusOid,
                     julkaistavissa: hakemus.julkaistavissa,
                     hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
+                    hyvaksyPeruuntunut: hakemus.hyvaksyPeruuntunut,
                     read: hakemus.read
             	};
             });

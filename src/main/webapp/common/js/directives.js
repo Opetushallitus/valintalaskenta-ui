@@ -857,12 +857,13 @@ app.directive('showSijoittelunTila', function () {
         restrict: 'E',
         scope: {
             hakemus: '=',
-            userLang: '='
+            userLang: '=',
+            onEdit: '&'
         },
         templateUrl: '../common/html/showSijoittelunTila.html',
         controller: function ($modal, $scope) {
-
-
+            $scope.showHyvaksyPeruuntunut = $scope.onEdit && $scope.hakemus.tila == "PERUUNTUNUT";
+            $scope.hakemusOidWODots = $scope.hakemus.hakemusOid.replace(/\./g, "")
         }
     };
 });
