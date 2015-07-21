@@ -15,7 +15,8 @@ describe('Valintakoetulos', function() {
     var HAKEMUS2 = "HAKEMUS2";
     beforeEach(function(done) {
         addTestHook(tarjontaFixtures)();
-        addTestHook(valintaperusteetFixtures)();
+        addTestHook(httpFixtures().hakukohteenAvaimet)();
+        addTestHook(httpFixtures().hakukohdeHAKUKOHDE1)();
         addTestHook(koodistoFixtures)();
         addTestHook(parametritFixtures)();
         addTestHook(organisaatioFixtures)();

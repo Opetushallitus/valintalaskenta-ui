@@ -154,7 +154,7 @@ function listfullFixtures(hakemukset) {
 }
 function hakuAppKaksiHenkiloaFixtures() {
     var httpBackend = testFrame().httpBackend
-    httpBackend.when('GET', /.*\/haku-app\/applications\/additionalData\/.*/).respond([
+    httpBackend.when('GET', /.*\/haku-app\/applications\/additionalData\/h\/h0/).respond([
         {
             "oid": "1.2.246.562.11.00000000181",
             "personOid": "1.2.246.562.24.57650437995",

@@ -9,7 +9,7 @@ describe('Näytä kaikki', function () {
 
     beforeEach(function (done) {
         addTestHook(hakuAppKaksiHenkiloaFixtures)();
-        addTestHook(valintaperusteetFixtures)();
+        addTestHook(httpFixtures().hakukohteenAvaimet)();
         addTestHook(organisaatioFixtures)();
         addTestHook(commonFixtures())();
         page.openPage(done)
@@ -22,7 +22,7 @@ describe('Näytä kaikki', function () {
     });
 
     describe('Näyttää', function () {
-        it('kaikki tiedot', seqDone(
+        it('Kaikki tiedot', seqDone(
             wait.forAngular,
             function () {
                 expect(page.nthNameInTable(1)).to.contain('Ilman');
@@ -30,7 +30,7 @@ describe('Näytä kaikki', function () {
                 expect(page.allStudentsTable().length).to.equal(1)
             }
         )),
-            it('filtteröidyt tiedot', seqDone(
+            it('Filtteröidyt tiedot', seqDone(
                 wait.forAngular,
                 input(page.search, "Yksikkötestihenkilö"),
                 function () {
