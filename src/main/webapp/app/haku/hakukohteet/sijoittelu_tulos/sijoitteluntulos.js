@@ -80,6 +80,7 @@ angular.module('valintalaskenta')
             model.haku = {};
             model.sijoitteluntulosHakijoittain = {};
             model.sijoitteluntulosHakijoittainArray = [];
+            model.sijoitteluajoId = 0;
 
             HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
                 model.haku = resultWrapper.result;
@@ -124,6 +125,7 @@ angular.module('valintalaskenta')
                                 tila: hakemus.tila,
                                 jonosija: hakemus.jonosija,
                                 prioriteetti: valintatapajono.prioriteetti,
+                                onkoMuuttunutViimeSijoittelussa: hakemus.onkoMuuttunutViimeSijoittelussa,
                                 tilaHistoria: hakemus.tilaHistoria,
                                 varasijanNumero: hakemus.varasijanNumero
                             };
@@ -209,6 +211,7 @@ angular.module('valintalaskenta')
                                             if (vastaanottotila.ilmoittautumisTila === null) {
                                                 vastaanottotila.ilmoittautumisTila = "EI_TEHTY";
                                             }
+                                            currentHakemus.viimeinenMuutos = vastaanottotila.viimeinenMuutos;
                                             currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
@@ -256,21 +259,6 @@ angular.module('valintalaskenta')
                         });
 
                     });
-
-
-
-                      // Väliaikaisesti pois
-//                    SijoitteluAjo.get({
-//                            hakuOid: hakuOid,
-//                            sijoitteluajoOid: result.sijoitteluajoId
-//                        }, function (result) {
-//                            model.latestSijoitteluajo.startMils = result.startMils;
-//                            model.latestSijoitteluajo.endMils = result.endMils;
-//                            model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
-//                        }, function (error) {
-//                            model.errors.push(error);
-//                        }
-//                    );
 
                 }
 
@@ -624,15 +612,16 @@ angular.module('valintalaskenta')
 
     $scope.filterChangedValues = function(hakemus) {
         if ($scope.model.naytaVainMuuttuneet) {
-            if (hakemus.tilaHistoria && hakemus.tilaHistoria.length > 0) {
-                var i = 0;
-                if (hakemus.tilaHistoria.length > 2)
-                    i = hakemus.tilaHistoria.length-2;
-                if (hakemus.tilaHistoria[i].tila === hakemus.tila)
-                    return false;
+            if(hakemus.onkoMuuttunutViimeSijoittelussa) {
+                //$log.info("Näytetään hakija " + hakemus.hakemusOid + " koska oli muuttunut viimesijoittelussa");
+                return true;
             }
+            if($scope.model.latestSijoitteluajo.sijoitteluajoId <= hakemus.viimeinenMuutos) {
+                //$log.info("Näytetään hakija " + hakemus.hakemusOid + " tila oli muuttunut sitten viimesijoittelun");
+                return true;
+            }
+            return false;
         }
-
         return true;
     };
 
