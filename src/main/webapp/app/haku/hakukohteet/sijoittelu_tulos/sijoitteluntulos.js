@@ -217,6 +217,7 @@ angular.module('valintalaskenta')
                                             currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
                                             currentHakemus.hyvaksyttyVarasijalta = vastaanottotila.hyvaksyttyVarasijalta;
                                             currentHakemus.read = vastaanottotila.read;
+                                            currentHakemus.hyvaksyPeruuntunut = vastaanottotila.hyvaksyPeruuntunut;
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].vastaanottoTila=currentHakemus.vastaanottoTila;
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].ilmoittautumisTila=currentHakemus.ilmoittautumisTila;
                                             return true;

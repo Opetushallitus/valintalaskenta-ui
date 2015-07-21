@@ -193,7 +193,9 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(ohjausparametritFixtures)()
             addTestHook(dokumenttipalveluFixtures)()
             addTestHook(organisaatioFixtures)()
-            addTestHook(valintaperusteetFixtures)()
+            addTestHook(httpFixtures().hakukohteenAvaimet)()
+            addTestHook(httpFixtures().hakukohde18097797874)()
+            addTestHook(httpFixtures().hakukohde18097797874Tila)()
             addTestHook(commonFixtures())()
             page.openPage(done);
         })
@@ -211,6 +213,22 @@ describe('Sijoittelun tulokset välilehti', function () {
             ),
             function(data) {
                 expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.true
+            }
+        ))
+
+        hakemusOid = "1.2.246.562.11.00002071778";
+        it('hyväksyntä voidaan poistaa', seqDone(
+            wait.forAngular,
+            visible(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            checked(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            click(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            expectPost(
+                /.*resources\/tila\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=Massamuokkaus/,
+                click(sijoitteluntulokset.tallenna)
+            ),
+            function(data) {
+                expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.false
             }
         ))
     })

@@ -361,9 +361,9 @@ function sijoitteluAjoFixtures() {
                             }
                         ],
                         "tilanKuvaukset": {
-                            "FI": "Hylk\u00e4\u00e4misfunktion sy\u00f6te on tyhj\u00e4. Hylk\u00e4yst\u00e4 ei voida tulkita."
+                            "FI": "Peruuntunut, ottanut vastaan toisen opiskelupaikan"
                         },
-                        "tila": "HYLATTY",
+                        "tila": "PERUUNTUNUT",
                         "tasasijaJonosija": 1,
                         "jonosija": 1,
                         "prioriteetti": 2,
