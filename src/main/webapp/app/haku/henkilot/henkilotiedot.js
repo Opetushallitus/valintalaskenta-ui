@@ -115,7 +115,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             if (result.valintatapajonot) {
                                                 result.valintatapajonot.forEach(function (jono) {
                                                     if (jono.oid === valintatapajono.valintatapajonoOid) {
-                                                        model.sijoittelu[valintatapajono.valintatapajonoOid].tilaHistoria = jono.hakemukset[0].tilaHistoria;
+                                                        jono.hakemukset.forEach(function (h) {
+                                                            if (h.hakemusOid === model.hakemus.oid) {
+                                                                model.sijoittelu[valintatapajono.valintatapajonoOid].tilaHistoria = h.tilaHistoria;
+                                                            }
+                                                        });
                                                     }
                                                 });
                                             }
