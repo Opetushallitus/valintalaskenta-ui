@@ -861,7 +861,10 @@ app.directive('showSijoittelunTila', function () {
             onEdit: '&'
         },
         templateUrl: '../common/html/showSijoittelunTila.html',
-        controller: function ($modal, $scope) {
+        controller: function ($modal, $scope, AuthService) {
+            $scope.canHyvaksyPeruuntunut = false;
+            AuthService.peruuntuneidenHyvaksyntaOph("APP_SIJOITTELU")
+                .then(function() { $scope.canHyvaksyPeruuntunut = true; }, function() { $scope.canHyvaksyPeruuntunut = false; });
             $scope.showHyvaksyPeruuntunut = false;
             $scope.id = "";
             $scope.$watchCollection('hakemus', function (hakemus, oldval) {
