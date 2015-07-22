@@ -2,6 +2,7 @@
 <div ng-if="showHyvaksyPeruuntunut">
     <label for="hyvaksyPeruuntunut-{{id}}">Hyväksy peruuntunut</label>
     <input id="hyvaksyPeruuntunut-{{id}}"
+           ng-disabled="hakemus.julkaistavissa"
            ng-model="hakemus.hyvaksyPeruuntunut"
            type="checkbox"
            ng-change="onEdit({hakemus: hakemus})"></input>

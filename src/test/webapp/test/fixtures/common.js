@@ -230,7 +230,7 @@ var restData = {
             "valintatapajonoOid": "1425545626196-6437662849831338165",
             "hakemusOid": "1.2.246.562.11.00002071778",
             "hakukohdeOid": "1.2.246.562.20.44161747595",
-            "julkaistavissa": true,
+            "julkaistavissa": false,
             "hyvaksyttyVarasijalta": false,
             "hyvaksyPeruuntunut": true,
             "hakijaOid": null,

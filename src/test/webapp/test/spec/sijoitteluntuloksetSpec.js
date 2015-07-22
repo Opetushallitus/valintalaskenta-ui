@@ -248,5 +248,14 @@ describe('Sijoittelun tulokset välilehti', function () {
                 expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.false
             }
         ))
+
+        hakemusOid = "1.2.246.562.11.00002071778";
+        it('estä Hyväksy peruuntunut muuttaminen jos julkaistavissa', seqDone(
+            wait.forAngular,
+            visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            click(sijoitteluntulokset.julkaistavissa(4)),
+            disabled(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid))
+        ))
     })
 })

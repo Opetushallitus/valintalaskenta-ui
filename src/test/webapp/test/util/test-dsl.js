@@ -89,6 +89,10 @@ function enabled(fn) {
     return waitJqueryIs(fn, ':enabled')
 }
 
+function disabled(fn) {
+    return waitJqueryIs(fn, ':enabled', false)
+}
+
 function checked(fn) {
     return waitJqueryIs(fn, ":checked")
 }
