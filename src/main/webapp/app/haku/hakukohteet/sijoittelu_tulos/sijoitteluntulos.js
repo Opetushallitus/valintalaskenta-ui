@@ -324,11 +324,7 @@ angular.module('valintalaskenta')
                 return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
             });
 
-            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, function(success){
-                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
-            }, function(error){
-                Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-            });
+            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid);
         };
 
         this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid) {
@@ -358,6 +354,9 @@ angular.module('valintalaskenta')
             });
 
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
+                muokatutHakemukset.forEach(function (hakemus) {
+                    hakemus.onkoMuuttunutViimeSijoittelussa = true; // nakyy vain muuttuneet nakymassa
+                });
             	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
             }, function (error) {
 
