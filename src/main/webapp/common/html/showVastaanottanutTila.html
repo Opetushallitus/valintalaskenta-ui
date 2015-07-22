@@ -10,19 +10,7 @@
     <tr ng-repeat="entry in logEntries | orderBy:'luotu':true">
         <td fast-bind-once="entry.luotu | date:'dd.MM.yyyy HH:mm'"></td>
         <td fast-bind-once="entry.muokkaaja"></td>
-        <td>
-            <span ng-if="entry.muutos == ''">{{ t('sijoitteluntulos.kesken') || 'Kesken' }}</span>
-            <span ng-if="entry.muutos == 'KESKEN'">{{ t('sijoitteluntulos.kesken') || 'Kesken' }}</span>
-            <span ng-if="entry.muutos == 'ILMOITETTU'">{{ t('sijoitteluntulos.hakijalleilmoitettu') || 'Hakijalle ilmoitettu' }}</span>
-            <span ng-if="entry.muutos == 'VASTAANOTTANUT'">{{ t('sijoitteluntulos.vastaanottanut') || 'Vastaanottanut' }}</span>
-            <span ng-if="entry.muutos == 'VASTAANOTTANUT_LASNA'">{{ t('sijoitteluntulos.vastaanottanutlasnaolevana') || 'Vastaanottanut läsnäolevana' }}</span>
-            <span ng-if="entry.muutos == 'VASTAANOTTANUT_POISSAOLEVA'">{{ t('sijoitteluntulos.vastaanottanutpoissaolevana') || 'Vastaanottanut poissaolevana' }}</span>
-            <span ng-if="entry.muutos == 'EI_VASTAANOTETTU_MAARA_AIKANA'">{{ t('sijoitteluntulos.eivastaanotettu') || 'Ei vastaanotettu määräaikana' }}</span>
-            <span ng-if="entry.muutos == 'PERUNUT'">{{ t('sijoitteluntulos.perunut') || 'Perunut' }}</span>
-            <span ng-if="entry.muutos == 'PERUUTETTU'">{{ t('sijoitteluntulos.peruutettu') || 'Peruutettu' }}</span>
-            <span ng-if="entry.muutos == 'EHDOLLISESTI_VASTAANOTTANUT'">{{ t('sijoitteluntulos.ehdollisestivastaanottanut') || 'Ehdollisesti vastaanottanut' }}</span>
-            <span ng-if="entry.muutos == 'VASTAANOTTANUT_SITOVASTI'">{{ t('sijoitteluntulos.vastaanottanutsitovasti') || 'Vastaanottanut sitovasti' }}</span>
-        </td>
+        <td fast-bind-once="entry.muutos"></td>
         <td fast-bind-once="entry.selite"></td>
     </tr>
 </table>
