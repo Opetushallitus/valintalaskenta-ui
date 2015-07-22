@@ -200,13 +200,14 @@ describe('Sijoittelun tulokset välilehti', function () {
             page.openPage(done);
         })
 
+        var jonoOid = "1427374494574-2003796769000462860";
         var hakemusOid = "1.2.246.562.11.00002380171";
         it('voidaan hyväksyä', seqDone(
             wait.forAngular,
-            visible(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
-            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
-            click(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
-            checked(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            click(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             expectPost(
                 /.*resources\/tila\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=Massamuokkaus/,
                 click(sijoitteluntulokset.tallenna)
@@ -219,10 +220,26 @@ describe('Sijoittelun tulokset välilehti', function () {
         hakemusOid = "1.2.246.562.11.00002071778";
         it('hyväksyntä voidaan poistaa', seqDone(
             wait.forAngular,
-            visible(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
-            checked(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
-            click(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
-            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(hakemusOid)),
+            visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            click(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            expectPost(
+                /.*resources\/tila\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=Massamuokkaus/,
+                click(sijoitteluntulokset.tallenna)
+            ),
+            function(data) {
+                expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.false
+            }
+        ))
+
+        hakemusOid = "1.2.246.562.11.00001941430";
+        it('hyväksytyltä voidaan poistaa hyväksyntä', seqDone(
+            wait.forAngular,
+            visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            click(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             expectPost(
                 /.*resources\/tila\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=Massamuokkaus/,
                 click(sijoitteluntulokset.tallenna)

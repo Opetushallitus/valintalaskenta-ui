@@ -37,8 +37,8 @@ sijoitteluntulokset = initSelectors({
     koulunNimi: "[ng-bind='tulos.tarjoajaNimi']",
     modaali: ".modal-content",
     valintatilanne: ".result-list tr th span",
-    hyvaksyPeruuntunut: function(hakemusOid) {
-        return "#hyvaksyPeruuntunut-" + hakemusOid.replace(/\./g, "")
+    hyvaksyPeruuntunut: function(jonoOid, hakemusOid) {
+        return "#hyvaksyPeruuntunut-" + jonoOid + "-" + hakemusOid.replace(/\./g, "")
     },
     valintatulosTableIndex: function (trIndex, spanIndex) {
         return ".result-list tr:eq(" + trIndex + ") td span:eq(" + spanIndex + ")"

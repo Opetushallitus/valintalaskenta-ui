@@ -862,8 +862,14 @@ app.directive('showSijoittelunTila', function () {
         },
         templateUrl: '../common/html/showSijoittelunTila.html',
         controller: function ($modal, $scope) {
-            $scope.showHyvaksyPeruuntunut = $scope.onEdit && $scope.hakemus.tila == "PERUUNTUNUT";
-            $scope.hakemusOidWODots = $scope.hakemus.hakemusOid.replace(/\./g, "")
+            $scope.showHyvaksyPeruuntunut = false;
+            $scope.id = "";
+            $scope.$watchCollection('hakemus', function (hakemus, oldval) {
+                var peruuntunut = "PERUUNTUNUT" === hakemus.tila;
+                var hyvaksyttyPeruuntuneena = ("HYVAKSYTTY" === hakemus.tila) && hakemus.hyvaksyPeruuntunut;
+                $scope.showHyvaksyPeruuntunut = $scope.onEdit && (peruuntunut || hyvaksyttyPeruuntuneena || $scope.showHyvaksyPeruuntunut);
+                $scope.id = hakemus.valintatapajonoOid + "-" + hakemus.hakemusOid.replace(/\./g, "")
+            });
         }
     };
 });
