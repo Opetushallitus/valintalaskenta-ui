@@ -106,7 +106,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
                                         VastaanottoTilat.get({hakukohdeOid: hakutoive.hakukohdeOid,
                                             valintatapajonoOid: valintatapajono.valintatapajonoOid}, function (result) {
-                                            model.sijoittelu[valintatapajono.valintatapajonoOid].logEntries = result[0].logEntries;
+                                            result.forEach(function (r) {
+                                                if (r.hakemusOid === model.hakemus.oid) {
+                                                    model.sijoittelu[valintatapajono.valintatapajonoOid].logEntries = r.logEntries;
+                                                }
+                                            });
                                         });
                                         LatestSijoitteluajoHakukohde.get({
                                             hakukohdeOid: hakutoive.hakukohdeOid,
