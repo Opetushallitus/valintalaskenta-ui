@@ -50,7 +50,7 @@
             <div ng-if="nakymanTila == 'Hakijoittain'">
                 <h2>{{ t('valintakoetulos.hakijoittain') || 'Hakijoittain' }}</h2>
                 <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
-                <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="model.naytaVainMuuttuneet"> <br/></div>
+                <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="model.naytaVainMuuttuneet" ng-change="filterChangedValues(model.naytaVainMuuttuneet,model.sijoitteluntulosHakijoittainTableParams)"> <br/></div>
 
                 <table ng-table="model.sijoitteluntulosHakijoittainTableParams" show-filter="true" class="virkailija-table-1">
                     <tbody ng-repeat="hakija in $data">
@@ -74,7 +74,7 @@
                                 {{ t('sijoitteluntulos.ilmoittautumistila') || 'Ilmoittautumistila' }}:&nbsp;{{hakija.ilmoittautumisTila}}
                             </td>
                         </tr>
-                        <tr ng-hide="hakija.$hideRows" ng-repeat="jono in hakija.jonot | tilaFilter: tilaFilterValue | filter:filterChangedValues">
+                        <tr ng-hide="hakija.$hideRows" ng-repeat="jono in hakija.jonot | tilaFilter: tilaFilterValue">
                             <td data-title="(t('sijoitteluntulos.jonosija') || 'Jonosija')" sortable="'sija'">
                                 {{jono.sija > 0?jono.sija:""}}
                             </td>
@@ -105,8 +105,7 @@
                 <div ng-repeat="jono in model.sijoitteluTulokset.valintatapajonot | orderBy:'prioriteetti' track by $index">
                     <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
                     <a ng-click="selectIlmoitettuToAll(jono.oid)" class="btn btn-default btn-sm margin-bottom-2">{{ t('sijoitteluntulos.hyvaksyvalintaesitys') || 'Hyväksy valintaesitys' }}</a>
-                    <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="model.naytaVainMuuttuneet"> <br/></div>
-
+                    <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="model.naytaVainMuuttuneet" ng-change="filterChangedValues(model.naytaVainMuuttuneet,jono.tableParams)"> <br/></div>
 
                     <table ng-table="jono.tableParams" show-filter="true" class="virkailija-table-1">
                         <tbody>
@@ -120,7 +119,7 @@
                                     {{ t('sijoitteluntulos.jononprioriteetti') || 'Prioriteetti' }}: {{jono.prioriteetti}}
                                 </th>
                             </tr>
-                            <tr ng-repeat="hakemus in ($data | tilaFilter: tilaFilterValue | filter:filterChangedValues)">
+                            <tr ng-repeat="hakemus in ($data | tilaFilter: tilaFilterValue)">
                                 <td data-title="jonoLength(jono.hakemukset.length)" sortable="'sija'">
                                     {{hakemus.sija > 0?hakemus.sija:""}}
                                 </td>

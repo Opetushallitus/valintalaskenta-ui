@@ -67,7 +67,7 @@ angular.module('valintalaskenta')
 			});
 			valintatapajono.valittu = this.isAllValittu(valintatapajono);
 		};
-		
+
         this.refresh = function (hakuOid, hakukohdeOid) {
             model.errors = [];
             model.errors.length = 0;
@@ -119,18 +119,20 @@ angular.module('valintalaskenta')
                         var lastTasaSija = 1;
                         var sija = 0;
                         hakemukset.forEach(function (hakemus, index) {
+                            hakemus.onkoMuuttunutViimeSijoittelussa = (hakemus.onkoMuuttunutViimeSijoittelussa === true) || model.latestSijoitteluajo.sijoitteluajoId <= hakemus.viimeinenMuutos;
+
                             var jono = {
                                 nimi: valintatapajono.nimi,
                                 pisteet: hakemus.pisteet,
                                 tila: hakemus.tila,
                                 jonosija: hakemus.jonosija,
                                 prioriteetti: valintatapajono.prioriteetti,
-                                onkoMuuttunutViimeSijoittelussa: hakemus.onkoMuuttunutViimeSijoittelussa,
                                 tilaHistoria: hakemus.tilaHistoria,
                                 varasijanNumero: hakemus.varasijanNumero
                             };
                             if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                 model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = {
+                                    onkoMuuttunutViimeSijoittelussa: hakemus.onkoMuuttunutViimeSijoittelussa,
                                     etunimi: hakemus.etunimi,
                                     sukunimi: hakemus.sukunimi,
                                     hakemusOid: hakemus.hakemusOid,
@@ -291,7 +293,6 @@ angular.module('valintalaskenta')
                         orderedData = params.filter() ?
                             $filter('filter')(orderedData, filters) :
                             orderedData;
-
                         params.total(orderedData.length); // set total for recalc pagination
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 
@@ -327,7 +328,6 @@ angular.module('valintalaskenta')
 
             model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid);
         };
-
         this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid) {
             model.errors.length = 0;
             var tilaParams = {
@@ -611,20 +611,13 @@ angular.module('valintalaskenta')
 	    }
     };
 
-    $scope.filterChangedValues = function(hakemus) {
-        if ($scope.model.naytaVainMuuttuneet) {
-            if(hakemus.onkoMuuttunutViimeSijoittelussa) {
-                //$log.info("Näytetään hakija " + hakemus.hakemusOid + " koska oli muuttunut viimesijoittelussa");
-                return true;
-            }
-            if($scope.model.latestSijoitteluajo.sijoitteluajoId <= hakemus.viimeinenMuutos) {
-                //$log.info("Näytetään hakija " + hakemus.hakemusOid + " tila oli muuttunut sitten viimesijoittelun");
-                return true;
-            }
-            return false;
+    $scope.filterChangedValues = function(naytaVainMuuttuneet, tableParams) {
+        if(naytaVainMuuttuneet) {
+            tableParams.filter()['onkoMuuttunutViimeSijoittelussa'] = true;
+        } else {
+            tableParams.filter()['onkoMuuttunutViimeSijoittelussa'] = undefined;
         }
-        return true;
-    };
+    }
 
     $scope.createHyvaksymiskirjeetPDF = function (oidit) {
         var hakuOid = $routeParams.hakuOid;

@@ -29,6 +29,7 @@ function sijoitteluAjoFixtures() {
                 "tasasijaJonosija": 1,
                 "tila": "HYVAKSYTTY",
                 "tilanKuvaukset": {},
+                "onkoMuuttunutViimeSijoittelussa": true,
                 "tilaHistoria": [{"tila": "PERUUNTUNUT", "luotu": 1433336039261}, {
                     "tila": "HYVAKSYTTY",
                     "luotu": 1433336759084
@@ -421,6 +422,7 @@ function sijoitteluAjoFixtures() {
                             }
                         ],
                         "tilanKuvaukset": null,
+                        "onkoMuuttunutViimeSijoittelussa": true,
                         "tila": "HYVAKSYTTY",
                         "tasasijaJonosija": 1,
                         "jonosija": 3,
