@@ -421,7 +421,7 @@ app.factory('NgTableParams', ['$q', '$log', 'ngTableDefaults', function($q, $log
          * @methodOf ngTable.factory:NgTableParams
          * @description Reload table data
          */
-        this.reload = function() {
+        this.reload = function(afterReload) {
             var $defer = $q.defer(),
                 self = this,
                 pData = null;
@@ -455,6 +455,9 @@ app.factory('NgTableParams', ['$q', '$log', 'ngTableDefaults', function($q, $log
                 }
                 if (settings.$scope) settings.$scope.pages = self.generatePagesArray(self.page(), self.total(), self.count());
                 settings.$scope.$emit('ngTableAfterReloadData');
+                if (afterReload) {
+                  afterReload()
+                }
                 return data;
             });
         };
@@ -562,7 +565,19 @@ function($scope, NgTableParams, $timeout, $parse, $compile, $attrs, $element, ng
                 $scope.params.reload();
             }, $scope.params.settings().filterDelay);
         } else {
-            $scope.params.reload();
+            var pagerElement = $element.parent().find(".ng-table-pager")[0]
+            if (pagerElement) {
+              // restore pagerElement pos on screen by scrolling to appropriate position
+              var posInWindow = pagerElement.offsetTop - document.body.scrollTop
+              $scope.params.reload(function() {
+                setTimeout(function() {
+                  console.log("hello", pagerElement)
+                  document.body.scrollTop = pagerElement.offsetTop - posInWindow
+                }, 0)
+              })
+            } else {
+              $scope.params.reload();
+            }
         }
 
         if (!$scope.params.isNullInstance) {
