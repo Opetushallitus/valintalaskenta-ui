@@ -356,10 +356,7 @@ angular.module('valintalaskenta')
             });
 
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
-                muokatutHakemukset.forEach(function (hakemus) {
-                    hakemus.onkoMuuttunutViimeSijoittelussa = true; // nakyy vain muuttuneet nakymassa
-                });
-            	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+            	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.", null, function() { document.location.reload() });
             }, function (error) {
 
                 function getMessage(error) {
