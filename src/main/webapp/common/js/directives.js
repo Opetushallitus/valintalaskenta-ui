@@ -862,17 +862,25 @@ app.directive('showSijoittelunTila', function () {
         },
         templateUrl: '../common/html/showSijoittelunTila.html',
         controller: function ($modal, $scope, AuthService) {
+            var l = function (newval, oldval) {
+                if (newval !== oldval) {
+                    var peruuntunut = "PERUUNTUNUT" === $scope.hakemus.tila;
+                    var hyvaksyttyPeruuntuneena = ("HYVAKSYTTY" === $scope.hakemus.tila) && $scope.hakemus.hyvaksyPeruuntunut;
+                    $scope.showHyvaksyPeruuntunut = $scope.onEdit &&
+                        ((peruuntunut && $scope.canHyvaksyPeruuntunut) ||
+                        hyvaksyttyPeruuntuneena ||
+                        $scope.showHyvaksyPeruuntunut);
+                    $scope.id = $scope.hakemus.valintatapajonoOid + "-" + $scope.hakemus.hakemusOid.replace(/\./g, "");
+                }
+            };
             $scope.canHyvaksyPeruuntunut = false;
-            AuthService.peruuntuneidenHyvaksyntaOph("APP_SIJOITTELU")
-                .then(function() { $scope.canHyvaksyPeruuntunut = true; }, function() { $scope.canHyvaksyPeruuntunut = false; });
             $scope.showHyvaksyPeruuntunut = false;
             $scope.id = "";
-            $scope.$watchCollection('hakemus', function (hakemus, oldval) {
-                var peruuntunut = "PERUUNTUNUT" === hakemus.tila;
-                var hyvaksyttyPeruuntuneena = ("HYVAKSYTTY" === hakemus.tila) && hakemus.hyvaksyPeruuntunut;
-                $scope.showHyvaksyPeruuntunut = $scope.onEdit && (peruuntunut || hyvaksyttyPeruuntuneena || $scope.showHyvaksyPeruuntunut);
-                $scope.id = hakemus.valintatapajonoOid + "-" + hakemus.hakemusOid.replace(/\./g, "")
-            });
+            $scope.$watchCollection('hakemus', l);
+            $scope.$watch('canHyvaksyPeruuntunut', l);
+            AuthService.peruuntuneidenHyvaksyntaOph("APP_SIJOITTELU")
+                .then(function() { $scope.canHyvaksyPeruuntunut = true; },
+                      function() { $scope.canHyvaksyPeruuntunut = false; });
         }
     };
 });

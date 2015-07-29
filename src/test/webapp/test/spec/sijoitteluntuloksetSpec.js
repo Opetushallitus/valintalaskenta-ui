@@ -280,14 +280,6 @@ describe('Sijoittelun tulokset välilehti', function () {
         var jonoOid = "1427374494574-2003796769000462860";
         it('Hyväksy peruuntunut näkyy, mutta sitä ei voi muuttaa', seqDone(
             wait.forAngular,
-            visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00002380171")),
-            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00002380171")),
-            disabled(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00002380171")),
-
-            visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00002071778")),
-            checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00002071778")),
-            disabled(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00002071778")),
-
             visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430")),
             checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430")),
             disabled(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430"))
