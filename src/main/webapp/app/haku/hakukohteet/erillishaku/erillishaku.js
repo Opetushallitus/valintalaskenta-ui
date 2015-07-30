@@ -1,12 +1,12 @@
 ﻿angular.module('valintalaskenta')
 
-  .controller('ErillishakuController', ['$scope', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
+  .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
     'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
     'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','_', 'LocalisationService','ErillishakuVienti',
-    'ErillishakuProxy','ErillishakuTuonti','ErillishaunVastaanottoTila', '$window',
-    function ($scope, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
+    'ErillishakuProxy','ErillishakuTuonti','ErillishaunVastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet', 'Kirjepohjat',
+    function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, _, LocalisationService,
-              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,ErillishaunVastaanottoTila, $window) {
+              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,ErillishaunVastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat) {
       "use strict";
 
       $scope.muokatutHakemukset = [];
@@ -366,5 +366,69 @@
             //error
           });
         };
+      };
+      $scope.luoHyvaksymiskirjeetPDF = function() {
+        var hakuOid = $routeParams.hakuOid;
+        var hakukohde = $scope.hakukohdeModel.hakukohde;
+        var tag = null;
+        if(hakukohde.hakukohdeNimiUri) {
+          tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+        } else {
+          tag = $routeParams.hakukohdeOid;
+        }
+        var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
+        var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
+        var viestintapalveluInstance = $modal.open({
+          backdrop: 'static',
+          templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+          controller: ViestintapalveluIkkunaCtrl,
+          size: 'lg',
+          resolve: {
+            oids: function () {
+              return {
+                otsikko: "Hyväksymiskirjeet",
+                toimintoNimi: "Muodosta hyväksymiskirjeet",
+                toiminto: function(sisalto, palautusPvm, palautusAika) {
+                  Hyvaksymiskirjeet.post(
+                    {
+                      sijoitteluajoId: null,
+                      hakuOid: $routeParams.hakuOid,
+                      tarjoajaOid: hakukohde.tarjoajaOids[0],
+                      templateName: templateName,
+                      palautusPvm: palautusPvm,
+                      palautusAika: palautusAika,
+                      tag: tag,
+                      hakukohdeOid: $routeParams.hakukohdeOid
+                    },
+                    {
+                      hakemusOids: null,
+                      letterBodyText:sisalto
+                    },
+                    function (id) {
+                      Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
+                    },
+                    function () {});
+                },
+                showDateFields: true,
+                hakuOid: $routeParams.hakuOid,
+                hakukohdeOid: $routeParams.hakukohdeOid,
+                tarjoajaOid: hakukohde.tarjoajaOids[0],
+                pohjat: function() {
+                  return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
+                },
+                hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
+                hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
+              };
+            }
+          }
+        });
+      }
+
+      $scope.hakuaVastaavaHyvaksymiskirjeMuotti = function() {
+        if(HakuModel.hakuOid.nivelvaihe) {
+          return "hyvaksymiskirje_nivel";
+        }else {
+          return "hyvaksymiskirje";
+        }
       };
     }]);
