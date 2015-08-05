@@ -537,7 +537,7 @@ angular.module('valintalaskenta')
     		tag = $routeParams.hakukohdeOid;
     	}
     	var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
-    	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
+    	var templateName = "hyvaksymiskirje";
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -600,9 +600,6 @@ angular.module('valintalaskenta')
             
         });
     };
-    $scope.hakuaVastaavaHyvaksymiskirjeMuotti = function() {
-    	return "hyvaksymiskirje";
-    };
 
     $scope.filterChangedValues = function(naytaVainMuuttuneet, tableParams) {
         if(naytaVainMuuttuneet) {
@@ -623,7 +620,7 @@ angular.module('valintalaskenta')
     	}
     	//var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
-    	var templateName = $scope.hakuaVastaavaHyvaksymiskirjeMuotti();
+    	var templateName = "hyvaksymiskirje";
     	var viestintapalveluInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -654,7 +651,7 @@ angular.module('valintalaskenta')
                         hakukohdeOid: $routeParams.hakukohdeOid,
                         tarjoajaOid: hakukohde.tarjoajaOids[0],
                         pohjat: function() {
-                        	return Kirjepohjat.get({languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
+                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
                         },
                         hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                         hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
