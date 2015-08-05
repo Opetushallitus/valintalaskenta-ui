@@ -601,11 +601,7 @@ angular.module('valintalaskenta')
         });
     };
     $scope.hakuaVastaavaHyvaksymiskirjeMuotti = function() {
-    	if(HakuModel.hakuOid.nivelvaihe) {
-    		return "hyvaksymiskirje_nivel";	
-    	}else {
-	    	return "hyvaksymiskirje";
-	    }
+    	return "hyvaksymiskirje";
     };
 
     $scope.filterChangedValues = function(naytaVainMuuttuneet, tableParams) {
