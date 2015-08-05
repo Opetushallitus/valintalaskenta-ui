@@ -242,14 +242,6 @@ angular.module('valintalaskenta').
     SijoitteluAjo.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function (result) {
         $scope.sijoitteluModel = result;
     });
-    $scope.hakuaVastaavaJalkiohjauskirjeMuotti = function() {
-    	if(HakuModel.hakuOid.nivelvaihe) {
-    		return "jalkiohjauskirje_nivel";	
-    	}else {
-	    	return "jalkiohjauskirje";
-	    }
-    };
-
     $scope.sijoittelunTuloksetHyvaksymiskirjeiksi = function() {
         var hakuoid = $routeParams.hakuOid;
         SijoittelunTulosHyvaksymiskirjeet.aktivoi({hakuOid: hakuoid}, {}, function (id) {
@@ -298,7 +290,6 @@ angular.module('valintalaskenta').
         var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakumodel.hakuOid.kohdejoukkoUri);
         var hakuOid = $routeParams.hakuOid;
     	var tag = $routeParams.hakuOid;
-    	var templateName = $scope.hakuaVastaavaJalkiohjauskirjeMuotti();
         var otsikko = "";
         var toimintoNimi = "";
         var latausikkunaTeksti = "";
@@ -324,7 +315,7 @@ angular.module('valintalaskenta').
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
-					        	tag: tag, templateName: templateName}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
+					        	tag: tag, templateName: "jalkiohjauskirje"}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
 					            Latausikkuna.avaa(id, latausikkunaTeksti, "");
 					        }, function () {
 					            
@@ -333,7 +324,7 @@ angular.module('valintalaskenta').
                         showDateFields: true,
                         hakuOid: $routeParams.hakuOid,
                         pohjat: function() {
-                        	return Jalkiohjauskirjepohjat.get({templateName: templateName, languageCode: langcode, tag: tag, applicationPeriod: hakuOid});
+                        	return Jalkiohjauskirjepohjat.get({languageCode: langcode, tag: tag, applicationPeriod: hakuOid});
                         }
                     };
                 }
