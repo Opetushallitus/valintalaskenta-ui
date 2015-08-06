@@ -185,8 +185,9 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
 angular.module('valintalaskenta').
     controller('LisahakuhyvaksytytController', ['$scope', '$location', '$routeParams', 'HyvaksytytModel', 'HakukohdeModel',
         'AuthService', 'HakemusKey','LocalisationService','SijoitteluntulosModel', 'VastaanottoTila', 'Ilmoitus', 'IlmoitusTila',
+        'Kirjeet','HakukohdeNimiService',
         function ($scope, $location, $routeParams, HyvaksytytModel, HakukohdeModel, AuthService, HakemusKey, LocalisationService,
-                  SijoitteluntulosModel, VastaanottoTila, Ilmoitus, IlmoitusTila) {
+                  SijoitteluntulosModel, VastaanottoTila, Ilmoitus, IlmoitusTila,Kirjeet,HakukohdeNimiService) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HyvaksytytModel;
     $scope.hakuOid =  $routeParams.hakuOid;
@@ -196,6 +197,26 @@ angular.module('valintalaskenta').
     $scope.muutettu = false;
     $scope.pageSize = 50;
     $scope.currentPage = 1;
+
+    $scope.luoHyvaksymiskirjeetPDF = function() {
+        var tag = null;
+        var hakukohde = $scope.hakukohdeModel.hakukohde;
+        if(hakukohde.hakukohdeNimiUri) {
+            tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+        } else {
+            tag = $routeParams.hakukohdeOid;
+        }
+        Kirjeet.hyvaksymiskirjeet({
+            hakuOid: $routeParams.hakuOid,
+            hakukohdeOid: $routeParams.hakukohdeOid,
+            tarjoajaOid: hakukohde.tarjoajaOids[0],
+            hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
+            hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi,
+            tag: tag,
+            langcode: HakukohdeNimiService.getOpetusKieliCode(hakukohde),
+            templateName: "hyvaksymiskirje"
+        });
+    }
 
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
         {value: "EI_TEHTY", text_prop: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},

@@ -239,9 +239,9 @@
 
 angular.module('valintalaskenta').
     controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel',
-        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log', 'HakukohdeNimiService',
+        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log', 'HakukohdeNimiService','Kirjeet',
         function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
-                  Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log,HakukohdeNimiService) {
+                  Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log,HakukohdeNimiService, Kirjeet) {
 
     "use strict";
 
@@ -257,7 +257,6 @@ angular.module('valintalaskenta').
 	    return (!str || /^\s*$/.test(str));
 	};
 	$scope.createKoekutsukirjeetPDF = function (valintakoe) {
-		var hakuOid = $routeParams.hakuOid;
 		var hakukohde = $scope.hakukohdeModel.hakukohde;
     	var hakukohdeOid = $routeParams.hakukohdeOid;
     	var tag = null;
@@ -266,8 +265,6 @@ angular.module('valintalaskenta').
     	} else {
     		tag = hakukohdeOid;
     	}
-        var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
-
         var templateName = "koekutsukirje";
     	var otsikko = null;
     	var hakemusOids = null;
@@ -281,57 +278,20 @@ angular.module('valintalaskenta').
 			}
 			otsikko = "Muodostetaan koekutsukirjeet valituille hakemuksille";
 		}
-    	var viestintapalveluInstance = $modal.open({
-            backdrop: 'static',
-            templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
-            controller: ViestintapalveluIkkunaCtrl,
-            size: 'lg',
-            resolve: {
-                oids: function () {
-                    return {
-                    	otsikko: "Koekutsukirjeet",
-                    	toimintoNimi: "Muodosta koekutsukirjeet",
-                    	toiminto: function(sisalto) {
-                    		Koekutsukirjeet.post({
-                				hakuOid: $routeParams.hakuOid,
-                				hakukohdeOid:$routeParams.hakukohdeOid,
-                				tarjoajaOid: hakukohde.tarjoajaOids[0],
-                				templateName: "koekutsukirje",
-								valintakoeTunnisteet: [valintakoe.tunniste]},{
-                					tag: "valintakoetulos",
-                					hakemusOids: hakemusOids,
-                					letterBodyText: sisalto
-                				},
-                				function(id) {
-                					Latausikkuna.avaaKustomoitu(id, otsikko, valintakoe.valintakoeTunniste, "haku/hakukohteet/koekutsut/modaalinen/valintakoe.html",
-                		                    function (dokumenttiId) {
-                								$window.open(VIESTINTAPALVELU_URL_BASE + "/api/v1/letter/previewLetterBatchEmail/" + dokumenttiId);
-                		                    },
-                		                    function (dokumenttiId) {
-                		                        KoekutsukirjeetSahkopostita.put(dokumenttiId, function (success) {
-                		                            Ilmoitus.avaa("Sähköpostilla lähetys onnistui", "Koekutsukirjeiden lähetys sähköpostilla onnistui");
-                		                        }, function () {
-                		                            Ilmoitus.avaa("Sähköpostilla lähetys epäonnistui", "Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-                		                        });
-
-                		                    }
-                		                );
-                	    	},function() {
-                	    	});
-                    	},
-						showDateFields: true,
-                        hakuOid: $routeParams.hakuOid,
-                        hakukohdeOid: $routeParams.hakukohdeOid,
-                        tarjoajaOid: hakukohde.tarjoajaOids[0],
-                        pohjat: function() {
-                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
-                        },
-                        hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
-                        hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
-                    };
-                }
-            }
-        });
+		Kirjeet.koekutsukirjeet({
+			hakuOid: $routeParams.hakuOid,
+			hakukohdeOid: $routeParams.hakukohdeOid,
+			tarjoajaOid: hakukohde.tarjoajaOids[0],
+			hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
+			hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi,
+			tag: tag,
+			langcode: HakukohdeNimiService.getOpetusKieliCode(hakukohde),
+			otsikko: otsikko,
+			templateName: templateName,
+			hakemusOids: hakemusOids,
+			valintakoe: valintakoe.tunniste,
+			valintakoeTunniste: valintakoe.valintakoeTunniste
+		});
 	};
 
 	$scope.valintakoeTulosXLS = function(valintakoe) {
