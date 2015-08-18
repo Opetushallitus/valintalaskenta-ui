@@ -205,6 +205,22 @@ function assertText(selector, val) {
     expect(selector().text().trim()).to.equal(val, selector().selector)
 }
 
+function assertTextLazy(selector, val) {
+    return function() {
+        assertText(selector, val);
+    }
+}
+
+function assertNoTextContent(selector, text) {
+    return function(){
+        var found = selector().toArray().map(function(e) { return e.textContent; }).some(function(t) { return t == text; });
+        if (found) {
+            throw new Error("An element with text content '" + text + "' found");
+        }
+        false
+    }
+}
+
 function assertValue(selector, val) {
     chai.assert(typeof selector().val() !== 'undefined', "element "  + selector().selector + " should be defined, is undefined")
     expect(selector().val().trim()).to.equal(val, selector().selector)

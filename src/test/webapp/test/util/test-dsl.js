@@ -85,6 +85,10 @@ function visible(fn) {
     return waitJqueryIs(fn, ':visible')
 }
 
+function invisible(fn) {
+    return waitJqueryIs(fn, ':hidden')
+}
+
 function enabled(fn) {
     return waitJqueryIs(fn, ':enabled')
 }
@@ -99,6 +103,26 @@ function checked(fn) {
 
 function unchecked(fn) {
     return waitJqueryIs(fn, ":checked", false)
+}
+
+function valueEquals(fn, expectedValue) {
+    return seq(
+        visible(fn),
+        function() {
+            var elementValue = fn().val();
+            if (elementValue != expectedValue) {
+                throw new Error("Element value '" + elementValue + "' didn't match expected value '" + expectedValue + "'")
+            }
+        })
+}
+
+function notExists(fn) {
+    if (typeof(fn) !== 'function') {
+        throw new Error('notExists() got a non-function');
+    }
+    return wait.until(function() {
+        return fn().length === 0;
+    });
 }
 
 function input1(fn, value) {
@@ -199,6 +223,12 @@ wait = {
         }
     }
 };
+
+function visibleText(fn, text) {
+    return wait.until(function() {
+        return fn().is(':visible') && fn().text().trim().indexOf(text) !== -1;
+    })
+}
 
 function select(fn, value) {
     return seq(

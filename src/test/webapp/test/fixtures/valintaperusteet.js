@@ -21,5 +21,20 @@ function valintakokeetFixtures(valintakokeet) {
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|1\.2\.246\.562\.20\.37731636579|)\/valintakoe/).respond(
             kokeet
         );
+
+        // lisahaku
+        var lisahaku = {
+            "nimi": null,
+            "kohdejoukko": null,
+            "hakuoid": null,
+            "hakuvuosi": null,
+            "organisaatiot": [],
+            "oid": null,
+            "hakukohdekoodit": [],
+            "valintakoekoodit": [],
+            "lapsivalintaryhma": false,
+            "lapsihakukohde": false
+        }
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/LISAHAKUKOHDE\/valintaryhma/).respond(lisahaku);
     }
 }

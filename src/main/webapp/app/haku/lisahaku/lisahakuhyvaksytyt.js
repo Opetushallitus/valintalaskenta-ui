@@ -15,7 +15,7 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
         this.sijoitteluMap = {};
         this.haku = {};
 
-        this.getJonoOid = function(hakukohdeOid, hakuOid) {
+        this.getJonoOid = function(hakuOid, hakukohdeOid) {
             LatestSijoitteluajoHakukohde.get({
                 hakukohdeOid: hakukohdeOid,
                 hakuOid: hakuOid
@@ -52,18 +52,18 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(resultWrapper) {
                 model.tarjoajaOid = resultWrapper.result.tarjoajaOid;
             });
-            HakukohdeHenkilot.get({aoOid: hakukohdeOid, asId: hakuOid, rows:100000}, function(result) {
-                model.hakeneet = result.results;
+            HakukohdeHenkilot.get({aoOid: hakukohdeOid, asId: hakuOid, rows:100000}, function(henkilot) {
+                model.hakeneet = henkilot.results;
                 if(model.hakeneet) {
 
                     LatestSijoitteluajoHakukohde.get({
                         hakukohdeOid: hakukohdeOid,
                         hakuOid: hakuOid
-                    }, function (result) {
-                        if (result.sijoitteluajoId) {
-                            model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
+                    }, function (sijoitteluajoHakukohde) {
+                        if (sijoitteluajoHakukohde.sijoitteluajoId) {
+                            model.latestSijoitteluajo.sijoitteluajoId = sijoitteluajoHakukohde.sijoitteluajoId;
 
-                            model.sijoitteluTulokset = result;
+                            model.sijoitteluTulokset = sijoitteluajoHakukohde;
 
                             var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
 
@@ -71,18 +71,20 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
                                 valintatapajono.index = index;
                                 valintatapajono.valittu = true;
                                 var valintatapajonoOid = valintatapajono.oid;
-                                var hakemukset = valintatapajono.hakemukset;
                                 model.valintatapajonoOid = valintatapajono.oid;
-                                hakemukset.forEach(function (hakemus, index) {
 
+                                valintatapajono.hakemukset.forEach(function(hakemus) {
+                                    var tila = '';
                                     if (hakemus.tila === "HYVAKSYTTY") {
-                                        model.sijoitteluMap[hakemus.hakemusOid] = {};
-                                        model.sijoitteluMap[hakemus.hakemusOid].tila = "HYVAKSYTTY";
+                                        tila = 'true';
+                                    } else if (hakemus.tila === "HYLATTY") {
+                                        tila = 'false';
                                     }
+                                    model.sijoitteluMap[hakemus.hakemusOid] = {tila: tila};
                                 });
 
                                 VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
-                                    valintatapajonoOid: valintatapajonoOid}, function (result) {
+                                    valintatapajonoOid: valintatapajonoOid}, function (vastaanottotilat) {
 
                                     model.hakeneet.forEach(function (currentHakemus) {
 
@@ -92,7 +94,7 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
                                         currentHakemus.muokattuVastaanottoTila = "";
                                         currentHakemus.muokattuIlmoittautumisTila = "";
 
-                                        result.some(function (vastaanottotila) {
+                                        vastaanottotilat.some(function(vastaanottotila) {
                                             if (vastaanottotila.hakemusOid === currentHakemus.oid) {
                                                 currentHakemus.logEntries = vastaanottotila.logEntries;
                                                 currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
@@ -122,9 +124,9 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
 
                         }
 
-                        model.hakeneet.forEach(function (currentHakemus) {
-                            if(model.sijoitteluMap[currentHakemus.oid]) {
-                                currentHakemus.lisahakuHyvaksytty = "Kyllä"
+                        model.hakeneet.forEach(function(currentHakemus) {
+                            if (currentHakemus.oid in model.sijoitteluMap) {
+                                currentHakemus.tila = model.sijoitteluMap[currentHakemus.oid].tila;
                             }
                         });
 
@@ -132,7 +134,7 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
                         model.errors.push(error.data.message);
                     });
                 }
-                
+
             }, function(error) {
                 model.errors.push(error);
             });
@@ -151,16 +153,6 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
           tilaObj.hyvaksy = hyvaksytty;
 
           SijoitteluTila.post(tilaParams, tilaObj, function (result) {
-
-              model.hakeneet.forEach(function(hakija) {
-                  if(hakija.oid === hakemusOid) {
-                      if(hyvaksytty == 'true') {
-                        hakija.lisahakuHyvaksytty = "Kyllä";
-                      } else {
-                        hakija.lisahakuHyvaksytty = null;
-                      }
-                  }
-              });
               if(!model.valintatapajonoOid) {
                   model.getJonoOid(model.hakuOid, model.hakukohdeOid);
               }

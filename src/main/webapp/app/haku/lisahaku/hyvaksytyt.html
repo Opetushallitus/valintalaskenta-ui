@@ -33,7 +33,7 @@
                                 <th>{{ t('hyvaksytyt.nimi') || 'Nimi' }}</th>
                                 <th>{{ t('hyvaksytyt.hakemus') || 'Hakemus' }}</th>
                                 <th>{{ t('hyvaksytyt.tila') || 'Hyväksymisen tila' }}</th>
-                                <th></th>
+                                <th>{{ t('hyvaksytyt.julkaistu') || 'Julkaistu' }}</th>
                                 <th>{{ t('hyvaksytyt.vastaanottotieto') || 'Vastaanottotieto' }}</th>
                                 <th>{{ t('hyvaksytyt.ilmoittautumistieto') || 'Ilmoittautumistieto' }}</th>
                             </tr>
@@ -51,28 +51,28 @@
 	                                    </a>
                                     </span>
                                 </td>
-
-
                                 <td>
-                                    {{hakija.lisahakuHyvaksytty}}
+                                    <select ng-model="hakija.tila" ng-change="lisahakuUpdate(hakija.oid, hakija.tila)">
+                                        <option value="" disabled>{{ t('hyvaksytyt.kesken') || 'Määrittelemätön' }}</option>
+                                        <option value="true">{{ t('hyvaksytyt.hyvaksy') || 'Hyväksytty' }}</option>
+                                        <option value="false">{{ t('hyvaksytyt.hylkaa') || 'Hylätty' }}</option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <a ng-show="!hakija.lisahakuHyvaksytty" ng-click="lisahakuUpdate(hakija.oid, 'true')" class="btn btn-primary btn-sm">{{ t('hyvaksytyt.hyvaksy') || 'Hyväksy' }}</a>
-                                    <a ng-show="hakija.lisahakuHyvaksytty" ng-click="lisahakuUpdate(hakija.oid, 'false')" class="btn btn-default btn-sm ">{{ t('hyvaksytyt.hylkaa') || 'Hylkää' }}</a>
+                                    <input ng-show="hakija.tila === 'false' || hakija.tila === 'true'"
+                                           type="checkbox"
+                                           ng-model="hakija.julkaistavissa"
+                                           ng-change="setIlmoittautumisTila(hakija)"/>
+                                </td>
+                                <td>
+                                    <muokattu-vastaanotto-tila
+                                            ng-show="hakija.tila === 'true' && hakija.julkaistavissa"
+                                            haku="model.haku"
+                                            hakemus="hakija"/>
                                 </td>
 
                                 <td>
-                                    <div ng-show="hakija.lisahakuHyvaksytty">
-
-                                        <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-model="hakija.julkaistavissa" ng-change="setIlmoittautumisTila(hakija)"> <br/></div>
-                                        <div ng-show="hakija.julkaistavissa">
-                                            <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakija"/>
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div ng-show="hakija.julkaistavissa && hakija.lisahakuHyvaksytty && (hakija.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakija.muokattuVastaanottoTila == 'EHDOLLISESTI_VASTAANOTTANUT')">
+                                    <div ng-show="hakija.julkaistavissa && hakija.tila === 'true' && hakija.muokattuVastaanottoTila.indexOf('VASTAANOTTANUT') !== -1">
                                         <select ng-model="hakija.muokattuIlmoittautumisTila"
                                                 ng-change="setIlmoittautumisTila(hakija)"
                                                 ng-options="tila.value as tila.text for tila in hakemuksenMuokattuIlmoittautumisTilat">

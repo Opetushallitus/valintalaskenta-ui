@@ -1,5 +1,14 @@
 function organisaatioFixtures() {
     var httpBackend = testFrame().httpBackend
+
+    // lisahaku
+    httpBackend
+        .when('GET', /.*organisaatio\/LISAHAKUKOHDE\/parentoids/)
+        .respond("1.2.246.562.10.00000000001/1.2.246.562.20.31450195396")
+    httpBackend
+        .when('GET', /.*organisaatio\/1\.2\.246\.562\.10\.520877937010\/parentoids/)
+        .respond("1.2.246.562.10.00000000001/1.2.246.562.10.79875033395/1.2.246.562.10.78305677532/1.2.246.562.10.520877937010")
+
     httpBackend.when('GET', /.*organisaatio\/1\.2\.246\.562\.10\.10464399921\/parentoids/)
         .respond("1.2.246.562.10.00000000001/1.2.246.562.10.23511028237/1.2.246.562.10.328060821310/1.2.246.562.10.10464399921")
     var organisaatio = "1.2.246.562.10.00000000001/1.2.246.562.10.83391443328/1.2.246.562.10.29176843356/1.2.246.562.10.92016169366"

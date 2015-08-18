@@ -739,4 +739,123 @@ function sijoitteluAjoFixtures() {
       "oid": "1.2.246.562.20.44161747595",
       "sijoitteluajoId": 1434513756673
     });
+
+    var lisahaku = {
+        "sijoitteluajoId": 1439890957880,
+        "oid": "1.2.246.562.20.31450195396",
+        "tila": null,
+        "tarjoajaOid": "1.2.246.562.10.520877937010",
+        "valintatapajonot": [{
+            "tasasijasaanto": null,
+            "tila": null,
+            "oid": "5e7e8b1a-7fa2-4833-a941-f993b749d437",
+            "nimi": null,
+            "prioriteetti": 0,
+            "aloituspaikat": 0,
+            "alinHyvaksyttyPistemaara": null,
+            "eiVarasijatayttoa": null,
+            "kaikkiEhdonTayttavatHyvaksytaan": null,
+            "poissaOlevaTaytto": null,
+            "hakemukset": [{
+                "hakijaOid": null,
+                "hakemusOid": "1.2.246.562.11.00000000848",
+                "pisteet": null,
+                "paasyJaSoveltuvuusKokeenTulos": null,
+                "etunimi": null,
+                "sukunimi": null,
+                "prioriteetti": 1,
+                "jonosija": 1,
+                "tasasijaJonosija": null,
+                "tila": "KESKEN",
+                "tilanKuvaukset": {},
+                "tilaHistoria": [],
+                "hyvaksyttyHarkinnanvaraisesti": false,
+                "varasijanNumero": null,
+                "sijoitteluajoId": 1439890957880,
+                "hakukohdeOid": "1.2.246.562.20.31450195396",
+                "tarjoajaOid": "1.2.246.562.10.520877937010",
+                "valintatapajonoOid": "5e7e8b1a-7fa2-4833-a941-f993b749d437",
+                "hakuOid": null,
+                "onkoMuuttunutViimeSijoittelussa": false,
+                "pistetiedot": [],
+                "todellinenJonosija": 1
+            }, {
+                "hakijaOid": null,
+                "hakemusOid": "1.2.246.562.11.00000000864",
+                "pisteet": null,
+                "paasyJaSoveltuvuusKokeenTulos": null,
+                "etunimi": null,
+                "sukunimi": null,
+                "prioriteetti": 1,
+                "jonosija": 1,
+                "tasasijaJonosija": null,
+                "tila": "KESKEN",
+                "tilanKuvaukset": {},
+                "tilaHistoria": [],
+                "hyvaksyttyHarkinnanvaraisesti": false,
+                "varasijanNumero": null,
+                "sijoitteluajoId": 1439890957880,
+                "hakukohdeOid": "1.2.246.562.20.31450195396",
+                "tarjoajaOid": "1.2.246.562.10.520877937010",
+                "valintatapajonoOid": "5e7e8b1a-7fa2-4833-a941-f993b749d437",
+                "hakuOid": null,
+                "onkoMuuttunutViimeSijoittelussa": false,
+                "pistetiedot": [],
+                "todellinenJonosija": 1
+            }],
+            "hakeneet": 2,
+            "hyvaksytty": 0,
+            "varalla": 0,
+            "varasijat": 0,
+            "varasijaTayttoPaivat": 0,
+            "varasijojaKaytetaanAlkaen": null,
+            "varasijojaTaytetaanAsti": null,
+            "tayttojono": null
+        }],
+        "kaikkiJonotSijoiteltu": true
+    };
+    httpBackend.when('GET', /.*resources\/sijoittelu\/LISAHAKU\/sijoitteluajo\/latest\/hakukohde\/LISAHAKUKOHDE/).respond(lisahaku);
+
+    // Hyväksymistilan muutos
+    httpBackend.when('POST', /.*resources\/tila\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\/hakemus\/.*/).respond();
+
+    // Julkaisu
+    httpBackend.when('POST', /.*resources\/tila\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/).respond();
+
+    var lisahakuTila = [{
+        "id": {
+            "timeSecond": 1439893585,
+            "inc": 1122706712,
+            "machine": -458217670,
+            "time": 1439893585000,
+            "date": 1439893585000,
+            "timestamp": 1439893585,
+            "new": false
+        },
+        "valintatapajonoOid": "5e7e8b1a-7fa2-4833-a941-f993b749d437",
+        "hakemusOid": "1.2.246.562.11.00000000848",
+        "hakukohdeOid": "1.2.246.562.20.31450195396",
+        "julkaistavissa": false,
+        "hyvaksyttyVarasijalta": false,
+        "hyvaksyPeruuntunut": false,
+        "hakijaOid": null,
+        "hakuOid": "1.2.246.562.29.97467487498",
+        "hakutoive": 1,
+        "tila": "KESKEN",
+        "ilmoittautumisTila": "EI_TEHTY",
+        "logEntries": [{
+            "luotu": 1439893585759,
+            "muokkaaja": "1.2.246.562.24.72453542949",
+            "muutos": "julkaistavissa: false -> true",
+            "selite": ""
+        }, {
+            "luotu": 1439896286961,
+            "muokkaaja": "1.2.246.562.24.72453542949",
+            "muutos": "julkaistavissa: true -> false",
+            "selite": ""
+        }],
+        "read": 1439898044625,
+        "viimeinenMuutos": 1439896286961
+    }];
+    httpBackend.when('GET', /.*resources\/tila\/hakukohde\/LISAHAKUKOHDE\/5e7e8b1a-7fa2-4833-a941-f993b749d437/).respond(lisahakuTila);
 }
