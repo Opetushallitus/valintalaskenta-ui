@@ -281,7 +281,10 @@ angular.module('valintalaskenta').
         VastaanottoTila.post(tilaParams, tilaObj, function (result) {
             Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
         }, function (error) {
-            Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+            var errorMessage = (error.status == 403)
+                ? "Hakija on vastaanottanut paikan toisaalla: " + error.data.message
+                : "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.";
+            Ilmoitus.avaa("Sijoittelun tulosten tallennus", errorMessage, IlmoitusTila.ERROR);
         });
 
     };
