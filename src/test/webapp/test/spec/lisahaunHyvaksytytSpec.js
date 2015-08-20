@@ -93,13 +93,27 @@ describe('Lisähaun hakeneet välilehti', function () {
                     before(lisahakuPartials.withSuccessModal(
                         select(lomake.vastaanottoDropdown(0), "1")));
 
-                    it("näyttää ilmoittautmisvalikon", seqDone(
+                    it("näyttää ilmoittautumisvalikon", seqDone(
                         visible(lomake.ilmoittautumisDropdown(0))
                     ));
 
                     it("ilmoittautumisvalikon tila on 'Ei tehty'", seqDone(
                         assertTextLazy(lomake.ilmoittautumisDropdownSelecedOption(0), "Ei tehty")
                     ));
+                });
+
+                describe("vastaanoton asetus PERUNUT-tilaan", function() {
+                    before(lisahakuPartials.withErrorModal(
+                        select(lomake.vastaanottoDropdown(0), "3"), "Hakija on vastaanottanut paikan toisaalla: VTS aikaisempi vastaanotto"));
+
+                    it("tuottaa virhemodaalin", seqDone());
+                });
+
+                describe("vastaanoton asetus PERUUTETTU-tilaa", function() {
+                    before(lisahakuPartials.withErrorModal(
+                        select(lomake.vastaanottoDropdown(0), "4"), "Vastaanottotiedon muutos epäonnistui: VTS vastaanottovirhe"));
+
+                    it("tuottaa virhemodaalin", seqDone());
                 });
             });
         });

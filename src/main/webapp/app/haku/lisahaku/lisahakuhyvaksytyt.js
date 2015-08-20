@@ -252,6 +252,17 @@ angular.module('valintalaskenta').
         $scope.updateOph = true;
     });
 
+    function errorToMessage(error) {
+        switch (error.status) {
+            case 403:
+                return "Hakija on vastaanottanut paikan toisaalla: " + error.data.message;
+            case 400:
+                return "Vastaanottotiedon muutos epäonnistui: " + error.data.message;
+            default:
+                return "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.";
+        }
+    }
+
     $scope.resetIlmoittautumisTila = function(hakemus) {
         if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT' && hakemus.muokattuVastaanottoTila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
             hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
@@ -281,10 +292,7 @@ angular.module('valintalaskenta').
         VastaanottoTila.post(tilaParams, tilaObj, function (result) {
             Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
         }, function (error) {
-            var errorMessage = (error.status == 403)
-                ? "Hakija on vastaanottanut paikan toisaalla: " + error.data.message
-                : "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.";
-            Ilmoitus.avaa("Sijoittelun tulosten tallennus", errorMessage, IlmoitusTila.ERROR);
+            Ilmoitus.avaa("Sijoittelun tulosten tallennus", errorToMessage(error), IlmoitusTila.ERROR);
         });
 
     };

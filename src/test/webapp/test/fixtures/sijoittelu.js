@@ -819,7 +819,17 @@ function sijoitteluAjoFixtures() {
     // Hyväksymistilan muutos
     httpBackend.when('POST', /.*resources\/tila\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\/hakemus\/.*/).respond();
 
-    // Julkaisu
+    function tilaIs(tila) {
+        return function(data) {
+            return JSON.parse(data)[0].tila === tila;
+        }
+    }
+
+    // Tilasiirtymäkutsut:
+    // Taustajärjestelmä voi tuottaa tämän virheen oikeasti sitovassa vastaanotossa
+    httpBackend.when('POST', /.*resources\/tila\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/, tilaIs("PERUNUT")).respond(403, '{"message": "VTS aikaisempi vastaanotto"}');
+    // Taustajärjestelmä voi oikessa ympäristössä tuottaa tämän virheen siirryttäessä tilaan joka muutetaan VTS:ssä
+    httpBackend.when('POST', /.*resources\/tila\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/, tilaIs("PERUUTETTU")).respond(400, '{"message": "VTS vastaanottovirhe"}');
     httpBackend.when('POST', /.*resources\/tila\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/).respond();
 
     var lisahakuTila = [{

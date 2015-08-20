@@ -7,6 +7,7 @@ lisahakuSelectors = initSelectors({
         return ".virkailija-table-1 tbody tr:nth(" + n + ") select:nth(0) option:selected";
     },
     modalSuccess: ".modal-dialog .alert-success",
+    modalError: ".modal-dialog .alert-danger",
     modalOkButton: ".modal-dialog .btn",
     julkaistuCheckbox: function(n) {
         return ".virkailija-table-1 tbody tr:nth(" + n + ") input[type=checkbox]";
@@ -36,6 +37,13 @@ lisahakuPartials = {
             visibleText(lisahakuSelectors.modalSuccess, "Muutokset on tallennettu."),
             click(lisahakuSelectors.modalOkButton),
             notExists(lisahakuSelectors.modalSuccess));
+    },
+    withErrorModal: function(promise, errorMessage) {
+        return seqDone(
+            promise,
+            visibleText(lisahakuSelectors.modalError, errorMessage),
+            click(lisahakuSelectors.modalOkButton),
+            notExists(lisahakuSelectors.modalError));
     }
 };
 
