@@ -103,17 +103,25 @@ describe('Lisähaun hakeneet välilehti', function () {
                 });
 
                 describe("vastaanoton asetus PERUNUT-tilaan", function() {
-                    before(lisahakuPartials.withErrorModal(
-                        select(lomake.vastaanottoDropdown(0), "3"), "Hakija on vastaanottanut paikan toisaalla: VTS aikaisempi vastaanotto"));
+                    var alkuperainenTila;
+                    before(
+                        function() { alkuperainenTila = lomake.vastaanottoDropdownSelecedOption(0)().val(); },
+                        lisahakuPartials.withErrorModal(select(lomake.vastaanottoDropdown(0), "3"), "Hakija on vastaanottanut paikan toisaalla: VTS aikaisempi vastaanotto"));
 
-                    it("tuottaa virhemodaalin", seqDone());
+                    it("palauttaa valikon tilan alkuperäiseksi", seqDone(
+                        function() { return assertValue(lomake.vastaanottoDropdown(0), alkuperainenTila); }
+                    ));
                 });
 
                 describe("vastaanoton asetus PERUUTETTU-tilaa", function() {
-                    before(lisahakuPartials.withErrorModal(
-                        select(lomake.vastaanottoDropdown(0), "4"), "Vastaanottotiedon muutos epäonnistui: VTS vastaanottovirhe"));
+                    var alkuperainenTila;
+                    before(
+                        function() { alkuperainenTila = lomake.vastaanottoDropdownSelecedOption(0)().val(); },
+                        lisahakuPartials.withErrorModal(select(lomake.vastaanottoDropdown(0), "4"), "Vastaanottotiedon muutos epäonnistui: VTS vastaanottovirhe"));
 
-                    it("tuottaa virhemodaalin", seqDone());
+                    it("palauttaa valikon tilan alkuperäiseksi", seqDone(
+                        function() { return assertValue(lomake.vastaanottoDropdown(0), alkuperainenTila); }
+                    ));
                 });
             });
         });

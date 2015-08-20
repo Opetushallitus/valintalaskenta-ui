@@ -291,8 +291,10 @@ angular.module('valintalaskenta').
 
         VastaanottoTila.post(tilaParams, tilaObj, function (result) {
             Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
+            hakemus.vastaanottoTila = hakemus.muokattuVastaanottoTila;
         }, function (error) {
             Ilmoitus.avaa("Sijoittelun tulosten tallennus", errorToMessage(error), IlmoitusTila.ERROR);
+            hakemus.muokattuVastaanottoTila = hakemus.vastaanottoTila;
         });
 
     };
