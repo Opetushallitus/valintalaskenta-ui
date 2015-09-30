@@ -363,7 +363,7 @@ angular.module('valintalaskenta')
                 if(error.status == 409) {
                     errorMsg = "Tietoihin on tehty samanaikaisia muutoksia, päivitä sivu ja yritä uudelleen";
                 } else {
-                    errorMsg = "Tallennus epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.";
+                    errorMsg = "Yritä uudelleen tai ota yhteyttä ylläpitoon.";
                 }
 
                 afterFailure(function() {

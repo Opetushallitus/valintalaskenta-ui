@@ -101,12 +101,13 @@ angular.module('valintalaskenta')
                                        $modalInstance.dismiss('cancel');
                                        successAction();
                                    }}
-                               ,function(message) {
+                               ,function(failAction,message) {
                                    $scope.working = null;
                                    $scope.ilmoitus = message;
                                    $scope.state="danger";
                                    $scope.ok = function() {
                                        $modalInstance.dismiss('cancel');
+                                       failAction();
                                    }});
                     };
                     $scope.peruuta = function() {
