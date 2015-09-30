@@ -100,7 +100,11 @@ angular.module('valintalaskenta')
                                        successAction();
                                    }}
                                ,function(message) {
-                               });
+                                   $scope.ilmoitus = message;
+                                   $scope.state="danger";
+                                   $scope.ok = function() {
+                                       $modalInstance.dismiss('cancel');
+                                   }});
                     };
                     $scope.peruuta = function() {
                         $modalInstance.dismiss('cancel');
