@@ -373,11 +373,11 @@ angular.module('valintalaskenta')
 }])
 
 
-    .controller('SijoitteluntulosController', ['$scope', '$modal', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
+    .controller('SijoitteluntulosController', ['$scope', '$modal', 'TallennaValinnat', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
         'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
         'Kirjeet',
-        function ($scope, $modal, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
+        function ($scope, $modal, TallennaValinnat, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService,
                                     Kirjeet) {
@@ -656,6 +656,7 @@ angular.module('valintalaskenta')
     };
 
     $scope.selectIlmoitettuToAll = function(valintatapajonoOid) {
+
         var jonoonLiittyvat = _.filter($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
             return valintatapajono.oid === valintatapajonoOid;
         });
@@ -663,9 +664,16 @@ angular.module('valintalaskenta')
             return valintatapajono.hakemukset;
         }));
 
-        muokattavatHakemukset.forEach(function (hakemus) {
-            hakemus.julkaistavissa = true;
-            $scope.addMuokattuHakemus(hakemus);
+        TallennaValinnat.avaa("Hyväksy valintaesitys", "Olet hyväksymässä muutoksia: " + muokattavatHakemukset.length + " kpl.", function(success, failure) {
+            muokattavatHakemukset.forEach(function (hakemus) {
+                hakemus.julkaistavissa = true;
+                $scope.addMuokattuHakemus(hakemus);
+            });
+
+            success(function() {
+                document.location.reload();
+            },"Kaikki tallennettu");
+
         });
 
 

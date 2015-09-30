@@ -1,0 +1,15 @@
+<div class="modal-header">
+	<h3>{{otsikko}}</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="alert alert-{{state}}">{{ilmoitus}}</div>
+	</div>
+	
+</div>
+<div class="modal-footer">
+	<div class="row">
+		<a class="btn btn-default btn-sm" ng-click="peruuta();" ng-show="peruuta" role="button">{{ t('ilmoitus.peruuta') || 'Peruuta' }}</a>
+		<a class="btn btn-primary btn-sm" ng-click="ok();" role="button">{{ t('ilmoitus.ok') || 'Ok' }}</a>
+	</div>
+</div>

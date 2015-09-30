@@ -80,6 +80,42 @@ angular.module('valintalaskenta')
         }
     };
 }])
+.factory('TallennaValinnat', ['$modal', function($modal) {
+    return {
+        avaa: function(otsikko, ilmoitus, action) {
+            $modal.open({
+                backdrop: 'static',
+                templateUrl: '../common/modaalinen/tallennavalinnat-ilmoitus.html',
+                controller: function($scope, $window, $modalInstance) {
+                    $scope.ilmoitus = ilmoitus;
+                    $scope.otsikko = otsikko;
+                    $scope.state="info";
+                    $scope.ok = function() {
+                        $scope.peruuta = null;
+                        action(function(successAction, message) {
+                                   $scope.ilmoitus = message;
+                                   $scope.state="success";
+                                   $scope.ok = function() {
+                                       $modalInstance.dismiss('cancel');
+                                       successAction();
+                                   }}
+                               ,function(message) {
+                               });
+                    };
+                    $scope.peruuta = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                },
+                resolve: {
+
+                }
+            }).result.then(function() {
+                }, function() {
+                });
+
+        }
+    };
+}])
 .factory('Latausikkuna', ['$log', '$modal', 'DokumenttiProsessinTila',
         function($log, $modal, DokumenttiProsessinTila) {
     return {
