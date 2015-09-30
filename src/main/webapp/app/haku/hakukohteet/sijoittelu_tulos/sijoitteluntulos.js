@@ -674,7 +674,7 @@ angular.module('valintalaskenta')
             return valintatapajono.hakemukset;
         }));
 
-        TallennaValinnat.avaa("Hyväksy valintaesitys", "Olet hyväksymässä muutoksia: " + muokattavatHakemukset.length + " kpl.", function(success, failure) {
+        TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä muutoksia jonosta 1/" + $scope.model.sijoitteluTulokset.valintatapajonot.length + ": " + muokattavatHakemukset.length + " kpl.", function(success, failure) {
             muokattavatHakemukset.forEach(function (hakemus) {
                 hakemus.julkaistavissa = true;
                 $scope.addMuokattuHakemus(hakemus);
