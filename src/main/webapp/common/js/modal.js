@@ -91,8 +91,10 @@ angular.module('valintalaskenta')
                     $scope.otsikko = otsikko;
                     $scope.state="info";
                     $scope.ok = function() {
+                        $scope.working = true;
                         $scope.peruuta = null;
                         action(function(successAction, message) {
+                                   $scope.working = null;
                                    $scope.ilmoitus = message;
                                    $scope.state="success";
                                    $scope.ok = function() {
@@ -100,6 +102,7 @@ angular.module('valintalaskenta')
                                        successAction();
                                    }}
                                ,function(message) {
+                                   $scope.working = null;
                                    $scope.ilmoitus = message;
                                    $scope.state="danger";
                                    $scope.ok = function() {
