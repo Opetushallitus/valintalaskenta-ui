@@ -312,13 +312,12 @@ angular.module('valintalaskenta')
         	}
         };
 
-        this.updateHakemuksienTila = function (valintatapajonoOid, uiMuokatutHakemukset) {
+        this.updateHakemuksienTila = function (valintatapajonoOid, uiMuokatutHakemukset, afterSuccess, afterFailure) {
             var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
                 return valintatapajono.oid === valintatapajonoOid;
             });
 
             var muokatutHakemuksetOids = _.pluck(uiMuokatutHakemukset, 'hakemusOid');
-
 
             var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
                 return valintatapajono.hakemukset;
@@ -326,9 +325,9 @@ angular.module('valintalaskenta')
                 return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
             });
 
-            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid);
+            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
         };
-        this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid) {
+        this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure) {
             model.errors.length = 0;
             var tilaParams = {
                 hakuoid: model.hakuOid,
@@ -356,13 +355,20 @@ angular.module('valintalaskenta')
             });
 
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
-            	Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.", null, function() { document.location.reload() });
+                afterSuccess(function() {
+                             document.location.reload();
+                         },"Muutokset tallennettu.");
             }, function (error) {
-
-                function getMessage(error) {
-                    return error.status == 409 ? "Tietoihin on tehty samanaikaisia muutoksia, päivitä sivu ja yritä uudelleen" : "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon."
+                var errorMsg = "";
+                if(error.status == 409) {
+                    errorMsg = "Tietoihin on tehty samanaikaisia muutoksia, päivitä sivu ja yritä uudelleen";
+                } else {
+                    errorMsg = "Tallennus epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.";
                 }
-                Ilmoitus.avaa("Sijoittelun tulosten tallennus", getMessage(error), IlmoitusTila.ERROR)
+
+                afterFailure(function() {
+                             document.location.reload();
+                },"Tallennuksessa tapahtui virhe. " + errorMsg);
             });
         };
 
@@ -462,11 +468,12 @@ angular.module('valintalaskenta')
 
     $scope.pageSize = 50;
 
-
+/*
     $scope.updateVastaanottoTila = function (hakemus, valintatapajonoOid) {
         $scope.model.updateVastaanottoTila(hakemus, valintatapajonoOid);
         hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
     };
+*/
 
     $scope.muokatutHakemukset = [];
 
@@ -476,7 +483,10 @@ angular.module('valintalaskenta')
     };
 
     $scope.submit = function (valintatapajonoOid) {
-        $scope.model.updateHakemuksienTila(valintatapajonoOid, $scope.muokatutHakemukset);
+
+        TallennaValinnat.avaa("Tallenna muutokset.", "Olet tallentamassa muutoksia: " + $scope.muokatutHakemukset.length + " kpl.", function(success, failure) {
+            $scope.model.updateHakemuksienTila(valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
+        });
     };
 
     $scope.luoJalkiohjauskirjeetPDF = function() {
@@ -670,9 +680,7 @@ angular.module('valintalaskenta')
                 $scope.addMuokattuHakemus(hakemus);
             });
 
-            success(function() {
-                document.location.reload();
-            },"Kaikki tallennettu");
+            $scope.model.updateHakemuksienTila(valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
 
         });
 
