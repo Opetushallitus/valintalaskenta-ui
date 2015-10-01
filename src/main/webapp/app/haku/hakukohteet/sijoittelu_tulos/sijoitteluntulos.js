@@ -355,20 +355,16 @@ angular.module('valintalaskenta')
             });
 
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
-                afterSuccess(function() {
-                             document.location.reload();
-                         },"Muutokset tallennettu.");
+                afterSuccess(function() { document.location.reload(); }, muokatutHakemukset.length + " muutosta tallennettu.");
             }, function (error) {
-                var errorMsg = "";
-                if(error.status == 409) {
-                    errorMsg = "Tietoihin on tehty samanaikaisia muutoksia, päivitä sivu ja yritä uudelleen";
+                var errorCount = error.data.statuses.length;
+                var errorMsg = errorCount + "/" + muokatutHakemukset.length + " hakemuksen päivitys epäonnistui. ";
+                if (error.data.statuses.filter(function(status) { return status.status === 409; }).length > 0) {
+                    errorMsg += "Tietoihin on tehty samanaikaisia muutoksia, päivitä sivu ja yritä uudelleen";
                 } else {
-                    errorMsg = "Yritä uudelleen tai ota yhteyttä ylläpitoon.";
+                    errorMsg += "Yritä uudelleen tai ota yhteyttä ylläpitoon.";
                 }
-
-                afterFailure(function() {
-                             document.location.reload();
-                },"Tallennuksessa tapahtui virhe. " + errorMsg);
+                afterFailure(function() { document.location.reload(); }, errorMsg);
             });
         };
 
