@@ -11,7 +11,7 @@
 <div class="modal-footer">
 	<div class="row">
 		<a class="btn btn-default btn-sm" ng-click="peruuta();" ng-show="peruuta" role="button">{{ t('ilmoitus.peruuta') || 'Peruuta' }}</a>
-		<a class="btn btn-primary btn-sm" ng-click="ok();" role="button" ng-hide="working">{{ t('ilmoitus.ok') || 'Ok' }}</a>
+		<a class="btn btn-primary btn-sm" id="saveChoicesBtn" ng-click="ok();" role="button" ng-hide="working">{{ t('ilmoitus.ok') || 'Ok' }}</a>
 		<a class="btn btn-primary btn-sm" role="button" ng-disabled="true" ng-show="working">{{ t('ilmoitus.kasitellaan') || 'Käsitellään' }}</a>
 	</div>
 </div>

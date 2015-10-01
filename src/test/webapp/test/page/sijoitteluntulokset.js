@@ -50,6 +50,7 @@ sijoitteluntulokset = initSelectors({
         return ".result-list tr:eq(" + trIndex + ") td:eq(1) span"
     },
     tallenna: "a.btn-primary:nth-child(1)",
+    tallennaOk: "#saveChoicesBtn",
     hyvaksyValintaesitys: "a.btn:nth-child(2)",
     vastaanottotieto: ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select",
     vastaanottotietoOption: function(i) {

@@ -210,7 +210,10 @@ describe('Sijoittelun tulokset välilehti', function () {
             checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             expectPost(
                 /.*resources\/tila\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=Massamuokkaus/,
-                click(sijoitteluntulokset.tallenna)
+               seq(
+                    click(sijoitteluntulokset.tallenna),
+                    click(sijoitteluntulokset.tallennaOk)
+               )
             ),
             function(data) {
                 expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.true
@@ -226,7 +229,10 @@ describe('Sijoittelun tulokset välilehti', function () {
             unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             expectPost(
                 /.*resources\/tila\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=Massamuokkaus/,
-                click(sijoitteluntulokset.tallenna)
+               seq(
+                    click(sijoitteluntulokset.tallenna),
+                    click(sijoitteluntulokset.tallennaOk)
+               )
             ),
             function(data) {
                 expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.false
@@ -242,7 +248,10 @@ describe('Sijoittelun tulokset välilehti', function () {
             unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             expectPost(
                 /.*resources\/tila\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=Massamuokkaus/,
-                click(sijoitteluntulokset.tallenna)
+               seq(
+                    click(sijoitteluntulokset.tallenna),
+                    click(sijoitteluntulokset.tallennaOk)
+               )
             ),
             function(data) {
                 expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.false
