@@ -14,8 +14,7 @@
             <tila-filter tila-filter-value="kuuluuFilterValue" filter-values="kuuluuFilterValues"></tila-filter>
 
             <accordion close-others="true">
-                <accordion-group ng-repeat="hakijaryhma in model.hakijaryhmat track by $index"
-                        is-open="$first">
+                <accordion-group ng-repeat="hakijaryhma in model track by $index" is-open="$first">
 
                     <accordion-heading>
 
@@ -34,17 +33,17 @@
                                                          haku-oid="{{hakuOid}}"
                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
                             </td>
-                            <td data-title="(t('hakijaryhmat.hakemuksentila') || 'Hakijaryhmään kuuluminen')" sortable="'jarjestyskriteerit[0].tila'">
-                                {{ t('hakijaryhmat.'+tulos.jarjestyskriteerit[0].tila) || tulos.jarjestyskriteerit[0].tila}}
+                            <td data-title="(t('hakijaryhmat.hakemuksentila') || 'Hakijaryhmään kuuluminen')" sortable="'ryhmaanKuuluminen'">
+                                {{ t('hakijaryhmat.' + tulos.ryhmaanKuuluminen) || tulos.ryhmaanKuuluminen}}
                             </td>
-                            <td data-title="(t('hakijaryhmat.valinnantila') || 'Valinnan tila')" sortable="'jarjestyskriteerit[0].tila'">
-                                {{ tulos.jarjestyskriteerit[0].tila }}
+                            <td data-title="(t('hakijaryhmat.valinnantila') || 'Valinnan tila')" sortable="'valinnanTila'">
+                                <span ng-if="tulos.valinnanTila">{{ tulos.valinnanTila }}</span>
                             </td>
                             <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')" sortable="'tila'">
-                                <show-sijoittelun-tila hakemus="tulos" user-lang="userLang"></show-sijoittelun-tila>
+                                <show-sijoittelun-tila ng-if="tulos.hakemusSijoittelussa" hakemus="tulos.hakemusSijoittelussa" user-lang="userLang"></show-sijoittelun-tila>
                             </td>
-                            <td data-title="(t('hakijaryhmat.vastaanottotila') || 'Vastaanottotila')" sortable="'vastaanottoTila'">
-                                {{tulos.vastaanottoTila}}
+                            <td data-title="(t('hakijaryhmat.vastaanottotila') || 'Vastaanottotila')" sortable="'vastaanottotila'">
+                                <span ng-if="tulos.vastaanottotila">{{tulos.vastaanottotila}}</span>
                             </td>
                         </tr>
                     </table>
