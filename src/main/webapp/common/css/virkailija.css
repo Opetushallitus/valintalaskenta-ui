@@ -1465,6 +1465,12 @@ label, .label {
   .virkailija-table-1 td.leftorientedcolumn {
     text-align: left; }
 
+virkailija-jono-container {
+  border-top: 1px solid #555;
+  margin-top:15px;
+  padding-top:15px;
+}
+
 /*** Dropmenu table
 ************************************************/
 /* laskentakaavojen dropdown funktiolistalle */
