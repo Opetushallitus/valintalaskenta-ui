@@ -1,4 +1,5 @@
 app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
+                                                        HakukohdeValinnanvaihe,
                                                         HakukohteenValintatulokset,
                                                         LatestSijoitteluajoHakukohde,
                                                         ngTableParams,
@@ -6,69 +7,80 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                                                         $filter) {
     "use strict";
     return function (hakuOid, hakukohdeOid) {
-        var tilaOrdinal = function (tila) {
-            switch (tila) {
-                case "HYVAKSYTTY":
-                    return 4;
-                case "HARKINNANVARAISESTI_HYVAKSYTTY":
-                    return 3;
-                case "VARASIJALTA_HYVAKSYTTY":
-                    return 2;
-                case "VARALLA":
-                    return 1;
-                default:
-                    return 0;
+        var sijoittelunTilaOrdinal = function (tila) {
+            return ["VARALLA", "HYVAKSYTTY", "VARASIJALTA_HYVAKSYTTY", "HARKINNANVARAISESTI_HYVAKSYTTY"].indexOf(tila);
+        };
+        var laskennanTilaOrdinal = function (tila) {
+            return ["MAARITTELEMATON", "HYLATTY", "HYVAKSYTTAVISSA", "HYVAKSYTTY_HARKINNANVARAISESTI", "VIRHE"].indexOf(tila);
+        };
+        var findHakemusSijoittelussa = function(hakemuksetSijoittelussa, valintatapajonot, hakija) {
+            if (_.has(hakemuksetSijoittelussa, hakija.hakijaOid)) {
+                return _.reduce(hakemuksetSijoittelussa[hakija.hakijaOid], function (h, hakemus) {
+                    if (sijoittelunTilaOrdinal(hakemus.tila) > sijoittelunTilaOrdinal(h.tila)) {
+                        return hakemus;
+                    }
+                    if (sijoittelunTilaOrdinal(hakemus.tila) < sijoittelunTilaOrdinal(h.tila)) {
+                        return h;
+                    }
+                    if (valintatapajonot[hakemus.valintatapajonoOid].prioriteetti < valintatapajonot[h.valintatapajonoOid].prioriteetti) {
+                        return hakemus;
+                    }
+                    return h;
+                });
+            }
+        };
+        var findValinnanTila = function(laskennanTilat, hakemusSijoittelussa, hakija) {
+            if (laskennanTilat) {
+                if (hakemusSijoittelussa &&
+                    _.has(laskennanTilat, hakemusSijoittelussa.valintatapajonoid) &&
+                    _.has(laskennanTilat[hakemusSijoittelussa.valintatapajonoid], hakija.hakijaOid)) {
+                    return laskennanTilat[hakemusSijoittelussa.valintatapajonoid][hakija.hakijaOid].tuloksenTila;
+                }
+                var valinnanTila = _.chain(laskennanTilat)
+                    .map(hakija.hakijaOid).compact().map('tuloksenTila').max(laskennanTilaOrdinal).value();
+                if (valinnanTila !== -Infinity) {
+                    return valinnanTila;
+                }
+            }
+        };
+        var findVastaanottotila = function(valintatulokset, hakemusSijoittelussa, hakija) {
+            if (hakemusSijoittelussa && _.has(valintatulokset, hakija.hakijaOid)) {
+                var valintatulos = _.find(valintatulokset[hakija.hakijaOid],
+                    {valintatapajonoOid: hakemusSijoittelussa.valintatapajonoOid});
+                if (valintatulos) {
+                    return valintatulos.tila;
+                }
             }
         };
         return $q.all({
             hakijaryhmat: HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}).$promise,
-            valintatulokset: HakukohteenValintatulokset.get({hakukohdeOid: hakukohdeOid}).$promise,
-            sijoittelunTulos: LatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+            laskennanTilat: HakukohdeValinnanvaihe.get({parentOid: hakukohdeOid}).$promise,
+            sijoittelunTulos: LatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
+            valintatulokset: HakukohteenValintatulokset.get({hakukohdeOid: hakukohdeOid}).$promise
         }).then(function (o) {
-            var valintatapajonot = {};
-            var sijoittelunTilat = {};
-            var valintatulokset = {};
-            o.sijoittelunTulos.valintatapajonot.forEach(function (valintatapajono) {
-                valintatapajonot[valintatapajono.oid] = valintatapajono;
-                valintatapajono.hakemukset.forEach(function (hakemus) {
-                    if (sijoittelunTilat.hasOwnProperty(hakemus.hakijaOid)) {
-                        sijoittelunTilat[hakemus.hakijaOid].push(hakemus);
-                    } else {
-                        sijoittelunTilat[hakemus.hakijaOid] = [hakemus];
-                    }
-                });
-            });
-            o.valintatulokset.forEach(function (valintatulos) {
-                if (valintatulokset.hasOwnProperty(valintatulos.hakijaOid)) {
-                    valintatulokset[valintatulos.hakijaOid].push(valintatulos);
-                } else {
-                    valintatulokset[valintatulos.hakijaOid] = [valintatulos];
-                }
-            });
+            var viimeinenValinnanvaihe = _.max(o.laskennanTilat, 'jarjestysnumero');
+            if (viimeinenValinnanvaihe !== -Infinity) {
+                var laskennanTilat = _.reduce(viimeinenValinnanvaihe.valintatapajonot, function(m, valintatapajono) {
+                    m[valintatapajono.oid] = _.indexBy(valintatapajono.jonosijat, 'hakijaOid');
+                    return m;
+                }, {});
+            }
+            var valintatapajonot = _.indexBy(o.sijoittelunTulos.valintatapajonot, 'oid');
+            var hakemuksetSijoittelussa = _.chain(o.sijoittelunTulos.valintatapajonot)
+                .map('hakemukset').flatten().groupBy('hakijaOid').value();
+            var valintatulokset = _.groupBy(o.valintatulokset, 'hakijaOid');
             return o.hakijaryhmat.map(function (hakijaryhma) {
                 var hakijat = hakijaryhma.jonosijat.map(function (hakija) {
-                    var hakemusSijoittelussa = null;
-                    (sijoittelunTilat[hakija.hakijaOid] || []).forEach(function (hakemus) {
-                        if (hakemusSijoittelussa === null ||
-                            tilaOrdinal(hakemus.tila) > tilaOrdinal(hakemusSijoittelussa.tila ||
-                                (tilaOrdinal(hakemus.tila) === tilaOrdinal(hakemusSijoittelussa.tila) &&
-                                valintatapajonot[hakemus.valintatapajonoOid].prioriteetti < valintatapajonot[hakemusSijoittelussa.valintatapajonoOid].prioriteetti))) {
-                            hakemusSijoittelussa = hakemus;
-                        }
-                    });
-                    var vastaanottotila = null;
-                    ((hakemusSijoittelussa && valintatulokset[hakija.hakijaOid]) || []).forEach(function (valintatulos) {
-                        if (valintatulos.valintatapajonoOid === hakemusSijoittelussa.valintatapajonoOid) {
-                            vastaanottotila = valintatulos.tila;
-                        }
-                    });
+                    var hakemusSijoittelussa = findHakemusSijoittelussa(hakemuksetSijoittelussa, valintatapajonot, hakija);
+                    var valinnanTila = findValinnanTila(laskennanTilat, hakemusSijoittelussa, hakija);
+                    var vastaanottotila = findVastaanottotila(valintatulokset, hakemusSijoittelussa, hakija);
                     return {
                         etunimi: hakija.etunimi,
                         sukunimi: hakija.sukunimi,
                         hakemusOid: hakija.hakemusOid,
                         hakijaOid: hakija.hakijaOid,
                         ryhmaanKuuluminen: hakija.jarjestyskriteerit[0].tila,
-                        valinnanTila: null,
+                        valinnanTila: valinnanTila,
                         hakemusSijoittelussa: hakemusSijoittelussa,
                         vastaanottotila: vastaanottotila
                     };
