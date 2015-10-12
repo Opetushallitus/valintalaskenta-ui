@@ -81,6 +81,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                         hakijaOid: hakija.hakijaOid,
                         ryhmaanKuuluminen: hakija.jarjestyskriteerit[0].tila,
                         valinnanTila: valinnanTila,
+                        jononNimi: hakemusSijoittelussa ? valintatapajonot[hakemusSijoittelussa.valintatapajonoOid].nimi : undefined,
                         hakemusSijoittelussa: hakemusSijoittelussa,
                         vastaanottotila: vastaanottotila
                     };
