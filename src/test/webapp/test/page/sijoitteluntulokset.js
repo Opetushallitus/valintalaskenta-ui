@@ -49,9 +49,9 @@ sijoitteluntulokset = initSelectors({
     valintatulosTilaIndex: function (trIndex) {
         return ".result-list tr:eq(" + trIndex + ") td:eq(1) span"
     },
-    tallenna: "a.btn-primary:nth-child(1)",
+    tallenna: "a.btn-primary:nth-child(3)",
     tallennaOk: "#saveChoicesBtn",
-    hyvaksyValintaesitys: "a.btn:nth-child(2)",
+    hyvaksyValintaesitys: "a.btn:nth-child(1)",
     vastaanottotieto: ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select",
     vastaanottotietoOption: function(i) {
         return ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select option:eq(" + i + ")";
