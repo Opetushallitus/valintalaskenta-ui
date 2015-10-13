@@ -10,9 +10,6 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
         var sijoittelunTilaOrdinal = function (tila) {
             return ["VARALLA", "HYVAKSYTTY", "VARASIJALTA_HYVAKSYTTY", "HARKINNANVARAISESTI_HYVAKSYTTY"].indexOf(tila);
         };
-        var laskennanTilaOrdinal = function (tila) {
-            return ["MAARITTELEMATON", "HYLATTY", "HYVAKSYTTAVISSA", "HYVAKSYTTY_HARKINNANVARAISESTI", "VIRHE"].indexOf(tila);
-        };
         var findHakemusSijoittelussa = function(hakemuksetSijoittelussa, valintatapajonot, hakija) {
             if (_.has(hakemuksetSijoittelussa, hakija.hakijaOid)) {
                 return _.reduce(hakemuksetSijoittelussa[hakija.hakijaOid], function (h, hakemus) {
@@ -29,20 +26,6 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                 });
             }
         };
-        var findValinnanTila = function(laskennanTilat, hakemusSijoittelussa, hakija) {
-            if (laskennanTilat) {
-                if (hakemusSijoittelussa &&
-                    _.has(laskennanTilat, hakemusSijoittelussa.valintatapajonoid) &&
-                    _.has(laskennanTilat[hakemusSijoittelussa.valintatapajonoid], hakija.hakijaOid)) {
-                    return laskennanTilat[hakemusSijoittelussa.valintatapajonoid][hakija.hakijaOid].tuloksenTila;
-                }
-                var valinnanTila = _.chain(laskennanTilat)
-                    .map(hakija.hakijaOid).compact().map('tuloksenTila').max(laskennanTilaOrdinal).value();
-                if (valinnanTila !== -Infinity) {
-                    return valinnanTila;
-                }
-            }
-        };
         var findVastaanottotila = function(valintatulokset, hakemusSijoittelussa, hakija) {
             if (hakemusSijoittelussa && _.has(valintatulokset, hakija.hakijaOid)) {
                 var valintatulos = _.find(valintatulokset[hakija.hakijaOid],
@@ -54,17 +37,9 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
         };
         return $q.all({
             hakijaryhmat: HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}).$promise,
-            laskennanTilat: HakukohdeValinnanvaihe.get({parentOid: hakukohdeOid}).$promise,
             sijoittelunTulos: LatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
             valintatulokset: HakukohteenValintatulokset.get({hakukohdeOid: hakukohdeOid}).$promise
         }).then(function (o) {
-            var viimeinenValinnanvaihe = _.max(o.laskennanTilat, 'jarjestysnumero');
-            if (viimeinenValinnanvaihe !== -Infinity) {
-                var laskennanTilat = _.reduce(viimeinenValinnanvaihe.valintatapajonot, function(m, valintatapajono) {
-                    m[valintatapajono.oid] = _.indexBy(valintatapajono.jonosijat, 'hakijaOid');
-                    return m;
-                }, {});
-            }
             var valintatapajonot = _.indexBy(o.sijoittelunTulos.valintatapajonot, 'oid');
             var hakemuksetSijoittelussa = _.chain(o.sijoittelunTulos.valintatapajonot)
                 .map('hakemukset').flatten().groupBy('hakijaOid').value();
@@ -72,7 +47,6 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
             return o.hakijaryhmat.map(function (hakijaryhma) {
                 var hakijat = hakijaryhma.jonosijat.map(function (hakija) {
                     var hakemusSijoittelussa = findHakemusSijoittelussa(hakemuksetSijoittelussa, valintatapajonot, hakija);
-                    var valinnanTila = findValinnanTila(laskennanTilat, hakemusSijoittelussa, hakija);
                     var vastaanottotila = findVastaanottotila(valintatulokset, hakemusSijoittelussa, hakija);
                     return {
                         etunimi: hakija.etunimi,
@@ -80,7 +54,6 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                         hakemusOid: hakija.hakemusOid,
                         hakijaOid: hakija.hakijaOid,
                         ryhmaanKuuluminen: hakija.jarjestyskriteerit[0].tila,
-                        valinnanTila: valinnanTila,
                         jononNimi: hakemusSijoittelussa ? valintatapajonot[hakemusSijoittelussa.valintatapajonoOid].nimi : undefined,
                         hakemusSijoittelussa: hakemusSijoittelussa,
                         vastaanottotila: vastaanottotila

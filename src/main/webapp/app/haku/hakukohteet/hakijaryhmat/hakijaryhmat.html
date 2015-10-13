@@ -36,9 +36,6 @@
                             <td data-title="(t('hakijaryhmat.hakemuksentila') || 'Hakijaryhmään kuuluminen')" sortable="'ryhmaanKuuluminen'">
                                 {{ t('hakijaryhmat.' + tulos.ryhmaanKuuluminen) || tulos.ryhmaanKuuluminen}}
                             </td>
-                            <td data-title="(t('hakijaryhmat.valinnantila') || 'Valinnan tila')" sortable="'valinnanTila'">
-                                <span ng-if="tulos.valinnanTila">{{ tulos.valinnanTila }}</span>
-                            </td>
                             <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')" sortable="'hakemusSijoittelussa.tila'">
                                 <div ng-if="tulos.hakemusSijoittelussa">
                                     <p ng-if="tulos.jononNimi">{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{tulos.jononNimi}}</p>
