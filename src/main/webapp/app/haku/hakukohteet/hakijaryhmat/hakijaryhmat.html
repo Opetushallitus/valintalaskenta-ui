@@ -39,7 +39,7 @@
                             <td data-title="(t('hakijaryhmat.valinnantila') || 'Valinnan tila')" sortable="'valinnanTila'">
                                 <span ng-if="tulos.valinnanTila">{{ tulos.valinnanTila }}</span>
                             </td>
-                            <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')" sortable="'tila'">
+                            <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')" sortable="'hakemusSijoittelussa.tila'">
                                 <div ng-if="tulos.hakemusSijoittelussa">
                                     <p ng-if="tulos.jononNimi">{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{tulos.jononNimi}}</p>
                                     <span ng-if="!tulos.hakemusSijoittelussa.tilanKuvaukset.FI || tulos.hakemusSijoittelussa.tila == 'HYLATTY'">{{tulos.hakemusSijoittelussa.tila}}</span>
