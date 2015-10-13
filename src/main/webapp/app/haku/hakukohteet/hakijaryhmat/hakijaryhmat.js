@@ -92,13 +92,4 @@ angular.module('valintalaskenta').
                 $scope.model = model;
             });
             $scope.hakukohdeModel = HakukohdeModel;
-
-            $scope.kuuluuFilterValue = "";
-            $scope.kuuluuFilterValues = [
-                {value: "", text_prop: "hakijaryhmat.alasuodata", default_text:"Älä suodata"},
-                {value: "HYVAKSYTTAVISSA", text_prop: "hakijaryhmat.HYVAKSYTTAVISSA", default_text:"Kuuluu"},
-                {value: "HYLATTY", text_prop: "hakijaryhmat.HYLATTY", default_text:"Ei kuulu"}
-            ];
-
-            LocalisationService.getTranslationsForArray($scope.kuuluuFilterValues).then(function () {});
     }]);

@@ -10,9 +10,6 @@
         <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
 
         <div class="tabsheets">
-
-            <tila-filter tila-filter-value="kuuluuFilterValue" filter-values="kuuluuFilterValues"></tila-filter>
-
             <accordion close-others="true">
                 <accordion-group ng-repeat="hakijaryhma in model track by $index" is-open="$first">
 
@@ -24,7 +21,7 @@
                     {{ t('hakijaryhmat.kiintionkoko') || 'Kiintiön koko' }}: {{hakijaryhma.kiintio}}
 
                     <table ng-table="hakijaryhma.tableParams" show-filter="true" class="virkailija-table-1">
-                        <tr ng-repeat="tulos in ($data | kuuluuFilter: kuuluuFilterValue)">
+                        <tr ng-repeat="tulos in $data">
                             <td class="leftorientedcolumn" data-title="(t('hakijaryhmat.hakija') || 'Hakija')"
                                 sortable="'sukunimi'" filter="{ 'sukunimi' : 'text' }">
                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
@@ -33,7 +30,13 @@
                                                          haku-oid="{{hakuOid}}"
                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
                             </td>
-                            <td data-title="(t('hakijaryhmat.hakemuksentila') || 'Hakijaryhmään kuuluminen')" sortable="'ryhmaanKuuluminen'">
+                            <td data-title="(t('hakijaryhmat.hakemuksentila') || 'Hakijaryhmään kuuluminen')"
+                                sortable="'ryhmaanKuuluminen'"
+                                filter="{ryhmaanKuuluminen: 'select'}"
+                                filter-data="[
+                                {title: ''},
+                                {id: 'HYVAKSYTTAVISSA', title: (t('hakijaryhmat.HYVAKSYTTAVISSA') || 'Kuuluu')},
+                                {id: 'HYLATTY', title: (t('hakijaryhmat.HYLATTY') || 'Ei kuulu')}]">
                                 {{ t('hakijaryhmat.' + tulos.ryhmaanKuuluminen) || tulos.ryhmaanKuuluminen}}
                             </td>
                             <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')" sortable="'hakemusSijoittelussa.tila'">
