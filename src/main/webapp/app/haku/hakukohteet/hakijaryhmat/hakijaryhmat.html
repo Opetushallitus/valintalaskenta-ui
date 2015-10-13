@@ -40,8 +40,15 @@
                                 <span ng-if="tulos.valinnanTila">{{ tulos.valinnanTila }}</span>
                             </td>
                             <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')" sortable="'tila'">
-                                <p ng-if="tulos.jononNimi">{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{tulos.jononNimi}}</p>
-                                <show-sijoittelun-tila ng-if="tulos.hakemusSijoittelussa" hakemus="tulos.hakemusSijoittelussa" user-lang="userLang"></show-sijoittelun-tila>
+                                <div ng-if="tulos.hakemusSijoittelussa">
+                                    <p ng-if="tulos.jononNimi">{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{tulos.jononNimi}}</p>
+                                    <span ng-if="!tulos.hakemusSijoittelussa.tilanKuvaukset.FI || tulos.hakemusSijoittelussa.tila == 'HYLATTY'">{{tulos.hakemusSijoittelussa.tila}}</span>
+                                    <span ng-if="userLang=='fi' && tulos.hakemusSijoittelussa.tilanKuvaukset.FI && tulos.hakemusSijoittelussa.tila != 'HYLATTY'">{{tulos.hakemusSijoittelussa.tilanKuvaukset.FI}}</span>
+                                    <span ng-if="userLang=='sv' && tulos.hakemusSijoittelussa.tilanKuvaukset.FI && tulos.hakemusSijoittelussa.tila != 'HYLATTY'">{{tulos.hakemusSijoittelussa.tilanKuvaukset.SV}}</span>
+                                    <span ng-if="userLang=='en' && tulos.hakemusSijoittelussa.tilanKuvaukset.FI && tulos.hakemusSijoittelussa.tila != 'HYLATTY'">{{tulos.hakemusSijoittelussa.tilanKuvaukset.EN}}</span>
+                                    <span ng-if="(tulos.hakemusSijoittelussa.tila == 'HYVAKSYTTY' || tulos.hakemusSijoittelussa.tila == 'VARASIJALTA_HYVAKSYTTY') && tulos.hakemusSijoittelussa.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
+                                    <span ng-if="tulos.hakemusSijoittelussa.varasijanNumero != undefined">({{tulos.hakemusSijoittelussa.varasijanNumero}})</span>
+                                </div>
                             </td>
                             <td data-title="(t('hakijaryhmat.vastaanottotila') || 'Vastaanottotila')" sortable="'vastaanottotila'">
                                 <span ng-if="tulos.vastaanottotila">{{tulos.vastaanottotila}}</span>
