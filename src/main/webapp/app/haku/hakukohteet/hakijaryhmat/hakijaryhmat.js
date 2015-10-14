@@ -60,9 +60,15 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                     };
                 });
                 return {
-                    nimi: hakijaryhma.nimi,
+                    nimi: hakijaryhma.nimi + (_.has(valintatapajonot, hakijaryhma.valintatapajonoOid) ? ', ' + valintatapajonot[hakijaryhma.valintatapajonoOid].nimi : ''),
                     kiintio: hakijaryhma.kiintio,
-                    tableParams: new ngTableParams({page: 1, count: 50}, {
+                    tableParams: new ngTableParams({
+                        page: 1,
+                        count: 50,
+                        sorting: {
+                            sukunimi: 'asc'
+                        }
+                    }, {
                         total: hakijat.length,
                         getData: function ($defer, params) {
                             var orderedData = params.sorting() ?
