@@ -8,7 +8,9 @@ function parametritFixtures() {
             valinnanhallinta: true,
             harkinnanvaraiset: true,
             valintakoekutsut: true,
-            hakijaryhmat: true
+            hakijaryhmat: true,
+            koetulostentallennus: false,
+            koekutsujenmuodostaminen: false
         }
     );
 }

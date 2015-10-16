@@ -35,6 +35,15 @@ function valintakokeetFixtures(valintakokeet) {
             "lapsivalintaryhma": false,
             "lapsihakukohde": false
         }
-        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/LISAHAKUKOHDE\/valintaryhma/).respond(lisahaku);
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|HAKUKOHDEOID|LISAHAKUKOHDE)\/valintaryhma/).respond(lisahaku);
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/avaimet\/HAKUKOHDEOID/).respond([{
+            "tunniste":"SYOTETTAVA_ARVO",
+            "osallistuminenTunniste":"kielikoe_fi-OSALLISTUMINEN",
+            "lahde":"SYOTETTAVA_ARVO",
+            "vaatiiOsallistumisen":true,
+            "kuvaus":"eka",
+            "syotettavissaKaikille": true
+        }]);
+
     }
 }

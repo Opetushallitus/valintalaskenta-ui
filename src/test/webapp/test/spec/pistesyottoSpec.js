@@ -16,6 +16,21 @@ describe('Pistesyöttö', function() {
         addTestHook(parametritFixtures)();
         addTestHook(listfullFixtures([]))();
         addTestHook(commonFixtures())();
+        addTestHook(ohjausparametritFixtures)();
+        addTestHook(dokumenttipalveluFixtures)();
+        addTestHook(organisaatioFixtures)();
+        addTestHook(hakuAppKaksiHenkiloaPisteFixtures)();
+        addTestHook(valintakokeetFixtures([
+            {
+                valintakoeOid: VALINTAKOE1
+            },
+            {
+                valintakoeOid: VALINTAKOE2
+            },
+            {
+                valintakoeOid: VALINTAKOE3,
+                kutsutaankoKaikki: true
+            }]))();
         addTestHook(valintalaskentaValintakokeetFixtures([
             {
                 hakuOid: HAKU,
@@ -39,13 +54,9 @@ describe('Pistesyöttö', function() {
     });
 
     describe('Pistesyöttö', function() {
-        /*
-        it('tallentaa yksittäisen hakijan pisteet', seqDone(
+        it('Kenttien muokkaus ei sallittu', seqDone(
             wait.forAngular,
-            function() {
-                expect(page.allStudentsTable().length).to.equal(1)
-            }
+            disabled(pistesyottoselectors.formSelectBox)
         ))
-        */
     })
 });

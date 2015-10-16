@@ -65,6 +65,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeHenkilotFull, HakukohdeAv
                 HakemusAdditionalDataByOids.post({}, angular.toJson(hakemusOids), function (haetut) {
 
                     model.hakeneet = haetut;
+
                     HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}, function (result) {
                         model.avaimet = result;
 
@@ -184,9 +185,9 @@ app.factory('PistesyottoModel', function ($q, HakukohdeHenkilotFull, HakukohdeAv
 
 angular.module('valintalaskenta').
     controller('PistesyottoController', ['$scope', '$log', '$timeout', '$routeParams', '$upload', 'PistesyottoVienti',
-        'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel',
+        'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel', 'ParametriService',
         function ($scope, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
-                  IlmoitusTila, Latausikkuna, HakukohdeModel) {
+                  IlmoitusTila, Latausikkuna, HakukohdeModel, ParametriService) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -210,6 +211,10 @@ angular.module('valintalaskenta').
     $scope.submit = function () {
         PistesyottoModel.submit();
     };
+
+    ParametriService.promise().then(function (data) {
+        $scope.inputdisabled = !data["koetulostentallennus"];
+    });
 
 	$scope.pistesyottoTuontiXlsx = function($files) {
 		var file = $files[0];

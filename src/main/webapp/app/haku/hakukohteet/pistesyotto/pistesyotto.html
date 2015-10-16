@@ -53,7 +53,7 @@
                 </select>
                 <pagination-pagesize page-size="pageSize"></pagination-pagesize>
                 <form name="form" ng-if="model.avaimet">
-                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
+                    <button ng-disabled="inputdisabled || !form.$valid || form.$error.arvovalidaattori.length > 0"
                             class="btn btn-primary btn-sm margin-bottom-2" ng-click="submit()">{{ t('hakukohteetpistesyotto.tallenna') || 'Tallenna' }}
                     </button>
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0" 
@@ -98,7 +98,8 @@
                             <td class="leftorientedcolumn" ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
                                 <pisteiden-syottaminen hakija="hakija"
                                                        avain="avain"
-                                                       laskentaonly="model.laskentaonly"/>
+                                                       laskentaonly="model.laskentaonly"
+                                                       inputdisabled="inputdisabled"/>
                             </td>
                         </tr>
 
@@ -107,7 +108,7 @@
 
                     <pagination previous-text="{{ t('hakukohteetpistesyotto.edellinen') || 'Edellinen' }}" next-text="{{ t('hakukohteetpistesyotto.seuraava') || 'Seuraava' }}" total-items="filteredResult.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
                     <br/>
-                    <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
+                    <button ng-disabled="inputdisabled || !form.$valid || form.$error.arvovalidaattori.length > 0"
                             class="btn btn-primary btn-sm margin-top-2" ng-click="submit()">{{ t('hakukohteetpistesyotto.tallenna') || 'Tallenna' }}
                     </button>
                     <div>

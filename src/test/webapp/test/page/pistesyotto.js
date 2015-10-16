@@ -13,6 +13,9 @@ function pistesyottoPage() {
     allStudentsTable: function () {
       return S(".virkailija-table-1").first()
     },
+    formSelectBox: function () {
+      return S(".virkailija-table-1 select").first()
+    },
     openPage: function (done) {
       return _pistesyottoPage()
         .then(wait.until(function () {
@@ -26,3 +29,6 @@ function pistesyottoPage() {
   };
   return pageFunctions;
 }
+pistesyottoselectors = initSelectors({
+    formSelectBox: ".virkailija-table-1 select:nth-child(1)"
+})

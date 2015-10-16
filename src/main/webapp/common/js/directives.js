@@ -926,7 +926,8 @@ app.directive('pisteidenSyottaminen', function () {
     scope: {
       hakija: '=',
       avain: '=',
-      laskentaonly: '='
+      laskentaonly: '=',
+      inputdisabled: '='
     },
     templateUrl: '../common/html/pisteidenSyottaminen.html',
     controller: function ($scope, $modal) {

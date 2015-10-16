@@ -589,4 +589,28 @@ function tarjontaFixtures() {
         "status": "OK"
     }
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/LISAHAKU/).respond(lisahakuHaku)
+
+    var hakukohdeTulos = {
+        "kokonaismaara": 1,
+        "tulokset": [{
+            "hakukohdeOid": "1.2.246.562.20.25463238029",
+            "tarjoajaOid": "1.2.246.562.10.60222091211",
+            "tarjoajaNimi": {
+                "fi": "Ahlmanin ammatti- ja aikuisopisto"
+            },
+            "hakukohdeNimi": {
+                "fi": "Hotelli-, ravintola- ja catering-alan perustutkinto, yo",
+                "sv": "Grundexamen inom hotell-, restaurang- och cateringbranschen, st",
+                "en": "Hotelli-, ravintola- ja catering-alan perustutkinto, yo"
+            },
+            "hakukohdeTila": "JULKAISTU",
+            "hakuVuosi": 0,
+            "koulutusVuosi": 0,
+            "opetuskielet": [
+                "kieli_fi"
+            ]
+        }]
+    }
+    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/HAKUOID\/hakukohdeTulos/).respond(hakukohdeTulos)
+
 }
