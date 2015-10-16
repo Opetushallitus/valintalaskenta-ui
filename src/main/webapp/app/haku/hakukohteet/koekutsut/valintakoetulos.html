@@ -91,7 +91,7 @@
 	                                   class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('valintakoetulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
 									
 	                                <a ng-click="createKoekutsukirjeetPDF(valintakoe);$event.stopPropagation()"
-	                                   class="btn btn-default btn-sm">
+	                                   class="btn btn-default btn-sm" ng-disabled="inputdisabled">
 	                                    <i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostakoekutsut') || 'Muodosta koekutsut' }}
 	                                </a>
 	

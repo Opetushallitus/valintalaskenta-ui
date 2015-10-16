@@ -239,9 +239,9 @@
 
 angular.module('valintalaskenta').
     controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel',
-        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log', 'HakukohdeNimiService','Kirjeet',
+        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log', 'HakukohdeNimiService','Kirjeet', 'ParametriService',
         function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
-                  Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log,HakukohdeNimiService, Kirjeet) {
+                  Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log,HakukohdeNimiService, Kirjeet, ParametriService) {
 
     "use strict";
 
@@ -354,6 +354,9 @@ angular.module('valintalaskenta').
 
     $scope.model.refresh($scope.hakukohdeOid, $routeParams.hakuOid);
 
+    ParametriService.promise().then(function (data) {
+        $scope.inputdisabled = !data["koekutsujenmuodostaminen"];
+    });
 
     $scope.nakymanTila = "Kokeittain";
 
