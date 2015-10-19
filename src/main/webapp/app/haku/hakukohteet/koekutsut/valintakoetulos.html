@@ -96,7 +96,7 @@
 	                                </a>
 	
 	                                <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()"
-	                                   class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
+	                                   class="btn btn-default btn-sm" ng-disabled="inputdisabled"><i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
 	                            </div>
 	                        </div>
 	                        <div ng-hide="valintakoe.aktiivinen">
