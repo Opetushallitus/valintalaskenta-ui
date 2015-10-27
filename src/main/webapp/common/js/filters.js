@@ -51,16 +51,9 @@ angular.module('valintalaskenta')
 }])
 .filter('kuuluuFilter', [function() {
     return function(input, kuuluuFilterValue) {
-        var result = [];
-        if (input) {
-            for (var i = 0; i < input.length; i++) {
-                if (!kuuluuFilterValue || input[i].jarjestyskriteerit[0].tila === kuuluuFilterValue
-                    || kuuluuFilterValue === 'HYLATTY' && input[i].jarjestyskriteerit[0].tila !== 'HYVAKSYTTAVISSA') {
-                    result.push(input[i]);
-                }
-            }
-        }
-        return result;
+        return (input || []).filter(function(hakija) {
+            return !kuuluuFilterValue || hakija.ryhmaanKuuluminen === kuuluuFilterValue;
+        });
     };
 }])
 .filter('ListLength', [function () { // usefull finding out length of a filtered list in template

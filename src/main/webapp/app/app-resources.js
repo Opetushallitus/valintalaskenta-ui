@@ -461,6 +461,14 @@ app.factory('HakemusKey', function($resource) {
 
 
 //Sijoittelu
+app.factory('HakukohteenValintatulokset', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/hakukohde/:hakukohdeOid",
+        {
+            hakukohdeOid: "@hakukohdeOid"
+        }, {
+            get: {method: "GET", isArray: true, cahce: false}
+        });
+});
 app.factory('VastaanottoTilat', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/hakukohde/:hakukohdeOid/:valintatapajonoOid",
         {

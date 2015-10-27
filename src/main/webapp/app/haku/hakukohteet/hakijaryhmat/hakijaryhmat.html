@@ -10,12 +10,8 @@
         <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
 
         <div class="tabsheets">
-
-            <tila-filter tila-filter-value="kuuluuFilterValue" filter-values="kuuluuFilterValues"></tila-filter>
-
             <accordion close-others="true">
-                <accordion-group ng-repeat="hakijaryhma in model.hakijaryhmat track by $index"
-                        is-open="$first">
+                <accordion-group ng-repeat="hakijaryhma in model track by $index" is-open="$first">
 
                     <accordion-heading>
 
@@ -25,7 +21,7 @@
                     {{ t('hakijaryhmat.kiintionkoko') || 'Kiintiön koko' }}: {{hakijaryhma.kiintio}}
 
                     <table ng-table="hakijaryhma.tableParams" show-filter="true" class="virkailija-table-1">
-                        <tr ng-repeat="tulos in ($data | kuuluuFilter: kuuluuFilterValue)">
+                        <tr ng-repeat="tulos in $data">
                             <td class="leftorientedcolumn" data-title="(t('hakijaryhmat.hakija') || 'Hakija')"
                                 sortable="'sukunimi'" filter="{ 'sukunimi' : 'text' }">
                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
@@ -34,17 +30,28 @@
                                                          haku-oid="{{hakuOid}}"
                                                          henkilo-oid="{{tulos.hakijaOid}}"/>
                             </td>
-                            <td data-title="(t('hakijaryhmat.hakemuksentila') || 'Hakijaryhmään kuuluminen')" sortable="'jarjestyskriteerit[0].tila'">
-                                {{ t('hakijaryhmat.'+tulos.jarjestyskriteerit[0].tila) || tulos.jarjestyskriteerit[0].tila}}
+                            <td data-title="(t('hakijaryhmat.hakemuksentila') || 'Hakijaryhmään kuuluminen')"
+                                sortable="'ryhmaanKuuluminen'"
+                                filter="{ryhmaanKuuluminen: 'select'}"
+                                filter-data="[
+                                {title: ''},
+                                {id: 'HYVAKSYTTAVISSA', title: (t('hakijaryhmat.HYVAKSYTTAVISSA') || 'Kuuluu')},
+                                {id: 'HYLATTY', title: (t('hakijaryhmat.HYLATTY') || 'Ei kuulu')}]">
+                                {{ t('hakijaryhmat.' + tulos.ryhmaanKuuluminen) || tulos.ryhmaanKuuluminen}}
                             </td>
-                            <td data-title="(t('hakijaryhmat.valinnantila') || 'Valinnan tila')" sortable="'jarjestyskriteerit[0].tila'">
-                                {{ tulos.jarjestyskriteerit[0].tila }}
+                            <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')" sortable="'hakemusSijoittelussa.tila'">
+                                <div ng-if="tulos.hakemusSijoittelussa">
+                                    <p ng-if="tulos.jononNimi">{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{tulos.jononNimi}}</p>
+                                    <span ng-if="!tulos.hakemusSijoittelussa.tilanKuvaukset.FI || tulos.hakemusSijoittelussa.tila == 'HYLATTY'">{{tulos.hakemusSijoittelussa.tila}}</span>
+                                    <span ng-if="userLang=='fi' && tulos.hakemusSijoittelussa.tilanKuvaukset.FI && tulos.hakemusSijoittelussa.tila != 'HYLATTY'">{{tulos.hakemusSijoittelussa.tilanKuvaukset.FI}}</span>
+                                    <span ng-if="userLang=='sv' && tulos.hakemusSijoittelussa.tilanKuvaukset.FI && tulos.hakemusSijoittelussa.tila != 'HYLATTY'">{{tulos.hakemusSijoittelussa.tilanKuvaukset.SV}}</span>
+                                    <span ng-if="userLang=='en' && tulos.hakemusSijoittelussa.tilanKuvaukset.FI && tulos.hakemusSijoittelussa.tila != 'HYLATTY'">{{tulos.hakemusSijoittelussa.tilanKuvaukset.EN}}</span>
+                                    <span ng-if="(tulos.hakemusSijoittelussa.tila == 'HYVAKSYTTY' || tulos.hakemusSijoittelussa.tila == 'VARASIJALTA_HYVAKSYTTY') && tulos.hakemusSijoittelussa.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
+                                    <span ng-if="tulos.hakemusSijoittelussa.varasijanNumero != undefined">({{tulos.hakemusSijoittelussa.varasijanNumero}})</span>
+                                </div>
                             </td>
-                            <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')" sortable="'tila'">
-                                <show-sijoittelun-tila hakemus="tulos" user-lang="userLang"></show-sijoittelun-tila>
-                            </td>
-                            <td data-title="(t('hakijaryhmat.vastaanottotila') || 'Vastaanottotila')" sortable="'vastaanottoTila'">
-                                {{tulos.vastaanottoTila}}
+                            <td data-title="(t('hakijaryhmat.vastaanottotila') || 'Vastaanottotila')" sortable="'vastaanottotila'">
+                                <span ng-if="tulos.vastaanottotila">{{tulos.vastaanottotila}}</span>
                             </td>
                         </tr>
                     </table>
