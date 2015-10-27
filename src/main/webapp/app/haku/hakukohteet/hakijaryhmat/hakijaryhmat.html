@@ -39,7 +39,18 @@
                                 {id: 'HYLATTY', title: (t('hakijaryhmat.HYLATTY') || 'Ei kuulu')}]">
                                 {{ t('hakijaryhmat.' + tulos.ryhmaanKuuluminen) || tulos.ryhmaanKuuluminen}}
                             </td>
-                            <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')" sortable="'hakemusSijoittelussa.tila'">
+                            <td data-title="(t('hakijaryhmat.sijoitteluntila') || 'Sijoittelun tila')"
+                                sortable="'hakemusSijoittelussa.tila'"
+                                filter="{sijoittelunTila: 'select'}"
+                                filter-data="[
+                                {title: ''},
+                                {id: 'HYVAKSYTTY', title: (t('sijoitteluntulos.hyvaksytty') || 'Hyväksytty')},
+                                {id: 'VARASIJALTA_HYVAKSYTTY', title: (t('sijoitteluntulos.varasijalta') || 'Varasijalta hyväksytty')},
+                                {id: 'VARALLA', title: (t('sijoitteluntulos.varalla') || 'Varalla')},
+                                {id: 'HYLATTY', title: (t('sijoitteluntulos.hylatty') || 'Hylätty')},
+                                {id: 'PERUUNTUNUT', title: (t('sijoitteluntulos.peruuntunut') || 'Peruuntunut')},
+                                {id: 'PERUNUT', title: (t('sijoitteluntulos.perunut') || 'Perunut')},
+                                {id: 'PERUUTETTU', title: (t('sijoitteluntulos.peruutettu') || 'Peruutettu')}]">
                                 <div ng-if="tulos.hakemusSijoittelussa">
                                     <p ng-if="tulos.jononNimi">{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{tulos.jononNimi}}</p>
                                     <span ng-if="!tulos.hakemusSijoittelussa.tilanKuvaukset.FI || tulos.hakemusSijoittelussa.tila == 'HYLATTY'">{{tulos.hakemusSijoittelussa.tila}}</span>

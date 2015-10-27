@@ -56,6 +56,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                         ryhmaanKuuluminen: hakija.jarjestyskriteerit[0].tila,
                         jononNimi: hakemusSijoittelussa ? valintatapajonot[hakemusSijoittelussa.valintatapajonoOid].nimi : undefined,
                         hakemusSijoittelussa: hakemusSijoittelussa,
+                        sijoittelunTila: hakemusSijoittelussa ? hakemusSijoittelussa.tila : undefined,
                         vastaanottotila: vastaanottotila
                     };
                 });
