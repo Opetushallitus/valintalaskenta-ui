@@ -35,6 +35,16 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                 }
             }
         };
+        var isHyvaksyttyHakijaryhmasta = function(hakijaryhmaOid, hakemusSijoittelussa) {
+            console.log('hakijaryhmaOid: ' + hakijaryhmaOid);
+            if(hakemusSijoittelussa == null) return undefined;
+            console.log('hakemusSijoittelussa.hyvaksyttyHakijaryhmasta: ' + hakemusSijoittelussa.hyvaksyttyHakijaryhmasta);
+            console.log('hakemusSijoittelussa.hakijaryhmaOid: ' + hakemusSijoittelussa.hakijaryhmaOid);
+            if(hakemusSijoittelussa.hyvaksyttyHakijaryhmasta == true
+                && hakemusSijoittelussa.hakijaryhmaOid == hakijaryhmaOid) return true;
+            else if(hakemusSijoittelussa.hyvaksyttyHakijaryhmasta == false) return false;
+            return undefined;
+        };
         return $q.all({
             hakijaryhmat: HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}).$promise,
             sijoittelunTulos: LatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
@@ -48,6 +58,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                 var hakijat = hakijaryhma.jonosijat.map(function (hakija) {
                     var hakemusSijoittelussa = findHakemusSijoittelussa(hakemuksetSijoittelussa, valintatapajonot, hakija);
                     var vastaanottotila = findVastaanottotila(valintatulokset, hakemusSijoittelussa, hakija);
+                    var hyvaksyttyHakijaryhmasta = isHyvaksyttyHakijaryhmasta(hakijaryhma.hakijaryhmaOid, hakemusSijoittelussa);
                     return {
                         etunimi: hakija.etunimi,
                         sukunimi: hakija.sukunimi,
@@ -57,7 +68,9 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                         jononNimi: hakemusSijoittelussa ? valintatapajonot[hakemusSijoittelussa.valintatapajonoOid].nimi : undefined,
                         hakemusSijoittelussa: hakemusSijoittelussa,
                         sijoittelunTila: hakemusSijoittelussa ? hakemusSijoittelussa.tila : undefined,
-                        vastaanottotila: vastaanottotila
+                        vastaanottotila: vastaanottotila,
+                        hyvaksyttyHakijaryhmasta: hyvaksyttyHakijaryhmasta,
+                        pisteet: hakemusSijoittelussa ? hakemusSijoittelussa.pisteet : undefined
                     };
                 });
                 return {

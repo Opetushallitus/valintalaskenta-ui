@@ -61,6 +61,19 @@
                                     <span ng-if="tulos.hakemusSijoittelussa.varasijanNumero != undefined">({{tulos.hakemusSijoittelussa.varasijanNumero}})</span>
                                 </div>
                             </td>
+                            <td data-title="(t('hakijaryhmat.hyvaksyttyHakijaryhmasta') || 'Hyväksytty hakijaryhmästä')"
+                                sortable="'hyvaksyttyHakijaryhmasta'"
+                                filter="{hyvaksyttyHakijaryhmasta: 'select'}"
+                                filter-data="[
+                                {title: ''},
+                                {id: true, title: (t('hakijaryhmat.hyvaksyttyHakijaryhmasta.true') || 'Kyllä')},
+                                {id: false, title: (t('sijoitteluntulos.hyvaksyttyHakijaryhmasta.false') || 'Ei')},
+                                ]">
+                                {{ t('hakijaryhmat.hyvaksyttyHakijaryhmasta.' + tulos.hyvaksyttyHakijaryhmasta) || tulos.hyvaksyttyHakijaryhmasta}}
+                            </td>
+                            <td data-title="(t('hakijaryhmat.pisteet') || 'Pisteet')" sortable="'pisteet'">
+                                <span ng-if="tulos.pisteet">{{tulos.pisteet}}</span>
+                            </td>
                             <td data-title="(t('hakijaryhmat.vastaanottotila') || 'Vastaanottotila')" sortable="'vastaanottotila'">
                                 <span ng-if="tulos.vastaanottotila">{{tulos.vastaanottotila}}</span>
                             </td>
