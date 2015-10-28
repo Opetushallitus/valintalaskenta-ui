@@ -36,10 +36,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
             }
         };
         var isHyvaksyttyHakijaryhmasta = function(hakijaryhmaOid, hakemusSijoittelussa) {
-            console.log('hakijaryhmaOid: ' + hakijaryhmaOid);
             if(hakemusSijoittelussa == null) return undefined;
-            console.log('hakemusSijoittelussa.hyvaksyttyHakijaryhmasta: ' + hakemusSijoittelussa.hyvaksyttyHakijaryhmasta);
-            console.log('hakemusSijoittelussa.hakijaryhmaOid: ' + hakemusSijoittelussa.hakijaryhmaOid);
             if(hakemusSijoittelussa.hyvaksyttyHakijaryhmasta == true
                 && hakemusSijoittelussa.hakijaryhmaOid == hakijaryhmaOid) return true;
             else if(hakemusSijoittelussa.hyvaksyttyHakijaryhmasta == false) return false;
