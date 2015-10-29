@@ -212,6 +212,9 @@ app.factory('Dokumenttipalvelu', function($http, $log, $rootScope, $resource, $w
 });
 
 //koostepalvelus
+app.factory('ValintalaskentaKokoHaulle', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid/tyyppi/HAKU", {hakuoid: "@hakuoid"}, {aktivoi: {method: "POST"}});
+});
 app.factory('ValintalaskentaKerrallaHakukohteille', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/haku/:hakuoid/tyyppi/:tyyppi/whitelist/:whitelist",
         {hakuoid: "@hakuoid", whitelist: "@whitelist", tyyppi: "@tyyppi"}, {

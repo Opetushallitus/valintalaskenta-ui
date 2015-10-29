@@ -77,7 +77,8 @@ angular.module('valintalaskenta').
             resolve: {
                 oids: function () {
                     return {
-                        hakuOid: $routeParams.hakuOid
+                        hakuOid: $routeParams.hakuOid,
+                        kokoHaku: true
                     };
                 }
             }
@@ -373,7 +374,8 @@ angular.module('valintalaskenta').
                     return {
                         hakuOid: $routeParams.hakuOid,
                         valinnanvaihe: -1,
-                        valintakoelaskenta: false
+                        valintakoelaskenta: false,
+                        kokoHaku: true
                     };
                 }
             }
@@ -391,7 +393,8 @@ angular.module('valintalaskenta').
                     return {
                         hakuOid: $routeParams.hakuOid,
                         valinnanvaihe: null,
-                        valintakoelaskenta: true
+                        valintakoelaskenta: true,
+                        kokoHaku: true
                     };
                 }
             }

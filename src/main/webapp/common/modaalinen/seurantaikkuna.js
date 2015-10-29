@@ -1,9 +1,9 @@
 function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
-		$interval, $routeParams, HakuModel,
+		$interval, HakuModel,
 		ValintalaskentaKerrallaHakukohteille,
+		ValintalaskentaKokoHaulle,
 		ValintalaskentaKerrallaAktivointi, Ilmoitus, IlmoitusTila,
-		SeurantaPalvelu, ValintalaskentaKerrallaUudelleenYrita,
-		SeurantaPalveluLataa) {
+		SeurantaPalvelu, ValintalaskentaKerrallaUudelleenYrita) {
 	$scope.uuid = oids.uuid;
 	$scope.kaynnissa = false;
 	$scope.nimi = HakuModel.getNimi();
@@ -147,32 +147,37 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		if (!tyyppi) {
 			tyyppi = "HAKU";
 		}
-		var hakukohteet = oids.hakukohteet;
-		if (!hakukohteet) {
-			hakukohteet = [];
+		function laskennanVastaus(uuid) {
+			$scope.kaynnissa = true;
+			$scope.paivitaForce(uuid.latausUrl);
 		}
-		ValintalaskentaKerrallaHakukohteille
-				.aktivoi(
-						{
-							hakuoid : oids.hakuOid,
-							tyyppi : tyyppi,
-							erillishaku: oids.erillishaku,
-							whitelist : whitelist,
-							valinnanvaihe : oids.valinnanvaihe,
-							valintakoelaskenta : oids.valintakoelaskenta,
-						},
-						hakukohteet,
-						function(uuid) {
-							$scope.kaynnissa = true;
-							$scope.paivitaForce(uuid.latausUrl);
-						},
-						function(err) {
-							Ilmoitus
-									.avaa(
-											"Valintakoelaskenta epäonnistui",
-											"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. " + err.data,
-											IlmoitusTila.ERROR);
-						});
+		function laskennanVirhe(err) {
+			Ilmoitus
+					.avaa(
+					"Valintakoelaskenta epäonnistui",
+					"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. " + err.data,
+					IlmoitusTila.ERROR);
+		}
+		if (oids.kokoHaku === true) {
+			ValintalaskentaKokoHaulle.aktivoi({
+				hakuoid : oids.hakuOid,
+				erillishaku: oids.erillishaku,
+				valinnanvaihe: oids.valinnanvaihe,
+				valintakoelaskenta: oids.valintakoelaskenta
+			}, null, laskennanVastaus, laskennanVirhe);
+		} else {
+			ValintalaskentaKerrallaHakukohteille.aktivoi({
+						hakuoid: oids.hakuOid,
+						tyyppi: tyyppi,
+						erillishaku: oids.erillishaku,
+						whitelist: whitelist,
+						valinnanvaihe: oids.valinnanvaihe,
+						valintakoelaskenta: oids.valintakoelaskenta
+					},
+					oids.hakukohteet ? oids.hakukohteet : [],
+					laskennanVastaus,
+					laskennanVirhe);
+		}
 	}
 
 	$scope.yhteenveto = function() {
