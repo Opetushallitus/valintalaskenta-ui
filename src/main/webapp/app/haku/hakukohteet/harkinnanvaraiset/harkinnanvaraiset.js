@@ -101,10 +101,10 @@ angular.module('valintalaskenta')
 
     .controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
         'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel',
-        'Pohjakoulutukset','ngTableParams','$filter','FilterService',
+        'Pohjakoulutukset','ngTableParams','$filter','FilterService', 'ParametriService',
         function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,
             OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset, ngTableParams, $filter,
-            FilterService) {
+            FilterService, ParametriService) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -117,6 +117,10 @@ angular.module('valintalaskenta')
     $scope.muutettu = false;
 
     $scope.pohjakoulutukset = Pohjakoulutukset;
+
+    ParametriService.promise().then(function (data) {
+        $scope.inputdisabled = !data["harkinnanvarainenpaatostallennus"];
+    });
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
 

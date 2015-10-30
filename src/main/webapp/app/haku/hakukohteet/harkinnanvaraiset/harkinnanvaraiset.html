@@ -25,7 +25,7 @@
                 <a ng-click="muodostaKoekutsut();" class="btn btn-default btn-sm pdf">{{ t('hakukohteetharkinnanvaraiset.muodostakoekutsut') || 'Muodosta koekutsut' }}</a>
                 <a ng-click="muodostaOsoitetarrat();" class="btn btn-default btn-sm pdf">{{ t('hakukohteetharkinnanvaraiset.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
                 <br>
-                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2">{{ t('hakukohteetharkinnanvaraiset.tallenna') || 'Tallenna' }}</a>
+                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" ng-disabled="inputdisabled">{{ t('hakukohteetharkinnanvaraiset.tallenna') || 'Tallenna' }}</a>
 
                 <form name="form" ng-submit="submit()">
                     <table ng-table="tableParams" show-filter="true" class="virkailija-table-1">
@@ -45,7 +45,7 @@
                                 {{pohjakoulutukset[hakija.answers.koulutustausta.POHJAKOULUTUS]}}
                             </td>
                             <td data-title="(t('hakukohteetharkinnanvaraiset.harkinnanvarainentila') || 'Harkinnanvarainen tila')">
-                                <select ng-model="hakija.muokattuHarkinnanvaraisuusTila">
+                                <select ng-model="hakija.muokattuHarkinnanvaraisuusTila" ng-disabled="inputdisabled">
                                     <option value="HYVAKSYTTY">{{ t('hakukohteetharkinnanvaraiset.hyvaksytty') || 'Hyväksytty' }}</option>
                                     <option value="EI_HYVAKSYTTY">{{ t('hakukohteetharkinnanvaraiset.eihyvaksytty') || 'Ei Hyväksytty' }}</option>
                                 </select>
@@ -56,7 +56,7 @@
                         <input type="checkbox" ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />
                     </script>
                 </form>
-                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" >{{ t('hakukohteetharkinnanvaraiset.tallenna') || 'Tallenna' }}</a>
+                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" ng-disabled="inputdisabled">{{ t('hakukohteetharkinnanvaraiset.tallenna') || 'Tallenna' }}</a>
             </div>
         </div>
     </div>
