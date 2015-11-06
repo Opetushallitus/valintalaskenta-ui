@@ -378,11 +378,11 @@ angular.module('valintalaskenta')
     .controller('SijoitteluntulosController', ['$scope', '$modal', 'TallennaValinnat', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
         'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
-        'Kirjeet',
+        'Kirjeet','UserModel',
         function ($scope, $modal, TallennaValinnat, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService,
-                                    Kirjeet) {
+                                    Kirjeet, UserModel) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -702,5 +702,8 @@ angular.module('valintalaskenta')
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
         $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
     });
-
+    $scope.showJalkiohjaus = function() {
+        return UserModel.isOphUser || Korkeakoulu.isKorkeakoulu(HakuModel.hakuOid.kohdejoukkoUri);
+    }
+    UserModel.refreshIfNeeded()
 }]);
