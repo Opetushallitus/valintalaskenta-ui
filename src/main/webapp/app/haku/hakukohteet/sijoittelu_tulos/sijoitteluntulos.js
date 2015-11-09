@@ -702,8 +702,16 @@ angular.module('valintalaskenta')
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
         $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
     });
+    function isToinenAsteKohdeJoukko(kohdejoukkoUri) {
+        var returnValue = false;
+        if (kohdejoukkoUri) {
+            var arr = ["_11", "_17", "_20"];
+            return arr.some(function(s){kohdejoukkoUri.indexOf(s) !== -1});
+        }
+        return returnValue;
+    }
     $scope.showJalkiohjaus = function() {
-        return UserModel.isOphUser || Korkeakoulu.isKorkeakoulu(HakuModel.hakuOid.kohdejoukkoUri);
+        return UserModel.isOphUser || !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     }
     UserModel.refreshIfNeeded()
 }]);
