@@ -413,11 +413,6 @@ angular.module('valintalaskenta')
     if($routeParams.hakuOid) {
         Ohjausparametrit.get({hakuOid: $routeParams.hakuOid}, function (result) {
             var now = new Date();
-            if(result.PH_VTSSV) {
-                $scope.showHakemuksenTilaMuokkaus = now >= result.PH_VTSSV; //kaikki jonot siirretty sijoitteluun
-            } else {
-                $scope.showHakemuksenTilaMuokkaus = true;
-            }
             if (result.PH_VEH && result.PH_VEH.date && now >= new Date(result.PH_VEH.date)) {
                 $scope.valintaesitysJulkaistavissa = true;
             }
