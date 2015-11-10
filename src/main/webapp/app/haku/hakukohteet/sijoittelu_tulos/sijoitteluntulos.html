@@ -33,7 +33,7 @@
 
                 <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('sijoitteluntulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
                 <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
-                <a ng-show="showJalkiohjaus()" ng-click="luoJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">
+                <a ng-show="showJalkiohjaus()" ng-click="luoJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf testJalkiohjaus">
                     <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostaeihyvaksyttyjenkirjeet') || 'Muodosta kirjeet ei-hyväksytyille'}}</span>
                     <span ng-if="!korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostajalkiohjauskirjeet') || 'Muodosta jälkiohjauskirjeet hakukohteessa hylätyille' }}</span>
                 </a>

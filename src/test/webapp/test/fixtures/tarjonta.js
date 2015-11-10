@@ -473,6 +473,39 @@ function tarjontaFixtures() {
             "tarjoajaOids": ["1.2.246.562.10.00000000001"],
             "usePriority": true,
             "sisaltyvatHaut": []
+        }, {
+            "modified": 1410521781556,
+            "modifiedBy": "1.2.246.562.24.37685858527",
+            "oid": "1.2.246.562.29.90697286251",
+            "hakukausiUri": "kausi_s#1",
+            "hakukausiVuosi": 2013,
+            "hakutapaUri": "hakutapa_01#1",
+            "hakutyyppiUri": "hakutyyppi_01#1",
+            "kohdejoukkoUri": "haunkohdejoukko_11#1",
+            "koulutuksenAlkamisVuosi": 2014,
+            "koulutuksenAlkamiskausiUri": "kausi_k#1",
+            "tila": "JULKAISTU",
+            "ylioppilastutkintoAntaaHakukelpoisuuden": false,
+            "sijoittelu": true,
+            "jarjestelmanHakulomake": true,
+            "hakuaikas": [{
+                "hakuaikaId": "6",
+                "alkuPvm": 1380081600000,
+                "loppuPvm": 1380892500000,
+                "nimet": {"kieli_fi": "HAKUAIKA"}
+            }],
+            "hakukohdeOids": [],
+            "haunTunniste": "1.2.246.562.5.2013060313080811526781",
+            "nimi": {
+                "kieli_sv": "Gemensam ansökan till yrkes- och gymnasieutbildning",
+                "kieli_en": "",
+                "kieli_fi": "Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku"
+            },
+            "maxHakukohdes": 5,
+            "organisaatioOids": ["1.2.246.562.10.00000000001"],
+            "tarjoajaOids": ["1.2.246.562.10.00000000001"],
+            "usePriority": true,
+            "sisaltyvatHaut": []
         }]
     })
 
