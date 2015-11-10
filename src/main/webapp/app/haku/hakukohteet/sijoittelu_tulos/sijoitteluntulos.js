@@ -391,6 +391,7 @@ angular.module('valintalaskenta')
     $scope.model = SijoitteluntulosModel;
     $scope.korkeakouluService = Korkeakoulu;
     $scope.tilaFilterValue = "";
+    $scope.valintaesitysJulkaistavissa = false;
 
     $scope.tilaFilterValues = [
         {value: "", text_prop: "sijoitteluntulos.alasuodatatilan", default_text:"Älä suodata tilan mukaan"},
@@ -403,6 +404,12 @@ angular.module('valintalaskenta')
         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
     ];
 
+    HakuModel.promise.then(function(haku) {
+        if (haku.korkeakoulu) {
+            $scope.valintaesitysJulkaistavissa = true;
+        }
+    });
+
     if($routeParams.hakuOid) {
         Ohjausparametrit.get({hakuOid: $routeParams.hakuOid}, function (result) {
             var now = new Date();
@@ -410,6 +417,9 @@ angular.module('valintalaskenta')
                 $scope.showHakemuksenTilaMuokkaus = now >= result.PH_VTSSV; //kaikki jonot siirretty sijoitteluun
             } else {
                 $scope.showHakemuksenTilaMuokkaus = true;
+            }
+            if (result.PH_VEH && result.PH_VEH.date && now >= new Date(result.PH_VEH.date)) {
+                $scope.valintaesitysJulkaistavissa = true;
             }
         });
     }
