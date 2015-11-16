@@ -281,7 +281,7 @@
                                     <br>
                                     <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}"
                                                 next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}"
-                                                total-items="valintatapajono.filteredResults.length"
+                                                total-items="valintatapajono.hakemukset.length"
                                                 ng-model="valintatapajono.currentPage"
                                                 ng-init="valintatapajono.currentPage=1"
                                                 items-per-page="pageSize"></pagination>
