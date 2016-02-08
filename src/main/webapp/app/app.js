@@ -1,6 +1,5 @@
 "use strict";
 
-
 var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
     'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation', 'oph.services', 'ngTable', 'angular-cache',
     'ngIdle'], function($rootScopeProvider) {
@@ -20,11 +19,16 @@ var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute',
 
 });
 
+app.run(function($http, $cookies) {
+	$http.defaults.headers.common['clientSubSystemCode'] = "valintaperusteet.valintalaskenta-ui.frontend";
+	if($cookies['CSRF']) {
+		$http.defaults.headers.common['CSRF'] = $cookies['CSRF'];
+	}
+})
+
 if (window.mocksOn) {
     angular.module('valintalaskenta').requires.push('e2e-mocks');
 }
-
-
 
 //MODAALISET IKKUNAT
 app.factory('Ilmoitus', function($modal, IlmoitusTila) {
