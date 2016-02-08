@@ -1,6 +1,6 @@
 "use strict";
 
-var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'pascalprecht.translate',
+var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', "ngCookies", 'pascalprecht.translate',
     'ui.tinymce', 'valvomo','ui.bootstrap','angularFileUpload', 'lodash', 'oph.localisation', 'oph.services', 'ngTable', 'angular-cache',
     'ngIdle'], function($rootScopeProvider) {
 	$rootScopeProvider.digestTtl(25);
