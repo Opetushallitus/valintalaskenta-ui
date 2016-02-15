@@ -30,6 +30,8 @@ angular.module('valintalaskenta')
         for(var i = 0; i < input.length ; i++) {
             if(input[i].tila === 'JULKAISTU') {
                 result.push(input[i]);
+            } else if(input[i].tila === 'VALMIS' && input[i].kohdejoukonTarkenne === 'haunkohdejoukontarkenne_3#1') {
+                result.push(input[i]);
             }
         }
         return result;

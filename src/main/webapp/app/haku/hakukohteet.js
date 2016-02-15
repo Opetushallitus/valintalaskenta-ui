@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakukohteetModel', ['$q', '$routeParams', '$log', '$http', 'Haku', 'AuthService', 'TarjontaHaku',
-        function ($q, $routeParams, $log, $http, Haku, AuthService, TarjontaHaku) {
+    .factory('HakukohteetModel', ['$q', '$routeParams', '$log', '$http', 'Haku', 'AuthService', 'TarjontaHaku', 'HakuModel',
+        function ($q, $routeParams, $log, $http, Haku, AuthService, TarjontaHaku, HakuModel) {
             "use strict";
 
             var model;
@@ -16,7 +16,8 @@ angular.module('valintalaskenta')
                 this.lastSearch = null;
                 this.lastHakuOid = null;
                 this.omatHakukohteet = true;
-                this.valmiitHakukohteet = "JULKAISTU";
+                this.julkaistutHakukohteet = "JULKAISTU";
+                this.valmiitJaJulkaistutHakukohteet = "JULKAISTU,VALMIS";
                 this.readyToQueryForNextPage = true;
                 this.deferred = undefined;
                 this.hakukohteetVisible = true;
@@ -42,6 +43,9 @@ angular.module('valintalaskenta')
                     var startIndex = model.getCount();
                     var lastTotalCount = model.getTotalCount();
                     var notLastPage = startIndex < lastTotalCount;
+                    console.log('HakuModel.hakuOid.kohdejoukonTarkenne: ' + HakuModel.hakuOid.kohdejoukonTarkenne);
+                    var hakukohdeTilas = (HakuModel.hakuOid.kohdejoukonTarkenne === 'haunkohdejoukontarkenne_3#1' ? model.valmiitJaJulkaistutHakukohteet : model.julkaistutHakukohteet);
+                    //var hakukohdeTilas = valmiitJaJulkaistutHakukohteet;
                     if (notLastPage || restart) {
                         if (model.readyToQueryForNextPage) {
                             model.readyToQueryForNextPage = false;
@@ -52,7 +56,8 @@ angular.module('valintalaskenta')
                                     startIndex: startIndex,
                                     count: model.pageSize,
                                     searchTerms: model.lastSearch,
-                                    hakukohdeTilas: model.valmiitHakukohteet
+                                    hakukohdeTilas: hakukohdeTilas
+                                    //hakukohdeTilas: model.valmiitHakukohteet
                                 };
 
                                 if (model.omatHakukohteet) {
@@ -117,35 +122,37 @@ angular.module('valintalaskenta').
                                 function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, HakuModel,
                                           HakukohdeNimiService, Utility) {
             "use strict";
-            $scope.hakuOid = $routeParams.hakuOid;
-            $scope.hakukohdeOid = $routeParams.hakukohdeOid;
+            HakuModel.init($routeParams.hakuOid).then(function () {
+                $scope.hakuOid = $routeParams.hakuOid;
+                $scope.hakukohdeOid = $routeParams.hakukohdeOid;
 
-            $scope.hakuModel = HakuModel;
-            $scope.hakukohdeNimiService = HakukohdeNimiService;
+                $scope.hakuModel = HakuModel;
+                $scope.hakukohdeNimiService = HakukohdeNimiService;
 
-            $scope.model = HakukohteetModel;
-            $scope.model.refreshIfNeeded($routeParams.hakuOid);
+                $scope.model = HakukohteetModel;
+                $scope.model.refreshIfNeeded($routeParams.hakuOid);
 
-            $scope.searchWordChanged = Utility.debounce(function () {
-                HakukohteetModel.refresh();
-            }, 500);
+                $scope.searchWordChanged = Utility.debounce(function () {
+                    HakukohteetModel.refresh();
+                }, 500);
 
 
-            $scope.toggleHakukohteetVisible = function () {
-                $scope.model.hakukohteetVisible = !$scope.model.hakukohteetVisible;
-            };
+                $scope.toggleHakukohteetVisible = function () {
+                    $scope.model.hakukohteetVisible = !$scope.model.hakukohteetVisible;
+                };
 
-            $scope.showHakukohde = function (hakukohde, lisahaku) {
-                $rootScope.selectedHakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(hakukohde);
-                $scope.model.hakukohteetVisible = false;
-                HakukohteetModel.hakukohteetVisible = $scope.hakukohteetVisible;
-                $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/perustiedot'));
-            };
+                $scope.showHakukohde = function (hakukohde, lisahaku) {
+                    $rootScope.selectedHakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(hakukohde);
+                    $scope.model.hakukohteetVisible = false;
+                    HakukohteetModel.hakukohteetVisible = $scope.hakukohteetVisible;
+                    $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/perustiedot'));
+                };
 
-            // uuden sivun lataus
-            $scope.lazyLoading = function () {
-                $scope.model.getNextPage(false);
-            };
+                // uuden sivun lataus
+                $scope.lazyLoading = function () {
+                    $scope.model.getNextPage(false);
+                };
+            });
 
 
         }]);
