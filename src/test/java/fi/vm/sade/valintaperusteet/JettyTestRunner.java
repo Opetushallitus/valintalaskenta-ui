@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+/**
+ * -Dnode_server=http://localhost:3000 optional flag
+ */
 public class JettyTestRunner {
     private static final Logger LOG = LoggerFactory.getLogger(JettyTestRunner.class);
     public static final int PORT = portChecker();

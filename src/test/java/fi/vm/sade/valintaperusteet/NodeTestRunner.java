@@ -9,15 +9,21 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
-public class JettyAndNodeTestRunner {
-    private static final Logger LOG = LoggerFactory.getLogger(JettyAndNodeTestRunner.class);
+/**
+ * -Dkooste_server=http://localhost:8090
+ * -Dpublic_server=https://itest-virkailija.oph.ware.fi
+ */
+public class NodeTestRunner {
 
-    public static void main(String[] args) throws Exception {
+    public static void startNodeJs() throws Exception {
         final CommandLine cmdLine = new CommandLine("node").addArgument("--harmony").addArgument("ui/valintalaskenta-ui/server/server.js");
         new DefaultExecutor().execute(cmdLine, ImmutableMap.of(
                 "public_server", propertyOrEmptyString("public_server"),
                 "kooste_server", propertyOrEmptyString("kooste_server")), new DefaultExecuteResultHandler());
+    }
 
+    public static void main(String[] args) throws Exception {
+        startNodeJs();
         Thread.currentThread().join();
     }
 
