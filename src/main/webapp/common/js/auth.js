@@ -60,6 +60,7 @@ app.factory('ParametriService', function ($q, Parametrit) {
                     privileges = data;
                     instance.deferred.resolve(data);
                 }, function (error) {
+                    console.log(error);
                     alert("parametri service ei vastaa: " + error);
                 });
 

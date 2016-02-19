@@ -1,6 +1,8 @@
 package fi.vm.sade.valintalaskenta.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,93 +10,39 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ConfigController {
-    @Value("${localisation.rest}")
-    private String localisationUrl;
-
-    @Value("${valintalaskenta-ui.tarjona-service-url.rest}")
-    private String tarjontaServiceUrl;
-
-    @Value("${valintalaskenta-ui.valintaperusteet-service-url.rest}")
-    private String valintaperusteetServiceUrl;
-
-    @Value("${valintalaskenta-ui.valintalaskentakoostepalvelu-service-url.rest}")
-    private String valintalaskentakoostepalveluServiceUrl;
-
-    @Value("${valintalaskenta-ui.hakemus-service-url.rest}")
-    private String hakemusServiceUrl;
-
-    @Value("${valintalaskenta-ui.hakemus-ui-url}")
-    private String hakemusUiUrl;
-
-    @Value("${valintalaskenta-ui.valintalaskenta-service-url.rest}")
-    private String valintalaskentaServiceUrl;
-
-    @Value("${valintalaskenta-ui.valintalaskenta-service-url.excel}")
-    private String valintalaskentaUrl;
-
-    @Value("${valintalaskenta-ui.sijoittelu-service-url.rest}")
-    private String sijoitteluServiceUrl;
-
-    @Value("${valintalaskenta-ui.sijoittelu-service-url.excel}")
-    private String sijoitteluUrl;
-
-    @Value("${organisaatio.api.rest.url}")
-    private String organisaatioUrl;
-
-    @Value("${auth.mode:}")
-    private String authMode;
-
-    @Value("${valintalaskenta-ui.cas.url:/cas/myroles}")
-    private String casUrl;
-
-    @Value("${valintalaskentakoostepalvelu.viestintapalvelu.url}")
-    private String viestintapalveluUrl;
-
-    @Value("${valintalaskentakoostepalvelu.dokumenttipalvelu.rest.url}")
-    private String dokumenttipalveluUrl;
-
-    @Value("${valintalaskentakoostepalvelu.seuranta.rest.url}")
-    private String seurantaUrl;
-
-    @Value("${valintalaskenta-ui.koodisto-service-url.rest}")
-    private String koodistoServiceRestURL;
-
-    @Value("${valintalaskentakoostepalvelu.parametriservice.rest.url}")
-    private String ohjausparametripalveluRestUrl;
-
-    @Value("${valintalaskenta-ui.session-keepalive-interval.seconds:10000}")
-    private Integer sessionKeepAliveIntervalInSeconds;
-
-    @Value("${valintalaskenta-ui.session-max-idle-time.seconds:10000}")
-    private Integer maxSessionIdleTimeInSeconds;
+    private final Config config;
+    @Autowired
+    public ConfigController(Config config) {
+        this.config = config;
+    }
 
     @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript", headers = "Accept=*/*")
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
-        append(b, "LOCALISATION_URL_BASE", localisationUrl);
-        append(b, "TARJONTA_URL_BASE", tarjontaServiceUrl);
-        append(b, "VALINTAPERUSTEET_URL_BASE", valintaperusteetServiceUrl);
-        append(b, "DOKUMENTTIPALVELU_URL_BASE", dokumenttipalveluUrl);
-        append(b, "SEURANTA_URL_BASE", seurantaUrl);
+        append(b, "LOCALISATION_URL_BASE", config.localisationUrl);
+        append(b, "TARJONTA_URL_BASE", config.tarjontaServiceUrl);
+        append(b, "VALINTAPERUSTEET_URL_BASE", config.valintaperusteetServiceUrl);
+        append(b, "DOKUMENTTIPALVELU_URL_BASE", config.dokumenttipalveluUrl);
+        append(b, "SEURANTA_URL_BASE", config.seurantaUrl);
         append(b, "VALINTALASKENTAKOOSTE_URL_BASE",
-                valintalaskentakoostepalveluServiceUrl);
-        append(b, "HAKEMUS_URL_BASE", hakemusServiceUrl);
-        append(b, "SIJOITTELU_URL_BASE", sijoitteluServiceUrl);
-        append(b, "SERVICE_URL_BASE", valintalaskentaServiceUrl);
-        append(b, "SIJOITTELU_EXCEL_URL_BASE", sijoitteluUrl);
-        append(b, "SERVICE_EXCEL_URL_BASE", valintalaskentaUrl);
-        append(b, "ORGANISAATIO_URL_BASE", organisaatioUrl);
-        append(b, "HAKEMUS_UI_URL_BASE", hakemusUiUrl);
-        append(b, "VIESTINTAPALVELU_URL_BASE", viestintapalveluUrl);
+                config.valintalaskentakoostepalveluServiceUrl);
+        append(b, "HAKEMUS_URL_BASE", config.hakemusServiceUrl);
+        append(b, "SIJOITTELU_URL_BASE", config.sijoitteluServiceUrl);
+        append(b, "SERVICE_URL_BASE", config.valintalaskentaServiceUrl);
+        append(b, "SIJOITTELU_EXCEL_URL_BASE", config.sijoitteluUrl);
+        append(b, "SERVICE_EXCEL_URL_BASE", config.valintalaskentaUrl);
+        append(b, "ORGANISAATIO_URL_BASE", config.organisaatioUrl);
+        append(b, "HAKEMUS_UI_URL_BASE", config.hakemusUiUrl);
+        append(b, "VIESTINTAPALVELU_URL_BASE", config.viestintapalveluUrl);
         append(b, "TEMPLATE_URL_BASE", "");
-        append(b, "KOODISTO_URL_BASE", koodistoServiceRestURL);
-        append(b, "OHJAUSPARAMETRIT_URL_BASE", ohjausparametripalveluRestUrl);
-        append(b, "CAS_URL", casUrl);
-        append(b, "SESSION_KEEPALIVE_INTERVAL_IN_SECONDS", Integer.toString(sessionKeepAliveIntervalInSeconds));
-        append(b, "MAX_SESSION_IDLE_TIME_IN_SECONDS", Integer.toString(maxSessionIdleTimeInSeconds));
-        if (!authMode.isEmpty()) {
-            append(b, "AUTH_MODE", authMode);
+        append(b, "KOODISTO_URL_BASE", config.koodistoServiceRestURL);
+        append(b, "OHJAUSPARAMETRIT_URL_BASE", config.ohjausparametripalveluRestUrl);
+        append(b, "CAS_URL", config.casUrl);
+        append(b, "SESSION_KEEPALIVE_INTERVAL_IN_SECONDS", Integer.toString(config.sessionKeepAliveIntervalInSeconds));
+        append(b, "MAX_SESSION_IDLE_TIME_IN_SECONDS", Integer.toString(config.maxSessionIdleTimeInSeconds));
+        if (!config.authMode.isEmpty()) {
+            append(b, "AUTH_MODE", config.authMode);
         }
         return b.toString();
     }

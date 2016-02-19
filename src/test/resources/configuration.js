@@ -12,3 +12,6 @@ TEMPLATE_URL_BASE = "";
 AUTHENTICATION_URL_BASE = "http://localhost:8180/authentication-service/";
 CAS_URL = "/servers/cas/myroles";
 AUTH_MODE = "dev";
+SESSION_KEEPALIVE_INTERVAL_IN_SECONDS = 1000000;
+MAX_SESSION_IDLE_TIME_IN_SECONDS = 1000000;
+
