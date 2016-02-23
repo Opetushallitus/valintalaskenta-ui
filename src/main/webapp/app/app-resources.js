@@ -565,7 +565,7 @@ app.factory('LatestSijoittelunTilat', function($resource) {
 });
 
 app.factory('LatestSijoitteluajoHakukohde', function($resource) {
-    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid"}, {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuOid/sijoitteluajo/latest/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid"}, {
         get: {method: "GET", cache: false}
     });
 });
