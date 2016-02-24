@@ -472,6 +472,15 @@ app.factory('HakukohteenValintatulokset', function($resource) {
             get: {method: "GET", isArray: true, cahce: false}
         });
 });
+app.factory('VastaanottotilatHakukohteelle', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuOid/hakukohde/:hakukohdeOid",
+      {
+          hakuOid: "@hakuOid",
+          hakukohdeOid: "@hakukohdeoid"
+      }, {
+          get: {method: "GET", isArray:true, cache: false}
+      });
+});
 app.factory('VastaanottoTilat', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/hakukohde/:hakukohdeOid/:valintatapajonoOid",
         {
@@ -565,7 +574,7 @@ app.factory('LatestSijoittelunTilat', function($resource) {
 });
 
 app.factory('LatestSijoitteluajoHakukohde', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuOid/sijoitteluajo/latest/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid"}, {
+    return $resource(SIJOITTELU_URL_BASE + "resources/sijoittelu/:hakuOid/sijoitteluajo/latest/hakukohde/:hakukohdeOid", {hakukohdeOid: "@hakukohdeOid", hakuOid:"@hakuOid"}, {
         get: {method: "GET", cache: false}
     });
 });

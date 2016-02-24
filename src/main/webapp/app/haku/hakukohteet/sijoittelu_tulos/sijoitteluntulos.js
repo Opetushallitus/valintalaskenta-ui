@@ -1,10 +1,10 @@
 angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila',
-        '$timeout', 'SijoitteluAjo', 'VastaanottoTilat', 'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams',
+        '$timeout', 'SijoitteluAjo', 'VastaanottotilatHakukohteelle', 'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams',
         'FilterService', '$filter',
         function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
-                                               $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila,
+                                               $timeout, SijoitteluAjo, VastaanottotilatHakukohteelle, IlmoitusTila,
                                                HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
 
@@ -86,106 +86,106 @@ angular.module('valintalaskenta')
                 model.haku = resultWrapper.result;
             });
 
-            LatestSijoitteluajoHakukohde.get({
-                hakukohdeOid: hakukohdeOid,
-                hakuOid: hakuOid
-            }, function (result) {
-                if (result.sijoitteluajoId) {
-                    model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
+            var vastaanottotilatDeferred = $q.defer();
+            var sijoitteluajoDeferred = $q.defer();
 
-                    model.sijoitteluTulokset = result;
+            VastaanottotilatHakukohteelle.get({hakukohdeOid: hakukohdeOid,
+                hakuOid: hakuOid},
+              function (result) {
+                  vastaanottotilatDeferred.resolve(result);
+            }, function (error) {
+                  vastaanottotilatDeferred.reject(error);
+            });
 
-                    var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
-
-                    valintatapajonot.forEach(function (valintatapajono, index) {
-
-                        valintatapajono.index = index;
-                        valintatapajono.valittu = true;
-                        var valintatapajonoOid = valintatapajono.oid;
-                        var hakemukset = valintatapajono.hakemukset;
-
-                        //pick up data to be shown in basicinformation vie
-                        var hakemuserittely = {
-                            nimi: valintatapajono.nimi,
-                            hyvaksytyt: [],
-                            paikanVastaanottaneet: [],
-                            hyvaksyttyHarkinnanvaraisesti: [],
-                            varasijoilla: [],
-                            ehdollisesti: []
-                        };
-                        hakemuserittely.aloituspaikat = valintatapajono.aloituspaikat;
-                        model.hakemusErittelyt.push(hakemuserittely);
-
-                        var lastTasaSija = 1;
-                        var sija = 0;
-                        hakemukset.forEach(function (hakemus, index) {
-                            hakemus.onkoMuuttunutViimeSijoittelussa = (hakemus.onkoMuuttunutViimeSijoittelussa === true) || model.latestSijoitteluajo.sijoitteluajoId <= hakemus.viimeinenMuutos;
-
-                            var jono = {
+            sijoitteluajoDeferred.promise.then(function(result) {
+                vastaanottotilatDeferred.promise.then(function(tilat) {
+                    if (result.sijoitteluajoId) {
+                        model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
+                        model.sijoitteluTulokset = result;
+                        var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
+                        valintatapajonot.forEach(function (valintatapajono, index) {
+                            valintatapajono.index = index;
+                            valintatapajono.valittu = true;
+                            var valintatapajonoOid = valintatapajono.oid;
+                            var hakemukset = valintatapajono.hakemukset;
+                            //pick up data to be shown in basicinformation vie
+                            var hakemuserittely = {
                                 nimi: valintatapajono.nimi,
-                                pisteet: hakemus.pisteet,
-                                tila: hakemus.tila,
-                                jonosija: hakemus.jonosija,
-                                prioriteetti: valintatapajono.prioriteetti,
-                                tilaHistoria: hakemus.tilaHistoria,
-                                varasijanNumero: hakemus.varasijanNumero
+                                hyvaksytyt: [],
+                                paikanVastaanottaneet: [],
+                                hyvaksyttyHarkinnanvaraisesti: [],
+                                varasijoilla: [],
+                                ehdollisesti: []
                             };
-                            if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
-                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = {
-                                    onkoMuuttunutViimeSijoittelussa: hakemus.onkoMuuttunutViimeSijoittelussa,
-                                    etunimi: hakemus.etunimi,
-                                    sukunimi: hakemus.sukunimi,
-                                    hakemusOid: hakemus.hakemusOid,
-                                    hakijaOid: hakemus.hakijaOid,
-                                    tilanKuvaukset: hakemus.tilanKuvaukset,
-                                    hyvaksyttyHarkinnanvaraisesti: hakemus.hyvaksyttyHarkinnanvaraisesti,
-                                    varasijanNumero: hakemus.varasijanNumero,
+                            hakemuserittely.aloituspaikat = valintatapajono.aloituspaikat;
+                            model.hakemusErittelyt.push(hakemuserittely);
+                            var lastTasaSija = 1;
+                            var sija = 0;
+                            hakemukset.forEach(function (hakemus, index) {
+                                hakemus.onkoMuuttunutViimeSijoittelussa = (hakemus.onkoMuuttunutViimeSijoittelussa === true) || model.latestSijoitteluajo.sijoitteluajoId <= hakemus.viimeinenMuutos;
+
+                                var jono = {
+                                    nimi: valintatapajono.nimi,
+                                    pisteet: hakemus.pisteet,
                                     tila: hakemus.tila,
+                                    jonosija: hakemus.jonosija,
+                                    prioriteetti: valintatapajono.prioriteetti,
                                     tilaHistoria: hakemus.tilaHistoria,
-                                    vastaanottoTila: 'KESKEN',
-                                    ilmoittautumisTila: 'EI_TEHTY',
-                                    jonot: []
+                                    varasijanNumero: hakemus.varasijanNumero
                                 };
+                                if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
+                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = {
+                                        onkoMuuttunutViimeSijoittelussa: hakemus.onkoMuuttunutViimeSijoittelussa,
+                                        etunimi: hakemus.etunimi,
+                                        sukunimi: hakemus.sukunimi,
+                                        hakemusOid: hakemus.hakemusOid,
+                                        hakijaOid: hakemus.hakijaOid,
+                                        tilanKuvaukset: hakemus.tilanKuvaukset,
+                                        hyvaksyttyHarkinnanvaraisesti: hakemus.hyvaksyttyHarkinnanvaraisesti,
+                                        varasijanNumero: hakemus.varasijanNumero,
+                                        tila: hakemus.tila,
+                                        tilaHistoria: hakemus.tilaHistoria,
+                                        vastaanottoTila: 'KESKEN',
+                                        ilmoittautumisTila: 'EI_TEHTY',
+                                        jonot: []
+                                    };
 
-                            }
+                                }
 
-                            if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
-                                sija++;
-                                hakemus.valittu = true;
-                                hakemuserittely.hyvaksytyt.push(hakemus);
-                                hakemus.sija = sija;
-                                jono.sija = sija;
-                            }
+                                if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
+                                    sija++;
+                                    hakemus.valittu = true;
+                                    hakemuserittely.hyvaksytyt.push(hakemus);
+                                    hakemus.sija = sija;
+                                    jono.sija = sija;
+                                }
 
-                            if ((hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && hakemus.hyvaksyttyHarkinnanvaraisesti) {
-                                hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
-                            }
+                                if ((hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && hakemus.hyvaksyttyHarkinnanvaraisesti) {
+                                    hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
+                                }
 
 
-                            if (hakemus.tila === "VARALLA") {
-                                sija++;
-                                hakemuserittely.varasijoilla.push(hakemus);
-                                hakemus.sija = sija;
-                                jono.sija = sija;
-                            }
+                                if (hakemus.tila === "VARALLA") {
+                                    sija++;
+                                    hakemuserittely.varasijoilla.push(hakemus);
+                                    hakemus.sija = sija;
+                                    jono.sija = sija;
+                                }
 
-                            hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
+                                hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
 
-                            var found = false;
-                            model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.forEach(function (j) {
-                                if (j.nimi === jono.nimi) found = true;
+                                var found = false;
+                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.forEach(function (j) {
+                                    if (j.nimi === jono.nimi) found = true;
+                                });
+                                if (!found)
+                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
+
+
+                                lastTasaSija = hakemus.tasasijaJonosija;
                             });
-                            if (!found)
-                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
 
-
-                            lastTasaSija = hakemus.tasasijaJonosija;
-                        });
-
-
-                        VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
-                            valintatapajonoOid: valintatapajonoOid}, function (result) {
-
+                            // HERE
                             if (hakemukset) {
                                 hakemukset.forEach(function (currentHakemus) {
 
@@ -194,8 +194,8 @@ angular.module('valintalaskenta')
                                     currentHakemus.muokattuVastaanottoTila = "KESKEN";
                                     currentHakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
 
-                                    result.some(function (vastaanottotila) {
-                                        if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid) {
+                                    tilat.some(function (vastaanottotila) {
+                                        if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid && vastaanottotila.valintatapajonoOid === valintatapajonoOid) {
                                             currentHakemus.logEntries = vastaanottotila.logEntries;
                                             if (vastaanottotila.tila === null) {
                                                 vastaanottotila.tila = "KESKEN";
@@ -228,78 +228,89 @@ angular.module('valintalaskenta')
                                 });
                             }
 
-                        }, function (error) {
-                            model.errors.push(error);
+                            valintatapajono.tableParams = new ngTableParams({
+                                page: 1,            // show first page
+                                count: 50,          // count per page
+                                filters: {
+                                    'sukunimi' : ''
+                                },
+                                sorting: {
+                                    'tilaPrioriteetti': 'asc',     // initial sorting
+                                    'varasijanNumero': 'asc',
+                                    'sija': 'asc'
+                                }
+                            }, {
+                                total: valintatapajono.hakemukset.length, // length of data
+                                getData: function ($defer, params) {
+                                    var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                                    var orderedData = params.sorting() ?
+                                      $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
+                                      valintatapajono.hakemukset;
+                                    orderedData = params.filter() ?
+                                      $filter('filter')(orderedData, filters) :
+                                      orderedData;
+
+                                    params.total(orderedData.length); // set total for recalc pagination
+                                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+                                }
+                            });
+
                         });
 
-                        valintatapajono.tableParams = new ngTableParams({
-                            page: 1,            // show first page
-                            count: 50,          // count per page
-                            filters: {
-                                'sukunimi' : ''
-                            },
-                            sorting: {
-                                'tilaPrioriteetti': 'asc',     // initial sorting
-                                'varasijanNumero': 'asc',
-                                'sija': 'asc'
-                            }
-                        }, {
-                            total: valintatapajono.hakemukset.length, // length of data
-                            getData: function ($defer, params) {
-                                var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+                    }
 
-                                var orderedData = params.sorting() ?
-                                    $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
-                                    valintatapajono.hakemukset;
-                                orderedData = params.filter() ?
-                                    $filter('filter')(orderedData, filters) :
-                                    orderedData;
+                    for (var key in model.sijoitteluntulosHakijoittain) {
+                        if (model.sijoitteluntulosHakijoittain.hasOwnProperty(key)) {
+                            model.sijoitteluntulosHakijoittainArray.push(model.sijoitteluntulosHakijoittain[key]);
+                        }
+                    };
 
-                                params.total(orderedData.length); // set total for recalc pagination
-                                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    model.sijoitteluntulosHakijoittainTableParams = new ngTableParams({
+                        page: 1,            // show first page
+                        count: 50,          // count per page
+                        filters: {
+                            'sukunimi' : ''
+                        },
+                        sorting: {
+                            'tilaPrioriteetti': 'asc',     // initial sorting
+                            'varasijanNumero': 'asc',
+                            'sija': 'asc'
+                        }
+                    }, {
+                        total: model.sijoitteluntulosHakijoittainArray.length, // length of data
+                        getData: function ($defer, params) {
+                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
-                            }
-                        });
+                            var orderedData = params.sorting() ?
+                              $filter('orderBy')(model.sijoitteluntulosHakijoittainArray, params.orderBy()) :
+                              model.sijoitteluntulosHakijoittainArray;
+                            orderedData = params.filter() ?
+                              $filter('filter')(orderedData, filters) :
+                              orderedData;
+                            params.total(orderedData.length); // set total for recalc pagination
+                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 
+                        }
                     });
 
-                }
-
-                for (var key in model.sijoitteluntulosHakijoittain) {
-                    if (model.sijoitteluntulosHakijoittain.hasOwnProperty(key)) {
-                        model.sijoitteluntulosHakijoittainArray.push(model.sijoitteluntulosHakijoittain[key]);
-                    }
-                };
-
-                model.sijoitteluntulosHakijoittainTableParams = new ngTableParams({
-                    page: 1,            // show first page
-                    count: 50,          // count per page
-                    filters: {
-                        'sukunimi' : ''
-                    },
-                    sorting: {
-                        'tilaPrioriteetti': 'asc',     // initial sorting
-                        'varasijanNumero': 'asc',
-                        'sija': 'asc'
-                    }
-                }, {
-                    total: model.sijoitteluntulosHakijoittainArray.length, // length of data
-                    getData: function ($defer, params) {
-                        var filters = FilterService.fixFilterWithNestedProperty(params.filter());
-
-                        var orderedData = params.sorting() ?
-                            $filter('orderBy')(model.sijoitteluntulosHakijoittainArray, params.orderBy()) :
-                            model.sijoitteluntulosHakijoittainArray;
-                        orderedData = params.filter() ?
-                            $filter('filter')(orderedData, filters) :
-                            orderedData;
-                        params.total(orderedData.length); // set total for recalc pagination
-                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-
-                    }
-                });
-            }, function (error) {
+                }, function(error) {
+                    model.errors.push(error.data.message);
+                })
+            }, function(error) {
                 model.errors.push(error.data.message);
+            });
+
+            LatestSijoitteluajoHakukohde.get({
+                hakukohdeOid: hakukohdeOid,
+                hakuOid: hakuOid
+            },
+              function (result) {
+                  sijoitteluajoDeferred.resolve(result);
+
+            }, function (error) {
+                  sijoitteluajoDeferred.reject(error);
             });
         };
 
