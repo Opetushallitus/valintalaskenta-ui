@@ -469,7 +469,7 @@ app.factory('HakukohteenValintatulokset', function($resource) {
         {
             hakukohdeOid: "@hakukohdeOid"
         }, {
-            get: {method: "GET", isArray: true, cahce: false}
+            get: {method: "GET", isArray: true, cache: false}
         });
 });
 app.factory('VastaanottotilatHakukohteelle', function($resource) {
