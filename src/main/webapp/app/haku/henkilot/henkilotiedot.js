@@ -2,7 +2,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe,
                                             SijoittelunVastaanottotilat, LatestSijoittelunTilat,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
-                                            HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, VastaanottoTilat,
+                                            HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakukohteenValintatulokset,
                                             LatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService) {
     "use strict";
 
@@ -104,7 +104,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                     hakutoive.hakutoiveenValintatapajonot.forEach(function (valintatapajono) {
                                         model.sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
 
-                                        VastaanottoTilat.get({hakukohdeOid: hakutoive.hakukohdeOid,
+                                        HakukohteenValintatulokset.get({hakuOid: hakuOid, hakukohdeOid: hakutoive.hakukohdeOid,
                                             valintatapajonoOid: valintatapajono.valintatapajonoOid}, function (result) {
                                             result.forEach(function (r) {
                                                 if (r.hakemusOid === model.hakemus.oid) {
@@ -135,7 +135,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         });
 
                         //fetch sijoittelun vastaanottotilat and extend hakutoiveet
-                        SijoittelunVastaanottotilat.get({hakemusOid: model.hakemus.oid}, function (vastaanottotilat) {
+                        SijoittelunVastaanottotilat.get({hakuOid: hakuOid, hakemusOid: model.hakemus.oid}, function (vastaanottotilat) {
                             if (vastaanottotilat.length > 0) {
                                 vastaanottotilat.forEach(function (vastaanottoTila) {
 

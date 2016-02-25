@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, $q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
-                                        $timeout, SijoitteluAjo, VastaanottoTilat, IlmoitusTila,
+                                        $timeout, SijoitteluAjo, HakukohteenValintatulokset, IlmoitusTila,
                                         HaunTiedot, SijoitteluTila, TarjontaHakukohde) {
 	var model;
 	model = new function() {
@@ -83,7 +83,7 @@ app.factory('HyvaksytytModel', function(HakukohdeHenkilot, Hakemus, HakemusKey, 
                                     model.sijoitteluMap[hakemus.hakemusOid] = {tila: tila};
                                 });
 
-                                VastaanottoTilat.get({hakukohdeOid: hakukohdeOid,
+                                HakukohteenValintatulokset.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid,
                                     valintatapajonoOid: valintatapajonoOid}, function (vastaanottotilat) {
 
                                     model.hakeneet.forEach(function (currentHakemus) {

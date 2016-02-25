@@ -1,10 +1,10 @@
 angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila',
-        '$timeout', 'SijoitteluAjo', 'VastaanottotilatHakukohteelle', 'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams',
+        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatulokset', 'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams',
         'FilterService', '$filter',
         function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
-                                               $timeout, SijoitteluAjo, VastaanottotilatHakukohteelle, IlmoitusTila,
+                                               $timeout, SijoitteluAjo, HakukohteenValintatulokset, IlmoitusTila,
                                                HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
 
@@ -89,7 +89,7 @@ angular.module('valintalaskenta')
             var vastaanottotilatDeferred = $q.defer();
             var sijoitteluajoDeferred = $q.defer();
 
-            VastaanottotilatHakukohteelle.get({hakukohdeOid: hakukohdeOid,
+            HakukohteenValintatulokset.get({hakukohdeOid: hakukohdeOid,
                 hakuOid: hakuOid},
               function (result) {
                   vastaanottotilatDeferred.resolve(result);

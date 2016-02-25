@@ -45,7 +45,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
         return $q.all({
             hakijaryhmat: HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}).$promise,
             sijoittelunTulos: LatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
-            valintatulokset: HakukohteenValintatulokset.get({hakukohdeOid: hakukohdeOid}).$promise
+            valintatulokset: HakukohteenValintatulokset.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
         }).then(function (o) {
             var valintatapajonot = _.indexBy(o.sijoittelunTulos.valintatapajonot, 'oid');
             var hakemuksetSijoittelussa = _.chain(o.sijoittelunTulos.valintatapajonot)
