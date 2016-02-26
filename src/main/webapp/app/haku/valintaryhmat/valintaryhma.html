@@ -54,10 +54,11 @@
     <div class="col-md-6">
         <div collapse="!selectedValintaryhma">
             <h2>Valintaryhmä: {{selectedValintaryhma.nimi}}</h2>
-            <button ng-click="kaynnistaValintalaskenta(selectedValintaryhma)" class="btn btn-sm btn-primary">Suorita laskenta valintaryhmälle
-            </button>
-            <button ng-click="kaynnistaValintakoelaskenta()" class="btn btn-sm btn-primary">Suorita pelkkä valintakoelaskenta valintaryhmälle
-            </button>
+            <span ng-if="voiKaynnistaaLaskennan(selectedValintaryhma)">
+                <div ng-if="selectedValintaryhma.viimeinenKaynnistyspaiva">Valintaryhmäkohtainen laskenta mahdollinen {{selectedValintaryhma.viimeinenKaynnistyspaiva | date:'dd.MM.yyyy'}} asti.</div>
+                <button ng-click="kaynnistaValintalaskenta(selectedValintaryhma)" class="btn btn-sm btn-primary">Suorita laskenta valintaryhmälle</button>
+                <button ng-click="kaynnistaValintakoelaskenta()" class="btn btn-sm btn-primary">Suorita pelkkä valintakoelaskenta valintaryhmälle</button>
+            </span>
             <button ng-click="showHakukohteet(selectedValintaryhma)" class="btn btn-sm btn-default"><i ng-class="hakukohteetVisible ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> Näytä valintaryhmään liittyvät hakukohteet</button>
         </div>
 

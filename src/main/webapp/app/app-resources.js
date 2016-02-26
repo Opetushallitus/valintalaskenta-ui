@@ -680,6 +680,12 @@ app.factory('OrganizationByOid', function ($resource) {
     });
 });
 
+app.factory('OrganizationHierarchy', function ($resource) {
+    return $resource(ORGANIZATION_SERVICE_URL_BASE + "organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=:oid", {oid: "@oid"}, {
+        get: {method: "GET", cache: true}
+    });
+});
+
 
 angular.module('valintalaskenta')
 

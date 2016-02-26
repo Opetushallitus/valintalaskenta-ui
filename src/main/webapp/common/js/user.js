@@ -1,10 +1,12 @@
 angular.module('valintalaskenta')
 
-    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG', function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG) {
+    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG', 'OrganizationHierarchy',
+        function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG, OrganizationHierarchy) {
         var model = new function () {
             this.organizationsDeferred = undefined;
 
             this.organizationOids = [];
+            this.organizationOidsAndChilds = [];
             this.organizations = [];
             this.isKKUser = false;
             this.hasOtherThanKKUserOrgs = false;
@@ -34,6 +36,21 @@ angular.module('valintalaskenta')
                         model.organizationsDeferred.resolve();
                     }, function () {
                         model.organizationsDeferred.reject();
+                    });
+
+                    function getOrgOidAndChilds(org){
+                        if(org){
+                            model.organizationOidsAndChilds.push(org.oid);
+                            _.forEach(org.children, getOrgOidAndChilds) //Recursion
+                        }
+                    }
+
+                    _.forEach(oidList, function (oid) {
+                        OrganizationHierarchy.get({oid: oid}, function (res) {
+                            res.$promise.then(getOrgOidAndChilds(res.organisaatiot[0]));
+                        }, function (error) {
+                            $log.error('Organisaation hierarkian hakeminen epäonnistui:', error);
+                        });
                     });
 
                 }, function (error) {

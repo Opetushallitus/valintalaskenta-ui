@@ -105,8 +105,8 @@ angular.module('valintalaskenta')
     return modelInterface;
 }])
 
-.controller('ValintaryhmaController', ['$scope', '$routeParams', '$modal', '_', 'HakuModel', 'ValintaryhmaLista',
-    function($scope, $routeParams, $modal, _, HakuModel, ValintaryhmaLista) {
+.controller('ValintaryhmaController', ['$scope', '$routeParams', '$modal', '_', 'HakuModel', 'ValintaryhmaLista', 'UserModel',
+    function($scope, $routeParams, $modal, _, HakuModel, ValintaryhmaLista, UserModel) {
     $scope.predicate = 'nimi';
     $scope.domain = ValintaryhmaLista;
 
@@ -170,16 +170,20 @@ angular.module('valintalaskenta')
 
         if (valintaryhma.tyyppi === 'HAKUKOHDE') {
             valintaryhma.showValintaryhma = true;
-        } else if ($scope.hasHakukohdeViiteChild(valintaryhma.alavalintaryhmat) || valintaryhma.hakukohdeViitteet.length > 0) {
+        } else if ($scope.isChildValintaryhmaVisible(valintaryhma.alavalintaryhmat) || valintaryhma.hakukohdeViitteet.length > 0) {
             valintaryhma.showValintaryhma = true;
         } else if (_.isEmpty(valintaryhma.alavalintaryhmat) && _.isEmpty(valintaryhma.hakukohdeViitteet)) {
             valintaryhma.showValintaryhma = false;
         } else {
             valintaryhma.showValintaryhma = false;
         }
+
+        if(!$scope.voiKaynnistaaLaskennan(valintaryhma) && !$scope.isChildValintaryhmaVisible(valintaryhma.alavalintaryhmat)){
+            valintaryhma.showValintaryhma = false;
+        }
     };
 
-    $scope.hasHakukohdeViiteChild = function (alavalintaryhmat) {
+    $scope.isChildValintaryhmaVisible = function (alavalintaryhmat) {
         return _.some(alavalintaryhmat, function (alaValintaryhma) {
             return alaValintaryhma.showValintaryhma;
         });
@@ -200,6 +204,18 @@ angular.module('valintalaskenta')
         _.forEach(valintaryhma.hakukohdeViitteet, function (hakukohde) {
             $scope.hakukohteet.push(hakukohde);
         });
+    };
+
+    var dayInMillis = 24*60*60*1000-1;
+    $scope.voiKaynnistaaLaskennan = function (valintaryhma) {
+        if(!valintaryhma){ return false; }
+        if(UserModel.isOphUser){ return true; }
+
+        hasOrganizationAccess = valintaryhma.vastuuorganisaatio && UserModel.organizationOidsAndChilds.indexOf(valintaryhma.vastuuorganisaatio.oid) > 0;
+        hasExpired = valintaryhma.viimeinenKaynnistyspaiva && (new Date()).getTime() > valintaryhma.viimeinenKaynnistyspaiva + dayInMillis;
+        ifLeafNode = valintaryhma.alavalintaryhmat && valintaryhma.alavalintaryhmat.length == 0;
+
+        return hasOrganizationAccess && !hasExpired && ifLeafNode;
     };
 
     $scope.kaynnistaValintalaskenta = function (valintaryhma) {
