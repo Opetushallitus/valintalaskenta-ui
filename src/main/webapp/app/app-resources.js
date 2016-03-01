@@ -480,7 +480,7 @@ app.factory('HenkilotByOid', function($resource) {
     });
 });
 app.factory('VastaanottoTila', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/tila/haku/:hakuoid/hakukohde/:hakukohdeOid?selite=:selite",
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuoid/hakukohde/:hakukohdeOid?selite=:selite",
         {
             hakuoid: "@hakuoid",
             hakukohdeOid: "@hakukohdeoid",
