@@ -346,23 +346,23 @@ angular.module('valintalaskenta')
                 selite: selite
             };
 
-            var tilaObj = _.map(muokatutHakemukset, function(hakemus) {
+            var tilaObj = _.map(muokatutHakemukset, function (hakemus) {
                 if (hakemus.muokattuVastaanottoTila === '') {
                     hakemus.muokattuVastaanottoTila = null;
                 }
                 if (hakemus.muokattuIlmoittautumisTila === '') {
                     hakemus.muokattuIlmoittautumisTila = null;
                 }
-            	return {
-            		tila: hakemus.muokattuVastaanottoTila,
+                return {
+                    tila: hakemus.muokattuVastaanottoTila,
                     ilmoittautumisTila: hakemus.muokattuIlmoittautumisTila,
-            		valintatapajonoOid: valintatapajonoOid,
-                	hakemusOid: hakemus.hakemusOid,
+                    valintatapajonoOid: valintatapajonoOid,
+                    hakemusOid: hakemus.hakemusOid,
                     julkaistavissa: hakemus.julkaistavissa,
                     hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
                     hyvaksyPeruuntunut: hakemus.hyvaksyPeruuntunut,
                     read: hakemus.read
-            	};
+                };
             });
 
             VastaanottoTila.post(tilaParams, tilaObj, function (result) {
