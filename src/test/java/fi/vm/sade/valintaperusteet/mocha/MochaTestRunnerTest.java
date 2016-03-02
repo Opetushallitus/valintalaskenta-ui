@@ -14,7 +14,11 @@ public class MochaTestRunnerTest {
     public void mochaTest() throws Exception {
         JettyTestRunner.start();
         String[] cmd = {"node_modules/mocha-phantomjs/bin/mocha-phantomjs", "-R", "spec", "http://localhost:" + JettyTestRunner.PORT + "/valintalaskenta-ui/test/runner.html"};
-        Process ps = Runtime.getRuntime().exec(cmd);
+
+        ProcessBuilder pb = new ProcessBuilder(cmd);
+        pb.inheritIO();
+        Process ps = pb.start();
+
         assertTrue(ps.waitFor(60, TimeUnit.SECONDS));
         assertEquals(0, ps.exitValue());
         JettyTestRunner.stop();
