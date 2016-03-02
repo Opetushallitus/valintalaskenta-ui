@@ -285,7 +285,7 @@ angular.module('valintalaskenta').
         tulos.hyvaksyttyVarasijalta = false;
 
         var tilaParams = {
-            hakuoid: $routeParams.hakuOid,
+            hakuOid: $routeParams.hakuOid,
             hakukohdeOid: $routeParams.hakukohdeOid,
             hakemusOid: hakemus.oid
         };
@@ -304,7 +304,7 @@ angular.module('valintalaskenta').
 
     $scope.setIlmoittautumisTila = function(hakemus) {
         var tilaParams = {
-            hakuoid: $routeParams.hakuOid,
+            hakuOid: $routeParams.hakuOid,
             hakukohdeOid: $routeParams.hakukohdeOid,
             hakemusOid: hakemus.oid
         };

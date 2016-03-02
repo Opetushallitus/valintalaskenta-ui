@@ -341,7 +341,7 @@ angular.module('valintalaskenta')
         this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure) {
             model.errors.length = 0;
             var tilaParams = {
-                hakuoid: model.hakuOid,
+                hakuOid: model.hakuOid,
                 hakukohdeOid: model.hakukohdeOid,
                 selite: selite
             };

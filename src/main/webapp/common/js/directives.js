@@ -172,7 +172,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                             $scope.update = function () {
                                 if ($scope.hakemus) {
                                     var tilaParams = {
-                                        hakuoid: $scope.hakuOid,
+                                        hakuOid: $scope.hakuOid,
                                         hakukohdeOid: $scope.hakukohdeOid,
                                         valintatapajonoOid: $scope.valintatapajonoOid,
                                         hakemusOid: $scope.hakemus.hakemusOid,
@@ -192,6 +192,9 @@ app.directive('sijoitteluVastaanottoTila', function () {
                                     var tilaObj = {
                                         valintatapajonoOid: $scope.valintatapajonoOid,
                                         hakemusOid: $scope.hakemus.hakemusOid,
+                                        hakukohdeOid: $scope.hakukohdeOid,
+                                        hakuOid: $scope.hakuOid,
+                                        hakijaOid: $scope.hakemus.hakijaOid,
                                         tila: $scope.hakemus.muokattuVastaanottoTila,
                                         ilmoittautumisTila: $scope.hakemus.muokattuIlmoittautumisTila,
                                         julkaistavissa: true,

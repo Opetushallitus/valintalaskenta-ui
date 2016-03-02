@@ -480,10 +480,10 @@ app.factory('HenkilotByOid', function($resource) {
     });
 });
 app.factory('VastaanottoTila', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuoid/hakukohde/:hakukohdeOid?selite=:selite",
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuOid/hakukohde/:hakukohdeOid?selite=:selite",
         {
-            hakuoid: "@hakuoid",
-            hakukohdeOid: "@hakukohdeoid",
+            hakuOid: "@hakuOid",
+            hakukohdeOid: "@hakukohdeOid",
             selite: "@selite"
         }, {
             post: {method: "POST"}
@@ -514,10 +514,10 @@ app.factory('SijoitteluTila', function($resource) {
 
 
 app.factory('HakemuksenVastaanottoTila', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/hakemusOid/:hakemusOid/hakuOid/:hakuoid/hakukohde/:hakukohdeOid/valintatapajono/:valintatapajonoOid",
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/hakemus/:hakemusOid/haku/:hakuOid/hakukohde/:hakukohdeOid/valintatapajono/:valintatapajonoOid",
         {
-            hakuoid: "@hakuoid",
-            hakukohdeOid: "@hakukohdeoid",
+            hakuOid: "@hakuOid",
+            hakukohdeOid: "@hakukohdeOid",
             valintatapajonoOid: "@valintatapajonoOid",
             hakemusOid: "@hakemusOid"
         }, {
@@ -526,7 +526,7 @@ app.factory('HakemuksenVastaanottoTila', function($resource) {
 });
 
 app.factory('SijoittelunVastaanottotilat', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/hakemusOid/:hakemusOid/hakuOid/:hakuOid",
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/hakemus/:hakemusOid/haku/:hakuOid",
       {
           hakuoid: "@hakuoid",
           hakemusOid: "@hakemusOid"
