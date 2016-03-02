@@ -274,6 +274,9 @@ angular.module('valintalaskenta').
         tulos.tila = hakemus.muokattuVastaanottoTila;
         tulos.valintatapajonoOid = $scope.model.valintatapajonoOid;
         tulos.hakemusOid = hakemus.oid;
+        if (!hakemus.personOid) {
+            alert('No hakemus.personOid in lisahakuhyvaksytyt.js!');
+        }
         tulos.hakijaOid = hakemus.personOid;
         tulos.hakutoive = 1;
         tulos.ilmoittautumisTila = hakemus.muokattuIlmoittautumisTila;
