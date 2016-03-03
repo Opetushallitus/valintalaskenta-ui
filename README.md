@@ -6,7 +6,7 @@ Run NodeAndJettyTestRunner with flags -Dnode_server=http://localhost:3000 -Dkoos
 
 Run ValintalaskentakoostepalveluJetty with flags -Dport=8090 -Dsijoittelu_server=http://localhost:9000 -Dvts_server=http://localhost:8097
 
-Run SijoitteluServiceJetty with flags -Dport=9000 -DsijoitteluMongoUri=mongodb://localhost:10000 -DvalintalaskentaMongoUri=mongodb://localhost:10000
+Run SijoitteluServiceJetty with flags -Dpublic_server=http://localhost:3000/mock -Dport=9000  -Dvts_server=http://localhost:8097 -DsijoitteluMongoUri=mongodb://localhost:10000 -DvalintalaskentaMongoUri=mongodb://localhost:10000
 
 Run JettyLauncher with flags -Dvalintatulos.profile=it -DmongoPort=10000
 
