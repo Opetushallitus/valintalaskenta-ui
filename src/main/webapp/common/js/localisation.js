@@ -74,7 +74,10 @@ angular.module('oph.localisation', [])
                             }
                         }
                         deferred.resolve();
-                    })
+                    }, function(localeRetrievalError) {
+                         console.warn("Locale retrieval error, returning empty array for localisations", localeRetrievalError);
+                         deferred.resolve([]);
+                     });
                 };
                 return deferred.promise;
             };
@@ -158,7 +161,6 @@ angular.module('oph.localisation', [])
  * UI-directive käännösten käyttämiseen
  */
     .directive('tl', ['LocalisationService', function(LocalisationService) {
-
         return {
             restrict: 'A',
             replace: true,
