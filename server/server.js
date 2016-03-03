@@ -65,5 +65,26 @@ app.get('/valintalaskentakoostepalvelu/resources/parametrit/:any', (req,res)=>re
   "harkinnanvarainenpaatostallennus": true
 }));
 app.get('/valintalaskentakoostepalvelu/**', (req, res)=>proxy.web(req, res, { prependPath: true, xfwd: true, secure: false, target: kooste_server}));
+app.get('/mock/v1/haku/**', (req,res)=> {
+  res.send({
+    "result": {
+      "kohdejoukkoUri": "haunkohdejoukko_11#1"
+    }
+  })
+});
+app.get('/mock/v1/rest/parametri/**', (req,res)=> {
+  res.send({
+    "PH_HKP": {
+      "date" : new Date().getTime() + 24 * 60 * 60 * 1000
+    }
+  })
+});
 
-
+app.get('/mock/v1/**', (req,res)=> {
+  console.log(req)
+  res.send({
+    "result": {
+      "kohdejoukkoUri": "haunkohdejoukko_11#1"
+    }
+  })
+});
