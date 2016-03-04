@@ -18,6 +18,7 @@ public class NodeTestRunner {
     public static void startNodeJs() throws Exception {
         final CommandLine cmdLine = new CommandLine("node").addArgument("--harmony").addArgument("ui/valintalaskenta-ui/server/server.js");
         new DefaultExecutor().execute(cmdLine, ImmutableMap.of(
+                "sijoittelu_server", propertyOrEmptyString("sijoittelu_server"),
                 "public_server", propertyOrEmptyString("public_server"),
                 "kooste_server", propertyOrEmptyString("kooste_server")), new DefaultExecuteResultHandler());
     }

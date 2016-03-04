@@ -9,6 +9,7 @@ var url = require('url');
 var fs = require('fs');
 var kooste_server = process.env.kooste_server;
 var public_server = process.env.public_server;
+var sijoittelu_server = process.env.sijoittelu_server;
 
 // Server Config
 var appPort = process.env.PORT || 3000;
@@ -64,6 +65,7 @@ app.get('/valintalaskentakoostepalvelu/resources/parametrit/:any', (req,res)=>re
   "koekutsujenmuodostaminen": true,
   "harkinnanvarainenpaatostallennus": true
 }));
+app.get('/sijoittelu-service/**', (req, res)=>proxy.web(req, res, { prependPath: true, xfwd: true, secure: false, target: sijoittelu_server}));
 app.get('/valintalaskentakoostepalvelu/**', (req, res)=>proxy.web(req, res, { prependPath: true, xfwd: true, secure: false, target: kooste_server}));
 app.get('/mock/v1/haku/**', (req,res)=> {
   res.send({
