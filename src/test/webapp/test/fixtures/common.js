@@ -17,7 +17,7 @@ var serviceUrls = {
     },
 
     hakukohdeTila: function (oid) {
-        return new RegExp(".*resources/tila/hakukohde/" + oid + "$")
+        return new RegExp(".*resources/proxy/valintatulosservice/haku/.*/hakukohde/" + oid + ".*")
     },
 
     hakukohdeAvaimet: function () {
@@ -27,6 +27,10 @@ var serviceUrls = {
 
 var httpFixtures = function () {
     var fixtures = {}
+
+    fixtures.get = function (url, response) {
+        return testFrame().httpBackend.when('GET', url).respond(response)
+    }
 
     fixtures.hakukohdeHAKUKOHDE1 = function () {
         fixtures.get(serviceUrls.hakukohde("HAKUKOHDE1"), restData.hakukohde.peruskaava)
@@ -48,20 +52,24 @@ var httpFixtures = function () {
         fixtures.get(serviceUrls.hakukohde("1.2.246.562.20.18097797874"), restData.hakukohde.peruskaava)
     }
 
+    fixtures.hakukohde37731636579Tila = function () {
+        fixtures.get(serviceUrls.hakukohdeTila("1.2.246.562.20.37731636579"), restData.hakukohde.tila)
+    }
+
     fixtures.hakukohde44161747595Tila = function () {
-        fixtures.get(serviceUrls.hakukohdeTila("1.2.246.562.20.44161747595/1425545626196-6437662849831338165"), restData.hakukohde.tila)
+        fixtures.get(serviceUrls.hakukohdeTila("1.2.246.562.20.44161747595"), restData.hakukohde.tila)
     }
 
     fixtures.hakukohde18097797874Tila = function () {
-        fixtures.get(serviceUrls.hakukohdeTila("1.2.246.562.20.18097797874/1427374494574-2003796769000462860"), restData.hakukohde.tila)
+        fixtures.get(serviceUrls.hakukohdeTila("1.2.246.562.20.18097797874"), restData.hakukohde.tila)
+    }
+
+    fixtures.hakukohde00000000220Tila = function () {
+        fixtures.get(serviceUrls.hakukohdeTila("1.2.246.562.11.00000000220"), restData.hakukohde.tila)
     }
 
     fixtures.hakukohteenAvaimet = function () {
         fixtures.get(serviceUrls.hakukohdeAvaimet(), restData.hakukohde.avaimet)
-    }
-
-    fixtures.get = function (url, response) {
-        return testFrame().httpBackend.when('GET', url).respond(response)
     }
 
     return fixtures

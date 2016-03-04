@@ -321,10 +321,10 @@ function sijoitteluAjoFixtures() {
         }]
     }];
 
-    httpBackend.when('GET', /.*resources\/tila\/hakukohde\/1\.2\.246\.562\.20\.37731636579\/1433334427784-5861045456369717641/)
+    httpBackend.when('GET', /.*resources\/proxy\/valintatulosservice\/haku\/.*\/hakukohde\/1\.2\.246\.562\.20\.37731636579\?valintatapajonoOid=1433334427784-5861045456369717641/)
         .respond(hakukohteet1);
 
-    httpBackend.when('GET', /.*resources\/tila\/hakukohde\/1\.2\.246\.562\.11\.00000000220\/14255456271064587270246623295085/)
+    httpBackend.when('GET', /.*resources\/proxy\/valintatulosservice\/haku\/.*\/hakukohde\/1\.2\.246\.562\.11\.00000000220\?valintatapajonoOid=14255456271064587270246623295085/)
         .respond(hakukohteet2);
 
     httpBackend.when('GET', /.*\/sijoittelu\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.37731636579/)
@@ -827,10 +827,10 @@ function sijoitteluAjoFixtures() {
 
     // Tilasiirtymäkutsut:
     // Taustajärjestelmä voi tuottaa tämän virheen oikeasti sitovassa vastaanotossa
-    httpBackend.when('POST', /.*resources\/tila\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/, tilaIs("PERUNUT")).respond(403, '{"message": "VTS aikaisempi vastaanotto"}');
+    httpBackend.when('POST', /.*resources\/proxy\/valintatulosservice\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/, tilaIs("PERUNUT")).respond(403, '{"message": "VTS aikaisempi vastaanotto"}');
     // Taustajärjestelmä voi oikessa ympäristössä tuottaa tämän virheen siirryttäessä tilaan joka muutetaan VTS:ssä
-    httpBackend.when('POST', /.*resources\/tila\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/, tilaIs("PERUUTETTU")).respond(400, '{"message": "VTS vastaanottovirhe"}');
-    httpBackend.when('POST', /.*resources\/tila\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/).respond();
+    httpBackend.when('POST', /.*resources\/proxy\/valintatulosservice\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/, tilaIs("PERUUTETTU")).respond(400, '{"message": "VTS vastaanottovirhe"}');
+    httpBackend.when('POST', /.*resources\/proxy\/valintatulosservice\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hakemusOid=.*/).respond();
 
     var lisahakuTila = [{
         "id": {
@@ -867,5 +867,5 @@ function sijoitteluAjoFixtures() {
         "read": 1439898044625,
         "viimeinenMuutos": 1439896286961
     }];
-    httpBackend.when('GET', /.*resources\/tila\/hakukohde\/LISAHAKUKOHDE\/5e7e8b1a-7fa2-4833-a941-f993b749d437/).respond(lisahakuTila);
+    httpBackend.when('GET', /.*resources\/proxy\/valintatulosservice\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE.*/).respond(lisahakuTila);
 }
