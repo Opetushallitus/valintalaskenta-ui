@@ -45,9 +45,7 @@ public class JettyTestRunner {
         try {
             initServer(mainServer);
             mainServer.start();
-            while (true) {
-                Thread.sleep(200);
-            }
+            mainServer.join();
         } catch (Exception e) {
             LOG.error("Something terrible happened during jetty startup {}", e);
         } finally {
