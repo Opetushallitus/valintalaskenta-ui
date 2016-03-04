@@ -3,7 +3,7 @@
   <parent>
       <groupId>fi.vm.sade.valintaperusteet</groupId>
       <artifactId>ui</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
 	<relativePath>..</relativePath>
   </parent>
   <artifactId>valintalaskenta-ui</artifactId>
@@ -197,10 +197,9 @@
                         <phase>integration-test</phase>
                         <configuration>
                             <tasks name="Run mocha tests">
-                                <exec dir="${basedir}"
-                                      executable="npm"
+                                <exec dir="${basedir}" executable="npm"
                                       failonerror="true">
-                                    <arg value="test"/>
+                                    <arg value="test" />
                                 </exec>
                             </tasks>
                         </configuration>
