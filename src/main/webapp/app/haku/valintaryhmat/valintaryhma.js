@@ -211,7 +211,7 @@ angular.module('valintalaskenta')
         if(!valintaryhma){ return false; }
         if(UserModel.isOphUser){ return true; }
 
-        hasOrganizationAccess = valintaryhma.vastuuorganisaatio && UserModel.organizationOidsAndChilds.indexOf(valintaryhma.vastuuorganisaatio.oid) > 0;
+        hasOrganizationAccess = valintaryhma.vastuuorganisaatio && UserModel.organizationOidsAndChilds.indexOf(valintaryhma.vastuuorganisaatio.oid) != -1;
         hasExpired = valintaryhma.viimeinenKaynnistyspaiva && (new Date()).getTime() > valintaryhma.viimeinenKaynnistyspaiva + dayInMillis;
         ifLeafNode = valintaryhma.alavalintaryhmat && valintaryhma.alavalintaryhmat.length == 0;
 
