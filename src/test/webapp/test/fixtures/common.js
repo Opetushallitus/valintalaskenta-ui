@@ -188,6 +188,7 @@ var restData = {
             "hakuOid": "1.2.246.562.29.95390561488",
             "hakutoive": 2,
             "tila": "KESKEN",
+            "tilaHakijalle": "EI_VASTAANOTETTU_MAARA_AIKANA",
             "ilmoittautumisTila": "EI_TEHTY",
             "read": 1437464563179,
             "logEntries": [{
@@ -216,6 +217,7 @@ var restData = {
             "hakuOid": "1.2.246.562.29.95390561488",
             "hakutoive": 2,
             "tila": "KESKEN",
+            "tilaHakijalle": "EI_VASTAANOTETTU_MAARA_AIKANA",
             "ilmoittautumisTila": "EI_TEHTY",
             "read": 1437464563179,
             "logEntries": [{
@@ -245,6 +247,7 @@ var restData = {
             "hakuOid": "1.2.246.562.29.95390561488",
             "hakutoive": 2,
             "tila": "KESKEN",
+            "tilaHakijalle": "EI_VASTAANOTETTU_MAARA_AIKANA",
             "ilmoittautumisTila": "EI_TEHTY",
             "read": 1437464563179,
             "logEntries": [{
@@ -274,6 +277,7 @@ var restData = {
             "hakuOid": "1.2.246.562.29.95390561488",
             "hakutoive": 2,
             "tila": "KESKEN",
+            "tilaHakijalle": "EI_VASTAANOTETTU_MAARA_AIKANA",
             "ilmoittautumisTila": "EI_TEHTY",
             "read": 1437464563179,
             "logEntries": [{

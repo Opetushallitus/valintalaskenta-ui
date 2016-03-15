@@ -193,12 +193,16 @@ angular.module('valintalaskenta')
                                     currentHakemus.vastaanottoTila = "KESKEN";
                                     currentHakemus.muokattuVastaanottoTila = "KESKEN";
                                     currentHakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
+                                    currentHakemus.tilaHakijalle = "KESKEN";
 
                                     tilat.some(function (vastaanottotila) {
                                         if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid && vastaanottotila.valintatapajonoOid === valintatapajonoOid) {
                                             currentHakemus.logEntries = vastaanottotila.logEntries;
                                             if (vastaanottotila.tila === null) {
                                                 vastaanottotila.tila = "KESKEN";
+                                            }
+                                            if (vastaanottotila.tilaHakijalle === null) {
+                                                vastaanottotila.tilaHakijalle = "KESKEN";
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
@@ -213,6 +217,7 @@ angular.module('valintalaskenta')
                                             if (vastaanottotila.ilmoittautumisTila === null) {
                                                 vastaanottotila.ilmoittautumisTila = "EI_TEHTY";
                                             }
+                                            currentHakemus.tilaHakijalle = vastaanottotila.tilaHakijalle;
                                             currentHakemus.viimeinenMuutos = vastaanottotila.viimeinenMuutos;
                                             currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
@@ -670,7 +675,20 @@ angular.module('valintalaskenta')
         });
     };
 
+    $scope.selectEiVastanotettuMaaraaikanaToAll = function(valintatapajonoOid) {
+        var jonoonLiittyvat = _.filter($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
+            return valintatapajono.oid === valintatapajonoOid;
+        });
+        var muokattavatHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
+            return valintatapajono.hakemukset;
+        }));
 
+        muokattavatHakemukset.forEach(function(hakemus) {
+          if(hakemus.julkaistavissa && "HYLATTY" !== hakemus.tila && "EI_VASTAANOTETTU_MAARA_AIKANA" === hakemus.tilaHakijalle) {
+            hakemus.muokattuVastaanottoTila = hakemus.tilaHakijalle
+          }
+        });
+    };
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
@@ -734,3 +752,9 @@ angular.module('valintalaskenta')
     }
     UserModel.refreshIfNeeded()
 }]);
+
+app.filter('removeUnderscores', function(){
+    return function(obj){
+        return obj.replace(/_/g, "");
+    }
+});
