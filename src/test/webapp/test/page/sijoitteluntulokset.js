@@ -49,7 +49,7 @@ sijoitteluntulokset = initSelectors({
     valintatulosTilaIndex: function (trIndex) {
         return ".result-list tr:eq(" + trIndex + ") td:eq(1) span"
     },
-    tallenna: "a.btn-primary:nth-child(3)",
+    tallenna: "a:contains('Tallenna')",
     tallennaOk: "#saveChoicesBtn",
     hyvaksyValintaesitys: "a.btn:nth-child(1)",
     jalkiohjaus: ".testJalkiohjaus",
