@@ -1,3 +1,3 @@
 <select ng-disabled="!isEditable" ng-change="$parent.resetIlmoittautumisTila(hakemus); $parent.addMuokattuHakemus(hakemus)" ng-model="hakemus.muokattuVastaanottoTila"
-        ng-options="tila.value as tila.default_text for tila in hakemuksenMuokattuVastaanottoTilat">
+        ng-options="tila.value as tila.default_text disable when tila.disable for tila in hakemuksenMuokattuVastaanottoTilat">
 </select>

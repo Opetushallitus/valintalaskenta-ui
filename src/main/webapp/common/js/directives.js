@@ -810,9 +810,8 @@ app.directive('muokattuVastaanottoTila', function () {
         controller: function ($scope, AuthService, Korkeakoulu) {
             var updateEditable = function(hakemus, isKk, updateOph) {
                 $scope.isEditable =
-                    (isKk ||
-                     updateOph ||
-                     hakemus.muokattuVastaanottoTila !== "PERUUTETTU");
+                    (hakemus.muokattuVastaanottoTila !== "OTTANUT_VASTAAN_TOISEN_PAIKAN"
+                    && (isKk || updateOph || hakemus.muokattuVastaanottoTila !== "PERUUTETTU"));
             };
             var updateTilat = function(isKk, isLisahaku, updateOph) {
                 if (isKk) {
@@ -822,7 +821,8 @@ app.directive('muokattuVastaanottoTila', function () {
                         {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
                         {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
                         {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
-                        {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
+                        {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"},
+                        {value: "OTTANUT_VASTAAN_TOISEN_PAIKAN", text_prop: 'sijoitteluntulos.ottanutvastaantoisenpaikan', default_text:"Ottanut vastaan toisen paikan", disable: true}
                     ].filter(poistaLisahaustaEhdollinenVastaanotto(isLisahaku));
                 } else {
                     $scope.hakemuksenMuokattuVastaanottoTilat = [
@@ -888,10 +888,9 @@ app.directive('showSijoittelunTila', function () {
             $scope.showHyvaksyPeruuntunut = false;
             $scope.id = "";
             $scope.$watchCollection('hakemus', l);
-            $scope.$watch('canHyvaksyPeruuntunut', l);
             AuthService.peruuntuneidenHyvaksyntaOph("APP_SIJOITTELU")
-                .then(function() { $scope.canHyvaksyPeruuntunut = true; },
-                      function() { $scope.canHyvaksyPeruuntunut = false; });
+                .then(function () { $scope.canHyvaksyPeruuntunut = true; l(true, false); },
+                      function () { $scope.canHyvaksyPeruuntunut = false; l(false, true); });
         }
     };
 });

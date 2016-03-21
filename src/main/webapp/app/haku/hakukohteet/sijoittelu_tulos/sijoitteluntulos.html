@@ -162,8 +162,12 @@
                                 <td data-title="(t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto')" sortable="'vastaanottoTila'">
                                     <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input ng-disabled="!(updateOph || valintaesitysJulkaistavissa)" type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"/> <br/></div>
                                     <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
-                                        <span ng-bind="t('sijoittelutulos.' + ( hakemus.tilaHakijalle.toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores">
-                                        </span>
+                                        <div>
+                                            <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>
+                                            <span>: </span>
+                                            <span ng-bind="t('sijoitteluntulos.' + ( hakemus.tilaHakijalle.toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores">
+                                            </span>
+                                        </div>
                                         <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                             <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakemus"/>
                                         </span>
