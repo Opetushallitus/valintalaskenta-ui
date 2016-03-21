@@ -91,7 +91,7 @@ describe('Lisähaun hakeneet välilehti', function () {
 
                 describe("paikan sitova vastaanotto", function() {
                     before(lisahakuPartials.withSuccessModal(
-                        select(lomake.vastaanottoDropdown(0), "1")));
+                        select(lomake.vastaanottoDropdown(0), "string:VASTAANOTTANUT_SITOVASTI")));
 
                     it("näyttää ilmoittautumisvalikon", seqDone(
                         visible(lomake.ilmoittautumisDropdown(0))
@@ -106,7 +106,7 @@ describe('Lisähaun hakeneet välilehti', function () {
                     var alkuperainenTila;
                     before(
                         function() { alkuperainenTila = lomake.vastaanottoDropdownSelecedOption(0)().val(); },
-                        lisahakuPartials.withErrorModal(select(lomake.vastaanottoDropdown(0), "3"), "Hakija on vastaanottanut paikan toisaalla: VTS aikaisempi vastaanotto"));
+                        lisahakuPartials.withErrorModal(select(lomake.vastaanottoDropdown(0), "string:PERUNUT"), "Hakija on vastaanottanut paikan toisaalla: VTS aikaisempi vastaanotto"));
 
                     it("palauttaa valikon tilan alkuperäiseksi", seqDone(
                         function() { return assertValue(lomake.vastaanottoDropdown(0), alkuperainenTila); }
@@ -117,7 +117,7 @@ describe('Lisähaun hakeneet välilehti', function () {
                     var alkuperainenTila;
                     before(
                         function() { alkuperainenTila = lomake.vastaanottoDropdownSelecedOption(0)().val(); },
-                        lisahakuPartials.withErrorModal(select(lomake.vastaanottoDropdown(0), "4"), "Vastaanottotiedon muutos epäonnistui: VTS vastaanottovirhe"));
+                        lisahakuPartials.withErrorModal(select(lomake.vastaanottoDropdown(0), "string:PERUUTETTU"), "Vastaanottotiedon muutos epäonnistui: VTS vastaanottovirhe"));
 
                     it("palauttaa valikon tilan alkuperäiseksi", seqDone(
                         function() { return assertValue(lomake.vastaanottoDropdown(0), alkuperainenTila); }

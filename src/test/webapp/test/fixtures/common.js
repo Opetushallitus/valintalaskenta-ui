@@ -237,7 +237,7 @@ var restData = {
                 "date": 1437392281000,
                 "new": false
             },
-            "valintatapajonoOid": "1425545626196-6437662849831338165",
+            "valintatapajonoOid": "1427374494574-2003796769000462860",
             "hakemusOid": "1.2.246.562.11.00002071778",
             "hakukohdeOid": "1.2.246.562.20.44161747595",
             "julkaistavissa": false,
@@ -267,7 +267,7 @@ var restData = {
                 "date": 1437392281000,
                 "new": false
             },
-            "valintatapajonoOid": "1425545626196-6437662849831338165",
+            "valintatapajonoOid": "1427374494574-2003796769000462860",
             "hakemusOid": "1.2.246.562.11.00001941430",
             "hakukohdeOid": "1.2.246.562.20.44161747595",
             "julkaistavissa": false,

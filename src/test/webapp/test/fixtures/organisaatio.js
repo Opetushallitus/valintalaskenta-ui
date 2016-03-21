@@ -1,6 +1,14 @@
 function organisaatioFixtures() {
     var httpBackend = testFrame().httpBackend
 
+    httpBackend.when('GET', /.*\/organisaatio\/v2\/hierarkia\/hae\?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.00000000001/).respond({
+        "numHits":0,
+        "organisaatiot":[]
+    })
+    httpBackend.when('GET', /.*\/organisaatio\/v2\/hierarkia\/hae\?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.328060821310/).respond({
+        "numHits":0,
+        "organisaatiot":[]
+    })
     // lisahaku
     httpBackend
         .when('GET', /.*organisaatio\/LISAHAKUKOHDE\/parentoids/)
