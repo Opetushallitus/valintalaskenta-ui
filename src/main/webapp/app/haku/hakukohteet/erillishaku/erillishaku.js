@@ -28,6 +28,7 @@
             {value:"PERUNUT",   default_text:"Perunut"},
             {value:"PERUUTETTU",default_text:"Peruutettu"},
             {value:"VASTAANOTTANUT_SITOVASTI", default_text:"Vastaanotettu sitovasti"},
+            {value:"OTTANUT_VASTAAN_TOISEN_PAIKAN", default_text:"Ottanut vastaan toisen paikan", disable: true},
             {value:"",default_text:""}
           ];
         } else {
