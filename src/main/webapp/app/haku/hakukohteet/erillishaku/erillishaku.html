@@ -107,6 +107,10 @@
                                             </td>
                                             <td>
                                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
+                                                <div ng-show="tulos.julkaistavissa">
+                                                    <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
+                                                    <span ng-bind="valintatuloksenTilaKielistys(tulos.valintatuloksenTilaHakijalle)"></span>
+                                                </div>
                                                 <div ng-switch="updateOrg && tulos.julkaistavissa && tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN'">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.valintatuloksentila"
@@ -179,6 +183,10 @@
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
                                                     <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
+                                                    <div ng-show="tulos.julkaistavissa">
+                                                        <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
+                                                        <span ng-bind="valintatuloksenTilaKielistys(tulos.valintatuloksenTilaHakijalle)"></span>
+                                                    </div>
                                                     <div ng-switch="updateOrg && tulos.julkaistavissa && tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN'">
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.valintatuloksentila"

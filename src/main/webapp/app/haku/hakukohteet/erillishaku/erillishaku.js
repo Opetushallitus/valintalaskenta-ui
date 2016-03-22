@@ -45,6 +45,10 @@
         });
       });
 
+      $scope.valintatuloksenTilaKielistys = function(tila) {
+        return $scope.valintatuloksentilat.filter(function(o) { return o.value === tila; })[0].text_prop;
+      };
+
       $scope.hakemuksentilat = [
         {value:"HYVAKSYTTY",default_text:"Hyv\u00E4ksytty"},
         {value:"VARASIJALTA_HYVAKSYTTY",default_text:"Varasijalta hyv\u00E4ksytty"},
