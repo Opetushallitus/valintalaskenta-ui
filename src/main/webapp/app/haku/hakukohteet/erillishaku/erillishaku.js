@@ -42,12 +42,15 @@
         }
         LocalisationService.getTranslationsForArray($scope.valintatuloksentilat).then(function () {
           HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+          $scope.valintatuloksenTilaKielistys = $scope.valintatuloksentilat.reduce(function(o, tila) {
+              return o[tila.value] = tila.text_prop || tila.default_text;
+          }, {});
         });
       });
 
-      $scope.valintatuloksenTilaKielistys = function(tila) {
-        return $scope.valintatuloksentilat.filter(function(o) { return o.value === tila; })[0].text_prop;
-      };
+      $scope.valintatuloksenTilaKielistys = $scope.valintatuloksentilat.reduce(function(o, tila) {
+        return o[tila.value] = tila.default_text;
+      }, {});
 
       $scope.hakemuksentilat = [
         {value:"HYVAKSYTTY",default_text:"Hyv\u00E4ksytty"},
