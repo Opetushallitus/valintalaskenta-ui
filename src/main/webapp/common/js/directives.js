@@ -812,8 +812,9 @@ app.directive('muokattuVastaanottoTila', function () {
                 $scope.isEditable =
                     (hakemus.muokattuVastaanottoTila !== "OTTANUT_VASTAAN_TOISEN_PAIKAN"
                     && (isKk || updateOph || hakemus.muokattuVastaanottoTila !== "PERUUTETTU"));
+                return $scope.isEditable;
             };
-            var updateTilat = function(isKk, isLisahaku, updateOph) {
+            var updateTilat = function(isKk, isLisahaku, updateOph, isEditable) {
                 if (isKk) {
                     $scope.hakemuksenMuokattuVastaanottoTilat = [
                         {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
@@ -822,7 +823,7 @@ app.directive('muokattuVastaanottoTila', function () {
                         {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
                         {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
                         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"},
-                        {value: "OTTANUT_VASTAAN_TOISEN_PAIKAN", text_prop: 'sijoitteluntulos.ottanutvastaantoisenpaikan', default_text:"Ottanut vastaan toisen paikan", disable: true}
+                        {value: "OTTANUT_VASTAAN_TOISEN_PAIKAN", text_prop: 'sijoitteluntulos.ottanutvastaantoisenpaikan', default_text:"Ottanut vastaan toisen paikan", disable: isEditable}
                     ].filter(poistaLisahaustaEhdollinenVastaanotto(isLisahaku));
                 } else {
                     $scope.hakemuksenMuokattuVastaanottoTilat = [
@@ -852,8 +853,8 @@ app.directive('muokattuVastaanottoTila', function () {
                             if (haku !== undefined && hakemus !== undefined) {
                                 var isKk = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
                                 var isLisahaku = /^hakutyyppi_03/.test(haku.hakutyyppiUri);
-                                updateEditable(hakemus, isKk, updateOph);
-                                updateTilat(isKk, isLisahaku, updateOph);
+                                var isEditable = updateEditable(hakemus, isKk, updateOph);
+                                updateTilat(isKk, isLisahaku, updateOph, isEditable);
                             }
                         });
                 });
