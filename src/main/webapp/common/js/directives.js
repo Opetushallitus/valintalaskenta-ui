@@ -493,21 +493,9 @@ app.directive("valintatulos", function () {
                 $scope.status = value ? "Lopullinen" : "Kesken";
             });
 
-            $scope.$on("hakutoive-vastaanotettu", function (e, hakutoive) {
-                var item = $(_(element.find("tbody tr")).find(function (tr) {
-                    return angular.element(tr).scope().tulos.koulutus.oid === hakutoive.koulutus.oid
-                }));
-
-                item.css({"opacity": 0})
-
-                window.setTimeout(function () {
-                    item.animate({"opacity": 1}, 100)
-                }, 100 * 2)
-            });
-
             $scope.valintatulosText = function (valintatulos) {
                 var key = underscoreToCamelCase(valintatulos.valintatila);
-                if (["VASTAANOTTANUT", "EI_VASTAANOTETTU_MAARA_AIKANA", "EHDOLLISESTI_VASTAANOTTANUT"].indexOf(valintatulos.vastaanottotila) >= 0) {
+                if (["VASTAANOTTANUT_SITOVASTI", "EI_VASTAANOTETTU_MAARA_AIKANA", "EHDOLLISESTI_VASTAANOTTANUT"].indexOf(valintatulos.vastaanottotila) >= 0) {
                     key = underscoreToCamelCase(valintatulos.vastaanottotila)
                     return resultState[key]
                 } else if (!_.isEmpty(valintatulos.tilankuvaus)) {
