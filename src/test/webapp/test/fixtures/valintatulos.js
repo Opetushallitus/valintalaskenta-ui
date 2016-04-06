@@ -14,7 +14,7 @@ function valintatulosFixture() {
                 "tarjoajaNimi": "Aalto-yliopisto, Insinööritieteiden korkeakoulu",
                 "valintatapajonoOid": "1433334427784-5861045456369717641",
                 "valintatila": "HYVAKSYTTY",
-                "vastaanottotila": "VASTAANOTTANUT",
+                "vastaanottotila": "VASTAANOTTANUT_SITOVASTI",
                 "ilmoittautumistila": {
                     "ilmoittautumisaika": {},
                     "ilmoittautumistapa": {"nimi": {"fi": "Oili", "sv": "Oili", "en": "Oili"}, "url": "/oili/"},
