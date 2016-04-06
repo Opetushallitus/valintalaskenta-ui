@@ -461,7 +461,7 @@ app.directive("valintatulos", function () {
             "Perunut": "Peruit opiskelupaikan",
             "Peruuntunut": "Peruuntunut",
             "VarasijaltaHyvaksytty": "Hyväksytty varasijalta",
-            "Vastaanottanut": "Opiskelupaikka vastaanotettu",
+            "VastaanottanutSitovasti": "Opiskelupaikka vastaanotettu",
             "Hylatty": "Et saanut opiskelupaikkaa.",
             "EhdollisestiVastaanottanut": "Opiskelupaikka vastaanotettu ehdollisesti",
             "EiVastaanotettuMaaraAikana": "Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä"
