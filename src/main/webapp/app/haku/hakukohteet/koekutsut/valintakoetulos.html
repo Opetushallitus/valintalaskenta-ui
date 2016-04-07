@@ -53,7 +53,8 @@
                                                      etunimi="{{hakemus.etunimi}}"
                                                      hakemus-oid="{{hakemus.hakemusOid}}"
                                                      haku-oid="{{hakuOid}}"
-                                                     henkilo-oid="{{hakemus.hakijaOid}}"/>
+                                                     henkilo-oid="{{hakemus.hakijaOid}}"
+                                                     isKK="korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" />
                         </td>
                         <td ng-repeat="koetyyppi in model.koetyypit | orderBy:koetyyppi">
                             <div ng-switch="hakemus.kokeet[koetyyppi].osallistuminen">
@@ -132,7 +133,8 @@
 	                                                             etunimi="{{koe.etunimi}}"
 	                                                             hakemus-oid="{{koe.hakemusOid}}"
 	                                                             haku-oid="{{hakuOid}}"
-	                                                             henkilo-oid="{{koe.hakijaOid}}"/>
+	                                                             henkilo-oid="{{koe.hakijaOid}}"
+                                                                 isKK="korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" />
 	                                </td>
 	                                <td>
 	                                    <div ng-switch="koe.osallistuminen">

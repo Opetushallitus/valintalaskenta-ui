@@ -321,12 +321,15 @@
 
 angular.module('valintalaskenta').
     controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
-        'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ValintalaskentatulosModel',
+        'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ValintalaskentatulosModel', 'Korkeakoulu',
         'TulosXls', 'HakukohdeModel', 'HakuModel', '$http','$log','$modal', 'AuthService', 'UserModel', 'LocalisationService',
     function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, HakuModel, $http, $log, $modal, AuthService, UserModel,
+              ValintatapajonoVienti,ValintalaskentatulosModel, Korkeakoulu, TulosXls, HakukohdeModel, HakuModel, $http, $log, $modal, AuthService, UserModel,
               LocalisationService) {
     "use strict";
+    HakuModel.refreshIfNeeded($routeParams.hakuOid);
+    $scope.hakuModel = HakuModel;
+    $scope.korkeakoulu = Korkeakoulu;
     $scope.erityisopetus = HakuModel.hakuOid.erityisopetus;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;

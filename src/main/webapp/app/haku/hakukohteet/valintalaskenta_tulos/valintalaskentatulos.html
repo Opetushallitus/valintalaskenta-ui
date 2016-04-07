@@ -103,7 +103,8 @@
                                                                          etunimi="{{tulos.etunimi}}"
                                                                          hakemus-oid="{{tulos.hakemusOid}}"
                                                                          haku-oid="{{hakuOid}}"
-                                                                         henkilo-oid="{{tulos.hakijaOid}}"/>
+                                                                         henkilo-oid="{{tulos.hakijaOid}}"
+                                                                         isKK="korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" />
                                             </td>
                                             <td data-title="(t('valintalaskentatulos.valintatieto') || 'Valintatieto')" sortable="'tuloksenTila'">
                                                 <select ng-model="tulos.tuloksenTila" ng-change="changeSija(tulos, tulos.tuloksenTila)">
@@ -163,7 +164,8 @@
                                                                      etunimi="{{tulos.etunimi}}"
                                                                      hakemus-oid="{{tulos.hakemusOid}}"
                                                                      haku-oid="{{hakuOid}}"
-                                                                     henkilo-oid="{{tulos.hakijaOid}}"/>
+                                                                     henkilo-oid="{{tulos.hakijaOid}}"
+                                                                     isKK="korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" />
                                         </td>
                                         <td data-title="(t('valintalaskentatulos.yhteispisteet') || 'Yhteispisteet')" sortable="'jarjestyskriteerit[0].arvo'">
                                             {{tulos.jarjestyskriteerit[0].arvo}}

@@ -26,7 +26,8 @@
                                                          etunimi="{{hakija.answers.henkilotiedot.Etunimet}}"
                                                          hakemus-oid="{{hakija.oid}}"
                                                          haku-oid="{{hakuOid}}"
-                                                         henkilo-oid="{{hakija.personOid}}" />
+                                                         henkilo-oid="{{hakija.personOid}}"
+                                                         isKK="korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" />
                             </td>
                             <td data-title="(t('hakukohteethakeneet.tila') || 'Tila')" sortable="'tila[hakija.state]'">
                                 {{tila[hakija.state]}}

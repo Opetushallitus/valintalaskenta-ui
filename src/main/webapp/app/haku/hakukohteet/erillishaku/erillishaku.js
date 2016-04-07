@@ -43,7 +43,7 @@
             {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
             {value:"KESKEN",    default_text:"Kesken"},
             {value:"PERUNUT",   default_text:"Perunut"},
-            {value:"VASTAANOTTANUT_SITOVASTI", default_text: "Vastaanotettu sitovasti"},
+            {value:"VASTAANOTTANUT_SITOVASTI", default_text: "Vastaanotettu"},
             {value:"",default_text:""}
           ];
         }

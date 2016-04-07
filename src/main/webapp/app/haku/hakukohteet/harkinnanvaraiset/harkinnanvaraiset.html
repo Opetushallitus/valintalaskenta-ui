@@ -39,7 +39,8 @@
                                                          etunimi="{{hakija.firstNames}}"
                                                          hakemus-oid="{{hakija.oid}}"
                                                          haku-oid="{{hakuOid}}"
-                                                         henkilo-oid="" />
+                                                         henkilo-oid=""
+                                                         isKK="korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" />
                             </td>
                             <td data-title="(t('hakukohteetharkinnanvaraiset.pohjakoulutus') || 'Pohjakoulutus')" sortable="'hakija.answers.koulutustausta.POHJAKOULUTUS'">
                                 {{pohjakoulutukset[hakija.answers.koulutustausta.POHJAKOULUTUS]}}
