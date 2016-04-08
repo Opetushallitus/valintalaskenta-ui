@@ -178,7 +178,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             enabled(sijoitteluntulokset.vastaanottotieto),
             function() {
                 assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
-                assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut sitovasti");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(2), "Ei vastaanotettu määräaikana");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(4), "Peruutettu");
@@ -222,7 +222,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             enabled(sijoitteluntulokset.vastaanottotieto),
             function() {
                 assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
-                assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut sitovasti");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(2), "Ei vastaanotettu määräaikana");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");
                 expect(sijoitteluntulokset.vastaanottotieto().children().length).to.equal(4);
