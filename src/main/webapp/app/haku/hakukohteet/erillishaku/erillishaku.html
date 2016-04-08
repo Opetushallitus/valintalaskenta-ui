@@ -80,6 +80,11 @@
                                         <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
                                             <td ng-show="updateOrg">
                                                 <input type="checkbox"
+                                                       ng-show="tulos.onkoVastaanottanut"
+                                                       data-toggle="tooltip" data-placement="left" title="Poista ensin vastaanotto"
+                                                       ng-disabled="true"> <br/>
+                                                <input type="checkbox"
+                                                       ng-hide="tulos.onkoVastaanottanut"
                                                        ng-model="tulos.poistetaankoRivi"
                                                        ng-change="addMuokattuHakemus(tulos)"> <br/>
                                             </td>

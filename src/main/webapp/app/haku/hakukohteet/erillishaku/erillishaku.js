@@ -93,7 +93,12 @@
           || (!$scope.korkeakoulu && tila === 'VASTAANOTTANUT');
       }
 
-      $scope.erillishaku = ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid});
+      ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid},function(erillishaku) {
+        _.chain(erillishaku).map(function(e){return e.valintatapajonot}).flatten().map(function(v){return v.hakemukset;}).flatten().each(function(hakemus){
+          hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' || hakemus.valintatuloksentila === 'VASTAANOTTANUT';
+        });
+        $scope.erillishaku = erillishaku;
+      });
 
       var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
