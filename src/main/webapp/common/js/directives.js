@@ -461,7 +461,6 @@ app.directive("valintatulos", function () {
             "Perunut": "Peruit opiskelupaikan",
             "Peruuntunut": "Peruuntunut",
             "VarasijaltaHyvaksytty": "Hyväksytty varasijalta",
-            "Vastaanottanut": "Opiskelupaikka vastaanotettu",
             "VastaanottanutSitovasti": "Opiskelupaikka vastaanotettu",
             "Hylatty": "Et saanut opiskelupaikkaa.",
             "EhdollisestiVastaanottanut": "Opiskelupaikka vastaanotettu ehdollisesti",
@@ -817,7 +816,7 @@ app.directive('muokattuVastaanottoTila', function () {
                 } else {
                     $scope.hakemuksenMuokattuVastaanottoTilat = [
                         {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
-                        {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
+                        {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanottanut"},
                         {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
                         {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"}
                     ];
