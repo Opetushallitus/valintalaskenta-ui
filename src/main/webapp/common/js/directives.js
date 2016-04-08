@@ -478,8 +478,7 @@ app.directive("valintatulos", function () {
         restrict: 'E',
         scope: {
             valintatulos: '&data',
-            isFinal: '&final',
-            isKK: '=isKK'
+            isFinal: '&final'
         },
         templateUrl: '../common/html/valintatulos.html',
         link: function ($scope, element) {
@@ -498,11 +497,7 @@ app.directive("valintatulos", function () {
             $scope.valintatulosText = function (valintatulos) {
                 var key = underscoreToCamelCase(valintatulos.valintatila);
                 if (["VASTAANOTTANUT_SITOVASTI", "EI_VASTAANOTETTU_MAARA_AIKANA", "EHDOLLISESTI_VASTAANOTTANUT"].indexOf(valintatulos.vastaanottotila) >= 0) {
-                    if (!$scope.isKK && valintatulos.vastaanottotila === "VASTAANOTTANUT_SITOVASTI") {
-                        key = underscoreToCamelCase("VASTAANOTTANUT")
-                    } else {
-                        key = underscoreToCamelCase(valintatulos.vastaanottotila)
-                    }
+                    key = underscoreToCamelCase(valintatulos.vastaanottotila)
                     return resultState[key]
                 } else if (!_.isEmpty(valintatulos.tilankuvaus)) {
                     if (valintatulos.valintatila === "HYLATTY") {
@@ -556,8 +551,7 @@ app.directive('showPersonInfoWithVtsData', ["ValintaTulosProxy", function (Valin
             etunimi: '@',
             hakemusOid: '@',
             hakuOid: '@',
-            henkiloOid: '@',
-            isKK: '@'
+            henkiloOid: '@'
         },
         templateUrl: '../common/html/personInformationPartial.html',
         controller: function ($modal, $scope) {
@@ -823,7 +817,7 @@ app.directive('muokattuVastaanottoTila', function () {
                 } else {
                     $scope.hakemuksenMuokattuVastaanottoTilat = [
                         {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
-                        {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanottanut"},
+                        {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
                         {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
                         {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"}
                     ];

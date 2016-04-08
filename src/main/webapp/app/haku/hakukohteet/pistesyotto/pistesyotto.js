@@ -185,14 +185,10 @@ app.factory('PistesyottoModel', function ($q, HakukohdeHenkilotFull, HakukohdeAv
 
 angular.module('valintalaskenta').
     controller('PistesyottoController', ['$scope', '$log', '$timeout', '$routeParams', '$upload', 'PistesyottoVienti',
-        'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel', 'ParametriService', 'HakuModel', 'Korkeakoulu',
+        'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel', 'ParametriService',
         function ($scope, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
-                  IlmoitusTila, Latausikkuna, HakukohdeModel, ParametriService, HakuModel, Korkeakoulu) {
+                  IlmoitusTila, Latausikkuna, HakukohdeModel, ParametriService) {
     "use strict";
-
-    HakuModel.refreshIfNeeded($routeParams.hakuOid);
-    $scope.hakuModel = HakuModel;
-    $scope.korkeakoulu = Korkeakoulu;
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = PistesyottoModel;

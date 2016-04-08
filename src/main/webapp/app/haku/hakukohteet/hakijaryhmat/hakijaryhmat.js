@@ -100,13 +100,10 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
 
 angular.module('valintalaskenta').
     controller('HakijaryhmatController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
-        'IlmoitusTila','ValintalaskentaHakijaryhmaModel','HakukohdeModel', '$http', 'AuthService', 'LocalisationService', 'HakuModel', 'Korkeakoulu',
+        'IlmoitusTila','ValintalaskentaHakijaryhmaModel','HakukohdeModel', '$http', 'AuthService', 'LocalisationService',
         function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila
-                  ,ValintalaskentaHakijaryhmaModel, HakukohdeModel, $http, AuthService, LocalisationService, HakuModel, Korkeakoulu) {
+                  ,ValintalaskentaHakijaryhmaModel, HakukohdeModel, $http, AuthService, LocalisationService) {
             "use strict";
-            HakuModel.refreshIfNeeded($routeParams.hakuOid);
-            $scope.hakuModel = HakuModel;
-            $scope.korkeakoulu = Korkeakoulu;
             $scope.hakuOid =  $routeParams.hakuOid;
             ValintalaskentaHakijaryhmaModel($routeParams.hakuOid, $routeParams.hakukohdeOid).then(function(model) {
                 $scope.model = model;

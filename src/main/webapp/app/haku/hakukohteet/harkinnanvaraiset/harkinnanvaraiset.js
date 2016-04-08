@@ -101,15 +101,11 @@ angular.module('valintalaskenta')
 
     .controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
         'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel',
-        'Pohjakoulutukset','ngTableParams','$filter','FilterService', 'ParametriService', 'HakuModel', 'Korkeakoulu',
+        'Pohjakoulutukset','ngTableParams','$filter','FilterService', 'ParametriService',
         function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,
             OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset, ngTableParams, $filter,
-            FilterService, ParametriService, HakuModel, Korkeakoulu) {
+            FilterService, ParametriService) {
     "use strict";
-
-    HakuModel.refreshIfNeeded($routeParams.hakuOid);
-    $scope.hakuModel = HakuModel;
-    $scope.korkeakoulu = Korkeakoulu;
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HarkinnanvaraisetModel;

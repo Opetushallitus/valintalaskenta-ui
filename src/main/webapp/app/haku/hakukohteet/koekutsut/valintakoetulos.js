@@ -238,9 +238,9 @@
 
 
 angular.module('valintalaskenta').
-    controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel', 'HakuModel', 'Korkeakoulu',
+    controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel',
         'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log', 'HakukohdeNimiService','Kirjeet', 'ParametriService',
-        function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakuModel, Korkeakoulu, HakukohdeModel, Koekutsukirjeet,
+        function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
                   Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log,HakukohdeNimiService, Kirjeet, ParametriService) {
 
     "use strict";
@@ -342,10 +342,6 @@ angular.module('valintalaskenta').
     		
     	});
     };
-
-	HakuModel.refreshIfNeeded($routeParams.hakuOid);
-	$scope.hakuModel = HakuModel;
-	$scope.korkeakoulu = Korkeakoulu;
     
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;

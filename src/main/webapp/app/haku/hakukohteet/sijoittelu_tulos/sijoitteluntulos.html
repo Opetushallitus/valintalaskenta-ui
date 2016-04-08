@@ -62,8 +62,7 @@
                                                                    etunimi="{{hakija.etunimi}}"
                                                                    hakemus-oid="{{hakija.hakemusOid}}"
                                                                    haku-oid="{{hakuOid}}"
-                                                                   henkilo-oid="{{hakija.hakijaOid}}"
-                                                                   isKK="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" />
+                                                                   henkilo-oid="{{hakija.hakijaOid}}"/>
                                     </strong>
                                 </a>
                             </td>
@@ -139,8 +138,7 @@
                                                              etunimi="{{hakemus.etunimi}}"
                                                              hakemus-oid="{{hakemus.hakemusOid}}"
                                                              haku-oid="{{hakuOid}}"
-                                                             henkilo-oid="{{hakemus.hakijaOid}}"
-                                                             isKK="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" />
+                                                             henkilo-oid="{{hakemus.hakijaOid}}"/>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.hakutoive') || 'Hakutoive')" sortable="'prioriteetti'">
                                     {{hakemus.prioriteetti}}
