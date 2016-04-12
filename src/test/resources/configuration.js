@@ -10,6 +10,7 @@ LOKALISOINTIPALVELU_URL_BASE = "http://localhost:8180/lokalisointi/";
 HAKEMUS_URL_BASE = "http://localhost:8180/";
 TEMPLATE_URL_BASE = "";
 AUTHENTICATION_URL_BASE = "http://localhost:8180/authentication-service/";
+AUTHENTICATION_HENKILOUI_URL_BASE = "http://localhost:8180/authentication-henkiloui/";
 CAS_URL = "/servers/cas/myroles";
 AUTH_MODE = "dev";
 SESSION_KEEPALIVE_INTERVAL_IN_SECONDS = 1000000;
