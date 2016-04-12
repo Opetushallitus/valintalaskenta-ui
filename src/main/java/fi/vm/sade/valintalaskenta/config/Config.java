@@ -23,6 +23,9 @@ public class Config {
     @Value("${valintalaskenta-ui.hakemus-ui-url}")
     public String hakemusUiUrl;
 
+    @Value("${valintalaskenta-ui.authentication-henkiloui-url}")
+    public String authenticationHenkiloUiUrl;
+
     @Value("${valintalaskenta-ui.valintalaskenta-service-url.rest}")
     public String valintalaskentaServiceUrl;
 
