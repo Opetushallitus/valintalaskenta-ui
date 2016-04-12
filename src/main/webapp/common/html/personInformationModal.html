@@ -11,8 +11,7 @@
         </dd>
 
         <dt ng-if="henkiloOid">{{ t('personinformationmodal.numero') || 'Oppijan numero' }}</dt>
-        <dd ng-if="henkiloOid" fast-bind-once="henkiloOid"></dd>
-
+        <dd ng-if="henkiloOid"><link-to-henkilo-in-henkilopalvelu henkilo-oid="{{henkiloOid}}" /></dd>
     </dl>
 </div>
 
