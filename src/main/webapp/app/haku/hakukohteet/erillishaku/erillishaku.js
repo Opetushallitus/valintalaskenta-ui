@@ -222,12 +222,6 @@
       };
 
       $scope.addMuokattuHakemus = function (hakemus) {
-        if(!hakemus.valintatuloksentila) {
-          hakemus.valintatuloksentila = 'KESKEN';
-        }
-        if(!hakemus.ilmoittautumistila) {
-          hakemus.ilmoittautumistila = 'EI_TEHTY';
-        }
         $scope.muokatutHakemukset.push(hakemus);
         $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
       };
