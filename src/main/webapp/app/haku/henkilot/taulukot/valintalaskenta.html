@@ -74,13 +74,21 @@
                     </modal-open>
                 </modal>
             </td>
-            <td>{{model.sijoittelu[valintatapajono.valintatapajonooid].vastaanottoTila}}
-                <modal modal-template="sijoitteluLogModal.html">
-                    <modal-open>
-                        {{model.sijoittelu[valintatapajono.valintatapajonooid].logEntries[model.sijoittelu[valintatapajono.valintatapajonooid].logEntries.length-1].luotu
-                        | date:'dd.MM.yyyy HH:mm'}}
-                    </modal-open>
-                </modal>
+            <td>
+                <div ng-if="
+                    model.sijoittelu[valintatapajono.valintatapajonooid].tila === 'HYVAKSYTTY'
+                    || model.sijoittelu[valintatapajono.valintatapajonooid].tila === 'VARASIJALTA_HYVAKSYTTY'
+                    || model.sijoittelu[valintatapajono.valintatapajonooid].tila === 'PERUNUT'
+                    || model.sijoittelu[valintatapajono.valintatapajonooid].tila === 'PERUUTETTU'
+                ">
+                    {{model.sijoittelu[valintatapajono.valintatapajonooid].vastaanottoTila}}
+                    <modal modal-template="sijoitteluLogModal.html">
+                        <modal-open>
+                            {{model.sijoittelu[valintatapajono.valintatapajonooid].logEntries[model.sijoittelu[valintatapajono.valintatapajonooid].logEntries.length-1].luotu
+                            | date:'dd.MM.yyyy HH:mm'}}
+                        </modal-open>
+                    </modal>
+                </div>
             </td>
             <td>
                 <sijoittelu-vastaanotto-tila hakemus="model.sijoittelu[valintatapajono.valintatapajonooid]"
