@@ -172,6 +172,13 @@ angular.module('valintalaskenta')
                                     jono.sija = sija;
                                 }
 
+                                if(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || hakemus.tila == 'PERUUTETTU') {
+                                    hakemus.naytetaanVastaanottotieto = true;
+                                } else {
+                                    hakemus.naytetaanVastaanottotieto = false;
+                                }
+
+
                                 hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
 
                                 var found = false;
@@ -227,6 +234,7 @@ angular.module('valintalaskenta')
                                             currentHakemus.hyvaksyPeruuntunut = vastaanottotila.hyvaksyPeruuntunut;
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].vastaanottoTila=currentHakemus.vastaanottoTila;
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].ilmoittautumisTila=currentHakemus.ilmoittautumisTila;
+
                                             return true;
                                         }
                                     });
