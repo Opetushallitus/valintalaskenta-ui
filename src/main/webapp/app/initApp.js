@@ -23,7 +23,9 @@
 
     function bootstrapApplication() {
         angular.element(document).ready(function() {
-            angular.bootstrap('html', ['valintalaskenta']);
+            setTimeout(function() {
+                angular.bootstrap('html', ['valintalaskenta']);
+            }, 200);
         });
     }
 
