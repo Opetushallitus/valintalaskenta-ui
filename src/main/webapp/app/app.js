@@ -7,8 +7,6 @@ var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute',
 }).run(function($http, MyRolesModel, LocalisationService, CacheFactory){
     // ja vastaus ei ole $window.location.pathname koska siina tulee mukana myos index.html
     tinyMCE.baseURL = '/valintalaskenta-ui/common/jslib/static/tinymce-4.0.12';
-    MyRolesModel;
-    $http.get(VALINTAPERUSTEET_URL_BASE + "buildversion.txt?auth");
     LocalisationService.getTranslation("");
 
     $http.defaults.cache = CacheFactory('defaultCache', {
