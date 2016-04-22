@@ -77,7 +77,7 @@
                                         </thead>
                                         <tbody>
 
-                                        <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['jonosija', 'sukunimi']:reverse | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
+                                        <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:'sukunimi' | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
                                             <td ng-show="updateOrg">
                                                 <input type="checkbox"
                                                        ng-show="tulos.onkoVastaanottanut"
