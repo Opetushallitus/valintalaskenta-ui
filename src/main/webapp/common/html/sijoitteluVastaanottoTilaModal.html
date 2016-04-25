@@ -4,7 +4,8 @@
 
 <div class="modal-body">
     <div ng-if="error">
-        <alert type="'danger'">{{ t('sijoitteluvastaanottotilamodal.error') || 'Tallennus epäonnistui. Ole hyvä ja yritä uudelleen hetken päästä.' }}</alert>
+        <div class="alert-danger">{{ t('sijoitteluvastaanottotilamodal.error') || 'Tallennus epäonnistui. Ole hyvä ja yritä uudelleen hetken päästä.' }}</div>
+        <alert type="danger" ng-repeat="message in errorRows">{{message}}</alert>
         <pre ng-show="false">
             {{error}}
         </pre>

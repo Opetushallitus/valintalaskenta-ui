@@ -205,6 +205,15 @@ app.directive('sijoitteluVastaanottoTila', function () {
                                         setVastaanottoTila($scope.hakemus, tilaParams);
                                     }, function (error) {
                                         $scope.error = error;
+                                        if (error && error.data && error.data.statuses) {
+                                            $scope.errorRows = _.map(error.data.statuses, function(status) {
+                                                if (status.message) {
+                                                    return status.message.replace(/,/g, ', ');
+                                                } else {
+                                                    return status;
+                                                }
+                                            });
+                                        }
                                     });
                                 }
                             };

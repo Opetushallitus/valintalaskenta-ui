@@ -391,7 +391,8 @@ angular.module('valintalaskenta')
                 } else {
                     errorMsg += "Yritä uudelleen tai ota yhteyttä ylläpitoon.";
                 }
-                afterFailure(function() { document.location.reload(); }, errorMsg);
+                var errorRows = _.map(error.data.statuses, function(status) { return status.message; });
+                afterFailure(function() { document.location.reload(); }, errorMsg, errorRows);
             });
         };
 

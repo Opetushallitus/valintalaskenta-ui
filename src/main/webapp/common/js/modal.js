@@ -87,6 +87,7 @@ angular.module('valintalaskenta')
                 backdrop: 'static',
                 templateUrl: '../common/modaalinen/tallennavalinnat-ilmoitus.html',
                 controller: function($scope, $window, $modalInstance) {
+                    $scope.errorRows = [];
                     $scope.ilmoitus = ilmoitus;
                     $scope.otsikko = otsikko;
                     $scope.state="info";
@@ -101,9 +102,10 @@ angular.module('valintalaskenta')
                                        $modalInstance.dismiss('cancel');
                                        successAction();
                                    }}
-                               ,function(failAction,message) {
+                               ,function(failAction, message, errorRows) {
                                    $scope.working = null;
                                    $scope.ilmoitus = message;
+                                   $scope.errorRows = errorRows;
                                    $scope.state="danger";
                                    $scope.ok = function() {
                                        $modalInstance.dismiss('cancel');

@@ -4,6 +4,9 @@
 <div class="modal-body">
 	<div class="row">
 		<div class="alert alert-{{state}}">{{ilmoitus}}</div>
+		<div ng-repeat="row in errorRows">
+			{{row}}
+		</div>
 		<div ng-show="working"><center><i class="fa fa-cog fa-spin fa-3x"></i></center></div>
 	</div>
 	
