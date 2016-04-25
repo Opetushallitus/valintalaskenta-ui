@@ -29,15 +29,28 @@
       HakuModel.promise.then(function(model) {
         $scope.korkeakoulu = model.korkeakoulu;
         if ($scope.korkeakoulu) {
-          $scope.valintatuloksentilat = [
-            {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-            {value:"KESKEN",    default_text:"Kesken"},
-            {value:"PERUNUT",   default_text:"Perunut"},
-            {value:"PERUUTETTU",default_text:"Peruutettu"},
-            {value:"VASTAANOTTANUT_SITOVASTI", default_text:"Vastaanotettu sitovasti"},
-            {value:"OTTANUT_VASTAAN_TOISEN_PAIKAN", default_text:"Ottanut vastaan toisen paikan", disable: true},
-            {value:"",default_text:""}
-          ];
+          if (model.sijoittelu) {
+            $scope.valintatuloksentilat = [
+              {value: "EI_VASTAANOTETTU_MAARA_AIKANA", default_text: "Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+              {value: "KESKEN", default_text: "Kesken"},
+              {value: "PERUNUT", default_text: "Perunut"},
+              {value: "PERUUTETTU", default_text: "Peruutettu"},
+              {value: "VASTAANOTTANUT_SITOVASTI", default_text: "Vastaanotettu sitovasti"},
+              {value: "EHDOLLISESTI_VASTAANOTTANUT", default_text: "Vastaanotettu ehdollisesti"},
+              {value: "OTTANUT_VASTAAN_TOISEN_PAIKAN", default_text: "Ottanut vastaan toisen paikan", disable: true},
+              {value: "", default_text: ""}
+            ];
+          } else {
+            $scope.valintatuloksentilat = [
+              {value: "EI_VASTAANOTETTU_MAARA_AIKANA", default_text: "Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+              {value: "KESKEN", default_text: "Kesken"},
+              {value: "PERUNUT", default_text: "Perunut"},
+              {value: "PERUUTETTU", default_text: "Peruutettu"},
+              {value: "VASTAANOTTANUT_SITOVASTI", default_text: "Vastaanotettu sitovasti"},
+              {value: "OTTANUT_VASTAAN_TOISEN_PAIKAN", default_text: "Ottanut vastaan toisen paikan", disable: true},
+              {value: "", default_text: ""}
+            ];
+          }
         } else {
           $scope.valintatuloksentilat = [
             {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
