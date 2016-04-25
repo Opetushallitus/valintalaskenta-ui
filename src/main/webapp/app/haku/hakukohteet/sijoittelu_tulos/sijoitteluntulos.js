@@ -118,6 +118,7 @@ angular.module('valintalaskenta')
                                 ehdollisesti: []
                             };
                             hakemuserittely.aloituspaikat = valintatapajono.aloituspaikat;
+                            hakemuserittely.prioriteetti = valintatapajono.prioriteetti;
                             model.hakemusErittelyt.push(hakemuserittely);
                             var lastTasaSija = 1;
                             var sija = 0;

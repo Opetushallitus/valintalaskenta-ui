@@ -39,7 +39,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt">
+                    <tr ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt | orderBy:'prioriteetti'">
                         <td>{{erittely.nimi}}</td>
                         <td>{{erittely.aloituspaikat}}</td>
                         <td>{{erittely.hyvaksytyt.length}}</td>
