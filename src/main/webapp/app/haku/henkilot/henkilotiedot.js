@@ -148,6 +148,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                                 sijoittelu.vastaanottoTila = vastaanottoTila.tila;
                                                 sijoittelu.muokattuVastaanottoTila = vastaanottoTila.tila;
                                             }
+                                            sijoittelu.hakijaOid = model.hakemus.personOid;
                                         });
 
                                     }
