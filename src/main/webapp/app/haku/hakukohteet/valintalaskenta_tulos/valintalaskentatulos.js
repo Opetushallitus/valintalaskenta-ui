@@ -141,7 +141,7 @@
                                         } else {
                                             jonosija = {};
                                             jonosija.hakemusOid = hakija.oid;
-                                            jonosija.hakijaOid = null;
+                                            jonosija.hakijaOid = hakija.personOid;
                                             jonosija.prioriteetti = model.hakutoivePrioriteetti(hakija.oid);
                                             jonosija.harkinnanvarainen = false;
                                             jonosija.historiat = null;
