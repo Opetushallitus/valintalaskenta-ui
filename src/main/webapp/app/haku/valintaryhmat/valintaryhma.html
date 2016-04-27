@@ -1,7 +1,7 @@
 <!-- Node template -->
 <script type="text/ng-template" id="node.html">
     <span class="node"
-          ng-if="data.nimi && data.tyyppi !== 'HAKUKOHDE' && data.showValintaryhma | filter:domain.search.q">
+          ng-if="data.nimi && data.tyyppi !== 'HAKUKOHDE' && data.showValintaryhma">
         <i class="fa fa-users valintaryhma"
            ng-click="domain.expandNode(data)"></i>
         <input ng-click="changeValintaryhma(data)" name="valintaryhmaOid" type="radio" ng-model="model.parentOid"

@@ -4,9 +4,11 @@
     'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
     'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','_', 'LocalisationService','ErillishakuVienti',
     'ErillishakuProxy','ErillishakuTuonti','ErillishaunVastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet', 'Kirjepohjat','Kirjeet',
+    'VastaanottoUtil',
     function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, _, LocalisationService,
-              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,ErillishaunVastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet) {
+              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,ErillishaunVastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
+              VastaanottoUtil) {
       "use strict";
 
       $scope.muokatutHakemukset = [];
@@ -395,6 +397,24 @@
           langcode: HakukohdeNimiService.getOpetusKieliCode(hakukohde),
           templateName: "hyvaksymiskirje"
         });
-      }
-
+      };
+      $scope.selectEiVastanotettuMaaraaikanaToAll = function(valintatapajono) {
+        var valintatulokset = _.map(valintatapajono.hakemukset, function(hakemus) {
+          return {
+            julkaistavissa: hakemus.julkaistavissa,
+            tila: hakemus.valintatuloksenTila,
+            tilaHakijalle: hakemus.valintatuloksenTilaHakijalle,
+            hakemusOid: hakemus.hakemusOid,
+            hakijaOid: hakemus.hakijaOid
+          }
+        });
+        VastaanottoUtil.merkitseMyohastyneeksi(valintatulokset);
+        _.forEach(valintatulokset, function(valintatulos) {
+          if (valintatulos.muokattuVastaanottoTila && valintatulos.muokattuVastaanottoTila !== valintatulos.tila) {
+            var vastaavaHakemus = _.find(valintatapajono.hakemukset, function(hakemus) { return hakemus.hakemusOid === valintatulos.hakemusOid; });
+            vastaavaHakemus.valintatuloksentila = valintatulos.muokattuVastaanottoTila;
+            $scope.addMuokattuHakemus(vastaavaHakemus);
+          }
+        });
+      };
     }]);

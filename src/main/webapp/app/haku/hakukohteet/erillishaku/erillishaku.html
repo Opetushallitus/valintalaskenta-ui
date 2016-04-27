@@ -64,6 +64,11 @@
                                             ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm ">
                                         {{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}
                                     </button>
+                                    <button ng-click="selectEiVastanotettuMaaraaikanaToAll(valintatapajono)"
+
+                                            class="btn btn-default btn-sm margin-bottom-2">
+                                        {{ t('sijoitteluntulos.merkitsemyohastyneeksi') || 'Merkitse myöhästyneeksi' }}
+                                    </button>
                                     <table ng-hide="valintatapajono.kaytetaanValintalaskentaa" class="virkailija-table-1">
                                         <thead>
                                         <tr>
