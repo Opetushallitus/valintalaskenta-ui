@@ -407,11 +407,11 @@ angular.module('valintalaskenta')
     .controller('SijoitteluntulosController', ['$scope', '$modal', 'TallennaValinnat', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
         'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
-        'Kirjeet','UserModel',
+        'Kirjeet','UserModel', 'VastaanottoUtil',
         function ($scope, $modal, TallennaValinnat, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService,
-                                    Kirjeet, UserModel) {
+                                    Kirjeet, UserModel, VastaanottoUtil) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -692,12 +692,7 @@ angular.module('valintalaskenta')
         var muokattavatHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
             return valintatapajono.hakemukset;
         }));
-
-        muokattavatHakemukset.forEach(function(hakemus) {
-          if(hakemus.julkaistavissa && "HYLATTY" !== hakemus.tila && "EI_VASTAANOTETTU_MAARA_AIKANA" === hakemus.tilaHakijalle) {
-            hakemus.muokattuVastaanottoTila = hakemus.tilaHakijalle
-          }
-        });
+        VastaanottoUtil.merkitseMyohastyneeksi(muokattavatHakemukset);
     };
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
