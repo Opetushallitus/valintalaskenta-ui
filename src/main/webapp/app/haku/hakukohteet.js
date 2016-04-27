@@ -43,9 +43,7 @@ angular.module('valintalaskenta')
                     var startIndex = model.getCount();
                     var lastTotalCount = model.getTotalCount();
                     var notLastPage = startIndex < lastTotalCount;
-                    console.log('HakuModel.hakuOid.kohdejoukonTarkenne: ' + HakuModel.hakuOid.kohdejoukonTarkenne);
                     var hakukohdeTilas = (HakuModel.hakuOid.kohdejoukonTarkenne === 'haunkohdejoukontarkenne_3#1' ? model.valmiitJaJulkaistutHakukohteet : model.julkaistutHakukohteet);
-                    //var hakukohdeTilas = valmiitJaJulkaistutHakukohteet;
                     if (notLastPage || restart) {
                         if (model.readyToQueryForNextPage) {
                             model.readyToQueryForNextPage = false;
@@ -57,7 +55,6 @@ angular.module('valintalaskenta')
                                     count: model.pageSize,
                                     searchTerms: model.lastSearch,
                                     hakukohdeTilas: hakukohdeTilas
-                                    //hakukohdeTilas: model.valmiitHakukohteet
                                 };
 
                                 if (model.omatHakukohteet) {
