@@ -233,6 +233,7 @@ angular.module('valintalaskenta')
                                             currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
+                                            currentHakemus.ehdollisestiHyvaksyttavissa = vastaanottotila.ehdollisestiHyvaksyttavissa;
                                             currentHakemus.hyvaksyttyVarasijalta = vastaanottotila.hyvaksyttyVarasijalta;
                                             currentHakemus.read = vastaanottotila.read;
                                             currentHakemus.hyvaksyPeruuntunut = vastaanottotila.hyvaksyPeruuntunut;
@@ -382,6 +383,7 @@ angular.module('valintalaskenta')
                     hakuOid: model.hakuOid,
                     hakukohdeOid: model.hakukohdeOid,
                     julkaistavissa: hakemus.julkaistavissa,
+                    ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
                     hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
                     hyvaksyPeruuntunut: hakemus.hyvaksyPeruuntunut,
                     read: hakemus.read

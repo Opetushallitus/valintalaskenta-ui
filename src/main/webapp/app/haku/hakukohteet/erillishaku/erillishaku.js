@@ -202,6 +202,7 @@
             valintatapajonoOid: valintatapajono.oid,
             hakemusOid: hakemus.hakemusOid,
             julkaistavissa: hakemus.julkaistavissa,
+            ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
             hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta
           };
         };
@@ -402,6 +403,7 @@
         var valintatulokset = _.map(valintatapajono.hakemukset, function(hakemus) {
           return {
             julkaistavissa: hakemus.julkaistavissa,
+            ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
             tila: hakemus.valintatuloksenTila,
             tilaHakijalle: hakemus.valintatuloksenTilaHakijalle,
             hakemusOid: hakemus.hakemusOid,
