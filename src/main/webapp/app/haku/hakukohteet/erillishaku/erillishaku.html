@@ -212,8 +212,8 @@
                                                         </select>
                                                     </div>
                                                     <div>
-                                                        <span>{{ t('sijoitteluntulos.ehdollisesti') || 'Ehdollisesti vastaanotettu' }}:</span>
-                                                        <input ng-disabled="!(updateOph)" type="checkbox" ng-model="tulos.ehdollisestiVastaanotettu"
+                                                        <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
+                                                        <input ng-disabled="!(updateOph)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
                                                                ng-change="addMuokattuHakemus(tulos)"/>
                                                         <br/>
                                                     </div>
