@@ -213,9 +213,8 @@ angular.module('valintalaskenta')
 
         hasOrganizationAccess = valintaryhma.vastuuorganisaatio && UserModel.organizationOidsAndChilds.indexOf(valintaryhma.vastuuorganisaatio.oid) != -1;
         hasExpired = valintaryhma.viimeinenKaynnistyspaiva && (new Date()).getTime() > valintaryhma.viimeinenKaynnistyspaiva + dayInMillis;
-        ifLeafNode = valintaryhma.alavalintaryhmat && valintaryhma.alavalintaryhmat.length == 0;
 
-        return hasOrganizationAccess && !hasExpired && ifLeafNode;
+        return hasOrganizationAccess && !hasExpired;
     };
 
     $scope.kaynnistaValintalaskenta = function (valintaryhma) {
