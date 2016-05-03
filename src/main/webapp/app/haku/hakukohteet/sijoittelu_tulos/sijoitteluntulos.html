@@ -160,7 +160,10 @@
                                     <div ng-show="hakemus.tila == 'VARALLA' && (updateOph || updateVarasijaltaHyvaksytty)">{{ t('sijoitteluntulos.varasijahyvaksy') || 'Hyväksytään varasijalta' }}: <input type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.hyvaksyttyVarasijalta"></div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto')" sortable="'vastaanottoTila'">
-                                    <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input ng-disabled="!(updateOph || valintaesitysJulkaistavissa)" type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"/> <br/></div>
+                                    <div class="white-space-nowrap">
+                                        <span>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:</span>
+                                        <input ng-disabled="!(updateOph || valintaesitysJulkaistavissa)" type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"/>
+                                    </div>
                                     <div ng-if="hakemus.naytetaanVastaanottotieto">
                                         <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
                                             <div>
@@ -174,10 +177,9 @@
                                                 </span>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="white-space-nowrap">
                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                         <input ng-disabled="!(updateOph)" type="checkbox" ng-model="hakemus.ehdollisestiHyvaksyttavissa" ng-change="addMuokattuHakemus(hakemus)"/>
-                                        <br/>
                                     </div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto')" sortable="'muokattuIlmoittautumisTila'">

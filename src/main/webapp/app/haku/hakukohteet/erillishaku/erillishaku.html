@@ -193,7 +193,10 @@
                                             <td>
                                                 <div ng-if="valinnanvaihe.viimeinenVaihe">
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
-                                                    <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
+                                                    <div class="white-space-nowrap">
+                                                        <span>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:</span>
+                                                        <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa">
+                                                    </div>
                                                     <div ng-show="tulos.julkaistavissa">
                                                         <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
                                                         <span ng-bind="valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle]"></span>
@@ -211,11 +214,10 @@
                                                                 ng-change="addMuokattuHakemus(tulos)">
                                                         </select>
                                                     </div>
-                                                    <div>
+                                                    <div class="white-space-nowrap">
                                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                                         <input ng-disabled="!(updateOph)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
                                                                ng-change="addMuokattuHakemus(tulos)"/>
-                                                        <br/>
                                                     </div>
                                                 </div>
 
