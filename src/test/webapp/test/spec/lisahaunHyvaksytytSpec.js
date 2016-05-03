@@ -17,7 +17,7 @@ describe('Lisähaun hakeneet välilehti', function () {
                 koodistoFixtures,
                 valintakokeetFixtures(),
                 sijoitteluAjoFixtures,
-                ohjausparametritFixtures,
+                ohjausparametritFixtures(),
                 organisaatioFixtures,
                 commonFixtures()
             ].map(addTestHook).forEach(function(f) { f(); });

@@ -16,7 +16,7 @@ describe('Pistesyöttö', function() {
         addTestHook(parametritFixtures)();
         addTestHook(listfullFixtures([]))();
         addTestHook(commonFixtures())();
-        addTestHook(ohjausparametritFixtures)();
+        addTestHook(ohjausparametritFixtures())();
         addTestHook(dokumenttipalveluFixtures)();
         addTestHook(organisaatioFixtures)();
         addTestHook(hakuAppKaksiHenkiloaPisteFixtures)();
