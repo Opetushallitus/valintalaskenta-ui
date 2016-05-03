@@ -19,7 +19,7 @@ public class MochaTestRunnerTest {
         pb.inheritIO();
         Process ps = pb.start();
 
-        assertTrue(ps.waitFor(60, TimeUnit.SECONDS));
+        assertTrue(ps.waitFor(120, TimeUnit.SECONDS));
         assertEquals(0, ps.exitValue());
         JettyTestRunner.stop();
     }
