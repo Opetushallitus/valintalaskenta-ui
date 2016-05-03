@@ -41,7 +41,7 @@ sijoitteluntulokset = initSelectors({
         return "#hyvaksyPeruuntunut-" + jonoOid + "-" + hakemusOid.replace(/\./g, "")
     },
     julkaistavissa: function(n) {
-        return "tr.ng-scope:nth-child(" + n + ") > td:nth-child(7) > div:nth-child(1) > input:nth-child(1)";
+        return "tr.ng-scope:nth-child(" + n + ") > td:nth-child(7) > div:nth-child(1) > input";
     },
     valintatulosTableIndex: function (trIndex, spanIndex) {
         return ".result-list tr:eq(" + trIndex + ") td span:eq(" + spanIndex + ")"

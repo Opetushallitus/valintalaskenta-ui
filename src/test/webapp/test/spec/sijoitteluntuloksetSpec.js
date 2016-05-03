@@ -265,7 +265,7 @@ describe('Sijoittelun tulokset välilehti', function () {
         )
     })
 
-    describe('Hakemuksen tila sijoittelun tulokset -välilehdellä PERUUNTUNUT', function () {
+    describe('Hakemuksen tila sijoittelun tulokset -välilehdellä PERUUNTUNUT jos käyttäjällä PERUUNTUNEIDEN_HYVAKSYNTA oikeus', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.90697286251", "1.2.246.562.20.18097797874");
         beforeEach(function (done) {
             addTestHook(tarjontaFixtures)()
