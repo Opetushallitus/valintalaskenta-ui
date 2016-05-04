@@ -2,7 +2,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe,
                                             SijoittelunVastaanottotilat, LatestSijoittelunTilat,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
-                                            HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakukohteenValintatulokset,
+                                            HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakemuksenValintatulokset,
                                             LatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService) {
     "use strict";
 
@@ -104,8 +104,12 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                     hakutoive.hakutoiveenValintatapajonot.forEach(function (valintatapajono) {
                                         model.sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
 
-                                        HakukohteenValintatulokset.get({hakuOid: hakuOid, hakukohdeOid: hakutoive.hakukohdeOid,
-                                            valintatapajonoOid: valintatapajono.valintatapajonoOid}, function (result) {
+                                        HakemuksenValintatulokset.get({
+                                            hakemusOid: hakemusOid,
+                                            hakuOid: hakuOid,
+                                            hakukohdeOid: hakutoive.hakukohdeOid,
+                                            valintatapajonoOid: valintatapajono.valintatapajonoOid
+                                        }, function (result) {
                                             result.forEach(function (r) {
                                                 if (r.hakemusOid === model.hakemus.oid) {
                                                     model.sijoittelu[valintatapajono.valintatapajonoOid].logEntries = r.logEntries;

@@ -474,6 +474,17 @@ app.factory('HakukohteenValintatulokset', function($resource) {
           get: {method: "GET", isArray:true, cache: false}
       });
 });
+app.factory('HakemuksenValintatulokset', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/hakemus/:hakemusOid/haku/:hakuOid/hakukohde/:hakukohdeOid/valintatapajono/:valintatapajonoOid",
+      {
+          hakemusOid: "@hakemusOid",
+          hakuOid: "@hakuOid",
+          hakukohdeOid: "@hakukohdeoid",
+          valintatapajonoOid: "@valintatapajonoOid"
+      }, {
+          get: {method: "GET", isArray:true, cache: false}
+      });
+});
 app.factory('HenkilotByOid', function($resource) {
     return $resource(HAKEMUS_URL_BASE + "haku-app/applications/list", {rows: 100000}, {
         hae: {method:'POST', isArray:true} // , cache: true
