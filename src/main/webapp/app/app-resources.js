@@ -122,7 +122,7 @@ app.factory('HakukohdeHakijaryhma', function($resource) {
 //valintaperusteet
 app.factory('ValinnanvaiheListFromValintaperusteet', function($resource) {
     return $resource(VALINTAPERUSTEET_URL_BASE + "resources/hakukohde/:hakukohdeoid/valinnanvaihe", {hakukohdeoid: "@hakukohdeoid"}, {
-        get: {method: "GET", isArray: true, cache: false}
+        get: {method: "GET", isArray: true, cache: false, params: {withValisijoitteluTieto: true}}
     });
 });
 app.factory('Valintatapajono', function($resource) {
