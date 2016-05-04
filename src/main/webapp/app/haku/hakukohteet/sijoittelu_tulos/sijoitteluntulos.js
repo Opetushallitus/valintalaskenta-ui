@@ -1,11 +1,11 @@
 angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila',
-        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatulokset', 'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams',
-        'FilterService', '$filter',
+        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'VastaanottoAikarajanMennytTieto', 
+        'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter',
         function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
-                                               $timeout, SijoitteluAjo, HakukohteenValintatulokset, IlmoitusTila,
-                                               HaunTiedot, _, ngTableParams, FilterService, $filter) {
+                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, VastaanottoAikarajanMennytTieto, 
+                                               IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
 
     var model = new function () {
@@ -89,7 +89,7 @@ angular.module('valintalaskenta')
             var vastaanottotilatDeferred = $q.defer();
             var sijoitteluajoDeferred = $q.defer();
 
-            HakukohteenValintatulokset.get({hakukohdeOid: hakukohdeOid,
+            HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({hakukohdeOid: hakukohdeOid,
                 hakuOid: hakuOid},
               function (result) {
                   vastaanottotilatDeferred.resolve(result);
@@ -98,7 +98,8 @@ angular.module('valintalaskenta')
             });
 
             sijoitteluajoDeferred.promise.then(function(result) {
-                vastaanottotilatDeferred.promise.then(function(tilat) {
+                vastaanottotilatDeferred.promise
+                  .then(function(tilat) {
                     if (result.sijoitteluajoId) {
                         model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
                         model.sijoitteluTulokset = result;
@@ -210,7 +211,8 @@ angular.module('valintalaskenta')
                                                 vastaanottotila.tila = "KESKEN";
                                             }
                                             if (vastaanottotila.tilaHakijalle === null) {
-                                                vastaanottotila.tilaHakijalle = "KESKEN";
+                                                vastaanottotila.tilaHakijalle = "";
+                                                currentHakemus.tilaHakijalleTaytyyLadataPalvelimelta = true;
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
@@ -308,10 +310,11 @@ angular.module('valintalaskenta')
 
                         }
                     });
-
+                    return tilat;
                 }, function(error) {
                     model.errors.push(error.data.message);
                 })
+                .then(fetchAndPopulateVastaanottoAikarajaMennyt)
             }, function(error) {
                 model.errors.push(error.data.message);
             });
@@ -401,17 +404,50 @@ angular.module('valintalaskenta')
 
     return model;
 
+    function fetchAndPopulateVastaanottoAikarajaMennyt(tilat) {
+        var hakemuksetOnLadattu = _.size(model.sijoitteluntulosHakijoittain) > 0;
+        if (hakemuksetOnLadattu) {
+            var kaikkiHakemukset = _.flatten(_.map(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
+                return valintatapajono.hakemukset;
+            }));
+
+            var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function(h) {
+                return h.vastaanottoTila === "KESKEN" && (h.tila === 'HYVAKSYTTY' || h.tila === 'VARASIJALTA_HYVAKSYTTY' || h.tila === 'PERUNUT');
+            }), function(relevanttiHakemus) {
+                return relevanttiHakemus.hakemusOid;
+            });
+
+            var aikarajaMennytDeferred = $q.defer();
+            aikarajaMennytDeferred.promise.then(function(aikarajaMennytTiedot) {
+                _.forEach(aikarajaMennytTiedot, function(vastaanottoAikarajaMennyt) {
+                    _.forEach(kaikkiHakemukset, function(hakemus) {
+                        if (hakemus && (hakemus.hakemusOid === vastaanottoAikarajaMennyt.hakemusOid)) {
+                            hakemus.vastaanottoAikarajaMennyt = vastaanottoAikarajaMennyt.mennyt;
+                        }
+                    });
+                })
+            });
+
+            if (oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon.length > 0) {
+                VastaanottoAikarajanMennytTieto.post({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, angular.toJson(oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon),
+                      function(result) { aikarajaMennytDeferred.resolve(result); },
+                      function(error) { aikarajaMennytDeferred.reject(error); }
+                );
+            }
+        }
+        return tilat;
+    }
 }])
 
 
     .controller('SijoitteluntulosController', ['$scope', '$modal', 'TallennaValinnat', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
         'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
-        'Kirjeet','UserModel', 'VastaanottoUtil',
+        'Kirjeet','UserModel', 'VastaanottoUtil', 'HakemuksenValintatulokset',
         function ($scope, $modal, TallennaValinnat, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService,
-                                    Kirjeet, UserModel, VastaanottoUtil) {
+                                    Kirjeet, UserModel, VastaanottoUtil, HakemuksenValintatulokset) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -754,7 +790,31 @@ angular.module('valintalaskenta')
     }
     $scope.showJalkiohjaus = function() {
         return UserModel.isOphUser || !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
-    }
+    };
+
+    $scope.haeTilaHakijalle = function(hakemusobjektiValintatapajonosta) {
+        if (hakemusobjektiValintatapajonosta.tilaHakijalleTaytyyLadataPalvelimelta) {
+            hakemusobjektiValintatapajonosta.tilaHakijalleTaytyyLadataPalvelimelta = false;
+
+            var hakemusOid = hakemusobjektiValintatapajonosta.hakemusOid;
+            var hakuOid = $scope.model.hakuOid;
+            var hakukohdeOid = $scope.model.hakukohdeOid;
+            var valintatapajonoOid = hakemusobjektiValintatapajonosta.valintatapajonoOid;
+            HakemuksenValintatulokset.get({
+                hakemusOid: hakemusOid,
+                hakuOid: hakuOid,
+                hakukohdeOid: hakukohdeOid,
+                valintatapajonoOid: valintatapajonoOid
+            }, function (hakemuksenValintatulokset) {
+                _.forEach(hakemuksenValintatulokset, function(valintatulosHakijanTilanKanssa) {
+                    if (hakemusobjektiValintatapajonosta.valintatapajonoOid == valintatulosHakijanTilanKanssa.valintatapajonoOid) {
+                        hakemusobjektiValintatapajonosta.tilaHakijalle = valintatulosHakijanTilanKanssa.tilaHakijalle;
+                    }
+                });
+            });
+        }
+        return hakemusobjektiValintatapajonosta.tilaHakijalle;
+    };
     UserModel.refreshIfNeeded()
 }]);
 

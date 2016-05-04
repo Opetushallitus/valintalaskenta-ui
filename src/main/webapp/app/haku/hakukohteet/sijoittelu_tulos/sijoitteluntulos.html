@@ -166,7 +166,7 @@
                                                 <div>
                                                     <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>
                                                     <span>: </span>
-                                                    <span ng-bind="t('sijoitteluntulos.' + ( hakemus.tilaHakijalle.toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores">
+                                                    <span ng-bind="t('sijoitteluntulos.' + ( haeTilaHakijalle(hakemus).toLowerCase() | removeUnderscores) ) || haeTilaHakijalle(hakemus).toLowerCase() | removeUnderscores">
                                                     </span>
                                                 </div>
                                                 <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
