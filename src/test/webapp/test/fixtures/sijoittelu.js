@@ -867,5 +867,5 @@ function sijoitteluAjoFixtures() {
         "read": 1439898044625,
         "viimeinenMuutos": 1439896286961
     }];
-    httpBackend.when('GET', /.*resources\/proxy\/valintatulosservice\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE.*/).respond(lisahakuTila);
+    httpBackend.when('GET', /.*resources\/proxy\/valintatulosservice\/ilmanhakijantilaa\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE.*/).respond(lisahakuTila);
 }

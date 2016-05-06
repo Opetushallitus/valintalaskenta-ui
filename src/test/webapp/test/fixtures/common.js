@@ -17,7 +17,7 @@ var serviceUrls = {
     },
 
     hakukohdeTila: function (oid) {
-        return new RegExp(".*resources/proxy/valintatulosservice/haku/.*/hakukohde/" + oid + ".*")
+        return new RegExp(".*resources/proxy/valintatulosservice/ilmanhakijantilaa/haku/.*/hakukohde/" + oid + ".*")
     },
 
     hakukohdeAvaimet: function () {
