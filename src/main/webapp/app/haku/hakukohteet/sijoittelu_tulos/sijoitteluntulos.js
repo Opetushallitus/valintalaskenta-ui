@@ -81,6 +81,7 @@ angular.module('valintalaskenta')
             model.sijoitteluntulosHakijoittain = {};
             model.sijoitteluntulosHakijoittainArray = [];
             model.sijoitteluajoId = 0;
+            model.myohastymistietoLadattu = false;
 
             HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
                 model.haku = resultWrapper.result;
@@ -425,7 +426,8 @@ angular.module('valintalaskenta')
                             hakemus.vastaanottoAikarajaMennyt = vastaanottoAikarajaMennyt.mennyt;
                         }
                     });
-                })
+                });
+                model.myohastymistietoLadattu = true;
             });
 
             if (oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon.length > 0) {

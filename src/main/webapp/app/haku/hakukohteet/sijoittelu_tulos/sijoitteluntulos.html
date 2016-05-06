@@ -109,7 +109,7 @@
                     </a>
                     <a ng-click="selectEiVastanotettuMaaraaikanaToAll(jono.oid)"
                        class="btn btn-default btn-sm margin-bottom-2"
-                       ng-class='(updateOph || valintaesitysJulkaistavissa) ? "" : "disabled"'>
+                       ng-class='(model.myohastymistietoLadattu && (updateOph || valintaesitysJulkaistavissa)) ? "" : "disabled"'>
                         {{ t('sijoitteluntulos.merkitsemyohastyneeksi') || 'Merkitse myöhästyneeksi' }}
                     </a>
                     <br/>
