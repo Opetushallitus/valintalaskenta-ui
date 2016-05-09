@@ -8,6 +8,7 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
         this.hakukohdeOid = '';
         this.tulosValinnanvaiheet = [];
         this.errors = [];
+        this.anyVVHasValisijoittelu = false;
 
         this.refresh = function (hakukohdeOid) {
             if (hakukohdeOid !== undefined) {
@@ -15,8 +16,17 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
                 model.tulosValinnanvaiheet = [];
                 model.errors = [];
                 model.errors.length = 0;
+                model.anyVVHasValisijoittelu = false;
+
                 ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: hakukohdeOid}, function (result) {
                     model.tulosValinnanvaiheet = result;
+
+                    var anyHasValisijoittelu = !_.every(result, {'hasValisijoittelu': false});
+
+                    if (anyHasValisijoittelu) {
+                        model.anyVVHasValisijoittelu = true;
+                    }
+
                 }, function (error) {
                     model.errors.push(error);
                 });

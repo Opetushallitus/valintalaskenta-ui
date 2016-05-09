@@ -3,60 +3,63 @@
 <div class="clear"></div>
 
 <div class="tabsheets">
-	
-	<div ng-include="'haku/hakukohdelista.html'"></div>
+
+    <div ng-include="'haku/hakukohdelista.html'"></div>
 
     <div class="toggle-content-container overflow-x-scroll">
         <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
-		<div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"></div>
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"></div>
 
         <div class="tabsheets">
-			<div ng-include="'../common/html/errors.html'"></div>
+            <div ng-include="'../common/html/errors.html'"></div>
 
-			<table ng-show="model.tulosValinnanvaiheet" class="virkailija-table-1">
-				<thead>
-					<tr>
-						<th>{{ t('valinnanhallinta.valinnanvaiheennimi') || 'Valinnanvaiheen nimi' }}</th>
-						<th>{{ t('valinnanhallinta.tyyppi') || 'Tyyppi' }}</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
-						<td>{{valinnanvaihe.nimi}}</td>
-						<td>
-							<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'VALINTAKOE'">{{ t('valinnanhallinta.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}</span>
-							<span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'TAVALLINEN'">{{ t('valinnanhallinta.valinnanvaihe') || 'Valinnanvaihe' }}</span>
-						</td>
-						<td>
-                            <div ng-show="valinnanvaihe.aktiivinen">
+            <table ng-show="model.tulosValinnanvaiheet" class="virkailija-table-1">
+                <thead>
+                    <tr>
+                        <th>{{ t('valinnanhallinta.valinnanvaiheennimi') || 'Valinnanvaiheen nimi' }}</th>
+                        <th>{{ t('valinnanhallinta.tyyppi') || 'Tyyppi' }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
+                        <td>{{valinnanvaihe.nimi}}</td>
+                        <td>
+                            <span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'VALINTAKOE'">{{ t('valinnanhallinta.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}</span>
+                            <span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'TAVALLINEN'">{{ t('valinnanhallinta.valinnanvaihe') || 'Valinnanvaihe' }}</span>
+                        </td>
+                        <td>
+                            <div ng-show="valinnanvaihe.aktiivinen && !valinnanvaihe.hasValisijoittelu">
                                 <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'TAVALLINEN'" ng-click="kaynnistaValintalaskenta($index)" class="btn btn-primary btn-sm">{{ t('valinnanhallinta.kaynnistalaskenta') || 'Käynnistä laskenta' }}</a>
                                 <a ng-show="valinnanvaihe.valinnanVaiheTyyppi === 'VALINTAKOE'" ng-click="kaynnistaValintakoelaskenta($index)" class="btn btn-primary btn-sm">{{ t('valinnanhallinta.kaynnistavalintakoelaskenta') || 'Käynnistä valintakoelaskenta' }}</a>
                             </div>
                             <div ng-show="!valinnanvaihe.aktiivinen">
                                 {{ t('valinnanhallinta.eioleaktiivinen') || 'Valinnanvaihe ei ole aktiivinen' }}
                             </div>
-		                </td>
-	                </tr>
-	                <tr>
-	                	<td></td>
-	                	<td></td>
-	                	<td>
-	                		<a ng-click="kaikkiKerralla()" class="btn btn-primary btn-sm">{{ t('valinnanhallinta.kaikkiVaiheetKerralla') || 'Suorita kaikki valinnan vaiheet' }}</a>
-	                	</td>
-	                </tr>
+                            <div ng-show="valinnanvaihe.aktiivinen && valinnanvaihe.hasValisijoittelu">
+                                {{ t('valinnanhallinta.onvalisijoittelu') || 'Valinnanvaiheella on käytössä välisijoittelu, joten laskentaa ei voi käynnistää hakukohteen kautta' }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <a ng-show="!model.anyVVHasValisijoittelu" ng-click="kaikkiKerralla()" class="btn btn-primary btn-sm">{{ t('valinnanhallinta.kaikkiVaiheetKerralla') || 'Suorita kaikki valinnan vaiheet' }}</a>
+                            <div ng-show="model.anyVVHasValisijoittelu" >{{ t('valinnanhallinta.onvalisijoittelusuoritakaikki') || 'Yhdellä tai useammalla Valinnanvaiheella on käytössä välisijoittelu, joten kaikkia valinnanvaiheita ei voi kerralla suorittaa.' }}</div>
+                        </td>
+                    </tr>
                 </tbody>
-			</table>
-			
+            </table>
 
-			<div ng-show="!model.tulosValinnanvaiheet" class="offset-left-16-4 grid16-8">
-				<p class="alert alert-danger">{{ t('valinnanhallinta.eiolemallinnettu') || 'Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa' }}</p>
-			</div>
-			<div class="clear"></div>
-		</div>
-	</div>
-	<div class="clear"></div>
+
+            <div ng-show="!model.tulosValinnanvaiheet" class="offset-left-16-4 grid16-8">
+                <p class="alert alert-danger">{{ t('valinnanhallinta.eiolemallinnettu') || 'Valintaperusteita ei ole mallinnettu, mallinna valintaperusteet ennen valintalaskentaa' }}</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
 
 
 </div>
-
