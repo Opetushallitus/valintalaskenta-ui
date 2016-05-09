@@ -464,16 +464,6 @@ app.factory('HakemusKey', function($resource) {
 
 
 //Sijoittelu
-app.factory('HakukohteenValintatulokset', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuOid/hakukohde/:hakukohdeOid?valintatapajonoOid=:valintatapajonoOid",
-      {
-          hakuOid: "@hakuOid",
-          hakukohdeOid: "@hakukohdeoid",
-          valintatapajonoOid: "@valintatapajonoOid"
-      }, {
-          get: {method: "GET", isArray:true, cache: false}
-      });
-});
 app.factory('HakemuksenValintatulokset', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/hakemus/:hakemusOid/haku/:hakuOid/hakukohde/:hakukohdeOid/valintatapajono/:valintatapajonoOid",
       {
