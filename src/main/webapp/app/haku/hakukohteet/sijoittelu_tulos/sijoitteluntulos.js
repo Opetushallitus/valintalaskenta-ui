@@ -1,10 +1,10 @@
 angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila',
-        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'VastaanottoAikarajanMennytTieto', 
+        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'VastaanottoAikarajanMennytTieto', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter',
         function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
-                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, VastaanottoAikarajanMennytTieto, 
+                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, VastaanottoAikarajanMennytTieto, HakemustenVastaanottotilaHakijalle,
                                                IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
 
@@ -269,7 +269,9 @@ angular.module('valintalaskenta')
                                       orderedData;
 
                                     params.total(orderedData.length); // set total for recalc pagination
-                                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                                    var visibleSlice = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                    haeTilaHakijalleTarvitsevilleHakemuksille(visibleSlice, valintatapajono.oid);
+                                    $defer.resolve(visibleSlice);
 
                                 }
                             });
@@ -438,6 +440,34 @@ angular.module('valintalaskenta')
             }
         }
         return tilat;
+    }
+
+    function haeTilaHakijalleTarvitsevilleHakemuksille(nakyvatJononHakemukset, valintatapajonoOid) {
+        var oiditHakemuksilleJotkaTarvitsevatTilanHakijalle = _.map(_.filter(nakyvatJononHakemukset, function(h) {
+            return h.tilaHakijalleTaytyyLadataPalvelimelta;
+        }), function(relevanttiHakemus) {
+            relevanttiHakemus.tilaHakijalleTaytyyLadataPalvelimelta = false;
+            return relevanttiHakemus.hakemusOid;
+        });
+
+        var tilatHakijalleDeferred = $q.defer();
+        tilatHakijalleDeferred.promise.then(function(tilaHakijalleTiedot) {
+            _.forEach(tilaHakijalleTiedot, function(yksittainenTilaHakijalleTieto) {
+                _.forEach(nakyvatJononHakemukset, function(hakemus) {
+                    if (hakemus && (hakemus.hakemusOid === yksittainenTilaHakijalleTieto.hakemusOid && hakemus.valintatapajonoOid === yksittainenTilaHakijalleTieto.valintatapajonoOid)) {
+                        hakemus.tilaHakijalle = yksittainenTilaHakijalleTieto.tilaHakijalle;
+                    }
+                });
+            });
+        });
+
+        if (oiditHakemuksilleJotkaTarvitsevatTilanHakijalle.length > 0) {
+            HakemustenVastaanottotilaHakijalle.post({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid, valintatapajonoOid: valintatapajonoOid},
+              angular.toJson(oiditHakemuksilleJotkaTarvitsevatTilanHakijalle),
+                  function(result) { tilatHakijalleDeferred.resolve(result); },
+                  function(error) { tilatHakijalleDeferred.reject(error); }
+            );
+        }
     }
 }])
 
@@ -794,29 +824,6 @@ angular.module('valintalaskenta')
         return UserModel.isOphUser || !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     };
 
-    $scope.haeTilaHakijalle = function(hakemusobjektiValintatapajonosta) {
-        if (hakemusobjektiValintatapajonosta.tilaHakijalleTaytyyLadataPalvelimelta) {
-            hakemusobjektiValintatapajonosta.tilaHakijalleTaytyyLadataPalvelimelta = false;
-
-            var hakemusOid = hakemusobjektiValintatapajonosta.hakemusOid;
-            var hakuOid = $scope.model.hakuOid;
-            var hakukohdeOid = $scope.model.hakukohdeOid;
-            var valintatapajonoOid = hakemusobjektiValintatapajonosta.valintatapajonoOid;
-            HakemuksenValintatulokset.get({
-                hakemusOid: hakemusOid,
-                hakuOid: hakuOid,
-                hakukohdeOid: hakukohdeOid,
-                valintatapajonoOid: valintatapajonoOid
-            }, function (hakemuksenValintatulokset) {
-                _.forEach(hakemuksenValintatulokset, function(valintatulosHakijanTilanKanssa) {
-                    if (hakemusobjektiValintatapajonosta.valintatapajonoOid == valintatulosHakijanTilanKanssa.valintatapajonoOid) {
-                        hakemusobjektiValintatapajonosta.tilaHakijalle = valintatulosHakijanTilanKanssa.tilaHakijalle;
-                    }
-                });
-            });
-        }
-        return hakemusobjektiValintatapajonosta.tilaHakijalle;
-    };
     UserModel.refreshIfNeeded()
 }]);
 

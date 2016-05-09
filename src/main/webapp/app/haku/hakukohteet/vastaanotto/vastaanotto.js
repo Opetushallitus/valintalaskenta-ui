@@ -33,3 +33,14 @@ app.factory('VastaanottoAikarajanMennytTieto', function($resource) {
             post: {method: "POST", isArray: true }
         });
 });
+
+app.factory('HakemustenVastaanottotilaHakijalle', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/tilahakijalle/haku/:hakuOid/hakukohde/:hakukohdeOid/valintatapajono/:valintatapajonoOid",
+      {
+          hakuOid: "@hakuOid",
+          hakukohdeOid: "@hakukohdeoid",
+          valintatapajonoOid: "@valintatapajonoOid"
+      }, {
+        post: {method: "POST", isArray: true }
+      });
+});
