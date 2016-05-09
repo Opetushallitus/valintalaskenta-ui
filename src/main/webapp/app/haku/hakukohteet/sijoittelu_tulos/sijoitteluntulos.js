@@ -760,7 +760,8 @@ angular.module('valintalaskenta')
         var muokattavatHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
             return valintatapajono.hakemukset;
         }));
-        VastaanottoUtil.merkitseMyohastyneeksi(muokattavatHakemukset);
+        var muokatutHakemukset = VastaanottoUtil.merkitseMyohastyneeksi(muokattavatHakemukset);
+        _.forEach(muokatutHakemukset, $scope.addMuokattuHakemus)
     };
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
