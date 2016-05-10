@@ -186,6 +186,7 @@
           syntymaAika: hakemus.syntymaaika,
           personOid: hakemus.hakijaOid,
           hakemuksenTila: hakemus.hakemuksentila,
+          ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
           vastaanottoTila: hakemus.valintatuloksentila,
           ilmoittautumisTila: hakemus.ilmoittautumistila,
           poistetaankoRivi: hakemus.poistetaankoRivi,
