@@ -155,6 +155,10 @@
                                             | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
                                         </modal-open>
                                     </modal>
+                                    <div class="white-space-nowrap">
+                                        <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
+                                        <input ng-disabled="!(updateOph)" type="checkbox" ng-model="hakemus.ehdollisestiHyvaksyttavissa" ng-change="addMuokattuHakemus(hakemus)"/>
+                                    </div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.varasijatoiminto') || 'Varasijalta hyväksyminen')" sortable="'tila'">
                                     <div ng-show="hakemus.tila == 'VARALLA' && (updateOph || updateVarasijaltaHyvaksytty)">{{ t('sijoitteluntulos.varasijahyvaksy') || 'Hyväksytään varasijalta' }}: <input type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.hyvaksyttyVarasijalta"></div>
@@ -176,10 +180,6 @@
                                                     <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakemus"/>
                                                 </span>
                                         </div>
-                                    </div>
-                                    <div class="white-space-nowrap">
-                                        <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
-                                        <input ng-disabled="!(updateOph)" type="checkbox" ng-model="hakemus.ehdollisestiHyvaksyttavissa" ng-change="addMuokattuHakemus(hakemus)"/>
                                     </div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto')" sortable="'muokattuIlmoittautumisTila'">
