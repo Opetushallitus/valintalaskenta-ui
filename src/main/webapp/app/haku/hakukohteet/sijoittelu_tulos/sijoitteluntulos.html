@@ -175,7 +175,10 @@
                                                 <span>: </span>
                                                     <span ng-bind="t('sijoitteluntulos.' + ( hakemus.tilaHakijalle.toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores">
                                                     </span>
-                                            </div>
+                                                    <div ng-if="hakemus.vastaanottoAikaraja">
+                                                        <span ng-bind="t('sijoitteluntulos.vastaanottoaikaraja') || 'Aikaraja'"></span>: <span>{{hakemus.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm'}}</span>
+                                                    </div>
+                                                </div>
                                                 <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                                     <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakemus"/>
                                                 </span>
