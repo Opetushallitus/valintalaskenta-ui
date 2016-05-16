@@ -114,7 +114,10 @@
                                                 </select>
                                             </td>
                                             <td data-title="(t('valintalaskentatulos.yhteispisteet') || 'Yhteispisteet')" sortable="'jarjestyskriteerit[0].arvo'">
-                                                {{(tulos.jarjestyskriteerit[0].arvo < 0) ? "" : tulos.jarjestyskriteerit[0].arvo}}
+                                                <input type="number"
+                                                       ng-model="jarjestyskriteerit[0].arvo">
+                                                    {{(tulos.jarjestyskriteerit[0].arvo < 0) ? "" : tulos.jarjestyskriteerit[0].arvo}}
+                                                </input>
                                             </td>
                                             <td data-title="(t('valintalaskentatulos.kuvausfi') || 'Kuvaus (FI)')" sortable="'jarjestyskriteerit[0].kuvaus.FI'">
                                                 <input ng-model="tulos.jarjestyskriteerit[0].kuvaus.FI" size="20"/>
