@@ -510,6 +510,8 @@ app.directive("valintatulos", function () {
                 } else if (!_.isEmpty(valintatulos.tilankuvaus)) {
                     if (valintatulos.valintatila === "HYLATTY") {
                         return resultState[key] + " " + valintatulos.tilankuvaus
+                    } else if(hyvaksytty(valintatulos) && valintatulos.ehdollisestiHyvaksyttavissa) {
+                        return resultState[key] + " (ehdollinen)"
                     } else {
                         return valintatulos.tilankuvaus
                     }
@@ -518,15 +520,21 @@ app.directive("valintatulos", function () {
                 } else {
                     if(valintatulos.valintatila === 'VARALLA') {
                         return valintatulos.varasijanumero + ". varasijalla";
+                    } else if(hyvaksytty(valintatulos) && valintatulos.ehdollisestiHyvaksyttavissa) {
+                        return resultState[key] + " (ehdollinen)"
                     } else {
                         return resultState[key];
                     }
                 }
             };
 
-            $scope.valintatulosStyle = function (valintatulos) {
-                if (valintatulos.valintatila == "HYVAKSYTTY" || valintatulos.valintatila == "HYVAKSYTTY_EHDOLLISESTI" || valintatulos.valintatila == "VARASIJALTA_HYVAKSYTTY")
+            $scope.valintatulosStyle = function(valintatulos) {
+                if (hyvaksytty(valintatulos))
                     return "accepted"
+            }
+
+            function hyvaksytty(valintatulos) {
+                return valintatulos.valintatila == "HYVAKSYTTY" || valintatulos.valintatila == "HARKINNANVARAISESTI_HYVAKSYTTY" || valintatulos.valintatila == "VARASIJALTA_HYVAKSYTTY"
             }
         }
     }
