@@ -113,6 +113,9 @@
                                                     <option ng-hide="erityisopetus" value="HYVAKSYTTY_HARKINNANVARAISESTI">{{ t('valintalaskentatulos.harkinnanvaraisesti') || 'Hyväksytty harkinnanvaraisesti' }}</option>
                                                 </select>
                                             </td>
+                                            <td data-title="(t('valintalaskentatulos.yhteispisteet') || 'Yhteispisteet')" sortable="'jarjestyskriteerit[0].arvo'">
+                                                {{(tulos.jarjestyskriteerit[0].arvo < 0) ? "" : tulos.jarjestyskriteerit[0].arvo}}
+                                            </td>
                                             <td data-title="(t('valintalaskentatulos.kuvausfi') || 'Kuvaus (FI)')" sortable="'jarjestyskriteerit[0].kuvaus.FI'">
                                                 <input ng-model="tulos.jarjestyskriteerit[0].kuvaus.FI" size="20"/>
                                             </td>
