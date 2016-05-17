@@ -426,7 +426,8 @@
 
       function fetchAndPopulateVastaanottoAikaraja(hakuOid, hakukohdeOid, kaikkiHakemukset) {
         var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function(h) {
-            return h.valintatuloksentila === "KESKEN" && (h.hakemuksentila === 'HYVAKSYTTY' || h.hakemuksentila === 'VARASIJALTA_HYVAKSYTTY' || h.hakemuksentila === 'PERUNUT');
+            return h.valintatuloksentila === "KESKEN" && h.julkaistavissa && 
+              (h.hakemuksentila === 'HYVAKSYTTY' || h.hakemuksentila === 'VARASIJALTA_HYVAKSYTTY' || h.hakemuksentila === 'PERUNUT');
         }), function(relevanttiHakemus) {
             return relevanttiHakemus.hakemusOid;
         });

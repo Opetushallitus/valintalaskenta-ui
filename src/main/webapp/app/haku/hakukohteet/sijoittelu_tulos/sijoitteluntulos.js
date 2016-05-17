@@ -417,7 +417,8 @@ angular.module('valintalaskenta')
             }));
 
             var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function(h) {
-                return h.vastaanottoTila === "KESKEN" && (h.tila === 'HYVAKSYTTY' || h.tila === 'VARASIJALTA_HYVAKSYTTY' || h.tila === 'PERUNUT');
+                return h.vastaanottoTila === "KESKEN" && h.julkaistavissa &&
+                  (h.tila === 'HYVAKSYTTY' || h.tila === 'VARASIJALTA_HYVAKSYTTY' || h.tila === 'PERUNUT');
             }), function(relevanttiHakemus) {
                 return relevanttiHakemus.hakemusOid;
             });
