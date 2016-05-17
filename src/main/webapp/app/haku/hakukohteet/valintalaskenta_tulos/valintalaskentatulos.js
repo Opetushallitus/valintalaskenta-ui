@@ -141,7 +141,11 @@
                                             if(krit.tila != 'HYVAKSYTTAVISSA') {
                                                 delete jonosija.jonosija
                                             } else {
-                                                jonosija.jonosija = -(krit.arvo);
+                                                if(tulosjono.kaytetaanKokonaispisteita) {
+                                                    jonosija.jonosija = krit.arvo;
+                                                } else {
+                                                    jonosija.jonosija = -(krit.arvo);
+                                                }
                                             }
                                             tulosjono.jonosijat.push(jonosija);
                                         } else {
@@ -496,7 +500,9 @@ angular.module('valintalaskenta').
 
     };
 
-
+    $scope.clearJonosijat = function (valintatapajono) {
+        valintatapajono.jonosijat = []
+    }
 
 
 }]);
