@@ -168,11 +168,6 @@
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('EN')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaenglanniksi') || 'Muodosta jälkiohjauskirjeet englanniksi' }}
     </button>
-
-    <button privileges="valintalaskenta"
-            href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
-            class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
-    </button>
 </collapsible>
 
 <!-- Ei hyväksyttyjen kirjeet (Korkeakoulut) -->
@@ -190,11 +185,6 @@
     </button>
     <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('EN')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytenglanniksi') || 'Muodosta ei-hyväksyttyjen englanniksi' }}
-    </button>
-
-    <button privileges="valintalaskenta"
-            href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
-            class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
     </button>
 </collapsible>
 
