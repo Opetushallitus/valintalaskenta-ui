@@ -82,6 +82,12 @@
                                         }
                                     }
 
+                                    if(jono.kaytetaanKokonaispisteita == null) {
+                                        tulosjono.kaytetaanKokonaispisteita = false;
+                                    } else {
+                                        tulosjono.kaytetaanKokonaispisteita = jono.kaytetaanKokonaispisteita;
+                                    }
+
                                     if(jono.siirretaanSijoitteluun == null) {
                                         tulosjono.siirretaanSijoitteluun = true;
                                     } else {
@@ -281,7 +287,11 @@
                         return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila !== '');
                     }).map(function(sija) {
                         if(_.isUndefined(sija.jonoSija && _.isNumber(sija.jonosija))) {
-                            sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
+                            if(sija.kaytetaanKokonaispisteita) {
+                                sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
+                            } else {
+                                sija.jarjestyskriteerit[0].arvo = sija.jonosija;
+                            }
                         } else {
                             delete sija.jarjestyskriteerit[0].arvo;
                         }
