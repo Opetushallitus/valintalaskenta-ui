@@ -291,7 +291,7 @@
                         return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila !== '');
                     }).map(function(sija) {
                         if(_.isUndefined(sija.jonoSija && _.isNumber(sija.jonosija))) {
-                            if(sija.kaytetaanKokonaispisteita) {
+                            if(!sija.kaytetaanKokonaispisteita) {
                                 sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                             } else {
                                 sija.jarjestyskriteerit[0].arvo = sija.jonosija;
@@ -501,8 +501,8 @@ angular.module('valintalaskenta').
     };
 
     $scope.clearJonosijat = function (valintatapajono) {
-        valintatapajono.jonosijat = []
+        _.each(valintatapajono.jonosijat, function(jonosija){
+            jonosija.jarjestyskriteerit[0].arvo = null;
+        });
     }
-
-
 }]);
