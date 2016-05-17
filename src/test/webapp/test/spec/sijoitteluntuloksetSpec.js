@@ -124,6 +124,10 @@ describe('Sijoittelun tulokset välilehti', function () {
                 wait.forAngular,
                 waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true))
         )
+        it('Ehdollinen valinta is visible', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', true))
+        )
     })
 
     describe('Sijoittelun tulokset -välilehdellä Kk haussa ilman OPH oikeuksia', function () {
@@ -149,6 +153,10 @@ describe('Sijoittelun tulokset välilehti', function () {
         it('Jälkiohjaus nappi is visible', seqDone(
                 wait.forAngular,
                 waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true))
+        )
+        it('Ehdollinen valinta is visible', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', true))
         )
     })
 
@@ -194,6 +202,10 @@ describe('Sijoittelun tulokset välilehti', function () {
                 wait.forAngular,
                 waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true))
         )
+        it('Ehdollinen valinta is not visible', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', false))
+        )
     })
 
     describe('Sijoittelun tulokset -välilehti 2. asteen haussa ilman OPH oikeuksia', function () {
@@ -236,6 +248,10 @@ describe('Sijoittelun tulokset välilehti', function () {
         it('Jälkiohjaus nappi is not visible', seqDone(
                 wait.forAngular,
                 waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', false))
+        )
+        it('Ehdollinen valinta is not visible', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', false))
         )
     })
 

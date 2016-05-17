@@ -823,6 +823,9 @@ angular.module('valintalaskenta')
         }
         return returnValue;
     }
+    $scope.showEhdollinenHyvaksynta = function() {
+        return !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
+    };
     $scope.showJalkiohjaus = function() {
         return UserModel.isOphUser || !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     };
