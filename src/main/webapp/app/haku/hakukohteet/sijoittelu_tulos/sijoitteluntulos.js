@@ -117,10 +117,11 @@ angular.module('valintalaskenta')
                                 paikanVastaanottaneet: [],
                                 hyvaksyttyHarkinnanvaraisesti: [],
                                 varasijoilla: [],
-                                ehdollisesti: []
+                                ehdollisesti: [],
+                                aloituspaikat: valintatapajono.aloituspaikat,
+                                alkuperaisetAloituspaikat: valintatapajono.alkuperaisetAloituspaikat,
+                                prioriteetti: valintatapajono.prioriteetti
                             };
-                            hakemuserittely.aloituspaikat = valintatapajono.aloituspaikat;
-                            hakemuserittely.prioriteetti = valintatapajono.prioriteetti;
                             model.hakemusErittelyt.push(hakemuserittely);
                             var lastTasaSija = 1;
                             var sija = 0;
