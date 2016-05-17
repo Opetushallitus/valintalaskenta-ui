@@ -291,7 +291,7 @@
                         return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila !== '');
                     }).map(function(sija) {
                         if(_.isUndefined(sija.jonoSija && _.isNumber(sija.jonosija))) {
-                            if(!sija.kaytetaanKokonaispisteita) {
+                            if(!vaihe.kaytetaanKokonaispisteita) {
                                 sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                             } else {
                                 sija.jarjestyskriteerit[0].arvo = sija.jonosija;
