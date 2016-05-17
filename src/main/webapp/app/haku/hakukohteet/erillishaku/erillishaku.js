@@ -432,7 +432,7 @@
             return relevanttiHakemus.hakemusOid;
         });
 
-        var dataLoadedCallback = function(aikarajaMennytTiedot) { model.myohastymistietoLadattu = true; };
+        var dataLoadedCallback = _.noop;
         VastaanottoUtil.fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously(hakuOid, hakukohdeOid, kaikkiHakemukset,
           oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, dataLoadedCallback);
       }
