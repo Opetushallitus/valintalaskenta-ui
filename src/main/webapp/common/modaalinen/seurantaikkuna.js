@@ -8,6 +8,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	$scope.kaynnissa = false;
 	$scope.nimi = HakuModel.getNimi();
 	$scope.nimentarkennus = oids.nimentarkennus;
+	$scope.jonosija = undefined;
 	$scope.lisaa = false;
 	$scope.ohitettu = 0;
 	$scope.tehty = 0;
@@ -46,7 +47,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 				$scope.kaynnissa = false;
 			}
 		}
-		//$scope.kaynnissa = (r.tila == "MENEILLAAN");
+		$scope.jonosija = r.jonosija;
 		if ($scope.kaikkityot) {
 			if ($scope.tehty == $scope.kaikkityot) {
 				$scope.kokonaanvalmis = true;
