@@ -82,7 +82,7 @@
                                         }
                                     }
 
-                                    if(!_.isDefined(laskentaJono) || laskentaJono.kaytetaanKokonaispisteita == null) {
+                                    if(_.isUndefined(laskentaJono) || laskentaJono.kaytetaanKokonaispisteita == null) {
                                         tulosjono.kaytetaanKokonaispisteita = false;
                                     } else {
                                         tulosjono.kaytetaanKokonaispisteita = laskentaJono.kaytetaanKokonaispisteita;
