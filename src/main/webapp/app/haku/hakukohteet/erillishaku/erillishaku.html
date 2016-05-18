@@ -121,7 +121,9 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}: <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"> <br/></div>
+                                                <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:
+                                                    <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"
+                                                           ng-disabled="tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' || tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' || tulos.valintatuloksentila === 'VASTAANOTTANUT' || tulos.valintatuloksentila === 'PERUUTETTU' || tulos.valintatuloksentila === 'PERUNUT'"> <br/></div>
                                                 <div ng-show="tulos.julkaistavissa">
                                                     <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
                                                     <span ng-bind="valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle]"></span>
@@ -200,7 +202,8 @@
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
                                                     <div class="white-space-nowrap">
                                                         <span>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:</span>
-                                                        <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa">
+                                                        <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"
+                                                               ng-disabled="tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' || tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' || tulos.valintatuloksentila === 'VASTAANOTTANUT' || tulos.valintatuloksentila === 'PERUUTETTU' || tulos.valintatuloksentila === 'PERUNUT'">
                                                     </div>
                                                     <div ng-show="tulos.julkaistavissa">
                                                         <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
