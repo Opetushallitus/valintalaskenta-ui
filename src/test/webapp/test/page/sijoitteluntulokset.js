@@ -53,6 +53,7 @@ sijoitteluntulokset = initSelectors({
     tallennaOk: "#saveChoicesBtn",
     hyvaksyValintaesitys: "a.btn:nth-child(1)",
     jalkiohjaus: ".testJalkiohjaus",
+    ehdollinenValinta: ".testEhdollinenValinta",
     vastaanottotieto: ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select",
     vastaanottotietoOption: function(i) {
         return ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select option:eq(" + i + ")";

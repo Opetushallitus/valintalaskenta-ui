@@ -155,7 +155,7 @@
                                             | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
                                         </modal-open>
                                     </modal>
-                                    <div class="white-space-nowrap">
+                                    <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap testEhdollinenValinta">
                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                         <input ng-disabled="!(updateOph)" type="checkbox" ng-model="hakemus.ehdollisestiHyvaksyttavissa" ng-change="addMuokattuHakemus(hakemus)"/>
                                     </div>
