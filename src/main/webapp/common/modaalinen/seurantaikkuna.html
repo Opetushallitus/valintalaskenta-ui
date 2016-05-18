@@ -13,6 +13,9 @@
 	  </div>
 	</div>
 	<div ng-if="uuid">
+		<div ng-if="jonosija">
+			Työ on jonossa jonosijalla {{jonosija}}.
+		</div>
 		<div class="col-sm-4">Hakukohteita valmiina {{tehty}} / {{kaikkityot}}</div>
 		<div ng-if="ohitettu">
 			<div class="col-sm-4">Hakukohteita ohitettu {{ohitettu}} / {{kaikkityot}}</div>
