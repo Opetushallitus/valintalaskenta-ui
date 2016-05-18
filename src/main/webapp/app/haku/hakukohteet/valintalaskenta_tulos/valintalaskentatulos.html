@@ -86,7 +86,7 @@
                                     <button ng-disabled="!updateOph && !crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
                                     <button ng-disabled="!updateOph" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
 
-                                    <input id="kaytetaanKokonaispisteita" type="checkbox" ng-model="valintatapajono.kaytetaanKokonaispisteita" ng-change="clearJonosijat(valintatapajono)"/>
+                                    <input id="kaytetaanKokonaispisteita" type="checkbox" ng-model="valintatapajono.kaytetaanKokonaispisteita"/>
                                     <label for="kaytetaanKokonaispisteita">{{ t('valintalaskentatulos.kaytetaankokonaispisteita') || 'Korvaa jonosijat kokonaispisteillä' }}</label>
 
                                     <table ng-table="valintatapajono.tableParams" show-filter="true" class="virkailija-table-1">

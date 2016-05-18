@@ -82,10 +82,10 @@
                                         }
                                     }
 
-                                    if(jono.kaytetaanKokonaispisteita == null) {
+                                    if(!_.isDefined(laskentaJono) || laskentaJono.kaytetaanKokonaispisteita == null) {
                                         tulosjono.kaytetaanKokonaispisteita = false;
                                     } else {
-                                        tulosjono.kaytetaanKokonaispisteita = jono.kaytetaanKokonaispisteita;
+                                        tulosjono.kaytetaanKokonaispisteita = laskentaJono.kaytetaanKokonaispisteita;
                                     }
 
                                     if(jono.siirretaanSijoitteluun == null) {
@@ -499,10 +499,4 @@ angular.module('valintalaskenta').
         }
 
     };
-
-    $scope.clearJonosijat = function (valintatapajono) {
-        _.each(valintatapajono.jonosijat, function(jonosija){
-            jonosija.jarjestyskriteerit[0].arvo = null;
-        });
-    }
 }]);
