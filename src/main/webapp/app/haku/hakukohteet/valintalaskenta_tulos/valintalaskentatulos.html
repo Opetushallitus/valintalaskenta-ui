@@ -86,7 +86,7 @@
                                     <button ng-disabled="!updateOph && !crudOrg" ng-if="!valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'true')" class="btn btn-primary btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</button>
                                     <button ng-disabled="!updateOph" ng-if="valintatapajono.valmisSijoiteltavaksi && valintatapajono.siirretaanSijoitteluun" ng-click="muutaSijoittelunStatus(valintatapajono, 'false')" class="btn btn-default btn-sm margin-bottom-2">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</button>
 
-                                    <input id="kaytetaanKokonaispisteita" type="checkbox" ng-model="valintatapajono.kaytetaanKokonaispisteita"/>
+                                    <input id="kaytetaanKokonaispisteita" type="checkbox" ng-model="valintatapajono.kaytetaanKokonaispisteita" ng-change="changeKaytetaanKokonaispisteita(valintatapajono)"/>
                                     <label for="kaytetaanKokonaispisteita">{{ t('valintalaskentatulos.kaytetaankokonaispisteita') || 'Korvaa jonosijat kokonaispisteillä' }}</label>
 
                                     <table ng-table="valintatapajono.tableParams" show-filter="true" class="virkailija-table-1">
@@ -116,10 +116,10 @@
                                                     <option ng-hide="erityisopetus" value="HYVAKSYTTY_HARKINNANVARAISESTI">{{ t('valintalaskentatulos.harkinnanvaraisesti') || 'Hyväksytty harkinnanvaraisesti' }}</option>
                                                 </select>
                                             </td>
-                                            <td data-title="(t('valintalaskentatulos.kokonaispisteet') || 'Kokonaispisteet')" sortable="'jonosija'">
+                                            <td data-title="(t('valintalaskentatulos.kokonaispisteet') || 'Kokonaispisteet')" sortable="'kokonaispisteet'">
                                                 <input type="number"
-                                                       ng-model="tulos.jonosija"
-                                                       ng-change="changeTila(tulos, tulos.jonosija)" ng-debounce="1000"
+                                                       ng-model="tulos.kokonaispisteet"
+                                                       ng-change="changeTila(tulos, tulos.kokonaispisteet)" ng-debounce="1000"
                                                        ng-disabled="tulos.tuloksenTila == 'HYLATTY' || !valintatapajono.kaytetaanKokonaispisteita"
                                                        ng-hide="!valintatapajono.kaytetaanKokonaispisteita"/>
                                             </td>

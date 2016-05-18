@@ -139,12 +139,15 @@
                                         if(jonosija) {
                                             var krit = jonosija.jarjestyskriteerit[0];
                                             if(krit.tila != 'HYVAKSYTTAVISSA') {
-                                                delete jonosija.jonosija
+                                                delete jonosija.kokonaispisteet;
+                                                delete jonosija.jonosija;
                                             } else {
                                                 if(tulosjono.kaytetaanKokonaispisteita) {
-                                                    jonosija.jonosija = krit.arvo;
+                                                    jonosija.kokonaispisteet = krit.arvo;
+                                                    delete jonosija.jonosija;
                                                 } else {
                                                     jonosija.jonosija = -(krit.arvo);
+                                                    delete jonosija.kokonaispisteet;
                                                 }
                                             }
                                             tulosjono.jonosijat.push(jonosija);
@@ -182,6 +185,7 @@
                                         },
                                         sorting: {
                                             'jonosija' : 'asc',
+                                            'kokonaispisteet' : 'desc',
                                             'sukunimi': 'asc'
                                         }
                                     }, {
@@ -251,6 +255,7 @@
                         },
                         sorting: {
                             'jonosija' : 'asc',
+                            'kokonaispisteet' : 'desc',
                             'sukunimi': 'asc'
                         }
                     }, {
@@ -294,7 +299,7 @@
                             if(!vaihe.kaytetaanKokonaispisteita) {
                                 sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                             } else {
-                                sija.jarjestyskriteerit[0].arvo = sija.jonosija;
+                                sija.jarjestyskriteerit[0].arvo = sija.kokonaispisteet;
                             }
                         } else {
                             delete sija.jarjestyskriteerit[0].arvo;
@@ -486,6 +491,7 @@ angular.module('valintalaskenta').
             $timeout(function(){
                 jonosija.tuloksenTila = "";
                 delete jonosija.jonosija;
+                delete jonosija.kokonaispisteet;
             });
         }
 
@@ -495,8 +501,19 @@ angular.module('valintalaskenta').
         if (value !== 'HYVAKSYTTAVISSA') {
             $timeout(function(){
                 delete jonosija.jonosija;
+                delete jonosija.kokonaispisteet;
             });
         }
 
+    };
+
+    $scope.changeKaytetaanKokonaispisteita = function(jono) {
+        _.each(jono.jonosijat, function(jonosija){
+           if(jono.kaytetaanKokonaispisteita) {
+               delete jonosija.jonosija;
+           } else {
+               delete jonosija.kokonaispisteet;
+           }
+        });
     };
 }]);
