@@ -298,10 +298,12 @@
                         var isValidNumber = function (value) {
                             !_.isNaN(value) && _.isNumber(value)
                         };
+                        var kaytetaanKokonaispisteita = vaihe.valintatapajonot[0].kaytetaanKokonaispisteita;
 
-                        if(vaihe.kaytetaanKokonaispisteita && isValidNumber(sija.kokonaispisteet)) {
+
+                        if(kaytetaanKokonaispisteita && isValidNumber(sija.kokonaispisteet)) {
                             sija.jarjestyskriteerit[0].arvo = sija.kokonaispisteet;
-                        } else if(!vaihe.kaytetaanKokonaispisteita && isValidNumber(sija.jonosija)) {
+                        } else if(!kaytetaanKokonaispisteita && isValidNumber(sija.jonosija)) {
                             sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                         } else {
                             delete sija.jarjestyskriteerit[0].arvo;
