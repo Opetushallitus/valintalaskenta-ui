@@ -296,7 +296,7 @@
                         return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila !== '');
                     }).map(function(sija) {
                         var isValidNumber = function (value) {
-                            !_.isNaN(value) && _.isNumber(value)
+                            return !_.isNaN(value) && _.isNumber(value);
                         };
                         var kaytetaanKokonaispisteita = vaihe.valintatapajonot[0].kaytetaanKokonaispisteita;
 
