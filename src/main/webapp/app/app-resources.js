@@ -522,7 +522,7 @@ app.factory('HakemuksenVastaanottoTila', function($resource) {
             valintatapajonoOid: "@valintatapajonoOid",
             hakemusOid: "@hakemusOid"
         }, {
-            get: {method: "GET", cache: false}
+            get: {method: "GET", isArray: true, cache: false}
         });
 });
 
