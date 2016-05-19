@@ -185,6 +185,7 @@
                                         },
                                         sorting: {
                                             'jonosija' : 'asc',
+                                            '!kokonaispisteet' : 'desc',
                                             'kokonaispisteet' : 'desc',
                                             'sukunimi': 'asc'
                                         }
