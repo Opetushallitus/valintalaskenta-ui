@@ -172,171 +172,172 @@
 
 
     <!--KELAN TIEDONSIIRTO-->
-<collapsible heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}">
+<collapsible ng-click="showKelaCollapsible = true" heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}">
+    <div ng-if="showKelaCollapsible">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="aineistonnimi">{{ t('yhteisvalinnanhallinta.keladokumentinmuodostus') || 'Kela-dokumentin muodostus' }}</label>
 
-    <div class="form-horizontal">
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="aineistonnimi">{{ t('yhteisvalinnanhallinta.keladokumentinmuodostus') || 'Kela-dokumentin muodostus' }}</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="aineistonnimi" placeholder="{{ t('yhteisvalinnanhallinta.aineistonnimi') || 'Aineistonnimi' }}"
+                           ng-model="aineistonnimi"  maxlength="26"/>
+                </div>
 
-            <div class="col-md-2">
-                <input class="form-control" id="aineistonnimi" placeholder="{{ t('yhteisvalinnanhallinta.aineistonnimi') || 'Aineistonnimi' }}" 
-                       ng-model="aineistonnimi"  maxlength="26"/>
-            </div>
-
-            <div class="col-md-2">
-	             <button style="margin-top: 5px" ng-if="!isNotBlank(aineistonnimi) || !aineistoAlkupvm || !aineistoLoppupvm" privileges="valintalaskenta"
-	                    popover="{{ t('yhteisvalinnanhallinta.kirjoitanimi') || 'Kirjoita aineistolle nimi.' }}" popover-trigger="mouseenter"
-	                    class="btn btn-default btn-sm disabled"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
-	            </button>
-	
-	            <button style="margin-top: 5px" ng-if="isNotBlank(aineistonnimi)  && aineistoAlkupvm && aineistoLoppupvm" privileges="valintalaskenta"
-	                    ng-click="muodostaKelaDokumentti(aineistoAlkupvm,aineistoLoppupvm,aineistonnimi);$event.preventDefault();"
-	                    class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
-	            </button>
-            </div>            
-            <div class="col-md-12">
-            </div>
-       </div>        
-    </div>
-    <div class="form-horizontal">
-        <div class="form-group"> 
-            <label class="col-md-2 control-label" for="aineistoAlkupvm">{{ t('yhteisvalinnanhallinta.alkujaloppupvm') || 'Alku- ja loppupvm' }}</label>
-            <div class="col-md-2">
-                <input class="form-control" id="aineistoAlkupvm" placeholder="{{ t('yhteisvalinnanhallinta.alkupvm') || 'Alkupvm' }}"
-                       ng-model="aineistoAlkupvm" datepicker-popup="dd.MM.yyyy" is-open="aineistoAlkupvm_open" 
-       				   ng-click = "aineistoAlkupvm_open = true" datepicker-options="dateOptions" ng-blur="visitedDate = true" 
-       				   max-date="maxdate" show-button-bar="false" 
-       				  />
-            </div>
-            <div class="col-md-2">
-                <input class="form-control" id="aineistoLoppupvm" placeholder="{{ t('yhteisvalinnanhallinta.loppupvm') || 'Loppupvm' }}"
-                       ng-model="aineistoLoppupvm" datepicker-popup="dd.MM.yyyy" is-open="aineistoLoppupvm_open" 
-       				   ng-click = "aineistoLoppupvm_open = true" datepicker-options="dateOptions"
-   					   ng-blur="visitedDate = true" max-date="maxdate" min-date="aineistoAlkupvm" show-button-bar="false" 
-   					   />
-            </div>
-            <div class="col-md-12">
-            </div>
-       </div>        
-    </div>
-    <div class="col-md-12 margin-bottom-2" ng-hide="naytetaanHaut">
-        <button class="btn btn-default btn-sm" ng-click="kelalimit=10;naytaHaut();$event.preventDefault();"><i class="fa fa-eye"></i>
-            {{ t('yhteisvalinnanhallinta.naytahaut') || 'Näytä haut' }}
-        </button>
-    </div>
-    <div ng-show="naytetaanHaut" class="form-horizontal">
-
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="hakuvuosi">{{t('hakulista.hakuvuosi') || 'Hakuvuosi'}}</label>
-
-            <div class="col-md-2">
-                <select class="form-control input-sm"
-                        id="hakuvuosi"
-                        ng-model="kelafilter.hakuvuosi"
-                        ng-change="kelaUpdate(kelafilter)"
-                        ng-options="hakuvuosi for hakuvuosi in customHakuUtil.hakuvuodetOpts">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="hakukausi">{{t('hakulista.hakukausi') || 'Hakukausi'}}</label>
-
-            <div class="col-md-2">
-                <select class="form-control input-sm"
-                        id="hakukausi"
-                        ng-model="kelafilter.hakukausi"
-                        ng-change="kelaUpdate(kelafilter)"
-                        ng-options="hakukausi.koodiUri as hakukausi.nimi for hakukausi in customHakuUtil.hakukausiOpts"
-                        placeholder="Hakukausi">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="hakutapa">{{t('hakulista.hakutapa') || 'Hakutapa'}}</label>
-
-            <div class="col-md-2">
-                <select class="form-control input-sm"
-                        id="hakutapa"
-                        ng-model="kelafilter.hakutapa"
-                        ng-change="kelaUpdate(kelafilter)"
-                        ng-options="hakutapa.koodiUri as hakutapa.nimi for hakutapa in customHakuUtil.hakutapaOpts">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="kohdejoukko">{{t('hakulista.kohdejoukko') || 'Kohdejoukko'}}</label>
-
-            <div class="col-md-2">
-                <select class="form-control input-sm"
-                        id="kohdejoukko"
-                        ng-model="kelafilter.kohdejoukko"
-                        ng-change="kelaUpdate(kelafilter)"
-                        ng-options="kohdejoukko.koodiUri as kohdejoukko.nimi for kohdejoukko in customHakuUtil.kohdejoukkoOpts">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="hakutyyppi">{{t('hakulista.hakutyyppi') || 'Hakutyyppi'}}</label>
-
-            <div class="col-md-2">
-                <select class="form-control input-sm"
-                        id="hakutyyppi"
-                        ng-model="kelafilter.hakutyyppi"
-                        ng-change="kelaUpdate(kelafilter)"
-                        ng-options="hakutyyppi.koodiUri as hakutyyppi.nimi for hakutyyppi in customHakuUtil.hakutyyppiOpts">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12">
-        <table class="virkailija-table-1">
-            <thead>
-            <tr>
-                <th colspan="3">{{ t('yhteisvalinnanhallinta.muodostavalituista') || 'Kela-dokumentti muodostetaan valituista hauista' }}</th>
-            </tr>
-            <tr>
-                <th class="col-sm-1"><input type="checkbox" ng-checked="kaikkiHautValittu" ng-click="switchChecked()"></th>
-                <th>{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</th>
-                <th>{{ t('yhteisvalinnanhallinta.oid') || 'Oid' }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="info">
-                <td><input disabled="disabled" type="checkbox" checked="checked"></td>
-                <td>{{hakumodel.hakuOid.nimi.kieli_fi}}<span ng-hide="hakumodel.hakuOid.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span>
-                </td>
-                <td>{{hakumodel.hakuOid.oid}}</td>
-            </tr>
-            <tr ng-show="naytetaanHaut" ng-repeat="haku in hakumodel.haut | filter:notThisHaku | filter:{hakukausiVuosi:nullIsUndefined(kelafilter.hakuvuosi),hakukausiUri:nullIsUndefined(kelafilter.hakukausi),hakutapaUri:nullIsUndefined(kelafilter.hakutapa),kohdejoukkoUri:nullIsUndefined(kelafilter.kohdejoukko),hakutyyppiUri:nullIsUndefined(kelafilter.hakutyyppi)} | limitTo:kelalimit">
-                <td><input type="checkbox" ng-model="haku.valittu" ></td>
-                <td>{{haku.nimi.kieli_fi}}<span ng-hide="haku.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span></td>
-                <td>{{haku.oid}}</td>
-            </tr>
-            <tr ng-show="kelalimit == 10">
-                <td span="3">
-                    <button class="btn btn-default btn-sm" ng-click="kelalimit = 100000;"><i class="fa fa-eye"></i>
-                        {{ t('yhteisvalinnanhallinta.naytahaut.laajenna') || 'Laajenna' }}
+                <div class="col-md-2">
+                     <button style="margin-top: 5px" ng-if="!isNotBlank(aineistonnimi) || !aineistoAlkupvm || !aineistoLoppupvm" privileges="valintalaskenta"
+                            popover="{{ t('yhteisvalinnanhallinta.kirjoitanimi') || 'Kirjoita aineistolle nimi.' }}" popover-trigger="mouseenter"
+                            class="btn btn-default btn-sm disabled"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
                     </button>
-                </td>
-            </tr>
-            <tr ng-hide="kelalimit == 10">
-                <td span="3">
-                    <button class="btn btn-default btn-sm" ng-click="kelalimit = 10;"><i class="fa fa-eye"></i>
-                        {{ t('yhteisvalinnanhallinta.naytahaut.piilota') || 'Piilota' }}
+
+                    <button style="margin-top: 5px" ng-if="isNotBlank(aineistonnimi)  && aineistoAlkupvm && aineistoLoppupvm" privileges="valintalaskenta"
+                            ng-click="muodostaKelaDokumentti(aineistoAlkupvm,aineistoLoppupvm,aineistonnimi);$event.preventDefault();"
+                            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
                     </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                </div>
+                <div class="col-md-12">
+                </div>
+           </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="aineistoAlkupvm">{{ t('yhteisvalinnanhallinta.alkujaloppupvm') || 'Alku- ja loppupvm' }}</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="aineistoAlkupvm" placeholder="{{ t('yhteisvalinnanhallinta.alkupvm') || 'Alkupvm' }}"
+                           ng-model="aineistoAlkupvm" datepicker-popup="dd.MM.yyyy" is-open="aineistoAlkupvm_open"
+                           ng-click = "aineistoAlkupvm_open = true" datepicker-options="dateOptions" ng-blur="visitedDate = true"
+                           max-date="maxdate" show-button-bar="false"
+                          />
+                </div>
+                <div class="col-md-2">
+                    <input class="form-control" id="aineistoLoppupvm" placeholder="{{ t('yhteisvalinnanhallinta.loppupvm') || 'Loppupvm' }}"
+                           ng-model="aineistoLoppupvm" datepicker-popup="dd.MM.yyyy" is-open="aineistoLoppupvm_open"
+                           ng-click = "aineistoLoppupvm_open = true" datepicker-options="dateOptions"
+                           ng-blur="visitedDate = true" max-date="maxdate" min-date="aineistoAlkupvm" show-button-bar="false"
+                           />
+                </div>
+                <div class="col-md-12">
+                </div>
+           </div>
+        </div>
+        <div class="col-md-12 margin-bottom-2" ng-hide="naytetaanHaut">
+            <button class="btn btn-default btn-sm" ng-click="kelalimit=10;naytaHaut();$event.preventDefault();"><i class="fa fa-eye"></i>
+                {{ t('yhteisvalinnanhallinta.naytahaut') || 'Näytä haut' }}
+            </button>
+        </div>
+        <div ng-show="naytetaanHaut" class="form-horizontal">
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="hakuvuosi">{{t('hakulista.hakuvuosi') || 'Hakuvuosi'}}</label>
+
+                <div class="col-md-2">
+                    <select class="form-control input-sm"
+                            id="hakuvuosi"
+                            ng-model="kelafilter.hakuvuosi"
+                            ng-change="kelaUpdate(kelafilter)"
+                            ng-options="hakuvuosi for hakuvuosi in customHakuUtil.hakuvuodetOpts">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="hakukausi">{{t('hakulista.hakukausi') || 'Hakukausi'}}</label>
+
+                <div class="col-md-2">
+                    <select class="form-control input-sm"
+                            id="hakukausi"
+                            ng-model="kelafilter.hakukausi"
+                            ng-change="kelaUpdate(kelafilter)"
+                            ng-options="hakukausi.koodiUri as hakukausi.nimi for hakukausi in customHakuUtil.hakukausiOpts"
+                            placeholder="Hakukausi">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="hakutapa">{{t('hakulista.hakutapa') || 'Hakutapa'}}</label>
+
+                <div class="col-md-2">
+                    <select class="form-control input-sm"
+                            id="hakutapa"
+                            ng-model="kelafilter.hakutapa"
+                            ng-change="kelaUpdate(kelafilter)"
+                            ng-options="hakutapa.koodiUri as hakutapa.nimi for hakutapa in customHakuUtil.hakutapaOpts">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="kohdejoukko">{{t('hakulista.kohdejoukko') || 'Kohdejoukko'}}</label>
+
+                <div class="col-md-2">
+                    <select class="form-control input-sm"
+                            id="kohdejoukko"
+                            ng-model="kelafilter.kohdejoukko"
+                            ng-change="kelaUpdate(kelafilter)"
+                            ng-options="kohdejoukko.koodiUri as kohdejoukko.nimi for kohdejoukko in customHakuUtil.kohdejoukkoOpts">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="hakutyyppi">{{t('hakulista.hakutyyppi') || 'Hakutyyppi'}}</label>
+
+                <div class="col-md-2">
+                    <select class="form-control input-sm"
+                            id="hakutyyppi"
+                            ng-model="kelafilter.hakutyyppi"
+                            ng-change="kelaUpdate(kelafilter)"
+                            ng-options="hakutyyppi.koodiUri as hakutyyppi.nimi for hakutyyppi in customHakuUtil.hakutyyppiOpts">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <table class="virkailija-table-1">
+                <thead>
+                <tr>
+                    <th colspan="3">{{ t('yhteisvalinnanhallinta.muodostavalituista') || 'Kela-dokumentti muodostetaan valituista hauista' }}</th>
+                </tr>
+                <tr>
+                    <th class="col-sm-1"><input type="checkbox" ng-checked="kaikkiHautValittu" ng-click="switchChecked()"></th>
+                    <th>{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</th>
+                    <th>{{ t('yhteisvalinnanhallinta.oid') || 'Oid' }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="info">
+                    <td><input disabled="disabled" type="checkbox" checked="checked"></td>
+                    <td>{{hakumodel.hakuOid.nimi.kieli_fi}}<span ng-hide="hakumodel.hakuOid.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span>
+                    </td>
+                    <td>{{hakumodel.hakuOid.oid}}</td>
+                </tr>
+                <tr ng-show="naytetaanHaut" ng-repeat="haku in hakumodel.haut | filter:notThisHaku | filter:{hakukausiVuosi:nullIsUndefined(kelafilter.hakuvuosi),hakukausiUri:nullIsUndefined(kelafilter.hakukausi),hakutapaUri:nullIsUndefined(kelafilter.hakutapa),kohdejoukkoUri:nullIsUndefined(kelafilter.kohdejoukko),hakutyyppiUri:nullIsUndefined(kelafilter.hakutyyppi)} | limitTo:kelalimit">
+                    <td><input type="checkbox" ng-model="haku.valittu" ></td>
+                    <td>{{haku.nimi.kieli_fi}}<span ng-hide="haku.nimi.kieli_fi">{{haku.nimi.kieli_sv}}</span></td>
+                    <td>{{haku.oid}}</td>
+                </tr>
+                <tr ng-show="kelalimit == 10">
+                    <td span="3">
+                        <button class="btn btn-default btn-sm" ng-click="kelalimit = 100000;"><i class="fa fa-eye"></i>
+                            {{ t('yhteisvalinnanhallinta.naytahaut.laajenna') || 'Laajenna' }}
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-hide="kelalimit == 10">
+                    <td span="3">
+                        <button class="btn btn-default btn-sm" ng-click="kelalimit = 10;"><i class="fa fa-eye"></i>
+                            {{ t('yhteisvalinnanhallinta.naytahaut.piilota') || 'Piilota' }}
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </collapsible>
 
