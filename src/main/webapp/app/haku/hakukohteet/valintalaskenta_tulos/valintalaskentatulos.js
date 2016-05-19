@@ -508,12 +508,23 @@ angular.module('valintalaskenta').
     };
 
     $scope.changeKaytetaanKokonaispisteita = function(jono) {
-        _.each(jono.jonosijat, function(jonosija){
-           if(jono.kaytetaanKokonaispisteita) {
-               delete jonosija.jonosija;
-           } else {
-               delete jonosija.kokonaispisteet;
-           }
-        });
+        var ok = function() {
+            _.each(jono.jonosijat, function(jonosija){
+                jonosija.tuloksenTila = "";
+                if(jono.kaytetaanKokonaispisteita) {
+                    delete jonosija.jonosija;
+                } else {
+                    delete jonosija.kokonaispisteet;
+                }
+            });
+        };
+        var cancel = function() {
+            jono.kaytetaanKokonaispisteita = !jono.kaytetaanKokonaispisteita;
+        };
+        if(jono.kaytetaanKokonaispisteita) {
+            Ilmoitus.avaaCancel("Käytetään kokonaispisteitä", "Jos siirryt käyttämään kokonaispisteitä, jonosijat poistetaan.", IlmoitusTila.INFO, ok, cancel);
+        } else {
+            Ilmoitus.avaaCancel("Käytetään kokonaispisteitä", "Jos siirryt käyttämään jonosijoja, kokonaispisteet poistetaan.", IlmoitusTila.INFO, ok, cancel);
+        }
     };
 }]);

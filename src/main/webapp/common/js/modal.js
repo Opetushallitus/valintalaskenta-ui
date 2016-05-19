@@ -66,8 +66,8 @@ angular.module('valintalaskenta')
                         tila = IlmoitusTila.INFO;
                     }
                     $scope.tila = tila;
-                    $scope.sulje = callback || function() {
-                        $modalInstance.dismiss('cancel');
+                    $scope.ok = callback || function() {
+                        $modalInstance.dismiss('ok');
                     };
                 },
                 resolve: {
@@ -77,6 +77,34 @@ angular.module('valintalaskenta')
                 }, function() {
                 });
 
+        },
+        avaaCancel: function(otsikko, ilmoitus, tila, ok, cancel) {
+            $modal.open({
+                backdrop: 'static',
+                templateUrl: '../common/modaalinen/ilmoitus.html',
+                controller: function($scope, $window, $modalInstance) {
+                    $scope.showCancel = true;
+                    $scope.ilmoitus = ilmoitus;
+                    $scope.otsikko = otsikko;
+                    if(!tila) {
+                        tila = IlmoitusTila.INFO;
+                    }
+                    $scope.tila = tila;
+                    $scope.ok = function() {
+                        $modalInstance.dismiss('ok');
+                        ok();
+                    };
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                        cancel();
+                    };
+                },
+                resolve: {
+
+                }
+            }).result.then(function() {
+            }, function() {
+            });
         }
     };
 }])
