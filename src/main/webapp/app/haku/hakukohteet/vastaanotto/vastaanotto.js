@@ -1,7 +1,9 @@
 angular.module('valintalaskenta')
 
-.factory('VastaanottoUtil',[ function () {
-  "use strict";
+.factory('VastaanottoUtil',
+         ['VastaanottoAikarajanMennytTieto', '$q',
+  function ( VastaanottoAikarajanMennytTieto,   $q) {
+    "use strict";
   return {
     merkitseMyohastyneeksi: function(valintatulokset) {
       var muokatutValintatulokset = [];
@@ -12,6 +14,37 @@ angular.module('valintalaskenta')
         }
       });
       return muokatutValintatulokset;
+    },
+
+    fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously: function(hakuOid, hakukohdeOid, kaikkiHakemukset, oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, dataloadedCallback) {
+      var aikarajaMennytDeferred = $q.defer();
+      aikarajaMennytDeferred.promise.then(function (aikarajaMennytTiedot) {
+        _.forEach(aikarajaMennytTiedot, function (vastaanottoAikarajaMennyt) {
+          _.forEach(kaikkiHakemukset, function (hakemus) {
+            if (hakemus && (hakemus.hakemusOid === vastaanottoAikarajaMennyt.hakemusOid)) {
+              hakemus.vastaanottoAikarajaMennyt = vastaanottoAikarajaMennyt.mennyt;
+              hakemus.vastaanottoAikaraja = vastaanottoAikarajaMennyt.vastaanottoDeadline;
+            }
+          });
+        });
+        if (_.isFunction(dataloadedCallback)) {
+          dataloadedCallback();
+        }
+      });
+
+      if (oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon.length > 0) {
+        VastaanottoAikarajanMennytTieto.post({
+            hakuOid: hakuOid,
+            hakukohdeOid: hakukohdeOid
+          }, angular.toJson(oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon),
+          function (result) {
+            aikarajaMennytDeferred.resolve(result);
+          },
+          function (error) {
+            aikarajaMennytDeferred.reject(error);
+          }
+        );
+      }
     }
   };
 }]);

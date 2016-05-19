@@ -97,9 +97,12 @@
       }
 
       ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid},function(erillishaku) {
-        _.chain(erillishaku).map(function(e){return e.valintatapajonot}).flatten().map(function(v){return v.hakemukset;}).flatten().each(function(hakemus){
+        var hakemukset = _.chain(erillishaku).map(function(e){return e.valintatapajonot}).flatten().map(function(v){return v.hakemukset;}).flatten();
+        fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, hakemukset.value());
+        hakemukset.each(function(hakemus) {
           hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' || hakemus.valintatuloksentila === 'VASTAANOTTANUT';
         });
+
         $scope.erillishaku = erillishaku;
       });
 
@@ -420,4 +423,17 @@
           }
         });
       };
+
+      function fetchAndPopulateVastaanottoAikaraja(hakuOid, hakukohdeOid, kaikkiHakemukset) {
+        var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function(h) {
+            return h.valintatuloksentila === "KESKEN" && h.julkaistavissa && 
+              (h.hakemuksentila === 'HYVAKSYTTY' || h.hakemuksentila === 'VARASIJALTA_HYVAKSYTTY' || h.hakemuksentila === 'PERUNUT');
+        }), function(relevanttiHakemus) {
+            return relevanttiHakemus.hakemusOid;
+        });
+
+        var dataLoadedCallback = _.noop;
+        VastaanottoUtil.fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously(hakuOid, hakukohdeOid, kaikkiHakemukset,
+          oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, dataLoadedCallback);
+      }
     }]);

@@ -1,10 +1,10 @@
 angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila',
-        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'VastaanottoAikarajanMennytTieto', 'HakemustenVastaanottotilaHakijalle',
+        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter',
         function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
-                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, VastaanottoAikarajanMennytTieto, HakemustenVastaanottotilaHakijalle,
+                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
                                                IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
 
@@ -417,29 +417,14 @@ angular.module('valintalaskenta')
             }));
 
             var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function(h) {
-                return h.vastaanottoTila === "KESKEN" && (h.tila === 'HYVAKSYTTY' || h.tila === 'VARASIJALTA_HYVAKSYTTY' || h.tila === 'PERUNUT');
+                return h.vastaanottoTila === "KESKEN" && h.julkaistavissa &&
+                  (h.tila === 'HYVAKSYTTY' || h.tila === 'VARASIJALTA_HYVAKSYTTY' || h.tila === 'PERUNUT');
             }), function(relevanttiHakemus) {
                 return relevanttiHakemus.hakemusOid;
             });
 
-            var aikarajaMennytDeferred = $q.defer();
-            aikarajaMennytDeferred.promise.then(function(aikarajaMennytTiedot) {
-                _.forEach(aikarajaMennytTiedot, function(vastaanottoAikarajaMennyt) {
-                    _.forEach(kaikkiHakemukset, function(hakemus) {
-                        if (hakemus && (hakemus.hakemusOid === vastaanottoAikarajaMennyt.hakemusOid)) {
-                            hakemus.vastaanottoAikarajaMennyt = vastaanottoAikarajaMennyt.mennyt;
-                        }
-                    });
-                });
-                model.myohastymistietoLadattu = true;
-            });
-
-            if (oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon.length > 0) {
-                VastaanottoAikarajanMennytTieto.post({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, angular.toJson(oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon),
-                      function(result) { aikarajaMennytDeferred.resolve(result); },
-                      function(error) { aikarajaMennytDeferred.reject(error); }
-                );
-            }
+            VastaanottoUtil.fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously(model.hakuOid, model.hakukohdeOid, kaikkiHakemukset,
+              oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, function() { model.myohastymistietoLadattu = true });
         }
         return tilat;
     }
