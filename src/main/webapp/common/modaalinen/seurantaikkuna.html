@@ -13,12 +13,15 @@
 	  </div>
 	</div>
 	<div ng-if="uuid">
-		<div ng-if="jonosija">
-			Työ on jonossa jonosijalla {{jonosija}}.
+		<div class="row">
+			<div ng-if="tila=='ALOITTAMATTA'" class="col-sm-4">Tehtävä on laskennassa jonosijalla {{jonosija}}.</div>
+			<div ng-if="tila=='MENEILLAAN'" class="col-sm-4">Tehtävä on laskenassa parhaillaan.</div>
 		</div>
-		<div class="col-sm-4">Hakukohteita valmiina {{tehty}} / {{kaikkityot}}</div>
-		<div ng-if="ohitettu">
-			<div class="col-sm-4">Hakukohteita ohitettu {{ohitettu}} / {{kaikkityot}}</div>
+		<div class="row">
+			<div class="col-sm-4">Hakukohteita valmiina {{tehty}} / {{kaikkityot}}</div>
+			<div ng-if="ohitettu">
+				<div class="col-sm-4">Hakukohteita ohitettu {{ohitettu}} / {{kaikkityot}}</div>
+			</div>
 		</div>
 	</div>
 </div>

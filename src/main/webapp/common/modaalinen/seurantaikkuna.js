@@ -9,6 +9,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	$scope.nimi = HakuModel.getNimi();
 	$scope.nimentarkennus = oids.nimentarkennus;
 	$scope.jonosija = undefined;
+	$scope.tila = undefined;
 	$scope.lisaa = false;
 	$scope.ohitettu = 0;
 	$scope.tehty = 0;
@@ -42,6 +43,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		$scope.ohitettu = r.hakukohteitaKeskeytetty;
 		$scope.tehty = r.hakukohteitaValmiina;
 		$scope.kaikkityot = r.hakukohteitaYhteensa;
+		$scope.tila = r.tila;
 		if(r.tila == "VALMIS") {
 			if ($scope.ohitettu + $scope.tehty == $scope.kaikkityot) {
 				$scope.kaynnissa = false;
