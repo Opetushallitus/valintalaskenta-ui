@@ -94,35 +94,6 @@
     </div>
 </collapsible>
 
-<!-- VALINTALASKENNAN SEURANTA -->
-<collapsible ng-if="!hakumodel.hakuOid.lisahaku" heading="{{ t('yhteisvalinnanhallinta.valintalaskennanseuranta') || 'Valintalaskennan seuranta' }}" ng-click="updateHaunLaskennat();" is-open="naytaHaunLaskennat">
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Haun valintalaskennat' }}</strong></div>
-    <div class="col-md-10 margin-bottom-2">
-        <div class="list-group">
-		  <a class="list-group-item" ng-repeat="laskenta in haunLaskennat | filter:yksittainenhakukohde:notequals | orderBy:'luotu':'true' | limitTo:10" ng-click="uudelleenYritaLaskentaa($event, laskenta);">
-		    <h4 class="list-group-item-heading">{{laskenta.tila}}</h4>
-		    <div class="list-group-item-text">
-			    <div class="progress">
-				  <div class="progress-bar" style="width: {{prosentteina(laskenta.hakukohteitaValmiina,laskenta.hakukohteitaYhteensa)}}%">
-				    {{prosentteina(laskenta.hakukohteitaValmiina,laskenta.hakukohteitaYhteensa)}}%
-				  </div>
-				  <div class="progress-bar progress-bar-danger" style="width: {{prosentteina(laskenta.hakukohteitaKeskeytetty,laskenta.hakukohteitaYhteensa)}}%">
-				    {{prosentteina(laskenta.hakukohteitaKeskeytetty,laskenta.hakukohteitaYhteensa)}}%
-				  </div>
-				</div>
-			</div>
-			<div ng-if="laskenta.uuid" class="list-group-item-text">
-				<div class="col-sm-4">Hakukohteita valmiina {{laskenta.hakukohteitaValmiina}} / {{laskenta.hakukohteitaYhteensa}}</div>
-				<div ng-if="laskenta.hakukohteitaKeskeytetty">
-					<div class="col-sm-4">Hakukohteita ohitettu {{laskenta.hakukohteitaKeskeytetty}} / {{laskenta.hakukohteitaYhteensa}}</div>
-				</div>
-			</div>
-			<br>
-		  </a>
-		</div>
-    </div>
-</collapsible>
-
 <!-- SIJOITTELUN TULOKSET -->
 <collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Sijoittelun tulokset' }}">
     <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
