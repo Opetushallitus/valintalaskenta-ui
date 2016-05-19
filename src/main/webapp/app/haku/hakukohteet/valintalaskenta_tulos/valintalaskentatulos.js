@@ -295,15 +295,18 @@
                     .filter(function(sija) {
                         return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila !== '');
                     }).map(function(sija) {
-                        if(_.isUndefined(sija.jonoSija && _.isNumber(sija.jonosija))) {
-                            if(!vaihe.kaytetaanKokonaispisteita) {
-                                sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
-                            } else {
-                                sija.jarjestyskriteerit[0].arvo = sija.kokonaispisteet;
-                            }
+                        var isValidNumber = function (value) {
+                            !_.isNaN(value) && _.isNumber(value)
+                        };
+
+                        if(vaihe.kaytetaanKokonaispisteita && isValidNumber(sija.kokonaispisteet)) {
+                            sija.jarjestyskriteerit[0].arvo = sija.kokonaispisteet;
+                        } else if(!vaihe.kaytetaanKokonaispisteita && isValidNumber(sija.jonosija)) {
+                            sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                         } else {
                             delete sija.jarjestyskriteerit[0].arvo;
                         }
+
                         if(_.isUndefined(sija.prioriteetti) || sija.prioriteetti === 0) {
                             sija.prioriteetti = model.hakutoivePrioriteetti(sija.hakemusOid);
                         }
