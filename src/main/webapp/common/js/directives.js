@@ -21,6 +21,89 @@ app.directive('lazyLoading', function () {
     };
 });
 
+app.directive('resolveNamesFromTarjonta', function ($http, $q) {
+    function replaceOid(oid, message, kielistysObject) {
+        if (kielistysObject.kieli_fi) {
+            return message.replace(oid, kielistysObject.kieli_fi + ' (' + oid + ')')
+        } else if (kielistysObject.kieli_sv) {
+            return message.replace(oid, kielistysObject.kieli_sv + ' (' + oid + ')')
+        } else if (kielistysObject.kieli_en) {
+            return message.replace(oid, kielistysObject.kieli_en + ' (' + oid + ')')
+        }
+        return message
+    }
+    
+    function fetchHaku(haku, hakuQ) {
+        if (haku) {
+            $http.get('/tarjonta-service/rest/v1/haku/' + encodeURIComponent(haku), {cache: true}).then(function (result) {
+                if (result && result.data && result.data.result && result.data.result.nimi) {
+                    hakuQ.resolve(result.data.result.nimi)
+                } else {
+                    hakuQ.resolve(null)
+                }
+            }, function (error) {
+                hakuQ.reject(error)
+            })
+        } else {
+            hakuQ.resolve(null)
+        }
+        return hakuQ.promise
+    }
+
+    function fetchHakukohde(hakukohde, hakukohdeQ) {
+        if (hakukohde) {
+            $http.get('/tarjonta-service/rest/v1/hakukohde/' + encodeURIComponent(hakukohde), {cache: true}).then(function (result) {
+                if (result && result.data && result.data.result && result.data.result.hakukohteenNimet) {
+                    hakukohdeQ.resolve(result.data.result.hakukohteenNimet)
+                } else {
+                    hakukohdeQ.resolve(null)
+                }
+            }, function (error) {
+                hakukohdeQ.reject(error)
+            })
+        } else {
+            hakukohdeQ.resolve(null)
+        }
+        return hakukohdeQ.promise
+    }
+
+    function link(scope, element, attrs) {
+        if (attrs.message) {
+            element.text(attrs.message);
+
+            var hakuMatch = /^.*(1\.2\.246\.562\.29\.[0-9]+).*$/g.exec(attrs.message);
+            var hakuOid = hakuMatch && hakuMatch.length > 1 ? hakuMatch[1] : null;
+
+            var hakukohdeMatch = /^.*(1.2.246.562.20.[0-9]+).*$/g.exec(attrs.message);
+            var hakukohdeOid = hakukohdeMatch && hakukohdeMatch.length > 1 ? hakukohdeMatch[1] : null;
+
+            $q.all({
+                haku: fetchHaku(hakuOid, $q.defer()),
+                hakukohde: fetchHakukohde(hakukohdeOid, $q.defer())
+            }).then(function (results) {
+                var haunNimet = results.haku,
+                    hakukohteenNimet = results.hakukohde,
+                    message = attrs.message;
+
+                if (haunNimet) {
+                    message = replaceOid(hakuOid, message, haunNimet)
+                }
+
+                if (hakukohteenNimet) {
+                    message = replaceOid(hakukohdeOid, message, hakukohteenNimet)
+                }
+
+                element.text(message)
+            }, function (errors) {
+                console.log("cannot resolve from tarjonta", JSON.stringify(errors))
+            })
+        }
+    }
+
+    return {
+        link: link
+    }
+});
 
 app.directive('itemOnScreen', function ($timeout) {
     return {
