@@ -193,12 +193,24 @@
                                         getData: function ($defer, params) {
                                             var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
+                                            if(tulosjono.kaytetaanKokonaispisteita) {
+                                                _.each(tulosjono.jonosijat, function(jonosija){
+                                                    if(_.isUndefined(jonosija.kokonaispisteet)){jonosija.kokonaispisteet=Number.MIN_VALUE}
+                                                });
+                                            }
+
                                             var orderedData = params.sorting() ?
                                                 $filter('orderBy')(tulosjono.jonosijat, params.orderBy()) :
                                                 tulosjono.jonosijat;
                                             orderedData = params.filter() ?
                                                 $filter('filter')(orderedData, filters) :
                                                 orderedData;
+
+                                            if(tulosjono.kaytetaanKokonaispisteita) {
+                                                _.each(tulosjono.jonosijat, function(jonosija){
+                                                    if(jonosija.kokonaispisteet==Number.MIN_VALUE){delete jonosija.kokonaispisteet}
+                                                });
+                                            }
 
                                             params.total(orderedData.length); // set total for recalc pagination
                                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
@@ -263,8 +275,8 @@
                         getData: function ($defer, params) {
                             var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
-                            if(tulosjono.kaytetaanKokonaispisteita) {
-                                _.each(tulosjono.jonosijat, function(jonosija){
+                            if(jono.kaytetaanKokonaispisteita) {
+                                _.each(jono.jonosijat, function(jonosija){
                                     if(_.isUndefined(jonosija.kokonaispisteet)){jonosija.kokonaispisteet=Number.MIN_VALUE}
                                 });
                             }
@@ -276,8 +288,8 @@
                                 $filter('filter')(orderedData, filters) :
                                 orderedData;
 
-                            if(tulosjono.kaytetaanKokonaispisteita) {
-                                _.each(tulosjono.jonosijat, function(jonosija){
+                            if(jono.kaytetaanKokonaispisteita) {
+                                _.each(jono.jonosijat, function(jonosija){
                                     if(jonosija.kokonaispisteet==Number.MIN_VALUE){delete jonosija.kokonaispisteet}
                                 });
                             }
