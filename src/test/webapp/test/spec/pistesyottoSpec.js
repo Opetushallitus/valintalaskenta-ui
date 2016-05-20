@@ -10,10 +10,9 @@ describe('Pistesyöttö', function() {
     var HAKEMUS1 = "HAKEMUS1";
     var HAKEMUS2 = "HAKEMUS2";
 
-    beforeEach(function(done) {
+    beforeEach(function() {
         addTestHook(tarjontaFixtures)();
         addTestHook(koodistoFixtures)();
-        addTestHook(parametritFixtures)();
         addTestHook(listfullFixtures([]))();
         addTestHook(commonFixtures())();
         addTestHook(ohjausparametritFixtures())();
@@ -44,7 +43,6 @@ describe('Pistesyöttö', function() {
                 valintakoeOid: VALINTAKOE2,
                 hakemusOid: HAKEMUS2
             }]))();
-        page.openPage(done)
     });
 
     afterEach(function() {
@@ -53,10 +51,31 @@ describe('Pistesyöttö', function() {
         }
     });
 
-    describe('Pistesyöttö', function() {
+    describe('Pistesyöttö, kun koetulostentallennus=false', function() {
+        beforeEach(function(done) {
+            addTestHook(parametritFixtures)();
+            page.openPage(done);
+            wait.forAngular;
+        });
         it('Kenttien muokkaus ei sallittu', seqDone(
-            wait.forAngular,
             disabled(pistesyottoselectors.formSelectBox)
+        ))
+        it('Tallenna nappi on disabloitu', seqDone(
+            disabled(pistesyottoselectors.tallennaButton)
+        ))
+    })
+
+    describe('Pistesyöttö, kun koetulostentallennus=true', function() {
+        beforeEach(function(done) {
+            addTestHook(parametritFixturesWithOverrides({koetulostentallennus: true}))();
+            page.openPage(done);
+            wait.forAngular;
+        });
+        it('Kenttien muokkaus ei sallittu', seqDone(
+            enabled(pistesyottoselectors.formSelectBox)
+        ))
+        it('Tallenna nappi on enabloitu', seqDone(
+            enabled(pistesyottoselectors.tallennaButton)
         ))
     })
 });

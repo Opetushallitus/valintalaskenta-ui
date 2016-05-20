@@ -30,5 +30,6 @@ function pistesyottoPage() {
   return pageFunctions;
 }
 pistesyottoselectors = initSelectors({
-    formSelectBox: ".virkailija-table-1 select:nth-child(1)"
+    formSelectBox: ".virkailija-table-1 select:nth(1)",
+    tallennaButton: "button.btn-primary:nth(1)"
 })
