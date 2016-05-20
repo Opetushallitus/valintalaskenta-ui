@@ -62,6 +62,15 @@ angular.module('valintalaskenta').
     }
     $scope.jatkuva = {};
     $scope.korkeakoulu = Korkeakoulu;
+    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+    $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
+    $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
+    if(_.isEmpty(HakuModel.deferred)) { HakuModel.init($routeParams.hakuOid) }
+    $scope.hakumodel = HakuModel;
+    HakuModel.promise.then(function(h){
+        $scope.iskorkeakoulu = $scope.korkeakoulu.isKorkeakoulu(h.hakuOid.kohdejoukkoUri);
+    });
+
     $scope.nullIsUndefined = function(value) {
         if(value) {
             return value;
@@ -106,11 +115,7 @@ angular.module('valintalaskenta').
         });
     };
     
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
-    $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
-    $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
-    if(_.isEmpty(HakuModel.deferred)) { HakuModel.init($routeParams.hakuOid) }
-    $scope.hakumodel = HakuModel;
+
 
     $scope.virheet = VirheModel;
     $scope.naytaKokeita = 50;
@@ -251,6 +256,21 @@ angular.module('valintalaskenta').
             Ilmoitus.avaa("Sijoittelun tulokset hyväksymiskirjeiksi epäonnistui", "Sijoittelun tulokset hyväksymiskirjeiksi epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
     };
+
+    $scope.muodostaKirjeet = function(hyvaksymiskirje, langcode, iposti) {
+        console.log("is hyvaksymiskirje? " + (hyvaksymiskirje == true));
+        console.log("is iposti? " + (iposti == true));
+        console.log("using language " + langcode);
+        if(iposti) {
+            if(hyvaksymiskirje) {
+                $scope.muodostaHyvaksymiskirjeet(langcode);
+            } else {
+                $scope.muodostaJalkiohjauskirjeet(langcode);
+            }
+        } else {
+            console.log("Mitas nyt");
+        }
+    }
 
     $scope.muodostaHyvaksymiskirjeet = function (langcode) {
         var hakuOid = $routeParams.hakuOid;
