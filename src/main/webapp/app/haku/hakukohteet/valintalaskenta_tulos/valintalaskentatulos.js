@@ -185,7 +185,6 @@
                                         },
                                         sorting: {
                                             'jonosija' : 'asc',
-                                            '!kokonaispisteet' : 'desc',
                                             'kokonaispisteet' : 'desc',
                                             'sukunimi': 'asc'
                                         }
@@ -256,7 +255,6 @@
                         },
                         sorting: {
                             'jonosija' : 'asc',
-                            '!kokonaispisteet' : 'desc',
                             'kokonaispisteet' : 'desc',
                             'sukunimi': 'asc'
                         }
