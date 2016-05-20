@@ -263,12 +263,24 @@
                         getData: function ($defer, params) {
                             var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
+                            if(tulosjono.kaytetaanKokonaispisteita) {
+                                _.each(tulosjono.jonosijat, function(jonosija){
+                                    if(_.isUndefined(jonosija.kokonaispisteet)){jonosija.kokonaispisteet=Number.MIN_VALUE}
+                                });
+                            }
+
                             var orderedData = params.sorting() ?
                                 $filter('orderBy')(jono.jonosijat, params.orderBy()) :
                                 jono.jonosijat;
                             orderedData = params.filter() ?
                                 $filter('filter')(orderedData, filters) :
                                 orderedData;
+
+                            if(tulosjono.kaytetaanKokonaispisteita) {
+                                _.each(tulosjono.jonosijat, function(jonosija){
+                                    if(jonosija.kokonaispisteet==Number.MIN_VALUE){delete jonosija.kokonaispisteet}
+                                });
+                            }
 
                             params.total(orderedData.length); // set total for recalc pagination
                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
