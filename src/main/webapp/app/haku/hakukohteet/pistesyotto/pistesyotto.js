@@ -200,7 +200,6 @@ angular.module('valintalaskenta').
     $scope.osallistuminenFilter = "";
     $scope.pageSize = 50;
     $scope.currentPage = 1;
-    $scope.filteredResult = [];
     $scope.muutettu = false;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);

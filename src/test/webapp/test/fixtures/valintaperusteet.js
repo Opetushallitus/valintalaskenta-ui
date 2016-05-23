@@ -42,7 +42,9 @@ function valintakokeetFixtures(valintakokeet) {
             "lahde":"SYOTETTAVA_ARVO",
             "vaatiiOsallistumisen":true,
             "kuvaus":"eka",
-            "syotettavissaKaikille": true
+            "syotettavissaKaikille": true,
+            "min": 0,
+            "max": 100
         }]);
 
     }
