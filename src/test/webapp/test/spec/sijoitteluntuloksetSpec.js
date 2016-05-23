@@ -78,6 +78,13 @@ describe('Sijoittelun tulokset välilehti', function () {
                 assertText(sijoitteluntulokset.valintatulosTilaIndex(2), "Peruuntunut")
             }
         ))
+
+        it('vastaanottotilaa muutettaessa julkaistavissa-täppä muuttuu disabloiduksi', seqDone(
+            wait.forAngular,
+            click(sijoitteluntulokset.julkaistavissa(2)),
+            select(sijoitteluntulokset.vastaanottoDropdown(2), "string:VASTAANOTTANUT_SITOVASTI"),
+            disabled(sijoitteluntulokset.julkaistavissa(2))
+        ))
     })
 
     describe('Sijoittelun tulokset -välilehdellä Kk haussa', function () {
