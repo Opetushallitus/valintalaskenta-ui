@@ -1,0 +1,104 @@
+/*** jononhallinta
+************************************************/
+#stateSelector {
+  font-family: sans-serif;
+  font-size: 12px;
+  background-color: #F0F0F0;
+  color: #707070;
+  margin-top: 30px;
+  padding-left: 15px; }
+
+#stateSelectorPanelBody {
+  padding: 5px; }
+
+#stateSelector .btn-stateSelectorButton {
+  color: #4A4A4A;
+  background-color: #E3E3E3;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 10px;
+  border-radius: 2px;
+  font-size: 14px;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1); }
+
+#stateSelector .active {
+  color: #ffffff;
+  background-color: #159ECB; }
+
+#jobList .flexContainer {
+  padding-top: 20px;
+  display: -ms-flex;
+  display: -webkit-flex;
+  display: flex;
+  /* Left side details, job name, user, running time, progress bar etc. */
+  /* Description block including action button(s)*/ }
+  #jobList .flexContainer .jobListItem {
+    background-color: #ffffff;
+    height: 120px;
+    margin-bottom: 10px;
+    padding: 13px;
+    padding-top: 20px;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2); }
+  #jobList .flexContainer .details {
+    width: 25%;
+    display: -ms-flex;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column; }
+    #jobList .flexContainer .details .top {
+      width: 100%; }
+      #jobList .flexContainer .details .top .jobItemHeading {
+        font-size: 16px; }
+      #jobList .flexContainer .details .top .jobItemStartTime {
+        font-size: 14px; }
+    #jobList .flexContainer .details .middle {
+      padding-top: 10px;
+      width: 100%; }
+      #jobList .flexContainer .details .middle .jobItemUser {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size: 0.75em; }
+      #jobList .flexContainer .details .middle .jobItemRunningTime {
+        margin-left: 20px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size: 0.75em; }
+      #jobList .flexContainer .details .middle .jobItemErrors {
+        margin-left: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size: 0.8em;
+        color: #EE1C25; }
+      #jobList .flexContainer .details .middle .errorLink {
+        color: #EE1C25; }
+    #jobList .flexContainer .details .bottom {
+      padding-top: 25px;
+      display: -ms-flex;
+      display: -webkit-flex;
+      display: flex; }
+      #jobList .flexContainer .details .bottom .progressBar {
+        width: 85%; }
+        #jobList .flexContainer .details .bottom .progressBar .progress {
+          height: 8px; }
+      #jobList .flexContainer .details .bottom .progressPercent {
+        width: 15%;
+        font-size: 12px;
+        color: #2A2A2A;
+        padding-left: 5px;
+        margin-top: -4px;
+        text-align: center; }
+  #jobList .flexContainer .description {
+    width: 75%;
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #2A2A2A; }
+    #jobList .flexContainer .description .jobItemDescription {
+      height: 65%; }
+    #jobList .flexContainer .description .actionButton:hover {
+      color: red; }
+  #jobList .flexContainer .glyph-background {
+    padding: 7.5px;
+    position: relative;
+    border-radius: 50%;
+    background: #EBEBEB;
+    z-index: 2; }

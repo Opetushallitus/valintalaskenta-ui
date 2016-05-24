@@ -5,8 +5,9 @@ var gulp = require('gulp'),
 	clean = require('gulp-clean'),
 	watch = require('gulp-watch'),
 	livereload = require('gulp-livereload'),
-    karma = require('gulp-karma');
-	sass = require('gulp-sass');
+    karma = require('gulp-karma'),
+	sass = require('gulp-sass'),
+  debug = require('gulp-debug');
 
 var paths = {
 	testSources: 'src/test/ui/',
@@ -33,18 +34,16 @@ var paths = {
 
 		'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
 
-        'bower_components/lodash/dist/lodash.underscore.min.js',
+    'bower_components/lodash/dist/lodash.underscore.min.js',
 
 		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
 
-        'bower_components/angular-cache/dist/angular-cache.js',
-        'bower_components/angular-cache/dist/angular-cache.min.js',
-        'bower_components/angular-cache/dist/angular-cache.min.map'
+    'bower_components/angular-cache/dist/angular-cache.js',
+    'bower_components/angular-cache/dist/angular-cache.min.js',
+    'bower_components/angular-cache/dist/angular-cache.min.map'
 	],
-	css: [
-		'src/main/webapp/common/css/'
-	],
-	sass: 'sass/valintaperusteet.scss',
+	css: 'src/main/webapp/common/css/',
+	sass: ['sass/valintaperusteet.scss', 'sass/valintalaskenta.scss'],
 	cleanBuildFiles: [
 		'node/',
 		'node_modules/',
@@ -122,6 +121,20 @@ gulp.task('test', function () {
         }));
 });
 
+gulp.task('css', function () {
+  return gulp
+      .src(paths.sass)
+      .pipe(debug({'title': 'Preprocessing CSS'}))
+      .pipe(sass())
+      .pipe(debug({'title': 'Generated'}))
+      .pipe(gulp.dest(paths.css))
+      .pipe(livereload())
+})
+
+gulp.task('watch-sass', ['css'], function() {
+  livereload.listen()
+  gulp.watch(['sass/**/*.scss'], ['css']);
+});
 
 // Livereload
 gulp.task('livereload', function () {
