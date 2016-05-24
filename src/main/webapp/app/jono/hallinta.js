@@ -50,8 +50,32 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
 
 
     var updateJobList = function() {
-      $http.get('/data.json').then(function(res) {
-        $scope.jobs = res.data;
+      var categoryOrder = function(cat) {
+        var state = cat.tila;
+        if (state === JOB_STATES.RUNNING) {
+          return 1;
+        } else if (state === JOB_STATES.QUEUEING) {
+          return 2;
+        } else if (state === JOB_STATES.CANCELLED) {
+          return 3;
+        } else if (state === JOB_STATES.COMPLETED) {
+          return 4;
+        } else {
+          return 5;
+        }
+      };
+      var compare = function(a, b) {
+        return (a < b) ? -1 : ((a > b) ? 1 : 0);
+      };
+      $http.get('/data.json').then(function(res) { ///seuranta-service/resources/seuranta/jonossajakaynnissaolevatlaskennat').then(function(res) {
+        $scope.jobs = res.data.sort(function(a, b) {
+          var rval = compare(categoryOrder(a), categoryOrder(b));
+          if (rval === 0) {
+            return compare(a.jonosija, b.jonosija);
+          } else {
+            return rval;
+          }
+        });
         _($scope.jobs).forEach(function(job) {
             queryUserByOid(job, job.userOid);
         });
@@ -63,19 +87,19 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
 
     var updateJobSubscriptions = function() {
       $scope.jobsByState = _.groupBy($scope.jobs, 'tila');
+
       // Add new running jobs to tracked jobs
       _($scope.jobsByState[JOB_STATES.RUNNING]).forEach(function(job) {
         if (! (job.uuid in $scope.sseTrackedJobs)) {
           setUpTrackedJob(job.uuid)
         }
       });
+
       // Remove completed / cancelled jobs from tracked jobs
       _.forEach($scope.sseTrackedJobs, function(eventSource, key) {
         var defaultObject =  {};
         defaultObject[JOB_STATES.RUNNING] = []
-        if (! (_.contains(
-                _.defaults($scope.jobsByState, defaultObject)[JOB_STATES.RUNNING].map(function(o) { return o.uuid; }),
-                key))) {
+        if (! (_.contains(_.defaults($scope.jobsByState, defaultObject)[JOB_STATES.RUNNING].map(function(o) { return o.uuid; }), key))) {
           tearDownTrackedJob(key);
         }
       });
