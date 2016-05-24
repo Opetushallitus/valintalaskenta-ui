@@ -165,6 +165,8 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			ValintalaskentaKokoHaulle.aktivoi({
 				hakuoid : oids.hakuOid,
 				erillishaku: oids.erillishaku,
+				haunnimi: $scope.nimi,
+				nimi: $scope.nimentarkennus,
 				valinnanvaihe: oids.valinnanvaihe,
 				valintakoelaskenta: oids.valintakoelaskenta
 			}, null, laskennanVastaus, laskennanVirhe);
@@ -172,6 +174,8 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 			ValintalaskentaKerrallaHakukohteille.aktivoi({
 						hakuoid: oids.hakuOid,
 						tyyppi: tyyppi,
+					  haunnimi: $scope.nimi,
+					  nimi: $scope.nimentarkennus,
 						erillishaku: oids.erillishaku,
 						whitelist: whitelist,
 						valinnanvaihe: oids.valinnanvaihe,

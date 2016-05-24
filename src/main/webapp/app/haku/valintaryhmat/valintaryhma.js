@@ -244,7 +244,7 @@ angular.module('valintalaskenta')
 
     };
 
-    $scope.kaynnistaValintakoelaskenta = function () {
+    $scope.kaynnistaValintakoelaskenta = function (valintaryhma) {
         var hakukohdeOids = [];
         _.forEach($scope.hakukohteet, function (hakukohde) {
             hakukohdeOids.push(hakukohde.oid);
@@ -259,6 +259,7 @@ angular.module('valintalaskenta')
                     return {
                         hakuOid: $routeParams.hakuOid,
                         valinnanvaihe: null,
+                        nimentarkennus: valintaryhma.nimi,
                         valintakoelaskenta: true,
                         hakukohteet: hakukohdeOids
                     };
