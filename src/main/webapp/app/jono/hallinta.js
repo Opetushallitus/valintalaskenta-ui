@@ -142,7 +142,7 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
         return;
       }
       $http.get('/authentication-service/resources/henkilo/' + userOID).then(function(res) {
-         $scope.userCache[userOID] = _.defaults(res.kayttajatiedot, {username: '???'}).username || '???';
+         $scope.userCache[userOID] = _.defaults(res.data.kayttajatiedot, {username: '???'}).username || '???';
       }, function(err) {
          $scope.userCache[userOID] = '???';
       });
