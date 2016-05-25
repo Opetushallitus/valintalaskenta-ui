@@ -63,12 +63,12 @@
         padding-bottom: 5px;
         font-size: 0.75em; }
       #jobList .flexContainer .details .middle .jobItemRunningTime {
-        margin-left: 20px;
+        margin-left: 10px;
         padding-top: 5px;
         padding-bottom: 5px;
         font-size: 0.75em; }
       #jobList .flexContainer .details .middle .jobItemErrors {
-        margin-left: 10px;
+        margin-left: 5px;
         padding-top: 5px;
         padding-bottom: 5px;
         font-size: 0.8em;

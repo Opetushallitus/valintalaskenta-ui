@@ -1,4 +1,5 @@
-angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
+angular
+  .module('valintalaskenta.jononhallinta', ['ui.bootstrap'])
   .constant("JOB_STATES", {
     RUNNING: "MENEILLAAN",
     QUEUEING: "ALOITTAMATTA",
@@ -12,8 +13,8 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
     };
   })
   .controller('DashboardController',
-             ['$http', '$scope', '$interval', 'JOB_STATES', 'uibButtonConfig',
-      function($http,   $scope,   $interval,   JOB_STATES,   uibButtonConfig) {
+             ['$http', '$scope', '$interval', 'JOB_STATES', 'uibButtonConfig', 'seurantaservice',
+      function($http,   $scope,   $interval,   JOB_STATES,   uibButtonConfig,   seurantaservice) {
     // Set moment library locatlization
     moment.locale('fi');
     // CSS class for angular-ui buttons(checkbox'ish)
@@ -37,13 +38,13 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
       var origState = job.tila;
       job.tila = JOB_STATES.REMOVING;
       updateJobSubscriptions();
-      $http.delete('/valintalaskentakerralla/haku/' + job.uuid, {params: {lopetaVainJonossaOlevaLaskenta: true}}).then(
-        function(res) {
-          job.tila = JOB_STATES.CANCELLED;
+      seurantaservice.removeJob(job)
+        .then(function() {
           updateJobSubscriptions();
-        }, function(err) {
+        })
+        .catch(function(err) {
           console.log("Removing job from queue failed: ", err);
-      });
+        });
     };
 
     $scope.stateToHumanReadable = function(state) {
@@ -74,7 +75,6 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
 
     $scope.userCache = {};
 
-
     var updateJobList = function() {
       var categoryOrder = function(cat) {
         var state = cat.tila;
@@ -90,23 +90,26 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
           return 5;
         }
       };
+
       var compare = function(a, b) {
         return (a < b) ? -1 : ((a > b) ? 1 : 0);
       };
-      $http.get('/seuranta-service/resources/seuranta/yhteenvetokaikillelaskennoille').then(function(res) {
-        $scope.jobs = res.data.sort(function(a, b) {
-          var rval = compare(categoryOrder(a), categoryOrder(b));
-          if (rval === 0) {
-            return compare(a.jonosija, b.jonosija);
-          } else {
-            return rval;
-          }
+
+      seurantaservice.getJobs()
+        .then(function(jobs) {
+          $scope.jobs = jobs.sort(function(a, b) {
+            var rval = compare(categoryOrder(a), categoryOrder(b));
+            if (rval === 0) {
+              return compare(a.jonosija, b.jonosija);
+            } else {
+              return rval;
+            }
+          });
+          _($scope.jobs).forEach(function(job) {
+              queryUserByOid(job, job.userOID);
+          });
+          updateJobSubscriptions();
         });
-        _($scope.jobs).forEach(function(job) {
-            queryUserByOid(job, job.userOID);
-        });
-        updateJobSubscriptions();
-      });
     };
 
     updateJobList();
@@ -141,8 +144,9 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
       if (_.isEmpty(userOID)) {
         return;
       }
-      $http.get('/authentication-service/resources/henkilo/' + userOID).then(function(res) {
-         $scope.userCache[userOID] = _.defaults(res.data.kayttajatiedot, {username: '???'}).username || '???';
+
+      seurantaservice.queryUsernameByOid(userOID).then(function(res) {
+         $scope.userCache[userOID] = _.defaults(res.kayttajatiedot, {username: '???'}).username || '???';
       }, function(err) {
          $scope.userCache[userOID] = '???';
       });
