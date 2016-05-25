@@ -67,7 +67,7 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
       var compare = function(a, b) {
         return (a < b) ? -1 : ((a > b) ? 1 : 0);
       };
-      $http.get('/seuranta-service/resources/seuranta/jonossajakaynnissaolevatlaskennat').then(function(res) {
+      $http.get('/seuranta-service/resources/seuranta/yhteenvetokaikillelaskennoille').then(function(res) {
         $scope.jobs = res.data.sort(function(a, b) {
           var rval = compare(categoryOrder(a), categoryOrder(b));
           if (rval === 0) {
