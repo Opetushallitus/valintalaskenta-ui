@@ -77,7 +77,7 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
           }
         });
         _($scope.jobs).forEach(function(job) {
-            queryUserByOid(job, job.userOid);
+            queryUserByOid(job, job.userOID);
         });
         updateJobSubscriptions();
       });
@@ -111,7 +111,7 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
       }
       $scope.userCache[userOID] = '???';
       $http.get('/authentication-service/resources/henkilo/' + userOID).then(function(res) {
-         $scope.userCache[userOID] = _.defaults(res.kayttajatiedot, {username: '???'}).username;
+         $scope.userCache[userOID] = _.defaults(res.kayttajatiedot, {username: '???'}).username || '???';
       }, function(err) {
          $scope.userCache[userOID] = '???';
       });
