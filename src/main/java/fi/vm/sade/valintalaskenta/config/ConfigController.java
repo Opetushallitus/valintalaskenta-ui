@@ -29,6 +29,7 @@ public class ConfigController {
                 config.valintalaskentakoostepalveluServiceUrl);
         append(b, "HAKEMUS_URL_BASE", config.hakemusServiceUrl);
         append(b, "AUTHENTICATION_HENKILOUI_URL_BASE", config.authenticationHenkiloUiUrl);
+        append(b, "AUTHENTICATION_HENKILO_URL_BASE", config.authenticationHenkiloServiceUrl);
         append(b, "SIJOITTELU_URL_BASE", config.sijoitteluServiceUrl);
         append(b, "SERVICE_URL_BASE", config.valintalaskentaServiceUrl);
         append(b, "SIJOITTELU_EXCEL_URL_BASE", config.sijoitteluUrl);

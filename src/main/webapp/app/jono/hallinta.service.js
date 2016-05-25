@@ -12,7 +12,7 @@ function seurantaservice($http) {
   };
 
   function getJobs() {
-    return $http.get('/seuranta-service/resources/seuranta/yhteenvetokaikillelaskennoille')
+    return $http.get(SEURANTA_URL_BASE + '/seuranta/yhteenvetokaikillelaskennoille')
       .then(function(response) {
         return response.data;
       })
@@ -22,14 +22,14 @@ function seurantaservice($http) {
   }
 
   function removeJob(job) {
-    return $http.delete('/valintalaskentakerralla/haku/' + job.uuid, {params: {lopetaVainJonossaOlevaLaskenta: true}})
+    return $http.delete(VALINTALASKENTAKOOSTE_URL_BASE + 'resources/valintalaskentakerralla/haku/' + job.uuid, {params: {lopetaVainJonossaOlevaLaskenta: true}})
       .then(function() {
         job.tila = JOB_STATES.CANCELLED;
       });
   }
 
   function queryUsernameByOid(userOID) {
-    return $http.get('/authentication-service/resources/henkilo/' + userOID)
+    return $http.get(AUTHENTICATION_HENKILO_URL_BASE + '/resources/henkilo/' + userOID)
       .then(function(response) {
         return response.data;
       })
