@@ -15,9 +15,7 @@ function parametritFixtures() {
     httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/parametrit\/.*/).respond(defaultParametritFixtures);
 }
 function parametritFixturesWithOverrides(overrides) {
-  var withOverrides = {};
-  for (var attrname in defaultParametritFixtures) { withOverrides[attrname] = defaultParametritFixtures[attrname]; }
-  for (var attrname in overrides) { withOverrides[attrname] = overrides[attrname]; }
+  var withOverrides = _.extend({}, defaultParametritFixtures, overrides)
   return function () {
     var httpBackend = testFrame().httpBackend;
     httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/parametrit\/.*/).respond(withOverrides);
