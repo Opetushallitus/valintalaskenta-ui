@@ -35,7 +35,7 @@
             <div ng-repeat="job in jobs | filter:isShown" class="flexContainer">
                 <div class="jobListItem details">
                     <div class="top">
-                      <span class="jobItemHeading">{{ job.tila }}</span>
+                      <span class="jobItemHeading">{{ stateToHumanReadable(job.tila) }}</span>
                       <span class="jobItemStartTime">{{ job.luotu | date : "d.M.yyyy 'klo' H:m" }}</span>
                     </div>
                     <div class="middle">
@@ -49,7 +49,10 @@
                     </div>
                     <div class="bottom">
                         <div class="progressBar">
-                            <uib-progressbar class="progress" value="job.hakukohteitaValmiina" max="job.hakukohteitaYhteensa">
+                            <uib-progressbar class="progress"
+                              value="job.hakukohteitaValmiina"
+                              max="job.hakukohteitaYhteensa"
+                              type="{{ progressBarType(job.tila) }}">
                             </uib-progressbar>
                         </div>
                         <div class="progressPercent">

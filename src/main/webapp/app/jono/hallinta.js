@@ -46,6 +46,32 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
       });
     };
 
+    $scope.stateToHumanReadable = function(state) {
+      if (state === JOB_STATES.CANCELLED) {
+        return 'Keskeytynyt';
+      } else if (state === JOB_STATES.COMPLETED) {
+        return 'Valmis';
+      } else if (state === JOB_STATES.QUEUEING) {
+        return 'Jonossa';
+      } else if (state === JOB_STATES.RUNNING) {
+        return 'Käynnistetty';
+      } else if (state === JOB_STATES.REMOVING) {
+        return 'Poistetaan';
+      } else {
+        return '???';
+      }
+    };
+
+    $scope.progressBarType = function(state) {
+      if (state === JOB_STATES.CANCELLED) {
+        return 'danger';
+      } else if (state === JOB_STATES.COMPLETED) {
+        return 'info';
+      } else {
+        return 'default';
+      }
+    };
+
     $scope.userCache = {};
 
 
@@ -109,7 +135,12 @@ angular.module('valintalaskenta-jononhallinta', ['ngResource', 'ui.bootstrap'])
       if (angular.isDefined($scope.userCache[userOID])) {
         return;
       }
+
       $scope.userCache[userOID] = '???';
+
+      if (_.isEmpty(userOID)) {
+        return;
+      }
       $http.get('/authentication-service/resources/henkilo/' + userOID).then(function(res) {
          $scope.userCache[userOID] = _.defaults(res.kayttajatiedot, {username: '???'}).username || '???';
       }, function(err) {

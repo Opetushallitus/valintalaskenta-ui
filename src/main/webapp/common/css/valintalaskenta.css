@@ -1,5 +1,9 @@
 /*** jononhallinta
 ************************************************/
+#application-wrapper {
+  padding-left: 50px;
+  padding-right: 50px; }
+
 #stateSelector {
   font-family: sans-serif;
   font-size: 12px;
