@@ -261,18 +261,14 @@ angular.module('valintalaskenta').
         console.log("is hyvaksymiskirje? " + (hyvaksymiskirje == true));
         console.log("is iposti? " + (iposti == true));
         console.log("using language " + langcode);
-        if(iposti) {
-            if(hyvaksymiskirje) {
-                $scope.muodostaHyvaksymiskirjeet(langcode);
-            } else {
-                $scope.muodostaJalkiohjauskirjeet(langcode);
-            }
+        if(hyvaksymiskirje) {
+            $scope.muodostaHyvaksymiskirjeet(langcode, iposti);
         } else {
-            console.log("Mitas nyt");
+            $scope.muodostaJalkiohjauskirjeet(langcode, iposti);
         }
     }
 
-    $scope.muodostaHyvaksymiskirjeet = function (langcode) {
+    $scope.muodostaHyvaksymiskirjeet = function (langcode, iposti) {
         var hakuOid = $routeParams.hakuOid;
         var templateName = "hyvaksymiskirje";
         var viestintapalveluInstance = $modal.open({
@@ -289,6 +285,7 @@ angular.module('valintalaskenta').
                             SijoittelunTulosHyvaksymiskirjeet.aktivoi({
                                 hakuOid: hakuOid,
                                 asiointikieli: langcode,
+                                sahkoposti: !iposti,
                                 letterBodyText: sisalto
                             }, {}, function (id) {
                                 Latausikkuna.avaa(id, "Hyväksymiskirjeet", "");
@@ -307,7 +304,7 @@ angular.module('valintalaskenta').
         });
     };
 
-    $scope.muodostaJalkiohjauskirjeet = function (langcode) {
+    $scope.muodostaJalkiohjauskirjeet = function (langcode, iposti) {
         var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakumodel.hakuOid.kohdejoukkoUri);
         var hakuOid = $routeParams.hakuOid;
     	var tag = $routeParams.hakuOid;
@@ -336,6 +333,7 @@ angular.module('valintalaskenta').
                     	toiminto: function(sisalto) {
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
+                    sahkoposti: !iposti,
 					        	tag: tag, templateName: "jalkiohjauskirje"}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
 					            Latausikkuna.avaa(id, latausikkunaTeksti, "");
 					        }, function () {
