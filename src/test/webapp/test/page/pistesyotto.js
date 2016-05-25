@@ -13,9 +13,6 @@ function pistesyottoPage() {
     allStudentsTable: function () {
       return S(".virkailija-table-1").first()
     },
-    formSelectBox: function () {
-      return S(".virkailija-table-1 select").first()
-    },
     openPage: function (done) {
       return _pistesyottoPage()
         .then(wait.until(function () {
@@ -30,5 +27,9 @@ function pistesyottoPage() {
   return pageFunctions;
 }
 pistesyottoselectors = initSelectors({
-    formSelectBox: ".virkailija-table-1 select:nth-child(1)"
+    osallistuminenSelectBox: ".virkailija-table-1 select:nth(1)",
+    pistearvoInputBox: ".virkailija-table-1 input:nth(1)",
+    formError: "form .alert:first",
+    tallennaButton: "button.btn-primary:nth(1)",
+    page2link: ".pagination a:contains(2)"
 })
