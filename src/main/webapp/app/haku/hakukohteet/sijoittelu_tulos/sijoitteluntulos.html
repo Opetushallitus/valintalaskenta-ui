@@ -166,7 +166,7 @@
                                 <td data-title="(t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto')" sortable="'vastaanottoTila'">
                                     <div class="white-space-nowrap">
                                         <span>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:</span>
-                                        <input ng-disabled="!(updateOph || valintaesitysJulkaistavissa)" type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"/>
+                                        <input ng-disabled="(hakemus.muokattuVastaanottoTila === 'VASTAANOTTANUT_SITOVASTI' || hakemus.muokattuVastaanottoTila === 'EHDOLLISESTI_VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila === 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila === 'PERUUTETTU' || hakemus.muokattuVastaanottoTila === 'PERUNUT') || !(updateOph || valintaesitysJulkaistavissa)" type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"/>
                                     </div>
                                     <div ng-if="hakemus.naytetaanVastaanottotieto">
                                         <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">

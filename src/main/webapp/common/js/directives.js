@@ -303,12 +303,16 @@ app.directive('sijoitteluVastaanottoTila', function () {
 
                             var setVastaanottoTila = function (hakemus, tilaParams) {
                                 HakemuksenVastaanottoTila.get(tilaParams, function (result) {
-                                    if (!result.tila) {
+                                    if (!result || !_.isArray(result) || result.length === 0) {
                                         hakemus.vastaanottoTila = "";
                                         hakemus.muokattuVastaanottoTila = "";
                                     } else {
-                                        hakemus.vastaanottoTila = result.tila;
-                                        hakemus.muokattuVastaanottoTila = result.tila;
+                                        if (result.length > 1) {
+                                            console.log('Warning: got multiple results from HakemuksenVastaanottoTila.get:', result)
+                                        }
+                                        var firstResult = result[0];
+                                        hakemus.vastaanottoTila = firstResult.tila;
+                                        hakemus.muokattuVastaanottoTila = firstResult.tila;
                                     }
                                     $modalInstance.close(result)
                                     Ilmoitus.avaa("Tallennus onnistui", "Sijoittelun vastaanottotila muutettu.");
