@@ -38,13 +38,12 @@
   /* Description block including action button(s)*/ }
   #jobList .flexContainer .jobListItem {
     background-color: #ffffff;
-    height: 120px;
+    height: 130px;
     margin-bottom: 10px;
     padding: 13px;
-    padding-top: 20px;
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2); }
   #jobList .flexContainer .details {
-    width: 25%;
+    width: 30%;
     display: -ms-flex;
     display: -webkit-flex;
     display: flex;
@@ -84,6 +83,8 @@
         width: 85%; }
         #jobList .flexContainer .details .bottom .progressBar .progress {
           height: 8px; }
+      #jobList .flexContainer .details .bottom .progress-bar-cancelled {
+        background-color: #B3B3B3; }
       #jobList .flexContainer .details .bottom .progressPercent {
         width: 15%;
         font-size: 12px;
@@ -92,7 +93,7 @@
         margin-top: -4px;
         text-align: center; }
   #jobList .flexContainer .description {
-    width: 75%;
+    width: 70%;
     font-family: sans-serif;
     font-size: 14px;
     color: #2A2A2A; }

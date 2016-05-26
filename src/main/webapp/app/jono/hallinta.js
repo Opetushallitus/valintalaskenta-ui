@@ -49,8 +49,9 @@ angular
     $scope.fetchSummaryXLS = function(job) {
       $window.open(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/status/" + job.uuid + "/xls");
     };
-    $scope.stateToHumanReadable = function(state) {
-      if (state === JOB_STATES.CANCELLED) {
+    $scope.stateToHumanReadable = function(job) {
+      var state = job.tila;
+      if (state === JOB_STATES.CANCELLED || job.hakukohteitaKeskeytetty > 0) {
         return 'Keskeytynyt';
       } else if (state === JOB_STATES.COMPLETED) {
         return 'Valmis';
@@ -65,9 +66,10 @@ angular
       }
     };
 
-    $scope.progressBarType = function(state) {
-      if (state === JOB_STATES.CANCELLED) {
-        return 'danger';
+    $scope.progressBarType = function(job) {
+      var state = job.tila;
+      if (state === JOB_STATES.CANCELLED || job.hakukohteitaKeskeytetty > 0) {
+        return 'cancelled';
       } else if (state === JOB_STATES.COMPLETED) {
         return 'info';
       } else {
@@ -102,7 +104,11 @@ angular
           $scope.jobs = jobs.sort(function(a, b) {
             var rval = compare(categoryOrder(a), categoryOrder(b));
             if (rval === 0) {
-              return compare(a.jonosija, b.jonosija);
+              if (!_.isEmpty(a.jonosija) && !_.isEmpty(b.jonosija)) {
+                return compare(a.jonosija, b.jonosija);
+              } else {
+                return compare(b.luotu, a.luotu);
+              }
             } else {
               return rval;
             }
@@ -148,7 +154,7 @@ angular
       }
 
       seurantaservice.queryUsernameByOid(userOID).then(function(res) {
-         $scope.userCache[userOID] = _.defaults(res.kayttajatiedot, {username: '???'}).username || '???';
+         $scope.userCache[userOID] = _.defaults(res.kayttajatiedot, {username: '???'}).username || '???';
       }, function(err) {
          $scope.userCache[userOID] = '???';
       });
