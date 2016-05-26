@@ -13,8 +13,8 @@ angular
     };
   })
   .controller('DashboardController',
-             ['$http', '$scope', '$interval', 'JOB_STATES', 'uibButtonConfig', 'seurantaservice',
-      function($http,   $scope,   $interval,   JOB_STATES,   uibButtonConfig,   seurantaservice) {
+             ['$http', '$scope', '$interval', '$window', 'JOB_STATES', 'uibButtonConfig', 'seurantaservice',
+      function($http,   $scope,   $interval,   $window,   JOB_STATES,   uibButtonConfig,   seurantaservice) {
     // Set moment library locatlization
     moment.locale('fi');
     // CSS class for angular-ui buttons(checkbox'ish)
@@ -46,7 +46,9 @@ angular
           console.log("Removing job from queue failed: ", err);
         });
     };
-
+    $scope.fetchSummaryXLS = function(job) {
+      $window.open(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/status/" + job.uuid + "/xls");
+    };
     $scope.stateToHumanReadable = function(state) {
       if (state === JOB_STATES.CANCELLED) {
         return 'Keskeytynyt';

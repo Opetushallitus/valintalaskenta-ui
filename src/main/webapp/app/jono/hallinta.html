@@ -47,7 +47,7 @@
                         <span class="jobItemRunningTime glyphicon glyphicon-time glyph-background"></span>  {{ job.luotu | timeFromNow }}
                         <span ng-show="job.hakukohteitaKeskeytetty > 0">
                           <span class="jobItemErrors glyphicon glyphicon-warning-sign glyph-background"></span>
-                          <a class="errorLink" href="/resources/valintalaskentakerralla/status/{{job.uuid}}/xls" >Virheitä ({{ job.hakukohteitaKeskeytetty}})</a>
+                          <a href="" class="errorLink" ng-click="fetchSummaryXLS(job)" >Virheitä ({{ job.hakukohteitaKeskeytetty}})</a>
                         </span>
                     </div>
                     <div class="bottom">
