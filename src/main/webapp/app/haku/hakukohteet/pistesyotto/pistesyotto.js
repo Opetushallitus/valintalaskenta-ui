@@ -197,6 +197,7 @@ angular.module('valintalaskenta').
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.koeFilter = null;
+    $scope.hakijaFilter = "";
     $scope.osallistuminenFilter = "";
     $scope.pageSize = 50;
     $scope.currentPage = 1;
@@ -298,6 +299,13 @@ angular.module('valintalaskenta').
         return show;
 
     };
+    $scope.filteredResult = [];
+    $scope.$watch('model.hakeneet', function () {
+        $scope.filteredResult = $scope.$eval("model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter");
+    }, true);
+    $scope.$watchGroup(['hakijaFilter','koeFilter','osallistuminenFilter'], function () {
+        $scope.filteredResult = $scope.$eval("model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter");
+    });
 
     $scope.updateFilterData = function () {
         PistesyottoModel.updateFilterData();
