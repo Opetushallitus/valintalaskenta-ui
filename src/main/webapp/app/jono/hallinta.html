@@ -1,13 +1,11 @@
 <html ng-app="valintalaskenta.jononhallinta">
 <head>
+    <meta charset="utf-8"/>
     <link href="../../common/css/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="../../common/css/font-awesome-4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="../../common/css/ng-table.css" rel="stylesheet" type="text/css"/>
     <link href="../../common/css/valintalaskenta.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript"  src="../../configuration/configuration.js"></script>
-
-
-
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
 </head>
 <body>
@@ -30,7 +28,7 @@
                 </button>
                 <button class="btn btn-stateSelectorButton" ng-model="stateFilters.VALMIS" uib-btn-checkbox>
                     <span ng-show="stateFilters.VALMIS" class="glyphicon glyphicon-ok"></span>
-                    Valmis {{ jobsByState.VALMIS.length || 0 }}
+                    Valmis {{ jobsByState.VALMIS.length || 0 }}
                 </button>
             </div>
         </div>
