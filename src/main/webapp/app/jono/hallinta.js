@@ -7,14 +7,18 @@ angular
     COMPLETED: "VALMIS",
     REMOVING: "POISTETAAN"
   })
+  // Maximum number of SSE subscriptions
+  .constant("SSE", {
+    MAX_CONNECTIONS: 3
+  })
   .filter('timeFromNow', function() {
     return function(input) {
         return moment(new Date(input).toISOString()).fromNow();
     };
   })
   .controller('DashboardController',
-             ['$http', '$scope', '$interval', '$window', 'JOB_STATES', 'uibButtonConfig', 'seurantaservice',
-      function($http,   $scope,   $interval,   $window,   JOB_STATES,   uibButtonConfig,   seurantaservice) {
+             ['$http', '$scope', '$interval', '$window', 'JOB_STATES', 'SSE', 'uibButtonConfig', 'seurantaservice',
+      function($http,   $scope,   $interval,   $window,   JOB_STATES,   SSE,   uibButtonConfig,   seurantaservice) {
     // Set moment library locatlization
     moment.locale('fi');
     // CSS class for angular-ui buttons(checkbox'ish)
@@ -127,7 +131,7 @@ angular
 
       // Add new running jobs to tracked jobs
       _($scope.jobsByState[JOB_STATES.RUNNING]).forEach(function(job) {
-        if (! (job.uuid in $scope.sseTrackedJobs)) {
+        if (! (job.uuid in $scope.sseTrackedJobs) && _.size($scope.sseTrackedJobs) < SSE.MAX_CONNECTIONS){
           setUpTrackedJob(job.uuid)
         }
       });
@@ -175,7 +179,6 @@ angular
       };
 
       var source = new EventSource('/seuranta-service/resources/seuranta/yhteenveto/'+ jobId + '/sse');
-
       source.addEventListener('message', handleCallback, false);
       source.onerror = function(e) {
         console.log("EventSource subscription failed for job " + jobId);
