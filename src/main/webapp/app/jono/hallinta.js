@@ -51,7 +51,7 @@ angular
     };
     $scope.stateToHumanReadable = function(job) {
       var state = job.tila;
-      if (state === JOB_STATES.CANCELLED || job.hakukohteitaKeskeytetty > 0) {
+      if (state === JOB_STATES.CANCELLED || job.hakukohteitaKeskeytetty > 0) {
         return 'Keskeytynyt';
       } else if (state === JOB_STATES.COMPLETED) {
         return 'Valmis';
@@ -68,7 +68,7 @@ angular
 
     $scope.progressBarType = function(job) {
       var state = job.tila;
-      if (state === JOB_STATES.CANCELLED || job.hakukohteitaKeskeytetty > 0) {
+      if (state === JOB_STATES.CANCELLED || job.hakukohteitaKeskeytetty > 0) {
         return 'cancelled';
       } else if (state === JOB_STATES.COMPLETED) {
         return 'info';
