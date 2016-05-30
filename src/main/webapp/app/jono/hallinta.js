@@ -69,7 +69,18 @@ angular
         return '???';
       }
     };
-
+    $scope.typeToHumanReadable = function(job) {
+      switch(job.tyyppi) {
+        case "VALINTARYHMA" : return "Valintaryhmä";
+        case "HAKU" : return "Haku";
+        case "HAKUKOHDE" : return "Hakukohde";
+        default: return "";
+      }
+    };
+    $scope.calculateProgressPercent = function(job) {
+      var percent = job.hakukohteitaValmiina / job.hakukohteitaYhteensa * 100;
+      return Math.round(percent);
+    };
     $scope.progressBarType = function(job) {
       var state = job.tila;
       if (state === JOB_STATES.CANCELLED || job.hakukohteitaKeskeytetty > 0) {
