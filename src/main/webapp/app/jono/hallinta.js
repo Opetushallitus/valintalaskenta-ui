@@ -25,17 +25,17 @@ angular
     uibButtonConfig.activeClass = "active";
 
     $scope.stateFilters = {};
-    $scope.stateFilters[JOB_STATES.RUNNING] = true;
-    $scope.stateFilters[JOB_STATES.CANCELLED] = true;
-    $scope.stateFilters[JOB_STATES.QUEUEING] = true;
-    $scope.stateFilters[JOB_STATES.COMPLETED] = true;
-    $scope.stateFilters[JOB_STATES.REMOVING] = true;
+    $scope.stateFilters[JOB_STATES.RUNNING] = false;
+    $scope.stateFilters[JOB_STATES.CANCELLED] = false;
+    $scope.stateFilters[JOB_STATES.QUEUEING] = false;
+    $scope.stateFilters[JOB_STATES.COMPLETED] = false;
+    $scope.stateFilters[JOB_STATES.REMOVING] = false;
 
     // Jobs being processed are subscribed to SSE endpoint for a soft real-time updates
     $scope.sseTrackedJobs = {};
 
     $scope.isShown = function(elem, idx, arr) {
-      return $scope.stateFilters[elem.tila];
+      return $scope.stateFilters[elem.tila] || _.every($scope.stateFilters, function(state) {return !state});
     };
 
     $scope.removeJob = function(job) {
