@@ -29,7 +29,7 @@
                     <thead>
                     <tr>
                         <th>{{ t('hakukohteethakukohdeperustiedot.valintatapajono') || 'Valintatapajono' }}</th>
-                        <th>{{ t('hakukohteethakukohdeperustiedot.aloituspaikat') || 'Valintaperusteissa määritetyt aloituspaikat' }}</th>
+                        <th ng-if="isKorkeakoulu()">{{ t('hakukohteethakukohdeperustiedot.aloituspaikat') || 'Valintaperusteissa määritetyt aloituspaikat' }}</th>
                         <th>{{ t('hakukohteethakukohdeperustiedot.sijoittelunAloituspaikat') || 'Sijoittelun käyttämät aloituspaikat' }}</th>
                         <th>{{ t('hakukohteethakukohdeperustiedot.hyvaksytyt') || 'Hyväksytyt yhteensä' }}</th>
                         <th ng-if="!isKorkeakoulu()">{{ t('hakukohteethakukohdeperustiedot.harkinnanvaraisesti') || 'Harkinnanvaraisesti hyväksytyt yhteensä' }}</th>
@@ -42,7 +42,7 @@
                     <tbody>
                     <tr ng-repeat="erittely in sijoitteluntulosModel.hakemusErittelyt | orderBy:'prioriteetti'">
                         <td>{{erittely.nimi}}</td>
-                        <td>{{erittely.alkuperaisetAloituspaikat}}</td>
+                        <td ng-if="isKorkeakoulu()">{{erittely.alkuperaisetAloituspaikat}}</td>
                         <td>{{erittely.aloituspaikat}}</td>
                         <td>{{erittely.hyvaksytyt.length}}</td>
                         <td ng-if="!isKorkeakoulu()">{{erittely.hyvaksyttyHarkinnanvaraisesti.length}}</td>

@@ -122,7 +122,7 @@
                                 <th colspan="11">
                                     {{jono.nimi}}: {{jono.prioriteetti}} /
                                     <!---Valintatapajono OID: {{jono.oid}}-->
-                                    {{ t('sijoitteluntulos.aloituspaikat') || 'Valintaperusteissa määritetyt aloituspaikat' }}: {{jono.alkuperaisetAloituspaikat}} /
+                                    <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.aloituspaikat') || 'Valintaperusteissa määritetyt aloituspaikat' }}: {{jono.alkuperaisetAloituspaikat}} /</span>
                                     {{ t('sijoitteluntulos.sijoittelunAloituspaikat') || 'Sijoittelun käyttämät aloituspaikat' }}: {{jono.aloituspaikat}} /
                                     {{ t('sijoitteluntulos.tasasijasaanto') || 'Tasasijasääntö' }}: {{jono.tasasijasaanto}} /
                                     {{jono.eiVarasijatayttoa ? 'Ei varasijatäyttöä' : 'Varasijatäyttö'}} /
