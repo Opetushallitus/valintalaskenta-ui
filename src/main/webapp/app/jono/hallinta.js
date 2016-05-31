@@ -55,7 +55,7 @@ angular
     };
     $scope.stateToHumanReadable = function(job) {
       var state = job.tila;
-      if (state === JOB_STATES.CANCELLED || job.hakukohteitaKeskeytetty > 0) {
+      if (state === JOB_STATES.CANCELLED) {
         return 'Keskeytynyt';
       } else if (state === JOB_STATES.COMPLETED) {
         return 'Valmis';
@@ -67,14 +67,6 @@ angular
         return 'Poistetaan';
       } else {
         return '???';
-      }
-    };
-    $scope.typeToHumanReadable = function(job) {
-      switch(job.tyyppi) {
-        case "VALINTARYHMA" : return "Valintaryhmä";
-        case "HAKU" : return "Haku";
-        case "HAKUKOHDE" : return "Hakukohde";
-        default: return "";
       }
     };
     $scope.calculateProgressPercent = function(job) {

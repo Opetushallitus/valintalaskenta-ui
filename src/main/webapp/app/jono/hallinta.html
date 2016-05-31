@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="jobItemDescription">{{job.haunnimi}}</div>
-                    <div class="jobItemQueue">{{typeToHumanReadable(job) + ": " + job.nimi}}</div>
+                    <div class="jobItemQueue">{{job.nimi}}</div>
                     <div class="jobItemHakukohteitaYhteensa">{{"Hakukohteita yhteensä: " + job.hakukohteitaYhteensa}}</div>
                     <div class="jobItemValinnanvaihe">{{"Valinnanvaihe: " + ( null == job.valinnanvaihe ? "Kaikki" : job.valinnanvaihe)}}</div>
                     <div class="jobItemValintakoelaskenta">{{"Valintakoelaskenta: " + (null == job.valintakoelaskenta || !job.valintakoelaskenta ? "Ei" : "Kyllä")}}</div>
