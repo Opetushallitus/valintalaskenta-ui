@@ -43,7 +43,7 @@
                         <img ng-src="../../common/img/person_icon.png" class="jobItemUser" /> 
                         <a tooltip-placement="top-left"
                           uib-tooltip="{{ userCache[job.userOID].etunimet }} {{userCache[job.userOID].sukunimi}}"
-                          href="/authentication-henkiloui/html/index.html#/henkilo/{{job.userOID}}/">
+                          href="/authentication-henkiloui/html/index.html#/henkilo/{{job.userOID}}/" target="_blank">
                           {{ userCache[job.userOID].etunimet[0] + userCache[job.userOID].sukunimi[0] }}
                         </a>
                         <img ng-src="../../common/img/clock_icon.png" class="jobItemRunningTime" /> {{ job.luotu | timeFromNow }}
