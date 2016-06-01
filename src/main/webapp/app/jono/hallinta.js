@@ -78,7 +78,7 @@ angular
       if (state === JOB_STATES.CANCELLED || job.hakukohteitaKeskeytetty > 0) {
         return 'cancelled';
       } else if (state === JOB_STATES.COMPLETED) {
-        return 'info';
+        return 'completed';
       } else {
         return 'default';
       }
@@ -161,7 +161,7 @@ angular
       }
 
       seurantaservice.queryUsernameByOid(userOID).then(function(res) {
-         $scope.userCache[userOID] = _.defaults(res.kayttajatiedot, {username: '???'}).username || '???';
+         $scope.userCache[userOID] = res;
       }, function(err) {
          $scope.userCache[userOID] = '???';
       });

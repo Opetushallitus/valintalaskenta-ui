@@ -10,25 +10,25 @@
 </head>
 <body>
     <div id="application-wrapper" ng-controller="DashboardController">
-        <h1>Valintalaskennat</h1>
+        <h1 id="heading">Valintalaskennat</h1>
         <div id="stateSelector" class="flexContainer">
             <div id="stateSelectorPanelBody">
                 NÄYTÄ
                 <button class="btn btn-stateSelectorButton" ng-model="stateFilters.MENEILLAAN" uib-btn-checkbox>
-                    <span ng-show="stateFilters.MENEILLAAN" class="glyphicon glyphicon-ok"></span>
-                    Käynnissä {{ jobsByState.MENEILLAAN.length || 0 }}
+                    <img ng-src="../../common/img/selection_checked.png" ng-show="stateFilters.MENEILLAAN" class="selectionIcon"/>
+                    Käynnissä <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.MENEILLAAN}]">{{ jobsByState.MENEILLAAN.length || 0 }}</span>
                 </button>
                 <button class="btn btn-stateSelectorButton" ng-model="stateFilters.ALOITTAMATTA" uib-btn-checkbox>
-                    <span ng-show="stateFilters.ALOITTAMATTA" class="glyphicon glyphicon-ok"></span>
-                    Jonossa {{ jobsByState.ALOITTAMATTA.length || 0 }}
+                    <img ng-src="../../common/img/selection_checked.png" ng-show="stateFilters.ALOITTAMATTA" class="selectionIcon"/>
+                    Jonossa <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.ALOITTAMATTA}]">{{ jobsByState.ALOITTAMATTA.length || 0 }}</span>
                 </button>
                 <button class="btn btn-stateSelectorButton" ng-model="stateFilters.PERUUTETTU " uib-btn-checkbox>
-                    <span ng-show="stateFilters.PERUUTETTU" class="glyphicon glyphicon-ok"></span>
-                    Keskeytynyt {{ jobsByState.PERUUTETTU.length || 0 }}
+                    <img ng-src="../../common/img/selection_checked.png" ng-show="stateFilters.PERUUTETTU" class="selectionIcon"/>
+                    Keskeytynyt <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.PERUUTETTU}]">{{ jobsByState.PERUUTETTU.length || 0 }}</span>
                 </button>
                 <button class="btn btn-stateSelectorButton" ng-model="stateFilters.VALMIS" uib-btn-checkbox>
-                    <span ng-show="stateFilters.VALMIS" class="glyphicon glyphicon-ok"></span>
-                    Valmis {{ jobsByState.VALMIS.length || 0 }}
+                    <img ng-src="../../common/img/selection_checked.png" ng-show="stateFilters.VALMIS" class="selectionIcon"/>
+                    Valmis <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.VALMIS}]">{{ jobsByState.VALMIS.length || 0 }}</span>
                 </button>
             </div>
         </div>
@@ -40,11 +40,15 @@
                       <span class="jobItemStartTime">{{ job.luotu | date : "d.M.yyyy 'klo' HH:mm" }}</span>
                     </div>
                     <div class="middle">
-                        <span class="jobItemUser glyphicon glyphicon-user glyph-background"></span> 
-                        <a href="/authentication-henkiloui/html/index.html#/henkilo/{{job.userOID}}/">{{ userCache[job.userOID] }}</a>
-                        <span class="jobItemRunningTime glyphicon glyphicon-time glyph-background"></span>  {{ job.luotu | timeFromNow }}
+                        <img ng-src="../../common/img/person_icon.png" class="jobItemUser" /> 
+                        <a tooltip-placement="top-left"
+                          uib-tooltip="{{ userCache[job.userOID].etunimet }} {{userCache[job.userOID].sukunimi}}"
+                          href="/authentication-henkiloui/html/index.html#/henkilo/{{job.userOID}}/">
+                          {{ userCache[job.userOID].etunimet[0] + userCache[job.userOID].sukunimi[0] }}
+                        </a>
+                        <img ng-src="../../common/img/clock_icon.png" class="jobItemRunningTime" /> {{ job.luotu | timeFromNow }}
                         <span ng-show="job.hakukohteitaKeskeytetty > 0">
-                          <span class="jobItemErrors glyphicon glyphicon-warning-sign glyph-background"></span>
+                          <img ng-src="../../common/img/warning_icon.png" class="jobItemErrors" />
                           <a href="" class="errorLink" ng-click="fetchSummaryXLS(job)" >Virheitä ({{ job.hakukohteitaKeskeytetty}})</a>
                         </span>
                     </div>
@@ -65,13 +69,18 @@
                     <div ng-show="job.tila === 'ALOITTAMATTA'" class="pull-right">
                         <span ng-click="removeJob(job)" class="glyphicon glyphicon-remove glyph-background actionButton"></span>
                     </div>
-
-                    <div class="jobItemDescription">{{job.haunnimi}}</div>
-                    <div class="jobItemQueue">{{job.nimi}}</div>
-                    <div class="jobItemHakukohteitaYhteensa">{{"Hakukohteita yhteensä: " + job.hakukohteitaYhteensa}}</div>
-                    <div class="jobItemValinnanvaihe">{{"Valinnanvaihe: " + ( null == job.valinnanvaihe ? "Kaikki" : job.valinnanvaihe)}}</div>
-                    <div class="jobItemValintakoelaskenta">{{"Valintakoelaskenta: " + (null == job.valintakoelaskenta || !job.valintakoelaskenta ? "Ei" : "Kyllä")}}</div>
-
+                    
+                    <div class="jobItemDescription">
+                        <div class="jobItemName">
+                             <div>{{job.haunnimi}}</div>
+                        </div>
+                        <div class="jobItemDetails">
+                            <div class="jobItemQueue">{{job.nimi}}</div>
+                            <div class="jobItemHakukohteitaYhteensa">{{"Hakukohteita yhteensä: " + job.hakukohteitaYhteensa}}</div>
+                            <div class="jobItemValinnanvaihe">{{"Valinnanvaihe: " + ( null == job.valinnanvaihe ? "Kaikki" : job.valinnanvaihe)}}</div>
+                            <div class="jobItemValintakoelaskenta">{{"Valintakoelaskenta: " + (null == job.valintakoelaskenta || !job.valintakoelaskenta ? "Ei" : "Kyllä")}}</div>
+                        </div>
+                    </div>
                 </div>
           </div>
       </div>
