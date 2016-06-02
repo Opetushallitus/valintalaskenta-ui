@@ -9,10 +9,6 @@ function organisaatioFixtures() {
         "numHits":0,
         "organisaatiot":[]
     })
-    // lisahaku
-    httpBackend
-        .when('GET', /.*organisaatio\/LISAHAKUKOHDE\/parentoids/)
-        .respond("1.2.246.562.10.00000000001/1.2.246.562.20.31450195396")
     httpBackend
         .when('GET', /.*organisaatio\/1\.2\.246\.562\.10\.520877937010\/parentoids/)
         .respond("1.2.246.562.10.00000000001/1.2.246.562.10.79875033395/1.2.246.562.10.78305677532/1.2.246.562.10.520877937010")

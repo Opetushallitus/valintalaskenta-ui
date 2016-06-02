@@ -138,11 +138,11 @@ angular.module('valintalaskenta').
                     $scope.model.hakukohteetVisible = !$scope.model.hakukohteetVisible;
                 };
 
-                $scope.showHakukohde = function (hakukohde, lisahaku) {
+                $scope.showHakukohde = function (hakukohde) {
                     $rootScope.selectedHakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(hakukohde);
                     $scope.model.hakukohteetVisible = false;
                     HakukohteetModel.hakukohteetVisible = $scope.hakukohteetVisible;
-                    $location.path((lisahaku ? '/lisahaku/' : '/haku/') + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + (lisahaku ? '/perustiedot' : '/perustiedot'));
+                    $location.path('/haku/' + $routeParams.hakuOid + '/hakukohde/' + hakukohde.hakukohdeOid + '/perustiedot');
                 };
 
                 // uuden sivun lataus

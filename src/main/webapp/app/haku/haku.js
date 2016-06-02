@@ -10,7 +10,6 @@ angular.module('valintalaskenta')
                 this.promise = this.deferred.promise;
                 this.hakuOid = "";
                 this.haut = [];
-                this.lisahaku = false;
                 this.nivelvaihe = false;
                 this.korkeakoulu = false;
                 this.erillishaku = false;
@@ -64,9 +63,6 @@ angular.module('valintalaskenta')
                                 erityis ? haku.erityisopetus = true : haku.erityisopetus = false;
 
                                 var hakutyyppi = haku.hakutyyppiUri;
-                                var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
-                                var match = lisahakutyyppiRegExp.exec(hakutyyppi);
-                                match ? haku.lisahaku = true : haku.lisahaku = false;
 
                                 var hakutapa = haku.hakutapaUri;
                                 var erillishakutapaRegExp = /(hakutapa_02).*/;
@@ -122,11 +118,7 @@ angular.module('valintalaskenta')
 
                 if ($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid !== $routeParams.hakuOid) {
                     ParametriService(HakuModel.hakuOid.oid);
-                    if ($scope.hakumodel.hakuOid.lisahaku) {
-                        $location.path('/lisahaku/' + HakuModel.hakuOid.oid + '/hakukohde/');
-                    } else {
-                        $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
-                    }
+                    $location.path('/haku/' + HakuModel.hakuOid.oid + '/hakukohde/');
                 }
             });
 

@@ -75,7 +75,7 @@
                 <tr ng-repeat="hakukohde in hakukohteet track by $index">
                     <td>{{$index + 1}}</td>
                     <td>
-                        <a target="_blank" href="#/{{ hakumodel.lisahaku ? 'lisa' : '' }}haku/{{hakumodel.hakuOid.oid}}/hakukohde/{{hakukohde.oid}}/perustiedot">
+                        <a target="_blank" href="#/haku/{{hakumodel.hakuOid.oid}}/hakukohde/{{hakukohde.oid}}/perustiedot">
                             {{hakukohde.nimi}} <i class="fa fa-external-link"></i>
                         </a>
                     </td>
