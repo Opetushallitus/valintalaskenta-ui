@@ -232,26 +232,3 @@ function hakuAppPisteFixtures(count) {
     }
 }
 
-function lisahakuApplications() {
-    var result = {
-        "totalCount": 2,
-        "results": [{
-            "oid": "1.2.246.562.11.00000000848",
-            "state": "ACTIVE",
-            "received": 1439210322672,
-            "firstNames": "Eka Henkilo",
-            "lastName": "Vr",
-            "ssn": "090695-951U",
-            "personOid": "1.2.246.562.24.25138611362"
-        }, {
-            "oid": "1.2.246.562.11.00000000864",
-            "state": "ACTIVE",
-            "received": 1439210542417,
-            "firstNames": "Toka Henkilo Lisa",
-            "lastName": "Vr",
-            "ssn": "090695-9637",
-            "personOid": "1.2.246.562.24.25991948722"
-        }]
-    }
-    testFrame().httpBackend.whenGET(/.*\/haku-app\/applications?.*/).respond(result);
-}
