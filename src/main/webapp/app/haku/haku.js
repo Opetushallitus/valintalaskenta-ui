@@ -63,13 +63,17 @@ angular.module('valintalaskenta')
                                 erityis ? haku.erityisopetus = true : haku.erityisopetus = false;
 
                                 var hakutyyppi = haku.hakutyyppiUri;
-
                                 var hakutapa = haku.hakutapaUri;
+
                                 var erillishakutapaRegExp = /(hakutapa_02).*/;
                                 var jatkuvahakuRegExp = /(hakutapa_03).*/;
+                                var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
+
                                 var matchErillishaku = erillishakutapaRegExp.exec(hakutapa);
                                 var matchJatkuvahaku = jatkuvahakuRegExp.exec(hakutapa);
-                                ((matchErillishaku || matchJatkuvahaku) && !haku.sijoittelu) ? haku.erillishaku = true : haku.erillishaku = false;
+                                var matchLisahaku = lisahakutyyppiRegExp.exec(hakutyyppi);
+
+                                ((matchErillishaku || matchJatkuvahaku || matchLisahaku) && !haku.sijoittelu) ? haku.erillishaku = true : haku.erillishaku = false;
 
                             });
                             model.deferred.resolve(model);
