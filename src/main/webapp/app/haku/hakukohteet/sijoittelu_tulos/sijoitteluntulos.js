@@ -348,7 +348,7 @@ angular.module('valintalaskenta')
         	}
         };
 
-        this.updateHakemuksienTila = function (valintatapajonoOid, uiMuokatutHakemukset, afterSuccess, afterFailure) {
+        this.updateHakemuksienTila = function (jononHyvaksynta, valintatapajonoOid, uiMuokatutHakemukset, afterSuccess, afterFailure) {
             var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
                 return valintatapajono.oid === valintatapajonoOid;
             });
@@ -361,14 +361,15 @@ angular.module('valintalaskenta')
                 return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
             });
 
-            model.updateVastaanottoTila("Massamuokkaus", muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
+            model.updateVastaanottoTila(jononHyvaksynta, muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
         };
-        this.updateVastaanottoTila = function (selite, muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure) {
+        this.updateVastaanottoTila = function (jononHyvaksynta, muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure) {
             model.errors.length = 0;
             var tilaParams = {
                 hakuOid: model.hakuOid,
                 hakukohdeOid: model.hakukohdeOid,
-                selite: selite
+                hyvaksyttyJonoOid: jononHyvaksynta ? valintatapajonoOid : "",
+                selite: jononHyvaksynta ? "Jonon valintaesityksen hyväksyminen" : "Massamuokkaus"
             };
 
             var tilaObj = _.map(muokatutHakemukset, function (hakemus) {
@@ -574,7 +575,7 @@ angular.module('valintalaskenta')
     $scope.submit = function (valintatapajonoOid) {
 
         TallennaValinnat.avaa("Tallenna muutokset.", "Olet tallentamassa muutoksia: " + $scope.muokatutHakemukset.length + " kpl.", function(success, failure) {
-            $scope.model.updateHakemuksienTila(valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
+            $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
         });
     };
 
@@ -778,7 +779,7 @@ angular.module('valintalaskenta')
                 $scope.addMuokattuHakemus(hakemus);
             });
 
-            $scope.model.updateHakemuksienTila(valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
+            $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
 
         });
 

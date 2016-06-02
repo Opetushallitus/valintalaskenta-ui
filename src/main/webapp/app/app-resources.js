@@ -481,11 +481,12 @@ app.factory('HenkilotByOid', function($resource) {
     });
 });
 app.factory('VastaanottoTila', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuOid/hakukohde/:hakukohdeOid?selite=:selite",
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuOid/hakukohde/:hakukohdeOid?selite=:selite&hyvaksyttyJonoOid=:hyvaksyttyJonoOid",
         {
             hakuOid: "@hakuOid",
             hakukohdeOid: "@hakukohdeOid",
-            selite: "@selite"
+            selite: "@selite",
+            hyvaksyttyJonoOid: "@hyvaksyttyJonoOid"
         }, {
             post: {method: "POST"}
         });
