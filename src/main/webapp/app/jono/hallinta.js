@@ -1,5 +1,5 @@
 angular
-  .module('valintalaskenta.jononhallinta', ['ui.bootstrap'])
+  .module('valintalaskenta.jononhallinta', ['ui.bootstrap', 'angular-cache'])
   .constant("JOB_STATES", {
     RUNNING: "MENEILLAAN",
     QUEUEING: "ALOITTAMATTA",
@@ -10,6 +10,9 @@ angular
   // Maximum number of SSE subscriptions
   .constant("SSE", {
     MAX_CONNECTIONS: 3
+  })
+  .config(function(CacheFactoryProvider) {
+    angular.extend(CacheFactoryProvider.defaults, { maxAge: 15 * 60 * 1000 });
   })
   .filter('timeFromNow', function() {
     return function(input) {
@@ -84,8 +87,6 @@ angular
       }
     };
 
-    $scope.userCache = {};
-
     var updateJobList = function() {
       var categoryOrder = function(cat) {
         var state = cat.tila;
@@ -150,20 +151,20 @@ angular
     };
 
     var queryUserByOid = function(job, userOID) {
-      if (angular.isDefined($scope.userCache[userOID])) {
-        return;
-      }
-
-      $scope.userCache[userOID] = '???';
-
       if (_.isEmpty(userOID)) {
         return;
       }
 
       seurantaservice.queryUsernameByOid(userOID).then(function(res) {
-         $scope.userCache[userOID] = res;
+        job.userNameInitials = '';
+        if (res.etunimet && res.sukunimi) {
+          job.userNameInitials = _.head(res.etunimet) + _.head(res.sukunimi);
+          job.userFullname = res.etunimet + ' ' + res.sukunimi;
+        } else {
+          job.userNameInitials = '???';
+        }
       }, function(err) {
-         $scope.userCache[userOID] = '???';
+        job.userNameInitials = '???';
       });
     };
 

@@ -2,8 +2,14 @@ angular
   .module('valintalaskenta.jononhallinta')
   .factory('seurantaservice', seurantaservice);
 
-seurantaservice.$inject = ['$http'];
-function seurantaservice($http) {
+seurantaservice.$inject = ['$http', 'CacheFactory'];
+function seurantaservice($http, CacheFactory) {
+  if (!CacheFactory.get('userCache')) {
+    CacheFactory.createCache('userCache', {
+      deleteOnExpire: 'aggressive',
+      recycleFreq: 60000
+    });
+  }
   return {
     getJobs: getJobs,
     queryUsernameByOid: queryUsernameByOid,
@@ -29,7 +35,8 @@ function seurantaservice($http) {
   }
 
   function queryUsernameByOid(userOID) {
-    return $http.get(AUTHENTICATION_HENKILO_URL_BASE + '/resources/henkilo/' + userOID)
+    var userCache = CacheFactory.get('userCache');
+    return $http.get(AUTHENTICATION_HENKILO_URL_BASE + '/resources/henkilo/' + userOID, {cache: userCache})
       .then(function(response) {
         return response.data;
       })
