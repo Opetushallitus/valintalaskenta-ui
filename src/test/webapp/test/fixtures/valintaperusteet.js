@@ -22,8 +22,7 @@ function valintakokeetFixtures(valintakokeet) {
             kokeet
         );
 
-        // lisahaku
-        var lisahaku = {
+        var haku = {
             "nimi": null,
             "kohdejoukko": null,
             "hakuoid": null,
@@ -34,8 +33,9 @@ function valintakokeetFixtures(valintakokeet) {
             "valintakoekoodit": [],
             "lapsivalintaryhma": false,
             "lapsihakukohde": false
-        }
-        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|HAKUKOHDEOID|LISAHAKUKOHDE)\/valintaryhma/).respond(lisahaku);
+        };
+
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|HAKUKOHDEOID)\/valintaryhma/).respond(haku);
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/avaimet\/HAKUKOHDEOID/).respond([{
             "tunniste":"SYOTETTAVA_ARVO",
             "osallistuminenTunniste":"kielikoe_fi-OSALLISTUMINEN",
