@@ -6,12 +6,14 @@ body {
   font-family: "Open Sans";
   font-color: #2A2A2A; }
   body #heading {
-    font-size: 20px; }
+    font-size: 20px;
+    font-family: "Open Sans"; }
   body #application-wrapper {
     padding-left: 50px;
     padding-right: 50px; }
   body #stateSelector {
     font-size: 12px;
+    font-family: "Open Sans";
     background-color: #F0F0F0;
     color: #707070;
     margin-top: 30px;
@@ -37,82 +39,82 @@ body {
     body #stateSelector .active {
       color: #ffffff;
       background-color: #159ECB; }
-  body #jobList .flexContainer {
-    padding-top: 20px;
-    display: -ms-flex;
-    display: -webkit-flex;
-    display: flex;
-    /* Left side details, job name, user, running time, progress bar etc. */
-    /* Description block including action button(s)*/ }
-    body #jobList .flexContainer .jobListItem {
-      background-color: #ffffff;
-      height: 130px;
-      margin-bottom: 10px;
-      padding: 13px;
-      box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2); }
-    body #jobList .flexContainer .details {
-      width: 30%;
+  body #jobList {
+    font-family: "Open Sans"; }
+    body #jobList .flexContainer {
+      padding-top: 20px;
       display: -ms-flex;
       display: -webkit-flex;
       display: flex;
-      flex-direction: column; }
-      body #jobList .flexContainer .details .top {
-        width: 100%; }
-        body #jobList .flexContainer .details .top .jobItemHeading {
-          font-size: 16px; }
-        body #jobList .flexContainer .details .top .jobItemStartTime {
-          font-size: 14px; }
-      body #jobList .flexContainer .details .middle {
-        padding-top: 10px;
-        width: 100%;
-        font-size: 12px; }
-        body #jobList .flexContainer .details .middle a {
-          color: #2A2A2A; }
-        body #jobList .flexContainer .details .middle .jobItemUser {
-          width: 18px; }
-        body #jobList .flexContainer .details .middle .jobItemRunningTime {
-          margin-left: 15px;
-          width: 18px; }
-        body #jobList .flexContainer .details .middle .jobItemErrors {
-          margin-left: 15px;
-          width: 18px; }
-        body #jobList .flexContainer .details .middle .errorLink {
-          color: #EE1C25; }
-      body #jobList .flexContainer .details .bottom {
-        padding-top: 25px;
+      /* Left side details, job name, user, running time, progress bar etc. */
+      /* Description block including action button(s)*/ }
+      body #jobList .flexContainer .jobListItem {
+        background-color: #ffffff;
+        height: 130px;
+        margin-bottom: 10px;
+        padding: 13px;
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2); }
+      body #jobList .flexContainer .details {
+        width: 30%;
         display: -ms-flex;
         display: -webkit-flex;
-        display: flex; }
-        body #jobList .flexContainer .details .bottom .progressBar {
-          width: 85%; }
-          body #jobList .flexContainer .details .bottom .progressBar .progress {
-            height: 8px; }
-        body #jobList .flexContainer .details .bottom .progress-bar-cancelled {
-          background-color: #B3B3B3; }
-        body #jobList .flexContainer .details .bottom .progress-bar-completed {
-          background-color: #159ecb; }
-        body #jobList .flexContainer .details .bottom .progressPercent {
-          width: 15%;
-          font-size: 12px;
-          color: #2A2A2A;
-          padding-left: 5px;
-          margin-top: -4px;
-          text-align: center; }
-    body #jobList .flexContainer .description {
-      width: 70%;
-      font-size: 14px;
-      color: #2A2A2A; }
-      body #jobList .flexContainer .description .jobItemDescription {
-        padding-bottom: 5px; }
+        display: flex;
+        flex-direction: column; }
+        body #jobList .flexContainer .details .top {
+          width: 100%; }
+          body #jobList .flexContainer .details .top .jobItemHeading {
+            font-size: 16px; }
+          body #jobList .flexContainer .details .top .jobItemStartTime {
+            font-size: 14px; }
+        body #jobList .flexContainer .details .middle {
+          padding-top: 10px;
+          width: 100%;
+          font-size: 12px; }
+          body #jobList .flexContainer .details .middle a {
+            color: #2A2A2A; }
+          body #jobList .flexContainer .details .middle .jobItemUser {
+            width: 18px; }
+          body #jobList .flexContainer .details .middle .jobItemRunningTime {
+            margin-left: 15px;
+            width: 18px; }
+          body #jobList .flexContainer .details .middle .jobItemErrors {
+            margin-left: 15px;
+            width: 18px; }
+          body #jobList .flexContainer .details .middle .errorLink {
+            color: #EE1C25; }
+        body #jobList .flexContainer .details .bottom {
+          padding-top: 25px;
+          display: -ms-flex;
+          display: -webkit-flex;
+          display: flex; }
+          body #jobList .flexContainer .details .bottom .progressBar {
+            width: 85%; }
+            body #jobList .flexContainer .details .bottom .progressBar .progress {
+              height: 8px; }
+          body #jobList .flexContainer .details .bottom .progress-bar-cancelled {
+            background-color: #B3B3B3; }
+          body #jobList .flexContainer .details .bottom .progress-bar-completed {
+            background-color: #159ecb; }
+          body #jobList .flexContainer .details .bottom .progressPercent {
+            width: 15%;
+            font-size: 12px;
+            color: #2A2A2A;
+            padding-left: 5px;
+            margin-top: -4px;
+            text-align: center; }
+      body #jobList .flexContainer .description {
+        width: 70%;
+        font-size: 14px;
+        color: #2A2A2A; }
         body #jobList .flexContainer .description .jobItemDescription .jobItemName {
-          height: 30%; }
+          padding-bottom: 5px; }
         body #jobList .flexContainer .description .jobItemDescription .jobItemDetails {
-          height: 70%; }
+          font-size: 0.85em; }
         body #jobList .flexContainer .description .jobItemDescription .actionButton:hover {
           color: red; }
-    body #jobList .flexContainer .glyph-background {
-      padding: 7.5px;
-      position: relative;
-      border-radius: 50%;
-      background: #EBEBEB;
-      z-index: 2; }
+      body #jobList .flexContainer .glyph-background {
+        padding: 7.5px;
+        position: relative;
+        border-radius: 50%;
+        background: #EBEBEB;
+        z-index: 2; }

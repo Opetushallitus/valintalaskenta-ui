@@ -13,8 +13,8 @@ function seurantaservice($http, CacheFactory) {
   return {
     getJobs: getJobs,
     queryUsernameByOid: queryUsernameByOid,
-    removeJob: removeJob
-
+    removeJob: removeJob,
+    getMyInfo: getMyInfo
   };
 
   function getJobs() {
@@ -42,6 +42,16 @@ function seurantaservice($http, CacheFactory) {
       })
       .catch(function(error) {
         console.log('failed to get username from henkilo-service: ' + userOID);
+      });
+  }
+
+  function getMyInfo() {
+    var userCache = CacheFactory.get('userCache');
+    return $http.get(CAS_ME_URL, {cache: userCache})
+      .then(function (response) {
+        return response.data;
+      }, function () {
+        console.log('failed to get user info from CAS')
       });
   }
 };

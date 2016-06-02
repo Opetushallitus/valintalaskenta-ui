@@ -28,7 +28,7 @@ var data = [
 		"uuid": "baba624ea9314c09bb254c008e55141e",
 		"hakuOid": "haku-oid524ea9314c09bb254c008e55141e",
 		"luotu": 1464096772906,
-		"tila": "MENEILLAAN",
+		"tila": "ALOITTAMATTA",
 		"userOID": "MV",
 		"runtime": "8h 15min",
 		"hakukohteitaYhteensa": 7,
@@ -141,13 +141,23 @@ app.get('/seuranta-service/resources/seuranta/yhteenvetokaikillelaskennoille', f
 	res.json(data);
 });
 
+app.get('/virkailija-raamit/apply-raamit.js', function(req,res) {
+  res.json({});
+});
+
+app.get('/me', function(req, res) {
+  res.json({oid: "MV"});
+});
+
 app.get('/authentication-service/resources/henkilo/:uid', function(req, res) {
   res.json(hen);
 });
 
 app.get('/configuration/configuration.js', function(req, res) {
   res.send('SEURANTA_URL_BASE = "http://localhost:3000/seuranta-service/resources";'+
-           'AUTHENTICATION_HENKILO_URL_BASE = "http://localhost:3000/authentication-service";');
+           'VALINTALASKENTAKOOSTE_URL_BASE = "http://localhost:3000/remove";' +
+           'AUTHENTICATION_HENKILO_URL_BASE = "http://localhost:3000/authentication-service";' +
+           'CAS_ME_URL = "http://localhost:3000/me";');
 });
 
 app.use('/', express.static('.'));

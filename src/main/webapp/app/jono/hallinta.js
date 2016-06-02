@@ -87,6 +87,16 @@ angular
       }
     };
 
+    var me = seurantaservice.getMyInfo();
+    $scope.showRemoveOption = function(job){
+      if (_.isEmpty(job) || _.isEmpty(me)) {
+        return false;
+      }
+      return job.tila === JOB_STATES.QUEUEING && (
+          job.userOID === me.oid ||
+          _.isEmpty(_.filter(me.roles, function(x)  {return _.includes(x, '1.2.246.562.10.00000000001')})));
+    };
+
     var updateJobList = function() {
       var categoryOrder = function(cat) {
         var state = cat.tila;
@@ -190,6 +200,7 @@ angular
       };
       $scope.sseTrackedJobs[jobId] = source;
     };
+
 
     var tearDownTrackedJob = function(uuid) {
       $scope.sseTrackedJobs[uuid].close();

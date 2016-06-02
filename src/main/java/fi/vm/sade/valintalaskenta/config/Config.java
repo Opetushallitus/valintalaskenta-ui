@@ -50,6 +50,9 @@ public class Config {
     @Value("${valintalaskenta-ui.cas.url:/cas/myroles}")
     public String casUrl;
 
+    @Value("${valintalaskenta-ui.cas.url:/cas/me}")
+    public String casMeUrl;
+
     @Value("${valintalaskentakoostepalvelu.viestintapalvelu.url}")
     public String viestintapalveluUrl;
 
