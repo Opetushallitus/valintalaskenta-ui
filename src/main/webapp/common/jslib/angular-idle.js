@@ -80,7 +80,7 @@ angular.module('ngIdle.keepalive', [])
             for(var i in options.http) {
 
               var http = options.http[i];
-              console.log('http: ' + http);
+              //console.log('http: ' + http);
               $rootScope.$broadcast('Keepalive');
 
               if (angular.isObject(http)) {
