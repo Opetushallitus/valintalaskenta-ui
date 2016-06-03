@@ -83,7 +83,7 @@ body {
           body #jobList .flexContainer .details .middle .errorLink {
             color: #EE1C25; }
         body #jobList .flexContainer .details .bottom {
-          padding-top: 25px;
+          padding-top: 35px;
           display: -ms-flex;
           display: -webkit-flex;
           display: flex; }
