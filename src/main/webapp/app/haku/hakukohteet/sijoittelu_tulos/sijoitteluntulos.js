@@ -209,6 +209,9 @@ angular.module('valintalaskenta')
                                     tilat.some(function (vastaanottotila) {
                                         if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid && vastaanottotila.valintatapajonoOid === valintatapajonoOid) {
                                             currentHakemus.logEntries = vastaanottotila.logEntries;
+                                            if (!currentHakemus.hakijaOid) {
+                                                currentHakemus.hakijaOid = vastaanottotila.hakijaOid;
+                                            }
                                             if (vastaanottotila.tila === null) {
                                                 vastaanottotila.tila = "KESKEN";
                                             }
