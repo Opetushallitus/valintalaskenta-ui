@@ -49,7 +49,13 @@
             <div ng-if="nakymanTila == 'Hakijoittain'">
                 <h2>{{ t('valintakoetulos.hakijoittain') || 'Hakijoittain' }}</h2>
                 <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
-                <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="model.naytaVainMuuttuneet" ng-change="filterChangedValues(model.naytaVainMuuttuneet,model.sijoitteluntulosHakijoittainTableParams)"> <br/></div>
+                <div>
+                    <label>
+                        {{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}:
+                        <input type="checkbox" ng-model="model.naytaVainMuuttuneet"
+                               ng-change="filterChangedValues(model.naytaVainMuuttuneet, model.sijoitteluntulosHakijoittainTableParams)">
+                    </label>
+                </div>
 
                 <table ng-table="model.sijoitteluntulosHakijoittainTableParams" show-filter="true" class="virkailija-table-1">
                     <tbody ng-repeat="hakija in $data">
@@ -114,7 +120,13 @@
                     </a>
                     <br/>
                     <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
-                    <div>{{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}: <input type="checkbox" ng-model="jono.naytaVainMuuttuneet" ng-change="filterChangedValues(jono.naytaVainMuuttuneet,jono.tableParams)"> <br/></div>
+                    <div>
+                        <label>
+                            {{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}:
+                            <input type="checkbox" ng-model="jono.naytaVainMuuttuneet"
+                                   ng-change="filterChangedValues(jono.naytaVainMuuttuneet, jono.tableParams)">
+                        </label>
+                    </div>
 
                     <table ng-table="jono.tableParams" show-filter="true" class="virkailija-table-1">
                         <tbody>
