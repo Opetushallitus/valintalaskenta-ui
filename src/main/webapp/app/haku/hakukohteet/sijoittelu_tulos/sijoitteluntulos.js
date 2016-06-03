@@ -126,8 +126,6 @@ angular.module('valintalaskenta')
                             var lastTasaSija = 1;
                             var sija = 0;
                             hakemukset.forEach(function (hakemus, index) {
-                                hakemus.onkoMuuttunutViimeSijoittelussa = (hakemus.onkoMuuttunutViimeSijoittelussa === true) || model.latestSijoitteluajo.sijoitteluajoId <= hakemus.viimeinenMuutos;
-
                                 var jono = {
                                     nimi: valintatapajono.nimi,
                                     pisteet: hakemus.pisteet,
@@ -234,6 +232,9 @@ angular.module('valintalaskenta')
                                             }
                                             currentHakemus.tilaHakijalle = vastaanottotila.tilaHakijalle;
                                             currentHakemus.viimeinenMuutos = vastaanottotila.viimeinenMuutos;
+                                            currentHakemus.onkoMuuttunutViimeSijoittelussa =
+                                                currentHakemus.onkoMuuttunutViimeSijoittelussa ||
+                                                model.latestSijoitteluajo.sijoitteluajoId <= currentHakemus.viimeinenMuutos;
                                             currentHakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
                                             currentHakemus.julkaistavissa = vastaanottotila.julkaistavissa;
