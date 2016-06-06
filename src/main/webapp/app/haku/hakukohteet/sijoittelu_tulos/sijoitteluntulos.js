@@ -819,6 +819,11 @@ angular.module('valintalaskenta')
     $scope.showJalkiohjaus = function() {
         return UserModel.isOphUser || !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     };
+    $scope.enableTulostus = function() {
+        return !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
+                UserModel.isOphUser ||
+                _.every($scope.model.sijoitteluTulokset.valintatapajonot, 'valintaesitysHyvaksytty');
+    };
 
     UserModel.refreshIfNeeded()
 }]);
