@@ -107,23 +107,28 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	$scope.paivitaForce = function(uuid) {
 		$scope.paivitaPollaten(uuid);
 	};
+  function laskennanVastaus(uuid) {
+    $scope.kaynnissa = true;
+    if(uuid.lisatiedot) {
+      $scope.seurataankoOlemassaAjossaOlevaaLaskentaa = !uuid.lisatiedot.luotiinkoUusiLaskenta;
+    } else {
+      $scope.seurataankoOlemassaAjossaOlevaaLaskentaa = false;
+    }
+    $scope.paivitaForce(uuid.latausUrl);
+  }
+  function laskennanVirhe(err) {
+    Ilmoitus
+      .avaa(
+        "Valintakoelaskenta epäonnistui",
+        "Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. " + err.data,
+        IlmoitusTila.ERROR);
+  }
 	$scope.uudelleenyritaForce = function() {
 		ValintalaskentaKerrallaUudelleenYrita
 				.uudelleenyrita(
 						{
 							uuid : $scope.uuid
-						},
-						function(uuid) {
-							$scope.kaynnissa = true;
-							$scope.paivitaForce(uuid.latausUrl);
-						},
-						function(err) {
-							Ilmoitus
-									.avaa(
-											"Valintakoelaskenta epäonnistui",
-											"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. " + err.data,
-											IlmoitusTila.ERROR);
-						});
+						}, laskennanVastaus, laskennanVirhe);
 	};
 	$scope.uudelleenyrita = function() {
 		if ($scope.isKaynnissa()) {
@@ -150,17 +155,7 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 		if (!tyyppi) {
 			tyyppi = "HAKU";
 		}
-		function laskennanVastaus(uuid) {
-			$scope.kaynnissa = true;
-			$scope.paivitaForce(uuid.latausUrl);
-		}
-		function laskennanVirhe(err) {
-			Ilmoitus
-					.avaa(
-					"Valintakoelaskenta epäonnistui",
-					"Valintakoelaskenta epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon. " + err.data,
-					IlmoitusTila.ERROR);
-		}
+
 		if (oids.kokoHaku === true) {
 			ValintalaskentaKokoHaulle.aktivoi({
 				hakuoid : oids.hakuOid,
