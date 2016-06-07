@@ -82,9 +82,9 @@ describe('Sijoittelun tulokset välilehti', function () {
     })
 
     describe('Sijoittelun tulokset -välilehdellä Kk haussa OPH oikeuksilla', function () {
-        var page = sijoitteluntuloksetPage("1.2.246.562.29.95390561488", "1.2.246.562.20.44161747595");
         var HAKU = "1.2.246.562.29.95390561488";
         var HAKUKOHDE = "1.2.246.562.20.44161747595";
+        var page = sijoitteluntuloksetPage(HAKU, HAKUKOHDE);
         before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
@@ -117,23 +117,23 @@ describe('Sijoittelun tulokset välilehti', function () {
         ))
 
         it('Valintaesitys on hyväksyttävissä', seqDone(
-                wait.forAngular,
-                waitJqueryIs(sijoitteluntulokset.hyvaksyValintaesitys, '[class~="disabled"]', false))
-        )
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.hyvaksyValintaesitys, '[class~="disabled"]', false)
+        ))
         it('Jälkiohjaus nappi is visible', seqDone(
-                wait.forAngular,
-                waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true))
-        )
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true)
+        ))
         it('Ehdollinen valinta is visible', seqDone(
             wait.forAngular,
-            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', true))
-        )
+            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', true)
+        ))
     })
 
     describe('Sijoittelun tulokset -välilehdellä Kk haussa ilman OPH oikeuksia', function () {
-        var page = sijoitteluntuloksetPage("1.2.246.562.29.95390561488", "1.2.246.562.20.44161747595");
         var HAKU = "1.2.246.562.29.95390561488";
         var HAKUKOHDE = "1.2.246.562.20.44161747595";
+        var page = sijoitteluntuloksetPage(HAKU, HAKUKOHDE);
         before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
@@ -151,19 +151,19 @@ describe('Sijoittelun tulokset välilehti', function () {
         })
 
         it('Jälkiohjaus nappi is visible', seqDone(
-                wait.forAngular,
-                waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true))
-        )
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true)
+        ))
         it('Ehdollinen valinta is visible', seqDone(
             wait.forAngular,
-            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', true))
-        )
+            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', true)
+        ))
     })
 
     describe('Sijoittelun tulokset -välilehti 2. asteen haussa OPH oikeuksilla', function () {
-        var page = sijoitteluntuloksetPage("1.2.246.562.29.90697286251", "1.2.246.562.20.18097797874");
         var HAKU = "1.2.246.562.29.90697286251";
         var HAKUKOHDE = "1.2.246.562.20.18097797874";
+        var page = sijoitteluntuloksetPage(HAKU, HAKUKOHDE);
         before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
@@ -194,23 +194,23 @@ describe('Sijoittelun tulokset välilehti', function () {
         ))
 
         it('Valintaesitys on hyväksyttävissä', seqDone(
-                wait.forAngular,
-                waitJqueryIs(sijoitteluntulokset.hyvaksyValintaesitys, '[class~="disabled"]', false))
-        )
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.hyvaksyValintaesitys, '[class~="disabled"]', false)
+        ))
         it('Jälkiohjaus nappi is visible', seqDone(
-                wait.forAngular,
-                waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true))
-        )
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true)
+        ))
         it('Ehdollinen valinta is not visible', seqDone(
             wait.forAngular,
-            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', false))
-        )
+            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', false)
+        ))
     })
 
     describe('Sijoittelun tulokset -välilehti 2. asteen haussa ilman OPH oikeuksia, kun valintaesitys ei vielä hyväksyttävissä', function () {
-        var page = sijoitteluntuloksetPage("1.2.246.562.29.90697286251", "1.2.246.562.20.18097797874");
         var HAKU = "1.2.246.562.29.90697286251";
         var HAKUKOHDE = "1.2.246.562.20.18097797874";
+        var page = sijoitteluntuloksetPage(HAKU, HAKUKOHDE);
         before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
@@ -232,19 +232,19 @@ describe('Sijoittelun tulokset välilehti', function () {
             disabled(sijoitteluntulokset.hyvaksyValintaesitys))
         )
         it('Jälkiohjaus nappi is not visible', seqDone(
-                wait.forAngular,
-                waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', false))
-        )
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', false)
+        ))
         it('Ehdollinen valinta is not visible', seqDone(
             wait.forAngular,
-            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', false))
-        )
+            waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', false)
+        ))
     })
 
     describe('Sijoittelun tulokset -välilehti 2. asteen haussa ilman OPH oikeuksia, kun valintaesitys hyväksyttävissä', function () {
-        var page = sijoitteluntuloksetPage("1.2.246.562.29.90697286251", "1.2.246.562.20.18097797874");
         var HAKU = "1.2.246.562.29.90697286251";
         var HAKUKOHDE = "1.2.246.562.20.18097797874";
+        var page = sijoitteluntuloksetPage(HAKU, HAKUKOHDE);
         before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
