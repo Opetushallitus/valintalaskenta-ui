@@ -44,7 +44,7 @@ describe('Sijoittelun tulokset välilehti', function () {
 
     describe('Opiskelijan valintatulokset, kun valinta kesken', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.11.00000000220");
-        beforeEach(function (done) {
+        before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
@@ -59,12 +59,6 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(valintatulosFixture)()
             addTestHook(commonFixtures())()
             page.openPage(done);
-        })
-
-        afterEach(function () {
-            if (this.currentTest.state == 'failed') {
-                takeScreenshot()
-            }
         })
 
         it('sijoittelu kesken', seqDone(
@@ -91,7 +85,7 @@ describe('Sijoittelun tulokset välilehti', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.95390561488", "1.2.246.562.20.44161747595");
         var HAKU = "1.2.246.562.29.95390561488";
         var HAKUKOHDE = "1.2.246.562.20.44161747595";
-        beforeEach(function (done) {
+        before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
@@ -141,7 +135,7 @@ describe('Sijoittelun tulokset välilehti', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.95390561488", "1.2.246.562.20.44161747595");
         var HAKU = "1.2.246.562.29.95390561488";
         var HAKUKOHDE = "1.2.246.562.20.44161747595";
-        beforeEach(function (done) {
+        before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
@@ -171,7 +165,7 @@ describe('Sijoittelun tulokset välilehti', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.90697286251", "1.2.246.562.20.18097797874");
         var HAKU = "1.2.246.562.29.90697286251";
         var HAKUKOHDE = "1.2.246.562.20.18097797874";
-        beforeEach(function (done) {
+        before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
@@ -215,11 +209,11 @@ describe('Sijoittelun tulokset välilehti', function () {
         )
     })
 
-    describe('Sijoittelun tulokset -välilehti 2. asteen haussa ilman OPH oikeuksia', function () {
+    describe('Sijoittelun tulokset -välilehti 2. asteen haussa ilman OPH oikeuksia, kun valintaesitys ei vielä hyväksyttävissä', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.90697286251", "1.2.246.562.20.18097797874");
         var HAKU = "1.2.246.562.29.90697286251";
         var HAKUKOHDE = "1.2.246.562.20.18097797874";
-        beforeEach(function (done) {
+        before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
@@ -262,11 +256,11 @@ describe('Sijoittelun tulokset välilehti', function () {
         )
     })
 
-    describe('Sijoittelun tulokset -välilehti 2. asteen haussa ilman OPH oikeuksia, valintaesitys hyväksyttävissä', function () {
+    describe('Sijoittelun tulokset -välilehti 2. asteen haussa ilman OPH oikeuksia, kun valintaesitys hyväksyttävissä', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.90697286251", "1.2.246.562.20.18097797874");
         var HAKU = "1.2.246.562.29.90697286251";
         var HAKUKOHDE = "1.2.246.562.20.18097797874";
-        beforeEach(function (done) {
+        before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
@@ -376,7 +370,7 @@ describe('Sijoittelun tulokset välilehti', function () {
 
     describe('Hakemuksen tila sijoittelun tulokset -välilehdellä PERUUNTUNUT ilman PERUUNTUNEIDEN_HYVAKSYNTA oikeutta', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.90697286251", "1.2.246.562.20.18097797874");
-        beforeEach(function (done) {
+        before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
