@@ -81,7 +81,7 @@ describe('Sijoittelun tulokset välilehti', function () {
         ))
     })
 
-    describe('Sijoittelun tulokset -välilehdellä Kk haussa', function () {
+    describe('Sijoittelun tulokset -välilehdellä Kk haussa OPH oikeuksilla', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.95390561488", "1.2.246.562.20.44161747595");
         var HAKU = "1.2.246.562.29.95390561488";
         var HAKUKOHDE = "1.2.246.562.20.44161747595";
@@ -103,7 +103,6 @@ describe('Sijoittelun tulokset välilehti', function () {
 
         it('Vastaanottotieto alasvetovalikko', seqDone(
             wait.forAngular,
-            click(sijoitteluntulokset.hyvaksyValintaesitys),
             enabled(sijoitteluntulokset.vastaanottotieto),
             function() {
                 assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
@@ -183,7 +182,6 @@ describe('Sijoittelun tulokset välilehti', function () {
 
         it('Vastaanottotieto alasvetovalikko', seqDone(
             wait.forAngular,
-            click(sijoitteluntulokset.hyvaksyValintaesitys),
             enabled(sijoitteluntulokset.vastaanottotieto),
             function() {
                 assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
@@ -229,19 +227,6 @@ describe('Sijoittelun tulokset välilehti', function () {
             page.openPage(done);
         })
 
-        it('Vastaanottotieto alasvetovalikko', seqDone(
-            wait.forAngular,
-            click(sijoitteluntulokset.hyvaksyValintaesitys),
-            enabled(sijoitteluntulokset.vastaanottotieto),
-            function() {
-                assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
-                assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut");
-                assertText(sijoitteluntulokset.vastaanottotietoOption(2), "Ei vastaanotettu määräaikana");
-                assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");
-                expect(sijoitteluntulokset.vastaanottotieto().children().length).to.equal(4);
-            }
-        ))
-
         it('Valintaesitys ei vielä hyväksyttävissä', seqDone(
             wait.forAngular,
             disabled(sijoitteluntulokset.hyvaksyValintaesitys))
@@ -276,10 +261,24 @@ describe('Sijoittelun tulokset välilehti', function () {
             page.openPage(done);
         })
 
+        it('Vastaanottotieto alasvetovalikko', seqDone(
+            enabled(sijoitteluntulokset.vastaanottotieto),
+            function() {
+                assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(2), "Ei vastaanotettu määräaikana");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");
+                expect(sijoitteluntulokset.vastaanottotieto().children().length).to.equal(4);
+            }
+        ))
         it('Valintaesitys on hyväksyttävissä', seqDone(
             wait.forAngular,
-            waitJqueryIs(sijoitteluntulokset.hyvaksyValintaesitys, '[class~="disabled"]', false))
-        )
+            waitJqueryIs(sijoitteluntulokset.hyvaksyValintaesitys, '[class~="disabled"]', false)
+        ))
+        it('Jälkiohjaus nappi is not visible', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', false)
+        ))
     })
 
     describe('Hakemuksen tila sijoittelun tulokset -välilehdellä PERUUNTUNUT jos käyttäjällä PERUUNTUNEIDEN_HYVAKSYNTA oikeus', function () {

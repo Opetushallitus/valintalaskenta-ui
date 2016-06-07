@@ -51,7 +51,7 @@ sijoitteluntulokset = initSelectors({
     },
     tallenna: "a:contains('Tallenna')",
     tallennaOk: "#saveChoicesBtn",
-    hyvaksyValintaesitys: "a.btn:nth-child(1)",
+    hyvaksyValintaesitys: ".virkailija-jono-container a.btn:first",
     jalkiohjaus: ".testJalkiohjaus",
     ehdollinenValinta: ".testEhdollinenValinta",
     vastaanottotieto: ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select",
