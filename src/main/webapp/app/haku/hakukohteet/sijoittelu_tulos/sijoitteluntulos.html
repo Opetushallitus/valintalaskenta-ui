@@ -41,8 +41,8 @@
                 <br/>
 
                 <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{sijoitteluntuloksetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !sijoitteluntuloksetUrl}">{{ t('sijoitteluntulos.lataatulokset') || 'Lataa tulokset' }}</a>
-                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{hyvaksymiskirjeetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !hyvaksymiskirjeetUrl}">{{ t('sijoitteluntulos.lataahyvaksymiskirjeet') || 'Lataa hyväksymiskirjeet' }}</a>
-                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{osoitetarratUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !osoitetarratUrl}">{{ t('sijoitteluntulos.lataaosoitetarrat') || 'Lataa osoitetarrat' }}</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{hyvaksymiskirjeetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !hyvaksymiskirjeetUrl || !enableTulostus()}">{{ t('sijoitteluntulos.lataahyvaksymiskirjeet') || 'Lataa hyväksymiskirjeet' }}</a>
+                <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{osoitetarratUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !osoitetarratUrl || !enableTulostus()}">{{ t('sijoitteluntulos.lataaosoitetarrat') || 'Lataa osoitetarrat' }}</a>
 
             </div>
 
