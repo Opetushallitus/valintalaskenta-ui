@@ -133,14 +133,7 @@
                 <option value="EN">englanti</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="lahetyksenTyyppi">lähetys</label>
-            <select ng-init="isiposti = 'true'"  ng-model="isiposti" id="lahetyksenTyyppi" class="form-control">
-                <option value="true">iPosti</option>
-                <option value="false">sähköposti</option>
-            </select>
-        </div>
-        <button ng-click="muodostaKirjeet(ishyvaksymiskirje=='true',langcode,isiposti=='true');" class="btn btn-default">{{ t('yhteisvalinnanhallinta.muodostakirjeet') || 'Muodosta kirjeet'}}</button>
+        <button ng-click="muodostaKirjeet(ishyvaksymiskirje=='true',langcode);" class="btn btn-default">{{ t('yhteisvalinnanhallinta.muodostakirjeet') || 'Muodosta kirjeet'}}</button>
     </form>
     <br>
 
