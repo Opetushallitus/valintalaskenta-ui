@@ -124,6 +124,12 @@ describe('Sijoittelun tulokset välilehti', function () {
             wait.forAngular,
             waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true)
         ))
+        it('Tulostus buttons are enabled', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, '.disabled', false),
+            waitJqueryIs(sijoitteluntulokset.luoHyvaksymiskirjeet, '[class~="disabled"]', false),
+            waitJqueryIs(sijoitteluntulokset.createHyvaksymisosoitteet, '[class~="disabled"]', false)
+        ))
         it('Ehdollinen valinta is visible', seqDone(
             wait.forAngular,
             waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', true)
@@ -153,6 +159,12 @@ describe('Sijoittelun tulokset välilehti', function () {
         it('Jälkiohjaus nappi is visible', seqDone(
             wait.forAngular,
             waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true)
+        ))
+        it('Tulostus buttons are enabled', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, '.disabled', false),
+            waitJqueryIs(sijoitteluntulokset.luoHyvaksymiskirjeet, '[class~="disabled"]', false),
+            waitJqueryIs(sijoitteluntulokset.createHyvaksymisosoitteet, '[class~="disabled"]', false)
         ))
         it('Ehdollinen valinta is visible', seqDone(
             wait.forAngular,
@@ -201,6 +213,12 @@ describe('Sijoittelun tulokset välilehti', function () {
             wait.forAngular,
             waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', true)
         ))
+        it('Tulostus buttons are enabled', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, '[class~="disabled"]', false),
+            waitJqueryIs(sijoitteluntulokset.luoHyvaksymiskirjeet, '[class~="disabled"]', false),
+            waitJqueryIs(sijoitteluntulokset.createHyvaksymisosoitteet, '[class~="disabled"]', false)
+        ))
         it('Ehdollinen valinta is not visible', seqDone(
             wait.forAngular,
             waitJqueryIs(sijoitteluntulokset.ehdollinenValinta, ':visible', false)
@@ -234,6 +252,12 @@ describe('Sijoittelun tulokset välilehti', function () {
         it('Jälkiohjaus nappi is not visible', seqDone(
             wait.forAngular,
             waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', false)
+        ))
+        it('Tulostus buttons are disabled', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, '.disabled', true),
+            waitJqueryIs(sijoitteluntulokset.luoHyvaksymiskirjeet, '[class~="disabled"]', true),
+            waitJqueryIs(sijoitteluntulokset.createHyvaksymisosoitteet, '[class~="disabled"]', true)
         ))
         it('Ehdollinen valinta is not visible', seqDone(
             wait.forAngular,
@@ -278,6 +302,58 @@ describe('Sijoittelun tulokset välilehti', function () {
         it('Jälkiohjaus nappi is not visible', seqDone(
             wait.forAngular,
             waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', false)
+        ))
+        it('Tulostus buttons are disabled', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, '.disabled', true),
+            waitJqueryIs(sijoitteluntulokset.luoHyvaksymiskirjeet, '[class~="disabled"]', true),
+            waitJqueryIs(sijoitteluntulokset.createHyvaksymisosoitteet, '[class~="disabled"]', true)
+        ))
+    })
+
+    describe('Sijoittelun tulokset -välilehti 2. asteen haussa ilman OPH oikeuksia, kun valintaesitys hyväksytty', function () {
+        var HAKU = "1.2.246.562.29.90697286251";
+        var HAKUKOHDE = "1.2.246.562.20.18097797874";
+        var page = sijoitteluntuloksetPage(HAKU, HAKUKOHDE);
+        before(function (done) {
+            addTestHook(tarjontaFixtures)()
+            addTestHook(koodistoFixtures)()
+            addTestHook(parametritFixtures)()
+            addTestHook(koodistoFixtures)()
+            addTestHook(sijoitteluAjoFixturesWithValintaesitysHyvaksytty)()
+            addTestHook(ohjausparametritFixtures((new Date()).getTime() - 1000))()
+            addTestHook(dokumenttipalveluFixtures)()
+            addTestHook(organisaatioFixtures)()
+            addTestHook(httpFixtures().hakukohteenAvaimet)()
+            addTestHook(httpFixtures().hakukohde18097797874)()
+            addTestHook(httpFixtures().hakukohde18097797874Tila)()
+            addTestHook(commonFixtures(["USER_lktesti", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_CRUD", "APP_ANOMUSTENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_EPERUSTEET", "APP_EPERUSTEET_READ", "APP_EPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_2ASTEENVASTUU", "APP_HENKILONHALLINTA_2ASTEENVASTUU_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_CRUD", "APP_HENKILONHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_CRUD", "APP_TIEDONSIIRTO_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ", "APP_VALINTAPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_LISATIETORU", "APP_HAKEMUS_LISATIETORU_1.2.246.562.10.328060821310", "APP_SUORITUSREKISTERI", "APP_SUORITUSREKISTERI_READ", "APP_SUORITUSREKISTERI_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_LETTER", "APP_ASIAKIRJAPALVELU_CREATE_LETTER_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_READ", "APP_ANOMUSTENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_VALINTAKAYTTAJA", "APP_RAPORTOINTI_VALINTAKAYTTAJA_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_READ", "APP_ASIAKIRJAPALVELU_READ_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_VALINTA", "APP_TIEDONSIIRTO_VALINTA_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_READ", "APP_HAKUJENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_READ", "APP_RAPORTOINTI_READ_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_VIEW", "APP_RYHMASAHKOPOSTI_VIEW_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_SEND", "APP_RYHMASAHKOPOSTI_SEND_1.2.246.562.10.328060821310", "APP_SIJOITTELU", "APP_SIJOITTELU_READ_UPDATE", "APP_SIJOITTELU_READ_UPDATE_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_HAKULOMAKKEENHALLINTA", "APP_HAKULOMAKKEENHALLINTA_CRUD", "APP_HAKULOMAKKEENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_OPO", "APP_RAPORTOINTI_OPO_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_OPO", "APP_HAKEMUS_OPO_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310"]))()
+            page.openPage(done);
+        })
+
+        it('Vastaanottotieto alasvetovalikko', seqDone(
+            enabled(sijoitteluntulokset.vastaanottotieto),
+            function() {
+                assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(2), "Ei vastaanotettu määräaikana");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");
+                expect(sijoitteluntulokset.vastaanottotieto().children().length).to.equal(4);
+            }
+        ))
+        it('Valintaesitys on hyväksyttävissä', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.hyvaksyValintaesitys, '[class~="disabled"]', false)
+        ))
+        it('Jälkiohjaus nappi is not visible', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', false)
+        ))
+        it('Tulostus buttons are enabled', seqDone(
+            wait.forAngular,
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, '.disabled', false),
+            waitJqueryIs(sijoitteluntulokset.luoHyvaksymiskirjeet, '[class~="disabled"]', false),
+            waitJqueryIs(sijoitteluntulokset.createHyvaksymisosoitteet, '[class~="disabled"]', false)
         ))
     })
 

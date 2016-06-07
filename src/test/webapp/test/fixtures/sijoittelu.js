@@ -1,4 +1,7 @@
-function sijoitteluAjoFixtures() {
+function sijoitteluAjoFixturesWithValintaesitysHyvaksytty() {
+    return sijoitteluAjoFixtures(true);
+}
+function sijoitteluAjoFixtures(valintaesitysHyvaksytty) {
     var httpBackend = testFrame().httpBackend
 
     var dippainssiSijoittelu = {
@@ -470,6 +473,7 @@ function sijoitteluAjoFixtures() {
                 "poissaOlevaTaytto": true,
                 "kaikkiEhdonTayttavatHyvaksytaan": false,
                 "eiVarasijatayttoa": false,
+                "valintaesitysHyvaksytty": valintaesitysHyvaksytty,
                 "alinHyvaksyttyPistemaara": 6.58,
                 "aloituspaikat": 108,
                 "prioriteetti": 0,

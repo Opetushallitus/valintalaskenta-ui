@@ -32,12 +32,12 @@
                 <tila-filter tila-filter-value="tilaFilterValue" filter-values="tilaFilterValues"></tila-filter>
 
                 <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('sijoitteluntulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
-                <a ng-class="{disabled: !enableTulostus()}" ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
+                <a ng-class="{disabled: !enableTulostus()}" ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf testLuoHyvaksymiskirjeet">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
                 <a ng-show="showJalkiohjaus()" ng-class="{disabled: !enableTulostus()}"  ng-click="luoJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf testJalkiohjaus">
                     <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostaeihyvaksyttyjenkirjeet') || 'Muodosta kirjeet ei-hyväksytyille'}}</span>
                     <span ng-if="!korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostajalkiohjauskirjeet') || 'Muodosta jälkiohjauskirjeet hakukohteessa hylätyille' }}</span>
                 </a>
-                <a ng-class="{disabled: !enableTulostus()}"  ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.muodostaosoitetarrat') || 'Muodosta hyväksytyille osoitetarrat' }}</a>
+                <a ng-class="{disabled: !enableTulostus()}"  ng-click="createHyvaksymisosoitteetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf testCreateHyvaksymisosoitteet">{{ t('sijoitteluntulos.muodostaosoitetarrat') || 'Muodosta hyväksytyille osoitetarrat' }}</a>
                 <br/>
 
                 <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{sijoitteluntuloksetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !sijoitteluntuloksetUrl}">{{ t('sijoitteluntulos.lataatulokset') || 'Lataa tulokset' }}</a>

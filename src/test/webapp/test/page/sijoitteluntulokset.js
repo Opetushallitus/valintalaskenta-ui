@@ -52,7 +52,9 @@ sijoitteluntulokset = initSelectors({
     tallenna: "a:contains('Tallenna')",
     tallennaOk: "#saveChoicesBtn",
     hyvaksyValintaesitys: ".virkailija-jono-container a.btn:first",
+    luoHyvaksymiskirjeet: ".testLuoHyvaksymiskirjeet",
     jalkiohjaus: ".testJalkiohjaus",
+    createHyvaksymisosoitteet: ".testCreateHyvaksymisosoitteet",
     ehdollinenValinta: ".testEhdollinenValinta",
     vastaanottotieto: ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select",
     vastaanottoDropdown: function(n) {
