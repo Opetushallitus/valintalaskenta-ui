@@ -327,7 +327,6 @@ describe('Sijoittelun tulokset välilehti', function () {
         ))
 
         hakemusOid = "1.2.246.562.11.00002071778";
-        // FIXME
         it('hyväksyntä voidaan poistaa', seqDone(
             wait.forAngular,
             visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
@@ -347,7 +346,6 @@ describe('Sijoittelun tulokset välilehti', function () {
         ))
 
         hakemusOid = "1.2.246.562.11.00001941430";
-        // FIXME
         it('hyväksytyltä voidaan poistaa hyväksyntä', seqDone(
             wait.forAngular,
             visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
@@ -367,7 +365,6 @@ describe('Sijoittelun tulokset välilehti', function () {
         ))
 
         hakemusOid = "1.2.246.562.11.00002071778";
-        // FIXME
         it('estä Hyväksy peruuntunut muuttaminen jos julkaistavissa', seqDone(
             wait.forAngular,
             visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
@@ -396,7 +393,6 @@ describe('Sijoittelun tulokset välilehti', function () {
         })
 
         var jonoOid = "1427374494574-2003796769000462860";
-        // FIXME
         it('Hyväksy peruuntunut näkyy, mutta sitä ei voi muuttaa', seqDone(
             wait.forAngular,
             visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430")),
