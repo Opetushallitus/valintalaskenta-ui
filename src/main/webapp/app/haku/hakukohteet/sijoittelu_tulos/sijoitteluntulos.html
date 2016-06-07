@@ -122,7 +122,8 @@
                                 <th colspan="11">
                                     {{jono.nimi}}: {{jono.prioriteetti}} /
                                     <!---Valintatapajono OID: {{jono.oid}}-->
-                                    {{ t('sijoitteluntulos.aloituspaikat') || 'Aloituspaikat' }}: {{jono.aloituspaikat}} /
+                                    <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.aloituspaikat') || 'Valintaperusteissa määritetyt aloituspaikat' }}: {{jono.alkuperaisetAloituspaikat}} /</span>
+                                    {{ t('sijoitteluntulos.sijoittelunAloituspaikat') || 'Sijoittelun käyttämät aloituspaikat' }}: {{jono.aloituspaikat}} /
                                     {{ t('sijoitteluntulos.tasasijasaanto') || 'Tasasijasääntö' }}: {{jono.tasasijasaanto}} /
                                     {{jono.eiVarasijatayttoa ? 'Ei varasijatäyttöä' : 'Varasijatäyttö'}} /
                                     {{ t('sijoitteluntulos.jononprioriteetti') || 'Prioriteetti' }}: {{jono.prioriteetti}}
@@ -157,7 +158,7 @@
                                     </modal>
                                     <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap testEhdollinenValinta">
                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
-                                        <input ng-disabled="!(updateOph)" type="checkbox" ng-model="hakemus.ehdollisestiHyvaksyttavissa" ng-change="addMuokattuHakemus(hakemus)"/>
+                                        <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="hakemus.ehdollisestiHyvaksyttavissa" ng-change="addMuokattuHakemus(hakemus)"/>
                                     </div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.varasijatoiminto') || 'Varasijalta hyväksyminen')" sortable="'tila'">
@@ -166,24 +167,32 @@
                                 <td data-title="(t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto')" sortable="'vastaanottoTila'">
                                     <div class="white-space-nowrap">
                                         <span>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:</span>
-                                        <input ng-disabled="!(updateOph || valintaesitysJulkaistavissa)" type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"/>
+                                        <input ng-disabled="(hakemus.muokattuVastaanottoTila === 'VASTAANOTTANUT_SITOVASTI' || hakemus.muokattuVastaanottoTila === 'EHDOLLISESTI_VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila === 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila === 'PERUUTETTU' || hakemus.muokattuVastaanottoTila === 'PERUNUT') || !(updateOph || valintaesitysJulkaistavissa)" type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"/>
                                     </div>
                                     <div ng-if="hakemus.naytetaanVastaanottotieto">
                                         <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
                                             <div>
                                                 <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>
                                                 <span>: </span>
+<<<<<<< HEAD
                                                     <span ng-bind="t('sijoitteluntulos.' + ( hakemus.tilaHakijalle.toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores"></span>
+=======
+                                                <span ng-bind="t('sijoitteluntulos.' + ( hakemus.tilaHakijalle.toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores"></span>
+>>>>>>> 0cd2f2ce43a57adda5194d399a4f093f6e59e06a
                                                 <div ng-if="hakemus.vastaanottoAikaraja">
                                                     <span ng-bind="t('sijoitteluntulos.vastaanottoaikaraja') || 'Aikaraja'"></span>:
                                                     <span>{{hakemus.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm'}}</span>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+>>>>>>> 0cd2f2ce43a57adda5194d399a4f093f6e59e06a
                                                 <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                                     <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakemus"/>
                                                 </span>
                                         </div>
                                     </div>
+                                  </div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto')" sortable="'muokattuIlmoittautumisTila'">
                                     <div ng-show="hakemus.naytetaanVastaanottotieto && (hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI')">

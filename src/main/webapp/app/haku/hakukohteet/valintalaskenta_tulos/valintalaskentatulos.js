@@ -82,6 +82,12 @@
                                         }
                                     }
 
+                                    if(_.isUndefined(laskentaJono) || laskentaJono.kaytetaanKokonaispisteita == null) {
+                                        tulosjono.kaytetaanKokonaispisteita = false;
+                                    } else {
+                                        tulosjono.kaytetaanKokonaispisteita = laskentaJono.kaytetaanKokonaispisteita;
+                                    }
+
                                     if(jono.siirretaanSijoitteluun == null) {
                                         tulosjono.siirretaanSijoitteluun = true;
                                     } else {
@@ -133,9 +139,16 @@
                                         if(jonosija) {
                                             var krit = jonosija.jarjestyskriteerit[0];
                                             if(krit.tila != 'HYVAKSYTTAVISSA') {
-                                                delete jonosija.jonosija
+                                                delete jonosija.kokonaispisteet;
+                                                delete jonosija.jonosija;
                                             } else {
-                                                jonosija.jonosija = -(krit.arvo);
+                                                if(tulosjono.kaytetaanKokonaispisteita) {
+                                                    jonosija.kokonaispisteet = krit.arvo;
+                                                    delete jonosija.jonosija;
+                                                } else {
+                                                    jonosija.jonosija = -(krit.arvo);
+                                                    delete jonosija.kokonaispisteet;
+                                                }
                                             }
                                             tulosjono.jonosijat.push(jonosija);
                                         } else {
@@ -172,6 +185,7 @@
                                         },
                                         sorting: {
                                             'jonosija' : 'asc',
+                                            'kokonaispisteet' : 'desc',
                                             'sukunimi': 'asc'
                                         }
                                     }, {
@@ -179,12 +193,24 @@
                                         getData: function ($defer, params) {
                                             var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
+                                            if(tulosjono.kaytetaanKokonaispisteita) {
+                                                _.each(tulosjono.jonosijat, function(jonosija){
+                                                    if(_.isUndefined(jonosija.kokonaispisteet)){jonosija.kokonaispisteet=Number.MIN_VALUE}
+                                                });
+                                            }
+
                                             var orderedData = params.sorting() ?
                                                 $filter('orderBy')(tulosjono.jonosijat, params.orderBy()) :
                                                 tulosjono.jonosijat;
                                             orderedData = params.filter() ?
                                                 $filter('filter')(orderedData, filters) :
                                                 orderedData;
+
+                                            if(tulosjono.kaytetaanKokonaispisteita) {
+                                                _.each(tulosjono.jonosijat, function(jonosija){
+                                                    if(jonosija.kokonaispisteet==Number.MIN_VALUE){delete jonosija.kokonaispisteet}
+                                                });
+                                            }
 
                                             params.total(orderedData.length); // set total for recalc pagination
                                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
@@ -241,6 +267,7 @@
                         },
                         sorting: {
                             'jonosija' : 'asc',
+                            'kokonaispisteet' : 'desc',
                             'sukunimi': 'asc'
                         }
                     }, {
@@ -248,12 +275,24 @@
                         getData: function ($defer, params) {
                             var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
+                            if(jono.kaytetaanKokonaispisteita) {
+                                _.each(jono.jonosijat, function(jonosija){
+                                    if(_.isUndefined(jonosija.kokonaispisteet)){jonosija.kokonaispisteet=Number.MIN_VALUE}
+                                });
+                            }
+
                             var orderedData = params.sorting() ?
                                 $filter('orderBy')(jono.jonosijat, params.orderBy()) :
                                 jono.jonosijat;
                             orderedData = params.filter() ?
                                 $filter('filter')(orderedData, filters) :
                                 orderedData;
+
+                            if(jono.kaytetaanKokonaispisteita) {
+                                _.each(jono.jonosijat, function(jonosija){
+                                    if(jonosija.kokonaispisteet==Number.MIN_VALUE){delete jonosija.kokonaispisteet}
+                                });
+                            }
 
                             params.total(orderedData.length); // set total for recalc pagination
                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
@@ -280,11 +319,20 @@
                     .filter(function(sija) {
                         return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila !== '');
                     }).map(function(sija) {
-                        if(_.isUndefined(sija.jonoSija && _.isNumber(sija.jonosija))) {
+                        var isValidNumber = function (value) {
+                            return !_.isNaN(value) && _.isNumber(value);
+                        };
+                        var kaytetaanKokonaispisteita = vaihe.valintatapajonot[0].kaytetaanKokonaispisteita;
+
+
+                        if(kaytetaanKokonaispisteita && isValidNumber(sija.kokonaispisteet)) {
+                            sija.jarjestyskriteerit[0].arvo = sija.kokonaispisteet;
+                        } else if(!kaytetaanKokonaispisteita && isValidNumber(sija.jonosija)) {
                             sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                         } else {
                             delete sija.jarjestyskriteerit[0].arvo;
                         }
+
                         if(_.isUndefined(sija.prioriteetti) || sija.prioriteetti === 0) {
                             sija.prioriteetti = model.hakutoivePrioriteetti(sija.hakemusOid);
                         }
@@ -472,6 +520,7 @@ angular.module('valintalaskenta').
             $timeout(function(){
                 jonosija.tuloksenTila = "";
                 delete jonosija.jonosija;
+                delete jonosija.kokonaispisteet;
             });
         }
 
@@ -481,12 +530,30 @@ angular.module('valintalaskenta').
         if (value !== 'HYVAKSYTTAVISSA') {
             $timeout(function(){
                 delete jonosija.jonosija;
+                delete jonosija.kokonaispisteet;
             });
         }
 
     };
 
-
-
-
+    $scope.changeKaytetaanKokonaispisteita = function(jono) {
+        var ok = function() {
+            _.each(jono.jonosijat, function(jonosija){
+                jonosija.tuloksenTila = "";
+                if(jono.kaytetaanKokonaispisteita) {
+                    delete jonosija.jonosija;
+                } else {
+                    delete jonosija.kokonaispisteet;
+                }
+            });
+        };
+        var cancel = function() {
+            jono.kaytetaanKokonaispisteita = !jono.kaytetaanKokonaispisteita;
+        };
+        if(jono.kaytetaanKokonaispisteita) {
+            Ilmoitus.avaaCancel("Käytetään kokonaispisteitä", "Jos siirryt käyttämään kokonaispisteitä, jonosijat poistetaan.", IlmoitusTila.INFO, ok, cancel);
+        } else {
+            Ilmoitus.avaaCancel("Käytetään kokonaispisteitä", "Jos siirryt käyttämään jonosijoja, kokonaispisteet poistetaan.", IlmoitusTila.INFO, ok, cancel);
+        }
+    };
 }]);

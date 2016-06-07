@@ -193,42 +193,43 @@ function hakuAppKaksiHenkiloaFixtures() {
         }
     ]);
 }
-function hakuAppKaksiHenkiloaPisteFixtures() {
-    var httpBackend = testFrame().httpBackend
-    httpBackend.when('POST', /.*\/haku-app\/applications\/additionalData/).respond([
+function hakuAppPisteFixtures(count) {
+    var hakuAppPisteFixtures = [{
+
+        "oid": "1.2.246.562.11.00002265212",
+        "personOid": "1.2.246.562.24.40242368269",
+        "firstNames": "Gösta Testi",
+        "lastName": "Friman-Testi",
+        "additionalData":
+
         {
+            "kielikoe_fi-OSALLISTUMINEN": "EI_OSALLISTUNUT",
+            "kielikoe_fi": "true",
+            "1_2_246_562_20_87022967258_urheilija_lisapiste": "",
+            "1_2_246_562_20_87022967258_urheilija_lisapiste-OSALLISTUMINEN": "EI_OSALLISTUNUT",
+            "1_2_246_562_20_24435399589_urheilija_lisapiste": "",
+            "1_2_246_562_20_24435399589_urheilija_lisapiste-OSALLISTUMINEN": "EI_OSALLISTUNUT"
+        }
 
-            "oid": "1.2.246.562.11.00002265212",
-            "personOid": "1.2.246.562.24.40242368269",
-            "firstNames": "Gösta Testi",
-            "lastName": "Friman-Testi",
-            "additionalData":
+    }]
+    for (var i = 1; i < count; i++) {
+        hakuAppPisteFixtures.push({
 
-            {
-                "kielikoe_fi-OSALLISTUMINEN": "EI_OSALLISTUNUT",
-                "kielikoe_fi": "true",
-                "1_2_246_562_20_87022967258_urheilija_lisapiste": "",
-                "1_2_246_562_20_87022967258_urheilija_lisapiste-OSALLISTUMINEN": "EI_OSALLISTUNUT",
-                "1_2_246_562_20_24435399589_urheilija_lisapiste": "",
-                "1_2_246_562_20_24435399589_urheilija_lisapiste-OSALLISTUMINEN": "EI_OSALLISTUNUT"
-            }
-
-        },
-        {
-
-            "oid": "1.2.246.562.11.00002273123",
-            "personOid": "1.2.246.562.24.36316162596",
-            "firstNames": "Keimo Testi",
+            "oid": "1.2.246.562.11.00002273123" + i,
+            "personOid": "1.2.246.562.24.36316162596" + i,
+            "firstNames": "Keimo Testi " + i,
             "lastName": "Ahonen-Testi",
             "additionalData":
-
             {
                 "kielikoe_fi-OSALLISTUMINEN": "EI_OSALLISTUNUT",
                 "kielikoe_fi": "true"
             }
-
-        }
-    ]);
+        })
+    }
+    return function() {
+        var httpBackend = testFrame().httpBackend
+        httpBackend.when('POST', /.*\/haku-app\/applications\/additionalData/).respond(hakuAppPisteFixtures);
+    }
 }
 
 function lisahakuApplications() {

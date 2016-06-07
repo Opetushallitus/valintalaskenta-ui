@@ -201,10 +201,13 @@
       $scope.hakemusToValintatulos = function (valintatapajono) {
         return function(hakemus) {
           return {
-            tila: hakemus.valintatuloksentila,
+            valintatuloksenTila: hakemus.valintatuloksentila,
             ilmoittautumisTila: hakemus.ilmoittautumistila,
+            hakukohdeOid: $scope.hakukohdeOid,
+            hakuOid: $routeParams.hakuOid,
             valintatapajonoOid: valintatapajono.oid,
             hakemusOid: hakemus.hakemusOid,
+            hakijaOid: hakemus.hakijaOid,
             julkaistavissa: hakemus.julkaistavissa,
             ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
             hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta

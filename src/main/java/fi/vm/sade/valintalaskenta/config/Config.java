@@ -26,6 +26,9 @@ public class Config {
     @Value("${valintalaskenta-ui.authentication-henkiloui-url}")
     public String authenticationHenkiloUiUrl;
 
+    @Value("${valintalaskenta-ui.authentication-service-url}")
+    public String authenticationHenkiloServiceUrl;
+
     @Value("${valintalaskenta-ui.valintalaskenta-service-url.rest}")
     public String valintalaskentaServiceUrl;
 
@@ -46,6 +49,9 @@ public class Config {
 
     @Value("${valintalaskenta-ui.cas.url:/cas/myroles}")
     public String casUrl;
+
+    @Value("${valintalaskenta-ui.cas.url:/cas/me}")
+    public String casMeUrl;
 
     @Value("${valintalaskentakoostepalvelu.viestintapalvelu.url}")
     public String viestintapalveluUrl;

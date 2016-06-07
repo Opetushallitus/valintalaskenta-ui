@@ -90,6 +90,7 @@ angular.module('valintalaskenta').
                     return {
                         hakuOid: $routeParams.hakuOid,
                         erillishaku: erillishaku,
+                        nimentarkennus: $scope.hakukohdeModel.hakukohdeNimi,
                         valinnanvaihe: valinnanvaihe,
                         valintakoelaskenta: false,
                         tyyppi: "HAKUKOHDE",
@@ -114,6 +115,7 @@ angular.module('valintalaskenta').
                     return {
                         hakuOid: $routeParams.hakuOid,
                         erillishaku: erillishaku,
+                        nimentarkennus: $scope.hakukohdeModel.hakukohdeNimi,
                         valinnanvaihe: null,
                         valintakoelaskenta: true,
                         tyyppi: "HAKUKOHDE",

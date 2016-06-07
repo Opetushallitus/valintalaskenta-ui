@@ -29,6 +29,7 @@ public class ConfigController {
                 config.valintalaskentakoostepalveluServiceUrl);
         append(b, "HAKEMUS_URL_BASE", config.hakemusServiceUrl);
         append(b, "AUTHENTICATION_HENKILOUI_URL_BASE", config.authenticationHenkiloUiUrl);
+        append(b, "AUTHENTICATION_HENKILO_URL_BASE", config.authenticationHenkiloServiceUrl);
         append(b, "SIJOITTELU_URL_BASE", config.sijoitteluServiceUrl);
         append(b, "SERVICE_URL_BASE", config.valintalaskentaServiceUrl);
         append(b, "SIJOITTELU_EXCEL_URL_BASE", config.sijoitteluUrl);
@@ -40,6 +41,7 @@ public class ConfigController {
         append(b, "KOODISTO_URL_BASE", config.koodistoServiceRestURL);
         append(b, "OHJAUSPARAMETRIT_URL_BASE", config.ohjausparametripalveluRestUrl);
         append(b, "CAS_URL", config.casUrl);
+        append(b, "CAS_ME_URL", config.casMeUrl);
         append(b, "SESSION_KEEPALIVE_INTERVAL_IN_SECONDS", Integer.toString(config.sessionKeepAliveIntervalInSeconds));
         append(b, "MAX_SESSION_IDLE_TIME_IN_SECONDS", Integer.toString(config.maxSessionIdleTimeInSeconds));
         if (!config.authMode.isEmpty()) {
