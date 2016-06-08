@@ -827,3 +827,22 @@ app.filter('removeUnderscores', function(){
         return obj.replace(/_/g, "");
     }
 });
+
+/**
+ * Show a simple arrow with a title when hovered over if the Hakemus has
+ * siirtynytToisestaValintatapajonosta as true.
+ */
+app.directive('siirtynytToisestaValintatapajonostaIndicator', ['LocalisationService', function (LocalisationService) {
+    return {
+        restrict: 'E',
+        scope: {
+            hakemus: '='
+        },
+        link: function ($scope, element, attrs) {
+            var siirtynyt = $scope.hakemus.siirtynytToisestaValintatapajonosta;
+            $scope.isSiirtynyt = !!siirtynyt;
+            $scope.title = LocalisationService.tl('sijoitteluntulos.siirtynyttoisestavalintatapajonosta') || 'Vain siirtynyt toisesta valintatapajonosta';
+        },
+        template: '<span style="cursor: pointer;" title="{{title}}" ng-if="isSiirtynyt"> \u21E1</span>'
+    };
+}]);
