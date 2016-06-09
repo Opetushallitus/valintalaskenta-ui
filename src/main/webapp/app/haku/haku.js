@@ -120,11 +120,12 @@ angular.module('valintalaskenta')
                 }
             });
 
-            ParametriService.refresh($routeParams.hakuOid);
+            ParametriService($routeParams.hakuOid);
 
             $scope.$watch('hakumodel.hakuOid', function () {
 
                 if ($scope.hakumodel.hakuOid && $scope.hakumodel.hakuOid.oid !== $routeParams.hakuOid) {
+                    ParametriService(HakuModel.hakuOid.oid);
                     if ($scope.hakumodel.hakuOid.lisahaku) {
                         $location.path('/lisahaku/' + HakuModel.hakuOid.oid + '/hakukohde/');
                     } else {

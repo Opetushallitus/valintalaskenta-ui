@@ -118,8 +118,8 @@ angular.module('valintalaskenta')
 
     $scope.pohjakoulutukset = Pohjakoulutukset;
 
-    ParametriService.promise().then(function (data) {
-        $scope.inputdisabled = !data["harkinnanvarainenpaatostallennus"];
+    ParametriService($routeParams.hakuOid).then(function (privileges) {
+        $scope.inputdisabled = !privileges["harkinnanvarainenpaatostallennus"];
     });
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);

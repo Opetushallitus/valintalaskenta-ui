@@ -212,8 +212,8 @@ angular.module('valintalaskenta').
         PistesyottoModel.submit();
     };
 
-    ParametriService.promise().then(function (data) {
-        $scope.inputdisabled = !data["koetulostentallennus"];
+    ParametriService($routeParams.hakuOid).then(function (privileges) {
+        $scope.inputdisabled = !privileges["koetulostentallennus"];
     });
 
 	$scope.pistesyottoTuontiXlsx = function($files) {
