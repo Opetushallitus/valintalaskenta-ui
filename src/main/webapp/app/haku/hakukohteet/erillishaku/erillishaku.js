@@ -37,16 +37,14 @@
             {value:"PERUNUT",   default_text:"Perunut"},
             {value:"PERUUTETTU",default_text:"Peruutettu"},
             {value:"VASTAANOTTANUT_SITOVASTI", default_text:"Vastaanotettu sitovasti"},
-            {value:"OTTANUT_VASTAAN_TOISEN_PAIKAN", default_text:"Ottanut vastaan toisen paikan", disable: true},
-            {value:"",default_text:""}
+            {value:"OTTANUT_VASTAAN_TOISEN_PAIKAN", default_text:"Ottanut vastaan toisen paikan", disable: true}
           ];
         } else {
           $scope.valintatuloksentilat = [
             {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
             {value:"KESKEN",    default_text:"Kesken"},
             {value:"PERUNUT",   default_text:"Perunut"},
-            {value:"VASTAANOTTANUT_SITOVASTI", default_text: "Vastaanotettu"},
-            {value:"",default_text:""}
+            {value:"VASTAANOTTANUT_SITOVASTI", default_text: "Vastaanotettu"}
           ];
         }
         $scope.valintatuloksenTilaKielistys = valintatuloksenTilojenKielistykset($scope.valintatuloksentilat);
@@ -101,6 +99,9 @@
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, hakemukset.value());
         hakemukset.each(function(hakemus) {
           hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' || hakemus.valintatuloksentila === 'VASTAANOTTANUT';
+          if (hakemus.valintatuloksentila === "" || !_.isString(hakemus.valintatuloksentila)) {
+            hakemus.valintatuloksentila = 'KESKEN';
+          }
         });
 
         $scope.erillishaku = erillishaku;
