@@ -843,6 +843,6 @@ app.directive('siirtynytToisestaValintatapajonostaIndicator', ['LocalisationServ
             $scope.isSiirtynyt = !!siirtynyt;
             $scope.title = LocalisationService.tl('sijoitteluntulos.siirtynyttoisestavalintatapajonosta') || 'Vain siirtynyt toisesta valintatapajonosta';
         },
-        template: '<span style="cursor: pointer;" title="{{title}}" ng-if="isSiirtynyt"> \u21E1</span>'
+        template: '<img src="../common/img/icon-up.png" style="cursor: pointer; height: 1em; width: auto;" title="{{title}}" ng-if="isSiirtynyt" />'
     };
 }]);
