@@ -166,24 +166,6 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
     };
 });
 
-app.directive('privileges', function ($animate, $timeout, $routeParams, ParametriService) {
-    return {
-        link: function ($scope, element, attrs) {
-         //   $animate.addClass(element, 'ng-hide');
-
-            $timeout(function () {
-                ParametriService($routeParams.hakuOid).then(function (privileges) {
-                    if (privileges[attrs.privileges] || attrs.authKkUser) {
-
-                      //  $animate.removeClass(element, 'ng-hide');
-                    }
-                });
-            });
-
-        }
-    };
-});
-
 app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, ParametriService, UserModel, _, HakukohdeModel) {
     return {
         link: function ($scope, element, attrs) {

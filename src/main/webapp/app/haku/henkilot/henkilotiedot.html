@@ -23,7 +23,7 @@
                 <span ng-if="!korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('henkilotiedot.jalkiohjauskirje') || 'Muodosta jälkiohjauskirje' }}</span>
                 <span ng-if="korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('henkilotiedot.eihyvaksytynkirje') || 'Muodosta ei-hyväksytyn kirje'}}</span>
             </a>
-            <button privileges="valintalaskenta" ng-click="valintalaskentaKerrallaHakukohteille()" ng-if="!model.haku.lisahaku && updateOph"
+            <button ng-click="valintalaskentaKerrallaHakukohteille()" ng-if="!model.haku.lisahaku && updateOph"
                     class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskenta') || 'Suorita valintalaskenta' }}
             </button>
             <dl class="margin-top-6">
