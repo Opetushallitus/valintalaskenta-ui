@@ -467,5 +467,8 @@ angular.module('valintalaskenta').
         }
     };
 
-    $scope.privileges = ParametriService;
+    $scope.showMuodostaJalkiohjauskirje = false;
+    ParametriService($routeParams.hakuOid).then(function(privileges) {
+        $scope.showMuodostaJalkiohjauskirje = privileges.valintalaskenta;
+    });
 }]);

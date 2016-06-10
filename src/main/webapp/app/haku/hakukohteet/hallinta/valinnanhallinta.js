@@ -125,6 +125,4 @@ angular.module('valintalaskenta').
             }
         });
     };
-
-    $scope.privileges = ParametriService;
 }]);

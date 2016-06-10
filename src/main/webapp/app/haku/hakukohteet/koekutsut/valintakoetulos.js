@@ -347,8 +347,8 @@ angular.module('valintalaskenta').
 
     $scope.model.refresh($scope.hakukohdeOid, $routeParams.hakuOid);
 
-    ParametriService.promise().then(function (data) {
-        $scope.inputdisabled = !data["koekutsujenmuodostaminen"];
+    ParametriService($routeParams.hakuOid).then(function (privileges) {
+        $scope.inputdisabled = !privileges["koekutsujenmuodostaminen"];
     });
 
     $scope.nakymanTila = "Kokeittain";

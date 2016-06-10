@@ -18,12 +18,12 @@
             <h1 ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.Sukunimi}},
                 {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
 			
-			<a ng-show="privileges.showValintalaskenta()" ng-click="muodostaJalkiohjauskirje()"
+			<a ng-show="showMuodostaJalkiohjauskirje" ng-click="muodostaJalkiohjauskirje()"
        			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>
                 <span ng-if="!korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('henkilotiedot.jalkiohjauskirje') || 'Muodosta jälkiohjauskirje' }}</span>
                 <span ng-if="korkeakoulu.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('henkilotiedot.eihyvaksytynkirje') || 'Muodosta ei-hyväksytyn kirje'}}</span>
             </a>
-            <button privileges="valintalaskenta" ng-click="valintalaskentaKerrallaHakukohteille()" ng-if="!model.haku.lisahaku && updateOph"
+            <button ng-click="valintalaskentaKerrallaHakukohteille()" ng-if="!model.haku.lisahaku && updateOph"
                     class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskenta') || 'Suorita valintalaskenta' }}
             </button>
             <dl class="margin-top-6">

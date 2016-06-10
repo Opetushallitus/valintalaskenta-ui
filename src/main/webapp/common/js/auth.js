@@ -35,59 +35,18 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
 });
 
 app.factory('ParametriService', function ($q, Parametrit) {
-
-    var parametrit = function () {
-        var instance = {};
-        var oldHakuOid;
-        var privileges = {};
-        instance.deferred = $q.defer();
-
-        instance.refresh = function (hakuOid) {
-
-            if (hakuOid != oldHakuOid) {
-
-                Parametrit.list({hakuOid: hakuOid}, function (data) {
-                    privileges = data;
-                    instance.deferred.resolve(data);
-                }, function (error) {
-                    console.log(error);
-                    alert("parametri service ei vastaa: " + error);
-                });
-
-            }
-
-        };
-
-        instance.showHakeneet = function () {
-            return privileges.hakeneet;
-        };
-        instance.showHarkinnanvaraiset = function () {
-            return privileges.harkinnanvaraiset;
-        };
-        instance.showPistesyotto = function () {
-            return privileges.pistesyotto;
-        };
-        instance.showValinnanhallinta = function () {
-            return privileges.valinnanhallinta;
-        };
-        instance.showValintalaskenta = function () {
-            return privileges.valintalaskenta;
-        };
-        instance.showValintakoekutsut = function () {
-            return privileges.valintakoekutsut;
-        };
-        instance.showHakijaryhmat = function () {
-            return privileges.hakijaryhmat;
-        };
-
-        instance.promise = function () {
-            return instance.deferred.promise;
-        };
-
-        return instance;
-    }();
-
-    return parametrit;
+    var hakuOid = null;
+    var p = null;
+    return function (newHakuOid) {
+        if (hakuOid != newHakuOid) {
+            p = Parametrit.list({hakuOid: newHakuOid}).$promise.then(
+                function (x) { return x; },
+                function (e) { console.log(e); alert("Parametri-service ei vastaan: " + JSON.stringify(e)); }
+            );
+            hakuOid = newHakuOid;
+        }
+        return p;
+    };
 });
 
 
@@ -207,24 +166,6 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
     };
 });
 
-app.directive('privileges', function ($animate, $timeout, ParametriService) {
-    return {
-        link: function ($scope, element, attrs) {
-         //   $animate.addClass(element, 'ng-hide');
-
-            $timeout(function () {
-                ParametriService.promise().then(function (data) {
-                    if (data[attrs.privileges] || attrs.authKkUser) {
-
-                      //  $animate.removeClass(element, 'ng-hide');
-                    }
-                });
-            });
-
-        }
-    };
-});
-
 app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, ParametriService, UserModel, _, HakukohdeModel) {
     return {
         link: function ($scope, element, attrs) {
@@ -234,12 +175,12 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
             var success = function () {
                 if (attrs.authAdditionalCheck) {
 
-                    ParametriService.promise().then(function (data) {
+                    ParametriService($routeParams.hakuOid).then(function (privileges) {
 
                         if (attrs.korkeakouluCheck === 'true') {
                             $animate.addClass(element, 'ng-hide');
                         } else
-                        if (data[attrs.authAdditionalCheck]) {
+                        if (privileges[attrs.authAdditionalCheck]) {
                             $animate.removeClass(element, 'ng-hide');
                         }
                     });

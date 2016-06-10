@@ -37,13 +37,13 @@
 <collapsible ng-if="!hakumodel.hakuOid.lisahaku" heading="{{ t('yhteisvalinnanhallinta.valintalaskentajasijoittelu') || 'Valintalaskenta ja sijoittelu' }}" is-open="false">
     <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.valintalaskenta') || 'Valintalaskenta' }}</strong></div>
     <div class="col-md-10 margin-bottom-2">
-        <button privileges="valintakoekutsut" ng-click="aktivoiHaunValintakoelaskenta()"
+        <button ng-click="aktivoiHaunValintakoelaskenta()"
                 class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritahaulle') || 'Suorita valintakoelaskenta haulle' }}
         </button>
-        <button privileges="valintakoekutsut" ng-click="aktivoiHaunValintalaskenta()"
+        <button ng-click="aktivoiHaunValintalaskenta()"
                 class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskenta') || 'Suorita valintalaskenta haulle' }}
         </button>
-        <button privileges="valintalaskenta" ng-click="aktivoiValintalaskentaKerralla()"
+        <button ng-click="aktivoiValintalaskentaKerralla()"
                 class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.suoritavalintalaskentajavalintakoelaskentahaulle') || 'Suorita valintalaskenta ja valintakoelaskenta haulle' }}
         </button>
     </div>
@@ -96,26 +96,26 @@
 
 <!-- SIJOITTELUN TULOKSET -->
 <collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Sijoittelun tulokset' }}">
-    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
+    <button ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
     </button>
-    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi()"
+    <button ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viehyvaksymiskirjeiksi') || 'Muodosta hyväksymiskirjeet koko haulle' }}
     </button>
-    <button privileges="valintalaskenta" ng-click="sijoittelunTuloksetOsoitetarrat()"
+    <button ng-click="sijoittelunTuloksetOsoitetarrat()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieosoitetarroiksi') || 'Vie osoitetarroiksi' }}
     </button>
 
     <br>
     <hr>
 
-    <button privileges="valintalaskenta" ng-click="muodostaHyvaksymiskirjeet('FI')"
+    <button ng-click="muodostaHyvaksymiskirjeet('FI')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetsuomeksi') || 'Muodosta hyväksymiskirjeet suomeksi' }}
     </button>
-    <button privileges="valintalaskenta" ng-click="muodostaHyvaksymiskirjeet('SV')"
+    <button ng-click="muodostaHyvaksymiskirjeet('SV')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetruotsiksi') || 'Muodosta hyväksymiskirjeet ruotsiksi' }}
     </button>
-    <button privileges="valintalaskenta" ng-click="muodostaHyvaksymiskirjeet('EN')"
+    <button ng-click="muodostaHyvaksymiskirjeet('EN')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetenglanniksi') || 'Muodosta hyväksymiskirjeet englanniksi' }}
     </button>
 
@@ -126,17 +126,17 @@
 <!-- Jälkiohjauskirjeet (2. aste) -->
 <collapsible ng-if="!korkeakoulu.isKorkeakoulu(hakumodel.hakuOid.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.jalkiohjaus') || 'Jälkiohjaus' }}">
 
-    <button privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
+    <button ng-click="aktivoiJalkiohjaustuloksetXls()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viejalkiohjaustuloksettaulukkolaskentaan') || 'Vie jälkiohjaustulokset taulukkolaskentaan' }}
     </button>
 
-    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('FI')"
+    <button ng-click="muodostaJalkiohjauskirjeet('FI')"
                      class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostasuomeksi') || 'Muodosta jälkiohjauskirjeet suomeksi' }}
     </button>
-    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('SV')"
+    <button ng-click="muodostaJalkiohjauskirjeet('SV')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaruotsiksi') || 'Muodosta jälkiohjauskirjeet ruotsiksi' }}
     </button>
-    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('EN')"
+    <button ng-click="muodostaJalkiohjauskirjeet('EN')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaenglanniksi') || 'Muodosta jälkiohjauskirjeet englanniksi' }}
     </button>
 </collapsible>
@@ -144,17 +144,17 @@
 <!-- Ei hyväksyttyjen kirjeet (Korkeakoulut) -->
 <collapsible ng-if="korkeakoulu.isKorkeakoulu(hakumodel.hakuOid.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.eihyvaksytyt') || 'Ei-hyväksytyt' }}">
 
-    <button privileges="valintalaskenta" ng-click="aktivoiJalkiohjaustuloksetXls()"
+    <button ng-click="aktivoiJalkiohjaustuloksetXls()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieeihyvaksyttyjentuloksettaulukkolaskentaan') || 'Vie ei-hyväksyttyjen tulokset taulukkolaskentaan' }}
     </button>
 
-    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('FI')"
+    <button ng-click="muodostaJalkiohjauskirjeet('FI')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytsuomeksi') || 'Muodosta ei-hyväksyttyjen kirjeet suomeksi' }}
     </button>
-    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('SV')"
+    <button ng-click="muodostaJalkiohjauskirjeet('SV')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytruotsiksi') || 'Muodosta ei-hyväksyttyjen kirjeet ruotsiksi' }}
     </button>
-    <button privileges="valintalaskenta" ng-click="muodostaJalkiohjauskirjeet('EN')"
+    <button ng-click="muodostaJalkiohjauskirjeet('EN')"
             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytenglanniksi') || 'Muodosta ei-hyväksyttyjen englanniksi' }}
     </button>
 </collapsible>
@@ -174,12 +174,12 @@
                 </div>
 
                 <div class="col-md-2">
-                     <button style="margin-top: 5px" ng-if="!isNotBlank(aineistonnimi) || !aineistoAlkupvm || !aineistoLoppupvm" privileges="valintalaskenta"
+                     <button style="margin-top: 5px" ng-if="!isNotBlank(aineistonnimi) || !aineistoAlkupvm || !aineistoLoppupvm"
                             popover="{{ t('yhteisvalinnanhallinta.kirjoitanimi') || 'Kirjoita aineistolle nimi.' }}" popover-trigger="mouseenter"
                             class="btn btn-default btn-sm disabled"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
                     </button>
 
-                    <button style="margin-top: 5px" ng-if="isNotBlank(aineistonnimi)  && aineistoAlkupvm && aineistoLoppupvm" privileges="valintalaskenta"
+                    <button style="margin-top: 5px" ng-if="isNotBlank(aineistonnimi)  && aineistoAlkupvm && aineistoLoppupvm"
                             ng-click="muodostaKelaDokumentti(aineistoAlkupvm,aineistoLoppupvm,aineistonnimi);$event.preventDefault();"
                             class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostakeladokumentti') || 'Muodosta Kela-dokumentti' }}
                     </button>
@@ -333,7 +333,7 @@
 
 
 <!-- VIRHEET VALINTAKOKEISSA JA LASKENNOISSA -->
-<collapsible heading="Virheet valintakokeissa ja laskennoissa" privileges="valintalaskenta" ng-click="showErrors()">
+<collapsible heading="Virheet valintakokeissa ja laskennoissa" ng-click="showErrors()">
     <div ng-show="virheet.valintakoe.length > 0 || virheet.valintalaskenta.length > 0 || virheet.eiKoeVirheita || virheet.eiLaskentaVirheita">
         <div class="tabs">
             <a class="tab" ng-class="!valintalaskentavirheet ? 'current' : ''"
