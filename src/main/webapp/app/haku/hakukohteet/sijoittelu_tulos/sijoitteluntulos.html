@@ -213,7 +213,14 @@
                                                                  enabled="updateOph"/>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.toiminto') || 'Toiminto')">
-                                    <a ng-if="hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY'" ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
+                                    <div ng-if="hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY'">
+                                        <a ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
+                                        <div class="white-space-nowrap">
+                                            <span class="hyvaksymiskirje-lahetetty-text">{{ t('sijoitteluntulos.hyvaksymiskirjeLahetetty') || 'Hyväksymiskirje lähetetty' }}:</span>
+                                            <input class="hyvaksymiskirje-lahetetty-checkbox" type="checkbox" ng-change="updateHyvaksymiskirjeLahetettyPvm(hakemus)" ng-model="hakemus.hyvaksymiskirjeLahetetty"/>
+                                        </div>
+                                        <div class="hyvaksymiskirje-lahetetty-pvm" ng-show="hakemus.hyvaksymiskirjeLahetettyPvm">{{hakemus.hyvaksymiskirjeLahetettyPvm | date:'dd.MM.yyyy'}}</div>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

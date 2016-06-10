@@ -60,5 +60,14 @@ sijoitteluntulokset = initSelectors({
     },
     vastaanottotietoOption: function(i) {
         return ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select option:eq(" + i + ")";
+    },
+    hyvaksymiskirjeLahetettyText: function(n) {
+        return ".hyvaksymiskirje-lahetetty-text:nth-child(" + n + ")"
+    },
+    hyvaksymiskirjeLahetettyCheckbox: function() {
+        return ".hyvaksymiskirje-lahetetty-checkbox"
+    },
+    hyvaksymiskirjeLahetettyPvm: function() {
+        return ".hyvaksymiskirje-lahetetty-pvm"
     }
 })
