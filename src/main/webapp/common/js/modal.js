@@ -114,11 +114,12 @@ angular.module('valintalaskenta')
             $modal.open({
                 backdrop: 'static',
                 templateUrl: '../common/modaalinen/tallennavalinnat-ilmoitus.html',
-                controller: function($scope, $window, $modalInstance) {
+                controller: function($scope, $window, $modalInstance, LocalisationService) {
                     $scope.errorRows = [];
                     $scope.ilmoitus = ilmoitus;
                     $scope.otsikko = otsikko;
                     $scope.state="info";
+                    $scope.t = LocalisationService.tl;
                     $scope.ok = function() {
                         $scope.working = true;
                         $scope.peruuta = null;
