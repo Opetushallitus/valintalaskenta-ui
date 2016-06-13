@@ -226,7 +226,7 @@
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.toiminto') || 'Toiminto')">
                                     <div ng-if="hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY'">
-                                        <a ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
+                                        <a ng-click="createHyvaksymiskirjeetPDF([hakemus.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf" ng-class="{disabled: !enableTulostus()}">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
                                         <div class="white-space-nowrap">
                                             <span class="hyvaksymiskirje-lahetetty-text">{{ t('sijoitteluntulos.hyvaksymiskirjeLahetetty') || 'Hyväksymiskirje lähetetty' }}:</span>
                                             <input class="hyvaksymiskirje-lahetetty-checkbox" type="checkbox" ng-change="updateHyvaksymiskirjeLahetettyPvm(hakemus)" ng-model="hakemus.hyvaksymiskirjeLahetetty"/>
