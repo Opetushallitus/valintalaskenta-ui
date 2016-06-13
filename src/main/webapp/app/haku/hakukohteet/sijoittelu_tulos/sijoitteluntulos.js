@@ -711,7 +711,6 @@ angular.module('valintalaskenta')
     	} else {
     		tag = $routeParams.hakukohdeOid;
     	}
-    	//var langcode = HakukohdeNimiService.getKieliCode($scope.hakukohdeModel.hakukohde);
     	var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
     	var templateName = "hyvaksymiskirje";
     	var viestintapalveluInstance = $modal.open({
