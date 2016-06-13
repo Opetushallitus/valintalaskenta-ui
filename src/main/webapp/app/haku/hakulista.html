@@ -75,7 +75,7 @@
                 <select class="form-control input-sm"
                         id="kohdejoukko"
                         ng-model="customHakuUtil.kohdejoukko.value"
-                        ng-options="kohdejoukko.koodiUri as kohdejoukko.nimi for kohdejoukko in customHakuUtil.kohdejoukkoOpts">
+                        ng-options="kohdejoukko.koodiUri as kohdejoukko.nimi for kohdejoukko in customHakuUtil.kohdejoukkoOpts | orderBy: 'nimi'">
                     <option></option>
                 </select>
             </div>
