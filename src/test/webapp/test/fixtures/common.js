@@ -287,6 +287,37 @@ var restData = {
                 "muutos": "EHDOLLISESTI_VASTAANOTTANUT",
                 "selite": "Massamuokkaus"
             }]
-        }]
+        }, {
+           "id": {
+               "timeSecond": 1437392281,
+               "inc": 1088874422,
+               "machine": -458189833,
+               "timestamp": 1437392281,
+               "time": 1437392281000,
+               "date": 1437392281000,
+               "new": false
+           },
+           "valintatapajonoOid": "14255456271064587270246623295085",
+           "hakemusOid": "1.2.246.562.11.00000000220",
+           "hakukohdeOid": "1.2.246.562.11.00000000220",
+           "julkaistavissa": false,
+           "hyvaksyttyVarasijalta": false,
+           "hyvaksyPeruuntunut": true,
+           "hakijaOid": null,
+           "hakuOid": "1.2.246.562.29.11735171271",
+           "hakutoive": 2,
+           "tila": "KESKEN",
+           "tilaHakijalle": "EI_VASTAANOTETTU_MAARA_AIKANA",
+           "ilmoittautumisTila": "EI_TEHTY",
+           "read": 1437464563179,
+           "hyvaksymiskirjeLahetetty": 1437464563179,
+           "logEntries": [{
+               "id": null,
+               "luotu": 1437392281348,
+               "muokkaaja": "1.2.246.562.24.83767019241",
+               "muutos": "EHDOLLISESTI_VASTAANOTTANUT",
+               "selite": "Massamuokkaus"
+           }]
+       }]
     }
 }

@@ -469,4 +469,60 @@ describe('Sijoittelun tulokset välilehti', function () {
             disabled(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430"))
         ))
     })
+
+    describe('Hyväksymiskirjeen lähettämisen tieto, kun kirjettä ei ole lähetetty aiemmin', function () {
+        var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.20.37731636579");
+        before(function (done) {
+            addTestHook(tarjontaFixtures)()
+            addTestHook(koodistoFixtures)()
+            addTestHook(parametritFixtures)()
+            addTestHook(koodistoFixtures)()
+            addTestHook(sijoitteluAjoFixtures)()
+            addTestHook(ohjausparametritFixtures())()
+            addTestHook(dokumenttipalveluFixtures)()
+            addTestHook(organisaatioFixtures)()
+            addTestHook(httpFixtures().hakukohteenAvaimet)()
+            addTestHook(httpFixtures().hakukohde37731636579)()
+            addTestHook(httpFixtures().hakukohde37731636579Tila)()
+            addTestHook(valintatulosFixture)()
+            addTestHook(commonFixtures())()
+            page.openPage(done);
+        })
+
+        it('Hyväksymiskirje lähetetty on täpättävissä ja näkyvissä', seqDone(
+            wait.forAngular,
+            click(sijoitteluntulokset.hyvaksymiskirjeLahetettyCheckbox()),
+            function () {
+                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyText(1), "Hyväksymiskirje lähetetty:")
+            }
+        ))
+    })
+
+    describe('Hyväksymiskirjeen lähettämisen tieto, kun kirje on lähetetty aiemmin', function () {
+        var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.11.00000000220");
+        before(function (done) {
+            addTestHook(tarjontaFixtures)()
+            addTestHook(koodistoFixtures)()
+            addTestHook(parametritFixtures)()
+            addTestHook(koodistoFixtures)()
+            addTestHook(sijoitteluAjoFixtures)()
+            addTestHook(ohjausparametritFixtures())()
+            addTestHook(dokumenttipalveluFixtures)()
+            addTestHook(organisaatioFixtures)()
+            addTestHook(httpFixtures().hakukohteenAvaimet)()
+            addTestHook(httpFixtures().hakukohde00000000220)()
+            addTestHook(httpFixtures().hakukohde00000000220Tila)()
+            addTestHook(valintatulosFixture)()
+            addTestHook(commonFixtures())()
+            page.openPage(done);
+        })
+
+        it('Hyväksymiskirje lähetetty on täpättävissä ja näkyvissä ja lähetyspäivämäärä on näkyvillä', seqDone(
+            wait.forAngular,
+            function () {
+                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyText(1), "Hyväksymiskirje lähetetty:")
+                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyPvm(), "21.07.2015")
+            }
+        ))
+    })
 })

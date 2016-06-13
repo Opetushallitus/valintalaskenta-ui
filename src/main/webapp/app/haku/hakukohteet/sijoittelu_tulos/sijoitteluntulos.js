@@ -244,6 +244,14 @@ angular.module('valintalaskenta')
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].vastaanottoTila=currentHakemus.vastaanottoTila;
                                             model.sijoitteluntulosHakijoittain[currentHakemus.hakemusOid].ilmoittautumisTila=currentHakemus.ilmoittautumisTila;
 
+                                            if (vastaanottotila.hyvaksymiskirjeLahetetty) {
+                                                currentHakemus.hyvaksymiskirjeLahetetty = true;
+                                                currentHakemus.hyvaksymiskirjeLahetettyPvm = vastaanottotila.hyvaksymiskirjeLahetetty;
+                                            }
+                                            else {
+                                                vastaanottotila.hyvaksymiskirjeLahetetty = false;
+                                            }
+
                                             return true;
                                         }
                                     });
@@ -391,6 +399,7 @@ angular.module('valintalaskenta')
                     ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
                     hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
                     hyvaksyPeruuntunut: hakemus.hyvaksyPeruuntunut,
+                    hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetettyPvm,
                     read: hakemus.read
                 };
             });
@@ -570,6 +579,16 @@ angular.module('valintalaskenta')
     $scope.addMuokattuHakemus = function (hakemus) {
         $scope.muokatutHakemukset.push(hakemus);
         $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset, 'hakemusOid');
+    };
+
+    $scope.updateHyvaksymiskirjeLahetettyPvm = function (hakemus) {
+        if (hakemus.hyvaksymiskirjeLahetetty) {
+            hakemus.hyvaksymiskirjeLahetettyPvm = new Date();
+        }
+        else {
+            hakemus.hyvaksymiskirjeLahetettyPvm = null;
+        }
+        $scope.addMuokattuHakemus(hakemus);
     };
 
     $scope.submit = function (valintatapajonoOid) {
