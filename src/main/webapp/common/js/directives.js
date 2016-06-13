@@ -230,8 +230,9 @@ app.directive('sijoitteluVastaanottoTila', function () {
         link: function ($scope) {
 
         },
-        controller: function ($scope, VastaanottoTila, HakemuksenVastaanottoTila, $modal) {
+        controller: function ($scope, VastaanottoTila, HakemuksenVastaanottoTila, $modal, LocalisationService) {
 
+            $scope.t = LocalisationService.tl;
             $scope.show = function () {
                 if ($scope.enabled) {
                     $modal.open({
@@ -239,6 +240,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                         templateUrl: '../common/html/sijoitteluVastaanottoTilaModal.html',
                         controller: function ($scope, $window, $modalInstance, Ilmoitus, Korkeakoulu, AuthService) {
 
+                            $scope.t = LocalisationService.tl;
                             $scope.update = function () {
                                 if ($scope.hakemus) {
                                     var tilaParams = {
