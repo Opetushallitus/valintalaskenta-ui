@@ -866,7 +866,7 @@ app.directive('paginationPagesize', function () {
         },
         templateUrl: '../common/html/items-dropdown.html',
         controller: function ($scope, LocalisationService) {
-            $scope.itemsInDropdown = [{value:100000, text:'Kaikki'}];
+            $scope.itemsInDropdown = [{value:100000, text: LocalisationService.tl('kaikki') || 'Kaikki'}];
             [20, 50, 100, 200, 500].forEach(function(number) {
                 $scope.itemsInDropdown.push({
                     value: number,
