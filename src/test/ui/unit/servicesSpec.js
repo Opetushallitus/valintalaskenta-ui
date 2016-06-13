@@ -10,51 +10,6 @@ describe('Testing NimiService', function(){
         hakukohdeNimiService = $injector.get('HakukohdeNimiService');
     }));
 
-
-    it('getKieli', function() {
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: ''
-            }
-        };
-        expect(hakukohdeNimiService.getKieli(hakukohde)).toBe('kieli_fi');
-
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: 'koulufi',
-                sv: '',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: '',
-                sv: 'koulusv',
-                en: ''
-            }
-        };
-        expect(hakukohdeNimiService.getKieli(hakukohde)).toBe('kieli_fi');
-
-        var hakukohde = {
-            hakukohdeNimi : {
-                fi: '',
-                sv: 'koulusv',
-                en: 'kouluen'
-            },
-            tarjoajaNimi : {
-                fi: '',
-                sv: 'koulusv',
-                en: ''
-            }
-        };
-        expect(hakukohdeNimiService.getKieli(hakukohde)).toBe('kieli_sv');
-    });
-
     it('getTarjoajaNimi', function() {
         var hakukohde = {
             hakukohdeNimi : {
