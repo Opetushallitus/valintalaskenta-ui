@@ -594,7 +594,11 @@ angular.module('valintalaskenta')
 
     $scope.submit = function (valintatapajonoOid) {
 
-        TallennaValinnat.avaa("Tallenna muutokset.", "Olet tallentamassa muutoksia: " + $scope.muokatutHakemukset.length + " kpl.", function(success, failure) {
+        var title = LocalisationService.tl('tallennaMuutokset') || 'Tallenna muutokset.';
+        var body = LocalisationService.tl('oletTallentamassaMuutoksia') || 'Olet tallentamassa muutoksia: ';
+        var kpl = LocalisationService.tl('kpl') || 'kpl';
+
+        TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function(success, failure) {
             $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
         });
     };
