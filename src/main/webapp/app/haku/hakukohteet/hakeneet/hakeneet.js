@@ -82,10 +82,9 @@ angular.module('valintalaskenta').
     $scope.model = HakeneetModel;
     $scope.promise = $scope.model.loaded.promise;
 
-    // Kielistys joskus
     $scope.tila = {
-        "ACTIVE": "Aktiivinen",
-        "INCOMPLETE": "Puutteellinen"
+        ACTIVE: $scope.t('tila.active') || 'Aktiivinen',
+        INCOMPLETE: $scope.t('tila.incomplete') || 'Puutteellinen'
     };
 
     $scope.tableParams = new ngTableParams({

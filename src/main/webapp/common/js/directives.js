@@ -861,9 +861,15 @@ app.directive('paginationPagesize', function () {
             pageSize: '='
         },
         templateUrl: '../common/html/items-dropdown.html',
-        controller: function ($scope) {
-            $scope.itemsInDropdown = [{value:100000, text:"Kaikki"}, {value:20, text:"20 kpl"}, {value:50, text:"50 kpl"},
-                {value:100,text:"100 kpl"},{value:200, text:"200 kpl"}, {value:500, text:"500 kpl"}];
+        controller: function ($scope, LocalisationService) {
+            $scope.itemsInDropdown = [{value:100000, text:'Kaikki'}];
+            [20, 50, 100, 200, 500].forEach(function(number) {
+                $scope.itemsInDropdown.push({
+                    value: number,
+                    text: number + ' ' + (LocalisationService.tl('kpl') || 'kpl')
+                });
+            });
+            $scope.t = LocalisationService.tl;
         }
 
     };
