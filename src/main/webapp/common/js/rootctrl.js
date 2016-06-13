@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('valintalaskenta').controller('RootCtrl', ['$rootScope', '$scope','LocalisationService', 'UserModel',
-        function($rootScope, $scope, LocalisationService, UserModel ) {
+angular.module('valintalaskenta').controller('RootCtrl', ['$rootScope', 'LocalisationService', 'UserModel',
+        function($rootScope, LocalisationService, UserModel ) {
 
             UserModel.refreshIfNeeded();
 
@@ -10,14 +10,14 @@ angular.module('valintalaskenta').controller('RootCtrl', ['$rootScope', '$scope'
              * hänen palveluun määrittämä käyttökieli
              */
             LocalisationService.getUserLang().then(function(data){
-                $scope.userLang = data;
+                $rootScope.userLang = data;
             });
             /**
              * Astetaan käännösteksti valitulla avaimelle
              * @param key
              * @returns {*}
              */
-            $scope.t = function(key) {
+            $rootScope.t = function(key) {
                 return LocalisationService.tl(key);
             };
 }]);
