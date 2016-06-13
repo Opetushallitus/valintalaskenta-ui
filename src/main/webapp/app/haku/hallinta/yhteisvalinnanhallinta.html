@@ -8,26 +8,36 @@
 
 <!-- HAUN TIEDOT -->
 <collapsible show="false" heading="{{ t('yhteisvalinnanhallinta.tiedot') || 'Haun tiedot' }}">
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.nimi.kieli_fi}}</div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.nimi.kieli_fi}}</div>
+    </div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hauntunniste') || 'Haun tunniste' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.haunTunniste}}</div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hauntunniste') || 'Haun tunniste' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.haunTunniste}}</div>
+    </div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuvuosi') || 'Hakuvuosi' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.hakukausiVuosi}}</div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuvuosi') || 'Hakuvuosi' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.hakukausiVuosi}}</div>
+    </div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoittelu') || 'Sijoittelu' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.sijoittelu ? 'Kyllä' : 'Ei'}}</div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoittelu') || 'Sijoittelu' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.sijoittelu ? 'Kyllä' : 'Ei'}}</div>
+    </div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuajat') || 'Hakuajat' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">
-        <ul class="list-unstyled">
-            <li ng-repeat="hakuaika in hakumodel.hakuOid.hakuaikas">
-                <strong ng-if="hakumodel.hakuOid.hakuaikas.length > 1">{{hakuaika.nimi}}</strong>
-                <span>{{hakuaika.alkuPvm | date:'dd.MM.yyyy HH:mm'}} - {{hakuaika.loppuPvm | date:'dd.MM.yyyy HH:mm'}}</span>
-            </li>
-        </ul>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuajat') || 'Hakuajat' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">
+            <ul class="list-unstyled">
+                <li ng-repeat="hakuaika in hakumodel.hakuOid.hakuaikas">
+                    <strong ng-if="hakumodel.hakuOid.hakuaikas.length > 1">{{hakuaika.nimi}}</strong>
+                    <span>{{hakuaika.alkuPvm | date:'dd.MM.yyyy HH:mm'}} - {{hakuaika.loppuPvm | date:'dd.MM.yyyy HH:mm'}}</span>
+                </li>
+            </ul>
+        </div>
     </div>
 
 
