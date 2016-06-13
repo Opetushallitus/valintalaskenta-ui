@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu', '_', 'HakukohdeNimiService',
-        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu, _, HakukohdeNimiService) {
+    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu', '_', '$rootScope',
+        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu, _, $rootScope) {
             "use strict";
 
             var model;
@@ -16,13 +16,9 @@ angular.module('valintalaskenta')
                 this.erillishaku = false;
 
                 this.getHakuNimi = function (haku) {
-                    var kielet = ['kieli_fi', 'kieli_sv', 'kieli_en'];
-
-                    var kieli = _.find(kielet, function (kieli) {
-                        return !(_.isEmpty(haku.nimi[kieli]));
-                    });
-
-                    return haku.nimi[kieli];
+                    var name = haku.nimi;
+                    var lang = $rootScope.userLang || '';
+                    return name['kieli_' + lang.toLowerCase()] || name.kieli_fi || name.kieli_sv || name.kieli_en;
                 };
 
                 this.getNimi = function () {
