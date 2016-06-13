@@ -176,7 +176,8 @@ angular.module('valintalaskenta')
         }])
 
     .service('CustomHakuUtil', ['$q', '_', 'HakujenHakutyypit', 'HakujenKohdejoukot', 'HakujenHakutavat', 'HakujenHakukaudet', 'HakuModel',
-        function ($q, _, HakujenHakutyypit, HakujenKohdejoukot, HakujenHakutavat, HakujenHakukaudet, HakuModel) {
+        '$rootScope',
+        function ($q, _, HakujenHakutyypit, HakujenKohdejoukot, HakujenHakutavat, HakujenHakukaudet, HakuModel, $rootScope) {
 
             var that = this;
 
@@ -190,43 +191,37 @@ angular.module('valintalaskenta')
             this.hakukausiOpts = undefined;
             this.hakuvuodetOpts = undefined;
 
+            function metaInUserLang(meta) {
+                return _.findWhere(meta, {kieli: $rootScope.userLang.toUpperCase()}) ||
+                    _.findWhere(meta, {kieli: 'FI'});
+            }
+
+            function filterByLang(result) {
+                return _.map(result, function (koodi) {
+                    return {
+                        koodiUri: koodi.koodiUri,
+                        nimi: metaInUserLang(koodi.metadata).nimi
+                    };
+                });
+            }
+
             this.refresh = function (hakuOid) {
                 that.deferred = $q.defer();
 
                 HakujenHakutyypit.query(function (result) {
-                    that.hakutyyppiOpts = _.map(result, function (hakutyyppi) { //parse hakuoptions
-                        return {
-                            koodiUri: hakutyyppi['koodiUri'],
-                            nimi: _.findWhere(hakutyyppi.metadata, {kieli: 'FI'}).nimi
-                        };
-                    });
+                    that.hakutyyppiOpts = filterByLang(result);
                 });
 
                 HakujenKohdejoukot.query(function (result) {
-                    that.kohdejoukkoOpts = _.map(result, function (kohdejoukko) { //parse hakuoptions
-                        return {
-                            koodiUri: kohdejoukko['koodiUri'],
-                            nimi: _.findWhere(kohdejoukko.metadata, {kieli: 'FI'}).nimi
-                        };
-                    });
+                    that.kohdejoukkoOpts = filterByLang(result);
                 });
 
                 HakujenHakutavat.query(function (result) {
-                    that.hakutapaOpts = _.map(result, function (tapa) { //parse hakuoptions
-                        return {
-                            koodiUri: tapa['koodiUri'],
-                            nimi: _.findWhere(tapa.metadata, {kieli: 'FI'}).nimi
-                        };
-                    });
+                    that.hakutapaOpts = filterByLang(result);
                 });
 
                 HakujenHakukaudet.query(function (result) {
-                    that.hakukausiOpts = _.map(result, function (kausi) { //parse hakuoptions
-                        return {
-                            koodiUri: kausi['koodiUri'],
-                            nimi: _.findWhere(kausi.metadata, {kieli: 'FI'}).nimi
-                        };
-                    });
+                    that.hakukausiOpts = filterByLang(result);
                 });
 
                 if(_.isEmpty(HakuModel.deferred)) {
