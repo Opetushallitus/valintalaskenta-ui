@@ -52,7 +52,11 @@ app.factory('ValintaTulosProxy', function ($resource) {
         list: {method: "GET", cache: false}
     });
 });
-
+app.factory('ViestintapalveluProxy', function ($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/viestintapalvelu/count/haku/:hakuOid", {}, {
+        list: {method: "GET", cache: false}
+    });
+});
 
 //Valintalaskenta
 app.factory('HakukohdeValinnanvaihe', function($resource) {

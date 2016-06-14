@@ -37,7 +37,7 @@ app.factory('VirheModel', function (HakuVirheet) {
 angular.module('valintalaskenta').
     controller('YhteisvalinnanHallintaController',['$scope', '$modal', '$interval', '_', 
         'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat', 'SijoittelunTulosHyvaksymiskirjeet', 
-        'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp',
+        'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', 'ViestintapalveluProxy',
         '$log', '$timeout', '$q','$location', 
         'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
@@ -45,7 +45,7 @@ angular.module('valintalaskenta').
         'CustomHakuUtil','Hyvaksymiskirjepohjat',
         function ($scope, $modal, $interval, _, 
         		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, 
-        		Jalkiohjauskirjepohjat, AktivoiKelaFtp, 
+        		Jalkiohjauskirjepohjat, AktivoiKelaFtp, ViestintapalveluProxy,
         		$log, $timeout, $q, $location, 
         		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                 $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
@@ -451,6 +451,17 @@ angular.module('valintalaskenta').
             alert("virhe");
         });
     };
+
+    $scope.paivitaTuloskirjeidenMuodostuksenTilanne = function() {
+        ViestintapalveluProxy.get(
+          {
+              hakuOid: $routeParams.hakuOid
+          }, function (response) {
+              $scope.tuloskirjeet = response;
+          }, function (error) {
+              console.log("ValintaTulosProxy error: " + error);
+          });
+    }
 
     $scope.paivitaJatkuvanSijoittelunAloitus = function () {
         $scope.jatkuva.aloitusajankohta = new Date();
