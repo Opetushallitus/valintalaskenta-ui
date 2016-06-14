@@ -12,7 +12,10 @@
     	<span>{{ t('hakukohdenavigation.hakeneet') || 'Hakeneet' }}</span>
     </a>
 
-    <a auth-additional-check="valintalaskenta" auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" auth-kk-user="true" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
+    <a ng-if="hakuModel.hakuOid.erillishaku" auth-additional-check="valintalaskenta" auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="hakukohdeModel.hakukohde"  ng-class="navClass('valinnanhallinta', 5)" auth-kk-user="true" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
+        <span>{{ t('hakukohdenavigation.valinnanhallinta') || 'Valinnan hallinta' }}</span>
+    </a>
+    <a ng-if="!hakuModel.hakuOid.erillishaku" auth-additional-check="valintalaskenta" auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" auth-kk-user="true" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
         <span>{{ t('hakukohdenavigation.valinnanhallinta') || 'Valinnan hallinta' }}</span>
     </a>
 
