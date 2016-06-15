@@ -86,19 +86,17 @@
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
       });
       $scope.isVaaraVastaanottotila = function(tila) {
-        return ($scope.korkeakoulu && tila === 'VASTAANOTTANUT')
-          || (!$scope.korkeakoulu && tila === 'VASTAANOTTANUT_SITOVASTI');
+        return tila === 'VASTAANOTTANUT';
       }
       $scope.isVastaanottanut = function(tila) {
-        return ($scope.korkeakoulu && tila === 'VASTAANOTTANUT_SITOVASTI')
-          || (!$scope.korkeakoulu && tila === 'VASTAANOTTANUT');
+        return tila === 'VASTAANOTTANUT_SITOVASTI';
       }
 
       ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid},function(erillishaku) {
         var hakemukset = _.chain(erillishaku).map(function(e){return e.valintatapajonot}).flatten().map(function(v){return v.hakemukset;}).flatten();
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, hakemukset.value());
         hakemukset.each(function(hakemus) {
-          hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' || hakemus.valintatuloksentila === 'VASTAANOTTANUT';
+          hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI';
           if (hakemus.valintatuloksentila === "" || !_.isString(hakemus.valintatuloksentila)) {
             hakemus.valintatuloksentila = 'KESKEN';
           }
