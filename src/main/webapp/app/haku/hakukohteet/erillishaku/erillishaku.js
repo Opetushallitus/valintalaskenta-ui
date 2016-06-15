@@ -254,14 +254,6 @@
 
       };
 
-      $scope.resetIlmoittautumisTila = function(hakemus) {
-        if(hakemus.valintatuloksentila !== 'VASTAANOTTANUT_SITOVASTI') {
-          hakemus.ilmoittautumistila = 'EI_TEHTY';
-        } else if (!hakemus.ilmoittautumistila) {
-          hakemus.ilmoittautumistila = 'EI_TEHTY';
-        }
-      };
-
       $scope.changeSija = function (jonosija, value) {
         if (value !== 'HYVAKSYTTAVISSA') {
           $timeout(function(){
