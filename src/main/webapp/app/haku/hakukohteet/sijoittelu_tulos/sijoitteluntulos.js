@@ -814,7 +814,7 @@ angular.module('valintalaskenta')
     };
 
     $scope.resetIlmoittautumisTila = function(hakemus) {
-        if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT' && hakemus.muokattuVastaanottoTila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
+        if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT_SITOVASTI') {
             hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
         } else if (!hakemus.muokattuIlmoittautumisTila) {
             hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';

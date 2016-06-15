@@ -255,7 +255,7 @@
       };
 
       $scope.resetIlmoittautumisTila = function(hakemus) {
-        if(hakemus.valintatuloksentila !== 'VASTAANOTTANUT' && hakemus.valintatuloksentila !== 'EHDOLLISESTI_VASTAANOTTANUT') {
+        if(hakemus.valintatuloksentila !== 'VASTAANOTTANUT_SITOVASTI') {
           hakemus.ilmoittautumistila = 'EI_TEHTY';
         } else if (!hakemus.ilmoittautumistila) {
           hakemus.ilmoittautumistila = 'EI_TEHTY';
