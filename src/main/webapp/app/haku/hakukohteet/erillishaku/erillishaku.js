@@ -1,13 +1,12 @@
-﻿angular.module('valintalaskenta')
+angular.module('valintalaskenta')
 
-  .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
-    'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
-    'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','_', 'LocalisationService','ErillishakuVienti',
-    'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet', 'Kirjepohjat','Kirjeet',
-    'VastaanottoUtil',
+  .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna',
+              'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel', 'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService',
+              'ErillishakuVienti', 'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet', 'Kirjepohjat','Kirjeet',
+              'VastaanottoUtil',
     function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, _, LocalisationService,
-              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
+              ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
+              ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
               VastaanottoUtil) {
       "use strict";
 
@@ -68,16 +67,8 @@
       LocalisationService.getTranslationsForArray($scope.hakemuksentilat).then(function () {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
       });
-
-      function isToinenAsteKohdeJoukko(kohdejoukkoUri) {
-        if (kohdejoukkoUri) {
-          var arr = ["_11", "_17", "_20"];
-          return arr.some(function(s){return kohdejoukkoUri.indexOf(s) !== -1});
-        }
-        return false;
-      }
       $scope.showEhdollinenHyvaksynta = function() {
-        return !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
+        return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
       };
 
       $scope.ilmoittautumistilat = [

@@ -868,22 +868,14 @@ angular.module('valintalaskenta')
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
         $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
     });
-    function isToinenAsteKohdeJoukko(kohdejoukkoUri) {
-        var returnValue = false;
-        if (kohdejoukkoUri) {
-            var arr = ["_11", "_17", "_20"];
-            return arr.some(function(s){return kohdejoukkoUri.indexOf(s) !== -1});
-        }
-        return returnValue;
-    }
     $scope.showEhdollinenHyvaksynta = function() {
-        return !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
+        return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     };
     $scope.showJalkiohjaus = function() {
-        return UserModel.isOphUser || !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
+        return UserModel.isOphUser || !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     };
     $scope.enableTulostus = function() {
-        return !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
+        return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
                 UserModel.isOphUser ||
                 _.every($scope.model.sijoitteluTulokset.valintatapajonot, 'valintaesitysHyvaksytty');
     };
