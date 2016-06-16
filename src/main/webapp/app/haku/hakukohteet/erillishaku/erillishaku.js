@@ -68,7 +68,16 @@
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
       });
 
-
+      function isToinenAsteKohdeJoukko(kohdejoukkoUri) {
+        if (kohdejoukkoUri) {
+          var arr = ["_11", "_17", "_20"];
+          return arr.some(function(s){return kohdejoukkoUri.indexOf(s) !== -1});
+        }
+        return false;
+      }
+      $scope.showEhdollinenHyvaksynta = function() {
+        return !isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
+      };
 
       $scope.ilmoittautumistilat = [
         {value: "EI_TEHTY", text_prop: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},

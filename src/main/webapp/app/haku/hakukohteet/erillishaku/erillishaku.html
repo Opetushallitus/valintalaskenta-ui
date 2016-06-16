@@ -114,7 +114,7 @@
                                                             ng-change="addMuokattuHakemus(tulos)">
                                                     </select>
                                                 </div>
-                                                <div class="white-space-nowrap">
+                                                <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
                                                     <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                                     <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
                                                            ng-change="addMuokattuHakemus(tulos)"/>
@@ -225,7 +225,7 @@
                                                                 ng-change="addMuokattuHakemus(tulos)">
                                                         </select>
                                                     </div>
-                                                    <div class="white-space-nowrap">
+                                                    <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
                                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                                         <input ng-disabled="!(updateOph)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
                                                                ng-change="addMuokattuHakemus(tulos)"/>
