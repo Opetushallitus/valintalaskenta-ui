@@ -174,25 +174,17 @@
                                             <div>
                                                 <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>
                                                 <span>: </span>
-<<<<<<< HEAD
-                                                    <span ng-bind="t('sijoitteluntulos.' + ( hakemus.tilaHakijalle.toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores"></span>
-=======
                                                 <span ng-bind="t('sijoitteluntulos.' + ( hakemus.tilaHakijalle.toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores"></span>
->>>>>>> 0cd2f2ce43a57adda5194d399a4f093f6e59e06a
                                                 <div ng-if="hakemus.vastaanottoAikaraja">
                                                     <span ng-bind="t('sijoitteluntulos.vastaanottoaikaraja') || 'Aikaraja'"></span>:
                                                     <span>{{hakemus.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm'}}</span>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
->>>>>>> 0cd2f2ce43a57adda5194d399a4f093f6e59e06a
-                                                <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
-                                                    <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakemus"/>
-                                                </span>
+                                            <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
+                                                <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakemus"/>
+                                            </span>
                                         </div>
                                     </div>
-                                  </div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.ilmoittautumistieto') || 'Ilmoittautumistieto')" sortable="'muokattuIlmoittautumisTila'">
                                     <div ng-show="hakemus.naytetaanVastaanottotieto && (hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila == 'VASTAANOTTANUT_SITOVASTI')">
