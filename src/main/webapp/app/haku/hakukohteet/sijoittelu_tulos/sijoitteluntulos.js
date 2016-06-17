@@ -223,7 +223,7 @@ angular.module('valintalaskenta')
 
                                             if ((currentHakemus.vastaanottoTila === "VASTAANOTTANUT" ||
                                                  currentHakemus.vastaanottoTila === "VASTAANOTTANUT_SITOVASTI") &&
-                                                (currenthakemus.tila === "HYVAKSYTTY" ||
+                                                (currentHakemus.tila === "HYVAKSYTTY" ||
                                                  currentHakemus.tila === "VARASIJALTA_HYVAKSYTTY")) {
 
                                                 hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
