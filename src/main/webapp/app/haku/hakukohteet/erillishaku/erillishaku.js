@@ -98,6 +98,13 @@ angular.module('valintalaskenta')
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, hakemukset.value());
         hakemukset.each(function(hakemus) {
           hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI';
+          if (hakemus.hyvaksymiskirjeLahetetty) {
+            hakemus.hyvaksymiskirjeLahetettyPvm = hakemus.hyvaksymiskirjeLahetetty;
+            hakemus.hyvaksymiskirjeLahetetty = true;
+          }
+          else {
+            hakemus.hyvaksymiskirjeLahetetty = false;
+          }
           if (hakemus.valintatuloksentila === "" || !_.isString(hakemus.valintatuloksentila)) {
             hakemus.valintatuloksentila = 'KESKEN';
           }
@@ -190,6 +197,7 @@ angular.module('valintalaskenta')
           personOid: hakemus.hakijaOid,
           hakemuksenTila: hakemus.hakemuksentila,
           ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
+          hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty ? hakemus.hyvaksymiskirjeLahetettyPvm : null,
           vastaanottoTila: hakemus.valintatuloksentila,
           ilmoittautumisTila: hakemus.ilmoittautumistila,
           poistetaankoRivi: hakemus.poistetaankoRivi,
@@ -210,6 +218,7 @@ angular.module('valintalaskenta')
             hakijaOid: hakemus.hakijaOid,
             julkaistavissa: hakemus.julkaistavissa,
             ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
+            hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty ? hakemus.hyvaksymiskirjeLahetettyPvm : null,
             hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta
           };
         };
@@ -408,9 +417,18 @@ angular.module('valintalaskenta')
           });
         };
       };
-      $scope.luoHyvaksymiskirjeetPDF = function() {
-        var tag = null;
+      $scope.updateHyvaksymiskirjeLahetettyPvm = function (hakemus) {
+        if (hakemus.hyvaksymiskirjeLahetetty) {
+          hakemus.hyvaksymiskirjeLahetettyPvm = new Date();
+        }
+        else {
+          hakemus.hyvaksymiskirjeLahetettyPvm = null;
+        }
+        $scope.addMuokattuHakemus(hakemus);
+      };
+      $scope.luoHyvaksymiskirjeetPDF = function(hakemusOids, sijoitteluajoId) {
         var hakukohde = $scope.hakukohdeModel.hakukohde;
+        var tag = null;
         if(hakukohde.hakukohdeNimiUri) {
           tag = hakukohde.hakukohdeNimiUri.split('#')[0];
         } else {
@@ -419,6 +437,8 @@ angular.module('valintalaskenta')
         Kirjeet.hyvaksymiskirjeet({
           hakuOid: $routeParams.hakuOid,
           hakukohdeOid: $routeParams.hakukohdeOid,
+          sijoitteluajoId : sijoitteluajoId,
+          hakemusOids: hakemusOids,
           tarjoajaOid: hakukohde.tarjoajaOids[0],
           hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
           hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi,
@@ -432,6 +452,8 @@ angular.module('valintalaskenta')
           return {
             julkaistavissa: hakemus.julkaistavissa,
             ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
+            hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
+            hyvaksymiskirjeLahetettyPvm: hakemus.hyvaksymiskirjeLahetettyPvm,
             tila: hakemus.valintatuloksenTila,
             tilaHakijalle: hakemus.valintatuloksenTilaHakijalle,
             hakemusOid: hakemus.hakemusOid,
