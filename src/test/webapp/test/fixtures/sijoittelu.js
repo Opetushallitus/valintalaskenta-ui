@@ -95,7 +95,7 @@ function sijoitteluAjoFixtures(valintaesitysHyvaksytty) {
                     "prioriteetti": 1,
                     "jonosija": 1,
                     "tasasijaJonosija": 1,
-                    "tila": "PERUUNTUNUT",
+                    "tila": "HYLATTY",
                     "tilanKuvaukset": {},
                     "onkoMuuttunutViimeSijoittelussa": true,
                     "tilaHistoria": [{"tila": "PERUUNTUNUT", "luotu": 1433336039261}, {
