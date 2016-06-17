@@ -221,14 +221,6 @@ angular.module('valintalaskenta')
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
 
-                                            // Selvitetään onko tämä hakemus hyvaksytty
-                                            var hakemusOnHyvaksytty = false;
-                                            hyvaksytytHakemusOidIndex.forEach(function (hyvaksyttyHakemusOid) {
-                                                if (hyvaksyttyHakemusOid === currentHakemus.hakemusOid) {
-                                                    hakemusOnHyvaksytty = true;
-                                                }
-                                            });
-
                                             if ((currentHakemus.vastaanottoTila === "VASTAANOTTANUT" ||
                                                  currentHakemus.vastaanottoTila === "VASTAANOTTANUT_SITOVASTI") &&
                                                 (currenthakemus.tila === "HYVAKSYTTY" ||
