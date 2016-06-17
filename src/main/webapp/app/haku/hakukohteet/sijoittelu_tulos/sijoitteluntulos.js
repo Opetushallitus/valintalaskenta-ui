@@ -206,6 +206,7 @@ angular.module('valintalaskenta')
 
                                     tilat.some(function (vastaanottotila) {
                                         if (vastaanottotila.hakemusOid === currentHakemus.hakemusOid && vastaanottotila.valintatapajonoOid === valintatapajonoOid) {
+
                                             currentHakemus.logEntries = vastaanottotila.logEntries;
                                             if (!currentHakemus.hakijaOid) {
                                                 currentHakemus.hakijaOid = vastaanottotila.hakijaOid;
@@ -219,7 +220,20 @@ angular.module('valintalaskenta')
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
-                                            if (currentHakemus.vastaanottoTila === "VASTAANOTTANUT" || currentHakemus.vastaanottoTila === "VASTAANOTTANUT_SITOVASTI") {
+
+                                            // Selvitetään onko tämä hakemus hyvaksytty
+                                            var hakemusOnHyvaksytty = false;
+                                            hyvaksytytHakemusOidIndex.forEach(function (hyvaksyttyHakemusOid) {
+                                                if (hyvaksyttyHakemusOid === currentHakemus.hakemusOid) {
+                                                    hakemusOnHyvaksytty = true;
+                                                }
+                                            });
+
+                                            if ((currentHakemus.vastaanottoTila === "VASTAANOTTANUT" ||
+                                                 currentHakemus.vastaanottoTila === "VASTAANOTTANUT_SITOVASTI") &&
+                                                (currenthakemus.tila === "HYVAKSYTTY" ||
+                                                 currentHakemus.tila === "VARASIJALTA_HYVAKSYTTY")) {
+
                                                 hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
                                             }
 
