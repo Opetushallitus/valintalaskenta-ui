@@ -73,7 +73,7 @@ angular.module('valintalaskenta')
                             toiminto: function(sisalto, palautusPvm, palautusAika) {
                                 Hyvaksymiskirjeet.post(
                                 {
-                                    sijoitteluajoId: null,
+                                    sijoitteluajoId: kirje.sijoitteluajoId,
                                     hakuOid: kirje.hakuOid,
                                     tarjoajaOid: kirje.tarjoajaOid,
                                     templateName: kirje.templateName,
@@ -83,7 +83,7 @@ angular.module('valintalaskenta')
                                     hakukohdeOid: kirje.hakukohdeOid
                                 },
                                 {
-                                    hakemusOids: null,
+                                    hakemusOids: kirje.hakemusOids,
                                     letterBodyText:sisalto
                                 },
                                 function (id) {

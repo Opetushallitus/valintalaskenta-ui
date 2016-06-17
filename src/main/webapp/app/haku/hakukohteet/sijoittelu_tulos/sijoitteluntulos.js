@@ -694,26 +694,26 @@ angular.module('valintalaskenta')
             }
         });
     }
-    $scope.luoHyvaksymiskirjeetPDF = function() {
-    	var hakukohde = $scope.hakukohdeModel.hakukohde;
-    	var tag = null;
-    	if(hakukohde.hakukohdeNimiUri) {
-    		tag = hakukohde.hakukohdeNimiUri.split('#')[0];
-    	} else {
-    		tag = $routeParams.hakukohdeOid;
-    	}
-    	var templateName = "hyvaksymiskirje";
+    $scope.luoHyvaksymiskirjeetPDF = function(hakemusOids, sijoitteluajoId) {
+        var hakukohde = $scope.hakukohdeModel.hakukohde;
+        var tag = null;
+        if(hakukohde.hakukohdeNimiUri) {
+            tag = hakukohde.hakukohdeNimiUri.split('#')[0];
+        } else {
+            tag = $routeParams.hakukohdeOid;
+        }
         Kirjeet.hyvaksymiskirjeet({
             hakuOid: $routeParams.hakuOid,
             hakukohdeOid: $routeParams.hakukohdeOid,
+            sijoitteluajoId : sijoitteluajoId,
+            hakemusOids: hakemusOids,
             tarjoajaOid: hakukohde.tarjoajaOids[0],
             hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
             hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi,
             tag: tag,
             langcode: HakukohdeNimiService.getOpetusKieliCode(hakukohde),
-            templateName: templateName
+            templateName: "hyvaksymiskirje"
         });
-    	
     };
     
     $scope.createHyvaksymisosoitteetPDF = function (oidit) {
@@ -745,57 +745,6 @@ angular.module('valintalaskenta')
             tableParams.filter()['onkoMuuttunutViimeSijoittelussa'] = undefined;
         }
     }
-
-    $scope.createHyvaksymiskirjeetPDF = function (oidit) {
-        var hakuOid = $routeParams.hakuOid;
-		var hakukohde = $scope.hakukohdeModel.hakukohde;
-		var tag = null;
-    	if(hakukohde.hakukohdeNimiUri) {
-    		tag = hakukohde.hakukohdeNimiUri.split('#')[0];
-    	} else {
-    		tag = $routeParams.hakukohdeOid;
-    	}
-    	var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
-    	var templateName = "hyvaksymiskirje";
-    	var viestintapalveluInstance = $modal.open({
-            backdrop: 'static',
-            templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
-            controller: ViestintapalveluIkkunaCtrl,
-            size: 'lg',
-            resolve: {
-                oids: function () {
-                    return {
-                    	otsikko: "Hyväksymiskirjeet",
-                    	toimintoNimi: "Muodosta hyväksymiskirjeet",
-                    	toiminto: function(sisalto, palautusPvm, palautusAika) {
-                    		Hyvaksymiskirjeet.post({
-					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
-					        	hakuOid: $routeParams.hakuOid, 
-					        	tarjoajaOid: hakukohde.tarjoajaOids[0],
-					        	templateName: templateName,
-					        	palautusPvm: palautusPvm,
-					        	palautusAika: palautusAika,
-					        	tag: tag,
-					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit,letterBodyText:sisalto} , function (id) {
-					            Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille hyväksymiskirjeet", "");
-					        }, function () {
-					            
-					        });
-                    	},
-                        showDateFields: true,
-                        hakuOid: $routeParams.hakuOid,
-                        hakukohdeOid: $routeParams.hakukohdeOid,
-                        tarjoajaOid: hakukohde.tarjoajaOids[0],
-                        pohjat: function() {
-                        	return Kirjepohjat.get({templateName:templateName, languageCode: langcode, tarjoajaOid: hakukohde.tarjoajaOids[0], tag: tag, hakuOid: hakuOid});
-                        },
-                        hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
-                        hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi
-                    };
-                }
-            }
-        });
-    };
 
     $scope.createJalkiohjauskirjeetPDF = function () {
         Jalkiohjauskirjeet.post({
