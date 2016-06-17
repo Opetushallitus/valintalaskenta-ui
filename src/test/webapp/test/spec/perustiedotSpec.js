@@ -6,7 +6,7 @@ describe('Perustiedot', function() {
         }
     })
 
-    describe('Vastaanottaneiden lukumäärä', function () {
+    describe('Perustiedot-taulukko', function () {
         var page = perustiedotPage("1.2.246.562.29.11735171271", "1.2.246.562.20.37731636579");
 
         before(function (done) {
@@ -26,11 +26,23 @@ describe('Perustiedot', function() {
             page.openPage(done);
         })
 
-        it('kun yksi valintatapajono', seqDone(
+        it('sisältää kaikki valintatapajonot', seqDone(
             wait.forAngular,
             function () {
                 expect(true).to.equal(true)
+                assertText(perustiedotSelectors.valintatapajonoAtIndex(1), "valintatapajono1")
+                assertText(perustiedotSelectors.valintatapajonoAtIndex(2), "valintatapajono2")
+            }
+        ))
+
+        it('ainoastaan hyväksytyt hakemukset lasketaan mukaan vastaanottaneisiin', seqDone(
+            wait.forAngular,
+            function () {
+                expect(true).to.equal(true)
+                assertText(perustiedotSelectors.hyvaksytytAtIndex(1), "2")
+                assertText(perustiedotSelectors.hyvaksytytAtIndex(2), "0")
                 assertText(perustiedotSelectors.vastaanottaneetAtIndex(1), "1")
+                assertText(perustiedotSelectors.vastaanottaneetAtIndex(2), "0")
             }
         ))
     })

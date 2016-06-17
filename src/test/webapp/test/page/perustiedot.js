@@ -27,6 +27,12 @@ function perustiedotPage(hakuOid, hakukohdeOid) {
 }
 
 perustiedotSelectors = initSelectors({
+    valintatapajonoAtIndex: function (trIndex) {
+        return ".virkailija-table-1 tr:eq(" + trIndex + ") td:eq(0)"
+    },
+    hyvaksytytAtIndex: function (trIndex) {
+        return ".virkailija-table-1 tr:eq(" + trIndex + ") td:eq(3)"
+    },
     vastaanottaneetAtIndex: function (trIndex) {
         return ".virkailija-table-1 tr:eq(" + trIndex + ") td:eq(6)"
     }

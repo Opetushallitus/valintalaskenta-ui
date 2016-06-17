@@ -319,7 +319,36 @@ var restData = {
                "selite": "Massamuokkaus"
            }]
        }, {
-             "id": {
+            "id": {
+                 "timeSecond": 1437392281,
+                 "inc": 1088874422,
+                 "machine": -458189833,
+                 "timestamp": 1437392281,
+                 "time": 1437392281000,
+                 "date": 1437392281000,
+                 "new": false
+             },
+             "valintatapajonoOid": "1433334427784-5861045456369717642",
+             "hakemusOid": "1.2.246.562.11.00003935856",
+             "hakukohdeOid": "1.2.246.562.20.37731636579",
+             "julkaistavissa": true,
+             "hyvaksyttyVarasijalta": false,
+             "hakijaOid": "1.2.246.562.24.28860135981",
+             "hakuOid": "1.2.246.562.29.11735171271",
+             "hakutoive": 2,
+             "tila": "VASTAANOTTANUT_SITOVASTI",
+             "tilaHakijalle": "KESKEN",
+             "ilmoittautumisTila": "EI_TEHTY",
+             "read": 1437464563179,
+             "logEntries": [{
+                 "id": null,
+                 "luotu": 1437392281348,
+                 "muokkaaja": "1.2.246.562.24.83767019241",
+                 "muutos": "VASTAANOTTANUT_SITOVASTI",
+                 "selite": "Massamuokkaus"
+             }]
+         }, {
+            "id": {
                  "timeSecond": 1437392281,
                  "inc": 1088874422,
                  "machine": -458189833,
@@ -329,11 +358,11 @@ var restData = {
                  "new": false
              },
              "valintatapajonoOid": "1433334427784-5861045456369717641",
-             "hakemusOid": "1.2.246.562.11.00003935855",
+             "hakemusOid": "1.2.246.562.11.00003935856",
              "hakukohdeOid": "1.2.246.562.20.37731636579",
              "julkaistavissa": true,
              "hyvaksyttyVarasijalta": false,
-             "hakijaOid": "1.2.246.562.24.28860135980",
+             "hakijaOid": "1.2.246.562.24.28860135981",
              "hakuOid": "1.2.246.562.29.11735171271",
              "hakutoive": 2,
              "tila": "VASTAANOTTANUT_SITOVASTI",
