@@ -37,16 +37,16 @@ app.factory('VirheModel', function (HakuVirheet) {
 angular.module('valintalaskenta').
     controller('YhteisvalinnanHallintaController',['$scope', '$modal', '$interval', '_', 
         'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat', 'SijoittelunTulosHyvaksymiskirjeet', 
-        'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', 'ViestintapalveluProxy',
-        '$log', '$timeout', '$q','$location', 
+        'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', 'ViestintapalveluProxy', 'ViestintapalveluJulkaiseProxy',
+        '$log', '$timeout', '$q','$location', 'ViestintapalveluEPosti',
         'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
         'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat', 'Korkeakoulu',
         'CustomHakuUtil','Hyvaksymiskirjepohjat',
         function ($scope, $modal, $interval, _, 
         		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, 
-        		Jalkiohjauskirjepohjat, AktivoiKelaFtp, ViestintapalveluProxy,
-        		$log, $timeout, $q, $location, 
+        		Jalkiohjauskirjepohjat, AktivoiKelaFtp, ViestintapalveluProxy, ViestintapalveluJulkaiseProxy,
+        		$log, $timeout, $q, $location, ViestintapalveluEPosti,
         		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                 $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
                 HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat, Korkeakoulu,
@@ -461,7 +461,72 @@ angular.module('valintalaskenta').
           }, function (error) {
               console.log("ValintaTulosProxy error: " + error);
           });
-    }
+    };
+
+    $scope.tuloskirjeteksti = function(tyyppi) {
+        switch(tyyppi) {
+            case 'jalkiohjauskirje':
+                return 'jälkiohjauskirjeet';
+            case 'hyvaksymiskirje':
+                return 'hyväksymiskirjeet';
+            default:
+                return '';
+        }
+    };
+
+    $scope.kieliteksti = function(asiointikieli) {
+        switch(tyyppi) {
+            case 'fi':
+                return 'suomi';
+            case 'sv':
+                return 'ruotsi';
+            case 'en':
+                return 'englanti';
+            default:
+                return '';
+        }
+    };
+
+    $scope.julkaiseTuloskirjeet = function(asiointikieli, tyyppi) {
+        var ok = function() {
+            ViestintapalveluJulkaiseProxy.post({asiointikieli: asiointikieli, kirjeenTyyppi: tyyppi, hakuOid: $routeParams.hakuOid}, {
+            }, function (result) {
+                Ilmoitus.avaa("Tuloskirjeiden julkaisu", "Koko haun " + $scope.tuloskirjeteksti(tyyppi)
+                    + " julkaistu kielellä " + $scope.kieliteksti(asiointikieli) + "!");
+            }, function() {
+                Ilmoitus.avaa("Tuloskirjeiden julkaisu", "Tapahtui virhe, kun yritettiin julkaista haun "
+                    + $scope.tuloskirjeteksti(tyyppi) + " kielellä " + $scope.kieliteksti(asiointikieli) + "!",
+                    IlmoitusTila.ERROR);
+            });
+        };
+
+        Ilmoitus.avaaCancel("Tuloskirjeiden julkaisu", "Oletko varma, että haluat julkaista koko haun"
+            + $scope.tuloskirjeteksti(tyyppi) + " kielellä " + $scope.kieliteksti(asiointikieli) + "?",
+            IlmoitusTila.INFO, ok, function() {});
+    };
+
+    $scope.lahetaEPosti = function(asiointikieli, tyyppi) {
+        var ok = function() {
+            var postParams = {
+                hakuOid: $routeParams.hakuOid,
+                asiointikieli: asiointikieli,
+                kirjeenTyyppi: tyyppi
+            };
+
+            ViestintapalveluEPosti.post({}, postParams, function (result) {
+                Ilmoitus.avaa("ePostin lähetys", "Koko haun " + $scope.tuloskirjeteksti(tyyppi)
+                    + " kielellä " + $scope.kieliteksti(asiointikieli) + " lähetetty ePostilla!");
+            }, function() {
+                Ilmoitus.avaa("ePostin lähetys", "Tapahtui virhe, kun yritettiin lähettää ePostina haun "
+                    + $scope.tuloskirjeteksti(tyyppi) + " kielellä " + $scope.kieliteksti(asiointikieli) + "!",
+                    IlmoitusTila.ERROR);
+            });
+        };
+
+        Ilmoitus.avaaCancel("ePostin lähetys", "Oletko varma, että haluat lähettää ePostilla koko haun"
+            + $scope.tuloskirjeteksti(tyyppi) + " kielellä " + $scope.kieliteksti(asiointikieli) + "?",
+            IlmoitusTila.INFO, ok, function() {});
+    };
 
     $scope.paivitaJatkuvanSijoittelunAloitus = function () {
         $scope.jatkuva.aloitusajankohta = new Date();

@@ -52,9 +52,22 @@ app.factory('ValintaTulosProxy', function ($resource) {
         list: {method: "GET", cache: false}
     });
 });
+
 app.factory('ViestintapalveluProxy', function ($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/viestintapalvelu/count/haku/:hakuOid", {}, {
         list: {method: "GET", cache: false}
+    });
+});
+
+app.factory('ViestintapalveluJulkaiseProxy', function ($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/viestintapalvelu/publish/haku/:hakuOid",
+        {asiointikieli: "@asiointikieli", kirjeenTyyppi: "@kirjeenTyyppi"}, {
+        list: {method: "POST", cache: false}
+    });
+});
+app.factory('ViestintapalveluEPosti', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/viestintapalvelu/securelinkit/aktivoi", {}, {
+        post:  {method:'POST', isArray:false}
     });
 });
 

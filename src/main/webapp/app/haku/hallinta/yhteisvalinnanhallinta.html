@@ -158,39 +158,45 @@
                 <table class="table" ng-if="tuloskirjeet">
                     <thead>
                     <tr><th colspan="3">Hyväksymiskirjeet suomenkielellä</th></tr>
-                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th>Julkaise</th><th>Lähetä ePosti</th></tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>{{tuloskirjeet.hyvaksymiskirje.fi.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.hyvaksymiskirje.fi.letterTotalCount - (tuloskirjeet.hyvaksymiskirje.fi.letterReadyCount + tuloskirjeet.hyvaksymiskirje.fi.letterErrorCount)}}</td>
                         <td>{{tuloskirjeet.hyvaksymiskirje.fi.letterErrorCount}}</td>
+                        <td><button ng-click="julkaiseTuloskirjeet('fi', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-click="lahetaEPosti('fi', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
                 <table class="table" ng-if="tuloskirjeet">
                     <thead>
                     <tr><th colspan="3">Hyväksymiskirjeet ruotsiksi</th></tr>
-                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th>Julkaise</th><th>Lähetä ePosti</th></tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>{{tuloskirjeet.hyvaksymiskirje.sv.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.hyvaksymiskirje.sv.letterTotalCount - (tuloskirjeet.hyvaksymiskirje.sv.letterReadyCount + tuloskirjeet.hyvaksymiskirje.sv.letterErrorCount)}}</td>
                         <td>{{tuloskirjeet.hyvaksymiskirje.sv.letterErrorCount}}</td>
+                        <td><button ng-click="julkaiseTuloskirjeet('sv', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-click="lahetaEPosti('sv', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
                 <table class="table" ng-if="tuloskirjeet">
                     <thead>
                     <tr><th colspan="3">Hyväksymiskirjeet englanniksi</th></tr>
-                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th>Julkaise</th><th>Lähetä ePosti</th></tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>{{tuloskirjeet.hyvaksymiskirje.en.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.hyvaksymiskirje.en.letterTotalCount - (tuloskirjeet.hyvaksymiskirje.en.letterReadyCount + tuloskirjeet.hyvaksymiskirje.en.letterErrorCount)}}</td>
                         <td>{{tuloskirjeet.hyvaksymiskirje.en.letterErrorCount}}</td>
+                        <td><button ng-click="julkaiseTuloskirjeet('en', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-click="lahetaEPosti('en', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -198,13 +204,15 @@
                     <thead>
                     <tr ng-if="iskorkeakoulu"><th colspan="3">Ei-hyväksyttyjen kirjeet suomeksi</th></tr>
                     <tr ng-if="!iskorkeakoulu"><th colspan="3">Jälkiohjauskirjeet suomeksi</th></tr>
-                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th>Julkaise</th><th>Lähetä ePosti</th></tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>{{tuloskirjeet.jalkiohjauskirje.fi.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.fi.letterTotalCount - (tuloskirjeet.jalkiohjauskirje.fi.letterReadyCount + tuloskirjeet.jalkiohjauskirje.fi.letterErrorCount)}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.fi.letterErrorCount}}</td>
+                        <td><button ng-click="julkaiseTuloskirjeet('fi', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-click="lahetaEPosti('fi', 'jalkiohjauskirje')" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -212,13 +220,15 @@
                     <thead>
                     <tr ng-if="iskorkeakoulu"><th colspan="3">Ei-hyväksyttyjen kirjeet ruotsiksi</th></tr>
                     <tr ng-if="!iskorkeakoulu"><th colspan="3">Jälkiohjauskirjeet ruotsiksi</th></tr>
-                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th>Julkaise</th><th>Lähetä ePosti</th></tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>{{tuloskirjeet.jalkiohjauskirje.sv.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.sv.letterTotalCount - (tuloskirjeet.jalkiohjauskirje.sv.letterReadyCount + tuloskirjeet.jalkiohjauskirje.sv.letterErrorCount)}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.sv.letterErrorCount}}</td>
+                        <td><button ng-click="julkaiseTuloskirjeet('sv', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-click="lahetaEPosti('sv', 'jalkiohjauskirje')" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -226,13 +236,15 @@
                     <thead>
                     <tr ng-if="iskorkeakoulu"><th colspan="3">Ei-hyväksyttyjen kirjeet englanniksi</th></tr>
                     <tr ng-if="!iskorkeakoulu"><th colspan="3">Jälkiohjauskirjeet englanniksi</th></tr>
-                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th>Julkaise</th><th>Lähetä ePosti</th></tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>{{tuloskirjeet.jalkiohjauskirje.en.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.en.letterTotalCount - (tuloskirjeet.jalkiohjauskirje.en.letterReadyCount + tuloskirjeet.jalkiohjauskirje.en.letterErrorCount)}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.en.letterErrorCount}}</td>
+                        <td><button ng-click="julkaiseTuloskirjeet('en', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-click="lahetaEPosti('en', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
