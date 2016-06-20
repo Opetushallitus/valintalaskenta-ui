@@ -475,7 +475,7 @@ angular.module('valintalaskenta').
     };
 
     $scope.kieliteksti = function(asiointikieli) {
-        switch(tyyppi) {
+        switch(asiointikieli) {
             case 'fi':
                 return 'suomi';
             case 'sv':
