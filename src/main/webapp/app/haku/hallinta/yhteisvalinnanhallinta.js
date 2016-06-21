@@ -491,6 +491,7 @@ angular.module('valintalaskenta').
         var ok = function() {
             ViestintapalveluJulkaiseProxy.post({asiointikieli: asiointikieli, kirjeenTyyppi: tyyppi, hakuOid: $routeParams.hakuOid}, {
             }, function (result) {
+                $scope.paivitaTuloskirjeidenMuodostuksenTilanne();
                 Ilmoitus.avaa("Tuloskirjeiden julkaisu", "Koko haun " + $scope.tuloskirjeteksti(tyyppi)
                     + " julkaistu kielellä " + $scope.kieliteksti(asiointikieli) + "!");
             }, function() {
@@ -514,6 +515,7 @@ angular.module('valintalaskenta').
             };
 
             ViestintapalveluEPosti.post({}, postParams, function (result) {
+                $scope.paivitaTuloskirjeidenMuodostuksenTilanne();
                 Ilmoitus.avaa("ePostin lähetys", "Koko haun " + $scope.tuloskirjeteksti(tyyppi)
                     + " kielellä " + $scope.kieliteksti(asiointikieli) + " lähetetty ePostilla!");
             }, function() {
