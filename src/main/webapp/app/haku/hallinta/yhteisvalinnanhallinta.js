@@ -453,7 +453,7 @@ angular.module('valintalaskenta').
     };
 
     $scope.paivitaTuloskirjeidenMuodostuksenTilanne = function() {
-        ViestintapalveluProxy.get(
+        ViestintapalveluProxy.list(
           {
               hakuOid: $routeParams.hakuOid
           }, function (response) {
