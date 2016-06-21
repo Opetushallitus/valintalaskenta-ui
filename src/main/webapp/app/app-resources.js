@@ -55,7 +55,7 @@ app.factory('ValintaTulosProxy', function ($resource) {
 
 app.factory('ViestintapalveluProxy', function ($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/viestintapalvelu/count/haku/:hakuOid", {}, {
-        list: {method: "GET"}
+        list: {method: "GET", cache: false}
     });
 });
 
