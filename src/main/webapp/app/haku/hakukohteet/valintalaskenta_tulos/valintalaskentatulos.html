@@ -113,7 +113,7 @@
                                                     <option value="HYVAKSYTTAVISSA">{{ t('valintalaskentatulos.hyvaksyttavissa') || 'Hyväksyttävissä' }}</option>
                                                     <option value="HYLATTY">{{ t('valintalaskentatulos.hylatty') || 'Hylätty' }}</option>
                                                     <option value="">{{ t('valintalaskentatulos.maarittalematon') || 'Määrittelemätön' }}</option>
-                                                    <option ng-hide="erityisopetus" value="HYVAKSYTTY_HARKINNANVARAISESTI">{{ t('valintalaskentatulos.harkinnanvaraisesti') || 'Hyväksytty harkinnanvaraisesti' }}</option>
+                                                    <option ng-hide="erityisopetus || isKkHaku" value="HYVAKSYTTY_HARKINNANVARAISESTI">{{ t('valintalaskentatulos.harkinnanvaraisesti') || 'Hyväksytty harkinnanvaraisesti' }}</option>
                                                 </select>
                                             </td>
                                             <td data-title="(t('valintalaskentatulos.kokonaispisteet') || 'Kokonaispisteet')" sortable="'kokonaispisteet'">

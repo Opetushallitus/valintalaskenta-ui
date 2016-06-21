@@ -375,7 +375,7 @@ angular.module('valintalaskenta').
               ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, HakuModel, $http, $log, $modal, AuthService, UserModel,
               LocalisationService) {
     "use strict";
-    $scope.erityisopetus = HakuModel.hakuOid.erityisopetus;
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
     $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -387,6 +387,8 @@ angular.module('valintalaskenta').
     var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
 
     promise.then(function() {
+        $scope.isKkHaku = HakuModel.korkeakoulu;
+        $scope.erityisopetus = HakuModel.hakuOid.erityisopetus;
         AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
             $scope.updateOph = true;
             $scope.jkmuokkaus = true;
