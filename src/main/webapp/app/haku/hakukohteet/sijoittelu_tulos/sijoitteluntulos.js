@@ -389,13 +389,13 @@ angular.module('valintalaskenta')
             };
         };
 
-        this.reportSuccessfulSave = function(afterSuccess) {
+        this.reportSuccessfulSave = function(afterSuccess, muokatutHakemukset) {
             return function(result) {
                 afterSuccess(function () { document.location.reload(); }, muokatutHakemukset.length + " muutosta tallennettu.");
             }
         };
 
-        this.reportFailedSave = function(afterFailure) {
+        this.reportFailedSave = function(afterFailure, muokatutHakemukset) {
             return function(error) {
                 var errorCount = error.data.statuses.length;
                 var errorMsg = errorCount + "/" + muokatutHakemukset.length + " hakemuksen päivitys epäonnistui. ";
@@ -439,7 +439,7 @@ angular.module('valintalaskenta')
             };
 
             var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
-            ValintaesityksenHyvaksyminen.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess), this.reportFailedSave(afterFailure));
+            ValintaesityksenHyvaksyminen.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess, muokatutHakemukset), this.reportFailedSave(afterFailure, muokatutHakemukset));
         };
 
 
@@ -453,7 +453,7 @@ angular.module('valintalaskenta')
             };
 
             var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
-            VastaanottoTila.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess), this.reportFailedSave(afterFailure));
+            VastaanottoTila.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess, muokatutHakemukset), this.reportFailedSave(afterFailure, muokatutHakemukset));
         };
 
     }();
