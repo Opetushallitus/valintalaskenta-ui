@@ -63,13 +63,13 @@ sijoitteluntulokset = initSelectors({
     vastaanottotietoOption: function(i) {
         return ".virkailija-table-1 tr.ng-scope:nth-child(3) muokattu-vastaanotto-tila select option:eq(" + i + ")";
     },
-    hyvaksymiskirjeLahetettyText: function(n) {
-        return ".hyvaksymiskirje-lahetetty-text:nth-child(" + n + ")"
+    hyvaksymiskirjeLahetettyTextAtIndex: function(trIndex) {
+        return ".virkailija-table-1 tbody tr:eq(" + trIndex + ") td:eq(10) div div:eq(0) span"
     },
-    hyvaksymiskirjeLahetettyCheckbox: function() {
-        return ".hyvaksymiskirje-lahetetty-checkbox"
+    hyvaksymiskirjeLahetettyCheckbox: function(trIndex) {
+        return ".virkailija-table-1 tbody tr:eq(" + trIndex + ") td:eq(10) div div:eq(0) input"
     },
-    hyvaksymiskirjeLahetettyPvm: function() {
-        return ".hyvaksymiskirje-lahetetty-pvm"
+    hyvaksymiskirjeLahetettyPvm: function(trIndex) {
+        return ".virkailija-table-1 tbody tr:eq(" + trIndex + ") td:eq(10) div div:eq(1)"
     }
 })

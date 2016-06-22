@@ -491,9 +491,9 @@ describe('Sijoittelun tulokset välilehti', function () {
 
         it('Hyväksymiskirje lähetetty on täpättävissä ja näkyvissä', seqDone(
             wait.forAngular,
-            click(sijoitteluntulokset.hyvaksymiskirjeLahetettyCheckbox()),
+            click(sijoitteluntulokset.hyvaksymiskirjeLahetettyCheckbox(1)),
             function () {
-                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyText(1), "Hyväksymiskirje lähetetty:")
+                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyTextAtIndex(1), "Hyväksymiskirje lähetetty:")
             }
         ))
     })
@@ -520,8 +520,8 @@ describe('Sijoittelun tulokset välilehti', function () {
         it('Hyväksymiskirje lähetetty on täpättävissä ja näkyvissä ja lähetyspäivämäärä on näkyvillä', seqDone(
             wait.forAngular,
             function () {
-                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyText(1), "Hyväksymiskirje lähetetty:")
-                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyPvm(), "21.07.2015")
+                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyTextAtIndex(1), "Hyväksymiskirje lähetetty:")
+                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyPvm(1), "21.07.2015")
             }
         ))
     })
