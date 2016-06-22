@@ -1,9 +1,9 @@
 angular.module('valintalaskenta')
 
-.factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila',
+.factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
         '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter',
-        function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila,
+        function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, ValintaesityksenHyvaksyminen,
                                                $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
                                                IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
@@ -363,31 +363,8 @@ angular.module('valintalaskenta')
         	}
         };
 
-        this.updateHakemuksienTila = function (jononHyvaksynta, valintatapajonoOid, uiMuokatutHakemukset, afterSuccess, afterFailure) {
-            var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
-                return valintatapajono.oid === valintatapajonoOid;
-            });
-
-            var muokatutHakemuksetOids = _.pluck(uiMuokatutHakemukset, 'hakemusOid');
-
-            var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
-                return valintatapajono.hakemukset;
-            })), function (hakemus) {
-                return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
-            });
-
-            model.updateVastaanottoTila(jononHyvaksynta, muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
-        };
-        this.updateVastaanottoTila = function (jononHyvaksynta, muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure) {
-            model.errors.length = 0;
-            var tilaParams = {
-                hakuOid: model.hakuOid,
-                hakukohdeOid: model.hakukohdeOid,
-                hyvaksyttyJonoOid: jononHyvaksynta ? valintatapajonoOid : "",
-                selite: jononHyvaksynta ? "Jonon valintaesityksen hyväksyminen" : "Massamuokkaus"
-            };
-
-            var tilaObj = _.map(muokatutHakemukset, function (hakemus) {
+        this.muokattuHakemusToServerRequestObject = function(valintatapajonoOid) {
+            return function(hakemus) {
                 if (hakemus.muokattuVastaanottoTila === '') {
                     hakemus.muokattuVastaanottoTila = null;
                 }
@@ -409,11 +386,17 @@ angular.module('valintalaskenta')
                     hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetettyPvm,
                     read: hakemus.read
                 };
-            });
+            };
+        };
 
-            VastaanottoTila.post(tilaParams, tilaObj, function (result) {
-                afterSuccess(function() { document.location.reload(); }, muokatutHakemukset.length + " muutosta tallennettu.");
-            }, function (error) {
+        this.reportSuccessfulSave = function(afterSuccess) {
+            return function(result) {
+                afterSuccess(function () { document.location.reload(); }, muokatutHakemukset.length + " muutosta tallennettu.");
+            }
+        };
+
+        this.reportFailedSave = function(afterFailure) {
+            return function(error) {
                 var errorCount = error.data.statuses.length;
                 var errorMsg = errorCount + "/" + muokatutHakemukset.length + " hakemuksen päivitys epäonnistui. ";
                 if (error.data.statuses.filter(function(status) { return status.status === 409; }).length > 0) {
@@ -423,7 +406,54 @@ angular.module('valintalaskenta')
                 }
                 var errorRows = _.map(error.data.statuses, function(status) { return status.message; });
                 afterFailure(function() { document.location.reload(); }, errorMsg, errorRows);
+            }
+        };
+
+        this.updateHakemuksienTila = function (jononHyvaksynta, valintatapajonoOid, uiMuokatutHakemukset, afterSuccess, afterFailure) {
+            var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
+                return valintatapajono.oid === valintatapajonoOid;
             });
+
+            var muokatutHakemuksetOids = _.pluck(uiMuokatutHakemukset, 'hakemusOid');
+
+            var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
+                return valintatapajono.hakemukset;
+            })), function (hakemus) {
+                return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
+            });
+
+            if (jononHyvaksynta) {
+                model.merkitseJonoHyvaksytyksi(muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
+            } else {
+                model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
+            }
+        };
+
+        this.merkitseJonoHyvaksytyksi = function (muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure) {
+            model.errors.length = 0;
+            var tilaParams = {
+                hakuOid: model.hakuOid,
+                hakukohdeOid: model.hakukohdeOid,
+                hyvaksyttyJonoOid: valintatapajonoOid,
+                selite: "Jonon valintaesityksen hyväksyminen"
+            };
+
+            var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
+            ValintaesityksenHyvaksyminen.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess), this.reportFailedSave(afterFailure));
+        };
+
+
+        this.updateVastaanottoTila = function (muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure) {
+            model.errors.length = 0;
+            var tilaParams = {
+                hakuOid: model.hakuOid,
+                hakukohdeOid: model.hakukohdeOid,
+                hyvaksyttyJonoOid: "",
+                selite: "Massamuokkaus"
+            };
+
+            var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
+            VastaanottoTila.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess), this.reportFailedSave(afterFailure));
         };
 
     }();

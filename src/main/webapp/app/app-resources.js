@@ -481,12 +481,22 @@ app.factory('HenkilotByOid', function($resource) {
     });
 });
 app.factory('VastaanottoTila', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuOid/hakukohde/:hakukohdeOid?selite=:selite&hyvaksyttyJonoOid=:hyvaksyttyJonoOid",
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/haku/:hakuOid/hakukohde/:hakukohdeOid?selite=:selite",
+        {
+            hakuOid: "@hakuOid",
+            hakukohdeOid: "@hakukohdeOid",
+            selite: "@selite"
+        }, {
+            post: {method: "POST"}
+        });
+});
+app.factory('ValintaesityksenHyvaksyminen', function($resource) {
+    return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuOid/hakukohde/:hakukohdeOid/valintatapajono/:hyvaksyttyJonoOid/valintaesitys?selite=:selite&hyvaksytty=true",
         {
             hakuOid: "@hakuOid",
             hakukohdeOid: "@hakukohdeOid",
             selite: "@selite",
-            hyvaksyttyJonoOid: "@hyvaksyttyJonoOid"
+            valintatapajonoOid: "@hyvaksyttyJonoOid"
         }, {
             post: {method: "POST"}
         });
