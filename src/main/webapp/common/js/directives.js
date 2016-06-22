@@ -537,7 +537,7 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
     };
 });
 
-app.directive("valintatulos", function () {
+app.directive("valintatulos", function ($rootScope) {
     var resultState = {
         "Hyvaksytty": "Hyväksytty",
             "Kesken": "Opiskelijavalinta kesken",
@@ -582,16 +582,18 @@ app.directive("valintatulos", function () {
 
             $scope.valintatulosText = function (valintatulos) {
                 var key = underscoreToCamelCase(valintatulos.valintatila);
+                var lang = ($rootScope.userLang || 'FI').toUpperCase();
                 if (["VASTAANOTTANUT_SITOVASTI", "EI_VASTAANOTETTU_MAARA_AIKANA", "EHDOLLISESTI_VASTAANOTTANUT"].indexOf(valintatulos.vastaanottotila) >= 0) {
                     key = underscoreToCamelCase(valintatulos.vastaanottotila)
                     return resultState[key]
-                } else if (!_.isEmpty(valintatulos.tilankuvaus)) {
+                } else if (!_.isEmpty(valintatulos.tilanKuvaukset) && !_.isEmpty(valintatulos.tilanKuvaukset[lang])) {
+                    var tilankuvaus = valintatulos.tilanKuvaukset[lang];
                     if (valintatulos.valintatila === "HYLATTY") {
-                        return resultState[key] + " " + valintatulos.tilankuvaus
+                        return resultState[key] + " " + tilankuvaus;
                     } else if(hyvaksytty(valintatulos) && valintatulos.ehdollisestiHyvaksyttavissa) {
                         return resultState[key] + " (ehdollinen)"
                     } else {
-                        return valintatulos.tilankuvaus
+                        return tilankuvaus;
                     }
                 } else if (valintatulos.valintatila === "VARALLA" && valintatulos.varasijojaTaytetaanAsti != null) {
                     return valintatulos.varasijanumero + ". varasijalla. Varasijoja täytetään " + $scope.formatDate(valintatulos.varasijojaTaytetaanAsti) + " asti.";
