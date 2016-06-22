@@ -286,7 +286,7 @@ angular.module('valintalaskenta').
                                 asiointikieli: langcode,
                                 letterBodyText: sisalto
                             }, {}, function (id) {
-                                Latausikkuna.avaa(id, "Hyväksymiskirjeet", "");
+                                Latausikkuna.avaa(id, "Hyväksymiskirjeet", "", false);
                             }, function () {
 
                             });
@@ -332,7 +332,7 @@ angular.module('valintalaskenta').
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
 					        	tag: tag, templateName: "jalkiohjauskirje"}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
-					            Latausikkuna.avaa(id, latausikkunaTeksti, "");
+					            Latausikkuna.avaa(id, latausikkunaTeksti, "", false);
 					        }, function () {
 					            
 					        });
