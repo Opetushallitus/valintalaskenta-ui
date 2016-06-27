@@ -47,6 +47,7 @@ public class ConfigController {
         if (!config.authMode.isEmpty()) {
             append(b, "AUTH_MODE", config.authMode);
         }
+        append(b, "SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET", Boolean.toString(config.showTilaHakijalleInSijoittelunTulokset));
         return b.toString();
     }
 

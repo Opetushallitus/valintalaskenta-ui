@@ -73,4 +73,7 @@ public class Config {
 
     @Value("${valintalaskenta-ui.session-max-idle-time.seconds:10000}")
     public Integer maxSessionIdleTimeInSeconds;
+
+    @Value("${valintalaskenta-ui.sijoitteluntulokset.show-tila-hakijalle:true}")
+    public boolean showTilaHakijalleInSijoittelunTulokset;
 }

@@ -290,7 +290,9 @@ angular.module('valintalaskenta')
 
                                     params.total(orderedData.length); // set total for recalc pagination
                                     var visibleSlice = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                                    haeTilaHakijalleTarvitsevilleHakemuksille(visibleSlice, valintatapajono.oid);
+                                    if (!"false" === SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
+                                        haeTilaHakijalleTarvitsevilleHakemuksille(visibleSlice, valintatapajono.oid);
+                                    }
                                     $defer.resolve(visibleSlice);
 
                                 }
