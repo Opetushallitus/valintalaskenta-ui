@@ -45,6 +45,6 @@
 	<div class="row">
 		<a ng-show="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('latausikkuna.keskeyta') || 'Keskeytä muodostus' }}</a>
 		<a ng-hide="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('latausikkuna.sulje') || 'Sulje latausikkuna' }}</a>
-		<a ng-class="{disabled: onKesken() || !naytaLatauspainike()}" class="btn btn-default btn-sm" ng-click="ok()"  role="button">{{ t('latausikkuna.lataa') || 'Lataa tiedosto' }}</a>
+		<a ng-class="{disabled: onKesken()}" class="btn btn-default btn-sm" ng-click="ok()"  role="button">{{ t('latausikkuna.lataa') || 'Lataa tiedosto' }}</a>
 	</div>
 </div>
