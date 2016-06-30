@@ -8,26 +8,36 @@
 
 <!-- HAUN TIEDOT -->
 <collapsible show="false" heading="{{ t('yhteisvalinnanhallinta.tiedot') || 'Haun tiedot' }}">
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.nimi.kieli_fi}}</div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.haku') || 'Haku' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.nimi.kieli_fi}}</div>
+    </div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hauntunniste') || 'Haun tunniste' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.haunTunniste}}</div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hauntunniste') || 'Haun tunniste' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.haunTunniste}}</div>
+    </div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuvuosi') || 'Hakuvuosi' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.hakukausiVuosi}}</div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuvuosi') || 'Hakuvuosi' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.hakukausiVuosi}}</div>
+    </div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoittelu') || 'Sijoittelu' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.sijoittelu ? 'Kyllä' : 'Ei'}}</div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.sijoittelu') || 'Sijoittelu' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">{{hakumodel.hakuOid.sijoittelu ? 'Kyllä' : 'Ei'}}</div>
+    </div>
 
-    <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuajat') || 'Hakuajat' }}</strong></div>
-    <div class="col-md-10 margin-bottom-1">
-        <ul class="list-unstyled">
-            <li ng-repeat="hakuaika in hakumodel.hakuOid.hakuaikas">
-                <strong ng-if="hakumodel.hakuOid.hakuaikas.length > 1">{{hakuaika.nimi}}</strong>
-                <span>{{hakuaika.alkuPvm | date:'dd.MM.yyyy HH:mm'}} - {{hakuaika.loppuPvm | date:'dd.MM.yyyy HH:mm'}}</span>
-            </li>
-        </ul>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">{{ t('yhteisvalinnanhallinta.hakuajat') || 'Hakuajat' }}</strong></div>
+        <div class="col-md-10 margin-bottom-1">
+            <ul class="list-unstyled">
+                <li ng-repeat="hakuaika in hakumodel.hakuOid.hakuaikas">
+                    <strong ng-if="hakumodel.hakuOid.hakuaikas.length > 1">{{hakuaika.nimi}}</strong>
+                    <span>{{hakuaika.alkuPvm | date:'dd.MM.yyyy HH:mm'}} - {{hakuaika.loppuPvm | date:'dd.MM.yyyy HH:mm'}}</span>
+                </li>
+            </ul>
+        </div>
     </div>
 
 
@@ -95,71 +105,157 @@
 </collapsible>
 
 <!-- SIJOITTELUN TULOKSET -->
-<collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Sijoittelun tulokset' }}">
+<collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Kirjeet ja sijoittelun tulokset' }}">
     <button ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
-    </button>
-    <button ng-click="sijoittelunTuloksetHyvaksymiskirjeiksi()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viehyvaksymiskirjeiksi') || 'Muodosta hyväksymiskirjeet koko haulle' }}
     </button>
     <button ng-click="sijoittelunTuloksetOsoitetarrat()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieosoitetarroiksi') || 'Vie osoitetarroiksi' }}
     </button>
 
-    <br>
-    <hr>
-
-    <button ng-click="muodostaHyvaksymiskirjeet('FI')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetsuomeksi') || 'Muodosta hyväksymiskirjeet suomeksi' }}
-    </button>
-    <button ng-click="muodostaHyvaksymiskirjeet('SV')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetruotsiksi') || 'Muodosta hyväksymiskirjeet ruotsiksi' }}
-    </button>
-    <button ng-click="muodostaHyvaksymiskirjeet('EN')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostahyvaksymiskirjeetenglanniksi') || 'Muodosta hyväksymiskirjeet englanniksi' }}
-    </button>
-
-    <br>
-
-</collapsible>
-
-<!-- Jälkiohjauskirjeet (2. aste) -->
-<collapsible ng-if="!korkeakoulu.isKorkeakoulu(hakumodel.hakuOid.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.jalkiohjaus') || 'Jälkiohjaus' }}">
-
-    <button ng-click="aktivoiJalkiohjaustuloksetXls()"
+    <button ng-if="!iskorkeakoulu" ng-click="aktivoiJalkiohjaustuloksetXls()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viejalkiohjaustuloksettaulukkolaskentaan') || 'Vie jälkiohjaustulokset taulukkolaskentaan' }}
     </button>
 
-    <button ng-click="muodostaJalkiohjauskirjeet('FI')"
-                     class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostasuomeksi') || 'Muodosta jälkiohjauskirjeet suomeksi' }}
-    </button>
-    <button ng-click="muodostaJalkiohjauskirjeet('SV')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaruotsiksi') || 'Muodosta jälkiohjauskirjeet ruotsiksi' }}
-    </button>
-    <button ng-click="muodostaJalkiohjauskirjeet('EN')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaenglanniksi') || 'Muodosta jälkiohjauskirjeet englanniksi' }}
-    </button>
-</collapsible>
-
-<!-- Ei hyväksyttyjen kirjeet (Korkeakoulut) -->
-<collapsible ng-if="korkeakoulu.isKorkeakoulu(hakumodel.hakuOid.kohdejoukkoUri)" heading="{{ t('yhteisvalinnanhallinta.eihyvaksytyt') || 'Ei-hyväksytyt' }}">
-
-    <button ng-click="aktivoiJalkiohjaustuloksetXls()"
+    <button ng-if="iskorkeakoulu" ng-click="aktivoiJalkiohjaustuloksetXls()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieeihyvaksyttyjentuloksettaulukkolaskentaan') || 'Vie ei-hyväksyttyjen tulokset taulukkolaskentaan' }}
     </button>
 
-    <button ng-click="muodostaJalkiohjauskirjeet('FI')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytsuomeksi') || 'Muodosta ei-hyväksyttyjen kirjeet suomeksi' }}
+    <button privileges="valintalaskenta"
+            href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
+            class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
     </button>
-    <button ng-click="muodostaJalkiohjauskirjeet('SV')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytruotsiksi') || 'Muodosta ei-hyväksyttyjen kirjeet ruotsiksi' }}
-    </button>
-    <button ng-click="muodostaJalkiohjauskirjeet('EN')"
-            class="btn btn-default btn-sm"><i class="fa fa-file"></i>&nbsp;{{ t('yhteisvalinnanhallinta.muodostaeihyvaksytytenglanniksi') || 'Muodosta ei-hyväksyttyjen englanniksi' }}
-    </button>
+
+    <br>
+    <hr>
+
+<form class="form-inline">
+        <div class="form-group">
+            <label for="kirjeenTyyppi">Kirje</label>
+            <select ng-init="ishyvaksymiskirje = 'true'" ng-model="ishyvaksymiskirje" id="kirjeenTyyppi" class="form-control">
+                <option value="true">hyväksymiskirje</option>
+                <option value="false" ng-if="iskorkeakoulu">ei-hyväksyttyjen kirje</option>
+                <option value="false" ng-if="!iskorkeakoulu">jälkiohjauskirje</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="kirjeenKieli">kieli</label>
+            <select ng-init="langcode = 'EN'" ng-model="langcode" id="kirjeenKieli" class="form-control">
+                <option value="FI">suomi</option>
+                <option value="SV">ruotsi</option>
+                <option value="EN">englanti</option>
+            </select>
+        </div>
+        <button ng-click="muodostaKirjeet(ishyvaksymiskirje=='true',langcode);" class="btn btn-default">{{ t('yhteisvalinnanhallinta.muodostakirjeet') || 'Muodosta kirjeet'}}</button>
+    </form>
+    <br>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Tuloskirjeiden muodostuksen tilanne</div>
+                <div class="panel-body">
+                    <button ng-click="paivitaTuloskirjeidenMuodostuksenTilanne();" class="btn btn-default">Päivitä muodostuksen tilanne</button>
+                </div>
+                <table class="table" ng-if="tuloskirjeet">
+                    <thead>
+                    <tr><th colspan="3">Hyväksymiskirjeet suomeksi</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{tuloskirjeet.hyvaksymiskirje.fi.letterReadyCount}}</td>
+                        <td>{{tuloskirjeet.hyvaksymiskirje.fi.letterTotalCount - (tuloskirjeet.hyvaksymiskirje.fi.letterReadyCount + tuloskirjeet.hyvaksymiskirje.fi.letterErrorCount)}}</td>
+                        <td>{{tuloskirjeet.hyvaksymiskirje.fi.letterErrorCount}}</td>
+                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.fi.readyForPublish" ng-click="julkaiseTuloskirjeet('fi', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table" ng-if="tuloskirjeet">
+                    <thead>
+                    <tr><th colspan="3">Hyväksymiskirjeet ruotsiksi</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{tuloskirjeet.hyvaksymiskirje.sv.letterReadyCount}}</td>
+                        <td>{{tuloskirjeet.hyvaksymiskirje.sv.letterTotalCount - (tuloskirjeet.hyvaksymiskirje.sv.letterReadyCount + tuloskirjeet.hyvaksymiskirje.sv.letterErrorCount)}}</td>
+                        <td>{{tuloskirjeet.hyvaksymiskirje.sv.letterErrorCount}}</td>
+                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.sv.readyForPublish" ng-click="julkaiseTuloskirjeet('sv', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table" ng-if="tuloskirjeet">
+                    <thead>
+                    <tr><th colspan="3">Hyväksymiskirjeet englanniksi</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{tuloskirjeet.hyvaksymiskirje.en.letterReadyCount}}</td>
+                        <td>{{tuloskirjeet.hyvaksymiskirje.en.letterTotalCount - (tuloskirjeet.hyvaksymiskirje.en.letterReadyCount + tuloskirjeet.hyvaksymiskirje.en.letterErrorCount)}}</td>
+                        <td>{{tuloskirjeet.hyvaksymiskirje.en.letterErrorCount}}</td>
+                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.en.readyForPublish" ng-click="julkaiseTuloskirjeet('en', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table" ng-if="tuloskirjeet">
+                    <thead>
+                    <tr ng-if="iskorkeakoulu"><th colspan="3">Ei-hyväksyttyjen kirjeet suomeksi</th></tr>
+                    <tr ng-if="!iskorkeakoulu"><th colspan="3">Jälkiohjauskirjeet suomeksi</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{tuloskirjeet.jalkiohjauskirje.fi.letterReadyCount}}</td>
+                        <td>{{tuloskirjeet.jalkiohjauskirje.fi.letterTotalCount - (tuloskirjeet.jalkiohjauskirje.fi.letterReadyCount + tuloskirjeet.jalkiohjauskirje.fi.letterErrorCount)}}</td>
+                        <td>{{tuloskirjeet.jalkiohjauskirje.fi.letterErrorCount}}</td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.fi.readyForPublish" ng-click="julkaiseTuloskirjeet('fi', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'jalkiohjauskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table" ng-if="tuloskirjeet">
+                    <thead>
+                    <tr ng-if="iskorkeakoulu"><th colspan="3">Ei-hyväksyttyjen kirjeet ruotsiksi</th></tr>
+                    <tr ng-if="!iskorkeakoulu"><th colspan="3">Jälkiohjauskirjeet ruotsiksi</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{tuloskirjeet.jalkiohjauskirje.sv.letterReadyCount}}</td>
+                        <td>{{tuloskirjeet.jalkiohjauskirje.sv.letterTotalCount - (tuloskirjeet.jalkiohjauskirje.sv.letterReadyCount + tuloskirjeet.jalkiohjauskirje.sv.letterErrorCount)}}</td>
+                        <td>{{tuloskirjeet.jalkiohjauskirje.sv.letterErrorCount}}</td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.sv.readyForPublish" ng-click="julkaiseTuloskirjeet('sv', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'jalkiohjauskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table" ng-if="tuloskirjeet">
+                    <thead>
+                    <tr ng-if="iskorkeakoulu"><th colspan="3">Ei-hyväksyttyjen kirjeet englanniksi</th></tr>
+                    <tr ng-if="!iskorkeakoulu"><th colspan="3">Jälkiohjauskirjeet englanniksi</th></tr>
+                    <tr><th>Valmiit</th><th>Kesken</th><th>Virheellisiä</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{tuloskirjeet.jalkiohjauskirje.en.letterReadyCount}}</td>
+                        <td>{{tuloskirjeet.jalkiohjauskirje.en.letterTotalCount - (tuloskirjeet.jalkiohjauskirje.en.letterReadyCount + tuloskirjeet.jalkiohjauskirje.en.letterErrorCount)}}</td>
+                        <td>{{tuloskirjeet.jalkiohjauskirje.en.letterErrorCount}}</td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForPublish" ng-click="julkaiseTuloskirjeet('en', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </collapsible>
-
-
 
     <!--KELAN TIEDONSIIRTO-->
 <collapsible ng-click="showKelaCollapsible = true" heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}">

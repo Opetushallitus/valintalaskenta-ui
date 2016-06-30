@@ -37,16 +37,16 @@ app.factory('VirheModel', function (HakuVirheet) {
 angular.module('valintalaskenta').
     controller('YhteisvalinnanHallintaController',['$scope', '$modal', '$interval', '_', 
         'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat', 'SijoittelunTulosHyvaksymiskirjeet', 
-        'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp',
-        '$log', '$timeout', '$q','$location', 
+        'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', 'ViestintapalveluProxy', 'ViestintapalveluJulkaiseProxy',
+        '$log', '$timeout', '$q','$location', 'ViestintapalveluEPosti',
         'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
         '$http', '$route', '$window', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
         'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat', 'Korkeakoulu',
         'CustomHakuUtil','Hyvaksymiskirjepohjat',
         function ($scope, $modal, $interval, _, 
         		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, 
-        		Jalkiohjauskirjepohjat, AktivoiKelaFtp, 
-        		$log, $timeout, $q, $location, 
+        		Jalkiohjauskirjepohjat, AktivoiKelaFtp, ViestintapalveluProxy, ViestintapalveluJulkaiseProxy,
+        		$log, $timeout, $q, $location, ViestintapalveluEPosti,
         		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
                 $http, $route, $window, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
                 HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat, Korkeakoulu,
@@ -62,6 +62,15 @@ angular.module('valintalaskenta').
     }
     $scope.jatkuva = {};
     $scope.korkeakoulu = Korkeakoulu;
+    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+    $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
+    $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
+    if(_.isEmpty(HakuModel.deferred)) { HakuModel.init($routeParams.hakuOid) }
+    $scope.hakumodel = HakuModel;
+    HakuModel.promise.then(function(h){
+        $scope.iskorkeakoulu = $scope.korkeakoulu.isKorkeakoulu(h.hakuOid.kohdejoukkoUri);
+    });
+
     $scope.nullIsUndefined = function(value) {
         if(value) {
             return value;
@@ -106,11 +115,7 @@ angular.module('valintalaskenta').
         });
     };
     
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
-    $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
-    $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
-    if(_.isEmpty(HakuModel.deferred)) { HakuModel.init($routeParams.hakuOid) }
-    $scope.hakumodel = HakuModel;
+
 
     $scope.virheet = VirheModel;
     $scope.naytaKokeita = 50;
@@ -252,6 +257,16 @@ angular.module('valintalaskenta').
         });
     };
 
+    $scope.muodostaKirjeet = function(hyvaksymiskirje, langcode) {
+        console.log("is hyvaksymiskirje? " + (hyvaksymiskirje == true));
+        console.log("using language " + langcode);
+        if(hyvaksymiskirje) {
+            $scope.muodostaHyvaksymiskirjeet(langcode);
+        } else {
+            $scope.muodostaJalkiohjauskirjeet(langcode);
+        }
+    }
+
     $scope.muodostaHyvaksymiskirjeet = function (langcode) {
         var hakuOid = $routeParams.hakuOid;
         var templateName = "hyvaksymiskirje";
@@ -271,7 +286,7 @@ angular.module('valintalaskenta').
                                 asiointikieli: langcode,
                                 letterBodyText: sisalto
                             }, {}, function (id) {
-                                Latausikkuna.avaa(id, "Hyväksymiskirjeet", "");
+                                Latausikkuna.avaa(id, "Hyväksymiskirjeet", "", false);
                             }, function () {
 
                             });
@@ -317,7 +332,7 @@ angular.module('valintalaskenta').
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
 					        	tag: tag, templateName: "jalkiohjauskirje"}, {hakemusOids: null,letterBodyText:sisalto, languageCode: langcode} , function (id) {
-					            Latausikkuna.avaa(id, latausikkunaTeksti, "");
+					            Latausikkuna.avaa(id, latausikkunaTeksti, "", false);
 					        }, function () {
 					            
 					        });
@@ -435,6 +450,84 @@ angular.module('valintalaskenta').
         }, function (error) {
             alert("virhe");
         });
+    };
+
+    $scope.paivitaTuloskirjeidenMuodostuksenTilanne = function() {
+        ViestintapalveluProxy.list(
+          {
+              hakuOid: $routeParams.hakuOid
+          }, function (response) {
+              $scope.tuloskirjeet = response;
+          }, function (error) {
+              console.log("ValintaTulosProxy error: " + error);
+          });
+    };
+
+    $scope.tuloskirjeteksti = function(tyyppi) {
+        switch(tyyppi) {
+            case 'jalkiohjauskirje':
+                return 'jälkiohjauskirjeet';
+            case 'hyvaksymiskirje':
+                return 'hyväksymiskirjeet';
+            default:
+                return '';
+        }
+    };
+
+    $scope.kieliteksti = function(asiointikieli) {
+        switch(asiointikieli) {
+            case 'fi':
+                return 'suomi';
+            case 'sv':
+                return 'ruotsi';
+            case 'en':
+                return 'englanti';
+            default:
+                return '';
+        }
+    };
+
+    $scope.julkaiseTuloskirjeet = function(asiointikieli, tyyppi) {
+        var ok = function() {
+            ViestintapalveluJulkaiseProxy.post({asiointikieli: asiointikieli, kirjeenTyyppi: tyyppi, hakuOid: $routeParams.hakuOid}, {
+            }, function (result) {
+                $scope.paivitaTuloskirjeidenMuodostuksenTilanne();
+                Ilmoitus.avaa("Tuloskirjeiden julkaisu", "Koko haun " + $scope.tuloskirjeteksti(tyyppi)
+                    + " julkaistu kielellä " + $scope.kieliteksti(asiointikieli) + "!");
+            }, function() {
+                Ilmoitus.avaa("Tuloskirjeiden julkaisu", "Tapahtui virhe, kun yritettiin julkaista haun "
+                    + $scope.tuloskirjeteksti(tyyppi) + " kielellä " + $scope.kieliteksti(asiointikieli) + "!",
+                    IlmoitusTila.ERROR);
+            });
+        };
+
+        Ilmoitus.avaaCancel("Tuloskirjeiden julkaisu", "Oletko varma, että haluat julkaista koko haun"
+            + $scope.tuloskirjeteksti(tyyppi) + " kielellä " + $scope.kieliteksti(asiointikieli) + "?",
+            IlmoitusTila.INFO, ok, function() {});
+    };
+
+    $scope.lahetaEPosti = function(asiointikieli, tyyppi) {
+        var ok = function() {
+            var postParams = {
+                hakuOid: $routeParams.hakuOid,
+                asiointikieli: asiointikieli,
+                kirjeenTyyppi: tyyppi
+            };
+
+            ViestintapalveluEPosti.post({}, postParams, function (result) {
+                $scope.paivitaTuloskirjeidenMuodostuksenTilanne();
+                Ilmoitus.avaa("ePostin lähetys", "Koko haun " + $scope.tuloskirjeteksti(tyyppi)
+                    + " kielellä " + $scope.kieliteksti(asiointikieli) + " lähetetty ePostilla!");
+            }, function() {
+                Ilmoitus.avaa("ePostin lähetys", "Tapahtui virhe, kun yritettiin lähettää ePostina haun "
+                    + $scope.tuloskirjeteksti(tyyppi) + " kielellä " + $scope.kieliteksti(asiointikieli) + "!",
+                    IlmoitusTila.ERROR);
+            });
+        };
+
+        Ilmoitus.avaaCancel("ePostin lähetys", "Oletko varma, että haluat lähettää ePostilla koko haun"
+            + $scope.tuloskirjeteksti(tyyppi) + " kielellä " + $scope.kieliteksti(asiointikieli) + "?",
+            IlmoitusTila.INFO, ok, function() {});
     };
 
     $scope.paivitaJatkuvanSijoittelunAloitus = function () {

@@ -159,11 +159,14 @@ angular.module('valintalaskenta')
         function($log, $modal, DokumenttiProsessinTila) {
     return {
 
-        avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli) {
+        avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli, naytaLatauspainike) {
             var timer = null;
             var cancelTimerWhenClosing = function() {
                 DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
             };
+            if(_.isUndefined(naytaLatauspainike)) {
+                naytaLatauspainike = true;
+            }
             $modal.open({
                 backdrop: 'static',
                 templateUrl: ikkunaHtml,
@@ -177,6 +180,9 @@ angular.module('valintalaskenta')
                     $scope.kutsuLaajennettuaMallia = function() {
                         $log.error($scope.prosessi.dokumenttiId);
                         laajennos($scope.prosessi.dokumenttiId);
+                    };
+                    $scope.nautaLatauspainike = function() {
+                        return naytaLatauspainike;
                     };
                     $scope.update = function() {
                         DokumenttiProsessinTila.lue({id: id.id}, function(data) {
@@ -238,8 +244,8 @@ angular.module('valintalaskenta')
                 });
 
         },
-        avaa: function(id, otsikko, lisatiedot) {
-            this.avaaKustomoitu(id,otsikko,lisatiedot,'../common/modaalinen/latausikkuna.html',{});
+        avaa: function(id, otsikko, lisatiedot, naytaLatausikkuna) {
+            this.avaaKustomoitu(id,otsikko,lisatiedot,'../common/modaalinen/latausikkuna.html',{},naytaLatausikkuna);
         }
     };
 }]);
