@@ -463,21 +463,25 @@ angular.module('valintalaskenta')
     return model;
 
     function fetchAndPopulateVastaanottoAikarajaMennyt(tilat) {
-        var hakemuksetOnLadattu = _.size(model.sijoitteluntulosHakijoittain) > 0;
-        if (hakemuksetOnLadattu) {
-            var kaikkiHakemukset = _.flatten(_.map(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
-                return valintatapajono.hakemukset;
-            }));
+        if (!"false" === SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
+            var hakemuksetOnLadattu = _.size(model.sijoitteluntulosHakijoittain) > 0;
+            if (hakemuksetOnLadattu) {
+                var kaikkiHakemukset = _.flatten(_.map(model.sijoitteluTulokset.valintatapajonot, function (valintatapajono) {
+                    return valintatapajono.hakemukset;
+                }));
 
-            var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function(h) {
-                return h.vastaanottoTila === "KESKEN" && h.julkaistavissa &&
-                  (h.tila === 'HYVAKSYTTY' || h.tila === 'VARASIJALTA_HYVAKSYTTY' || h.tila === 'PERUNUT');
-            }), function(relevanttiHakemus) {
-                return relevanttiHakemus.hakemusOid;
-            });
+                var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function (h) {
+                    return h.vastaanottoTila === "KESKEN" && h.julkaistavissa &&
+                        (h.tila === 'HYVAKSYTTY' || h.tila === 'VARASIJALTA_HYVAKSYTTY' || h.tila === 'PERUNUT');
+                }), function (relevanttiHakemus) {
+                    return relevanttiHakemus.hakemusOid;
+                });
 
-            VastaanottoUtil.fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously(model.hakuOid, model.hakukohdeOid, kaikkiHakemukset,
-              oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, function() { model.myohastymistietoLadattu = true });
+                VastaanottoUtil.fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously(model.hakuOid, model.hakukohdeOid, kaikkiHakemukset,
+                    oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, function () {
+                        model.myohastymistietoLadattu = true
+                    });
+            }
         }
         return tilat;
     }
