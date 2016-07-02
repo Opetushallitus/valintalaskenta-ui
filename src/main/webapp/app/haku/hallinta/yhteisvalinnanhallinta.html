@@ -246,8 +246,8 @@
                         <td>{{tuloskirjeet.jalkiohjauskirje.en.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.en.letterTotalCount - (tuloskirjeet.jalkiohjauskirje.en.letterReadyCount + tuloskirjeet.jalkiohjauskirje.en.letterErrorCount)}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.en.letterErrorCount}}</td>
-                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForPublish" ng-click="julkaiseTuloskirjeet('en', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
-                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForPublish" ng-click="julkaiseTuloskirjeet('en', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'jalkiohjauskirje')" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
