@@ -23,7 +23,7 @@
                     }}</h2>
                 <accordion close-others="true">
                     <accordion-group
-                            ng-repeat="valinnanvaihe in erillishaku |  orderBy:['viimeinenVaihe', '-jarjestysnumero'] track by $index"
+                            ng-repeat="valinnanvaihe in erillishaku |  orderBy:['-viimeinenVaihe', '-jarjestysnumero'] track by $index"
                             is-open="$first">
 
                         <accordion-heading>
