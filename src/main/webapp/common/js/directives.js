@@ -591,7 +591,7 @@ app.directive("valintatulos", function () {
                     } else if(hyvaksytty(valintatulos) && valintatulos.ehdollisestiHyvaksyttavissa) {
                         return resultState[key] + " (ehdollinen)"
                     } else {
-                        return valintatulos.tilanKuvaukset
+                        return tilanKuvaus(valintatulos)
                     }
                 } else if (valintatulos.valintatila === "VARALLA" && valintatulos.varasijojaTaytetaanAsti != null) {
                     return valintatulos.varasijanumero + ". varasijalla. Varasijoja täytetään " + $scope.formatDate(valintatulos.varasijojaTaytetaanAsti) + " asti.";
