@@ -236,7 +236,16 @@
           $scope.muokatutHakemukset = [];
           Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
         }, function (error) {
-          Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+          var statuses = (error && error.data && error.data.statuses) ? error.data.statuses : []
+          var errorCount = statuses.length;
+          var errorMsg = errorCount + "/" + $scope.muokatutHakemukset.length + " hakemuksen päivitys epäonnistui. ";
+          if (statuses.filter(function(status) { return status.status === 409; }).length > 0) {
+              errorMsg += "Tietoihin on tehty samanaikaisia muutoksia, päivitä sivu ja yritä uudelleen";
+          } else {
+              errorMsg += "Yritä uudelleen tai ota yhteyttä ylläpitoon.";
+          }
+          var errorRows = _.map(statuses, function(status) { return status.hakemusOid + ": " + status.message; });
+          Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! " + errorMsg, errorRows);
         });
       };
 
