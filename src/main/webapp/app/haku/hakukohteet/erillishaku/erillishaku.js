@@ -3,11 +3,11 @@
   .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
     'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti',
     'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', 'AuthService', 'UserModel','_', 'LocalisationService','ErillishakuVienti',
-    'ErillishakuProxy','ErillishakuTuonti','ErillishaunVastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet', 'Kirjepohjat','Kirjeet',
+    'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet', 'Kirjepohjat','Kirjeet',
     'VastaanottoUtil',
     function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti,TulosXls, HakukohdeModel, HakuModel, $http, AuthService, UserModel, _, LocalisationService,
-              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,ErillishaunVastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
+              ErillishakuVienti,ErillishakuProxy,ErillishakuTuonti,VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
               VastaanottoUtil) {
       "use strict";
 
@@ -228,7 +228,7 @@
       };
 
       $scope.submitLaskennalla = function (valintatapajono) {
-        ErillishaunVastaanottoTila.post({
+        VastaanottoTila.post({
           hakuoid: $routeParams.hakuOid,
           hakukohdeOid: $routeParams.hakukohdeOid,
           selite: "Massamuokkaus"

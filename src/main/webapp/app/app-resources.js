@@ -518,16 +518,6 @@ app.factory('ValintaesityksenHyvaksyminen', function($resource) {
             post: {method: "POST"}
         });
 });
-app.factory('ErillishaunVastaanottoTila', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/erillishaku/haku/:hakuoid/hakukohde/:hakukohdeOid?selite=:selite",
-        {
-            hakuoid: "@hakuoid",
-            hakukohdeOid: "@hakukohdeoid",
-            selite: "@selite"
-        }, {
-            post: {method: "POST"}
-        });
-});
 
 app.factory('SijoitteluTila', function($resource) {
     return $resource(SIJOITTELU_URL_BASE + "resources/tila/haku/:hakuoid/hakukohde/:hakukohdeOid/hakemus/:hakemusOid?tarjoajaOid=:tarjoajaOid",
