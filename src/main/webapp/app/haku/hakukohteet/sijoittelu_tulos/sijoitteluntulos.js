@@ -290,7 +290,7 @@ angular.module('valintalaskenta')
 
                                     params.total(orderedData.length); // set total for recalc pagination
                                     var visibleSlice = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                                    if (!"false" === SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
+                                    if ("false" !== SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
                                         haeTilaHakijalleTarvitsevilleHakemuksille(visibleSlice, valintatapajono.oid);
                                     }
                                     $defer.resolve(visibleSlice);
@@ -463,7 +463,7 @@ angular.module('valintalaskenta')
     return model;
 
     function fetchAndPopulateVastaanottoAikarajaMennyt(tilat) {
-        if (!"false" === SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
+        if ("false" !== SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
             var hakemuksetOnLadattu = _.size(model.sijoitteluntulosHakijoittain) > 0;
             if (hakemuksetOnLadattu) {
                 var kaikkiHakemukset = _.flatten(_.map(model.sijoitteluTulokset.valintatapajonot, function (valintatapajono) {
