@@ -23,7 +23,7 @@
 
       function valintatuloksenTilojenKielistykset(valintatuloksentilat) {
         return valintatuloksentilat.reduce(function(o, tila) {
-          o[tila.value] = tila.text_prop || tila.default_text;
+          o[tila.value] = tila.text || tila.default_text;
           return o;
         }, {});
       }

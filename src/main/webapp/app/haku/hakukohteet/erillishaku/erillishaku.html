@@ -126,7 +126,7 @@
                                                            ng-disabled="tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' || tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' || tulos.valintatuloksentila === 'VASTAANOTTANUT' || tulos.valintatuloksentila === 'PERUUTETTU' || tulos.valintatuloksentila === 'PERUNUT'"> <br/></div>
                                                 <div ng-show="tulos.julkaistavissa">
                                                     <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
-                                                    <span ng-bind="valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle].text || valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle].default_text"></span>
+                                                    <span ng-bind="valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle]"></span>
                                                     <div ng-if="tulos.vastaanottoAikaraja">
                                                         <span ng-bind="t('sijoitteluntulos.vastaanottoaikaraja') || 'Aikaraja'"/>: <span>{{tulos.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm' }}</span>
                                                     </div>
@@ -210,7 +210,7 @@
                                                     </div>
                                                     <div ng-show="tulos.julkaistavissa">
                                                         <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
-                                                        <span ng-bind="valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle].text || valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle].default_text"></span>
+                                                        <span ng-bind="valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle]"></span>
                                                     </div>
                                                     <div ng-switch="updateOrg && tulos.julkaistavissa && tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN'">
                                                         <select ng-switch-when="true"
