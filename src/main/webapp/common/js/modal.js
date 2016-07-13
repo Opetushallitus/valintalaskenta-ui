@@ -55,7 +55,7 @@ angular.module('valintalaskenta')
 //MODAALISET IKKUNAT
 .factory('Ilmoitus', ['$modal', 'IlmoitusTila', function($modal, IlmoitusTila) {
     return {
-        avaa: function(otsikko, ilmoitus, tila, callback) {
+        avaa: function(otsikko, ilmoitus, tila, callback, errorRows) {
             $modal.open({
                 backdrop: 'static',
                 templateUrl: '../common/modaalinen/ilmoitus.html',
@@ -69,6 +69,7 @@ angular.module('valintalaskenta')
                     $scope.ok = callback || function() {
                         $modalInstance.dismiss('ok');
                     };
+                    $scope.errorRows = errorRows
                 },
                 resolve: {
 

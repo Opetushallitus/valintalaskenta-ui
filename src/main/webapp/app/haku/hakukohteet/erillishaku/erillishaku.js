@@ -235,6 +235,7 @@
           selite: "Massamuokkaus"
         }, _.map($scope.muokatutHakemukset,$scope.hakemusToValintatulos(valintatapajono)), function (result) {
           $scope.muokatutHakemukset = [];
+          console.log(result);
           Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
         }, function (error) {
           var statuses = (error && error.data && error.data.statuses) ? error.data.statuses : []
@@ -246,7 +247,7 @@
               errorMsg += "Yritä uudelleen tai ota yhteyttä ylläpitoon.";
           }
           var errorRows = _.map(statuses, function(status) { return status.hakemusOid + ": " + status.message; });
-          Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! " + errorMsg, errorRows);
+          Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! " + errorMsg, IlmoitusTila.ERROR, null, errorRows);
         });
       };
 
