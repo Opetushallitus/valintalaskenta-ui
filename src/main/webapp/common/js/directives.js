@@ -909,9 +909,9 @@ app.directive('muokattuVastaanottoTila', function () {
                 if (isKk) {
                     $scope.hakemuksenMuokattuVastaanottoTilat = [
                         {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
-                        {value: "EHDOLLISESTI_VASTAANOTTANUT", text_prop: "sijoitteluntulos.ehdollisesti", default_text:"Ehdollisesti vastaanottanut"},
+                        {value: "EHDOLLISESTI_VASTAANOTTANUT", text_prop: "sijoitteluntulos.ehdollisestivastaanottanut", default_text:"Ehdollisesti vastaanottanut"},
                         {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
-                        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettu", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
                         {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
                         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"},
                         {value: "OTTANUT_VASTAAN_TOISEN_PAIKAN", text_prop: 'sijoitteluntulos.ottanutvastaantoisenpaikan', default_text:"Ottanut vastaan toisen paikan", disable: isEditable}
@@ -920,7 +920,7 @@ app.directive('muokattuVastaanottoTila', function () {
                     $scope.hakemuksenMuokattuVastaanottoTilat = [
                         {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
                         {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanottanut"},
-                        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+                        {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettu", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
                         {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"}
                     ];
                     if (updateOph) {
