@@ -271,13 +271,7 @@
                                         <!-- LASKENNAN TULOS -->
                                         <tr>
                                             <td>{{t('erillishaku.laskennantulos') || 'Laskennan tulos'}}</td>
-                                            <td>{{tulos.jarjestyskriteerit[0].tila}}</td>
-                                            <td>
-
-                                                <span ng-if="userLang=='fi' && tulos.jarjestyskriteerit[0].kuvaus.FI">{{tulos.jarjestyskriteerit[0].kuvaus.FI}}</span>
-                                                <span ng-if="userLang=='sv' && tulos.jarjestyskriteerit[0].kuvaus.SV">{{tulos.jarjestyskriteerit[0].kuvaus.SV}}</span>
-                                                <span ng-if="userLang=='en' && tulos.jarjestyskriteerit[0].kuvaus.EN">{{tulos.jarjestyskriteerit[0].kuvaus.EN}}</span>
-                                            </td>
+                                            <td>{{t('valintalaskentatulos.' + tulos.jarjestyskriteerit[0].tila.toLowerCase())}}</td>
                                             <td>
                                                 <jarjestyskriteeri-muokkaus
                                                         jonosija="tulos"
@@ -290,12 +284,7 @@
                                         <!-- SIJOITTELUN TULOS -->
                                         <tr ng-if="valinnanvaihe.viimeinenVaihe">
                                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>
-                                            <td>{{tulos.hakemuksentila}}</td>
-                                            <td>
-                                                <span ng-if="userLang=='fi' && tulos.tilanKuvaukset.FI">{{tulos.tilanKuvaukset.FI}}</span>
-                                                <span ng-if="userLang=='sv' && tulos.tilanKuvaukset.SV">{{tulos.tilanKuvaukset.SV}}</span>
-                                                <span ng-if="userLang=='en' && tulos.tilanKuvaukset.EN">{{tulos.tilanKuvaukset.EN}}</span>
-                                            </td>
+                                            <td>{{t('sijoitteluntulos.' + tulos.hakemuksentila.toLowerCase())}}</td>
                                             <td>
                                                 <sijoittelu-vastaanotto-tila hakemus="tulos"
                                                                              valintatapajono-oid="valintatapajono.oid"
