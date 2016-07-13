@@ -229,8 +229,9 @@
 
       $scope.submitLaskennalla = function (valintatapajono) {
         VastaanottoTila.post({
-          hakuoid: $routeParams.hakuOid,
+          hakuOid: $routeParams.hakuOid,
           hakukohdeOid: $routeParams.hakukohdeOid,
+          hyvaksyttyJonoOid: "",
           selite: "Massamuokkaus"
         }, _.map($scope.muokatutHakemukset,$scope.hakemusToValintatulos(valintatapajono)), function (result) {
           $scope.muokatutHakemukset = [];
