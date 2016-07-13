@@ -32,19 +32,20 @@
         $scope.korkeakoulu = model.korkeakoulu;
         if ($scope.korkeakoulu) {
           $scope.valintatuloksentilat = [
-            {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-            {value:"KESKEN",    default_text:"Kesken"},
-            {value:"PERUNUT",   default_text:"Perunut"},
-            {value:"PERUUTETTU",default_text:"Peruutettu"},
-            {value:"VASTAANOTTANUT_SITOVASTI", default_text:"Vastaanotettu sitovasti"},
-            {value:"OTTANUT_VASTAAN_TOISEN_PAIKAN", default_text:"Ottanut vastaan toisen paikan", disable: true}
+            {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
+            {value: "EHDOLLISESTI_VASTAANOTTANUT", text_prop: "sijoitteluntulos.ehdollisesti", default_text:"Ehdollisesti vastaanottanut"},
+            {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanutsitovasti", default_text:"Vastaanottanut sitovasti"},
+            {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+            {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
+            {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"},
+            {value: "OTTANUT_VASTAAN_TOISEN_PAIKAN", text_prop: 'sijoitteluntulos.ottanutvastaantoisenpaikan', default_text:"Ottanut vastaan toisen paikan", disable: true}
           ];
         } else {
           $scope.valintatuloksentilat = [
-            {value:"EI_VASTAANOTETTU_MAARA_AIKANA", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-            {value:"KESKEN",    default_text:"Kesken"},
-            {value:"PERUNUT",   default_text:"Perunut"},
-            {value:"VASTAANOTTANUT_SITOVASTI", default_text: "Vastaanotettu"}
+            {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
+            {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanotettu"},
+            {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettumaaraaikana", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
+            {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"}
           ];
         }
         $scope.valintatuloksenTilaKielistys = valintatuloksenTilojenKielistykset($scope.valintatuloksentilat);
