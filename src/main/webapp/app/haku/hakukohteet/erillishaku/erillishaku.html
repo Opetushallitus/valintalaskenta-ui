@@ -271,7 +271,7 @@
                                         <!-- LASKENNAN TULOS -->
                                         <tr>
                                             <td>{{t('erillishaku.laskennantulos') || 'Laskennan tulos'}}</td>
-                                            <td>{{t('valintalaskentatulos.' + tulos.jarjestyskriteerit[0].tila.toLowerCase())}}</td>
+                                            <td>{{t('valintalaskentatulos.' + tulos.jarjestyskriteerit[0].tila.toLowerCase()) || tulos.jarjestyskriteerit[0].tila}}</td>
                                             <td>
                                                 <jarjestyskriteeri-muokkaus
                                                         jonosija="tulos"
@@ -284,7 +284,7 @@
                                         <!-- SIJOITTELUN TULOS -->
                                         <tr ng-if="valinnanvaihe.viimeinenVaihe">
                                             <td>{{t('erillishaku.sijoitteluntulos') || 'Sijoittelun tulos'}}</td>
-                                            <td>{{t('sijoitteluntulos.' + tulos.hakemuksentila.toLowerCase())}}</td>
+                                            <td>{{t('sijoitteluntulos.' + tulos.hakemuksentila.toLowerCase()) || tulos.hakemuksentila}}</td>
                                             <td>
                                                 <sijoittelu-vastaanotto-tila hakemus="tulos"
                                                                              valintatapajono-oid="valintatapajono.oid"
