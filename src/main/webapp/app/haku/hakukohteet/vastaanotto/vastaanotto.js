@@ -28,7 +28,7 @@ angular.module('valintalaskenta')
           });
         });
         if (_.isFunction(dataloadedCallback)) {
-          dataloadedCallback();
+          dataloadedCallback(true);
         }
       });
 
@@ -44,6 +44,8 @@ angular.module('valintalaskenta')
             aikarajaMennytDeferred.reject(error);
           }
         );
+      } else {
+          dataloadedCallback(false);
       }
     }
   };

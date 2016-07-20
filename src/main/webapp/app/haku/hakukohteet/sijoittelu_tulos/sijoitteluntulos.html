@@ -115,9 +115,10 @@
                     </a>
                     <a ng-click="selectEiVastanotettuMaaraaikanaToAll(jono.oid)"
                        class="btn btn-default btn-sm margin-bottom-2"
-                       ng-class='(model.myohastymistietoLadattu && (updateOph || valintaesitysJulkaistavissa)) ? "" : "disabled"'>
+                       ng-class='(model.myohastymistietoLadattu && model.eraantyneitaHakemuksia && (updateOph || valintaesitysJulkaistavissa)) ? "" : "disabled"'>
                         {{ t('sijoitteluntulos.merkitsemyohastyneeksi') || 'Merkitse myöhästyneeksi' }}
                     </a>
+                    <img ng-if='!model.myohastymistietoLadattu' class="spinner" alt="loading" src="../common/img/ajax-loader-big.gif" />
                     <br/>
                     <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
                     <div>

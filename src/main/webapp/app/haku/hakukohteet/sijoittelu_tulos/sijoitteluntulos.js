@@ -82,6 +82,7 @@ angular.module('valintalaskenta')
             model.sijoitteluntulosHakijoittainArray = [];
             model.sijoitteluajoId = 0;
             model.myohastymistietoLadattu = false;
+            model.eraantyneitaHakemuksia = false;
 
             HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
                 model.haku = resultWrapper.result;
@@ -478,8 +479,9 @@ angular.module('valintalaskenta')
                 });
 
                 VastaanottoUtil.fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously(model.hakuOid, model.hakukohdeOid, kaikkiHakemukset,
-                    oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, function () {
-                        model.myohastymistietoLadattu = true
+                    oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, function (eraantyneitaHakemuksia) {
+                        model.myohastymistietoLadattu = true;
+                        model.eraantyneitaHakemuksia = eraantyneitaHakemuksia;
                     });
             }
         }
