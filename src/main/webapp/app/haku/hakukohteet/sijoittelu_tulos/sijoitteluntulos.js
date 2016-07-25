@@ -222,16 +222,12 @@ angular.module('valintalaskenta')
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
 
-                                            if ((currentHakemus.vastaanottoTila === "VASTAANOTTANUT" ||
-                                                 currentHakemus.vastaanottoTila === "VASTAANOTTANUT_SITOVASTI") &&
-                                                (currentHakemus.tila === "HYVAKSYTTY" ||
-                                                 currentHakemus.tila === "VARASIJALTA_HYVAKSYTTY")) {
-
-                                                hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
-                                            }
-
-                                            if (currentHakemus.vastaanottoTila === "EHDOLLISESTI_VASTAANOTTANUT") {
-                                                hakemuserittely.ehdollisesti.push(currentHakemus);
+                                            if (_.contains(['HYVAKSYTTY', 'VARASIJALTA_HYVAKSYTTY'], currentHakemus.tila)) {
+                                                if (_.contains(['VASTAANOTTANUT', 'VASTAANOTTANUT_SITOVASTI'], currentHakemus.vastaanottoTila)) {
+                                                    hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
+                                                } else if (currentHakemus.vastaanottoTila === 'EHDOLLISESTI_VASTAANOTTANUT') {
+                                                    hakemuserittely.ehdollisesti.push(currentHakemus);
+                                                }
                                             }
 
                                             if (vastaanottotila.ilmoittautumisTila === null) {
