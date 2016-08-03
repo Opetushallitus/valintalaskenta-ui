@@ -888,6 +888,16 @@ angular.module('valintalaskenta')
                 _.every($scope.model.sijoitteluTulokset.valintatapajonot, 'valintaesitysHyvaksytty');
     };
 
+    $scope.currentHakuIsToinenAsteHaku = function() {
+        return isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
+    };
+
+    $scope.showCorrectHakemuksenTila = function(hakemuksenTila) {
+        if (hakemuksenTila === 'VASTAANOTTANUT_SITOVASTI' &&
+            isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri)) return 'VASTAANOTTANUT';
+        else return hakemuksenTila;
+    };
+
     UserModel.refreshIfNeeded()
 }]);
 

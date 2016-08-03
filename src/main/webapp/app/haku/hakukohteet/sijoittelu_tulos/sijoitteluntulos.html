@@ -187,7 +187,7 @@
                                             <div>
                                                 <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>
                                                 <span>: </span>
-                                                <span ng-bind="t('sijoitteluntulos.' + ( hakemus.tilaHakijalle.toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores"></span>
+                                                <span ng-bind="t('sijoitteluntulos.' + ( showCorrectHakemuksenTila(hakemus.tilaHakijalle).toLowerCase() | removeUnderscores) ) || hakemus.tilaHakijalle.toLowerCase() | removeUnderscores"></span>
                                                 <div ng-if="hakemus.vastaanottoAikaraja">
                                                     <span ng-bind="t('sijoitteluntulos.vastaanottoaikaraja') || 'Aikaraja'"></span>:
                                                     <span>{{hakemus.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm'}}</span>
@@ -207,7 +207,7 @@
                                     </div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.muokattu') || 'Muokattu')" sortable="'muokattuVastaanottoTila'">
-                                    <span ng-if="hakemus.naytetaanVastaanottotieto && hakemus.logEntries[hakemus.logEntries.length-1].luotu">{{hakemus.muokattuVastaanottoTila}}</span>
+                                    <span ng-if="hakemus.naytetaanVastaanottotieto && hakemus.logEntries[hakemus.logEntries.length-1].luotu">{{showCorrectHakemuksenTila(hakemus.muokattuVastaanottoTila)}}</span>
                                     <modal ng-if="hakemus.naytetaanVastaanottotieto" modal-template="sijoitteluLogModal.html">
                                         <modal-open>
                                             {{hakemus.logEntries[hakemus.logEntries.length-1].luotu
