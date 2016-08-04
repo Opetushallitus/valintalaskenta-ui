@@ -15,14 +15,14 @@
 	</div>
 	<div ng-if="uuid">
 		<div class="row">
-			<div ng-if="tila=='ALOITTAMATTA'" class="col-sm-4">Tehtävä on laskennassa jonosijalla {{jonosija}}.</div>
-			<div ng-if="tila=='MENEILLAAN'" class="col-sm-4">Tehtävä on laskennassa parhaillaan.</div>
-			<div ng-if="seurataankoOlemassaAjossaOlevaaLaskentaa">Laskenta oli jo käynnissä. Seurataan suorituksessa olevan laskennan etenemistä.</div>
+			<div ng-if="tila=='ALOITTAMATTA'" class="col-sm-4">{{ t('valintalaskentaikkuna.laskennassajonosijalla') || 'Tehtävä on laskennassa jonosijalla' }} {{jonosija}}.</div>
+			<div ng-if="tila=='MENEILLAAN'" class="col-sm-4">{{ t('valintalaskentaikkuna.laskennassaparhaillaan') || 'Tehtävä on laskennassa parhaillaan' }}.</div>
+			<div ng-if="seurataankoOlemassaAjossaOlevaaLaskentaa">{{ t('valintalaskentaikkuna.laskentakaynnissa') || 'Laskenta oli jo käynnissä. Seurataan ajossa olevan laskennan etenemistä' }}.</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4">Hakukohteita valmiina {{tehty}} / {{kaikkityot}}</div>
+			<div class="col-sm-4">{{ t('valintalaskentaikkuna.hakukohteitavalmiina') || 'Hakukohteita valmiina' }} {{tehty}} / {{kaikkityot}}</div>
 			<div ng-if="ohitettu">
-				<div class="col-sm-4">Hakukohteita ohitettu {{ohitettu}} / {{kaikkityot}}</div>
+				<div class="col-sm-4">{{ t('valintalaskentaikkuna.hakukohteitaohitettu') || 'Hakukohteita ohitettu' }} {{ohitettu}} / {{kaikkityot}}</div>
 			</div>
 		</div>
 	</div>
@@ -31,7 +31,7 @@
 	<div class="row">
 		<a ng-hide="hideUudelleenYritys()" class="btn btn-default" ng-click="uudelleenyrita()">{{ t('valintalaskentaikkuna.uudelleenyrita') || 'Yritä uudelleen ohitettuja hakukohteita' }}</a>
 		<a class="btn btn-default" ng-click="ok()"  role="button">{{ t('valintalaskentaikkuna.sulje') || 'Sulje ikkuna' }}</a>
-	    <a class="btn btn-default" ng-click="naytaLisaa()"  role="button"><span ng-hide="lisaa">Lisää &raquo;</span><span ng-show="lisaa">{{ t('valintalaskentaikkuna.vahemman') || 'Vähemmän' }} &laquo;</span></a>
+	    <a class="btn btn-default" ng-click="naytaLisaa()"  role="button"><span ng-hide="lisaa">{{ t('valintalaskentaikkuna.lisaa') || 'Lisää' }} &raquo;</span><span ng-show="lisaa">{{ t('valintalaskentaikkuna.vahemman') || 'Vähemmän' }} &laquo;</span></a>
 	</div>
 	<br>
 	<div class="row" ng-show="lisaa">
