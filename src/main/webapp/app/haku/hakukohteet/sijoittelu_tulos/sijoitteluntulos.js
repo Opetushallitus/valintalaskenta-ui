@@ -901,9 +901,14 @@ angular.module('valintalaskenta')
     UserModel.refreshIfNeeded()
 }]);
 
-app.filter('removeUnderscores', function(){
+app.filter('removeUnderscores', function() {
     return function(obj){
-        return obj.replace(/_/g, "");
+        // try to replace only if type is string
+        if (typeof obj === 'string'){
+            return obj.replace(/_/g, "");
+        } else {
+            return obj;
+        }
     }
 });
 
