@@ -188,7 +188,7 @@
                                         <td data-title="(t('valintalaskentatulos.valintatieto') || 'Valintatieto')" sortable="'tuloksenTila'">
                                             <modal modal-template="modal.html" window-class="wide">
                                                 <modal-open>
-                                                    {{tulos.tuloksenTila}}
+                                                    {{t('valintalaskentatulos.' + tulos.tuloksenTila.toLowerCase() | removeUnderscores) || tulos.tuloksenTila}}
                                                 </modal-open>
                                             </modal>
                                         </td>
