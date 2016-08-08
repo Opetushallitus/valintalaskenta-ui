@@ -226,14 +226,9 @@
 
       var hakemuksetByValintatapajonoOid = function (muokatutHakemukset, valintatapajonoOid) {
         if (valintatapajonoOid) {
-          var hakemuksetOidinMukaan = muokatutHakemukset[valintatapajonoOid];
-          if (hakemuksetOidinMukaan && hakemuksetOidinMukaan.length != 0) {
-            return hakemuksetOidinMukaan;
-          } else {
-            return [];
-          }
+          return muokatutHakemukset[valintatapajonoOid] || [];
         } else {
-          console.error('Muokattuja hakemuksia haetaan ilman valintatapajono oidia.');
+          console.error('Muokattuja hakemuksia haetaan ilman valintatapajono oidia');
           return [];
         }
       };
@@ -276,9 +271,7 @@
           joMuokatut = _.uniq(joMuokatut);
           $scope.muokatutHakemukset[valintatapajono.oid] = joMuokatut;
         } else {
-          var uudetMuokatut = [];
-          uudetMuokatut.push(hakemus);
-          $scope.muokatutHakemukset[valintatapajono.oid] = uudetMuokatut;
+          $scope.muokatutHakemukset[valintatapajono.oid] = [hakemus];
         }
       };
 
