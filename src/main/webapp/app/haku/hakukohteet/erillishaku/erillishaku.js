@@ -11,7 +11,7 @@
               VastaanottoUtil) {
       "use strict";
 
-      $scope.muokatutHakemukset = [];
+      $scope.muokatutHakemukset = {};
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
       $scope.hakuOid =  $routeParams.hakuOid;
       $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
@@ -224,24 +224,41 @@
         };
       };
 
+      var hakemuksetByValintatapajonoOid = function (muokatutHakemukset, valintatapajonoOid) {
+        if (valintatapajonoOid) {
+          var hakemuksetOidinMukaan = muokatutHakemukset[valintatapajonoOid];
+          if (hakemuksetOidinMukaan && hakemuksetOidinMukaan.length != 0) {
+            return hakemuksetOidinMukaan;
+          } else {
+            return [];
+          }
+        } else {
+          console.error('Muokattuja hakemuksia haetaan ilman valintatapajono oidia.');
+          return [];
+        }
+      };
+
+      $scope.hakemuksetByValintatapajonoOid = hakemuksetByValintatapajonoOid;
+
       $scope.submitIlmanLaskentaa = function (valintatapajono) {
-        $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map($scope.muokatutHakemukset,$scope.hakemusToErillishakuRivi));
+        var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
+        $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
       };
 
       $scope.submitLaskennalla = function (valintatapajono) {
+        var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
         VastaanottoTila.post({
           hakuOid: $routeParams.hakuOid,
           hakukohdeOid: $routeParams.hakukohdeOid,
           hyvaksyttyJonoOid: "",
           selite: "Massamuokkaus"
-        }, _.map($scope.muokatutHakemukset,$scope.hakemusToValintatulos(valintatapajono)), function (result) {
-          $scope.muokatutHakemukset = [];
-          console.log(result);
+        }, _.map(hakemukset, $scope.hakemusToValintatulos(valintatapajono)), function (result) {
+          delete $scope.muokatutHakemukset[valintatapajono.oid];
           Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
         }, function (error) {
-          var statuses = (error && error.data && error.data.statuses) ? error.data.statuses : []
+          var statuses = (error && error.data && error.data.statuses) ? error.data.statuses : [];
           var errorCount = statuses.length;
-          var errorMsg = errorCount + "/" + $scope.muokatutHakemukset.length + " hakemuksen päivitys epäonnistui. ";
+          var errorMsg = errorCount + "/" + hakemukset.length + " hakemuksen päivitys epäonnistui. ";
           if (statuses.filter(function(status) { return status.status === 409; }).length > 0) {
               errorMsg += "Tietoihin on tehty samanaikaisia muutoksia, päivitä sivu ja yritä uudelleen";
           } else {
@@ -252,9 +269,17 @@
         });
       };
 
-      $scope.addMuokattuHakemus = function (hakemus) {
-        $scope.muokatutHakemukset.push(hakemus);
-        $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset);
+      $scope.addMuokattuHakemus = function (hakemus, valintatapajono) {
+        var joMuokatut = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
+        if (joMuokatut && joMuokatut.length > 0) {
+          joMuokatut.push(hakemus);
+          joMuokatut = _.uniq(joMuokatut);
+          $scope.muokatutHakemukset[valintatapajono.oid] = joMuokatut;
+        } else {
+          var uudetMuokatut = [];
+          uudetMuokatut.push(hakemus);
+          $scope.muokatutHakemukset[valintatapajono.oid] = uudetMuokatut;
+        }
       };
 
       $scope.muutaSijoittelunStatus = function (jono, status) {

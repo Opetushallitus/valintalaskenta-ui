@@ -91,7 +91,7 @@
                                                 <input type="checkbox"
                                                        ng-hide="tulos.onkoVastaanottanut"
                                                        ng-model="tulos.poistetaankoRivi"
-                                                       ng-change="addMuokattuHakemus(tulos)"> <br/>
+                                                       ng-change="addMuokattuHakemus(tulos, valintatapajono)"> <br/>
                                             </td>
                                             <td class="leftorientedcolumn">
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
@@ -105,25 +105,29 @@
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.hakemuksentila"
                                                             ng-options="opt.value as opt.text for opt in hakemuksentilat"
-                                                            ng-change="addMuokattuHakemus(tulos)">
+                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                     </select>
                                                     <select disabled="disabled"
                                                             ng-switch-default
                                                             ng-model="tulos.hakemuksentila"
                                                             ng-options="opt.value as opt.text for opt in hakemuksentilat"
-                                                            ng-change="addMuokattuHakemus(tulos)">
+                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                     </select>
                                                 </div>
                                                 <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
                                                     <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                                     <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
-                                                           ng-change="addMuokattuHakemus(tulos)"/>
+                                                           ng-change="addMuokattuHakemus(tulos, valintatapajono)"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:
-                                                    <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"
-                                                           ng-disabled="tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' || tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' || tulos.valintatuloksentila === 'VASTAANOTTANUT' || tulos.valintatuloksentila === 'PERUUTETTU' || tulos.valintatuloksentila === 'PERUNUT'"> <br/></div>
+                                                    <input type="checkbox" ng-change="addMuokattuHakemus(tulos, valintatapajono)" ng-model="tulos.julkaistavissa"
+                                                           ng-disabled="tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI'||
+                                                                        tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' ||
+                                                                        tulos.valintatuloksentila === 'VASTAANOTTANUT' ||
+                                                                        tulos.valintatuloksentila === 'PERUUTETTU' ||
+                                                                        tulos.valintatuloksentila === 'PERUNUT'"> <br/></div>
                                                 <div ng-show="tulos.julkaistavissa">
                                                     <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
                                                     <span ng-bind="valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle]"></span>
@@ -137,13 +141,13 @@
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.valintatuloksentila"
                                                             ng-options="opt.value as opt.text disable when opt.disable for opt in valintatuloksentilat"
-                                                            ng-change="addMuokattuHakemus(tulos)">
+                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                     </select>
                                                     <select disabled="disabled"
                                                             ng-switch-default
                                                             ng-model="tulos.valintatuloksentila"
                                                             ng-options="opt.value as opt.text for opt in valintatuloksentilat"
-                                                            ng-change="addMuokattuHakemus(tulos)">
+                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                     </select>
                                                 </div>
                                             </td>
@@ -152,13 +156,13 @@
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.ilmoittautumistila"
                                                             ng-options="opt.value as opt.text for opt in ilmoittautumistilat"
-                                                            ng-change="addMuokattuHakemus(tulos)">
+                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                     </select>
                                                     <select disabled="disabled"
                                                             ng-switch-default
                                                             ng-model="tulos.ilmoittautumistila"
                                                             ng-options="opt.value as opt.text for opt in ilmoittautumistilat"
-                                                            ng-change="addMuokattuHakemus(tulos)">
+                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                     </select>
                                                 </div>
                                             </td>
@@ -180,7 +184,7 @@
                                         <tfoot>
                                             <tr>
                                                 <td>
-                                                <button ng-disabled="muokatutHakemukset.length == 0" ng-click="submitIlmanLaskentaa(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
+                                                <button ng-disabled="hakemuksetByValintatapajonoOid(muokatutHakemukset, valintatapajono.oid).length == 0" ng-click="submitIlmanLaskentaa(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -207,8 +211,12 @@
                                                     {{ t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'}}:
                                                     <div class="white-space-nowrap">
                                                         <span>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:</span>
-                                                        <input type="checkbox" ng-change="addMuokattuHakemus(tulos)" ng-model="tulos.julkaistavissa"
-                                                               ng-disabled="tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' || tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' || tulos.valintatuloksentila === 'VASTAANOTTANUT' || tulos.valintatuloksentila === 'PERUUTETTU' || tulos.valintatuloksentila === 'PERUNUT'">
+                                                        <input type="checkbox" ng-change="addMuokattuHakemus(tulos, valintatapajono)" ng-model="tulos.julkaistavissa"
+                                                               ng-disabled="tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI' ||
+                                                                            tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' ||
+                                                                            tulos.valintatuloksentila === 'VASTAANOTTANUT' ||
+                                                                            tulos.valintatuloksentila === 'PERUUTETTU' ||
+                                                                            tulos.valintatuloksentila === 'PERUNUT'">
                                                     </div>
                                                     <div ng-show="tulos.julkaistavissa">
                                                         <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
@@ -218,19 +226,19 @@
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.valintatuloksentila"
                                                                 ng-options="opt.value as opt.text disable when opt.disable for opt in valintatuloksentilat"
-                                                                ng-change="addMuokattuHakemus(tulos)">
+                                                                ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                         </select>
                                                         <select disabled="disabled"
                                                                 ng-switch-default
                                                                 ng-model="tulos.valintatuloksentila"
                                                                 ng-options="opt.value as opt.text for opt in valintatuloksentilat"
-                                                                ng-change="addMuokattuHakemus(tulos)">
+                                                                ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                         </select>
                                                     </div>
                                                     <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
                                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                                         <input ng-disabled="!(updateOph)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
-                                                               ng-change="addMuokattuHakemus(tulos)"/>
+                                                               ng-change="addMuokattuHakemus(tulos, valintatapajono)"/>
                                                     </div>
                                                 </div>
 
@@ -243,13 +251,13 @@
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.ilmoittautumistila"
                                                                 ng-options="opt.value as opt.text for opt in ilmoittautumistilat"
-                                                                ng-change="addMuokattuHakemus(tulos)">
+                                                                ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                         </select>
                                                         <select disabled="disabled"
                                                                 ng-switch-default
                                                                 ng-model="tulos.ilmoittautumistila"
                                                                 ng-options="opt.value as opt.text for opt in ilmoittautumistilat"
-                                                                ng-change="addMuokattuHakemus(tulos)">
+                                                                ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -301,7 +309,7 @@
                                         <tfoot>
                                         <tr>
                                             <td>
-                                                <button ng-show="valintatapajono.kaytetaanValintalaskentaa" ng-disabled="muokatutHakemukset.length == 0" ng-click="submitLaskennalla(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
+                                                <button ng-show="valintatapajono.kaytetaanValintalaskentaa" ng-disabled="hakemuksetByValintatapajonoOid(muokatutHakemukset, valintatapajono.oid).length == 0" ng-click="submitLaskennalla(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
                                             </td>
                                         </tr>
                                         </tfoot>
