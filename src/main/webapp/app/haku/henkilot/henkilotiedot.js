@@ -345,11 +345,7 @@ angular.module('valintalaskenta').
     $scope.korkeakoulu = Korkeakoulu;
 
     $scope.hakuaVastaavaJalkiohjauskirjeMuotti = function() {
-    	if(HakuModel.hakuOid.nivelvaihe) {
-    		return "jalkiohjauskirje_nivel";	
-    	}else {
-	    	return "jalkiohjauskirje";
-	    }
+	    return "jalkiohjauskirje";
     };
     $scope.muodostaJalkiohjauskirje = function () {
         var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakuModel.hakuOid.kohdejoukkoUri);
