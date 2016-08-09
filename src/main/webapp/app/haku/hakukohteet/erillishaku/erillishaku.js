@@ -67,6 +67,7 @@ angular.module('valintalaskenta')
       LocalisationService.getTranslationsForArray($scope.hakemuksentilat).then(function () {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
       });
+
       $scope.showEhdollinenHyvaksynta = function() {
         return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
       };
@@ -86,17 +87,48 @@ angular.module('valintalaskenta')
       LocalisationService.getTranslationsForArray($scope.ilmoittautumistilat).then(function () {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
       });
+
       $scope.isVaaraVastaanottotila = function(tila) {
         return tila === 'VASTAANOTTANUT';
-      }
+      };
+
       $scope.isVastaanottanut = function(tila) {
         return tila === 'VASTAANOTTANUT_SITOVASTI';
-      }
+      };
 
-      ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid},function(erillishaku) {
-        var hakemukset = _.chain(erillishaku).map(function(e){return e.valintatapajonot}).flatten().map(function(v){return v.hakemukset;}).flatten();
+      var isKeinotekoinenOid = function (oid) {
+        return !oid ? false : /MISSING/.test(oid);
+      };
+
+      var addKeinotekoinenOidIfMissing = function (valintatapajono, i) {
+        if (!valintatapajono.oid) {
+          valintatapajono.oid = "MISSING_OID_" + (i + 1);
+        }
+
+        return valintatapajono;
+      };
+
+      var populateValintatapajonoOidsIfMissing = function (erillishaku) {
+        erillishaku.forEach(function (e) {
+          e.valintatapajonot.forEach(addKeinotekoinenOidIfMissing);
+        });
+
+        return erillishaku;
+      };
+
+      ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (erillishaku) {
+        var hakemukset = _.chain(erillishaku)
+          .map(function (e) { return e.valintatapajonot; })
+          .flatten()
+          .map(function (v) { return v.hakemukset; })
+          .flatten();
+
+        // Populate valintatapajonoOids if they are missing to "MISSING_OID"
+        erillishaku = populateValintatapajonoOidsIfMissing(erillishaku);
+
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, hakemukset.value());
-        hakemukset.each(function(hakemus) {
+
+        hakemukset.each(function (hakemus) {
           hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI';
           if (hakemus.hyvaksymiskirjeLahetetty) {
             hakemus.hyvaksymiskirjeLahetettyPvm = hakemus.hyvaksymiskirjeLahetetty;
@@ -138,7 +170,7 @@ angular.module('valintalaskenta')
 
       $scope.getHakijanSijoitteluTulos = function (valintatapajono, hakija) {
         var jono = _.find($scope.model.erillishakuSijoitteluajoTulos.valintatapajonot, function (item) {
-          return item.oid === valintatapajono.oid;
+          return item.oid === valintatapajono.oid || !item.oid;
         });
 
         if(!_.isEmpty(jono)) {
@@ -150,7 +182,7 @@ angular.module('valintalaskenta')
 
       $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
         ValintatapajonoVienti.vie({
-            valintatapajonoOid: valintatapajonoOid,
+            valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid,
             valintatapajononNimi: valintatapajononNimi,
             hakukohdeOid: $scope.hakukohdeOid,
             hakuOid: $routeParams.hakuOid},
@@ -172,14 +204,14 @@ angular.module('valintalaskenta')
       };
 
       $scope.showTilaPartial = function(valintatulos) {
-        if(valintatulos.showTilaPartial === null || valintatulos.showTilaPartial === false) {
+        if (valintatulos.showTilaPartial === null || valintatulos.showTilaPartial === false) {
           valintatulos.showTilaPartial = true;
         } else {
           valintatulos.showTilaPartial = false;
         }
       };
       $scope.showHenkiloPartial = function(valintatulos) {
-        if(valintatulos.showHenkiloPartial === null || valintatulos.showHenkiloPartial === false) {
+        if (valintatulos.showHenkiloPartial === null || valintatulos.showHenkiloPartial === false) {
           valintatulos.showHenkiloPartial = true;
         } else {
           valintatulos.showHenkiloPartial = false;
@@ -187,7 +219,6 @@ angular.module('valintalaskenta')
       };
 
       $scope.hakemusToErillishakuRivi = function (hakemus) {
-        //$log.info(hakemus);
         return {
           etunimi: hakemus.etunimi,
           sukunimi: hakemus.sukunimi,
@@ -213,7 +244,7 @@ angular.module('valintalaskenta')
             ilmoittautumisTila: hakemus.ilmoittautumistila,
             hakukohdeOid: $scope.hakukohdeOid,
             hakuOid: $routeParams.hakuOid,
-            valintatapajonoOid: valintatapajono.oid,
+            valintatapajonoOid: isKeinotekoinenOid(valintatapajono.oid) ? null : valintatapajono.oid,
             hakemusOid: hakemus.hakemusOid,
             hakijaOid: hakemus.hakijaOid,
             julkaistavissa: hakemus.julkaistavissa,
@@ -225,12 +256,7 @@ angular.module('valintalaskenta')
       };
 
       var hakemuksetByValintatapajonoOid = function (muokatutHakemukset, valintatapajonoOid) {
-        if (valintatapajonoOid) {
           return muokatutHakemukset[valintatapajonoOid] || [];
-        } else {
-          console.error('Muokattuja hakemuksia haetaan ilman valintatapajono oidia');
-          return [];
-        }
       };
 
       $scope.hakemuksetByValintatapajonoOid = hakemuksetByValintatapajonoOid;
@@ -264,14 +290,19 @@ angular.module('valintalaskenta')
         });
       };
 
+      var addToMuokattuHakemusList = function (joMuokatut, hakemus, valintatapajonoOid) {
+        joMuokatut.push(hakemus);
+        joMuokatut = _.uniq(joMuokatut);
+        $scope.muokatutHakemukset[valintatapajonoOid] = joMuokatut;
+      };
+
       $scope.addMuokattuHakemus = function (hakemus, valintatapajono) {
         var joMuokatut = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
+
         if (joMuokatut && joMuokatut.length > 0) {
-          joMuokatut.push(hakemus);
-          joMuokatut = _.uniq(joMuokatut);
-          $scope.muokatutHakemukset[valintatapajono.oid] = joMuokatut;
+            addToMuokattuHakemusList(joMuokatut, hakemus, valintatapajono.oid);
         } else {
-          $scope.muokatutHakemukset[valintatapajono.oid] = [hakemus];
+            $scope.muokatutHakemukset[valintatapajono.oid] = [hakemus];
         }
       };
 
@@ -317,7 +348,7 @@ angular.module('valintalaskenta')
             hakuOid: $routeParams.hakuOid,
             valintatapajononNimi: valintatapajononNimi,
             tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
-            valintatapajonoOid: valintatapajonoOid
+            valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
           },
           {rivit: json}, function (id) {
             Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
@@ -339,7 +370,7 @@ angular.module('valintalaskenta')
             hakuOid: $routeParams.hakuOid,
             valintatapajononNimi: valintatapajononNimi,
             tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
-            valintatapajonoOid: valintatapajonoOid
+            valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
           },
           {}, function (id) {
             Latausikkuna.avaa(id, "Erillishaun hakukohteen vienti taulukkolaskentaan", "");
@@ -355,7 +386,7 @@ angular.module('valintalaskenta')
         var hakuOid = $routeParams.hakuOid;
         var url =
           VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid;
-        if(valintatapajonoOid) {
+        if(!isKeinotekoinenOid(valintatapajonoOid)) {
           url = url + "&valintatapajonoOid="+valintatapajonoOid;
         }
         if(valintatapajononNimi) {
@@ -391,7 +422,7 @@ angular.module('valintalaskenta')
         var hakutyyppi = $scope.getHakutyyppi();
         var url =
           VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" + hakukohdeOid +"&hakutyyppi="+hakutyyppi;
-        if(valintatapajonoOid) {
+        if(!isKeinotekoinenOid(valintatapajonoOid)) {
           url = url + "&valintatapajonoOid="+valintatapajonoOid;
         }
         if(valintatapajononNimi) {
@@ -417,19 +448,19 @@ angular.module('valintalaskenta')
           });
         };
       };
-      $scope.updateHyvaksymiskirjeLahetettyPvm = function (hakemus) {
+      $scope.updateHyvaksymiskirjeLahetettyPvm = function (hakemus, valintatapajono) {
         if (hakemus.hyvaksymiskirjeLahetetty) {
           hakemus.hyvaksymiskirjeLahetettyPvm = new Date();
         }
         else {
           hakemus.hyvaksymiskirjeLahetettyPvm = null;
         }
-        $scope.addMuokattuHakemus(hakemus);
+        $scope.addMuokattuHakemus(hakemus, valintatapajono);
       };
       $scope.luoHyvaksymiskirjeetPDF = function(hakemusOids, sijoitteluajoId) {
         var hakukohde = $scope.hakukohdeModel.hakukohde;
         var tag = null;
-        if(hakukohde.hakukohdeNimiUri) {
+        if (hakukohde.hakukohdeNimiUri) {
           tag = hakukohde.hakukohdeNimiUri.split('#')[0];
         } else {
           tag = $routeParams.hakukohdeOid;
@@ -465,14 +496,14 @@ angular.module('valintalaskenta')
           if (valintatulos.muokattuVastaanottoTila && valintatulos.muokattuVastaanottoTila !== valintatulos.tila) {
             var vastaavaHakemus = _.find(valintatapajono.hakemukset, function(hakemus) { return hakemus.hakemusOid === valintatulos.hakemusOid; });
             vastaavaHakemus.valintatuloksentila = valintatulos.muokattuVastaanottoTila;
-            $scope.addMuokattuHakemus(vastaavaHakemus);
+            $scope.addMuokattuHakemus(vastaavaHakemus, valintatapajono);
           }
         });
       };
 
       function fetchAndPopulateVastaanottoAikaraja(hakuOid, hakukohdeOid, kaikkiHakemukset) {
         var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function(h) {
-            return h.valintatuloksentila === "KESKEN" && h.julkaistavissa && 
+            return h.valintatuloksentila === "KESKEN" && h.julkaistavissa &&
               (h.hakemuksentila === 'HYVAKSYTTY' || h.hakemuksentila === 'VARASIJALTA_HYVAKSYTTY' || h.hakemuksentila === 'PERUNUT');
         }), function(relevanttiHakemus) {
             return relevanttiHakemus.hakemusOid;

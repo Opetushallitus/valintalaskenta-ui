@@ -185,7 +185,7 @@
                                                     <a ng-click="luoHyvaksymiskirjeetPDF([tulos.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
                                                     <div class="white-space-nowrap">
                                                         <span class="hyvaksymiskirje-lahetetty-text">{{ t('sijoitteluntulos.hyvaksymiskirjeLahetetty') || 'Hyväksymiskirje lähetetty' }}:</span>
-                                                        <input class="hyvaksymiskirje-lahetetty-checkbox" type="checkbox" ng-change="updateHyvaksymiskirjeLahetettyPvm(tulos)" ng-model="tulos.hyvaksymiskirjeLahetetty"/>
+                                                        <input class="hyvaksymiskirje-lahetetty-checkbox" type="checkbox" ng-change="updateHyvaksymiskirjeLahetettyPvm(tulos, valintatapajono)" ng-model="tulos.hyvaksymiskirjeLahetetty"/>
                                                     </div>
                                                     <div class="hyvaksymiskirje-lahetetty-pvm" ng-show="tulos.hyvaksymiskirjeLahetettyPvm">{{tulos.hyvaksymiskirjeLahetettyPvm | date:'dd.MM.yyyy'}}</div>
                                                 </div>
@@ -292,7 +292,7 @@
                                                     <a ng-click="luoHyvaksymiskirjeetPDF([tulos.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
                                                     <div class="white-space-nowrap">
                                                         <span class="hyvaksymiskirje-lahetetty-text">{{ t('sijoitteluntulos.hyvaksymiskirjeLahetetty') || 'Hyväksymiskirje lähetetty' }}:</span>
-                                                        <input class="hyvaksymiskirje-lahetetty-checkbox" type="checkbox" ng-change="updateHyvaksymiskirjeLahetettyPvm(tulos)" ng-model="tulos.hyvaksymiskirjeLahetetty"/>
+                                                        <input class="hyvaksymiskirje-lahetetty-checkbox" type="checkbox" ng-change="updateHyvaksymiskirjeLahetettyPvm(tulos, valintatapajono)" ng-model="tulos.hyvaksymiskirjeLahetetty"/>
                                                     </div>
                                                     <div class="hyvaksymiskirje-lahetetty-pvm" ng-show="hakemus.hyvaksymiskirjeLahetettyPvm">{{hakemus.hyvaksymiskirjeLahetettyPvm | date:'dd.MM.yyyy'}}</div>
                                                 </div>
