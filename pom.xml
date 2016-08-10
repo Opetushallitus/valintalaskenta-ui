@@ -76,40 +76,6 @@
           <artifactId>spring-security-ldap</artifactId>
       </dependency>
       <dependency>
-          <groupId>fi.vm.sade.generic</groupId>
-          <artifactId>generic-common</artifactId>
-          <exclusions>
-              <exclusion>
-                  <artifactId>spring-web</artifactId>
-                  <groupId>org.springframework</groupId>
-              </exclusion>
-              <exclusion>
-                  <artifactId>spring-context</artifactId>
-                  <groupId>org.springframework</groupId>
-              </exclusion>
-              <exclusion>
-                  <artifactId>spring-tx</artifactId>
-                  <groupId>org.springframework</groupId>
-              </exclusion>
-              <exclusion>
-                  <artifactId>spring-beans</artifactId>
-                  <groupId>org.springframework</groupId>
-              </exclusion>
-              <exclusion>
-                  <artifactId>spring-core</artifactId>
-                  <groupId>org.springframework</groupId>
-              </exclusion>
-              <exclusion>
-                  <artifactId>spring-asm</artifactId>
-                  <groupId>org.springframework</groupId>
-              </exclusion>
-              <exclusion>
-                  <artifactId>spring-expression</artifactId>
-                  <groupId>org.springframework</groupId>
-              </exclusion>
-          </exclusions>
-      </dependency>
-      <dependency>
           <groupId>org.hibernate</groupId>
           <artifactId>hibernate-validator</artifactId>
       </dependency>
@@ -155,7 +121,6 @@
       <dependency>
           <groupId>com.google.guava</groupId>
           <artifactId>guava</artifactId>
-          <version>19.0</version>
           <scope>test</scope>
       </dependency>
       <dependency>
