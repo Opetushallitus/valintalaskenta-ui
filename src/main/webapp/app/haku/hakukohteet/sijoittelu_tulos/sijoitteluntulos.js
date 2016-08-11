@@ -835,7 +835,7 @@ angular.module('valintalaskenta')
 
     $scope.showCorrectHakemuksenTila = function(hakemuksenTila) {
         if (hakemuksenTila === 'VASTAANOTTANUT_SITOVASTI' &&
-            isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri)) return 'VASTAANOTTANUT';
+            HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri)) return 'VASTAANOTTANUT';
         else return hakemuksenTila;
     };
 
