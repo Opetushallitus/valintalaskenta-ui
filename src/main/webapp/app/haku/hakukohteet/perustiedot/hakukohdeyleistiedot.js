@@ -17,7 +17,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.kaytetaanValintalaskentaa = false;
         this.valinnanvaiheet = [];
 
-
         this.refresh = function (hakukohdeOid) {
             model.hakukohdeOid = hakukohdeOid;
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (resultWrapper) {
@@ -75,7 +74,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         };
 
         this.setHakukohdeValinnanvaiheet = function (hakukohdeOid, hakuOid) {
-            ErillishakuProxy.get({hakukohdeoid: hakukohdeOid, hakuOid: hakuOid}, function (result) {
+            ErillishakuProxy.hae({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function (result) {
                 model.kaytetaanValintalaskentaa = _(result).filter(function (e) {
                     return e.viimeinenVaihe;
                 })[0].valintatapajonot.some(function (e) {
@@ -83,7 +82,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                 });
                 model.valinnanvaiheet = result;
             }, function (error) {
-                model.errors.push(error);
+                console.log(error);
             });
         }
     }();
