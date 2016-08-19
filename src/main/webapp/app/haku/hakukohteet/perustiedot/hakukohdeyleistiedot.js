@@ -25,7 +25,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                 model.hakukohde = hakukohde;
                 model.setHakukohdeNames();
                 model.setHakukohdeValintaRyhma(hakukohdeOid);
-                model.setHakukohdeValinnanvaiheet(hakukohdeOid, hakuOid);
+                model.setHakukohdeValinnanvaiheet(hakukohdeOid, hakukohde.hakuOid);
                 model.deferred.resolve();
             }, function(error) {
                 $log.error('Hakukohteen tietojen hakeminen epäonnistui', error);
@@ -76,9 +76,9 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
 
         this.setHakukohdeValinnanvaiheet = function (hakukohdeOid, hakuOid) {
             ErillishakuProxy.get({hakukohdeoid: hakukohdeOid, hakuOid: hakuOid}, function (result) {
-                model.kaytetaanValintalaskentaa = result.filter(function (e) {
+                model.kaytetaanValintalaskentaa = _(result).filter(function (e) {
                     return e.viimeinenVaihe;
-                }).valintatapajonot.exists(function (e) {
+                })[0].valintatapajonot.some(function (e) {
                     return e.kaytetaanValintalaskentaa;
                 });
                 model.valinnanvaiheet = result;
