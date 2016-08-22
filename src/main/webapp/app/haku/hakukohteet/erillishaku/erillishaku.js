@@ -170,10 +170,11 @@ angular.module('valintalaskenta')
             $scope.updateOrg = true;
           });
         });
-      });
 
-      $scope.hakukohdeModel.valinnanVaiheetPromise.promise.then(function() {
-        getHakumodelValintatapaJonot($scope.hakukohdeModel.valinnanvaiheet);
+        // Do this here to ensure valinnanVaiheetPromise is defined
+        $scope.hakukohdeModel.valinnanVaiheetPromise.promise.then(function() {
+          getHakumodelValintatapaJonot($scope.hakukohdeModel.valinnanvaiheet);
+        });
       });
 
       AuthService.crudOph("APP_SIJOITTELU").then(function () {
