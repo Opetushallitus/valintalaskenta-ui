@@ -7,8 +7,13 @@ angular.module('valintalaskenta')
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
             $scope.hakuModel = HakuModel;
             $scope.hakukohdeModel = HakukohdeModel;
+            $scope.showNav = false;
 
-            HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+            HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function() {
+                $scope.hakukohdeModel.valinnanVaiheetPromise.promise.then(function() {
+                    $scope.showNav = true;
+                });
+            });
 
             $scope.navClass = function (page, level) {
                 var currentRoute = $location.path().split('/')[level];
