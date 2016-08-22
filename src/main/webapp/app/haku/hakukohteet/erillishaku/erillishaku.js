@@ -116,12 +116,16 @@ angular.module('valintalaskenta')
         return erillishaku;
       };
 
-      ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}, function (erillishaku) {
+      var processErillishaku = function(erillishaku) {
         var hakemukset = _.chain(erillishaku)
-          .map(function (e) { return e.valintatapajonot; })
-          .flatten()
-          .map(function (v) { return v.hakemukset; })
-          .flatten();
+            .map(function (e) {
+              return e.valintatapajonot;
+            })
+            .flatten()
+            .map(function (v) {
+              return v.hakemukset;
+            })
+            .flatten();
 
         // Populate valintatapajonoOids if they are missing to "MISSING_OID"
         erillishaku = populateValintatapajonoOidsIfMissing(erillishaku);
@@ -143,9 +147,20 @@ angular.module('valintalaskenta')
         });
 
         $scope.erillishaku = erillishaku;
-      });
+      };
 
-      var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+      var getHakumodelValintatapaJonot = function(valinnanvaiheet) {
+        if (valinnanvaiheet) {
+          processErillishaku(valinnanvaiheet);
+        } else {
+          ErillishakuProxy.hae({
+            hakuOid: $routeParams.hakuOid,
+            hakukohdeOid: $routeParams.hakukohdeOid
+          }, function (erillishaku) {
+            processErillishaku(erillishaku)
+          });
+        }
+      };
 
       $scope.pageSize = 50;
 
@@ -155,6 +170,10 @@ angular.module('valintalaskenta')
             $scope.updateOrg = true;
           });
         });
+      });
+
+      $scope.hakukohdeModel.valinnanVaiheetPromise.promise.then(function() {
+        getHakumodelValintatapaJonot($scope.hakukohdeModel.valinnanvaiheet);
       });
 
       AuthService.crudOph("APP_SIJOITTELU").then(function () {

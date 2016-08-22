@@ -13,6 +13,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.tarjoajaNimi = undefined;
         this.hakukohde = {};
         this.deferred = undefined;
+        this.valinnanVaiheetPromise = undefined;
         this.valintaryhma = {};
         this.kaytetaanValintalaskentaa = false;
         this.valinnanvaiheet = [];
@@ -74,6 +75,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         };
 
         this.setHakukohdeValinnanvaiheet = function (hakukohdeOid, hakuOid) {
+            model.valinnanVaiheetPromise = $q.defer();
             ErillishakuProxy.hae({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function (result) {
                 model.kaytetaanValintalaskentaa = _(result).filter(function (e) {
                     return e.viimeinenVaihe;
@@ -81,8 +83,10 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                     return e.kaytetaanValintalaskentaa;
                 });
                 model.valinnanvaiheet = result;
+                model.valinnanVaiheetPromise.resolve();
             }, function (error) {
                 console.log(error);
+                model.valinnanVaiheetPromise.reject(error);
             });
         }
     }();
