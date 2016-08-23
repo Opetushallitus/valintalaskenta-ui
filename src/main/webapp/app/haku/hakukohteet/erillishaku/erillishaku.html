@@ -60,7 +60,7 @@
                                         {{ t('sijoitteluntulos.merkitsemyohastyneeksi') || 'Merkitse myöhästyneeksi' }}
                                     </button>
                                     <input type="text" ng-model="nameFilters[valintatapajono]" placeholder="{{t('valintatapajono.suodata') || 'Suodata hakijan nimellä'}}"></input>
-                                    <table class="virkailija-table-1">
+                                    <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1" show-filter="true">
                                         <thead>
                                         <tr>
                                             <th ng-show="updateOrg">{{ t('valintalaskentatulos.rivinpoisto') || 'Rivin poisto' }}</th>
@@ -74,7 +74,7 @@
                                         </thead>
                                         <tbody>
 
-                                        <tr ng-repeat="tulos in valintatapajono.hakemukset | orderBy:['sukunimi', 'etunimi'] | filter: nameFilters[valintatapajono] | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
+                                        <tr ng-repeat="tulos in $data | orderBy:['sukunimi', 'etunimi'] | filter: nameFilters[valintatapajono] | startFrom:(valintatapajono.currentPage-1)*pageSize | limitTo:pageSize">
                                             <td ng-show="updateOrg">
                                                 <input type="checkbox"
                                                        ng-show="tulos.onkoVastaanottanut"
@@ -85,7 +85,7 @@
                                                        ng-model="tulos.poistetaankoRivi"
                                                        ng-change="addMuokattuHakemus(tulos, valintatapajono)"> <br/>
                                             </td>
-                                            <td class="leftorientedcolumn">
+                                            <td class="leftorientedcolumn" filter="{ etunimi: 'text', sukunimi: 'text' }" sortable="'etunimi'">
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"
                                                                          hakemus-oid="{{tulos.hakemusOid}}"

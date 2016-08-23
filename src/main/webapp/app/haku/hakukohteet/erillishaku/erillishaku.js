@@ -16,6 +16,7 @@ angular.module('valintalaskenta')
       $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
       $scope.hakukohdeModel = HakukohdeModel;
       $scope.hakuModel = HakuModel;
+      $scope.tableParams = {};
 
       $scope.valintatuloksentilat = [];
       $scope.korkeakoulu;
@@ -116,6 +117,10 @@ angular.module('valintalaskenta')
         return erillishaku;
       };
 
+      var createTableParamsForValintatapaJono = function(valintatapajono) {
+        $scope.tableParams[valintatapajono.oid] = new NgTableParams({}, {dataset: valintatapajono.hakemukset});
+      };
+
       var processErillishaku = function(erillishaku) {
         var hakemukset = _.chain(erillishaku)
             .map(function (e) {
@@ -123,6 +128,7 @@ angular.module('valintalaskenta')
             })
             .flatten()
             .map(function (v) {
+              createTableParamsForValintatapaJono(v);
               return v.hakemukset;
             })
             .flatten();
@@ -358,7 +364,7 @@ angular.module('valintalaskenta')
         } else {
           return "TOISEN_ASTEEN_OPPILAITOS";
         }
-      }
+      };
       $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
 
         var hakutyyppi = $scope.getHakutyyppi();
@@ -370,10 +376,9 @@ angular.module('valintalaskenta')
             tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
             valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
           },
-          {rivit: json}, function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
-              function(dokumenttiId) {
-                // tee paivitys
+          {rivit: json}, function () {
+            Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
+              function() {
                 $window.location.reload();
               }
             );
