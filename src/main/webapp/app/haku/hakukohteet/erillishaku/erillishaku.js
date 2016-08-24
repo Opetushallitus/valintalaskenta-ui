@@ -1,13 +1,13 @@
 angular.module('valintalaskenta')
 
-  .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna',
+  .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter', 'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna',
               'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel', 'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService',
               'ErillishakuVienti', 'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet', 'Kirjepohjat','Kirjeet',
-              'VastaanottoUtil',
-    function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
+              'VastaanottoUtil', 'NgTableParams',
+    function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
               ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-              VastaanottoUtil) {
+              VastaanottoUtil, NgTableParams) {
       "use strict";
 
       $scope.muokatutHakemukset = {};
@@ -117,8 +117,51 @@ angular.module('valintalaskenta')
         return erillishaku;
       };
 
-      var createTableParamsForValintatapaJono = function(valintatapajono) {
-        $scope.tableParams[valintatapajono.oid] = new NgTableParams({}, {dataset: valintatapajono.hakemukset});
+      var multiFilter = function(value, index, array) {
+        if (_.isEmpty($scope.filters)) return true;
+        return _.some(_.map($scope.filters,function(val, key) {
+          return value[key].indexOf(val) > 0;
+        }));
+      };
+
+      var createTableParamsForValintatapaJono = function (valintatapajono) {
+        $scope.tableParams[valintatapajono.oid] = new NgTableParams({
+          page: 1,
+          count: 50,
+          filters: {
+            'sukunimi': '',
+            'etunimi': ''
+          },
+          sorting: {
+            'sukunimi': 'asc',
+            'etunimi': 'desc'
+          }
+        }, {
+          total: valintatapajono.hakemukset.length,
+          getData: function ($defer, params) {
+            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+            // remove empty filters
+            _.map(filters, function(val ,key) {
+              if (!val) delete filters[key];
+            });
+
+            // Implement first and last name filtersing with only 1 search box.
+            // Has to be done with $scope.filters since custom filter functions cannot take filters as params AFAIK.
+            if ('sukunimi' in filters) filters.etunimi = filters.sukunimi;
+            $scope.filters = filters;
+
+            var orderedData = params.sorting() ?
+                $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
+                valintatapajono.hakemukset;
+            orderedData = params.filter() ?
+                $filter('filter')(orderedData, multiFilter) :
+                orderedData;
+
+            $scope.filters = {};
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+          }
+        });
       };
 
       var processErillishaku = function(erillishaku) {
