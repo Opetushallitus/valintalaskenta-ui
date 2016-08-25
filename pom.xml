@@ -15,7 +15,11 @@
           <artifactId>opintopolku-cas-servlet-filter</artifactId>
       </dependency>
       <dependency>
-      <groupId>org.jasig.cas.client</groupId>
+          <groupId>fi.vm.sade.generic</groupId>
+          <artifactId>generic-common</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.jasig.cas.client</groupId>
           <artifactId>cas-client-support-distributed-ehcache</artifactId>
       </dependency>
       <dependency>
