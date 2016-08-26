@@ -116,7 +116,8 @@
                                                 filter="{'valintatuloksentila': 'text'}">
                                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:
                                                     <input type="checkbox" ng-change="addMuokattuHakemus(tulos, valintatapajono)" ng-model="tulos.julkaistavissa"
-                                                           ng-disabled="tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI'||
+                                                           ng-disabled="tulos.hakemuksentila == null ||
+                                                                        tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI'||
                                                                         tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' ||
                                                                         tulos.valintatuloksentila === 'VASTAANOTTANUT' ||
                                                                         tulos.valintatuloksentila === 'PERUUTETTU' ||

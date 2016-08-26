@@ -560,20 +560,22 @@ angular.module('valintalaskenta')
 
       $scope.selectIlmoitettuToAll = function (valintatapajono) {
         var counter = 0;
-        _(valintatapajono.hakemukset)
-          .forEach(function(hakemus) {
-            if (!hakemus.julkaistavissa) {
-              counter ++;
-              hakemus.julkaistavissa = true;
-              $scope.addMuokattuHakemus(hakemus, valintatapajono);
-            }
-          });
-        $scope.submitIlmoitettuToall(valintatapajono);
+        _(valintatapajono.hakemukset).forEach(function(hakemus) {
+          if (!hakemus.julkaistavissa && hakemus.hakemuksentila) {
+            counter ++;
+            hakemus.julkaistavissa = true;
+            if (!hakemus.valintatuloksentila) hakemus.valintatuloksentila = "KESKEN";
+            if (!hakemus.ilmoittautumistila) hakemus.ilmoittautumistila = "EI_TEHTY";
+            $scope.addMuokattuHakemus(hakemus, valintatapajono);
+          }
+        });
+        $scope.submitIlmoitettuToall(valintatapajono, counter);
       };
 
-      $scope.submitIlmoitettuToall = function (valintatapajono) {
+      $scope.submitIlmoitettuToall = function (valintatapajono, hakemuksetSize) {
         var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
-        TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + counter + " kpl. hakemuksia.", function (success, failure) {
+        TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + hakemuksetSize + " kpl. hakemuksia.", function (success, failure) {
+          success();
           $scope.saveIlmoitettuToAll(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
         });
       };
