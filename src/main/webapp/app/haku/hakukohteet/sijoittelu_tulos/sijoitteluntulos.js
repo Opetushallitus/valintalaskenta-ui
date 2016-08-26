@@ -794,8 +794,6 @@ angular.module('valintalaskenta')
             $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
 
         });
-
-
     };
 
     $scope.jonoLength = function(length) {

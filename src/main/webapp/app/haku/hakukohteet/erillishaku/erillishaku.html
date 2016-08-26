@@ -55,11 +55,15 @@
                                     <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm margin-bottom-2 pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
 
                                     <button ng-click="selectEiVastanotettuMaaraaikanaToAll(valintatapajono)"
-
                                             class="btn btn-default btn-sm margin-bottom-2">
                                         {{ t('sijoitteluntulos.merkitsemyohastyneeksi') || 'Merkitse myöhästyneeksi' }}
                                     </button>
-                                    <!--<input type="text" ng-model="nameFilters[valintatapajono]" placeholder="{{t('valintatapajono.suodata') || 'Suodata hakijan nimellä'}}"></input>-->
+
+                                    <button ng-click="selectIlmoitettuToAll(valintatapajono)"
+                                            class="btn btn-default btn-sm margin-bottom-2">
+                                            <!--ng-class='(updateOph || valintaesitysJulkaistavissa) ? "" : "disabled"'>-->
+                                        {{ t('sijoitteluntulos.hyvaksyvalintaesitys') || 'Hyväksy ja tallenna valintaesitys' }}
+                                    </button>
 
                                     <!-- Valintatapajonot -->
                                     <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1" show-filter="true">
@@ -75,7 +79,10 @@
                                                        ng-change="addMuokattuHakemus(tulos, valintatapajono)"> <br/>
                                             </td>
 
-                                            <td class="leftorientedcolumn" data-title="t('valintalaskentatulos.hakija') || 'Hakija'" sortable="'sukunimi'" filter="{'sukunimi': 'text'}">
+                                            <td class="leftorientedcolumn"
+                                                data-title="t('valintalaskentatulos.hakija') || 'Hakija'"
+                                                sortable="'sukunimi'"
+                                                filter="{'sukunimi': 'text'}">
                                                 <show-person-information sukunimi="{{tulos.sukunimi}}"
                                                                          etunimi="{{tulos.etunimi}}"
                                                                          hakemus-oid="{{tulos.hakemusOid}}"
@@ -104,7 +111,9 @@
                                                 </div>
                                             </td>
 
-                                            <td data-title="t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'" sortable="'valintatuloksentila'">
+                                            <td data-title="t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'"
+                                                sortable="'valintatuloksentila'"
+                                                filter="{'valintatuloksentila': 'text'}">
                                                 <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:
                                                     <input type="checkbox" ng-change="addMuokattuHakemus(tulos, valintatapajono)" ng-model="tulos.julkaistavissa"
                                                            ng-disabled="tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI'||

@@ -1,13 +1,14 @@
 angular.module('valintalaskenta')
 
-  .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter', 'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna',
-              'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel', 'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService',
-              'ErillishakuVienti', 'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet', 'Kirjepohjat','Kirjeet',
-              'VastaanottoUtil', 'NgTableParams',
+  .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
+              'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
+              'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService', 'ErillishakuVienti',
+              'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
+              'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat',
     function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
               ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-              VastaanottoUtil, NgTableParams) {
+              VastaanottoUtil, NgTableParams, TallennaValinnat) {
       "use strict";
 
       $scope.muokatutHakemukset = {};
@@ -117,10 +118,14 @@ angular.module('valintalaskenta')
         return erillishaku;
       };
 
+      var toLowerStripUnderscore = function(str) {
+        return str.toLowerCase().replace('_', ' ');
+      };
+
       var multiFilter = function(value, index, array) {
         if (_.isEmpty($scope.filters)) return true;
         return _.some(_.map($scope.filters,function(val, key) {
-          return value[key].indexOf(val) > 0;
+          return toLowerStripUnderscore(value[key]).indexOf(toLowerStripUnderscore(val)) > -1;
         }));
       };
 
@@ -262,8 +267,6 @@ angular.module('valintalaskenta')
           });
       };
 
-
-
       $scope.valintalaskentaTulosXLS = function() {
         TulosXls.query({hakukohdeOid:$routeParams.hakukohdeOid});
       };
@@ -335,30 +338,6 @@ angular.module('valintalaskenta')
         $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
       };
 
-      $scope.submitLaskennalla = function (valintatapajono) {
-        var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
-        VastaanottoTila.post({
-          hakuOid: $routeParams.hakuOid,
-          hakukohdeOid: $routeParams.hakukohdeOid,
-          hyvaksyttyJonoOid: "",
-          selite: "Massamuokkaus"
-        }, _.map(hakemukset, $scope.hakemusToValintatulos(valintatapajono)), function (result) {
-          delete $scope.muokatutHakemukset[valintatapajono.oid];
-          Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Muutokset on tallennettu.");
-        }, function (error) {
-          var statuses = (error && error.data && error.data.statuses) ? error.data.statuses : [];
-          var errorCount = statuses.length;
-          var errorMsg = errorCount + "/" + hakemukset.length + " hakemuksen päivitys epäonnistui. ";
-          if (statuses.filter(function(status) { return status.status === 409; }).length > 0) {
-              errorMsg += "Tietoihin on tehty samanaikaisia muutoksia, päivitä sivu ja yritä uudelleen";
-          } else {
-              errorMsg += "Yritä uudelleen tai ota yhteyttä ylläpitoon.";
-          }
-          var errorRows = _.map(statuses, function(status) { return status.hakemusOid + ": " + status.message; });
-          Ilmoitus.avaa("Sijoittelun tulosten tallennus", "Tallennus epäonnistui! " + errorMsg, IlmoitusTila.ERROR, null, errorRows);
-        });
-      };
-
       var addToMuokattuHakemusList = function (joMuokatut, hakemus, valintatapajonoOid) {
         joMuokatut.push(hakemus);
         joMuokatut = _.uniq(joMuokatut);
@@ -399,8 +378,8 @@ angular.module('valintalaskenta')
             delete jonosija.jonosija;
           });
         }
-
       };
+
       $scope.getHakutyyppi = function() {
         if($scope.hakuModel.korkeakoulu) {
           return "KORKEAKOULU";
@@ -408,17 +387,21 @@ angular.module('valintalaskenta')
           return "TOISEN_ASTEEN_OPPILAITOS";
         }
       };
-      $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
 
-        var hakutyyppi = $scope.getHakutyyppi();
-        ErillishakuTuonti.tuo({
-            hakutyyppi: hakutyyppi,
-            hakukohdeOid: $scope.hakukohdeOid,
-            hakuOid: $routeParams.hakuOid,
-            valintatapajononNimi: valintatapajononNimi,
-            tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
-            valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
-          },
+
+      $scope.erillisHakuTuontiParams = function(valintatapajonoOid, valintatapajononNimi) {
+        return {
+          hakutyyppi: $scope.getHakutyyppi(),
+          hakukohdeOid: $scope.hakukohdeOid,
+          hakuOid: $routeParams.hakuOid,
+          valintatapajononNimi: valintatapajononNimi,
+          tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
+          valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
+        };
+      };
+
+      $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
+        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
           {rivit: json}, function () {
             Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
               function() {
@@ -428,8 +411,8 @@ angular.module('valintalaskenta')
           }, function () {
             Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
           });
-
       };
+
       $scope.erillishaunVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
         var hakutyyppi = $scope.getHakutyyppi();
         ErillishakuVienti.vie({
@@ -446,6 +429,7 @@ angular.module('valintalaskenta')
             Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
           });
       };
+
       $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files, valintatapajononNimi) {
         var file = $files[0];
         var fileReader = new FileReader();
@@ -480,6 +464,7 @@ angular.module('valintalaskenta')
           });
         };
       };
+
       $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid, valintatapajononNimi) {
         var file = $files[0];
         var fileReader = new FileReader();
@@ -516,6 +501,7 @@ angular.module('valintalaskenta')
           });
         };
       };
+
       $scope.updateHyvaksymiskirjeLahetettyPvm = function (hakemus, valintatapajono) {
         if (hakemus.hyvaksymiskirjeLahetetty) {
           hakemus.hyvaksymiskirjeLahetettyPvm = new Date();
@@ -525,6 +511,7 @@ angular.module('valintalaskenta')
         }
         $scope.addMuokattuHakemus(hakemus, valintatapajono);
       };
+
       $scope.luoHyvaksymiskirjeetPDF = function(hakemusOids, sijoitteluajoId) {
         var hakukohde = $scope.hakukohdeModel.hakukohde;
         var tag = null;
@@ -546,6 +533,7 @@ angular.module('valintalaskenta')
           templateName: "hyvaksymiskirje"
         });
       };
+
       $scope.selectEiVastanotettuMaaraaikanaToAll = function(valintatapajono) {
         var valintatulokset = _.map(valintatapajono.hakemukset, function(hakemus) {
           return {
@@ -559,6 +547,7 @@ angular.module('valintalaskenta')
             hakijaOid: hakemus.hakijaOid
           }
         });
+
         VastaanottoUtil.merkitseMyohastyneeksi(valintatulokset);
         _.forEach(valintatulokset, function(valintatulos) {
           if (valintatulos.muokattuVastaanottoTila && valintatulos.muokattuVastaanottoTila !== valintatulos.tila) {
@@ -567,6 +556,39 @@ angular.module('valintalaskenta')
             $scope.addMuokattuHakemus(vastaavaHakemus, valintatapajono);
           }
         });
+      };
+
+      $scope.selectIlmoitettuToAll = function (valintatapajono) {
+        var counter = 0;
+        _(valintatapajono.hakemukset)
+          .forEach(function(hakemus) {
+            if (!hakemus.julkaistavissa) {
+              counter ++;
+              hakemus.julkaistavissa = true;
+              $scope.addMuokattuHakemus(hakemus, valintatapajono);
+            }
+          });
+        $scope.submitIlmoitettuToall(valintatapajono);
+      };
+
+      $scope.submitIlmoitettuToall = function (valintatapajono) {
+        var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
+        TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + counter + " kpl. hakemuksia.", function (success, failure) {
+          $scope.saveIlmoitettuToAll(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
+        });
+      };
+
+      $scope.saveIlmoitettuToAll = function(valintatapajonoOid, valintatapajononNimi, json) {
+        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajononNimi, valintatapajonoOid),
+            {rivit: json}, function () {
+              Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
+                  function() {
+                    $window.location.reload();
+                  }
+              );
+            }, function () {
+              Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+            });
       };
 
       function fetchAndPopulateVastaanottoAikaraja(hakuOid, hakukohdeOid, kaikkiHakemukset) {
