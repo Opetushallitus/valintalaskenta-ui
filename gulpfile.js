@@ -1,13 +1,13 @@
 var gulp = require('gulp'),
-	concat = require('gulp-concat'),
-	uglify = require('gulp-uglify'),
-	runSequence = require('run-sequence'),
-	clean = require('gulp-clean'),
-	watch = require('gulp-watch'),
-	livereload = require('gulp-livereload'),
-    karma = require('gulp-karma'),
-	sass = require('gulp-sass'),
-  debug = require('gulp-debug');
+		concat = require('gulp-concat'),
+		uglify = require('gulp-uglify'),
+		runSequence = require('run-sequence'),
+		clean = require('gulp-clean'),
+		watch = require('gulp-watch'),
+		livereload = require('gulp-livereload'),
+		karma = require('gulp-karma'),
+		sass = require('gulp-sass'),
+		debug = require('gulp-debug');
 
 var paths = {
 	testSources: 'src/test/ui/',
