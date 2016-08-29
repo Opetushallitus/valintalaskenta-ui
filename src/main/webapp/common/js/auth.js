@@ -176,10 +176,11 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                 if (attrs.authAdditionalCheck) {
 
                     ParametriService($routeParams.hakuOid).then(function (privileges) {
-
-                        if (attrs.korkeakouluCheck === 'true') {
-                            $animate.addClass(element, 'ng-hide');
-                        } else
+                        attrs.$observe('korkeakouluCheck', function(value) {
+                            if (value === 'true') {
+                                $animate.addClass(element, 'ng-hide');
+                            }
+                        });
                         if (privileges[attrs.authAdditionalCheck]) {
                             $animate.removeClass(element, 'ng-hide');
                         }
