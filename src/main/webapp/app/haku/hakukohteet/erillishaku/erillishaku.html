@@ -59,16 +59,13 @@
 
                                     <button ng-click="selectIlmoitettuToAll(valintatapajono)"
                                             class="btn btn-default btn-sm margin-bottom-2">
-                                            <!--ng-class='(updateOph || valintaesitysJulkaistavissa) ? "" : "disabled"'>-->
                                         {{ t('sijoitteluntulos.hyvaksyvalintaesitys') || 'Hyväksy ja tallenna valintaesitys' }}
                                     </button>
 
-                                    <br />
-
-                                    <span>
-                                        <input type="checkbox" ng-model="showInvalidsOnly" ng-change="toggleShowInvalidsOnly(tableParams[valintatapajono.oid])" />
-                                        Näytä vain virheelliset
-                                    </span>
+                                    <button ng-click="toggleShowInvalidsOnly(tableParams[valintatapajono.oid])"
+                                            class="btn btn-default btn-sm margin-bottom-2">
+                                        {{ showInvalidsOnly ? 'Näytä kaikki' : 'Näytä vain virheelliset (' + invalidsAmount(valintatapajono.hakemukset) + ')' }}
+                                    </button>
 
                                     <!-- Valintatapajonot -->
                                     <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1" show-filter="true">

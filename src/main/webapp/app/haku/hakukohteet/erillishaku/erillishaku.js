@@ -19,6 +19,7 @@ angular.module('valintalaskenta')
       $scope.hakuModel = HakuModel;
       $scope.tableParams = {};
       $scope.showInvalidsOnly = false;
+      $scope.invalidsAmount = {};
 
       $scope.valintatuloksentilat = [];
       $scope.korkeakoulu;
@@ -115,6 +116,12 @@ angular.module('valintalaskenta')
       $scope.toggleShowInvalidsOnly = function(tableParams) {
         $scope.showInvalidsOnly = !$scope.showInvalidsOnly;
         tableParams.reload();
+      };
+
+      $scope.invalidsAmount = function(hakemukset) {
+        return _(hakemukset).filter(function(hakemus) {
+          return hakemus.isValid == false;
+        }).length;
       };
 
       $scope.changeVastaanottoTieto = function(hakemus, valintatapajono) {
