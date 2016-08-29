@@ -134,7 +134,7 @@
                                                         <span ng-bind="t('sijoitteluntulos.vastaanottoaikaraja') || 'Aikaraja'"/>: <span>{{tulos.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm' }}</span>
                                                     </div>
                                                 </div>
-                                                <div ng-switch="updateOrg && tulos.julkaistavissa && tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN'">
+                                                <div ng-switch="updateOrg && tulos.julkaistavissa && tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN' && tulos.hakemuksentila !== 'PERUUNTUNUT' && tulos.hakemuksentila !== 'HYLATTY'">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.valintatuloksentila"
                                                             ng-options="opt.value as opt.text disable when opt.disable for opt in valintatuloksentilat"
