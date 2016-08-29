@@ -66,14 +66,6 @@ angular.module('valintalaskenta')
         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
       ];
 
-      LocalisationService.getTranslationsForArray($scope.hakemuksentilat).then(function () {
-        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-      });
-
-      $scope.showEhdollinenHyvaksynta = function() {
-        return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
-      };
-
       $scope.ilmoittautumistilat = [
         {value: "EI_TEHTY", text_prop: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},
         {value: "LASNA_KOKO_LUKUVUOSI", text_prop: "sijoitteluntulos.enrollmentinfo.present", default_text:"Läsnä (koko lukuvuosi)"},
@@ -85,6 +77,67 @@ angular.module('valintalaskenta')
         {value: "POISSA", text_prop: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"},
         {value: "", default_text: ""}
       ];
+
+      $scope.valintaTuloksenTilaToHakemuksenTila = {
+        "EHDOLLISESTI_VASTAANOTTANUT": "HYVAKSYTTY",
+        "VASTAANOTTANUT_SITOVASTI": "HYVAKSYTTY",
+        "EI_VASTAANOTETTU_MAARA_AIKANA": "PERUNUT",
+        "PERUNUT": "PERUNUT",
+        "PERUUTETTU": "PERUUTETTU",
+        "OTTANUT_VASTAAN_TOISEN_PAIKAN": "PERUUNTUNUT"
+      };
+
+      $scope.validateHakemuksenTilat = function(hakemus) {
+        var isValid = false;
+        switch (hakemus.valintatuloksentila) {
+          case "KESKEN":
+            isValid = true;
+            break;
+          case "EHDOLLISESTI_VASTAANOTTANUT":
+          case "VASTAANOTTANUT_SITOVASTI":
+            isValid = hakemus.hakemuksentila == "HYVÄKSYTTY" || hakemus.hakemuksentila == "VARASIJALTA_HYVÄKSYTTY";
+            break;
+          case "EI_VASTAANOTETTU_MAARA_AIKANA":
+          case "PERUNUT":
+            isValid = hakemus.hakemuksentila == "PERUNUT";
+            break;
+          case "PERUUTETTU":
+            isValid = hakemus.hakemuksentila == "PERUUTETTU";
+            break;
+          case "OTTANUT_VASTAAN_TOISEN_PAIKAN":
+            isValid = hakemus.hakemuksentila == "PERUUNTUNUT";
+            break;
+        }
+        hakemus.isValid = isValid;
+      };
+
+      $scope.changeVastaanottoTieto = function(hakemus, valintatapajono) {
+        $scope.setHakemuksenTilaToVastaanottoTila(hakemus);
+        $scope.addMuokattuHakemus(hakemus, valintatapajono)
+      };
+
+      $scope.setHakemuksenTilaToVastaanottoTila = function(hakemus) {
+        if (hakemus.valintatuloksentila != "KESKEN") {
+          if ($scope.hakemusIsVarasijaltaHyvaksytty(hakemus)) {
+            hakemus.hakemuksentila = "VARASIJALTA_HYVAKSYTTY"
+          } else {
+            hakemus.hakemuksentila = $scope.valintaTuloksenTilaToHakemuksenTila[hakemus.valintatuloksentila];
+          }
+        }
+      };
+
+      $scope.hakemusIsVarasijaltaHyvaksytty = function(hakemus) {
+        return hakemus.hakemuksentila == "VARALLA"
+          && (hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT" || hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI");
+      };
+
+      LocalisationService.getTranslationsForArray($scope.hakemuksentilat).then(function () {
+        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+      });
+
+      $scope.showEhdollinenHyvaksynta = function() {
+        return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
+      };
 
       LocalisationService.getTranslationsForArray($scope.ilmoittautumistilat).then(function () {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
@@ -151,7 +204,7 @@ angular.module('valintalaskenta')
               if (!val) delete filters[key];
             });
 
-            // Implement first and last name filtersing with only 1 search box.
+            // Implement first and last name filtering with only 1 search box.
             // Has to be done with $scope.filters since custom filter functions cannot take filters as params AFAIK.
             if ('sukunimi' in filters) filters.etunimi = filters.sukunimi;
             $scope.filters = filters;
@@ -402,9 +455,9 @@ angular.module('valintalaskenta')
 
       $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
         ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
-          {rivit: json}, function () {
-            Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
-              function() {
+          {rivit: json}, function (id) {
+            Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
+              function(dokumenttiId) {
                 $window.location.reload();
               }
             );

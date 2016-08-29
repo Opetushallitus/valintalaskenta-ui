@@ -19,8 +19,7 @@
 
             <pagination-pagesize page-size="pageSize"></pagination-pagesize>
             <div>
-                <h2>{{ t('valintalaskentatulos.kaikkivalinnanvaiheet') || 'Valinnanvaiheet'
-                    }}</h2>
+                <h2>{{ t('valintalaskentatulos.kaikkivalinnanvaiheet') || 'Valinnanvaiheet'}}</h2>
                 <accordion close-others="true">
                     <accordion-group
                             ng-repeat="valinnanvaihe in erillishaku |  orderBy:['-viimeinenVaihe', '-jarjestysnumero'] track by $index"
@@ -43,8 +42,8 @@
 
                                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                                             ng-click="erillishaunVientiXlsx(valintatapajono.oid, valintatapajono.nimi)"
-                                            class="btn btn-default btn-sm margin-bottom-2">{{
-                                            t('erillishaku.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</button>
+                                            class="btn btn-default btn-sm margin-bottom-2">{{t('erillishaku.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</button>
+
 
                                     <span ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                                           class="btn btn-primary btn-sm margin-bottom-2 btn-file">
@@ -69,6 +68,7 @@
                                     <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1" show-filter="true">
                                         <tr ng-repeat="tulos in $data">
                                             <td ng-show="updateOrg" data-title="t('valintalaskentatulos.rivinpoisto') || 'Rivin poisto'">
+                                                <p ng-show="tulos.isValid != true">!</p>
                                                 <input type="checkbox"
                                                        ng-show="tulos.onkoVastaanottanut"
                                                        data-toggle="tooltip" data-placement="left" title="Poista ensin vastaanotto"
@@ -91,7 +91,7 @@
                                             </td>
 
                                             <td data-title="t('sijoitteluntulos.hakemuksentila') || 'Hakemuksentila'" sortable="'hakemuksentila'">
-                                                <div ng-switch="updateOrg">
+                                                <div ng-switch="updateOrg && tulos.valintatuloksentila == 'KESKEN'">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.hakemuksentila"
                                                             ng-options="opt.value as opt.text for opt in hakemuksentilat"
@@ -135,13 +135,13 @@
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.valintatuloksentila"
                                                             ng-options="opt.value as opt.text disable when opt.disable for opt in valintatuloksentilat"
-                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
+                                                            ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
                                                     </select>
                                                     <select disabled="disabled"
                                                             ng-switch-default
                                                             ng-model="tulos.valintatuloksentila"
                                                             ng-options="opt.value as opt.text for opt in valintatuloksentilat"
-                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
+                                                            ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
                                                     </select>
                                                 </div>
                                             </td>
