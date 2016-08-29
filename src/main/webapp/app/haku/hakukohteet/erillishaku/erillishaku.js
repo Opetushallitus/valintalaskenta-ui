@@ -18,6 +18,7 @@ angular.module('valintalaskenta')
       $scope.hakukohdeModel = HakukohdeModel;
       $scope.hakuModel = HakuModel;
       $scope.tableParams = {};
+      $scope.showInvalidsOnly = false;
 
       $scope.valintatuloksentilat = [];
       $scope.korkeakoulu;
@@ -109,6 +110,11 @@ angular.module('valintalaskenta')
             break;
         }
         hakemus.isValid = isValid;
+      };
+
+      $scope.toggleShowInvalidsOnly = function(tableParams) {
+        $scope.showInvalidsOnly = !$scope.showInvalidsOnly;
+        tableParams.reload();
       };
 
       $scope.changeVastaanottoTieto = function(hakemus, valintatapajono) {
@@ -212,6 +218,13 @@ angular.module('valintalaskenta')
             var orderedData = params.sorting() ?
                 $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
                 valintatapajono.hakemukset;
+
+            orderedData = $scope.showInvalidsOnly ?
+              _(orderedData)
+                .filter(function(o) {
+                  return !o.isValid;
+                }) : orderedData;
+
             orderedData = params.filter() ?
                 $filter('filter')(orderedData, multiFilter) :
                 orderedData;
@@ -251,6 +264,8 @@ angular.module('valintalaskenta')
           if (hakemus.valintatuloksentila === "" || !_.isString(hakemus.valintatuloksentila)) {
             hakemus.valintatuloksentila = 'KESKEN';
           }
+
+          $scope.validateHakemuksenTilat(hakemus);
         });
 
         $scope.erillishaku = erillishaku;
@@ -405,6 +420,8 @@ angular.module('valintalaskenta')
         } else {
             $scope.muokatutHakemukset[valintatapajono.oid] = [hakemus];
         }
+
+        $scope.validateHakemuksenTilat(hakemus);
       };
 
       $scope.muutaSijoittelunStatus = function (jono, status) {
