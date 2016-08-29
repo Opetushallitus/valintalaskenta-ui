@@ -139,6 +139,18 @@ angular.module('valintalaskenta')
         }
       };
 
+      $scope.parseHakemuksenTila = function(hakemus) {
+        var text = "";
+        if (hakemus.valintatuloksentila == "EI_VASTAANOTETTU_MAARA_AIKANA" && hakemus.hakemuksentila == "PERUNUT") {
+          text =  "Peruuntunut"
+        } else {
+          _($scope.hakemuksentilat).filter(function(tila) {
+            if (hakemus.hakemuksentila == tila.value) text = tila.text || tila.default_text;
+          });
+        }
+        return text;
+      };
+
       $scope.hakemusIsVarasijaltaHyvaksytty = function(hakemus) {
         return hakemus.hakemuksentila == "VARALLA"
           && (hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT" || hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI");

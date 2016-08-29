@@ -100,12 +100,10 @@
                                                             ng-options="opt.value as opt.text for opt in hakemuksentilat"
                                                             ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                     </select>
-                                                    <select disabled="disabled"
-                                                            ng-switch-default
-                                                            ng-model="tulos.hakemuksentila"
-                                                            ng-options="opt.value as opt.text for opt in hakemuksentilat"
-                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
-                                                    </select>
+                                                    <span ng-switch-default
+                                                          class="search"
+                                                          ng-readonly="true"
+                                                          ng-value="parseHakemuksenTila(tulos)">{{parseHakemuksenTila(tulos)}}</span>
                                                 </div>
                                                 <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
                                                     <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
