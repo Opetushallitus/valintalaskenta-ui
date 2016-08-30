@@ -5,8 +5,12 @@
     <div class="row">
 
         <div ng-hide="onVirheita()">
-            <div class="col-sm-12">
+            <div class="col-sm-12" ng-if="onKesken()">
                 {{ t('tuontiikkuna.tallennetaan') || 'Tallennetaan' }}
+                <img class="spinner" alt="loading" src="../common/img/ajax-loader-big.gif" />
+            </div>
+            <div class="col-sm-12" ng-if="!onKesken()">
+                {{ t('tuontiikkuna.valmis') || 'Tallennus onnistui' }}
             </div>
         </div>
         <div ng-show="onVirheita()">
