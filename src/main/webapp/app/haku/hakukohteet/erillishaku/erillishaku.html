@@ -94,7 +94,7 @@
                                             </td>
 
                                             <td data-title="t('sijoitteluntulos.hakemuksentila') || 'Valinnan tila'" sortable="'hakemuksentila'">
-                                                <div ng-switch="updateOrg && tulos.valintatuloksentila == 'KESKEN'">
+                                                <div ng-switch="updateOrg && tulos.valintatuloksentila == 'KESKEN' || tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.hakemuksentila"
                                                             ng-options="opt.value as opt.text for opt in hakemuksentilat"

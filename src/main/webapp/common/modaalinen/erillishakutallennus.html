@@ -1,0 +1,28 @@
+<div class="modal-header">
+    <h3>{{otsikko}}</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+
+        <div ng-hide="onVirheita()">
+            <div class="col-sm-12">
+                {{ t('tuontiikkuna.tallennetaan') || 'Tallennetaan' }}
+            </div>
+        </div>
+        <div ng-show="onVirheita()">
+            {{ t('tuontiikkuna.error') || 'Tallennus epäonnistui. Yritä uudelleen tai ota yhteyttä ylläpitoon.' }}
+            <div class="bs-callout bs-callout-danger" ng-repeat="poikkeus in prosessi.poikkeukset">
+                <h4>{{poikkeus.palvelu}}</h4>
+                <p><resolve-names-from-tarjonta message="{{poikkeus.palvelukutsu}} {{poikkeus.viesti}}"></resolve-names-from-tarjonta></p>
+                <p ng-repeat="oid in poikkeus.tunnisteet"><strong>{{oid.tyyppi}}</strong>&nbsp;{{oid.tunniste}}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <div class="row">
+        <a ng-show="onKesken()" class="btn btn-default btn-sm" ng-click="sulje();" role="button">{{ t('tuontiikkuna.sulje') || 'Sulje' }}</a>
+        <a ng-hide="onKesken()" class="btn btn-default btn-sm" ng-click="kutsuLaajennettuaMallia(); sulje();" role="button">{{ t('tuontiikkuna.paivita') || 'Päivitä näkymä' }}</a>
+    </div>
+</div>

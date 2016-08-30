@@ -19,10 +19,9 @@ angular.module('valintalaskenta')
       $scope.hakuModel = HakuModel;
       $scope.tableParams = {};
       $scope.showInvalidsOnly = false;
-      $scope.invalidsAmount = {};
-
       $scope.valintatuloksentilat = [];
       $scope.korkeakoulu;
+      $scope.pageSize = 50;
 
       function valintatuloksenTilojenKielistykset(valintatuloksentilat) {
         return valintatuloksentilat.reduce(function(o, tila) {
@@ -303,8 +302,6 @@ angular.module('valintalaskenta')
         }
       };
 
-      $scope.pageSize = 50;
-
       $scope.hakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
         $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOids', function () {
           AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
@@ -477,7 +474,6 @@ angular.module('valintalaskenta')
         }
       };
 
-
       $scope.erillisHakuTuontiParams = function(valintatapajonoOid, valintatapajononNimi) {
         return {
           hakutyyppi: $scope.getHakutyyppi(),
@@ -492,8 +488,8 @@ angular.module('valintalaskenta')
       $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
         ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
           {rivit: json}, function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
-              function(dokumenttiId) {
+            Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/erillishakutallennus.html",
+              function() {
                 $window.location.reload();
               }
             );
@@ -586,7 +582,7 @@ angular.module('valintalaskenta')
               }
             );
           }).error(function(data) {
-            //error
+            console.log(data);
           });
         };
       };
