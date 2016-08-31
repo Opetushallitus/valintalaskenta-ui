@@ -2456,11 +2456,34 @@ div.tilaParial {
   -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
 
+.disabled-dropdown-with-error {
+  background-color: #EFDCDC !important;
+  border: 1px solid #e8caca;
+  border-radius: 2px;
+  color: #9B9B9B;
+}
+
 .error {
   background: #FFE9E9;
   border: 1px solid #E09191;
   border-radius: 2px;
   box-shadow: none;
+}
+
+.error-exclamation {
+  background: #e25656;
+  border-radius: 50%;
+  font-weight: bold;
+  width: 17px;
+  height: 17px;
+  display: inline-block;
+  text-align: center;
+  font-size: 10px;
+  color: #fff;
+}
+
+.disabled-text {
+  color: #ccc;
 }
 
 /*** Tabsheet styles for 

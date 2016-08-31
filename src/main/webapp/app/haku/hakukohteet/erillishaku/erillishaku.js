@@ -96,7 +96,7 @@ angular.module('valintalaskenta')
             break;
           case "EHDOLLISESTI_VASTAANOTTANUT":
           case "VASTAANOTTANUT_SITOVASTI":
-            isValid = hakemus.hakemuksentila == "HYVÄKSYTTY" || hakemus.hakemuksentila == "VARASIJALTA_HYVÄKSYTTY";
+            isValid = hakemus.hakemuksentila == "HYVAKSYTTY" || hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY";
             break;
           case "EI_VASTAANOTETTU_MAARA_AIKANA":
           case "PERUNUT":
