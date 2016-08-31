@@ -63,7 +63,8 @@
                                     </button>
 
                                     <button ng-click="toggleShowInvalidsOnly(tableParams[valintatapajono.oid])"
-                                            class="btn btn-default btn-sm margin-bottom-2">
+                                            class="btn btn-default btn-sm margin-bottom-2"
+                                            ng-class="error: invalidsAmount(valintatapajono.hakemukset);">
                                         {{ showInvalidsOnly ? 'Näytä kaikki' : 'Näytä vain virheelliset (' + invalidsAmount(valintatapajono.hakemukset) + ')' }}
                                     </button>
 
@@ -71,7 +72,6 @@
                                     <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1" show-filter="true">
                                         <tr ng-repeat="tulos in $data | filter:showInvalidsOnly">
                                             <td ng-show="updateOrg" data-title="t('valintalaskentatulos.rivinpoisto') || 'Rivin poisto'">
-                                                <i ng-show="tulos.isValid == false" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                                 <input type="checkbox"
                                                        ng-show="tulos.onkoVastaanottanut"
                                                        data-toggle="tooltip" data-placement="left" title="Poista ensin vastaanotto"
@@ -94,15 +94,17 @@
                                             </td>
 
                                             <td data-title="t('sijoitteluntulos.hakemuksentila') || 'Valinnan tila'" sortable="'hakemuksentila'">
-                                                <div ng-switch="updateOrg && tulos.valintatuloksentila == 'KESKEN' || tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN">
+                                                <div ng-switch="updateOrg && tulos.valintatuloksentila == 'KESKEN' || tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN'">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.hakemuksentila"
                                                             ng-options="opt.value as opt.text for opt in hakemuksentilat"
+                                                            ng-class="error: tulos.isValid == false;"
                                                             ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                     </select>
                                                     <span ng-switch-default
                                                           class="search"
                                                           ng-readonly="true"
+                                                          ng-class="error: tulos.isValid == false;"
                                                           ng-value="parseHakemuksenTila(tulos)">{{parseHakemuksenTila(tulos)}}</span>
                                                 </div>
                                                 <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
@@ -135,11 +137,13 @@
                                                 <div ng-switch="updateOrg && tulos.julkaistavissa && tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN' && tulos.hakemuksentila !== 'PERUUNTUNUT' && tulos.hakemuksentila !== 'HYLATTY'">
                                                     <select ng-switch-when="true"
                                                             ng-model="tulos.valintatuloksentila"
+                                                            ng-class="error: tulos.isValid == false;"
                                                             ng-options="opt.value as opt.text disable when opt.disable for opt in valintatuloksentilat"
                                                             ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
                                                     </select>
                                                     <select disabled="disabled"
                                                             ng-switch-default
+                                                            ng-class="error: tulos.isValid == false;"
                                                             ng-model="tulos.valintatuloksentila"
                                                             ng-options="opt.value as opt.text for opt in valintatuloksentilat"
                                                             ng-change="changeVastaanottoTieto(tulos, valintatapajono)">

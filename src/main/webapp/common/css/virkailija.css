@@ -1,8 +1,3 @@
-/* color */
-.red {
-  color: #ff0000;
-}
-
 /* font-size */
 /***  Functions
 ************************************************/
@@ -2460,6 +2455,13 @@ div.tilaParial {
   -o-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
+
+.error {
+  background: #FFE9E9;
+  border: 1px solid #E09191;
+  border-radius: 2px;
+  box-shadow: none;
+}
 
 /*** Tabsheet styles for 
 ************************************************/
