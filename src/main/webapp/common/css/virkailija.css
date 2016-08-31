@@ -2457,10 +2457,13 @@ div.tilaParial {
   box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
 
 .disabled-dropdown-with-error {
-  background-color: #EFDCDC !important;
+  background: #EFDCDC !important;
   border: 1px solid #e8caca;
   border-radius: 2px;
   color: #9B9B9B;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 
 .error {
@@ -2482,8 +2485,11 @@ div.tilaParial {
   color: #fff;
 }
 
-.disabled-text {
-  color: #ccc;
+.filter-invalid {
+  margin-bottom: 6px;
+  display: inline-block;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 /*** Tabsheet styles for 

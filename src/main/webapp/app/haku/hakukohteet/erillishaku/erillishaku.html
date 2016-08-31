@@ -64,13 +64,12 @@
 
                                     <br />
 
-                                    <span ng-class="{'disabled-text': !invalidsAmount(valintatapajono.hakemukset)}">
-                                        <input type="checkbox"
-                                               ng-click="toggleShowInvalidsOnly(tableParams[valintatapajono.oid])"
-                                               ng-disabled="!invalidsAmount(valintatapajono.hakemukset)" />
+                                    <span class="filter-invalid"
+                                          ng-if="invalidsAmount(valintatapajono.hakemukset)"
+                                          ng-click="toggleShowInvalidsOnly(tableParams[valintatapajono.oid])">
+                                        <input type="checkbox" />
                                         {{ t('sijoitteluntulos.naytavainvirheelliset') || 'Näytä vain virheelliset' }}
-                                        <span ng-if="invalidsAmount(valintatapajono.hakemukset)"
-                                              class="error-exclamation">
+                                        <span class="error-exclamation">
                                             {{ (invalidsAmount(valintatapajono.hakemukset)) }}
                                         </span>
                                     </span>
