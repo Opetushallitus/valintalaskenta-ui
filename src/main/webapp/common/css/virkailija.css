@@ -93,6 +93,8 @@
 .width-100 {
   width: 100%; }
 
+.width200 {
+  width: 200px; }
 /*** Text
 ************************************************/
 .bold {
@@ -1387,7 +1389,6 @@ label, .label {
   border-spacing: 1px;
   border-collapse: separate; }
   .virkailija-table-1 tr td {
-    line-height: 2.3em;
     padding: 0 0.5em;
     vertical-align: middle;
     text-align: center; }
@@ -2473,8 +2474,8 @@ div.tilaParial {
   box-shadow: none;
 }
 
-.error-exclamation {
-  background: #e25656;
+.circled-character {
+  background: #5f5f5f;
   border-radius: 50%;
   font-weight: bold;
   width: 17px;
@@ -2483,6 +2484,10 @@ div.tilaParial {
   text-align: center;
   font-size: 10px;
   color: #fff;
+}
+
+.error-exclamation, .delete-button:hover {
+  background: #e25656;
 }
 
 .filter-invalid {

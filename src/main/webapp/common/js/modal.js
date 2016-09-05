@@ -222,7 +222,7 @@ angular.module('valintalaskenta')
                     };
                     timer = $interval(function () {
                         $scope.update();
-                    }, 10000);
+                    }, 1000);
 
                     $scope.ok = function() {
                         if($scope.onKesken()) {

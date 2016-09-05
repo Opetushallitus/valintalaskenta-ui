@@ -22,6 +22,7 @@ angular.module('valintalaskenta')
       $scope.valintatuloksentilat = [];
       $scope.korkeakoulu;
       $scope.pageSize = 50;
+      $scope.deleting = null;
 
       function valintatuloksenTilojenKielistykset(valintatuloksentilat) {
         return valintatuloksentilat.reduce(function(o, tila) {
@@ -234,8 +235,8 @@ angular.module('valintalaskenta')
             $scope.filters = filters;
 
             var orderedData = params.sorting() ?
-                $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
-                valintatapajono.hakemukset;
+              $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
+              valintatapajono.hakemukset;
 
             orderedData = $scope.showInvalidsOnly ?
               _(orderedData)
@@ -244,8 +245,8 @@ angular.module('valintalaskenta')
                 }) : orderedData;
 
             orderedData = params.filter() ?
-                $filter('filter')(orderedData, multiFilter) :
-                orderedData;
+              $filter('filter')(orderedData, multiFilter) :
+              orderedData;
 
             $scope.filters = {};
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
@@ -255,15 +256,15 @@ angular.module('valintalaskenta')
 
       var processErillishaku = function(erillishaku) {
         var hakemukset = _.chain(erillishaku)
-            .map(function (e) {
-              return e.valintatapajonot;
-            })
-            .flatten()
-            .map(function (v) {
-              createTableParamsForValintatapaJono(v);
-              return v.hakemukset;
-            })
-            .flatten();
+          .map(function (e) {
+            return e.valintatapajonot;
+          })
+          .flatten()
+          .map(function (v) {
+            createTableParamsForValintatapaJono(v);
+            return v.hakemukset;
+          })
+          .flatten();
 
         // Populate valintatapajonoOids if they are missing to "MISSING_OID"
         erillishaku = populateValintatapajonoOidsIfMissing(erillishaku);
@@ -412,7 +413,7 @@ angular.module('valintalaskenta')
       };
 
       var hakemuksetByValintatapajonoOid = function (muokatutHakemukset, valintatapajonoOid) {
-          return muokatutHakemukset[valintatapajonoOid] || [];
+        return muokatutHakemukset[valintatapajonoOid] || [];
       };
 
       $scope.hakemuksetByValintatapajonoOid = hakemuksetByValintatapajonoOid;
@@ -432,9 +433,9 @@ angular.module('valintalaskenta')
         var joMuokatut = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
 
         if (joMuokatut && joMuokatut.length > 0) {
-            addToMuokattuHakemusList(joMuokatut, hakemus, valintatapajono.oid);
+          addToMuokattuHakemusList(joMuokatut, hakemus, valintatapajono.oid);
         } else {
-            $scope.muokatutHakemukset[valintatapajono.oid] = [hakemus];
+          $scope.muokatutHakemukset[valintatapajono.oid] = [hakemus];
         }
 
         $scope.validateHakemuksenTilat(hakemus);
@@ -488,7 +489,7 @@ angular.module('valintalaskenta')
       $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
         ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
           {rivit: json}, function (id) {
-            Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/erillishakutallennus.html",
+            Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
               function() {
                 $window.location.reload();
               }
@@ -667,23 +668,63 @@ angular.module('valintalaskenta')
 
       $scope.saveIlmoitettuToAll = function(valintatapajonoOid, valintatapajononNimi, json) {
         ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajononNimi, valintatapajonoOid),
-            {rivit: json}, function () {
-              Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
-                  function() {
-                    $window.location.reload();
-                  }
-              );
-            }, function () {
-              Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
-            });
+          {rivit: json}, function () {
+            Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
+              function() {
+                $window.location.reload();
+              }
+            );
+          }, function () {
+            Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+          });
+      };
+
+      $scope.disableButton = function(button) {
+        angular.element(button).off('click');
+        angular.element(button).attr('disabled', true);
+      };
+
+      $scope.removeHakemusRow = function(hakemus, eventTarget, valintatapajono) {
+        $(eventTarget).parent('tr').hide('slow');
+        valintatapajono.hakemukset = _(valintatapajono.hakemukset).filter(function(o) {
+          return o.hakemusOid != hakemus.hakemusOid;
+        });
+        $scope.tableParams[valintatapajono.oid].reload();
+      };
+
+      $scope.removeHakemus = function(hakemus, valintatapajono, $event) {
+        $timeout.cancel($scope.deleting);
+        $scope.deleting = null;
+        $scope.disableButton(angular.element($event.target).prev());
+        $scope.removeHakemusRow(hakemus, $event.target, valintatapajono);
+        hakemus.poistetaankoRivi = true;
+
+        console.log($scope.hakemusToErillishakuRivi(hakemus));
+        // ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajono.nimi, valintatapajono.oid),
+        //   {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]}, function(res) {
+        //     console.log(res);
+        //   }, function(e) {
+        //     console.log(e);
+        //   });
+      };
+
+      $scope.handleRemoveHakemus = function(hakemus, valintatapajono, $event) {
+        if (!$scope.deleting) {
+          angular.element($event.target).hide().next().show();
+          $scope.deleting = $timeout(function() {
+            $scope.deleting = null;
+            angular.element($event.target).next().hide()
+            angular.element($event.target).show();
+          }, 3000);
+        }
       };
 
       function fetchAndPopulateVastaanottoAikaraja(hakuOid, hakukohdeOid, kaikkiHakemukset) {
         var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function(h) {
-            return h.valintatuloksentila === "KESKEN" && h.julkaistavissa &&
-              (h.hakemuksentila === 'HYVAKSYTTY' || h.hakemuksentila === 'VARASIJALTA_HYVAKSYTTY' || h.hakemuksentila === 'PERUNUT');
+          return h.valintatuloksentila === "KESKEN" && h.julkaistavissa &&
+            (h.hakemuksentila === 'HYVAKSYTTY' || h.hakemuksentila === 'VARASIJALTA_HYVAKSYTTY' || h.hakemuksentila === 'PERUNUT');
         }), function(relevanttiHakemus) {
-            return relevanttiHakemus.hakemusOid;
+          return relevanttiHakemus.hakemusOid;
         });
 
         var dataLoadedCallback = _.noop;

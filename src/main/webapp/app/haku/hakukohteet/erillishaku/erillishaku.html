@@ -17,7 +17,6 @@
                    placeholder="{{ t('valintalaskentatulos.suodatahakijoita') || 'Suodata hakijoita' }}"
                    ng-model="hakijaFilter"/>
 
-            <pagination-pagesize page-size="pageSize"></pagination-pagesize>
             <div>
                 <h2>{{ t('valintalaskentatulos.kaikkivalinnanvaiheet') || 'Valinnanvaiheet'}}</h2>
                 <accordion close-others="true">
@@ -67,9 +66,10 @@
                                     <span class="filter-invalid"
                                           ng-if="invalidsAmount(valintatapajono.hakemukset)"
                                           ng-click="toggleShowInvalidsOnly(tableParams[valintatapajono.oid])">
-                                        <input type="checkbox" />
+                                        <input type="checkbox"
+                                               ng-model="showInvalidsOnly"/>
                                         {{ t('sijoitteluntulos.naytavainvirheelliset') || 'Näytä vain virheelliset' }}
-                                        <span class="error-exclamation">
+                                        <span class="circled-character error-exclamation">
                                             {{ (invalidsAmount(valintatapajono.hakemukset)) }}
                                         </span>
                                     </span>
@@ -77,17 +77,6 @@
                                     <!-- Valintatapajonot -->
                                     <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1" show-filter="true">
                                         <tr ng-repeat="tulos in $data | filter:showInvalidsOnly">
-                                            <td ng-show="updateOrg" data-title="t('valintalaskentatulos.rivinpoisto') || 'Rivin poisto'">
-                                                <input type="checkbox"
-                                                       ng-show="tulos.onkoVastaanottanut"
-                                                       data-toggle="tooltip" data-placement="left" title="Poista ensin vastaanotto"
-                                                       ng-disabled="true"> <br/>
-                                                <input type="checkbox"
-                                                       ng-hide="tulos.onkoVastaanottanut"
-                                                       ng-model="tulos.poistetaankoRivi"
-                                                       ng-change="addMuokattuHakemus(tulos, valintatapajono)"> <br/>
-                                            </td>
-
                                             <td class="leftorientedcolumn"
                                                 data-title="t('valintalaskentatulos.hakija') || 'Hakija'"
                                                 sortable="'sukunimi'"
@@ -197,6 +186,13 @@
                                                     <div class="hyvaksymiskirje-lahetetty-pvm" ng-show="tulos.hyvaksymiskirjeLahetettyPvm">{{tulos.hyvaksymiskirjeLahetettyPvm | date:'dd.MM.yyyy'}}</div>
                                                 </div>
                                             </td>
+
+                                            <td ng-show="updateOrg" class="width200">
+                                                <span class="circled-character delete-button"
+                                                      ng-click="handleRemoveHakemus(tulos, valintatapajono, $event)">X</span>
+                                                <button ng-click="removeHakemus(tulos, valintatapajono, $event)"
+                                                        class="display-none">{{ t('sijoitteluntulos.vahvistaPoisto') || 'Vahvista poisto' }}</button>
+                                            </td>
                                         </tr>
                                         <tfoot>
                                             <tr>
@@ -206,14 +202,6 @@
                                             </tr>
                                         </tfoot>
                                     </table>
-
-                                    <br>
-                                    <pagination previous-text="{{ t('valintalaskentatulos.edellinen') || 'Edellinen' }}"
-                                                next-text="{{ t('valintalaskentatulos.seuraava') || 'Seuraava' }}"
-                                                total-items="valintatapajono.hakemukset.length"
-                                                ng-model="valintatapajono.currentPage"
-                                                ng-init="valintatapajono.currentPage=1"
-                                                items-per-page="pageSize"></pagination>
                                 </form>
                             </div>
                         </div>
