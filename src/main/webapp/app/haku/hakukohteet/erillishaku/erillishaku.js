@@ -685,11 +685,13 @@ angular.module('valintalaskenta')
       };
 
       $scope.removeHakemusRow = function(hakemus, eventTarget, valintatapajono) {
-        $(eventTarget).parent('tr').hide('slow');
-        valintatapajono.hakemukset = _(valintatapajono.hakemukset).filter(function(o) {
-          return o.hakemusOid != hakemus.hakemusOid;
-        });
-        $scope.tableParams[valintatapajono.oid].reload();
+        $(eventTarget).closest('tr').find('td > div').slideUp();
+        $timeout(function() {
+          valintatapajono.hakemukset = _(valintatapajono.hakemukset).filter(function(o) {
+            return o.hakemusOid != hakemus.hakemusOid;
+          });
+          $scope.tableParams[valintatapajono.oid].reload();
+        }, 500);
       };
 
       $scope.removeHakemus = function(hakemus, valintatapajono, $event) {
@@ -700,21 +702,23 @@ angular.module('valintalaskenta')
         hakemus.poistetaankoRivi = true;
 
         console.log($scope.hakemusToErillishakuRivi(hakemus));
-        // ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajono.nimi, valintatapajono.oid),
-        //   {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]}, function(res) {
-        //     console.log(res);
-        //   }, function(e) {
-        //     console.log(e);
-        //   });
+        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajono.nimi, valintatapajono.oid),
+          {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]}, function(res) {
+            console.log(res);
+          }, function(e) {
+            console.log(e);
+          });
       };
 
       $scope.handleRemoveHakemus = function(hakemus, valintatapajono, $event) {
         if (!$scope.deleting) {
           angular.element($event.target).hide().next().show();
+          angular.element($event.target).parent('td').siblings().addClass('deleting-row');
           $scope.deleting = $timeout(function() {
             $scope.deleting = null;
-            angular.element($event.target).next().hide()
+            angular.element($event.target).next().hide();
             angular.element($event.target).show();
+            angular.element($event.target).parent('td').siblings().removeClass('deleting-row');
           }, 3000);
         }
       };

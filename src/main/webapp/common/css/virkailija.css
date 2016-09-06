@@ -93,8 +93,8 @@
 .width-100 {
   width: 100%; }
 
-.width200 {
-  width: 200px; }
+.width100 {
+  width: 100px; }
 /*** Text
 ************************************************/
 .bold {
@@ -2457,6 +2457,9 @@ div.tilaParial {
   -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
 
+
+/*** erillishaku-tab
+************************************************/
 .disabled-dropdown-with-error {
   background: #EFDCDC !important;
   border: 1px solid #e8caca;
@@ -2475,7 +2478,7 @@ div.tilaParial {
 }
 
 .circled-character {
-  background: #5f5f5f;
+  background: #A0A0A0;
   border-radius: 50%;
   font-weight: bold;
   width: 17px;
@@ -2486,8 +2489,8 @@ div.tilaParial {
   color: #fff;
 }
 
-.error-exclamation, .delete-button:hover {
-  background: #e25656;
+.error-exclamation {
+  background: #E55757;
 }
 
 .filter-invalid {
@@ -2495,6 +2498,35 @@ div.tilaParial {
   display: inline-block;
   font-size: 12px;
   cursor: pointer;
+}
+
+.delete-button {
+  font-size: 22px;
+  color: #A0A0A0;
+}
+
+.delete-button:hover {
+  color: #E55757;
+}
+
+.confirm-delete {
+  background: #E55757;
+  border-radius: 2px;
+  border: 0px;
+  font-size: 14px;
+  color: #FFFFFF;
+  letter-spacing: 0px;
+}
+
+.deleting-row {
+  background: #FFE9E9 !important;
+  background-color: #FFE9E9 !important;
+}
+
+.erillishaku-table td:last-child, .erillishaku-table th:last-child {
+  border: none !important;
+  background: none;
+  background-color: #ffffff !important;
 }
 
 /*** Tabsheet styles for 

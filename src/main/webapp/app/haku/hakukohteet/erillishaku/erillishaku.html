@@ -75,74 +75,80 @@
                                     </span>
 
                                     <!-- Valintatapajonot -->
-                                    <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1" show-filter="true">
+                                    <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1 erillishaku-table" show-filter="true">
                                         <tr ng-repeat="tulos in $data | filter:showInvalidsOnly">
                                             <td class="leftorientedcolumn"
                                                 data-title="t('valintalaskentatulos.hakija') || 'Hakija'"
                                                 sortable="'sukunimi'"
                                                 filter="{'sukunimi': 'text'}">
-                                                <show-person-information sukunimi="{{tulos.sukunimi}}"
-                                                                         etunimi="{{tulos.etunimi}}"
-                                                                         hakemus-oid="{{tulos.hakemusOid}}"
-                                                                         haku-oid="{{hakuOid}}"
-                                                                         henkilo-oid="{{tulos.hakijaOid}}"/>
+                                                <div>
+                                                    <show-person-information sukunimi="{{tulos.sukunimi}}"
+                                                                             etunimi="{{tulos.etunimi}}"
+                                                                             hakemus-oid="{{tulos.hakemusOid}}"
+                                                                             haku-oid="{{hakuOid}}"
+                                                                             henkilo-oid="{{tulos.hakijaOid}}"/>
+                                                </div>
                                             </td>
 
                                             <td data-title="t('sijoitteluntulos.hakemuksentila') || 'Valinnan tila'" sortable="'hakemuksentila'">
-                                                <div ng-switch="updateOrg && tulos.valintatuloksentila == 'KESKEN' || tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN'">
-                                                    <select ng-switch-when="true"
-                                                            ng-model="tulos.hakemuksentila"
-                                                            ng-options="opt.value as opt.text for opt in hakemuksentilat"
-                                                            ng-class="{'error': !tulos.isValid}"
-                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
-                                                    </select>
-                                                    <span ng-switch-default
-                                                          class="search"
-                                                          ng-readonly="true"
-                                                          ng-class="{'error': !tulos.isValid}"
-                                                          ng-value="parseHakemuksenTila(tulos)">{{parseHakemuksenTila(tulos)}}</span>
-                                                </div>
-                                                <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
-                                                    <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
-                                                    <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
-                                                           ng-change="addMuokattuHakemus(tulos, valintatapajono)"/>
+                                                <div>
+                                                    <div ng-switch="updateOrg && tulos.valintatuloksentila == 'KESKEN' || tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN'">
+                                                        <select ng-switch-when="true"
+                                                                ng-model="tulos.hakemuksentila"
+                                                                ng-options="opt.value as opt.text for opt in hakemuksentilat"
+                                                                ng-class="{'error': !tulos.isValid}"
+                                                                ng-change="addMuokattuHakemus(tulos, valintatapajono)">
+                                                        </select>
+                                                        <span ng-switch-default
+                                                              class="search"
+                                                              ng-readonly="true"
+                                                              ng-class="{'error': !tulos.isValid}"
+                                                              ng-value="parseHakemuksenTila(tulos)">{{parseHakemuksenTila(tulos)}}</span>
+                                                    </div>
+                                                    <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
+                                                        <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
+                                                        <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
+                                                               ng-change="addMuokattuHakemus(tulos, valintatapajono)"/>
+                                                    </div>
                                                 </div>
                                             </td>
 
                                             <td data-title="t('sijoitteluntulos.vastaanottotieto') || 'Vastaanottotieto'"
                                                 sortable="'valintatuloksentila'"
                                                 filter="{'valintatuloksentila': 'text'}">
-                                                <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:
-                                                    <input type="checkbox" ng-change="addMuokattuHakemus(tulos, valintatapajono)" ng-model="tulos.julkaistavissa"
-                                                           ng-disabled="tulos.hakemuksentila == null ||
-                                                                        tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI'||
-                                                                        tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' ||
-                                                                        tulos.valintatuloksentila === 'VASTAANOTTANUT' ||
-                                                                        tulos.valintatuloksentila === 'PERUUTETTU' ||
-                                                                        tulos.valintatuloksentila === 'PERUNUT'"> <br/></div>
-                                                <div ng-show="tulos.julkaistavissa">
-                                                    <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
-                                                    <span ng-bind="valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle]"></span>
+                                                <div>
+                                                    <div>{{ t('sijoitteluntulos.julkaistavissa') || 'Julkaistavissa' }}:
+                                                        <input type="checkbox" ng-change="addMuokattuHakemus(tulos, valintatapajono)" ng-model="tulos.julkaistavissa"
+                                                               ng-disabled="tulos.hakemuksentila == null ||
+                                                                            tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI'||
+                                                                            tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' ||
+                                                                            tulos.valintatuloksentila === 'VASTAANOTTANUT' ||
+                                                                            tulos.valintatuloksentila === 'PERUUTETTU' ||
+                                                                            tulos.valintatuloksentila === 'PERUNUT'"> <br/></div>
+                                                    <div ng-show="tulos.julkaistavissa">
+                                                        <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>:
+                                                        <span ng-bind="valintatuloksenTilaKielistys[tulos.valintatuloksenTilaHakijalle]"></span>
 
 
-                                                    <div ng-if="tulos.vastaanottoAikaraja">
-                                                        <span ng-bind="t('sijoitteluntulos.vastaanottoaikaraja') || 'Aikaraja'"/>: <span>{{tulos.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm' }}</span>
+                                                        <div ng-if="tulos.vastaanottoAikaraja">
+                                                            <span ng-bind="t('sijoitteluntulos.vastaanottoaikaraja') || 'Aikaraja'"/>: <span>{{tulos.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm' }}</span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div ng-switch="updateOrg && tulos.julkaistavissa && tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN' && tulos.hakemuksentila !== 'PERUUNTUNUT' && tulos.hakemuksentila !== 'HYLATTY'">
-                                                    <select ng-switch-when="true"
-                                                            ng-model="tulos.valintatuloksentila"
-                                                            ng-class="{'error': !tulos.isValid}"
-                                                            ng-options="opt.value as opt.text disable when opt.disable for opt in valintatuloksentilat"
-                                                            ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
-                                                    </select>
-                                                    <select disabled="disabled"
-                                                            ng-switch-default
-                                                            ng-class="{'disabled-dropdown-with-error': !tulos.isValid}"
-                                                            ng-model="tulos.valintatuloksentila"
-                                                            ng-options="opt.value as opt.text for opt in valintatuloksentilat"
-                                                            ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
-                                                    </select>
+                                                    <div ng-switch="updateOrg && tulos.julkaistavissa && tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN' && tulos.hakemuksentila !== 'PERUUNTUNUT' && tulos.hakemuksentila !== 'HYLATTY'">
+                                                        <select ng-switch-when="true"
+                                                                ng-model="tulos.valintatuloksentila"
+                                                                ng-class="{'error': !tulos.isValid}"
+                                                                ng-options="opt.value as opt.text disable when opt.disable for opt in valintatuloksentilat"
+                                                                ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
+                                                        </select>
+                                                        <select disabled="disabled"
+                                                                ng-switch-default
+                                                                ng-class="{'disabled-dropdown-with-error': !tulos.isValid}"
+                                                                ng-model="tulos.valintatuloksentila"
+                                                                ng-options="opt.value as opt.text for opt in valintatuloksentilat"
+                                                                ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </td>
 
@@ -163,17 +169,19 @@
                                             </td>
 
                                             <td data-title="t('sijoitteluntulos.lisatiedot') || 'Lisätiedot'">
-                                                <ul class="list-group">
-                                                    <li class="list-group-item" ng-if="!tulos.loytyiHakemuksista">
-                                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                                        {{ t('sijoitteluntulos.hakemustaeiloytynyt') || 'Hakemusta ei löytynyt'}}
-                                                    </li>
-                                                    <li class="list-group-item" ng-if="!tulos.loytyiSijoittelusta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Sijoittelun tulosta ei löytynyt'}}</li>
-                                                    <li class="list-group-item" ng-if="isVaaraVastaanottotila(tulos.valintatuloksentila)">
-                                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                                        {{ t('sijoitteluntulos.vaaravalintatuloksentila') || 'Virheellinen vastaanottotieto'}}
-                                                    </li>
-                                                </ul>
+                                                <div>
+                                                    <ul class="list-group">
+                                                        <li class="" ng-if="!tulos.loytyiHakemuksista">
+                                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                            {{ t('sijoitteluntulos.hakemustaeiloytynyt') || 'Hakemusta ei löytynyt'}}
+                                                        </li>
+                                                        <li class="" ng-if="!tulos.loytyiSijoittelusta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Sijoittelun tulosta ei löytynyt'}}</li>
+                                                        <li class="" ng-if="isVaaraVastaanottotila(tulos.valintatuloksentila)">
+                                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                            {{ t('sijoitteluntulos.vaaravalintatuloksentila') || 'Virheellinen vastaanottotieto'}}
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </td>
 
                                             <td data-title="t('sijoitteluntulos.toiminto') || 'Toiminto'">
@@ -187,11 +195,14 @@
                                                 </div>
                                             </td>
 
-                                            <td ng-show="updateOrg" class="width200">
-                                                <span class="circled-character delete-button"
-                                                      ng-click="handleRemoveHakemus(tulos, valintatapajono, $event)">X</span>
-                                                <button ng-click="removeHakemus(tulos, valintatapajono, $event)"
-                                                        class="display-none">{{ t('sijoitteluntulos.vahvistaPoisto') || 'Vahvista poisto' }}</button>
+                                            <td ng-show="updateOrg" class="width100">
+                                                <div>
+                                                    <i class="fa fa-times-circle delete-button" aria-hidden="true"
+                                                       ng-click="handleRemoveHakemus(tulos, valintatapajono, $event)"></i>
+
+                                                    <button ng-click="removeHakemus(tulos, valintatapajono, $event)"
+                                                            class="display-none confirm-delete">{{ t('sijoitteluntulos.vahvistaPoisto') || 'Vahvista poisto' }}</button>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tfoot>
