@@ -2527,6 +2527,7 @@ div.tilaParial {
   border: none !important;
   background: none;
   background-color: #ffffff !important;
+  text-align: left;
 }
 
 /*** Tabsheet styles for 
