@@ -141,13 +141,18 @@
                                                                 ng-options="opt.value as opt.text disable when opt.disable for opt in valintatuloksentilat"
                                                                 ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
                                                         </select>
-                                                        <select disabled="disabled"
-                                                                ng-switch-default
-                                                                ng-class="{'disabled-dropdown-with-error': !tulos.isValid}"
-                                                                ng-model="tulos.valintatuloksentila"
-                                                                ng-options="opt.value as opt.text for opt in valintatuloksentilat"
-                                                                ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
-                                                        </select>
+                                                        <span ng-switch-default>
+                                                            <div ng-if="tulos.hakemuksenTilaKuvaus">
+                                                                {{tulos.hakemuksenTilaKuvaus.FI}}
+                                                            </div>
+                                                            <select disabled="disabled"
+                                                                    ng-if="!tulos.hakemuksenTilaKuvaus"
+                                                                    ng-class="{'disabled-dropdown-with-error': !tulos.isValid}"
+                                                                    ng-model="tulos.valintatuloksentila"
+                                                                    ng-options="opt.value as opt.text for opt in valintatuloksentilat"
+                                                                    ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
+                                                            </select>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </td>
