@@ -89,6 +89,10 @@ angular.module('valintalaskenta')
         "OTTANUT_VASTAAN_TOISEN_PAIKAN": "PERUUNTUNUT"
       };
 
+      $scope.objectIsEmpty = function(obj) {
+        return _.isEmpty(obj);
+      };
+
       $scope.validateHakemuksenTilat = function(hakemus) {
         var isValid = false;
         switch (hakemus.valintatuloksentila) {

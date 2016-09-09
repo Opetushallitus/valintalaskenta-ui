@@ -92,7 +92,10 @@
 
                                             <td data-title="t('sijoitteluntulos.hakemuksentila') || 'Valinnan tila'" sortable="'hakemuksentila'">
                                                 <div>
-                                                    <div ng-switch="updateOrg && tulos.valintatuloksentila == 'KESKEN' || tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN'">
+                                                    <div ng-switch="updateOrg &&
+                                                                    (tulos.valintatuloksentila == 'KESKEN' ||
+                                                                    tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN' ||
+                                                                    !tulos.isValid)">
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.hakemuksentila"
                                                                 ng-options="opt.value as opt.text for opt in hakemuksentilat"
@@ -134,7 +137,12 @@
                                                             <span ng-bind="t('sijoitteluntulos.vastaanottoaikaraja') || 'Aikaraja'"/>: <span>{{tulos.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm' }}</span>
                                                         </div>
                                                     </div>
-                                                    <div ng-switch="updateOrg && tulos.julkaistavissa && tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN' && tulos.hakemuksentila !== 'PERUUNTUNUT' && tulos.hakemuksentila !== 'HYLATTY'">
+                                                    <div ng-switch="tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN' &&
+                                                                    ((updateOrg &&
+                                                                      tulos.julkaistavissa &&
+                                                                      tulos.hakemuksentila !== 'PERUUNTUNUT' &&
+                                                                      tulos.hakemuksentila !== 'HYLATTY') ||
+                                                                      !tulos.isValid)">
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.valintatuloksentila"
                                                                 ng-class="{'error': !tulos.isValid}"
@@ -142,11 +150,12 @@
                                                                 ng-change="changeVastaanottoTieto(tulos, valintatapajono)">
                                                         </select>
                                                         <span ng-switch-default>
-                                                            <div ng-if="tulos.hakemuksenTilaKuvaus">
+                                                            <div ng-if="!objectIsEmpty(tulos.hakemuksenTilaKuvaus)">
                                                                 {{tulos.hakemuksenTilaKuvaus.FI}}
+                                                                asd
                                                             </div>
                                                             <select disabled="disabled"
-                                                                    ng-if="!tulos.hakemuksenTilaKuvaus"
+                                                                    ng-if="objectIsEmpty(tulos.hakemuksenTilaKuvaus)"
                                                                     ng-class="{'disabled-dropdown-with-error': !tulos.isValid}"
                                                                     ng-model="tulos.valintatuloksentila"
                                                                     ng-options="opt.value as opt.text for opt in valintatuloksentilat"
