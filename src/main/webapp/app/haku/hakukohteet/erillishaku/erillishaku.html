@@ -13,10 +13,6 @@
 
             <div ng-include="'../common/html/errors.html'"></div>
 
-            <input type="text" class="search margin-vertical-2"
-                   placeholder="{{ t('valintalaskentatulos.suodatahakijoita') || 'Suodata hakijoita' }}"
-                   ng-model="hakijaFilter"/>
-
             <div>
                 <h2>{{ t('valintalaskentatulos.kaikkivalinnanvaiheet') || 'Valinnanvaiheet'}}</h2>
                 <accordion close-others="true">
@@ -37,7 +33,7 @@
                                         {{valintatapajono.nimi}}<input type="hidden" value="{{valintatapajono.oid}}"></h3>
                                     <button ng-disabled="hakemuksetByValintatapajonoOid(muokatutHakemukset, valintatapajono.oid).length == 0"
                                             ng-click="submitIlmanLaskentaa(valintatapajono)"
-                                            class="btn btn-default btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
+                                            class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
 
                                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                                             ng-click="erillishaunVientiXlsx(valintatapajono.oid, valintatapajono.nimi)"
@@ -152,7 +148,6 @@
                                                         <span ng-switch-default>
                                                             <div ng-if="!objectIsEmpty(tulos.hakemuksenTilaKuvaus)">
                                                                 {{tulos.hakemuksenTilaKuvaus.FI}}
-                                                                asd
                                                             </div>
                                                             <select disabled="disabled"
                                                                     ng-if="objectIsEmpty(tulos.hakemuksenTilaKuvaus)"
@@ -189,7 +184,7 @@
                                                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                                             {{ t('sijoitteluntulos.hakemustaeiloytynyt') || 'Hakemusta ei löytynyt'}}
                                                         </li>
-                                                        <li class="" ng-if="!tulos.loytyiSijoittelusta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Sijoittelun tulosta ei löytynyt'}}</li>
+                                                        <li class="" ng-if="!tulos.loytyiSijoittelusta">{{ t('sijoitteluntulos.sijoittelustaeiloytynyt') || 'Valintatieto puuttuu'}}</li>
                                                         <li class="" ng-if="isVaaraVastaanottotila(tulos.valintatuloksentila)">
                                                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                                             {{ t('sijoitteluntulos.vaaravalintatuloksentila') || 'Virheellinen vastaanottotieto'}}

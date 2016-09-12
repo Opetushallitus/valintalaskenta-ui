@@ -4,7 +4,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimiService,ValintaperusteetHakukohdeValintaryhma, ErillishakuProxy, _) {
     "use strict";
 
-
     var model;
 
     model = new function () {

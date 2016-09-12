@@ -156,7 +156,7 @@ angular.module('valintalaskenta')
       };
 
       $scope.hakemusIsVarasijaltaHyvaksytty = function(hakemus) {
-        return hakemus.hakemuksentila == "VARALLA"
+        return (hakemus.hakemuksentila == "VARALLA" || hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY")
           && (hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT" || hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI");
       };
 
@@ -187,6 +187,7 @@ angular.module('valintalaskenta')
       var addKeinotekoinenOidIfMissing = function (valintatapajono, i) {
         if (!valintatapajono.oid) {
           valintatapajono.oid = "MISSING_OID_" + (i + 1);
+          createTableParamsForValintatapaJono(valintatapajono);
         }
 
         return valintatapajono;
@@ -212,50 +213,52 @@ angular.module('valintalaskenta')
       };
 
       var createTableParamsForValintatapaJono = function (valintatapajono) {
-        $scope.tableParams[valintatapajono.oid] = new NgTableParams({
-          page: 1,
-          count: 50,
-          filters: {
-            'sukunimi': '',
-            'etunimi': ''
-          },
-          sorting: {
-            'sukunimi': 'asc',
-            'etunimi': 'desc'
-          }
-        }, {
-          total: valintatapajono.hakemukset.length,
-          getData: function ($defer, params) {
-            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+        if (valintatapajono.oid) {
+          $scope.tableParams[valintatapajono.oid] = new NgTableParams({
+            page: 1,
+            count: 50,
+            filters: {
+              'sukunimi': '',
+              'etunimi': ''
+            },
+            sorting: {
+              'sukunimi': 'asc',
+              'etunimi': 'desc'
+            }
+          }, {
+            total: valintatapajono.hakemukset.length,
+            getData: function($defer, params) {
+              var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
-            // remove empty filters
-            _.map(filters, function(val ,key) {
-              if (!val) delete filters[key];
-            });
+              // remove empty filters
+              _.map(filters, function(val, key) {
+                if (!val) delete filters[key];
+              });
 
-            // Implement first and last name filtering with only 1 search box.
-            // Has to be done with $scope.filters since custom filter functions cannot take filters as params AFAIK.
-            if ('sukunimi' in filters) filters.etunimi = filters.sukunimi;
-            $scope.filters = filters;
+              // Implement first and last name filtering with only 1 search box.
+              // Has to be done with $scope.filters since custom filter functions cannot take filters as params AFAIK.
+              if ('sukunimi' in filters) filters.etunimi = filters.sukunimi;
+              $scope.filters = filters;
 
-            var orderedData = params.sorting() ?
-              $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
-              valintatapajono.hakemukset;
+              var orderedData = params.sorting() ?
+                $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
+                valintatapajono.hakemukset;
 
-            orderedData = $scope.showInvalidsOnly ?
-              _(orderedData)
-                .filter(function(o) {
-                  return !o.isValid;
-                }) : orderedData;
+              orderedData = $scope.showInvalidsOnly ?
+                _(orderedData)
+                  .filter(function(o) {
+                    return !o.isValid;
+                  }) : orderedData;
 
-            orderedData = params.filter() ?
-              $filter('filter')(orderedData, multiFilter) :
-              orderedData;
+              orderedData = params.filter() ?
+                $filter('filter')(orderedData, multiFilter) :
+                orderedData;
 
-            $scope.filters = {};
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          }
-        });
+              $scope.filters = {};
+              $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
+          });
+        }
       };
 
       var processErillishaku = function(erillishaku) {
