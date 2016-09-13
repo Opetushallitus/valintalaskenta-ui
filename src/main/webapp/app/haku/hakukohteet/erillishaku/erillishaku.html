@@ -16,18 +16,15 @@
             <div>
                 <h2>{{ t('valintalaskentatulos.kaikkivalinnanvaiheet') || 'Valinnanvaiheet'}}</h2>
                 <accordion close-others="true">
-                    <accordion-group
-                            ng-repeat="valinnanvaihe in erillishaku |  orderBy:['-viimeinenVaihe', '-jarjestysnumero'] track by $index"
-                            is-open="$first">
+                    <accordion-group ng-repeat="valinnanvaihe in erillishaku |  orderBy:['-viimeinenVaihe', '-jarjestysnumero'] track by $index"
+                                     is-open="$first">
 
                         <accordion-heading>
-                            <h3>{{ t('valintalaskentatulos.valinnanvaihe') || 'Valinnanvaihe' }}: <span
-                                    ng-bind="valinnanvaihe.nimi">-</span></h3>
-
-                        </accordion-heading>
+                            <h3>{{ t('valintalaskentatulos.valinnanvaihe') || 'Valinnanvaihe' }}:
+                                <span ng-bind="valinnanvaihe.nimi">-</span></h3></accordion-heading>
 
                         <div>
-                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index" ng-init="nameFilters={}">
+                            <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot track by $index">
                                 <form name="form">
                                     <h3>{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}:
                                         {{valintatapajono.nimi}}<input type="hidden" value="{{valintatapajono.oid}}"></h3>
@@ -137,7 +134,8 @@
                                                                     ((updateOrg &&
                                                                       tulos.julkaistavissa &&
                                                                       tulos.hakemuksentila !== 'PERUUNTUNUT' &&
-                                                                      tulos.hakemuksentila !== 'HYLATTY') ||
+                                                                      tulos.hakemuksentila !== 'HYLATTY' &&
+                                                                      tulos.hakemuksentila !== 'VARALLA') ||
                                                                       !tulos.isValid)">
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.valintatuloksentila"

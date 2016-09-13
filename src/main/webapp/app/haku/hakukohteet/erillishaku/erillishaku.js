@@ -93,28 +93,45 @@ angular.module('valintalaskenta')
         return _.isEmpty(obj);
       };
 
+      // $scope.validateHakemuksenTilat = function(hakemus) {
+      //   var isValid = false;
+      //   switch (hakemus.valintatuloksentila) {
+      //     case "KESKEN":
+      //       isValid = true;
+      //       break;
+      //     case "EHDOLLISESTI_VASTAANOTTANUT":
+      //     case "VASTAANOTTANUT_SITOVASTI":
+      //       isValid = hakemus.hakemuksentila == "HYVAKSYTTY" || hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY";
+      //       break;
+      //     case "EI_VASTAANOTETTU_MAARA_AIKANA":
+      //     case "PERUNUT":
+      //       isValid = hakemus.hakemuksentila == "PERUNUT";
+      //       break;
+      //     case "PERUUTETTU":
+      //       isValid = hakemus.hakemuksentila == "PERUUTETTU";
+      //       break;
+      //     case "OTTANUT_VASTAAN_TOISEN_PAIKAN":
+      //       isValid = hakemus.hakemuksentila == "PERUUNTUNUT";
+      //       break;
+      //   }
+      //   hakemus.isValid = isValid;
+      // };
+
       $scope.validateHakemuksenTilat = function(hakemus) {
-        var isValid = false;
-        switch (hakemus.valintatuloksentila) {
-          case "KESKEN":
-            isValid = true;
-            break;
-          case "EHDOLLISESTI_VASTAANOTTANUT":
-          case "VASTAANOTTANUT_SITOVASTI":
-            isValid = hakemus.hakemuksentila == "HYVAKSYTTY" || hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY";
-            break;
-          case "EI_VASTAANOTETTU_MAARA_AIKANA":
-          case "PERUNUT":
-            isValid = hakemus.hakemuksentila == "PERUNUT";
-            break;
-          case "PERUUTETTU":
-            isValid = hakemus.hakemuksentila == "PERUUTETTU";
-            break;
-          case "OTTANUT_VASTAAN_TOISEN_PAIKAN":
-            isValid = hakemus.hakemuksentila == "PERUUNTUNUT";
-            break;
-        }
-        hakemus.isValid = isValid;
+        if (hakemus.hakemuksentila == "HYLATTY" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "VARALLA" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "PERUUNTUNUT" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "PERUUNTUNUT" && hakemus.valintatuloksentila == "OTTANUT_VASTAAN_TOISEN_PAIKAN") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "PERUUNTUNUT" && hakemus.valintatuloksentila == "EI_VASTAANOTETTU_MAARA_AIKANA") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY" && hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY" && hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "HYVAKSYTTY" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "HYVAKSYTTY" && hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "HYVAKSYTTY" && hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "PERUNUT" && hakemus.valintatuloksentila == "PERUNUT") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "PERUUTETTU" && hakemus.valintatuloksentila == "PERUUTETTU") hakemus.isValid = true;
+        else hakemus.isValid = false
       };
 
       $scope.toggleShowInvalidsOnly = function(tableParams) {
