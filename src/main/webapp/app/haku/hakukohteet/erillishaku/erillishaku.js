@@ -65,7 +65,7 @@ angular.module('valintalaskenta')
         {value: "VARASIJALTA_HYVAKSYTTY", text_prop: "sijoitteluntulos.varasijalta", default_text:"Varasijalta hyv\u00E4ksytty"},
         {value: "HYVAKSYTTY", text_prop: "sijoitteluntulos.hyvaksytty", default_text:"Hyv\u00E4ksytty"},
         {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
-        {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
+        {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"},
       ];
 
       $scope.ilmoittautumistilat = [
@@ -83,7 +83,7 @@ angular.module('valintalaskenta')
       $scope.valintaTuloksenTilaToHakemuksenTila = {
         "EHDOLLISESTI_VASTAANOTTANUT": "HYVAKSYTTY",
         "VASTAANOTTANUT_SITOVASTI": "HYVAKSYTTY",
-        "EI_VASTAANOTETTU_MAARA_AIKANA": "PERUNUT",
+        "EI_VASTAANOTETTU_MAARA_AIKANA": "PERUUNTUNUT",
         "PERUNUT": "PERUNUT",
         "PERUUTETTU": "PERUUTETTU",
         "OTTANUT_VASTAAN_TOISEN_PAIKAN": "PERUUNTUNUT"
@@ -92,30 +92,6 @@ angular.module('valintalaskenta')
       $scope.objectIsEmpty = function(obj) {
         return _.isEmpty(obj);
       };
-
-      // $scope.validateHakemuksenTilat = function(hakemus) {
-      //   var isValid = false;
-      //   switch (hakemus.valintatuloksentila) {
-      //     case "KESKEN":
-      //       isValid = true;
-      //       break;
-      //     case "EHDOLLISESTI_VASTAANOTTANUT":
-      //     case "VASTAANOTTANUT_SITOVASTI":
-      //       isValid = hakemus.hakemuksentila == "HYVAKSYTTY" || hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY";
-      //       break;
-      //     case "EI_VASTAANOTETTU_MAARA_AIKANA":
-      //     case "PERUNUT":
-      //       isValid = hakemus.hakemuksentila == "PERUNUT";
-      //       break;
-      //     case "PERUUTETTU":
-      //       isValid = hakemus.hakemuksentila == "PERUUTETTU";
-      //       break;
-      //     case "OTTANUT_VASTAAN_TOISEN_PAIKAN":
-      //       isValid = hakemus.hakemuksentila == "PERUUNTUNUT";
-      //       break;
-      //   }
-      //   hakemus.isValid = isValid;
-      // };
 
       $scope.validateHakemuksenTilat = function(hakemus) {
         if (hakemus.hakemuksentila == "HYLATTY" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;

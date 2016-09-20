@@ -2530,6 +2530,10 @@ div.tilaParial {
   text-align: left;
 }
 
+.additional-info {
+  list-style: none;
+}
+
 /*** Tabsheet styles for 
 ************************************************/
 .tabsheets {
