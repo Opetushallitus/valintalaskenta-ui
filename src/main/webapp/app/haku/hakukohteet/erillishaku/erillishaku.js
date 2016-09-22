@@ -48,7 +48,8 @@ angular.module('valintalaskenta')
             {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
             {value: "VASTAANOTTANUT_SITOVASTI", text_prop: "sijoitteluntulos.vastaanottanut", default_text:"Vastaanotettu"},
             {value: "EI_VASTAANOTETTU_MAARA_AIKANA", text_prop: "sijoitteluntulos.eivastaanotettu", default_text:"Ei vastaanotettu m\u00E4\u00E4r\u00E4aikana"},
-            {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"}
+            {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
+            {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
           ];
         }
         $scope.valintatuloksenTilaKielistys = valintatuloksenTilojenKielistykset($scope.valintatuloksentilat);
@@ -83,7 +84,7 @@ angular.module('valintalaskenta')
       $scope.valintaTuloksenTilaToHakemuksenTila = {
         "EHDOLLISESTI_VASTAANOTTANUT": "HYVAKSYTTY",
         "VASTAANOTTANUT_SITOVASTI": "HYVAKSYTTY",
-        "EI_VASTAANOTETTU_MAARA_AIKANA": "PERUUNTUNUT",
+        "EI_VASTAANOTETTU_MAARA_AIKANA": "PERUNUT",
         "PERUNUT": "PERUNUT",
         "PERUUTETTU": "PERUUTETTU",
         "OTTANUT_VASTAAN_TOISEN_PAIKAN": "PERUUNTUNUT"
@@ -98,7 +99,7 @@ angular.module('valintalaskenta')
         else if (hakemus.hakemuksentila == "VARALLA" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "PERUUNTUNUT" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "PERUUNTUNUT" && hakemus.valintatuloksentila == "OTTANUT_VASTAAN_TOISEN_PAIKAN") hakemus.isValid = true;
-        else if (hakemus.hakemuksentila == "PERUUNTUNUT" && hakemus.valintatuloksentila == "EI_VASTAANOTETTU_MAARA_AIKANA") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "PERUNUT" && hakemus.valintatuloksentila == "EI_VASTAANOTETTU_MAARA_AIKANA") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY" && hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY" && hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI") hakemus.isValid = true;

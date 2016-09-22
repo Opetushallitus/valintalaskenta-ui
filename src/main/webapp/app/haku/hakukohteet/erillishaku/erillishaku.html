@@ -83,6 +83,8 @@
                                                 </div>
                                             </td>
 
+                                            <!--Jos valintatuloksentila on "ei vastaanotettu määräaikana" ja hakemuksen tila
+                                                on "perunut" näytetään hakemuksentilassa peruutettu.-->
                                             <td data-title="t('sijoitteluntulos.hakemuksentila') || 'Valinnan tila'" sortable="'hakemuksentila'">
                                                 <div>
                                                     <div ng-switch="updateOrg &&
@@ -99,7 +101,7 @@
                                                               class="search"
                                                               ng-readonly="true"
                                                               ng-class="{'error': !tulos.isValid}"
-                                                              ng-value="parseHakemuksenTila(tulos)">{{parseHakemuksenTila(tulos)}}</span>
+                                                              ng-value="tulos.hakemuksentila">{{parseHakemuksenTila(tulos)}}</span>
                                                     </div>
                                                     <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
                                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
