@@ -1,4 +1,9 @@
 <span ng-if="!hakemus.tilanKuvaukset.FI || hakemus.tila == 'HYLATTY'">{{hakemus.tila}}</span>
+<span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.FI}}</span>
+<span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.SV}}</span>
+<span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.EN}}</span>
+<span ng-if="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY') && hakemus.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
+<span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
 <div ng-if="showHyvaksyPeruuntunut">
     <label for="hyvaksyPeruuntunut-{{id}}">Hyväksy peruuntunut</label>
     <input id="hyvaksyPeruuntunut-{{id}}"
@@ -7,8 +12,3 @@
            type="checkbox"
            ng-change="onEdit({hakemus: hakemus})"></input>
 </div>
-<span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.FI}}</span>
-<span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.SV}}</span>
-<span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI && hakemus.tila != 'HYLATTY'">{{hakemus.tilanKuvaukset.EN}}</span>
-<span ng-if="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY') && hakemus.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
-<span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
