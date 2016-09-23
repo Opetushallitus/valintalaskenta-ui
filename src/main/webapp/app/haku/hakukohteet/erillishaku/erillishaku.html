@@ -121,6 +121,7 @@
                                                         <input type="checkbox" ng-change="addMuokattuHakemus(tulos, valintatapajono)" ng-model="tulos.julkaistavissa"
                                                                ng-disabled="tulos.hakemuksentila == null ||
                                                                             tulos.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI'||
+                                                                            tulos.valintatuloksentila === 'EI_VASTAANOTETTU_MAARA_AIKANA' ||
                                                                             tulos.valintatuloksentila === 'EHDOLLISESTI_VASTAANOTTANUT' ||
                                                                             tulos.valintatuloksentila === 'VASTAANOTTANUT' ||
                                                                             tulos.valintatuloksentila === 'PERUUTETTU' ||

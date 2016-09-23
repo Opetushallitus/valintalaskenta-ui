@@ -67,6 +67,7 @@ angular.module('valintalaskenta')
         {value: "HYVAKSYTTY", text_prop: "sijoitteluntulos.hyvaksytty", default_text:"Hyv\u00E4ksytty"},
         {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut", disable: true},
         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"},
+        {value: "", text_prop: "", default_text: ""}
       ];
 
       $scope.ilmoittautumistilat = [
@@ -202,6 +203,7 @@ angular.module('valintalaskenta')
       var multiFilter = function(value, index, array) {
         if (_.isEmpty($scope.filters)) return true;
         return _.some(_.map($scope.filters,function(val, key) {
+          if (value[key] == null) return false;
           return toLowerStripUnderscore(value[key]).indexOf(toLowerStripUnderscore(val)) > -1;
         }));
       };
