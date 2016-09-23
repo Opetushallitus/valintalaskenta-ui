@@ -1062,6 +1062,6 @@ app.directive('linkToHenkiloInHenkilopalvelu', function () {
             $scope.baseUrl = AUTHENTICATION_HENKILOUI_URL_BASE;
             $scope.txt = $scope.text || $scope.henkiloOid;
         },
-        template: '<a ng-if="henkiloOid" href="{{baseUrl}}/html/index.html#/henkilo/{{henkiloOid}}/?permissionCheckService=HAKU_APP" target="_blank">{{txt}}</a>'
+        template: '<a ng-if="henkiloOid" href="{{baseUrl}}/html/henkilo/{{henkiloOid}}/?permissionCheckService=HAKU_APP" target="_blank">{{txt}}</a>'
     };
 });
