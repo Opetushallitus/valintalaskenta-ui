@@ -65,7 +65,7 @@ angular.module('valintalaskenta')
         {value: "PERUUNTUNUT", text_prop: "sijoitteluntulos.peruuntunut", default_text:"Peruuntunut"},
         {value: "VARASIJALTA_HYVAKSYTTY", text_prop: "sijoitteluntulos.varasijalta", default_text:"Varasijalta hyv\u00E4ksytty"},
         {value: "HYVAKSYTTY", text_prop: "sijoitteluntulos.hyvaksytty", default_text:"Hyv\u00E4ksytty"},
-        {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut"},
+        {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut", disable: true},
         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"},
       ];
 

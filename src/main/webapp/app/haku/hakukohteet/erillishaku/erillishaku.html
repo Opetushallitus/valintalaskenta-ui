@@ -69,7 +69,7 @@
 
                                     <!-- Valintatapajonot -->
                                     <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1 erillishaku-table" show-filter="true">
-                                        <tr ng-repeat="tulos in $data | filter:showInvalidsOnly">
+                                        <tr ng-repeat="tulos in $data">
                                             <td class="leftorientedcolumn"
                                                 data-title="t('valintalaskentatulos.hakija') || 'Hakija'"
                                                 sortable="'sukunimi'"
@@ -85,7 +85,9 @@
 
                                             <!--Jos valintatuloksentila on "ei vastaanotettu määräaikana" ja hakemuksen tila
                                                 on "perunut" näytetään hakemuksentilassa peruutettu.-->
-                                            <td data-title="t('sijoitteluntulos.hakemuksentila') || 'Valinnan tila'" sortable="'hakemuksentila'">
+                                            <td data-title="t('sijoitteluntulos.hakemuksentila') || 'Valinnan tila'"
+                                                sortable="'hakemuksentila'"
+                                                filter="{'hakemuksentila': 'text'}">
                                                 <div>
                                                     <div ng-switch="updateOrg &&
                                                                     (tulos.valintatuloksentila == 'KESKEN' ||
@@ -93,7 +95,7 @@
                                                                     !tulos.isValid)">
                                                         <select ng-switch-when="true"
                                                                 ng-model="tulos.hakemuksentila"
-                                                                ng-options="opt.value as opt.text for opt in hakemuksentilat"
+                                                                ng-options="opt.value as opt.text disable when opt.disable for opt in hakemuksentilat"
                                                                 ng-class="{'error': !tulos.isValid}"
                                                                 ng-change="addMuokattuHakemus(tulos, valintatapajono)">
                                                         </select>
@@ -133,6 +135,7 @@
                                                         </div>
                                                     </div>
                                                     <div ng-switch="tulos.valintatuloksentila !== 'OTTANUT_VASTAAN_TOISEN_PAIKAN' &&
+                                                                    tulos.hakemuksentila != null &&
                                                                     ((updateOrg &&
                                                                       tulos.julkaistavissa &&
                                                                       tulos.hakemuksentila !== 'PERUUNTUNUT' &&
