@@ -60,7 +60,7 @@ angular.module('valintalaskenta')
       });
 
       $scope.hakemuksentilat = [
-        {value: "", text_prop: "", default_text: ""},
+        {value: null, text_prop: "", default_text: ""},
         {value: "HYLATTY", text_prop: "sijoitteluntulos.hylatty", default_text:"Hyl\u00E4tty"},
         {value: "VARALLA", text_prop: "sijoitteluntulos.varalla", default_text:"Varalla"},
         {value: "PERUUNTUNUT", text_prop: "sijoitteluntulos.peruuntunut", default_text:"Peruuntunut"},
@@ -96,7 +96,8 @@ angular.module('valintalaskenta')
       };
 
       $scope.validateHakemuksenTilat = function(hakemus) {
-        if (hakemus.hakemuksentila == "HYLATTY" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
+        if (hakemus.hakemuksentila == null && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
+        else if (hakemus.hakemuksentila == "HYLATTY" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "VARALLA" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "PERUUNTUNUT" && hakemus.valintatuloksentila == "KESKEN") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "PERUUNTUNUT" && hakemus.valintatuloksentila == "OTTANUT_VASTAAN_TOISEN_PAIKAN") hakemus.isValid = true;
