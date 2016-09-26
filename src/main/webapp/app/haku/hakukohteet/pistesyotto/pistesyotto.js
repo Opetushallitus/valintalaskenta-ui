@@ -1,5 +1,14 @@
-app.factory('PistesyottoModel', function ($q, HakukohdeHenkilotFull, HakukohdeAvaimet, HakemusAdditionalData, HakemusAdditionalDataByOids, Valintakoetulokset, Ilmoitus,
-                                          IlmoitusTila, HakukohdeAvainTyyppiService, _) {
+app.factory('PistesyottoModel', function (
+    $q,
+    HakukohdeHenkilotFull,
+    HakukohdeAvaimet,
+    KoostettuHakemusAdditionalData,
+    KoostettuHakemusAdditionalDataByOids,
+    Valintakoetulokset,
+    Ilmoitus,
+    IlmoitusTila,
+    HakukohdeAvainTyyppiService, _) {
+
     "use strict";
 
     var model;
@@ -62,7 +71,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeHenkilotFull, HakukohdeAv
 
                 // Haetaan additionalData kaikkille niille hakemuksille jotka ovat hakeneet hakukohteelle
                 // tai joille löytyy valintakoetulos
-                HakemusAdditionalDataByOids.post({}, angular.toJson(hakemusOids), function (haetut) {
+                    KoostettuHakemusAdditionalDataByOids.post({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, angular.toJson(hakemusOids), function (haetut) {
 
                     model.hakeneet = haetut;
 
@@ -160,7 +169,7 @@ app.factory('PistesyottoModel', function ($q, HakukohdeHenkilotFull, HakukohdeAv
                     hakija.filterData = undefined;
                     hakija.osallistuu = undefined;
                 });
-                HakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success){
+                KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success){
                     Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
                     blockSubmit = false;
                 },function(error){

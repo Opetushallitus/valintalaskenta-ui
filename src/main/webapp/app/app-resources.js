@@ -480,7 +480,22 @@ app.factory('OsoitetarratHakemuksille', function($resource) {
         post:  {method:'POST', isArray:false}
     });
 });
-
+app.factory('KoostettuHakemusAdditionalDataByOids', function($resource) {
+    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.koosta", ":hakuOid", ":hakukohdeOid"), {
+        hakuOid: "@hakuOid",
+        hakukohdeOid: "@hakukohdeOid"
+    }, {
+        post: {method: "POST", isArray: true}
+    });
+});
+app.factory('KoostettuHakemusAdditionalData', function($resource) {
+    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.tallenna", ":hakuOid", ":hakukohdeOid"), {
+        hakuOid: "@hakuOid",
+        hakukohdeOid: "@hakukohdeOid"
+    },{
+        put: {method: "PUT", isArray: true}
+    });
+});
 app.factory('HakukohteelleJalkiohjauskirjeet', function($resource) {
     return $resource(window.url("valintalaskentakoostepalvelu.viestintapalvelu.hakukohteessahylatyt.aktivoi"), {}, {
         post:  {method:'POST', isArray:false}
@@ -586,13 +601,6 @@ app.factory('HakemusAdditionalData', function($resource) {
             put: {method: "PUT", isArray: true}
         });
 });
-
-app.factory('HakemusAdditionalDataByOids', function($resource) {
-    return $resource(window.url("haku-app.applications.additionaldata"), {}, {
-        post: {method: "POST", isArray: true}
-    });
-});
-
 app.factory('HakukohdeHenkilot', function($resource) {
     return $resource(window.url("haku-app.applications"),
         {

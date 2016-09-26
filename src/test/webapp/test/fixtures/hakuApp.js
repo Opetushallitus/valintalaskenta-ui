@@ -228,7 +228,7 @@ function hakuAppPisteFixtures(count) {
     }
     return function() {
         var httpBackend = testFrame().httpBackend
-        httpBackend.when('POST', /.*\/haku-app\/applications\/additionalData/).respond(hakuAppPisteFixtures);
+        httpBackend.when('POST', /.*\/valintalaskentakoostepalvelu\/resources\/pistesyotto\/koostaPistetiedotHakemuksille.*/).respond(hakuAppPisteFixtures);
     }
 }
 
