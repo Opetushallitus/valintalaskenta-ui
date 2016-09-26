@@ -60,14 +60,14 @@ angular.module('valintalaskenta')
       });
 
       $scope.hakemuksentilat = [
+        {value: "", text_prop: "", default_text: ""},
         {value: "HYLATTY", text_prop: "sijoitteluntulos.hylatty", default_text:"Hyl\u00E4tty"},
         {value: "VARALLA", text_prop: "sijoitteluntulos.varalla", default_text:"Varalla"},
         {value: "PERUUNTUNUT", text_prop: "sijoitteluntulos.peruuntunut", default_text:"Peruuntunut"},
         {value: "VARASIJALTA_HYVAKSYTTY", text_prop: "sijoitteluntulos.varasijalta", default_text:"Varasijalta hyv\u00E4ksytty"},
         {value: "HYVAKSYTTY", text_prop: "sijoitteluntulos.hyvaksytty", default_text:"Hyv\u00E4ksytty"},
         {value: "PERUNUT", text_prop: "sijoitteluntulos.perunut", default_text:"Perunut", disable: true},
-        {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"},
-        {value: "", text_prop: "", default_text: ""}
+        {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
       ];
 
       $scope.ilmoittautumistilat = [
