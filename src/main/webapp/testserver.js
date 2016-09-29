@@ -162,42 +162,6 @@ app.get('/configuration/configuration.js', function(req, res) {
 
 app.use('/', express.static('.'));
 
-
-
-// simple route to register the clients
-app.get('/seuranta-service/resources/seuranta/yhteenveto/:id/sse', function(req, res) {
- 
-    // set timeout as high as possible
-    req.socket.setTimeout(10000000000);
- 
-    // send headers for event-stream connection
-    // see spec for more information
-    res.writeHead(200, {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive'
-    });
-    res.write('\n');
- 
-    // push this res object to our global variable
-    openConnections.push(res);
- 
-    // When the request is closed, e.g. the browser window
-    // is closed. We search through the open connections
-    // array and remove this connection.
-    req.on("close", function() {
-        var toRemove;
-        for (var j =0 ; j < openConnections.length ; j++) {
-            if (openConnections[j] == res) {
-                toRemove =j;
-                break;
-            }
-        }
-        openConnections.splice(j,1);
-        console.log(openConnections.length);
-    });
-});
- 
 var i = 0;
 setInterval(function() {
     // we walk through each connection
