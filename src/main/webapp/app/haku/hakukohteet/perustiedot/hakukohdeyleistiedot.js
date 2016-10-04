@@ -1,7 +1,7 @@
 
 angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'HakukohdeNimiService',
-    'ValintaperusteetHakukohdeValintaryhma','ErillishakuProxy', '_',
-    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimiService,ValintaperusteetHakukohdeValintaryhma, ErillishakuProxy, _) {
+    'ValintaperusteetHakukohdeValintaryhma','ErillishakuProxy', '_', 'HakuModel',
+    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimiService,ValintaperusteetHakukohdeValintaryhma, ErillishakuProxy, _, HakuModel) {
     "use strict";
 
     var model;
@@ -16,6 +16,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.valintaryhma = {};
         this.kaytetaanValintalaskentaa = false;
         this.valinnanvaiheet = [];
+        this.haku = HakuModel;
 
         this.refresh = function (hakukohdeOid) {
             model.hakukohdeOid = hakukohdeOid;
@@ -75,18 +76,23 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
 
         this.setHakukohdeValinnanvaiheet = function (hakukohdeOid, hakuOid) {
             model.valinnanVaiheetPromise = $q.defer();
-            ErillishakuProxy.hae({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function (result) {
-                model.kaytetaanValintalaskentaa = _(result).filter(function (e) {
-                    return e.viimeinenVaihe;
-                })[0].valintatapajonot.some(function (e) {
-                    return e.kaytetaanValintalaskentaa;
-                });
-                model.valinnanvaiheet = result;
-                model.valinnanVaiheetPromise.resolve();
-            }, function (error) {
-                console.log(error);
-                model.valinnanVaiheetPromise.reject(error);
-            });
+            model.haku.promise.then(function() {
+                if (model.haku.hakuOid.sijoittelu) model.valinnanVaiheetPromise.resolve();
+                else {
+                    ErillishakuProxy.hae({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}, function (result) {
+                        model.kaytetaanValintalaskentaa = _(result).filter(function (e) {
+                            return e.viimeinenVaihe;
+                        })[0].valintatapajonot.some(function (e) {
+                            return e.kaytetaanValintalaskentaa;
+                        });
+                        model.valinnanvaiheet = result;
+                        model.valinnanVaiheetPromise.resolve();
+                    }, function (error) {
+                        console.log(error);
+                        model.valinnanVaiheetPromise.reject(error);
+                    });
+                }
+            })
         }
     }();
 
