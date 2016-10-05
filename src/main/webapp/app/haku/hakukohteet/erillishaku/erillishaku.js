@@ -671,7 +671,7 @@ angular.module('valintalaskenta')
       };
 
       $scope.saveIlmoitettuToAll = function(valintatapajonoOid, valintatapajononNimi, json) {
-        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajononNimi, valintatapajonoOid),
+        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
           {rivit: json}, function () {
             Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
               function() {
@@ -706,7 +706,7 @@ angular.module('valintalaskenta')
         hakemus.poistetaankoRivi = true;
 
         console.log($scope.hakemusToErillishakuRivi(hakemus));
-        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajono.nimi, valintatapajono.oid),
+        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajono.oid, valintatapajono.nimi),
           {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]}, function(res) {
             console.log(res);
           }, function(e) {
