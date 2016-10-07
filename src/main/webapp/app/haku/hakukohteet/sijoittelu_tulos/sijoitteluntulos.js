@@ -800,14 +800,6 @@ angular.module('valintalaskenta')
         return LocalisationService.tl('sijoitteluntulos.jonosija') ? LocalisationService.tl('sijoitteluntulos.jonosija') +  " ("+length+")" : 'Jonosija' +  " ("+length+")";
     };
 
-    $scope.resetIlmoittautumisTila = function(hakemus) {
-        if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT_SITOVASTI') {
-            hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
-        } else if (!hakemus.muokattuIlmoittautumisTila) {
-            hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
-        }
-    };
-
     LocalisationService.getTranslationsForArray($scope.tilaFilterValues).then(function () {
     });
 

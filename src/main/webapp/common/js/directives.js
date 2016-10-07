@@ -895,7 +895,8 @@ app.directive('muokattuVastaanottoTila', function () {
         restrict: 'E',
         scope: {
             haku: '=',
-            hakemus: '='
+            hakemus: '=',
+            onHakemusUpdate: '&'
         },
         templateUrl: '../common/html/muokattuvastaanottotila.html',
         controller: function ($scope, AuthService, Korkeakoulu) {
@@ -928,6 +929,19 @@ app.directive('muokattuVastaanottoTila', function () {
                             {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
                         );
                     }
+                }
+            };
+            $scope.handleTilaChange = function(hakemus) {
+                $scope.resetIlmoittautumisTila(hakemus);
+                if($scope.onHakemusUpdate) {
+                    $scope.onHakemusUpdate({hakemus: hakemus});
+                }
+            };
+            $scope.resetIlmoittautumisTila = function(hakemus) {
+                if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT_SITOVASTI') {
+                    hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
+                } else if (!hakemus.muokattuIlmoittautumisTila) {
+                    hakemus.muokattuIlmoittautumisTila = 'EI_TEHTY';
                 }
             };
             $scope.isEditable = false;
