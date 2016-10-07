@@ -933,9 +933,7 @@ app.directive('muokattuVastaanottoTila', function () {
             };
             $scope.handleTilaChange = function(hakemus) {
                 $scope.resetIlmoittautumisTila(hakemus);
-                if($scope.onHakemusUpdate) {
-                    $scope.onHakemusUpdate({hakemus: hakemus});
-                }
+                $scope.onHakemusUpdate({hakemus: hakemus});
             };
             $scope.resetIlmoittautumisTila = function(hakemus) {
                 if(hakemus.muokattuVastaanottoTila !== 'VASTAANOTTANUT_SITOVASTI') {
