@@ -62,9 +62,7 @@ angular.module('valintalaskenta').
     }
     $scope.jatkuva = {};
     $scope.korkeakoulu = Korkeakoulu;
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
-    $scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE;
-    $scope.VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE;
+    $scope.url = window.url;
     if(_.isEmpty(HakuModel.deferred)) { HakuModel.init($routeParams.hakuOid) }
     $scope.hakumodel = HakuModel;
     HakuModel.promise.then(function(h){

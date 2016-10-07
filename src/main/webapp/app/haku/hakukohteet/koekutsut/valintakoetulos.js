@@ -238,11 +238,7 @@ angular.module('valintalaskenta').
 
     "use strict";
 
-	// kayttaa dokumenttipalvelua
-	$scope.DOKUMENTTIPALVELU_URL_BASE = DOKUMENTTIPALVELU_URL_BASE; 
-	
-	// kayttaa dokumenttipalvelua
-	
+	$scope.url = window.url;
 
     $scope.pageSize = 50;
 
@@ -338,7 +334,6 @@ angular.module('valintalaskenta').
     
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
 
     $scope.model = ValintakoetulosModel;
     $scope.hakukohdeModel = HakukohdeModel;

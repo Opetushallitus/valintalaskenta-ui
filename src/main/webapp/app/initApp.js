@@ -7,12 +7,12 @@
 
     function initCas() {
         var services = [
-            VALINTAPERUSTEET_URL_BASE,
-            SERVICE_URL_BASE,
-            VALINTALASKENTAKOOSTE_URL_BASE,
-            SIJOITTELU_URL_BASE,
-            VIESTINTAPALVELU_URL_BASE,
-            HAKEMUS_UI_URL_BASE
+            window.url("valintaperusteet-service.base"),
+            window.url("valintalaskenta-laskenta-service.base"),
+            window.url("valintalaskentakoostepalvelu.base"),
+            window.url("sijoittelu-service.base"),
+            window.url("viestintapalvelu.base"),
+            window.url("haku-app.base")
         ];
         return $q.all(services.map(loadBuildversion));
     }
@@ -27,5 +27,8 @@
         });
     }
 
-    initCas().then(bootstrapApplication, bootstrapApplication);
+    window.urls.debug = true;
+    window.urls.loadFromUrls('/valintalaskenta-ui/app/valintalaskenta-ui-web-url_properties.json').success(function() {
+        initCas().then(bootstrapApplication, bootstrapApplication);
+    });
 })();

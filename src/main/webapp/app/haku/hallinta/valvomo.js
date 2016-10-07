@@ -2,7 +2,8 @@ angular.module('resources.valvomo', [])
     .factory('ValvomoResource', ['$resource', function ($resource) {
         "use strict";
 
-        return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/:resurssi/status", {}, {
+        var plainUrls = window.urls().noEncode();
+        return $resource(plainUrls.url("valintalaskentakoostepalvelu.status", ":resurssi"), {}, {
             get: {method: "GET", isArray: true}
         });
 

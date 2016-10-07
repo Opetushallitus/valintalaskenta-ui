@@ -654,7 +654,7 @@ app.directive('showPersonInfoWithVtsData', ["ValintaTulosProxy", function (Valin
         },
         templateUrl: '../common/html/personInformationPartial.html',
         controller: function ($modal, $scope) {
-            $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+            $scope.url = window.url;
             $scope.show = function () {
                 fetchVTSData($scope, $scope.hakuOid, $scope.hakemusOid);
                 $modal.open({
@@ -684,7 +684,7 @@ app.directive('showPersonInformation', function () {
         },
         templateUrl: '../common/html/personInformationPartial.html',
         controller: function ($modal, $scope) {
-            $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+            $scope.url = window.url;
 
             $scope.show = function () {
                 $modal.open({

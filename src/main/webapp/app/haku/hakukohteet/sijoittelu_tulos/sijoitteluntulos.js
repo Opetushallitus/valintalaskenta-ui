@@ -524,7 +524,7 @@ angular.module('valintalaskenta')
                                     Kirjeet, UserModel, VastaanottoUtil, HakemuksenValintatulokset) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+    $scope.url = window.url;
     $scope.hakuModel = HakuModel;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.model = SijoitteluntulosModel;

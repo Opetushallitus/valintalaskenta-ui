@@ -378,7 +378,7 @@ angular.module('valintalaskenta').
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid =  $routeParams.hakuOid;
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+    $scope.url = window.url;
     $scope.model = ValintalaskentatulosModel;
     $scope.hakukohdeModel = HakukohdeModel;
 
@@ -431,7 +431,8 @@ angular.module('valintalaskenta').
         var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
         fileReader.onload = function(e) {
             $scope.upload = $upload.http({
-                url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?tarjoajaOid="+tarjoajaOid+"&hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid + "&valintatapajonoOid="+ valintatapajonoOid,
+                url: window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti.haku.hakukohde.valintatapajono",
+                    tarjoajaOid, hakuOid, hakukohdeOid, valintatapajonoOid),
                 method: "POST",
                 headers: {'Content-Type': 'application/octet-stream'},
                 data: e.target.result

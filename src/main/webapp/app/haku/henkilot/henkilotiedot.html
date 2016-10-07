@@ -32,7 +32,7 @@
                 <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
                 <dt>{{ t('henkilotiedot.hakemuksenoid') || 'hakemuksen oid' }}:</dt>
                 <dd>
-                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{model.hakuOid}}/esikatselu/{{model.hakemus.oid}}"
+                    <a href="{{url('haku-app.virkailija.hakemus.esikatselu', model.hakuOid, model.hakemus.oid)}}"
                        target="_blank">
                         {{model.hakemus.oid}}
                     </a>

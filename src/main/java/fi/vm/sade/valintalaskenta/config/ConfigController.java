@@ -20,28 +20,11 @@ public class ConfigController {
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
-        append(b, "LOCALISATION_URL_BASE", config.localisationUrl);
-        append(b, "TARJONTA_URL_BASE", config.tarjontaServiceUrl);
-        append(b, "VALINTAPERUSTEET_URL_BASE", config.valintaperusteetServiceUrl);
-        append(b, "DOKUMENTTIPALVELU_URL_BASE", config.dokumenttipalveluUrl);
-        append(b, "SEURANTA_URL_BASE", config.seurantaUrl);
-        append(b, "VALINTALASKENTAKOOSTE_URL_BASE",
-                config.valintalaskentakoostepalveluServiceUrl);
-        append(b, "HAKEMUS_URL_BASE", config.hakemusServiceUrl);
         append(b, "AUTHENTICATION_HENKILOUI_URL_BASE", config.authenticationHenkiloUiUrl);
         append(b, "AUTHENTICATION_HENKILO_URL_BASE", config.authenticationHenkiloServiceUrl);
-        append(b, "SIJOITTELU_URL_BASE", config.sijoitteluServiceUrl);
-        append(b, "SERVICE_URL_BASE", config.valintalaskentaServiceUrl);
         append(b, "SIJOITTELU_EXCEL_URL_BASE", config.sijoitteluUrl);
         append(b, "SERVICE_EXCEL_URL_BASE", config.valintalaskentaUrl);
-        append(b, "ORGANISAATIO_URL_BASE", config.organisaatioUrl);
-        append(b, "HAKEMUS_UI_URL_BASE", config.hakemusUiUrl);
-        append(b, "VIESTINTAPALVELU_URL_BASE", config.viestintapalveluUrl);
         append(b, "TEMPLATE_URL_BASE", "");
-        append(b, "KOODISTO_URL_BASE", config.koodistoServiceRestURL);
-        append(b, "OHJAUSPARAMETRIT_URL_BASE", config.ohjausparametripalveluRestUrl);
-        append(b, "CAS_URL", config.casUrl);
-        append(b, "CAS_ME_URL", config.casMeUrl);
         append(b, "SESSION_KEEPALIVE_INTERVAL_IN_SECONDS", Integer.toString(config.sessionKeepAliveIntervalInSeconds));
         append(b, "MAX_SESSION_IDLE_TIME_IN_SECONDS", Integer.toString(config.maxSessionIdleTimeInSeconds));
         if (!config.authMode.isEmpty()) {

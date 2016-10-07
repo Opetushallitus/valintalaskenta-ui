@@ -73,7 +73,7 @@ angular.module('valintalaskenta').
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid = $routeParams.hakuOid;
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+    $scope.url = window.url;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
     $scope.hakukohdeModel = HakukohdeModel;

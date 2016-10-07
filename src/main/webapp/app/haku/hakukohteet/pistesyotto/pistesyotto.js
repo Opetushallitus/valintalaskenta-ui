@@ -194,7 +194,7 @@ angular.module('valintalaskenta').
     $scope.model = PistesyottoModel;
     $scope.hakuOid = $routeParams.hakuOid;
 
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+    $scope.url = window.url;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.koeFilter = null;
     $scope.hakijaFilter = "";
@@ -224,7 +224,7 @@ angular.module('valintalaskenta').
 	    var hakuOid = $routeParams.hakuOid;
 	    fileReader.onload = function(e) {
 			$scope.upload = $upload.http({
-	    		url: VALINTALASKENTAKOOSTE_URL_BASE + "resources/pistesyotto/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid, //upload.php script, node.js route, or servlet url
+	    		url: window.url("valintalaskentakoostepalvelu.pistesyotto.tuonti", hakuOid, hakukohdeOid),
 				method: "POST",
 				headers: {'Content-Type': 'application/octet-stream'},
 				data: e.target.result

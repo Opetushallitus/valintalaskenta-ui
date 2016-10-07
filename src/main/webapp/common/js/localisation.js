@@ -3,7 +3,7 @@
  */
 angular.module('oph.localisation', [])
     .factory('Localisations',[ '$resource','$q', function ($resource, $q) {
-        var locals = $resource(LOCALISATION_URL_BASE+'/localisation',{},{
+        var locals = $resource(window.url("lokalisointi.localisation"),{},{
             query: {
                 method:'GET',
                 params:{

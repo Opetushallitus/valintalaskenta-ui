@@ -339,7 +339,7 @@ angular.module('valintalaskenta').
 
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+    $scope.url = window.url;
     HakuModel.refreshIfNeeded($routeParams.hakuOid);
     $scope.hakuModel = HakuModel;
     $scope.korkeakoulu = Korkeakoulu;

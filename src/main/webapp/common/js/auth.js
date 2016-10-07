@@ -14,7 +14,7 @@ app.factory('MyRolesModel', function ($q, $http, $timeout) {
     var deferred = $q.defer();
 
     var refresh = function () {
-        $http.get(CAS_URL).then(function (result) {
+        $http.get(window.url("cas.myroles")).then(function (result) {
             if (result.data.length > 0) {
                 deferred.resolve(result.data);
             } else {
@@ -68,19 +68,20 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
         var deferred = $q.defer();
 
         MyRolesModel.then(function (model) {
-            $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids").success(function (result) {
-                var found = false;
-                result.split("/").forEach(function (org) {
-                    if (roleCheck(service, org, model, roles)) {
-                        found = true;
+            $http.get(window.url("organisaatio-service.organisaatio.parentoids", orgOid))
+                .success(function (result) {
+                    var found = false;
+                    result.split("/").forEach(function (org) {
+                        if (roleCheck(service, org, model, roles)) {
+                            found = true;
+                        }
+                    });
+                    if (found) {
+                        deferred.resolve();
+                    } else {
+                        deferred.reject();
                     }
                 });
-                if (found) {
-                    deferred.resolve();
-                } else {
-                    deferred.reject();
-                }
-            });
         });
 
         return deferred.promise;

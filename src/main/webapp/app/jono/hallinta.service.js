@@ -18,7 +18,7 @@ function seurantaservice($http, CacheFactory) {
   };
 
   function getJobs() {
-    return $http.get(SEURANTA_URL_BASE + '/seuranta/yhteenvetokaikillelaskennoille')
+    return $http.get(window.url("seuranta-service.seuranta.yhteenvetokaikillelaskennoille"))
       .then(function(response) {
         return response.data;
       })
@@ -28,10 +28,12 @@ function seurantaservice($http, CacheFactory) {
   }
 
   function removeJob(job) {
-    return $http.delete(VALINTALASKENTAKOOSTE_URL_BASE + 'resources/valintalaskentakerralla/haku/' + job.uuid, {params: {lopetaVainJonossaOlevaLaskenta: true}})
-      .then(function() {
-        job.tila = JOB_STATES.CANCELLED;
-      });
+    return $http.delete(
+        window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti.haku.hakukohde.valintatapajono", job.uuid),
+        {params: {lopetaVainJonossaOlevaLaskenta: true}}
+    ).then(function() {
+      job.tila = JOB_STATES.CANCELLED;
+    });
   }
 
   function queryUsernameByOid(userOID) {

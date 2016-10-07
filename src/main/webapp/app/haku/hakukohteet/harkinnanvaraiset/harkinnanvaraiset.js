@@ -111,7 +111,7 @@ angular.module('valintalaskenta')
     $scope.model = HarkinnanvaraisetModel;
     $scope.hakuOid = $routeParams.hakuOid;
 
-    $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+    $scope.url = window.url;
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
     $scope.muutettu = false;

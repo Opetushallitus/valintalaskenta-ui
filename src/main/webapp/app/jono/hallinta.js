@@ -54,7 +54,7 @@ angular
         });
     };
     $scope.fetchSummaryXLS = function(job) {
-      $window.open(VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintalaskentakerralla/status/" + job.uuid + "/xls");
+      $window.open(window.url("valintalaskentakoostepalvelu.valitalaskentakerralla.status.xls", job.uuid));
     };
     $scope.stateToHumanReadable = function(job) {
       var state = job.tila;

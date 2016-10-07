@@ -34,13 +34,14 @@ var paths = {
 
 		'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
 
-    'bower_components/lodash/dist/lodash.underscore.min.js',
+		'bower_components/lodash/dist/lodash.underscore.min.js',
 
 		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
 
-    'bower_components/angular-cache/dist/angular-cache.js',
-    'bower_components/angular-cache/dist/angular-cache.min.js',
-    'bower_components/angular-cache/dist/angular-cache.min.map'
+		'bower_components/angular-cache/dist/angular-cache.js',
+		'bower_components/angular-cache/dist/angular-cache.min.js',
+		'bower_components/angular-cache/dist/angular-cache.min.map',
+		'bower_components/oph_urls/index.js'
 	],
 	css: 'src/main/webapp/common/css/',
 	sass: ['sass/valintaperusteet.scss', 'sass/valintalaskenta.scss'],

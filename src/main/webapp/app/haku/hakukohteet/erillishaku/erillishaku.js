@@ -14,7 +14,7 @@ angular.module('valintalaskenta')
       $scope.muokatutHakemukset = {};
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
       $scope.hakuOid =  $routeParams.hakuOid;
-      $scope.HAKEMUS_UI_URL_BASE = HAKEMUS_UI_URL_BASE;
+      $scope.url = window.url;
       $scope.hakukohdeModel = HakukohdeModel;
       $scope.hakuModel = HakuModel;
       $scope.tableParams = {};
@@ -527,7 +527,7 @@ angular.module('valintalaskenta')
         var hakukohdeOid = $scope.hakukohdeOid;
         var hakuOid = $routeParams.hakuOid;
         var url =
-          VALINTALASKENTAKOOSTE_URL_BASE + "resources/valintatapajonolaskenta/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" +hakukohdeOid;
+          window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti.haku.hakukohde", hakuOid, hakukohdeOid);
         if(!isKeinotekoinenOid(valintatapajonoOid)) {
           url = url + "&valintatapajonoOid="+valintatapajonoOid;
         }
@@ -563,8 +563,7 @@ angular.module('valintalaskenta')
         var hakuOid = $routeParams.hakuOid;
         var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
         var hakutyyppi = $scope.getHakutyyppi();
-        var url =
-          VALINTALASKENTAKOOSTE_URL_BASE + "resources/erillishaku/tuonti?hakuOid=" +hakuOid + "&hakukohdeOid=" + hakukohdeOid +"&hakutyyppi="+hakutyyppi;
+        var url = window.url("valintalaskentakoostepalvelu.erillishaku.tuonti", hakuOid, hakukohdeOid, hakutyyppi);
         if(!isKeinotekoinenOid(valintatapajonoOid)) {
           url = url + "&valintatapajonoOid="+valintatapajonoOid;
         }

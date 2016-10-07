@@ -79,11 +79,11 @@ app.controller('EventsCtrl', ['$scope','Idle', '$modal', '$http', function($scop
     IdleProvider.timeout(warningDuration);
 
     KeepaliveProvider.interval(SESSION_KEEPALIVE_INTERVAL_IN_SECONDS);
-    KeepaliveProvider.http(SIJOITTELU_URL_BASE + "resources/session/maxinactiveinterval");
-    KeepaliveProvider.http(DOKUMENTTIPALVELU_URL_BASE + "/session/maxinactiveinterval");
-    KeepaliveProvider.http(SEURANTA_URL_BASE + "/session/maxinactiveinterval");
-    KeepaliveProvider.http(VALINTALASKENTAKOOSTE_URL_BASE + "resources/session/maxinactiveinterval");
-    KeepaliveProvider.http(SERVICE_URL_BASE + "resources/session/maxinactiveinterval");
+    KeepaliveProvider.http(window.url("sijoittelu-service.session.maxinactiveinterval"));
+    KeepaliveProvider.http(window.url("dokumenttipalvelu-service.session.maxinactiveinterval"));
+    KeepaliveProvider.http(window.url("seuranta-service.session.maxactiveinterval"));
+    KeepaliveProvider.http(window.url("valintalaskentakoostepalvelu.session.maxinactiveinterval"));
+    KeepaliveProvider.http(window.url("valintalaskenta-laskenta-service.session.maxinactiveinterval"));
 }])
 .run(['Idle', function(Idle){
     Idle.watch();

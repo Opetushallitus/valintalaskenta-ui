@@ -465,7 +465,7 @@
                             <dd>{{virhe.hakijaOid}}</dd>
                         </dl>
                     </div>
-                    <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakumodel.hakuOid.oid}}/esikatselu/{{virhe.hakemusOid}}"
+                    <a href="{{url('haku-app.virkailija.hakemus.esikatselu', hakumodel.hakuOid.oid, virhe.hakemusOid)}}"
                        target="_blank">{{ t('yhteisvalinnanhallinta.hakemuspalvelu') || 'Hakemuspalvelu' }}</a>
                     <a href="" ng-click="henkilonakyma(virhe.hakemusOid)">{{ t('yhteisvalinnanhallinta.henkilonakyma') || 'Henkilönäkymä' }}</a>
 
@@ -543,7 +543,7 @@
                                         <dd>{{jonosijat.harkinnanvarainen ? 'Kyllä' : 'Ei'}}</dd>
                                     </dl>
                                 </div>
-                                <a href="{{HAKEMUS_UI_URL_BASE}}/virkailija/hakemus/{{hakumodel.hakuOid.oid}}/esikatselu/{{jonosijat.hakemusOid}}"
+                                <a href="{{url('haku-app.virkailija.hakemus.esikatselu', hakumodel.hakuOid.oid, jonosijat.hakemusOid)}}"
                                    target="_blank">{{ t('yhteisvalinnanhallinta.hakemuspalvelu') || 'Hakemuspalvelu' }}</a>
                                 <a href="" ng-click="henkilonakyma(jonosijat.hakemusOid)">{{ t('yhteisvalinnanhallinta.henkilonakyma') || 'Henkilönäkymä' }}</a>
                                 <a href="" ng-click="hakukohdenakyma(virhe.hakukohdeoid)">{{ t('yhteisvalinnanhallinta.hakukohdenakyma') || 'Hakukohdenäkymä' }}</a>

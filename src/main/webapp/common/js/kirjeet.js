@@ -31,7 +31,7 @@ angular.module('valintalaskenta')
                                             function(id) {
                                                 Latausikkuna.avaaKustomoitu(id, kirje.otsikko, kirje.valintakoeTunniste, "haku/hakukohteet/koekutsut/modaalinen/valintakoe.html",
                                                     function (dokumenttiId) {
-                                                        $window.open(VIESTINTAPALVELU_URL_BASE + "/api/v1/letter/previewLetterBatchEmail/" + dokumenttiId);
+                                                        $window.open(window.url("viestintapalvelu.letter.previewletterbatchemail", dokumenttiId));
                                                     },
                                                     function (dokumenttiId) {
                                                         KoekutsukirjeetSahkopostita.put(dokumenttiId, function (success) {

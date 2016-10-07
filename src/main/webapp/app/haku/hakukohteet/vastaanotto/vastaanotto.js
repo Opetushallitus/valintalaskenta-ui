@@ -52,18 +52,24 @@ angular.module('valintalaskenta')
 }]);
 
 app.factory('HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/ilmanhakijantilaa/haku/:hakuOid/hakukohde/:hakukohdeOid?valintatapajonoOid=:valintatapajonoOid",
-      {
-          hakuOid: "@hakuOid",
-          hakukohdeOid: "@hakukohdeoid",
-          valintatapajonoOid: "@valintatapajonoOid"
-      }, {
-          get: {method: "GET", isArray:true, cache: false}
-      });
+    var plainUrls = window.urls().noEncode();
+    return $resource(
+        plainUrls.url("valintalaskentakoostepalvelu.proxy.valintatulosservice.ilmanhakijantilaa.haku.hakukohde.valintatapajono",
+            ":hakuOid", ":hakukohdeOid", ":valintatapajonoOid"),
+        {
+            hakuOid: "@hakuOid",
+            hakukohdeOid: "@hakukohdeoid",
+            valintatapajonoOid: "@valintatapajonoOid"
+        }, {
+            get: {method: "GET", isArray:true, cache: false}
+        });
 });
 
 app.factory('VastaanottoAikarajanMennytTieto', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/myohastyneet/haku/:hakuOid/hakukohde/:hakukohdeOid",
+    var plainUrls = window.urls().noEncode();
+    return $resource(
+        plainUrls.url("valintalaskentakoostepalvelu.proxy.valintatulosservice.myohastyneet.haku.hakukohde",
+            ":hakuOid", ":hakukohdeOid"),
         {
             hakuOid: "@hakuOid",
             hakukohdeOid: "@hakukohdeOid"
@@ -73,12 +79,15 @@ app.factory('VastaanottoAikarajanMennytTieto', function($resource) {
 });
 
 app.factory('HakemustenVastaanottotilaHakijalle', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/proxy/valintatulosservice/tilahakijalle/haku/:hakuOid/hakukohde/:hakukohdeOid/valintatapajono/:valintatapajonoOid",
-      {
-          hakuOid: "@hakuOid",
-          hakukohdeOid: "@hakukohdeoid",
-          valintatapajonoOid: "@valintatapajonoOid"
-      }, {
-        post: {method: "POST", isArray: true }
-      });
+    var plainUrls = window.urls().noEncode();
+    return $resource(
+        plainUrls.url("valintalaskentakoostepalvelu.proxy.valintatulosservice.tilahakijalle.haku.hakukohde.valintatapajono",
+            ":hakuOid", ":hakukohdeOid", ":valintatapajonoOid"),
+        {
+            hakuOid: "@hakuOid",
+            hakukohdeOid: "@hakukohdeoid",
+            valintatapajonoOid: "@valintatapajonoOid"
+        }, {
+            post: {method: "POST", isArray: true }
+        });
 });

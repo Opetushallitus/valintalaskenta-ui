@@ -137,12 +137,10 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 	}
 
 	$scope.yhteenveto = function() {
-		$window.open(VALINTALASKENTAKOOSTE_URL_BASE
-				+ "resources/valintalaskentakerralla/status/" + $scope.uuid
-				+ "/xls");
+		$window.open(window.url("valintalaskentakoostepalvelu.valitalaskentakerralla.status.xls", $scope.uuid));
 	};
 	$scope.vieJsoniksi = function() {
-		$window.open(SEURANTA_URL_BASE + "/seuranta/lataa/" + $scope.uuid);
+		$window.open(window.url("seuranta-service.seuranta.lataa", $scope.uuid));
 	};
 
 	var update = function() {
