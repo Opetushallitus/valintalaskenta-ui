@@ -249,7 +249,7 @@ app.factory('ValintalaskentaKerrallaUudelleenYrita', function($resource) {
     });
 });
 app.factory('DokumenttiSeurantaPalvelu', function($resource) {
-    return $resource(SEURANTA_URL_BASE + "/dokumenttiseuranta/:uuid", {uuid: "@uuid"}, {
+    return $resource(SEURANTA_URL_BASE + "/dokumentinseuranta/:uuid", {uuid: "@uuid"}, {
         hae: {method: "GET", isArray:false, cache: false}
     });
 });
