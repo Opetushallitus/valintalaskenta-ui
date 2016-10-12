@@ -134,6 +134,12 @@ angular
           _($scope.jobs).forEach(function(job) {
               queryUserByOid(job, job.userOID);
           });
+          $scope.jobsByState = {
+            running: _.size(_.filter($scope.jobs, function(job) { return job.tila == JOB_STATES.RUNNING; })),
+            cancelled: _.size(_.filter($scope.jobs, function(job) { return job.tila == JOB_STATES.CANCELLED; })),
+            queueing: _.size(_.filter($scope.jobs, function(job) { return job.tila == JOB_STATES.QUEUEING; })),
+            completed: _.size(_.filter($scope.jobs, function(job) { return job.tila == JOB_STATES.COMPLETED; }))
+          };
         });
     };
 
