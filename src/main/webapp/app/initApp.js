@@ -27,8 +27,5 @@
         });
     }
 
-    window.urls.debug = true;
-    window.urls.loadFromUrls('/valintalaskenta-ui/app/valintalaskenta-ui-web-url_properties.json').success(function() {
-        initCas().then(bootstrapApplication, bootstrapApplication);
-    });
+    initCas().then(bootstrapApplication, bootstrapApplication);
 })();

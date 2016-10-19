@@ -38,7 +38,7 @@ function seurantaservice($http, CacheFactory) {
 
   function queryUsernameByOid(userOID) {
     var userCache = CacheFactory.get('userCache');
-    return $http.get(AUTHENTICATION_HENKILO_URL_BASE + '/resources/henkilo/' + userOID, {cache: userCache})
+    return $http.get(window.url("authentication-service.henkilo", userOID), {cache: userCache})
       .then(function(response) {
         return response.data;
       })
@@ -49,7 +49,7 @@ function seurantaservice($http, CacheFactory) {
 
   function getMyInfo() {
     var userCache = CacheFactory.get('userCache');
-    return $http.get(CAS_ME_URL, {cache: userCache})
+    return $http.get(window.url("cas.me"), {cache: userCache})
       .then(function (response) {
         return response.data;
       }, function () {

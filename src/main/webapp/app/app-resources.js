@@ -1,42 +1,43 @@
 //TARJONTA RESOURCES
 app.factory('Haku', function($resource) {
-    return $resource(window.url("tarjonta-sercice.haku"), {},
+    return $resource(window.url("tarjonta-service.haku"), {},
         {get: {method: "GET", isArray: true, cache: true}});
 });
 
 app.factory('HaunTiedot', function($resource) {
-    return $resource(window.url("tarjonta-sercice.haku.hakuoid"),
+    var plainUrls = window.urls().noEncode();
+    return $resource(plainUrls.url("tarjonta-service.haku.hakuoid", ":hakuOid"),
         {hakuOid: "@hakuOid"},
         {get: {method: "GET", cache: true}});
 });
 
 app.factory('HakuHakukohdeChildren', function($resource) {
     var plainUrls = window.urls().noEncode();
-    return $resource(plainUrls.url("tarjonta-sercice.haku.hakukohde", ":hakuOid", "99999"),
+    return $resource(plainUrls.url("tarjonta-service.haku.hakukohde", ":hakuOid", "99999"),
         {hakuOid: "@hakuOid"},
         {get: {method: "GET", isArray: true, cache: true}});
 });
 app.factory('TarjontaHaku', function($resource) {
     var plainUrls = window.urls().noEncode();
-    return $resource(plainUrls.url("tarjonta-sercice.haku.hakukohdetulos", ":hakuOid"), {},
+    return $resource(plainUrls.url("tarjonta-service.haku.hakukohdetulos", ":hakuOid"), {},
         {query: {method:'GET', isArray:false, cache: true}});
 });
 
 app.factory('TarjontaHakukohde', function($resource) {
     var plainUrls = window.urls().noEncode();
-    return $resource(plainUrls.url("tarjonta-sercice.hakukohde", ":hakukohdeoid"),
+    return $resource(plainUrls.url("tarjonta-service.hakukohde", ":hakukohdeoid"),
         {hakukohdeoid: "@hakukohdeoid"},
         {get: {method: "GET", cache: true}});
 });
 app.factory('HakukohdeNimi', function($resource) {
     var plainUrls = window.urls().noEncode();
-    return $resource(plainUrls.url("tarjonta-sercice.hakukohde.nimi", ":hakukohdeoid"),
+    return $resource(plainUrls.url("tarjonta-service.hakukohde.nimi", ":hakukohdeoid"),
         {hakukohdeoid: "@hakukohdeoid"},
         {get: {method: "GET", cache: true}});
 });
 
 app.factory('TarjontaHaut', function($resource) {
-    return $resource(window.url("tarjonta-sercice.haku.find", "false"), {}, {
+    return $resource(window.url("tarjonta-service.haku.find", "false"), {}, {
         get: {method: "GET", cache: true}
     });
 });
@@ -602,7 +603,7 @@ app.factory('Hakemus', function($resource) {
 
 app.factory('HakemusAdditionalData', function($resource) {
     var plainUrls = window.urls().noEncode();
-    return $resource(plainUrls.url("haku-app.applications.additionaldata.haku.hakukohde", ":hakuOid/", ":hakukohdeOid"),
+    return $resource(plainUrls.url("haku-app.applications.additionaldata.haku.hakukohde", ":hakuOid", ":hakukohdeOid"),
         {
             hakuOid: "@hakuOid",
             hakukohdeOid: "@hakukohdeOid"

@@ -7,6 +7,8 @@
     <link href="../../common/css/valintalaskenta.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript"  src="../../configuration/configuration.js"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
+    <script type="text/javascript" src="../../common/jslib/index.js"></script>
+    <script type="text/javascript" src="../valintalaskenta-ui-web-url_properties.js"></script>
 </head>
 <body>
     <div id="application-wrapper" ng-controller="DashboardController">
@@ -43,7 +45,7 @@
                         <img ng-src="../../common/img/person_icon.png" class="jobItemUser" /> 
                         <a tooltip-placement="top-left"
                           uib-tooltip="{{ job.userFullname }}"
-                          href="/authentication-henkiloui/html/index.html#/henkilo/{{job.userOID}}/">
+                          href="{{url('authentication-henkiloui.henkilo', job.userOID)}}/">
                           {{ job.userNameInitials }}
                         </a>
                         <img ng-src="../../common/img/clock_icon.png" class="jobItemRunningTime" /> {{ job.luotu | timeFromNow }}

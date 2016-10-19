@@ -1,12 +1,11 @@
-{
-    "tarjonta-sercice.haku" : "/tarjonta-service/rest/v1/haku",
-    "tarjonta-sercice.haku.count" : "/tarjonta-service/rest/v1/haku?count=$1",
-    "tarjonta-sercice.haku.find" : "/tarjonta-service/rest/v1/haku/find?addHakukohdes=$1",
-    "tarjonta-sercice.haku.hakuoid" : "/tarjonta-service/rest/v1/haku/$1",
-    "tarjonta-sercice.haku.hakukohde" : "/tarjonta-service/rest/v1/haku/$1/hakukohde?count=$2",
-    "tarjonta-sercice.haku.hakukohdetulos" : "/tarjonta-service/rest/v1/haku/$1/hakukohdeTulos",
-    "tarjonta-sercice.hakukohde" : "/tarjonta-service/rest/v1/hakukohde/$1",
-    "tarjonta-sercice.hakukohde.nimi" : "/tarjonta-service/rest/v1/hakukohde/$1/nimi",
+window.urls.addProperties({
+    "tarjonta-service.haku" : "/tarjonta-service/rest/v1/haku",
+    "tarjonta-service.haku.find" : "/tarjonta-service/rest/v1/haku/find?addHakukohdes=$1",
+    "tarjonta-service.haku.hakuoid" : "/tarjonta-service/rest/v1/haku/$1",
+    "tarjonta-service.haku.hakukohde" : "/tarjonta-service/rest/v1/haku/$1/hakukohde?count=$2",
+    "tarjonta-service.haku.hakukohdetulos" : "/tarjonta-service/rest/v1/haku/$1/hakukohdeTulos",
+    "tarjonta-service.hakukohde" : "/tarjonta-service/rest/v1/hakukohde/$1",
+    "tarjonta-service.hakukohde.nimi" : "/tarjonta-service/rest/v1/hakukohde/$1/nimi",
 
     "valintaperusteet-service.base" : "/valintaperusteet-service/",
     "valintaperusteet-service.hakukohde" : "/valintaperusteet-service/resources/hakukohde/$1",
@@ -139,11 +138,13 @@
     "koodisto-service.json.hakukohteet.koodi" : "/koodisto-service/rest/json/hakukohteet/koodi/$1",
 
     "cas.myroles" : "/cas/myroles",
+    "cas.me" : "/cas/me",
 
     "ohjausparametrit-service.parametri" : "/ohjausparametrit-service/api/v1/rest/parametri/$1",
 
     "lokalisointi.localisation" : "/lokalisointi/cxf/rest/v1/localisation",
 
-    "authentication-henkiloui.base" : "/authentication-henkiloui",
-    "authentication-service.base" : "/authentication-service"
-}
+    "authentication-henkiloui.henkilo" : "/authentication-henkiloui/html/index.html#/henkilo/$1",
+    "authentication-henkiloui.henkilo.permissioncheckservice" : "/authentication-henkiloui/html/henkilo/$1/?permissionCheckService=$2",
+    "authentication-service.henkilo" : "/authentication-service/resources/henkilo/$1"
+})

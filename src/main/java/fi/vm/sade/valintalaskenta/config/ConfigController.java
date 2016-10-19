@@ -20,10 +20,6 @@ public class ConfigController {
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
-        append(b, "AUTHENTICATION_HENKILOUI_URL_BASE", config.authenticationHenkiloUiUrl);
-        append(b, "AUTHENTICATION_HENKILO_URL_BASE", config.authenticationHenkiloServiceUrl);
-        append(b, "SIJOITTELU_EXCEL_URL_BASE", config.sijoitteluUrl);
-        append(b, "SERVICE_EXCEL_URL_BASE", config.valintalaskentaUrl);
         append(b, "TEMPLATE_URL_BASE", "");
         append(b, "SESSION_KEEPALIVE_INTERVAL_IN_SECONDS", Integer.toString(config.sessionKeepAliveIntervalInSeconds));
         append(b, "MAX_SESSION_IDLE_TIME_IN_SECONDS", Integer.toString(config.maxSessionIdleTimeInSeconds));
