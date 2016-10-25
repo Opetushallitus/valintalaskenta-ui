@@ -22,31 +22,13 @@ import java.util.*;
 public class OverridingConfigController {
     private final String configurationJs;
     public OverridingConfigController() throws IOException {
-        this.configurationJs = toString(Resources.getResource("configuration.js")) + nodeServerOverrides();
+        this.configurationJs = toString(Resources.getResource("configuration.js"));
     }
 
     @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript", headers = "Accept=*/*")
     @ResponseBody
     public String index() {
         return configurationJs;
-    }
-
-    private static String nodeServerOverrides() throws IOException {
-        return overrideWithKeyAndTemplate("node_server", "override-node-configuration.js");
-    }
-    private static String overrideWithKeyAndTemplate(String key, String template) throws IOException {
-        Optional<String> publicServerFlag = Optional.ofNullable(System.getProperty(key));
-        return publicServerFlag.map(publicServerValue -> {
-            String publicServerJs = toString(Resources.getResource(template));
-            return toString(publicServerJs, ImmutableMap.of(key, publicServerValue));
-        }).orElseGet(() -> "");
-    }
-    private static String toString(String template, Map<String,String> scopes) {
-        Writer writer = new StringWriter();
-        MustacheFactory mf = new DefaultMustacheFactory();
-        Mustache mustache = mf.compile(new StringReader(template),"template");
-        mustache.execute(writer, scopes);
-        return writer.toString();
     }
 
     private static String toString(URL url) {
