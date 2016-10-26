@@ -7,18 +7,18 @@
 
     function initCas() {
         var services = [
-            window.url("valintaperusteet-service.base"),
-            window.url("valintalaskenta-laskenta-service.base"),
-            window.url("valintalaskentakoostepalvelu.base"),
-            window.url("sijoittelu-service.base"),
-            window.url("viestintapalvelu.base"),
-            window.url("haku-app.base")
+            window.url("valintaperusteet-service.buildversion"),
+            window.url("valintalaskenta-laskenta-service.buildversion"),
+            window.url("valintalaskentakoostepalvelu.buildversion"),
+            window.url("sijoittelu-service.buildversion"),
+            window.url("viestintapalvelu.buildversion"),
+            window.url("haku-app.buildversion")
         ];
         return $q.all(services.map(loadBuildversion));
     }
 
     function loadBuildversion(serviceUrl) {
-        return $http.get(serviceUrl + '/buildversion.txt?auth');
+        return $http.get(serviceUrl);
     }
 
     function bootstrapApplication() {

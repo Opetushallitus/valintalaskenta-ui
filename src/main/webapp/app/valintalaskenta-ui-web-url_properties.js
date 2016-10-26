@@ -7,7 +7,7 @@ window.urls.addProperties({
     "tarjonta-service.hakukohde" : "/tarjonta-service/rest/v1/hakukohde/$1",
     "tarjonta-service.hakukohde.nimi" : "/tarjonta-service/rest/v1/hakukohde/$1/nimi",
 
-    "valintaperusteet-service.base" : "/valintaperusteet-service/",
+    "valintaperusteet-service.buildversion" : "/valintaperusteet-service/buildversion.txt?auth",
     "valintaperusteet-service.hakukohde" : "/valintaperusteet-service/resources/hakukohde/$1",
     "valintaperusteet-service.hakukohde.avaimet" : "/valintaperusteet-service/resources/hakukohde/avaimet/$1",
     "valintaperusteet-service.hakukohde.ilmanlaskentaa" : "/valintaperusteet-service/resources/hakukohde/$1/ilmanlaskentaa",
@@ -30,7 +30,7 @@ window.urls.addProperties({
     "seuranta-service.seuranta.yhteenveto" : "/seuranta-service/resources/seuranta/yhteenveto/$1",
     "seuranta-service.seuranta.yhteenvetokaikillelaskennoille" : "/seuranta-service/resources/seuranta/yhteenvetokaikillelaskennoille",
 
-    "valintalaskentakoostepalvelu.base" : "/valintalaskentakoostepalvelu/",
+    "valintalaskentakoostepalvelu.buildversion" : "/valintalaskentakoostepalvelu/buildversion.txt?auth",
     "valintalaskentakoostepalvelu.status" : "/valintalaskentakoostepalvelu/resources/$1/status",
     "valintalaskentakoostepalvelu.dokumenttiprosessi" : "/valintalaskentakoostepalvelu/resources/dokumenttiprosessi/$1",
     "valintalaskentakoostepalvelu.erillishaku.tuonti.json" : "/valintalaskentakoostepalvelu/resources/erillishaku/tuonti/json",
@@ -81,7 +81,7 @@ window.urls.addProperties({
     "valintalaskentakoostepalvelu.viestintapalvelu.osoitetarrat.sijoittelussahyvaksytyille.aktivoi" : "/valintalaskentakoostepalvelu/resources/viestintapalvelu/osoitetarrat/sijoittelussahyvaksytyille/aktivoi",
     "valintalaskentakoostepalvelu.viestintapalvelu.securelinkit.aktivoi" : "/valintalaskentakoostepalvelu/resources/viestintapalvelu/securelinkit/aktivoi",
 
-    "sijoittelu-service.base" : "/sijoittelu-service/",
+    "sijoittelu-service.buildversion" : "/sijoittelu-service/buildversion.txt?auth",
     "sijoittelu-service.erillissijoittelu.sijoitteluajo.hakukohde" : "/sijoittelu-service/resources/erillissijoittelu/$1/sijoitteluajo/$2/hakukohde/$3",
     "sijoittelu-service.session.maxinactiveinterval" : "/sijoittelu-service/resources/session/maxinactiveinterval",
     "sijoittelu-service.sijoittelu" : "/sijoittelu-service/resources/sijoittelu/$1/",
@@ -92,7 +92,7 @@ window.urls.addProperties({
     "sijoittelu-service.tila.haku.hakukohde.hakemus.tarjoaja" : "/sijoittelu-service/resources/tila/haku/$1/hakukohde/$2/hakemus/$3?tarjoajaOid=$4",
     "sijoittelu-service.tila.haku.hakukohde.valintatapajono.valintaesitys" : "/sijoittelu-service/resources/tila/haku/$1/hakukohde/$2/valintatapajono/$3/valintaesitys?selite=$4&hyvaksytty=$5",
 
-    "valintalaskenta-laskenta-service.base" : "/valintalaskenta-laskenta-service/",
+    "valintalaskenta-laskenta-service.buildversion" : "/valintalaskenta-laskenta-service/buildversion.txt?auth",
     "valintalaskenta-laskenta-service.hakemus" : "/valintalaskenta-laskenta-service/resources/hakemus/$1/$2",
     "valintalaskenta-laskenta-service.haku" : "/valintalaskenta-laskenta-service/resources/haku/$1/$2",
     "valintalaskenta-laskenta-service.hakukohde.hakijaryhma" : "/valintalaskenta-laskenta-service/resources/hakukohde/$1/hakijaryhma",
@@ -114,7 +114,7 @@ window.urls.addProperties({
     "organisaatio-service.organisaatio.hierarkia.hae" : "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=$1&suunnitellut=$2&lakkautetut=$3&oid=$4",
     "organisaatio-service.organisaatio.parentoids" : "/organisaatio-service/rest/organisaatio/$1/parentoids",
 
-    "haku-app.base" : "/haku-app",
+    "haku-app.buildversion" : "/haku-app/buildversion.txt?auth",
     "haku-app.applications" : "/haku-app/applications",
     "haku-app.applications.oid" : "/haku-app/applications/$1",
     "haku-app.application.oid.key" : "/haku-app/applications/$1/$2",
@@ -124,7 +124,7 @@ window.urls.addProperties({
     "haku-app.applications.listfull" : "/haku-app/applications/listfull",
     "haku-app.virkailija.hakemus.esikatselu" : "/haku-app/virkailija/hakemus/$1/esikatselu/$2",
 
-    "viestintapalvelu.base" : "/viestintapalvelu",
+    "viestintapalvelu.buildversion" : "/viestintapalvelu/buildversion.txt?auth",
     "viestintapalvelu.letter.emailletterbatch" : "/viestintapalvelu/api/v1/letter/emailLetterBatch/$1",
     "viestintapalvelu.letter.previewletterbatchemail" : "/viestintapalvelu/api/v1/letter/previewLetterBatchEmail/$1",
     "viestintapalvelu.template.gethistory.tarjoaja" : "/viestintapalvelu/api/v1/template/getHistory?templateName=$1&languageCode=$2&oid=$3&tag=$4&applicationPeriod=$5",
@@ -146,5 +146,7 @@ window.urls.addProperties({
 
     "authentication-henkiloui.henkilo" : "/authentication-henkiloui/html/index.html#/henkilo/$1",
     "authentication-henkiloui.henkilo.permissioncheckservice" : "/authentication-henkiloui/html/henkilo/$1/?permissionCheckService=$2",
-    "authentication-service.henkilo" : "/authentication-service/resources/henkilo/$1"
-})
+    "authentication-service.henkilo" : "/authentication-service/resources/henkilo/$1",
+
+    "virkailija-raamit.apply" : "/virkailija-raamit/apply-raamit.js"
+});
