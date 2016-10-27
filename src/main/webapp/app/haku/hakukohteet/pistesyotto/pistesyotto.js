@@ -224,7 +224,10 @@ angular.module('valintalaskenta').
 	    var hakuOid = $routeParams.hakuOid;
 	    fileReader.onload = function(e) {
 			$scope.upload = $upload.http({
-	    		url: window.url("valintalaskentakoostepalvelu.pistesyotto.tuonti", hakuOid, hakukohdeOid),
+	    		url: window.url("valintalaskentakoostepalvelu.pistesyotto.tuonti", {
+                    hakuOid : hakuOid,
+                    hakukohdeOid : hakukohdeOid
+	    		}),
 				method: "POST",
 				headers: {'Content-Type': 'application/octet-stream'},
 				data: e.target.result

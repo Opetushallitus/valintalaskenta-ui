@@ -13,7 +13,7 @@ app.factory('HaunTiedot', function($resource) {
 
 app.factory('HakuHakukohdeChildren', function($resource) {
     var plainUrls = window.urls().noEncode();
-    return $resource(plainUrls.url("tarjonta-service.haku.hakukohde", ":hakuOid", "99999"),
+    return $resource(plainUrls.url("tarjonta-service.haku.hakukohde", ":hakuOid", {count : "99999"}),
         {hakuOid: "@hakuOid"},
         {get: {method: "GET", isArray: true, cache: true}});
 });
@@ -37,7 +37,7 @@ app.factory('HakukohdeNimi', function($resource) {
 });
 
 app.factory('TarjontaHaut', function($resource) {
-    return $resource(window.url("tarjonta-service.haku.find", "false"), {}, {
+    return $resource(window.url("tarjonta-service.haku.find", {addHakukohdes : "false"}), {}, {
         get: {method: "GET", cache: true}
     });
 });
@@ -115,7 +115,7 @@ app.factory('HakuVirheet', function($resource) {
 app.factory('ValinnanvaiheListByHakukohde', function($resource) {
     var plainUrls = window.urls().noEncode();
     return $resource(
-        plainUrls.url("valintalaskenta-laskenta-service.hakukohde.valinnanvaihe.tarjoaja", ":hakukohdeoid", ":tarjoajaOid"),
+        plainUrls.url("valintalaskenta-laskenta-service.hakukohde.valinnanvaihe", ":hakukohdeoid", {tarjoajaOid: ":tarjoajaOid"}),
         {
             hakukohdeoid: "@hakukohdeoid",
             tarjoajaOid: "@tarjoajaOid"
@@ -424,7 +424,7 @@ app.factory('TulosXls', function($window) {
         query: function(data) {
             $window.location.href
                 = window.url("valintalaskentakoostepalvelu.valintalaskentaexcel.valintalaskennantulos.aktivoi",
-                data.hakukohdeOid);
+                {hakukohdeOid : data.hakukohdeOid});
         }
     };
 });
@@ -433,7 +433,7 @@ app.factory('JalkiohjausXls', function($window) {
         query: function(data) {
             $window.location.href
                 = window.url("valintalaskentakoostepalvelu.valintalaskentaexcel.jalkiohjaustulos.aktivoi",
-                data.hakuOid);
+                {hakuOid : data.hakuOid});
         }
     };
 });
@@ -554,8 +554,13 @@ app.factory('Jalkiohjauskirjeet', function($resource) {
 
 app.factory('Kirjepohjat', function($resource) {
     var plainUrls = window.urls().noEncode();
-    return $resource(plainUrls.url("viestintapalvelu.template.gethistory.tarjoaja",
-        ":templateName", ":languageCode", ":tarjoajaOid", ":tag", ":hakuOid"),
+    return $resource(plainUrls.url("viestintapalvelu.template.gethistory",
+        {
+            templateName : ":templateName",
+            languageCode : ":languageCode",
+            oid : ":tarjoajaOid",
+            tag : ":tag",
+            applicationPeriod : ":hakuOid"}),
         {
             templateName: "@templateName",
             languageCode:"@languageCode",
@@ -569,8 +574,13 @@ app.factory('Kirjepohjat', function($resource) {
 
 app.factory('Jalkiohjauskirjepohjat', function($resource) {
     var plainUrls = window.urls().noEncode();
-    return $resource(plainUrls.url("viestintapalvelu.template.gethistory", "jalkiohjauskirje",
-        ":languageCode", ":tag", ":applicationPeriod"),
+    return $resource(plainUrls.url("viestintapalvelu.template.gethistory",
+        {
+            templateName : "jalkiohjauskirje",
+            languageCode : ":languageCode",
+            tag : ":tag",
+            applicationPeriod : ":applicationPeriod"
+        }),
         {
             languageCode:"@languageCode",
             tag:"@tag",
@@ -583,7 +593,12 @@ app.factory('Jalkiohjauskirjepohjat', function($resource) {
 app.factory('Hyvaksymiskirjepohjat', function($resource) {
     var plainUrls = window.urls().noEncode();
     return $resource(plainUrls.url("viestintapalvelu.template.gethistory",
-        "hyvaksymiskirje", ":languageCode", ":tag", ":applicationPeriod"),
+        {
+            templateName : "hyvaksymiskirje",
+            languageCode : ":languageCode",
+            tag : ":tag",
+            applicationPeriod : ":applicationPeriod"
+        }),
         {
             languageCode:"@languageCode",
             tag:"@tag",
@@ -690,8 +705,8 @@ app.factory('HenkilotByOid', function($resource) {
 
 app.factory('VastaanottoTila', function($resource) {
     var plainUrls = window.urls().noEncode();
-    return $resource(plainUrls.url("valintalaskentakoostepalvelu.proxy.valintatulosservice.haku.hakukohde.selite",
-        ":hakuOid", ":hakukohdeOid", ":selite"),
+    return $resource(plainUrls.url("valintalaskentakoostepalvelu.proxy.valintatulosservice.haku.hakukohde",
+        ":hakuOid", ":hakukohdeOid", {selite : ":selite"}),
         {
             hakuOid: "@hakuOid",
             hakukohdeOid: "@hakukohdeOid",
@@ -704,7 +719,11 @@ app.factory('VastaanottoTila', function($resource) {
 app.factory('ValintaesityksenHyvaksyminen', function($resource) {
     var plainUrls = window.urls().noEncode();
     return $resource(plainUrls.url("sijoittelu-service.tila.haku.hakukohde.valintatapajono.valintaesitys",
-        ":hakuOid", ":hakukohdeOid", ":hyvaksyttyJonoOid", ":selite", "true"),
+        ":hakuOid", ":hakukohdeOid", ":hyvaksyttyJonoOid",
+        {
+            selite : ":selite",
+            hyvaksytty : "true"
+        }),
         {
             hakuOid: "@hakuOid",
             hakukohdeOid: "@hakukohdeOid",
@@ -718,7 +737,7 @@ app.factory('ValintaesityksenHyvaksyminen', function($resource) {
 app.factory('SijoitteluTila', function($resource) {
     var plainUrls = window.urls().noEncode();
     return $resource(plainUrls.url("sijoittelu-service.tila.haku.hakukohde.hakemus.tarjoaja",
-        ":hakuoid", ":hakukohdeOid", ":hakemusOid", ":tarjoajaOid"),
+        ":hakuoid", ":hakukohdeOid", ":hakemusOid", {tarjoajaOid : ":tarjoajaOid"}),
         {
             hakuoid: "@hakuoid",
             hakukohdeOid: "@hakukohdeoid",
@@ -936,7 +955,7 @@ app.factory('ValintatapajonoSijoitteluStatus', function($resource) {
     var plainUrls = window.urls().noEncode();
     return $resource(
         plainUrls.url("valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi",
-            ":valintatapajonoOid", ":status"),
+            ":valintatapajonoOid", {status : ":status"}),
         {
             valintatapajonoOid: "@valintatapajonoOid",
             status: "@status"
@@ -969,7 +988,12 @@ app.factory('OrganizationByOid', function ($resource) {
 app.factory('OrganizationHierarchy', function ($resource) {
     var plainUrls = window.urls().noEncode();
     return $resource(plainUrls.url("organisaatio-service.organisaatio.hierarkia.hae",
-        "true", "true", "false", ":oid"),
+        {
+            aktiiviset : "true",
+            suunnitellut : "true",
+            lakkautetut : "false",
+            oid : ":oid"
+        }),
         {oid: "@oid"},
         {get: {method: "GET", cache: true}
     });

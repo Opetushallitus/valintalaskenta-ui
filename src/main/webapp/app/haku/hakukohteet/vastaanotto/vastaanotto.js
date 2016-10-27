@@ -54,8 +54,8 @@ angular.module('valintalaskenta')
 app.factory('HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', function($resource) {
     var plainUrls = window.urls().noEncode();
     return $resource(
-        plainUrls.url("valintalaskentakoostepalvelu.proxy.valintatulosservice.ilmanhakijantilaa.haku.hakukohde.valintatapajono",
-            ":hakuOid", ":hakukohdeOid", ":valintatapajonoOid"),
+        plainUrls.url("valintalaskentakoostepalvelu.proxy.valintatulosservice.ilmanhakijantilaa.haku.hakukohde",
+            ":hakuOid", ":hakukohdeOid", {valintatapajonoOid : ":valintatapajonoOid"}),
         {
             hakuOid: "@hakuOid",
             hakukohdeOid: "@hakukohdeoid",

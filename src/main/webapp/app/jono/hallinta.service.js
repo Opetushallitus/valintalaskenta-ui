@@ -29,7 +29,7 @@ function seurantaservice($http, CacheFactory) {
 
   function removeJob(job) {
     return $http.delete(
-        window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti.haku.hakukohde.valintatapajono", job.uuid),
+        window.url("valintalaskentakoostepalvelu.valintalaskentakerralla.haku", job.uuid),
         {params: {lopetaVainJonossaOlevaLaskenta: true}}
     ).then(function() {
       job.tila = JOB_STATES.CANCELLED;

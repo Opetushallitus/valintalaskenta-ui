@@ -526,8 +526,10 @@ angular.module('valintalaskenta')
         fileReader.readAsArrayBuffer(file);
         var hakukohdeOid = $scope.hakukohdeOid;
         var hakuOid = $routeParams.hakuOid;
-        var url =
-          window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti.haku.hakukohde", hakuOid, hakukohdeOid);
+        var url = window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti", {
+          hakuOid : hakuOid,
+          hakukohdeOid : hakukohdeOid
+        });
         if(!isKeinotekoinenOid(valintatapajonoOid)) {
           url = url + "&valintatapajonoOid="+valintatapajonoOid;
         }
@@ -563,7 +565,13 @@ angular.module('valintalaskenta')
         var hakuOid = $routeParams.hakuOid;
         var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
         var hakutyyppi = $scope.getHakutyyppi();
-        var url = window.url("valintalaskentakoostepalvelu.erillishaku.tuonti", hakuOid, hakukohdeOid, hakutyyppi);
+
+        var url = window.url("valintalaskentakoostepalvelu.erillishaku.tuonti", {
+              hakuOid : hakuOid,
+              hakukohdeOid : hakukohdeOid,
+              hakutyyppi : hakutyyppi
+        });
+
         if(!isKeinotekoinenOid(valintatapajonoOid)) {
           url = url + "&valintatapajonoOid="+valintatapajonoOid;
         }

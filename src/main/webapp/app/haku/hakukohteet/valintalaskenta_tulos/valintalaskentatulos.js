@@ -431,8 +431,12 @@ angular.module('valintalaskenta').
         var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
         fileReader.onload = function(e) {
             $scope.upload = $upload.http({
-                url: window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti.haku.hakukohde.valintatapajono",
-                    tarjoajaOid, hakuOid, hakukohdeOid, valintatapajonoOid),
+                url: window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti", {
+                    tarjoajaOid : tarjoajaOid,
+                    hakuOid : hakuOid,
+                    hakukohdeOid : hakukohdeOid,
+                    valintatapajonoOid : valintatapajonoOid
+                }),
                 method: "POST",
                 headers: {'Content-Type': 'application/octet-stream'},
                 data: e.target.result
