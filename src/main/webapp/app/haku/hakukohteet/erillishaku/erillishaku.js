@@ -526,19 +526,19 @@ angular.module('valintalaskenta')
         fileReader.readAsArrayBuffer(file);
         var hakukohdeOid = $scope.hakukohdeOid;
         var hakuOid = $routeParams.hakuOid;
-        var url = window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti", {
+        var params = {
           hakuOid : hakuOid,
           hakukohdeOid : hakukohdeOid
-        });
+        };
         if(!isKeinotekoinenOid(valintatapajonoOid)) {
-          url = url + "&valintatapajonoOid="+valintatapajonoOid;
+          params.valintatapajonoOid=valintatapajonoOid;
         }
         if(valintatapajononNimi) {
-          url = url + "&valintatapajononNimi=" + valintatapajononNimi;
+          params.valintatapajononNimi=valintatapajononNimi;
         }
         fileReader.onload = function(e) {
           $scope.upload = $upload.http({
-            url: url,
+            url: window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti", params),
             method: "POST",
             headers: {'Content-Type': 'application/octet-stream'},
             data: e.target.result
@@ -566,21 +566,20 @@ angular.module('valintalaskenta')
         var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
         var hakutyyppi = $scope.getHakutyyppi();
 
-        var url = window.url("valintalaskentakoostepalvelu.erillishaku.tuonti", {
-              hakuOid : hakuOid,
-              hakukohdeOid : hakukohdeOid,
-              hakutyyppi : hakutyyppi
-        });
-
+        var params = {
+          hakuOid : hakuOid,
+          hakukohdeOid : hakukohdeOid,
+          hakutyyppi : hakutyyppi
+        };
         if(!isKeinotekoinenOid(valintatapajonoOid)) {
-          url = url + "&valintatapajonoOid="+valintatapajonoOid;
+          params.valintatapajonoOid=valintatapajonoOid;
         }
         if(valintatapajononNimi) {
-          url = url + "&valintatapajononNimi=" + valintatapajononNimi;
+          params.valintatapajononNimi=valintatapajononNimi;
         }
         fileReader.onload = function(e) {
           $scope.upload = $upload.http({
-            url: url,
+            url: window.url("valintalaskentakoostepalvelu.erillishaku.tuonti", params),
             method: "POST",
             headers: {'Content-Type': 'application/octet-stream'},
             data: e.target.result
