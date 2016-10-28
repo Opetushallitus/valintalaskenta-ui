@@ -125,26 +125,21 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     (hakemus.hakutoiveet || []).forEach(function (hakutoive) {
                         var hakukohde = model.hakutoiveetMap[hakutoive.hakukohdeOid];
                         if (hakukohde) {
-
                             hakukohde.valintakokeet = {};
                             hakukohde.osallistuminen = false;
                             hakutoive.valinnanVaiheet.forEach(function (valinnanVaihe) {
-
                                 valinnanVaihe.valintakokeet.forEach(function (valintakoe) {
-                                    var valintakoe = {
+                                    hakukohde.valintakokeet[valintakoe.valintakoeTunniste] = {
                                         jarjestysluku: valinnanVaihe.valinnanVaiheJarjestysluku,
                                         valinnanVaiheOid: valinnanVaihe.valinnanVaiheOid,
                                         valintakoeOid: valintakoe.valintakoeOid,
                                         valintakoeTunniste: valintakoe.valintakoeTunniste,
                                         osallistuminen: valintakoe.osallistuminenTulos.osallistuminen
                                     };
-                                    hakukohde.valintakokeet[valintakoe.valintakoeTunniste] = valintakoe;
-
-                                    if (valintakoe.osallistuminen === 'OSALLISTUU') {
+                                    if (valintakoe.osallistuminenTulos.osallistuminen === 'OSALLISTUU') {
                                         hakukohde.osallistuminen = true;
                                     }
                                 });
-
                             });
 
                             if (hakukohde.osallistuminen) {
