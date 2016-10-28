@@ -87,24 +87,20 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             }
                                         });
                                     });
-                                    LatestSijoitteluajoHakukohde.get({
-                                        hakukohdeOid: hakutoive.hakukohdeOid,
-                                        hakuOid: hakuOid
-                                    }, function (result) {
-                                        if (result.valintatapajonot) {
-                                            result.valintatapajonot.forEach(function (jono) {
-                                                if (jono.oid === valintatapajono.valintatapajonoOid) {
-                                                    jono.hakemukset.forEach(function (h) {
-                                                        if (h.hakemusOid === model.hakemus.oid) {
-                                                            model.sijoittelu[valintatapajono.valintatapajonoOid].tilaHistoria = h.tilaHistoria;
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    });
                                 });
                                 model.vastaanottoTilaOptionsToShow(hakutoive);
+                                LatestSijoitteluajoHakukohde.get({
+                                    hakukohdeOid: hakutoive.hakukohdeOid,
+                                    hakuOid: hakuOid
+                                }, function (result) {
+                                    (result.valintatapajonot || []).forEach(function (jono) {
+                                        jono.hakemukset.forEach(function (h) {
+                                            if (h.hakemusOid === model.hakemus.oid && model.sijoittelu[jono.oid]) {
+                                                model.sijoittelu[jono.oid].tilaHistoria = h.tilaHistoria;
+                                            }
+                                        });
+                                    });
+                                });
                             }
                         });
 
