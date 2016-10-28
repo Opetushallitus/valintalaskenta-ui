@@ -3,7 +3,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             SijoittelunVastaanottotilat, LatestSijoittelunTilat,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakemuksenValintatulokset,
-                                            LatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService) {
+                                            LatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
+                                            KoostettuHakemusAdditionalDataByOids) {
     "use strict";
 
     var model = new function () {
@@ -132,8 +133,15 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     errors.push(error);
                 });
 
-
-                ValintakoetuloksetHakemuksittain.get({hakemusOid: hakemus.oid}, function (hakemus) {
+                $q.all(hakutoiveet.map(function(hakutoive) {
+                    return KoostettuHakemusAdditionalDataByOids.post(
+                        {hakuOid: hakuOid, hakukohdeOid: hakutoive.hakukohdeOid}, [hakemusOid]
+                    ).$promise.then(function(result) {
+                        hakutoive.additionalData = result[0].additionalData;
+                    });
+                })).then(function() {
+                    return ValintakoetuloksetHakemuksittain.get({hakemusOid: hakemus.oid}).$promise;
+                }).then(function(hakemus) {
                     (hakemus.hakutoiveet || []).forEach(function (hakutoive) {
                         var hakukohde = hakutoiveetMap[hakutoive.hakukohdeOid];
                         if (hakukohde) {
@@ -191,7 +199,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             }
                         }
                     });
-                }, function (error) {
+                }, function(error) {
                     errors.push(error);
                 });
                 ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function (valintalaskenta) {
