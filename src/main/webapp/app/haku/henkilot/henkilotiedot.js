@@ -69,43 +69,41 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     if (latest.hakutoiveet) {
                         latest.hakutoiveet.forEach(function (hakutoive) {
                             if (model.hakutoiveetMap[hakutoive.hakukohdeOid]) {
-                                model.hakutoiveetMap[hakutoive.hakukohdeOid].sijoittelu = hakutoive.hakutoiveenValintatapajonot;
-                                if (hakutoive.hakutoiveenValintatapajonot) {
-                                    hakutoive.hakutoiveenValintatapajonot.forEach(function (valintatapajono) {
-                                        valintatapajono.hakemusOid = model.hakemus.oid;
-                                        valintatapajono.hakijaOid = model.hakemus.personOid;
-                                        model.sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
+                                model.hakutoiveetMap[hakutoive.hakukohdeOid].sijoittelu = hakutoive.hakutoiveenValintatapajonot || [];
+                                model.hakutoiveetMap[hakutoive.hakukohdeOid].sijoittelu.forEach(function (valintatapajono) {
+                                    valintatapajono.hakemusOid = model.hakemus.oid;
+                                    valintatapajono.hakijaOid = model.hakemus.personOid;
+                                    model.sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
 
-                                        HakemuksenValintatulokset.get({
-                                            hakemusOid: hakemusOid,
-                                            hakuOid: hakuOid,
-                                            hakukohdeOid: hakutoive.hakukohdeOid,
-                                            valintatapajonoOid: valintatapajono.valintatapajonoOid
-                                        }, function (result) {
-                                            result.forEach(function (r) {
-                                                if (r.hakemusOid === model.hakemus.oid) {
-                                                    model.sijoittelu[valintatapajono.valintatapajonoOid].logEntries = r.logEntries;
-                                                }
-                                            });
-                                        });
-                                        LatestSijoitteluajoHakukohde.get({
-                                            hakukohdeOid: hakutoive.hakukohdeOid,
-                                            hakuOid: hakuOid
-                                        }, function (result) {
-                                            if (result.valintatapajonot) {
-                                                result.valintatapajonot.forEach(function (jono) {
-                                                    if (jono.oid === valintatapajono.valintatapajonoOid) {
-                                                        jono.hakemukset.forEach(function (h) {
-                                                            if (h.hakemusOid === model.hakemus.oid) {
-                                                                model.sijoittelu[valintatapajono.valintatapajonoOid].tilaHistoria = h.tilaHistoria;
-                                                            }
-                                                        });
-                                                    }
-                                                });
+                                    HakemuksenValintatulokset.get({
+                                        hakemusOid: hakemusOid,
+                                        hakuOid: hakuOid,
+                                        hakukohdeOid: hakutoive.hakukohdeOid,
+                                        valintatapajonoOid: valintatapajono.valintatapajonoOid
+                                    }, function (result) {
+                                        result.forEach(function (r) {
+                                            if (r.hakemusOid === model.hakemus.oid) {
+                                                model.sijoittelu[valintatapajono.valintatapajonoOid].logEntries = r.logEntries;
                                             }
                                         });
                                     });
-                                }
+                                    LatestSijoitteluajoHakukohde.get({
+                                        hakukohdeOid: hakutoive.hakukohdeOid,
+                                        hakuOid: hakuOid
+                                    }, function (result) {
+                                        if (result.valintatapajonot) {
+                                            result.valintatapajonot.forEach(function (jono) {
+                                                if (jono.oid === valintatapajono.valintatapajonoOid) {
+                                                    jono.hakemukset.forEach(function (h) {
+                                                        if (h.hakemusOid === model.hakemus.oid) {
+                                                            model.sijoittelu[valintatapajono.valintatapajonoOid].tilaHistoria = h.tilaHistoria;
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
                                 model.vastaanottoTilaOptionsToShow(hakutoive);
                             }
                         });
