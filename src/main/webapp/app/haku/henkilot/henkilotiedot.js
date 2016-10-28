@@ -41,19 +41,14 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             break;
                         }
 
-                        var hakutoiveIndex = i;
-                        var koulutus = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"];
-                        var oppilaitos = model.hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"];
-
                         var harkinnanvarainen = model.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
                         var discretionary = model.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
 
-                        //create hakutoiveObject that can easily be iterated in view
                         var hakutoive = {
                             hakukohdeOid: oid,
-                            hakutoiveNumero: hakutoiveIndex,
-                            koulutuksenNimi: koulutus,
-                            oppilaitos: oppilaitos,
+                            hakutoiveNumero: i,
+                            koulutuksenNimi: model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"],
+                            oppilaitos: model.hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"],
                             hakemusOid: model.hakemus.oid,
                             hakenutHarkinnanvaraisesti: (harkinnanvarainen || discretionary),
                             additionalData: model.hakemus.additionalInfo
