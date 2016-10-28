@@ -199,23 +199,19 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 	                        }
 	                    });
                 	}
-
-                    ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function (valintalaskenta) {
-                        valintalaskenta.hakukohteet.forEach(function (hakukohde) {
-                            var hakutoive = model.hakutoiveetMap[hakukohde.oid];
-                            if (hakutoive) {
-                                hakutoive.valintalaskenta = hakukohde.valinnanvaihe;
-                            }
-                        });
-
-                    }, function (error) {
-                        model.errors.push(error);
-                    });
-
                 }, function (error) {
                     model.errors.push(error);
                 });
-
+                ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function (valintalaskenta) {
+                    valintalaskenta.hakukohteet.forEach(function (hakukohde) {
+                        var hakutoive = model.hakutoiveetMap[hakukohde.oid];
+                        if (hakutoive) {
+                            hakutoive.valintalaskenta = hakukohde.valinnanvaihe;
+                        }
+                    });
+                }, function (error) {
+                    model.errors.push(error);
+                });
             }, function (error) {
                 model.errors.push(error);
             });
