@@ -30,13 +30,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             Hakemus.get({oid: hakemusOid}, function (result) {
                 model.hakemus = result;
                 if (model.hakemus.answers && model.hakemus.answers.hakutoiveet) {
-                    for (var i = 1; i < 10; i++) {
+                    for (var i = 1; model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"]; i++) {
                         var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
-
-                        if (oid) {
-                            break;
-                        }
-
                         var harkinnanvarainen = model.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
                         var discretionary = model.hakemus.answers.hakutoiveet["preference" + i + "-Harkinnanvarainen"];  // this should be removed at some point
 
