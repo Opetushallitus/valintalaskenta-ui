@@ -77,24 +77,27 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                     valintatapajono.hakemusOid = hakemus.oid;
                                     valintatapajono.hakijaOid = hakemus.personOid;
                                     sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
-
-                                    HakemuksenValintatulokset.get({
-                                        hakemusOid: hakemusOid,
-                                        hakuOid: hakuOid,
-                                        hakukohdeOid: hakutoive.hakukohdeOid,
-                                        valintatapajonoOid: valintatapajono.valintatapajonoOid
-                                    }, function (result) {
-                                        result.forEach(function (r) {
-                                            if (r.hakemusOid === hakemus.oid) {
-                                                sijoittelu[valintatapajono.valintatapajonoOid].logEntries = r.logEntries;
-                                            }
-                                        });
-                                    }, function (error) {
-                                        errors.push(error);
-                                    });
                                 });
                                 model.vastaanottoTilaOptionsToShow(hakutoive);
                             }
+                        });
+                        hakutoiveet.forEach(function(hakutoive) {
+                            (hakutoive.sijoittelu || []).forEach(function (valintatapajono) {
+                                HakemuksenValintatulokset.get({
+                                    hakemusOid: hakemusOid,
+                                    hakuOid: hakuOid,
+                                    hakukohdeOid: hakutoive.hakukohdeOid,
+                                    valintatapajonoOid: valintatapajono.valintatapajonoOid
+                                }, function (result) {
+                                    result.forEach(function (r) {
+                                        if (r.hakemusOid === hakemus.oid) {
+                                            sijoittelu[valintatapajono.valintatapajonoOid].logEntries = r.logEntries;
+                                        }
+                                    });
+                                }, function (error) {
+                                    errors.push(error);
+                                });
+                            });
                         });
                         hakutoiveet.forEach(function(hakutoive) {
                             LatestSijoitteluajoHakukohde.get({
