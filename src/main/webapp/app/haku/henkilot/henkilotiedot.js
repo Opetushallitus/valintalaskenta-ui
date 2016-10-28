@@ -30,6 +30,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             Hakemus.get({oid: hakemusOid}, function (result) {
                 model.hakemus = result;
                 if (model.hakemus.answers && model.hakemus.answers.hakutoiveet) {
+                    model.hakutoiveet = [];
                     for (var i = 1; model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"]; i++) {
                         var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
                         var harkinnanvarainen = model.hakemus.answers.hakutoiveet["preference" + i + "-discretionary"];
