@@ -163,10 +163,10 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                         if (!hakukohde.additionalData[avain.tunniste]) {
                                             hakukohde.additionalData[avain.tunniste] = "";
                                         }
-                                        if (avain.vaatiiOsallistumisen == false && !hakukohde.additionalData[avain.osallistuminenTunniste]) {
+                                        if (!avain.vaatiiOsallistumisen && !hakukohde.additionalData[avain.osallistuminenTunniste]) {
                                             hakukohde.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
                                         }
-                                        if (avain.syotettavissaKaikille == true) {
+                                        if (avain.syotettavissaKaikille) {
                                             hakukohde.osallistuu[avain.tunniste] = 'OSALLISTUU';
                                         }
                                         if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
