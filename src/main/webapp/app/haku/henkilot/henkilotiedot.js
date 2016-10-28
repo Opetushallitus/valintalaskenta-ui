@@ -124,7 +124,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                 ValintakoetuloksetHakemuksittain.get({hakemusOid: model.hakemus.oid}, function (hakemus) {
                     (hakemus.hakutoiveet || []).forEach(function (hakutoive) {
                         var hakukohde = model.hakutoiveetMap[hakutoive.hakukohdeOid];
-                        var hakukohdeOid = hakutoive.hakukohdeOid;
                         if (hakukohde) {
 
                             hakukohde.valintakokeet = {};
