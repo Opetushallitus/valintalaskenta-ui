@@ -69,15 +69,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     if (latest.hakutoiveet) {
                         latest.hakutoiveet.forEach(function (hakutoive) {
                             if (model.hakutoiveetMap[hakutoive.hakukohdeOid]) {
-
-                                // Sijoittelun tilan muutosta varten
-                                hakutoive.hakutoiveenValintatapajonot.forEach(function (sijoittelu) {
-                                    sijoittelu.hakemusOid = model.hakemus.oid;
-                                });
                                 model.hakutoiveetMap[hakutoive.hakukohdeOid].sijoittelu = hakutoive.hakutoiveenValintatapajonot;
-
                                 if (hakutoive.hakutoiveenValintatapajonot) {
                                     hakutoive.hakutoiveenValintatapajonot.forEach(function (valintatapajono) {
+                                        valintatapajono.hakemusOid = model.hakemus.oid;
+                                        valintatapajono.hakijaOid = model.hakemus.personOid;
                                         model.sijoittelu[valintatapajono.valintatapajonoOid] = valintatapajono;
 
                                         HakemuksenValintatulokset.get({
@@ -118,22 +114,16 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         SijoittelunVastaanottotilat.get({hakuOid: hakuOid, hakemusOid: model.hakemus.oid}, function (vastaanottotilat) {
                             if (vastaanottotilat.length > 0) {
                                 vastaanottotilat.forEach(function (vastaanottoTila) {
-
                                     if (model.hakutoiveetMap[vastaanottoTila.hakukohdeOid] &&
                                         model.hakutoiveetMap[vastaanottoTila.hakukohdeOid].sijoittelu) {
                                         model.hakutoiveetMap[vastaanottoTila.hakukohdeOid].sijoittelu.forEach(function (sijoittelu) {
-                                            // Sijoittelun tilan muutosta varten
-                                            sijoittelu.hakemusOid = model.hakemus.oid;
                                             if (sijoittelu.valintatapajonoOid === vastaanottoTila.valintatapajonoOid) {
                                                 sijoittelu.vastaanottoTila = vastaanottoTila.tila;
                                                 sijoittelu.muokattuVastaanottoTila = vastaanottoTila.tila;
                                             }
-                                            sijoittelu.hakijaOid = model.hakemus.personOid;
                                         });
-
                                     }
                                 });
-
                             }
                         }, function (error) {
                             model.errors.push(error);
