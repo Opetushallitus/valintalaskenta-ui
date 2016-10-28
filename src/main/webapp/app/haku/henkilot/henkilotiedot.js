@@ -94,21 +94,23 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                     });
                                 });
                                 model.vastaanottoTilaOptionsToShow(hakutoive);
-                                LatestSijoitteluajoHakukohde.get({
-                                    hakukohdeOid: hakutoive.hakukohdeOid,
-                                    hakuOid: hakuOid
-                                }, function (result) {
-                                    (result.valintatapajonot || []).forEach(function (jono) {
-                                        jono.hakemukset.forEach(function (h) {
-                                            if (h.hakemusOid === hakemus.oid && sijoittelu[jono.oid]) {
-                                                sijoittelu[jono.oid].tilaHistoria = h.tilaHistoria;
-                                            }
-                                        });
-                                    });
-                                }, function (error) {
-                                    errors.push(error);
-                                });
                             }
+                        });
+                        hakutoiveet.forEach(function(hakutoive) {
+                            LatestSijoitteluajoHakukohde.get({
+                                hakukohdeOid: hakutoive.hakukohdeOid,
+                                hakuOid: hakuOid
+                            }, function (result) {
+                                (result.valintatapajonot || []).forEach(function (jono) {
+                                    jono.hakemukset.forEach(function (h) {
+                                        if (h.hakemusOid === hakemus.oid && sijoittelu[jono.oid]) {
+                                            sijoittelu[jono.oid].tilaHistoria = h.tilaHistoria;
+                                        }
+                                    });
+                                });
+                            }, function (error) {
+                                errors.push(error);
+                            });
                         });
 
                         //fetch sijoittelun vastaanottotilat and extend hakutoiveet
