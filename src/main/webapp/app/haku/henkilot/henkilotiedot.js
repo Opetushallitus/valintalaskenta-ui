@@ -89,6 +89,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                                 sijoittelu[valintatapajono.valintatapajonoOid].logEntries = r.logEntries;
                                             }
                                         });
+                                    }, function (error) {
+                                        errors.push(error);
                                     });
                                 });
                                 model.vastaanottoTilaOptionsToShow(hakutoive);
@@ -103,6 +105,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             }
                                         });
                                     });
+                                }, function (error) {
+                                    errors.push(error);
                                 });
                             }
                         });
