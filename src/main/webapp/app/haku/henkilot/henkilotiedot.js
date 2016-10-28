@@ -20,6 +20,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             model.hakutoiveet = [];
             model.errors = [];
             model.haku = {};
+            model.sijoittelu = {};
 
             HaunTiedot.get({hakuOid: hakuOid}, function (resultWrapper) {
                 model.haku = resultWrapper.result;
@@ -52,7 +53,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     }
                 }
                 HarkinnanvaraisestiHyvaksytty.get({hakemusOid: hakemusOid, hakuOid: hakuOid}, function (result) {
-
                     result.forEach(function (harkinnanvarainen) {
                         var hakutoive = model.hakutoiveetMap[harkinnanvarainen.hakukohdeOid];
                         if (hakutoive) {
@@ -60,14 +60,12 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             hakutoive.harkinnanvaraisuusTila = harkinnanvarainen.harkinnanvaraisuusTila;
                         }
                     });
-
                 }, function (error) {
                     model.errors.push(error);
                 });
 
                 //fetch sijoittelun tilat and extend hakutoiveet
                 LatestSijoittelunTilat.get({hakemusOid: model.hakemus.oid, hakuOid: hakuOid}, function (latest) {
-                    model.sijoittelu = {};
                     if (latest.hakutoiveet) {
                         latest.hakutoiveet.forEach(function (hakutoive) {
                             if (model.hakutoiveetMap[hakutoive.hakukohdeOid]) {
