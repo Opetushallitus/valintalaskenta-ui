@@ -141,14 +141,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                     }
                                 });
                             });
-
                             if (hakukohde.osallistuminen) {
                                 HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (result) {
-
                                     hakukohde.avaimet = result;
                                     HakukohdeAvainTyyppiService.createAvainTyyppiValues(hakukohde.avaimet, [])
                                     hakukohde.osallistuu = {};
-
                                     if (!hakukohde.additionalData) {
                                         hakukohde.additionalData = {};
                                     }
@@ -156,7 +153,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                     model.naytaPistetsyotto = false;
                                     hakukohde.avaimet.forEach(function (avain) {
                                         hakukohde.osallistuu[avain.tunniste] = false;
-
                                         if (hakukohde.valintakokeet &&
                                             hakukohde.valintakokeet[avain.tunniste]) {
                                             hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
@@ -165,26 +161,19 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                                 model.naytaPistesyotto = true;
                                             }
                                         }
-
                                         if (!hakukohde.additionalData[avain.tunniste]) {
                                             hakukohde.additionalData[avain.tunniste] = "";
                                         }
-
                                         if (avain.vaatiiOsallistumisen == false && !hakukohde.additionalData[avain.osallistuminenTunniste]) {
                                             hakukohde.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
                                         }
-
-
                                         if (avain.syotettavissaKaikille == true) {
                                             hakukohde.osallistuu[avain.tunniste] = 'OSALLISTUU';
                                         }
-
                                         if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
                                             hakukohde.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
                                         }
-
                                     });
-
                                 }, function (error) {
                                     model.errors.push(error);
                                 });
