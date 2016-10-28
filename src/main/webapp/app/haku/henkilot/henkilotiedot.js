@@ -106,19 +106,12 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
                         //fetch sijoittelun vastaanottotilat and extend hakutoiveet
                         SijoittelunVastaanottotilat.get({hakuOid: hakuOid, hakemusOid: model.hakemus.oid}, function (vastaanottotilat) {
-                            if (vastaanottotilat.length > 0) {
-                                vastaanottotilat.forEach(function (vastaanottoTila) {
-                                    if (model.hakutoiveetMap[vastaanottoTila.hakukohdeOid] &&
-                                        model.hakutoiveetMap[vastaanottoTila.hakukohdeOid].sijoittelu) {
-                                        model.hakutoiveetMap[vastaanottoTila.hakukohdeOid].sijoittelu.forEach(function (sijoittelu) {
-                                            if (sijoittelu.valintatapajonoOid === vastaanottoTila.valintatapajonoOid) {
-                                                sijoittelu.vastaanottoTila = vastaanottoTila.tila;
-                                                sijoittelu.muokattuVastaanottoTila = vastaanottoTila.tila;
-                                            }
-                                        });
-                                    }
-                                });
-                            }
+                            vastaanottotilat.forEach(function (vastaanottoTila) {
+                                if (model.sijoittelu[vastaanottoTila.valintatapajonoOid]) {
+                                    model.sijoittelu[vastaanottoTila.valintatapajonoOid].vastaanottoTila = vastaanottoTila.tila;
+                                    model.sijoittelu[vastaanottoTila.valintatapajonoOid].muokattuVastaanottoTila = vastaanottoTila.tila;
+                                }
+                            });
                         }, function (error) {
                             model.errors.push(error);
                         });
