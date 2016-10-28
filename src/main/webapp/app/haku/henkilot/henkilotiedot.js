@@ -33,7 +33,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     for (var i = 1; i < 10; i++) {
                         var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
 
-                        if (oid === undefined) {
+                        if (oid) {
                             break;
                         }
 
@@ -50,10 +50,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             additionalData: model.hakemus.additionalInfo
                         };
 
-                        if (oid) {
-                            model.hakutoiveetMap[oid] = hakutoive;
-                            model.hakutoiveet.push(hakutoive);
-                        }
+                        model.hakutoiveetMap[oid] = hakutoive;
+                        model.hakutoiveet.push(hakutoive);
                         if (hakutoive.hakenutHarkinnanvaraisesti === 'true') {
                             model.hakenutHarkinnanvaraisesti = true;
                         }
