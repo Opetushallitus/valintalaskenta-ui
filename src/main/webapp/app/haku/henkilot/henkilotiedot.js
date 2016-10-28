@@ -23,7 +23,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
             HaunTiedot.get({hakuOid: hakuOid}, function (resultWrapper) {
                 model.haku = resultWrapper.result;
-                var hakutyyppi = model.haku.hakutyyppiUri;
             });
 
             Hakemus.get({oid: hakemusOid}, function (result) {
