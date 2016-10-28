@@ -17,8 +17,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             model.hakuOid = hakuOid;
             model.hakemus = {};
             model.hakutoiveetMap = {};
-            model.hakutoiveet.length = 0;
-            model.errors.length = 0;
+            model.hakutoiveet = [];
+            model.errors = [];
             model.haku = {};
 
             HaunTiedot.get({hakuOid: hakuOid}, function (resultWrapper) {
@@ -284,7 +284,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
         };
 
         this.tallennaPisteet = function () {
-            model.errors.length = 0;
+            model.errors = [];
             var promises = [];
             model.hakutoiveet.forEach(function (hakutoive) {
                 if (hakutoive.osallistuminen) {
