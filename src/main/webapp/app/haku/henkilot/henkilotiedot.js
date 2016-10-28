@@ -29,10 +29,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
             Hakemus.get({oid: hakemusOid}, function (result) {
                 model.hakemus = result;
-
-                // autoscroll kutsuu controlleria kahteen kertaan. öri öri
-                model.hakutoiveetMap = {};
-                model.hakutoiveet.length = 0;
                 if (model.hakemus.answers && model.hakemus.answers.hakutoiveet) {
                     for (var i = 1; i < 10; i++) {
                         var oid = model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
