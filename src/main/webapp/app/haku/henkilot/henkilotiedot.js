@@ -46,15 +46,13 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             koulutuksenNimi: model.hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"],
                             oppilaitos: model.hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"],
                             hakemusOid: model.hakemus.oid,
-                            hakenutHarkinnanvaraisesti: (harkinnanvarainen || discretionary),
+                            hakenutHarkinnanvaraisesti: (harkinnanvarainen || discretionary) === "true",
                             additionalData: model.hakemus.additionalInfo
                         };
 
                         model.hakutoiveetMap[oid] = hakutoive;
                         model.hakutoiveet.push(hakutoive);
-                        if (hakutoive.hakenutHarkinnanvaraisesti === 'true') {
-                            model.hakenutHarkinnanvaraisesti = true;
-                        }
+                        model.hakenutHarkinnanvaraisesti = model.hakenutHarkinnanvaraisesti || hakutoive.hakenutHarkinnanvaraisesti;
                     }
                 }
                 HarkinnanvaraisestiHyvaksytty.get({hakemusOid: hakemusOid, hakuOid: hakuOid}, function (result) {
