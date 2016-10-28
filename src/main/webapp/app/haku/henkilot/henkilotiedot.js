@@ -122,83 +122,81 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
 
                 ValintakoetuloksetHakemuksittain.get({hakemusOid: model.hakemus.oid}, function (hakemus) {
-                	if(hakemus.hakutoiveet) { // Ilman tarkistusta => TypeError: Cannot read property 'forEach' of undefined
-	                    hakemus.hakutoiveet.forEach(function (hakutoive) {
-	                        var hakukohde = model.hakutoiveetMap[hakutoive.hakukohdeOid];
-	                        var hakukohdeOid = hakutoive.hakukohdeOid;
-	                        if (hakukohde) {
-	
-	                            hakukohde.valintakokeet = {};
-	                            hakukohde.osallistuminen = false;
-	                            hakutoive.valinnanVaiheet.forEach(function (valinnanVaihe) {
-	
-	                                valinnanVaihe.valintakokeet.forEach(function (valintakoe) {
-	                                    var valintakoe = {
-	                                        jarjestysluku: valinnanVaihe.valinnanVaiheJarjestysluku,
-	                                        valinnanVaiheOid: valinnanVaihe.valinnanVaiheOid,
-	                                        valintakoeOid: valintakoe.valintakoeOid,
-	                                        valintakoeTunniste: valintakoe.valintakoeTunniste,
-	                                        osallistuminen: valintakoe.osallistuminenTulos.osallistuminen
-	                                    };
-	                                    hakukohde.valintakokeet[valintakoe.valintakoeTunniste] = valintakoe;
-	
-	                                    if (valintakoe.osallistuminen === 'OSALLISTUU') {
-	                                        hakukohde.osallistuminen = true;
-	                                    }
-	                                });
-	
-	                            });
-	
-	                            if (hakukohde.osallistuminen) {
-	                                HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (result) {
-	
-	                                    hakukohde.avaimet = result;
-	                                    HakukohdeAvainTyyppiService.createAvainTyyppiValues(hakukohde.avaimet, [])
-	                                    hakukohde.osallistuu = {};
-	
-	                                    if (!hakukohde.additionalData) {
-	                                        hakukohde.additionalData = {};
-	                                    }
-	
-	                                    model.naytaPistetsyotto = false;
-	                                    hakukohde.avaimet.forEach(function (avain) {
-	                                        hakukohde.osallistuu[avain.tunniste] = false;
-	
-	                                        if (hakukohde.valintakokeet &&
-	                                            hakukohde.valintakokeet[avain.tunniste]) {
-	                                            hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
-	                                            if (hakukohde.osallistuu[avain.tunniste] === 'OSALLISTUU') {
-	                                                hakukohde.naytaPistesyotto = true;
-	                                                model.naytaPistesyotto = true;
-	                                            }
-	                                        }
-	
-	                                        if (!hakukohde.additionalData[avain.tunniste]) {
-	                                            hakukohde.additionalData[avain.tunniste] = "";
-	                                        }
+                    (hakemus.hakutoiveet || []).forEach(function (hakutoive) {
+                        var hakukohde = model.hakutoiveetMap[hakutoive.hakukohdeOid];
+                        var hakukohdeOid = hakutoive.hakukohdeOid;
+                        if (hakukohde) {
 
-	                                        if(avain.vaatiiOsallistumisen == false && !hakukohde.additionalData[avain.osallistuminenTunniste]) {
-	                                            hakukohde.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
-	                                        }
+                            hakukohde.valintakokeet = {};
+                            hakukohde.osallistuminen = false;
+                            hakutoive.valinnanVaiheet.forEach(function (valinnanVaihe) {
+
+                                valinnanVaihe.valintakokeet.forEach(function (valintakoe) {
+                                    var valintakoe = {
+                                        jarjestysluku: valinnanVaihe.valinnanVaiheJarjestysluku,
+                                        valinnanVaiheOid: valinnanVaihe.valinnanVaiheOid,
+                                        valintakoeOid: valintakoe.valintakoeOid,
+                                        valintakoeTunniste: valintakoe.valintakoeTunniste,
+                                        osallistuminen: valintakoe.osallistuminenTulos.osallistuminen
+                                    };
+                                    hakukohde.valintakokeet[valintakoe.valintakoeTunniste] = valintakoe;
+
+                                    if (valintakoe.osallistuminen === 'OSALLISTUU') {
+                                        hakukohde.osallistuminen = true;
+                                    }
+                                });
+
+                            });
+
+                            if (hakukohde.osallistuminen) {
+                                HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (result) {
+
+                                    hakukohde.avaimet = result;
+                                    HakukohdeAvainTyyppiService.createAvainTyyppiValues(hakukohde.avaimet, [])
+                                    hakukohde.osallistuu = {};
+
+                                    if (!hakukohde.additionalData) {
+                                        hakukohde.additionalData = {};
+                                    }
+
+                                    model.naytaPistetsyotto = false;
+                                    hakukohde.avaimet.forEach(function (avain) {
+                                        hakukohde.osallistuu[avain.tunniste] = false;
+
+                                        if (hakukohde.valintakokeet &&
+                                            hakukohde.valintakokeet[avain.tunniste]) {
+                                            hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
+                                            if (hakukohde.osallistuu[avain.tunniste] === 'OSALLISTUU') {
+                                                hakukohde.naytaPistesyotto = true;
+                                                model.naytaPistesyotto = true;
+                                            }
+                                        }
+
+                                        if (!hakukohde.additionalData[avain.tunniste]) {
+                                            hakukohde.additionalData[avain.tunniste] = "";
+                                        }
+
+                                        if (avain.vaatiiOsallistumisen == false && !hakukohde.additionalData[avain.osallistuminenTunniste]) {
+                                            hakukohde.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
+                                        }
 
 
-	                                        if(avain.syotettavissaKaikille == true) {
-	                                            hakukohde.osallistuu[avain.tunniste] = 'OSALLISTUU';
-	                                        }
+                                        if (avain.syotettavissaKaikille == true) {
+                                            hakukohde.osallistuu[avain.tunniste] = 'OSALLISTUU';
+                                        }
 
-                                          if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
-	                                            hakukohde.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-	                                        }
-	
-	                                    });
-	
-	                                }, function (error) {
-	                                    model.errors.push(error);
-	                                });
-	                            }
-	                        }
-	                    });
-                	}
+                                        if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
+                                            hakukohde.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
+                                        }
+
+                                    });
+
+                                }, function (error) {
+                                    model.errors.push(error);
+                                });
+                            }
+                        }
+                    });
                 }, function (error) {
                     model.errors.push(error);
                 });
