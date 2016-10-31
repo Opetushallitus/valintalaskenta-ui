@@ -268,6 +268,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                        {hakuOid: model.hakuOid, hakukohdeOid: hakutoive.hakukohdeOid},
                        [{
                            oid: model.hakemus.oid,
+                           personOid: model.hakemus.personOid,
                            additionalData: hakutoive.additionalData
                        }]
                    ).$promise;
