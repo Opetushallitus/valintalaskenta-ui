@@ -24,17 +24,23 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             var errors = [];
             var haku = {};
             var sijoittelu = {};
-            var hakenutHarkinnanvaraisesti = false;
-            var naytaPistesyotto = false;
 
             HaunTiedot.get({hakuOid: hakuOid}, function (resultWrapper) {
-                haku = resultWrapper.result;
+                for (var attr in resultWrapper.result) {
+                    if (resultWrapper.result.hasOwnProperty(attr)) {
+                        haku[attr] = resultWrapper.result[attr];
+                    }
+                }
             }, function(error) {
                 errors.push(error);
             });
 
             Hakemus.get({oid: hakemusOid}, function (result) {
-                hakemus = result;
+                for (var attr in result) {
+                    if (result.hasOwnProperty(attr)) {
+                        hakemus[attr] = result[attr];
+                    }
+                }
                 if (hakemus.answers && hakemus.answers.hakutoiveet) {
                     for (var i = 1; hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"]; i++) {
                         var oid = hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
@@ -53,7 +59,9 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
                         hakutoiveetMap[oid] = hakutoive;
                         hakutoiveet.push(hakutoive);
-                        hakenutHarkinnanvaraisesti = hakenutHarkinnanvaraisesti || hakutoive.hakenutHarkinnanvaraisesti;
+                        if (hakutoive.hakenutHarkinnanvaraisesti) {
+                            model.hakenutHarkinnanvaraisesti = true;
+                        }
                     }
                 }
                 HarkinnanvaraisestiHyvaksytty.get({hakemusOid: hakemusOid, hakuOid: hakuOid}, function (result) {
@@ -176,7 +184,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
                                             if (hakukohde.osallistuu[avain.tunniste] === 'OSALLISTUU') {
                                                 hakukohde.naytaPistesyotto = true;
-                                                naytaPistesyotto = true;
+                                                model.naytaPistesyotto = true;
                                             }
                                         }
                                         if (!hakukohde.additionalData[avain.tunniste]) {
@@ -223,8 +231,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             model.errors = errors;
             model.haku = haku;
             model.sijoittelu = sijoittelu;
-            model.hakenutHarkinnanvaraisesti = hakenutHarkinnanvaraisesti;
-            model.naytaPistesyotto = naytaPistesyotto;
         };
 
         this.refreshIfNeeded = function (hakuOid, hakemusOid) {
