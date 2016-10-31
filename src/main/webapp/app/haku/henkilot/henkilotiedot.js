@@ -4,7 +4,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakemuksenValintatulokset,
                                             LatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
-                                            KoostettuHakemusAdditionalDataByOids) {
+                                            KoostettuHakemusAdditionalDataByOids, KoostettuHakemusAdditionalData) {
     "use strict";
 
     var model = new function () {
@@ -262,35 +262,19 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
         };
 
         this.tallennaPisteet = function () {
-            model.errors = [];
-            var promises = [];
-            model.hakutoiveet.forEach(function (hakutoive) {
-                if (hakutoive.osallistuminen) {
-
-                    promises.push(function () {
-                        var deferred = $q.defer();
-                        var hakeneet = [
-                            {
-                                oid: model.hakemus.oid,
-                                additionalData: hakutoive.additionalData
-                            }
-                        ];
-
-
-                        HakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: hakutoive.hakukohdeOid}, hakeneet, function (success) {
-                            deferred.resolve(success);
-                        }, function (error) {
-                            deferred.reject(error);
-                            console.log(error);
-                        });
-
-                        return deferred;
-                    }());
-                }
-
+            return model.hakutoiveet.map(function(hakutoive) {
+               if (hakutoive.osallistuminen) {
+                   return KoostettuHakemusAdditionalData.put(
+                       {hakuOid: model.hakuOid, hakukohdeOid: hakutoive.hakukohdeOid},
+                       [{
+                           oid: model.hakemus.oid,
+                           additionalData: hakutoive.additionalData
+                       }]
+                   ).$promise;
+               } else {
+                   return $q.resolve();
+               }
             });
-
-            return promises;
         };
     }();
 
