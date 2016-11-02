@@ -91,6 +91,11 @@ angular.module('valintalaskenta').
             }
         });
     };
+    $scope.letterBatchUrl = function(letterBatchId) {
+        var plainUrls = window.urls().noEncode();
+        return plainUrls.url('viestintapalvelu-ui.report.letters', letterBatchId);
+    };
+
     $scope.prosentteina = function(a, b) {
     	return Math.round((a / b)*100);
     };

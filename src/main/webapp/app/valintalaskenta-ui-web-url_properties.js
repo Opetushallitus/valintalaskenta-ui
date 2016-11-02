@@ -126,6 +126,7 @@ window.urls.addProperties({
     "viestintapalvelu.letter.emailletterbatch" : "/viestintapalvelu/api/v1/letter/emailLetterBatch/$1",
     "viestintapalvelu.letter.previewletterbatchemail" : "/viestintapalvelu/api/v1/letter/previewLetterBatchEmail/$1",
     "viestintapalvelu.template.gethistory" : "/viestintapalvelu/api/v1/template/getHistory",
+    "viestintapalvelu-ui.report.letters" : "/viestintapalvelu-ui/#/reportLetters/$1",
 
     "koodisto-service.codeelement.codes.hakutapa" : "/koodisto-service/rest/codeelement/codes/hakutapa/$1",
     "koodisto-service.codeelement.codes.hakutyyppi" : "/koodisto-service/rest/codeelement/codes/hakutyyppi/$1",
