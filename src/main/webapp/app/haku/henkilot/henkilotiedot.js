@@ -4,7 +4,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakemuksenValintatulokset,
                                             LatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
-                                            KoostettuHakemusAdditionalDataByOids, KoostettuHakemusAdditionalData) {
+                                            KoostettuHakemusAdditionalDataByOids, KoostettuHakemusAdditionalData,
+                                            KoostettuHakemusAdditionalDataForHakemus) {
     "use strict";
 
     var model = new function () {
@@ -141,13 +142,13 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     errors.push(error);
                 });
 
-                $q.all(hakutoiveet.map(function(hakutoive) {
-                    return KoostettuHakemusAdditionalDataByOids.post(
-                        {hakuOid: hakuOid, hakukohdeOid: hakutoive.hakukohdeOid}, [hakemusOid]
-                    ).$promise.then(function(result) {
+                KoostettuHakemusAdditionalDataByOids.post(
+                    {hakuOid: hakuOid, hakukohdeOid: hakutoiveet[0].hakukohdeOid}, [hakemusOid]
+                ).$promise.then(function(result) {
+                    hakutoiveet.forEach(function(hakutoive) {
                         hakutoive.additionalData = result[0].additionalData;
                     });
-                })).then(function() {
+                }).then(function() {
                     return ValintakoetuloksetHakemuksittain.get({hakemusOid: hakemus.oid}).$promise;
                 }).then(function(hakemus) {
                     (hakemus.hakutoiveet || []).forEach(function (hakutoive) {
@@ -262,20 +263,14 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
         };
 
         this.tallennaPisteet = function () {
-            return model.hakutoiveet.map(function(hakutoive) {
-               if (hakutoive.osallistuminen) {
-                   return KoostettuHakemusAdditionalData.put(
-                       {hakuOid: model.hakuOid, hakukohdeOid: hakutoive.hakukohdeOid},
-                       [{
-                           oid: model.hakemus.oid,
-                           personOid: model.hakemus.personOid,
-                           additionalData: hakutoive.additionalData
-                       }]
-                   ).$promise;
-               } else {
-                   return $q.resolve();
-               }
-            });
+            return KoostettuHakemusAdditionalDataForHakemus.put(
+                {},
+                {
+                    oid: model.hakemus.oid,
+                    personOid: model.hakemus.personOid,
+                    additionalData: model.hakutoiveet[0].additionalData
+                }
+            ).$promise;
         };
     }();
 

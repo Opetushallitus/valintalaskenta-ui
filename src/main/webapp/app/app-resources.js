@@ -496,6 +496,11 @@ app.factory('KoostettuHakemusAdditionalData', function($resource) {
         put: {method: "PUT", isArray: true}
     });
 });
+app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
+    return $resource(window.url("valintalaskentakoostepalvelu.pistesyotto.hakemus.tallenna"), {}, {
+        put: {method: "PUT", isArray: false}
+    });
+});
 app.factory('HakukohteelleJalkiohjauskirjeet', function($resource) {
     return $resource(window.url("valintalaskentakoostepalvelu.viestintapalvelu.hakukohteessahylatyt.aktivoi"), {}, {
         post:  {method:'POST', isArray:false}
