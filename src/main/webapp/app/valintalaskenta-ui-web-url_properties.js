@@ -79,6 +79,7 @@ window.urls.addProperties({
     "valintalaskentakoostepalvelu.viestintapalvelu.osoitetarrat.hakemuksille.aktivoi" : "/valintalaskentakoostepalvelu/resources/viestintapalvelu/osoitetarrat/hakemuksille/aktivoi",
     "valintalaskentakoostepalvelu.viestintapalvelu.osoitetarrat.sijoittelussahyvaksytyille.aktivoi" : "/valintalaskentakoostepalvelu/resources/viestintapalvelu/osoitetarrat/sijoittelussahyvaksytyille/aktivoi",
     "valintalaskentakoostepalvelu.viestintapalvelu.securelinkit.aktivoi" : "/valintalaskentakoostepalvelu/resources/viestintapalvelu/securelinkit/aktivoi",
+    "valintalaskentakoostepalvelu.viestintapalvelu.securelinkit.esikatselu" : "/valintalaskentakoostepalvelu/resources/viestintapalvelu/securelinkit/esikatselu?hakuOid=$1&kirjeenTyyppi=$2&asiointikieli=$3",
 
     "sijoittelu-service.buildversion" : "/sijoittelu-service/buildversion.txt?auth",
     "sijoittelu-service.erillissijoittelu.sijoitteluajo.hakukohde" : "/sijoittelu-service/resources/erillissijoittelu/$1/sijoitteluajo/$2/hakukohde/$3",

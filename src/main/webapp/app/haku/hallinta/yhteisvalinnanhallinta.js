@@ -533,6 +533,11 @@ angular.module('valintalaskenta').
             IlmoitusTila.INFO, ok, function() {});
     };
 
+    $scope.esiKatseluEPostiUrl = function(asiointikieli, kirjeenTyyppi) {
+        var plainUrls = window.urls().noEncode();
+        return plainUrls.url('valintalaskentakoostepalvelu.viestintapalvelu.securelinkit.esikatselu', $routeParams.hakuOid, kirjeenTyyppi, asiointikieli);
+    };
+
     $scope.paivitaJatkuvanSijoittelunAloitus = function () {
         $scope.jatkuva.aloitusajankohta = new Date();
 
