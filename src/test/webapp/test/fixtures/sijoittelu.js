@@ -395,6 +395,15 @@ function sijoitteluAjoFixtures(valintaesitysHyvaksytty) {
     httpBackend.when('GET', /.*resources\/proxy\/valintatulosservice\/haku\/.*\/hakukohde\/1\.2\.246\.562\.11\.00000000220\?valintatapajonoOid=14255456271064587270246623295085/)
         .respond(hakukohteet2);
 
+    httpBackend.when('GET', /.*\/sijoittelu\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest$/)
+        .respond({sijoitteluajoId: 1433338214458,
+                  hakuOid: "1.2.246.562.29.11735171271",
+                  startMils: 1433338214458,
+                  endMils: 1433338214468,
+                  hakukohteet: [dippainssiSijoittelu]});
+    httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/koostesijoittelu\/jatkuva\?hakuOid\=1\.2\.246\.562\.29\.11735171271/)
+        .respond({"hakuOid":"1.2.246.562.29.11735171271","ajossa":false});
+
     httpBackend.when('GET', /.*\/sijoittelu\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.37731636579/)
         .respond(dippainssiSijoittelu);
 

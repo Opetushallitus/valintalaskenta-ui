@@ -506,7 +506,8 @@ function tarjontaFixtures() {
             "tarjoajaOids": ["1.2.246.562.10.00000000001"],
             "usePriority": true,
             "sisaltyvatHaut": []
-        }]
+        },
+        haku.result]
     })
 
     var hakukohdeTulos = {
