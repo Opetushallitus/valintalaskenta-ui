@@ -24,5 +24,10 @@ function yhteisvalinnanHallintaPage(hakuOid) {
 
 yhteisvalinnanHallintaSelectors = initSelectors({
     haunTiedotOsionAvaus: "collapsible div[ng-click]:contains('Haun tiedot'):first",
-    haunNimi: "collapsible[heading='Haun tiedot'] .row .row:first div:nth(1)"
+    haunNimi: "collapsible[heading='Haun tiedot'] .row .row:first div:nth(1)",
+    kirjeetOsionAvaus: "collapsible div[ng-click]:contains('Kirjeet ja sijoittelun tulokset'):first",
+    paivitaKirjeidenTilanne: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') button:first",
+    valmiitTulosKirjeet: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') th:contains('Valmiit')",
+    hyvaksymisKirjeetFiLinkki: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') table:first a:first",
+    ePostiFiLinkki: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') table:first a:nth(1)"
 })

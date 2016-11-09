@@ -10,6 +10,7 @@ describe('Yhteisvalinnan hallinta', function() {
         addTestHook(dokumenttipalveluFixtures)()
         addTestHook(organisaatioFixtures)()
         addTestHook(commonFixtures())()
+        addTestHook(kirjeFixtures)()
         page.openPage(done)
         wait.forAngular
     })
@@ -25,10 +26,26 @@ describe('Yhteisvalinnan hallinta', function() {
             click(yhteisvalinnanHallintaSelectors.haunTiedotOsionAvaus),
             wait.forAngular
         ))
-        it('sisältää haun tiedot', seqDone(
-            function () {
-                assertText(yhteisvalinnanHallintaSelectors.haunNimi, "valintatulokset-sijoitteluun haku")
-            }
+        it('sisältää haun tiedot', function () {
+            assertText(yhteisvalinnanHallintaSelectors.haunNimi, "valintatulokset-sijoitteluun haku")
+        })
+    })
+
+    describe('Kirjeet ja sijoittelun tulokset osio', function () {
+        before(seqDone(
+            click(yhteisvalinnanHallintaSelectors.kirjeetOsionAvaus),
+            wait.forAngular,
+            click(yhteisvalinnanHallintaSelectors.paivitaKirjeidenTilanne),
+            wait.forAngular
         ))
+        it('näyttää kuudelle eri lähetyserälle valmiiden määrän', function () {
+          expect(yhteisvalinnanHallintaSelectors.valmiitTulosKirjeet().length).to.equal(6)
+        })
+        it('sisältää linkin viestintäpalveluun', function () {
+            assertText(yhteisvalinnanHallintaSelectors.hyvaksymisKirjeetFiLinkki, "264")
+        })
+        it('sisältää linkin sähköpostin esikatseluun', function () {
+          assertText(yhteisvalinnanHallintaSelectors.ePostiFiLinkki, "Esikatsele ePosti")
+        })
     })
 });
