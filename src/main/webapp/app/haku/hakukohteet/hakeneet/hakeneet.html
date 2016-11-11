@@ -17,6 +17,7 @@
             <div ng-include="'../common/html/errors.html'"></div>
 
             <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
+                {{ t(hakeneet.maara) || 'Hakeneita yhteensä' }}: {{model.hakeneet.length}}
                 <form name="form" ng-submit="submit()">
                     <table ng-table="tableParams" show-filter="true" class="virkailija-table-1">
                         <tr ng-repeat="hakija in $data">
