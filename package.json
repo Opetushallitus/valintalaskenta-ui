@@ -1,8 +1,8 @@
 {
   "devDependencies": {
     "test": "*",
-    "phantomjs": "~1.9.1",
-    "mocha-phantomjs": "3.5.3"
+    "phantomjs-prebuilt": "~2.1.7",
+    "mocha-phantomjs-core": "2.0.1"
   },
   "dependencies": {
     "gulp-concat": "^2.6.0",
@@ -15,8 +15,8 @@
     "gulp-debug": "^2.1.2",
     "gulp-karma": "0.0.5",
     "karma": "^0.13.0",
-    "phantomjs": "~1.9.1",
-    "mocha-phantomjs": "3.5.3",
+    "phantomjs-prebuilt": "~2.1.7",
+    "mocha-phantomjs-core": "2.0.1",
     "test": "*"
   }
 }

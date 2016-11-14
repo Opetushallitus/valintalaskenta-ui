@@ -13,7 +13,7 @@ public class MochaTestRunnerTest {
     @Test
     public void mochaTest() throws Exception {
         JettyTestRunner.start();
-        String[] cmd = {"node_modules/mocha-phantomjs/bin/mocha-phantomjs", "-R", "spec", "http://localhost:" + JettyTestRunner.PORT + "/valintalaskenta-ui/test/runner.html"};
+        String[] cmd = {"node_modules/phantomjs-prebuilt/bin/phantomjs", "node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js", "http://localhost:" + JettyTestRunner.PORT + "/valintalaskenta-ui/test/runner.html", "spec"};
 
         ProcessBuilder pb = new ProcessBuilder(cmd);
         pb.inheritIO();
