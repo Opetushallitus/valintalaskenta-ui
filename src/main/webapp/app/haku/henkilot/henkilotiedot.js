@@ -142,74 +142,24 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     errors.push(error);
                 });
 
-                KoostettuHakemusAdditionalDataByOids.post(
-                    {hakuOid: hakuOid, hakukohdeOid: hakutoiveet[0].hakukohdeOid}, [hakemusOid]
-                ).$promise.then(function(result) {
-                    hakutoiveet.forEach(function(hakutoive) {
-                        hakutoive.additionalData = result[0].additionalData;
-                    });
-                }).then(function() {
-                    return ValintakoetuloksetHakemuksittain.get({hakemusOid: hakemus.oid}).$promise;
-                }).then(function(hakemus) {
-                    (hakemus.hakutoiveet || []).forEach(function (hakutoive) {
-                        var hakukohde = hakutoiveetMap[hakutoive.hakukohdeOid];
-                        if (hakukohde) {
-                            hakukohde.valintakokeet = {};
-                            hakukohde.osallistuminen = false;
-                            hakutoive.valinnanVaiheet.forEach(function (valinnanVaihe) {
-                                valinnanVaihe.valintakokeet.forEach(function (valintakoe) {
-                                    hakukohde.valintakokeet[valintakoe.valintakoeTunniste] = {
-                                        jarjestysluku: valinnanVaihe.valinnanVaiheJarjestysluku,
-                                        valinnanVaiheOid: valinnanVaihe.valinnanVaiheOid,
-                                        valintakoeOid: valintakoe.valintakoeOid,
-                                        valintakoeTunniste: valintakoe.valintakoeTunniste,
-                                        osallistuminen: valintakoe.osallistuminenTulos.osallistuminen
-                                    };
-                                    if (valintakoe.osallistuminenTulos.osallistuminen === 'OSALLISTUU') {
-                                        hakukohde.osallistuminen = true;
-                                    }
-                                });
+                hakutoiveet.forEach(function (hakutoive) {
+                    return $q.all(
+                        KoostettuHakemusAdditionalDataByOids.post(
+                            {hakuOid: hakuOid, hakukohdeOid: hakutoive.hakukohdeOid}, [hakemusOid]).$promise,
+                        HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}).$promise)
+                        .then(function (results) {
+                            hakutoive.avaimet = results[1];
+                            hakutoive.osallistuu = results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid] || {};
+                            hakutoive.additionalData = results[0][0].additionalData;
+                            hakutoive.naytaPistesyotto = false;
+                            hakutoive.avaimet.forEach(function (a) {
+                                if (hakutoive.osallistuu[a.tunniste] &&
+                                    hakutoive.osallistuu[a.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
+                                    hakutoive.naytaPistesyotto = true;
+                                    model.naytaPistesyotto = true;
+                                }
                             });
-                            if (hakukohde.osallistuminen) {
-                                HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (result) {
-                                    hakukohde.avaimet = result;
-                                    HakukohdeAvainTyyppiService.createAvainTyyppiValues(hakukohde.avaimet, []);
-                                    hakukohde.osallistuu = {};
-                                    if (!hakukohde.additionalData) {
-                                        hakukohde.additionalData = {};
-                                    }
-                                    hakukohde.avaimet.forEach(function (avain) {
-                                        hakukohde.osallistuu[avain.tunniste] = false;
-                                        if (hakukohde.valintakokeet &&
-                                            hakukohde.valintakokeet[avain.tunniste]) {
-                                            hakukohde.osallistuu[avain.tunniste] = hakukohde.valintakokeet[avain.tunniste].osallistuminen;
-                                            if (hakukohde.osallistuu[avain.tunniste] === 'OSALLISTUU') {
-                                                hakukohde.naytaPistesyotto = true;
-                                                model.naytaPistesyotto = true;
-                                            }
-                                        }
-                                        if (!hakukohde.additionalData[avain.tunniste]) {
-                                            hakukohde.additionalData[avain.tunniste] = "";
-                                        }
-                                        if (!hakukohde.additionalData[avain.osallistuminenTunniste]) {
-                                            if (!avain.vaatiiOsallistumisen) {
-                                                hakukohde.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
-                                            } else {
-                                                hakukohde.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-                                            }
-                                        }
-                                        if (avain.syotettavissaKaikille) {
-                                            hakukohde.osallistuu[avain.tunniste] = 'OSALLISTUU';
-                                        }
-                                    });
-                                }, function (error) {
-                                    errors.push(error);
-                                });
-                            }
-                        }
-                    });
-                }, function(error) {
-                    errors.push(error);
+                        });
                 });
                 ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function (valintalaskenta) {
                     valintalaskenta.hakukohteet.forEach(function (hakukohde) {

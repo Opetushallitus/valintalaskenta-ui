@@ -26,7 +26,8 @@
                         <td ng-repeat="avain in hakutoive.avaimet | filter:{'lahde': arvoFilter} | orderBy:'kuvaus'">
                           <pisteiden-syottaminen hakija="hakutoive"
                                                  avain="avain"
-                                                 laskentaonly="false"/>
+                                                 laskentaonly="false"
+                                                 inputdisabled="false"/>
                         </td>
                     </tr>
 
