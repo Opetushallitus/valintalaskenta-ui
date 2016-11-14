@@ -496,7 +496,7 @@ angular.module('valintalaskenta').
             }, function (result) {
                 $scope.paivitaTuloskirjeidenMuodostuksenTilanne();
                 Ilmoitus.avaa("Tuloskirjeiden julkaisu", "Koko haun " + $scope.tuloskirjeteksti(tyyppi)
-                    + " julkaistu kielellä " + $scope.kieliteksti(asiointikieli) + "!");
+                    + " kielellä " + $scope.kieliteksti(asiointikieli) + " julkaisu on aloitettu!");
             }, function() {
                 Ilmoitus.avaa("Tuloskirjeiden julkaisu", "Tapahtui virhe, kun yritettiin julkaista haun "
                     + $scope.tuloskirjeteksti(tyyppi) + " kielellä " + $scope.kieliteksti(asiointikieli) + "!",
