@@ -111,32 +111,32 @@ app.factory('PistesyottoModel', function (
 
 
         var blockSubmit = false;
-        this.submit = function () {
-            if(!blockSubmit) {
+        this.submit = function() {
+            if (!blockSubmit) {
                 blockSubmit = true;
                 // haku-app ei halua ylimääräistä tietoa
                 var hakeneet = angular.copy(model.hakeneet);
-                hakeneet.forEach(function(hakija){
+                hakeneet.forEach(function(hakija) {
                     // Filteröidään pois arvot, joita ei voi syöttää, koska haku-app mergaa
                     model.avaimet.forEach(function(avain) {
-                        if(hakija.osallistuu[avain.tunniste] != 'OSALLISTUU') {
+                        if (hakija.osallistuu[avain.tunniste].osallistumistieto !== "OSALLISTUI") {
                             delete hakija.additionalData[avain.tunniste];
                             delete hakija.additionalData[avain.osallistuminenTunniste];
                         }
                     });
                     var keys = _.keys(hakija.additionalData);
                     keys.forEach(function(tunniste) {
-                        if(!_.contains(model.tunnisteet, tunniste)) {
+                        if (!_.contains(model.tunnisteet, tunniste)) {
                             delete hakija.additionalData[tunniste];
                         }
                     });
-                    hakija.filterData = undefined;
-                    hakija.osallistuu = undefined;
+                    delete hakija.filterData;
+                    delete hakija.osallistuu;
                 });
-                KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success){
+                KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success) {
                     Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
                     blockSubmit = false;
-                },function(error){
+                }, function(error) {
                     Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
                     console.log(error);
                     blockSubmit = false;
