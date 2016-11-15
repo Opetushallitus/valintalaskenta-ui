@@ -79,11 +79,9 @@ app.factory('PistesyottoModel', function (
                         model.avaimet = results[0];
                         HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
                         model.hakeneet = results[1].map(function(pistetieto) {
-                            var h = {
-                                filterData: {},
-                                additionalData: pistetieto.additionalData,
-                                osallistuu: (pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid] || {})
-                            };
+                            var h = pistetieto.applicationAdditionalDataDTO;
+                            h.filterData = {};
+                            h.osallistuu = pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot || {};
                             model.avaimet.forEach(function(avain) {
                                 if (h.osallistuu[avain.tunniste] &&
                                     h.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
