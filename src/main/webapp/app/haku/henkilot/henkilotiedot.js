@@ -143,23 +143,24 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                 });
 
                 hakutoiveet.forEach(function (hakutoive) {
-                    return $q.all(
+                    return $q.all([
                         KoostettuHakemusAdditionalDataByOids.post(
                             {hakuOid: hakuOid, hakukohdeOid: hakutoive.hakukohdeOid}, [hakemusOid]).$promise,
-                        HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}).$promise)
-                        .then(function (results) {
-                            hakutoive.avaimet = results[1];
-                            hakutoive.osallistuu = results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid] || {};
-                            hakutoive.additionalData = results[0][0].additionalData;
-                            hakutoive.naytaPistesyotto = false;
-                            hakutoive.avaimet.forEach(function (a) {
-                                if (hakutoive.osallistuu[a.tunniste] &&
-                                    hakutoive.osallistuu[a.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
-                                    hakutoive.naytaPistesyotto = true;
-                                    model.naytaPistesyotto = true;
-                                }
-                            });
+                        HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}).$promise
+                    ]).then(function (results) {
+                        hakutoive.avaimet = results[1];
+                        HakukohdeAvainTyyppiService.createAvainTyyppiValues(hakutoive.avaimet, []);
+                        hakutoive.osallistuu = results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid] || {};
+                        hakutoive.additionalData = results[0][0].additionalData;
+                        hakutoive.naytaPistesyotto = false;
+                        hakutoive.avaimet.forEach(function (a) {
+                            if (hakutoive.osallistuu[a.tunniste] &&
+                                hakutoive.osallistuu[a.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
+                                hakutoive.naytaPistesyotto = true;
+                                model.naytaPistesyotto = true;
+                            }
                         });
+                    });
                 });
                 ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function (valintalaskenta) {
                     valintalaskenta.hakukohteet.forEach(function (hakukohde) {
