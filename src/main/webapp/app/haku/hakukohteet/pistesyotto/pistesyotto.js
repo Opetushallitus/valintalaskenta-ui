@@ -237,43 +237,35 @@ angular.module('valintalaskenta').
         var show = false;
 
         if ($scope.koeFilter === null) {
-            if (actual.osallistuu) {
-                PistesyottoModel.avaimet.forEach(function (avain) {
-
-                    if (actual.osallistuu[avain.tunniste] === 'OSALLISTUU') {
-                        show = true;
-                    }
-
-                });
-            }
+            PistesyottoModel.avaimet.forEach(function (avain) {
+                if (actual.osallistuu[avain.tunniste] &&
+                    actual.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
+                    show = true;
+                }
+            });
         } else if ($scope.koeFilter &&
-            actual.osallistuu && actual.osallistuu[$scope.koeFilter.tunniste] === 'OSALLISTUU') {
-
+            actual.osallistuu[$scope.koeFilter.tunniste] &&
+            actual.osallistuu[$scope.koeFilter.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
             show = true;
         }
 
-        if (show && $scope.osallistuminenFilter !== "") {
+        if (show && $scope.osallistuminenFilter) {
             if ($scope.koeFilter === null) {
-
-                if (actual.filterData) {
-                    var tempShow = false;
-                    PistesyottoModel.avaimet.forEach(function (avain) {
-
-                        if (actual.osallistuu[avain.tunniste] === 'OSALLISTUU' && actual.filterData[avain.tunniste + '-OSALLISTUMINEN'] === $scope.osallistuminenFilter) {
-                            tempShow = true;
-                        }
-
-                    });
-                    show = tempShow;
-                }
+                show = false;
+                PistesyottoModel.avaimet.forEach(function (avain) {
+                    if (actual.osallistuu[avain.tunniste] &&
+                        actual.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU" &&
+                        actual.filterData[avain.tunniste + "-OSALLISTUMINEN"] === $scope.osallistuminenFilter) {
+                        show = true;
+                    }
+                });
             } else if (actual.filterData &&
-                actual.filterData[$scope.koeFilter.tunniste + '-OSALLISTUMINEN'] !== $scope.osallistuminenFilter) {
+                actual.filterData[$scope.koeFilter.tunniste + "-OSALLISTUMINEN"] !== $scope.osallistuminenFilter) {
                 show = false;
             }
         }
 
         return show;
-
     };
     $scope.filteredResult = [];
     $scope.$watch('model.hakeneet', function () {
