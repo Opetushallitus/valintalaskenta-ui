@@ -214,14 +214,16 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
         };
 
         this.tallennaPisteet = function () {
-            return KoostettuHakemusAdditionalDataForHakemus.put(
-                {},
-                {
-                    oid: model.hakemus.oid,
-                    personOid: model.hakemus.personOid,
-                    additionalData: model.hakutoiveet[0].additionalData
-                }
-            ).$promise;
+            return $q.all(model.hakutoiveet.map(function(h) {
+                return KoostettuHakemusAdditionalDataForHakemus.put(
+                    {},
+                    {
+                        oid: model.hakemus.oid,
+                        personOid: model.hakemus.personOid,
+                        additionalData: h.additionalData
+                    }
+                ).$promise;
+            })).$promise;
         };
     }();
 
