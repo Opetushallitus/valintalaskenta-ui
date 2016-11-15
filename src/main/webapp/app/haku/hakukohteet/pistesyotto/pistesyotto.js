@@ -71,65 +71,31 @@ app.factory('PistesyottoModel', function (
 
                 // Haetaan additionalData kaikkille niille hakemuksille jotka ovat hakeneet hakukohteelle
                 // tai joille löytyy valintakoetulos
-                    KoostettuHakemusAdditionalDataByOids.post({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, angular.toJson(hakemusOids), function (haetut) {
-
-                    model.hakeneet = haetut;
-
-                    HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}, function (result) {
-                        model.avaimet = result;
-
-                        HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet)
-
-                        if (model.hakeneet) {
-                            model.hakeneet.forEach(function (hakija) {
-                                hakija.filterData = {};
-                                hakija.osallistuu = {};
-
-                                if (!hakija.additionalData) {
-                                    hakija.additionalData = {};
+                    $q.all([
+                        HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}).$promise,
+                        KoostettuHakemusAdditionalDataByOids.post(
+                            {hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, angular.toJson(hakemusOids)).$promise
+                    ]).then(function(results) {
+                        model.avaimet = results[0];
+                        HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
+                        model.hakeneet = results[1].map(function(pistetieto) {
+                            var h = {
+                                filterData: {},
+                                additionalData: pistetieto.additionalData,
+                                osallistuu: (pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid] || {})
+                            };
+                            model.avaimet.forEach(function(avain) {
+                                if (h.osallistuu[avain.tunniste] &&
+                                    h.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
+                                    h.filterData[avain.tunniste] = h.additionalData[avain.tunniste];
+                                    h.filterData[avain.osallistuminenTunniste] = h.additionalData[avain.osallistuminenTunniste];
                                 }
-
-                                model.avaimet.forEach(function (avain) {
-
-                                    hakija.osallistuu[avain.tunniste] = false;
-
-                                    if (tulokset[hakija.oid] &&
-                                        tulokset[hakija.oid][hakukohdeOid] &&
-                                        tulokset[hakija.oid][hakukohdeOid][avain.tunniste]
-
-                                        ) {
-                                        hakija.osallistuu[avain.tunniste] = tulokset[hakija.oid][hakukohdeOid][avain.tunniste];
-                                    }
-
-                                    if (!hakija.additionalData[avain.tunniste]) {
-                                        hakija.additionalData[avain.tunniste] = "";
-                                    }
-
-                                    if(avain.vaatiiOsallistumisen == false  && !hakija.additionalData[avain.osallistuminenTunniste]) {
-                                        hakija.additionalData[avain.osallistuminenTunniste] = "EI_VAADITA";
-                                    }
-
-                                    if (!hakija.additionalData[avain.osallistuminenTunniste]) {
-                                        hakija.additionalData[avain.osallistuminenTunniste] = "MERKITSEMATTA";
-                                    }
-
-                                    if(avain.syotettavissaKaikille == true) {
-                                        hakija.osallistuu[avain.tunniste] = 'OSALLISTUU';
-                                    }
-
-                                    if (hakija.osallistuu[avain.tunniste] === 'OSALLISTUU') {
-
-                                        hakija.filterData[avain.tunniste] = hakija.additionalData[avain.tunniste];
-                                        hakija.filterData[avain.osallistuminenTunniste] = hakija.additionalData[avain.osallistuminenTunniste];
-                                    }
-                                });
                             });
-                        }
+                            return h;
+                        });
+                    }, function(error) {
+                        model.errors.push(error);
                     });
-                }, function (error) {
-                    model.errors.push(error);
-                });
-
             });
 
             }, function (error) {
