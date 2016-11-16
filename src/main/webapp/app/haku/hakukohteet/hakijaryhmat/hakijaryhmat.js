@@ -42,6 +42,15 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
             else if(hakemusSijoittelussa.hyvaksyttyHakijaryhmasta == false) return false;
             return undefined;
         };
+        var getKiintio = function(sijoittelunTulos, hakijaryhmaOid) {
+            if(hakijaryhmaOid != null && sijoittelunTulos != null && sijoittelunTulos.hakijaryhmat != null) {
+                var hakijaryhma = _.findWhere(sijoittelunTulos.hakijaryhmat, { oid: hakijaryhmaOid });
+                if(hakijaryhma != null && hakijaryhma.kiintio != null) {
+                    return hakijaryhma.kiintio;
+                }
+            }
+            return '';
+        }
         return $q.all({
             hakijaryhmat: HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}).$promise,
             sijoittelunTulos: LatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
@@ -72,7 +81,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                 });
                 return {
                     nimi: hakijaryhma.nimi + (_.has(valintatapajonot, hakijaryhma.valintatapajonoOid) ? ', ' + valintatapajonot[hakijaryhma.valintatapajonoOid].nimi : ''),
-                    kiintio: hakijaryhma.kiintio,
+                    kiintio: getKiintio(o.sijoittelunTulos, hakijaryhma.hakijaryhmaOid),
                     tableParams: new ngTableParams({
                         page: 1,
                         count: 50,
