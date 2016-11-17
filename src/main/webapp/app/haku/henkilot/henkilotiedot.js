@@ -160,6 +160,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                 model.naytaPistesyotto = true;
                             }
                         });
+                    }, function(error) {
+                        errors.push(error);
                     });
                 });
                 ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}, function (valintalaskenta) {
