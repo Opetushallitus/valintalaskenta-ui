@@ -172,7 +172,7 @@
                         <td>{{tuloskirjeet.hyvaksymiskirje.fi.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.fi.readyForPublish" ng-click="julkaiseTuloskirjeet('fi', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
                         <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('fi', 'hyvaksymiskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'hyvaksymiskirje', tuloskirjeet.hyvaksymiskirje.fi.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -190,7 +190,7 @@
                         <td>{{tuloskirjeet.hyvaksymiskirje.sv.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.sv.readyForPublish" ng-click="julkaiseTuloskirjeet('sv', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
                         <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('sv', 'hyvaksymiskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'hyvaksymiskirje', tuloskirjeet.hyvaksymiskirje.sv.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -208,7 +208,7 @@
                         <td>{{tuloskirjeet.hyvaksymiskirje.en.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.en.readyForPublish" ng-click="julkaiseTuloskirjeet('en', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
                         <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('en', 'hyvaksymiskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'hyvaksymiskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'hyvaksymiskirje', tuloskirjeet.hyvaksymiskirje.en.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -227,7 +227,7 @@
                         <td>{{tuloskirjeet.jalkiohjauskirje.fi.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.fi.readyForPublish" ng-click="julkaiseTuloskirjeet('fi', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
                         <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('fi', 'jalkiohjauskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'jalkiohjauskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'jalkiohjauskirje', tuloskirjeet.jalkiohjauskirje.fi.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -246,7 +246,7 @@
                         <td>{{tuloskirjeet.jalkiohjauskirje.sv.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.sv.readyForPublish" ng-click="julkaiseTuloskirjeet('sv', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
                         <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('sv', 'jalkiohjauskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'jalkiohjauskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'jalkiohjauskirje', tuloskirjeet.jalkiohjauskirje.sv.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -265,7 +265,7 @@
                         <td>{{tuloskirjeet.jalkiohjauskirje.en.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForPublish" ng-click="julkaiseTuloskirjeet('en', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
                         <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('en', 'jalkiohjauskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'jalkiohjauskirje')" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'jalkiohjauskirje', tuloskirjeet.jalkiohjauskirje.en.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
                     </tr>
                     </tbody>
                 </table>

@@ -509,10 +509,11 @@ angular.module('valintalaskenta').
             IlmoitusTila.INFO, ok, function() {});
     };
 
-    $scope.lahetaEPosti = function(asiointikieli, tyyppi) {
+    $scope.lahetaEPosti = function(asiointikieli, tyyppi, letterId) {
         var ok = function() {
             var postParams = {
                 hakuOid: $routeParams.hakuOid,
+                letterId: letterId,
                 asiointikieli: asiointikieli,
                 kirjeenTyyppi: tyyppi
             };
