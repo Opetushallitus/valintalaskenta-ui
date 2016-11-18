@@ -21,6 +21,6 @@ public class FrontPropertiesResource {
     @RequestMapping(value="/frontProperties.js", method=RequestMethod.GET, produces="application/javascript;charset=UTF-8")
     @ResponseBody
     public String frontProperties() {
-        return "window.urls.addOverride(" + urlConfiguration.frontPropertiesToJson() + ");";
+        return "window.urls.addOverrides(" + urlConfiguration.frontPropertiesToJson() + ");";
     }
 }
