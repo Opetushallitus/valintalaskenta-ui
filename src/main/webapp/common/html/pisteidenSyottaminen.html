@@ -55,7 +55,10 @@
                         <span ng-if="hakija.additionalData[avain.tunniste] === 'false'">
                             {{ t('hakukohteetpistesyotto.hylatty_toisessa_hakutoiveessa') || 'Hylätty toisessa hakutoiveessa' }}
                         </span>
-                        <span ng-if="!hakija.additionalData[avain.tunniste]">
+                        <span ng-if="!hakija.additionalData[avain.tunniste] && hakija.additionalData[avain.osallistuminenTunniste] === 'EI_OSALLISTUNUT'">
+                            {{ t('hakukohteetpistesyotto.ei_osallistunut_toisessa_hakutoiveessa') || 'Ei osallistunut toisessa hakutoiveessa' }}
+                        </span>
+                        <span ng-if="!hakija.additionalData[avain.tunniste] && hakija.additionalData[avain.osallistuminenTunniste] === 'MERKITSEMATTA'">
                             {{ t('hakukohteetpistesyotto.merkitsematta_toisessa_hakutoiveessa') || 'Merkitsemättä toisessa hakutoiveessa' }}
                         </span>
                     </div>
