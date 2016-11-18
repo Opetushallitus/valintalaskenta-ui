@@ -81,7 +81,13 @@ app.factory('PistesyottoModel', function (
                         model.hakeneet = results[1].map(function(pistetieto) {
                             var h = pistetieto.applicationAdditionalDataDTO;
                             h.filterData = {};
-                            h.osallistuu = pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot || {};
+                            if (pistetieto.hakukohteidenOsallistumistiedot &&
+                                pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid] &&
+                                pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot) {
+                                h.osallistuu = pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot;
+                            } else {
+                                h.osallistuu = {};
+                            }
                             model.avaimet.forEach(function(avain) {
                                 if (h.osallistuu[avain.tunniste] &&
                                     h.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU") {

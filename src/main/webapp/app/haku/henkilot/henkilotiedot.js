@@ -150,7 +150,13 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     ]).then(function (results) {
                         hakutoive.avaimet = results[1];
                         HakukohdeAvainTyyppiService.createAvainTyyppiValues(hakutoive.avaimet, []);
-                        hakutoive.osallistuu = results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid].valintakokeidenOsallistumistiedot || {};
+                        if (results[0][0].hakukohteidenOsallistumistiedot &&
+                            results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid] &&
+                            results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid].valintakokeidenOsallistumistiedot) {
+                            hakutoive.osallistuu = results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid].valintakokeidenOsallistumistiedot;
+                        } else {
+                            hakutoive.osallistuu = {};
+                        }
                         hakutoive.additionalData = results[0][0].applicationAdditionalDataDTO.additionalData;
                         hakutoive.naytaPistesyotto = false;
                         hakutoive.avaimet.forEach(function (a) {
