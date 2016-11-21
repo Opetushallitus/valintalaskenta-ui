@@ -66,7 +66,7 @@
                         <span>{{ t('hakukohteetpistesyotto.hyvaksytty_toisella_hakemuksella') || 'Hyväksytty toisella hakemuksella' }}</span>
                     </div>
                     <div ng-switch-default>
-                        <div ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
+                        <div class="inline-block" ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
                             <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                     ng-model="hakija.additionalData[avain.tunniste]"
                                     ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)"
@@ -76,7 +76,7 @@
                                 <option value="false">{{ t('hakukohteetpistesyotto.ei') || 'Ei' }}</option>
                             </select>
                         </div>
-                        <div ng-if="(avain.tunniste.indexOf('kielikoe') > -1)">
+                        <div class="inline-block" ng-if="(avain.tunniste.indexOf('kielikoe') > -1)">
                             <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                     ng-model="hakija.additionalData[avain.tunniste]"
                                     ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)"
