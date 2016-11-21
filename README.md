@@ -17,3 +17,9 @@ Testing sijoittelu with VTS fixtures
 * Run JettyLauncher with flags -Dvalintatulos.profile=it -DmongoPort=10000
 
 * open page http://localhost:9000/sijoittelu-service/swagger
+
+How to upgrade javascripts
+==========================
+
+    bower update
+    gulp scripts
