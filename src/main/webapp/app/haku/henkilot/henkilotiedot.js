@@ -231,7 +231,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         additionalData: h.additionalData
                     }
                 ).$promise;
-            })).$promise;
+            }));
         };
     }();
 
@@ -331,8 +331,7 @@ angular.module('valintalaskenta').
     };
 
     $scope.tallennaPisteet = function () {
-        var promises = $scope.model.tallennaPisteet();
-        $q.all(promises).then(function () {
+        $scope.model.tallennaPisteet().then(function () {
             Ilmoitus.avaa("Tallennus onnistui", "Pisteet tallennettu onnistuneesti.");
         }, function () {
             Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
