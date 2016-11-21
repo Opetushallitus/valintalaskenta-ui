@@ -37,7 +37,7 @@ function valintakokeetFixtures(valintakokeet) {
 
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|HAKUKOHDEOID)\/valintaryhma/).respond(haku);
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/avaimet\/HAKUKOHDEOID/).respond([{
-            "tunniste":"SYOTETTAVA_ARVO",
+            "tunniste":"kielikoe_fi",
             "osallistuminenTunniste":"kielikoe_fi-OSALLISTUMINEN",
             "lahde":"SYOTETTAVA_ARVO",
             "vaatiiOsallistumisen":true,
