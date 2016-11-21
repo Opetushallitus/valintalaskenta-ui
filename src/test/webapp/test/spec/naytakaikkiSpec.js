@@ -9,6 +9,7 @@ describe('Näytä kaikki', function () {
 
     beforeEach(function (done) {
         addTestHook(hakuAppKaksiHenkiloaFixtures)();
+        addTestHook(koostettuPistetietoKaksiHenkiloaFixtures)();
         addTestHook(httpFixtures().hakukohteenAvaimet)();
         addTestHook(organisaatioFixtures)();
         addTestHook(commonFixtures())();

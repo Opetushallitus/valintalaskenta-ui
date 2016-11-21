@@ -18,7 +18,7 @@ describe('Pistesyöttö', function() {
         addTestHook(ohjausparametritFixtures())();
         addTestHook(dokumenttipalveluFixtures)();
         addTestHook(organisaatioFixtures)();
-        addTestHook(hakuAppPisteFixtures(55))();
+        addTestHook(koostettuPistetietoGeneroitava(55))();
         addTestHook(valintakokeetFixtures([
             {
                 valintakoeOid: VALINTAKOE1
