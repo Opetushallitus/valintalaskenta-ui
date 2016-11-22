@@ -193,12 +193,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             model.sijoittelu = sijoittelu;
         };
 
-        this.refreshIfNeeded = function (hakuOid, hakemusOid) {
-            if (model.hakemus.oid !== hakemusOid || model.valintalaskentaHakemus.hakuoid !== hakuOid) {
-                model.refresh(hakuOid, hakemusOid);
-            }
-        };
-
         this.vastaanottoTilaOptionsToShow = function(hakutoive) {
             var showSitovasti = false;
             if (hakutoive.hakutoiveenValintatapajonot) {
@@ -248,7 +242,6 @@ angular.module('valintalaskenta').
     $scope.model = HenkiloTiedotModel;
     $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.url = window.url;
-    HakuModel.refreshIfNeeded($routeParams.hakuOid);
     $scope.hakuModel = HakuModel;
     $scope.korkeakoulu = Korkeakoulu;
 
