@@ -325,6 +325,7 @@ angular.module('valintalaskenta').
 
     $scope.tallennaPisteet = function () {
         $scope.model.tallennaPisteet().then(function () {
+            $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
             Ilmoitus.avaa("Tallennus onnistui", "Pisteet tallennettu onnistuneesti.");
         }, function () {
             Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
