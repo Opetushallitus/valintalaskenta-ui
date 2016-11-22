@@ -29,5 +29,6 @@ yhteisvalinnanHallintaSelectors = initSelectors({
     paivitaKirjeidenTilanne: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') button:first",
     valmiitTulosKirjeet: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') th:contains('Valmiit')",
     hyvaksymisKirjeetFiLinkki: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') table:first a:first",
-    ePostiFiLinkki: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') table:first a:nth(1)"
+    ePostiFiLinkki: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') table:first a:nth(1)",
+    groupEmailFiLinkki: "div.panel:contains('Tuloskirjeiden muodostuksen tilanne') table:first a:nth(2)"
 })

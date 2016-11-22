@@ -45,7 +45,10 @@ describe('Yhteisvalinnan hallinta', function() {
             assertText(yhteisvalinnanHallintaSelectors.hyvaksymisKirjeetFiLinkki, "264")
         })
         it('sisältää linkin sähköpostin esikatseluun', function () {
-          assertText(yhteisvalinnanHallintaSelectors.ePostiFiLinkki, "Esikatsele ePosti")
+          assertText(yhteisvalinnanHallintaSelectors.ePostiFiLinkki, "Esikatsele")
+        })
+        it('sisältää linkin sähköpostin lähetysraporttiin', function () {
+            assertText(yhteisvalinnanHallintaSelectors.groupEmailFiLinkki, "1245")
         })
     })
 });

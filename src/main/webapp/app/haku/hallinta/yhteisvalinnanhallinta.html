@@ -151,7 +151,7 @@
     <br>
     <hr>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">Tuloskirjeiden muodostuksen tilanne</div>
@@ -160,8 +160,8 @@
                 </div>
                 <table class="table" ng-if="tuloskirjeet">
                     <thead>
-                    <tr><th colspan="4">Hyväksymiskirjeet suomeksi</th></tr>
-                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th></th></tr>
+                    <tr><th colspan="6">Hyväksymiskirjeet suomeksi</th></tr>
+                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th>ePosti</th><th>Lähetys</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -171,15 +171,18 @@
                         <td>{{tuloskirjeet.hyvaksymiskirje.fi.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.hyvaksymiskirje.fi.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.fi.readyForPublish" ng-click="julkaiseTuloskirjeet('fi', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
-                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('fi', 'hyvaksymiskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'hyvaksymiskirje', tuloskirjeet.hyvaksymiskirje.fi.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('fi', 'hyvaksymiskirje')}}">Esikatsele</a></td>
+                        <td>
+                            <a ng-if="tuloskirjeet.hyvaksymiskirje.fi.groupEmailId" target="_blank" ng-href="{{groupEmailUrl(tuloskirjeet.hyvaksymiskirje.fi.groupEmailId)}}">{{tuloskirjeet.hyvaksymiskirje.fi.groupEmailId}}</a>
+                            <button ng-if="!tuloskirjeet.hyvaksymiskirje.fi.groupEmailId" ng-disabled="!tuloskirjeet.hyvaksymiskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'hyvaksymiskirje', tuloskirjeet.hyvaksymiskirje.fi.letterBatchId)" class="btn btn-default">Lähetä ePosti</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
                 <table class="table" ng-if="tuloskirjeet">
                     <thead>
-                    <tr><th colspan="4">Hyväksymiskirjeet ruotsiksi</th></tr>
-                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th></th></tr>
+                    <tr><th colspan="6">Hyväksymiskirjeet ruotsiksi</th></tr>
+                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th>ePosti</th><th>Lähetys</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -189,15 +192,18 @@
                         <td>{{tuloskirjeet.hyvaksymiskirje.sv.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.hyvaksymiskirje.sv.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.sv.readyForPublish" ng-click="julkaiseTuloskirjeet('sv', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
-                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('sv', 'hyvaksymiskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'hyvaksymiskirje', tuloskirjeet.hyvaksymiskirje.sv.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('sv', 'hyvaksymiskirje')}}">Esikatsele</a></td>
+                        <td>
+                            <a ng-if="tuloskirjeet.hyvaksymiskirje.sv.groupEmailId" target="_blank" ng-href="{{groupEmailUrl(tuloskirjeet.hyvaksymiskirje.sv.groupEmailId)}}">{{tuloskirjeet.hyvaksymiskirje.sv.groupEmailId}}</a>
+                            <button ng-if="!tuloskirjeet.hyvaksymiskirje.sv.groupEmailId" ng-disabled="!tuloskirjeet.hyvaksymiskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'hyvaksymiskirje', tuloskirjeet.hyvaksymiskirje.sv.letterBatchId)" class="btn btn-default">Lähetä ePosti</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
                 <table class="table" ng-if="tuloskirjeet">
                     <thead>
-                    <tr><th colspan="4">Hyväksymiskirjeet englanniksi</th></tr>
-                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th></th></tr>
+                    <tr><th colspan="6">Hyväksymiskirjeet englanniksi</th></tr>
+                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th>ePosti</th><th>Lähetys</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -207,16 +213,19 @@
                         <td>{{tuloskirjeet.hyvaksymiskirje.en.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.hyvaksymiskirje.en.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.en.readyForPublish" ng-click="julkaiseTuloskirjeet('en', 'hyvaksymiskirje')" class="btn btn-default">Julkaise</button></td>
-                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('en', 'hyvaksymiskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.hyvaksymiskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'hyvaksymiskirje', tuloskirjeet.hyvaksymiskirje.en.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('en', 'hyvaksymiskirje')}}">Esikatsele</a></td>
+                        <td>
+                            <a ng-if="tuloskirjeet.hyvaksymiskirje.en.groupEmailId" target="_blank" ng-href="{{groupEmailUrl(tuloskirjeet.hyvaksymiskirje.en.groupEmailId)}}">{{tuloskirjeet.hyvaksymiskirje.en.groupEmailId}}</a>
+                            <button ng-if="!tuloskirjeet.hyvaksymiskirje.en.groupEmailId" ng-disabled="!tuloskirjeet.hyvaksymiskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'hyvaksymiskirje', tuloskirjeet.hyvaksymiskirje.en.letterBatchId)" class="btn btn-default">Lähetä ePosti</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
                 <table class="table" ng-if="tuloskirjeet">
                     <thead>
-                    <tr ng-if="iskorkeakoulu"><th colspan="4">Ei-hyväksyttyjen kirjeet suomeksi</th></tr>
-                    <tr ng-if="!iskorkeakoulu"><th colspan="4">Jälkiohjauskirjeet suomeksi</th></tr>
-                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th></th></tr>
+                    <tr ng-if="iskorkeakoulu"><th colspan="6">Ei-hyväksyttyjen kirjeet suomeksi</th></tr>
+                    <tr ng-if="!iskorkeakoulu"><th colspan="6">Jälkiohjauskirjeet suomeksi</th></tr>
+                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th>ePosti</th><th>Lähetys</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -226,16 +235,19 @@
                         <td>{{tuloskirjeet.jalkiohjauskirje.fi.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.fi.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.fi.readyForPublish" ng-click="julkaiseTuloskirjeet('fi', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
-                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('fi', 'jalkiohjauskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'jalkiohjauskirje', tuloskirjeet.jalkiohjauskirje.fi.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('fi', 'jalkiohjauskirje')}}">Esikatsele</a></td>
+                        <td>
+                            <a ng-if="tuloskirjeet.jalkiohjauskirje.fi.groupEmailId" target="_blank" ng-href="{{groupEmailUrl(tuloskirjeet.jalkiohjauskirje.fi.groupEmailId)}}">{{tuloskirjeet.jalkiohjauskirje.fi.groupEmailId}}</a>
+                            <button ng-if="!tuloskirjeet.jalkiohjauskirje.fi.groupEmailId" ng-disabled="!tuloskirjeet.jalkiohjauskirje.fi.readyForEPosti" ng-click="lahetaEPosti('fi', 'jalkiohjauskirje', tuloskirjeet.jalkiohjauskirje.fi.letterBatchId)" class="btn btn-default">Lähetä ePosti</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
                 <table class="table" ng-if="tuloskirjeet">
                     <thead>
-                    <tr ng-if="iskorkeakoulu"><th colspan="4">Ei-hyväksyttyjen kirjeet ruotsiksi</th></tr>
-                    <tr ng-if="!iskorkeakoulu"><th colspan="4">Jälkiohjauskirjeet ruotsiksi</th></tr>
-                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th></th></tr>
+                    <tr ng-if="iskorkeakoulu"><th colspan="6">Ei-hyväksyttyjen kirjeet ruotsiksi</th></tr>
+                    <tr ng-if="!iskorkeakoulu"><th colspan="6">Jälkiohjauskirjeet ruotsiksi</th></tr>
+                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th>ePosti</th><th>Lähetys</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -245,16 +257,19 @@
                         <td>{{tuloskirjeet.jalkiohjauskirje.sv.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.sv.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.sv.readyForPublish" ng-click="julkaiseTuloskirjeet('sv', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
-                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('sv', 'jalkiohjauskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'jalkiohjauskirje', tuloskirjeet.jalkiohjauskirje.sv.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('sv', 'jalkiohjauskirje')}}">Esikatsele</a></td>
+                        <td>
+                            <a ng-if="tuloskirjeet.jalkiohjauskirje.sv.groupEmailId" target="_blank" ng-href="{{groupEmailUrl(tuloskirjeet.jalkiohjauskirje.sv.groupEmailId)}}">{{tuloskirjeet.jalkiohjauskirje.sv.groupEmailId}}</a>
+                            <button ng-if="!tuloskirjeet.jalkiohjauskirje.sv.groupEmailId" ng-disabled="!tuloskirjeet.jalkiohjauskirje.sv.readyForEPosti" ng-click="lahetaEPosti('sv', 'jalkiohjauskirje', tuloskirjeet.jalkiohjauskirje.sv.letterBatchId)" class="btn btn-default">Lähetä ePosti</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
                 <table class="table" ng-if="tuloskirjeet">
                     <thead>
-                    <tr ng-if="iskorkeakoulu"><th colspan="4">Ei-hyväksyttyjen kirjeet englanniksi</th></tr>
-                    <tr ng-if="!iskorkeakoulu"><th colspan="4">Jälkiohjauskirjeet englanniksi</th></tr>
-                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th></th></tr>
+                    <tr ng-if="iskorkeakoulu"><th colspan="6">Ei-hyväksyttyjen kirjeet englanniksi</th></tr>
+                    <tr ng-if="!iskorkeakoulu"><th colspan="6">Jälkiohjauskirjeet englanniksi</th></tr>
+                    <tr><th>Lähetyksen tunniste</th><th>Virheellisiä</th><th>Kesken</th><th>Valmiit</th><th>Julkaistu</th><th></th><th>ePosti</th><th>Lähetys</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -264,8 +279,11 @@
                         <td>{{tuloskirjeet.jalkiohjauskirje.en.letterReadyCount}}</td>
                         <td>{{tuloskirjeet.jalkiohjauskirje.en.letterPublishedCount}}</td>
                         <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForPublish" ng-click="julkaiseTuloskirjeet('en', 'jalkiohjauskirje')" class="btn btn-default">Julkaise</button></td>
-                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('en', 'jalkiohjauskirje')}}">Esikatsele ePosti</a></td>
-                        <td><button ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'jalkiohjauskirje', tuloskirjeet.jalkiohjauskirje.en.letterBatchId)" class="btn btn-default">Lähetä ePosti</button></td>
+                        <td><a target="_blank" ng-href="{{esiKatseluEPostiUrl('en', 'jalkiohjauskirje')}}">Esikatsele</a></td>
+                        <td>
+                            <a ng-if="tuloskirjeet.jalkiohjauskirje.en.groupEmailId" target="_blank" ng-href="{{groupEmailUrl(tuloskirjeet.jalkiohjauskirje.en.groupEmailId)}}">{{tuloskirjeet.jalkiohjauskirje.en.groupEmailId}}</a>
+                            <button ng-if="!tuloskirjeet.jalkiohjauskirje.en.groupEmailId" ng-disabled="!tuloskirjeet.jalkiohjauskirje.en.readyForEPosti" ng-click="lahetaEPosti('en', 'jalkiohjauskirje', tuloskirjeet.jalkiohjauskirje.en.letterBatchId)" class="btn btn-default">Lähetä ePosti</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
