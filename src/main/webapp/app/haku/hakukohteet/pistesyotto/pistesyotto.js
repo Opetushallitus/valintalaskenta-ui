@@ -22,7 +22,6 @@ app.factory('PistesyottoModel', function (
         this.laskentaonly = true;
 
         this.refresh = function (hakukohdeOid, hakuOid) {
-
             model.hakeneet.length = 0;
             model.avaimet.length = 0;
             model.errors.length = 0;
@@ -30,81 +29,34 @@ app.factory('PistesyottoModel', function (
             model.hakuOid = hakuOid;
             model.tunnisteet.length = 0;
 
-            var hakemusOids = [];
-
-            //Haetaan hakukohteelle hakeneet ja lisätään niiden oidit arrayhin jolla haetaan additionalData
-            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}, function (result) {
-                result.forEach( function(hakemus) {
-                    hakemusOids.push(hakemus.oid);
-                });
-
-
-                Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}, function (tulos) {
-                var tulokset = {};
-
-                // Haetaan osallistuuko hakija kokeeseen
-                tulos.forEach(function (vkt) {
-                    var hakutoiveet = {};
-                    vkt.hakutoiveet.forEach(function (ht) {
-                        var valintakokeet = {};
-
-                        ht.valinnanVaiheet.forEach(function (vv) {
-
-                            vv.valintakokeet.forEach(function (vk) {
-                                valintakokeet[vk.valintakoeTunniste] = vk.osallistuminenTulos.osallistuminen;
-                            });
-                        });
-
-                        hakutoiveet[ht.hakukohdeOid] = valintakokeet;
-                    });
-
-                    tulokset[vkt.hakemusOid] = hakutoiveet;
-
-                    // Jos hakija ei ole hakenut hakukohteelle mutta valintakoetulos kuitenkin löytyy
-                    // haetaan myös tälle hakemukselle additionalData
-                    if(hakemusOids.indexOf(vkt.hakemusOid) == -1) {
-                        hakemusOids.push(vkt.hakemusOid);
+            $q.all([
+                HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}).$promise,
+                KoostettuHakemusAdditionalDataByOids.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+            ]).then(function(results) {
+                model.avaimet = results[0];
+                HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
+                model.hakeneet = results[1].map(function(pistetieto) {
+                    var h = pistetieto.applicationAdditionalDataDTO;
+                    h.filterData = {};
+                    if (pistetieto.hakukohteidenOsallistumistiedot &&
+                        pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid] &&
+                        pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot) {
+                        h.osallistuu = pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot;
+                    } else {
+                        h.osallistuu = {};
                     }
-                }, function (error) {
-                    model.errors.push(error);
-                });
-
-                // Haetaan additionalData kaikkille niille hakemuksille jotka ovat hakeneet hakukohteelle
-                // tai joille löytyy valintakoetulos
-                    $q.all([
-                        HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}).$promise,
-                        KoostettuHakemusAdditionalDataByOids.post(
-                            {hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, angular.toJson(hakemusOids)).$promise
-                    ]).then(function(results) {
-                        model.avaimet = results[0];
-                        HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
-                        model.hakeneet = results[1].map(function(pistetieto) {
-                            var h = pistetieto.applicationAdditionalDataDTO;
-                            h.filterData = {};
-                            if (pistetieto.hakukohteidenOsallistumistiedot &&
-                                pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid] &&
-                                pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot) {
-                                h.osallistuu = pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot;
-                            } else {
-                                h.osallistuu = {};
-                            }
-                            model.avaimet.forEach(function(avain) {
-                                if (h.osallistuu[avain.tunniste] &&
-                                    h.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
-                                    h.filterData[avain.tunniste] = h.additionalData[avain.tunniste];
-                                    h.filterData[avain.osallistuminenTunniste] = h.additionalData[avain.osallistuminenTunniste];
-                                }
-                            });
-                            return h;
-                        });
-                    }, function(error) {
-                        model.errors.push(error);
+                    model.avaimet.forEach(function(avain) {
+                        if (h.osallistuu[avain.tunniste] &&
+                            h.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
+                            h.filterData[avain.tunniste] = h.additionalData[avain.tunniste];
+                            h.filterData[avain.osallistuminenTunniste] = h.additionalData[avain.osallistuminenTunniste];
+                        }
                     });
+                    return h;
+                });
+            }, function(error) {
+                model.errors.push(error);
             });
-
-            }, function (error) {
-                            model.errors.push(error);
-                        });
         };
 
         this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {

@@ -485,7 +485,7 @@ app.factory('KoostettuHakemusAdditionalDataByOids', function($resource) {
         hakuOid: "@hakuOid",
         hakukohdeOid: "@hakukohdeOid"
     }, {
-        post: {method: "POST", isArray: true}
+        get: {method: "GET", isArray: true}
     });
 });
 app.factory('KoostettuHakemusAdditionalData', function($resource) {

@@ -17,21 +17,14 @@ app.factory('PistesyottoNaytaKaikkiModel', function ($q, HakukohdeAvaimet, Hakem
 
             model.avaimet = HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid});
 
-            HakemusAdditionalData.get({
-                hakuOid: hakuOid,
-                hakukohdeOid: hakukohdeOid
-            }).$promise.then(function (allAdditionalData) {
-                return KoostettuHakemusAdditionalDataByOids.post({
-                    hakuOid: hakuOid,
-                    hakukohdeOid: hakukohdeOid
-                }, angular.toJson(_.map(allAdditionalData, 'oid'))).$promise
-            }).then(function (koostetutPistetiedot) {
-                model.hakeneet = koostetutPistetiedot.map(function (pistetieto) {
-                    return pistetieto.applicationAdditionalDataDTO;
+            KoostettuHakemusAdditionalDataByOids.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                .then(function (koostetutPistetiedot) {
+                    model.hakeneet = koostetutPistetiedot.map(function (pistetieto) {
+                        return pistetieto.applicationAdditionalDataDTO;
+                    });
+                }, function (error) {
+                    model.errors.push(error);
                 });
-            }, function (error) {
-                model.errors.push(error);
-            });
         };
 
         this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {

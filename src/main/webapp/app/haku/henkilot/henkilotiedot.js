@@ -144,20 +144,26 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
                 hakutoiveet.forEach(function (hakutoive) {
                     return $q.all([
-                        KoostettuHakemusAdditionalDataByOids.post(
-                            {hakuOid: hakuOid, hakukohdeOid: hakutoive.hakukohdeOid}, [hakemusOid]).$promise,
+                        KoostettuHakemusAdditionalDataByOids.get({hakuOid: hakuOid, hakukohdeOid: hakutoive.hakukohdeOid}).$promise,
                         HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}).$promise
                     ]).then(function (results) {
                         hakutoive.avaimet = results[1];
                         HakukohdeAvainTyyppiService.createAvainTyyppiValues(hakutoive.avaimet, []);
-                        if (results[0][0].hakukohteidenOsallistumistiedot &&
-                            results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid] &&
-                            results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid].valintakokeidenOsallistumistiedot) {
-                            hakutoive.osallistuu = results[0][0].hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid].valintakokeidenOsallistumistiedot;
+                        var pistetieto;
+                        for (var i = 0; i < results[0].length; i++) {
+                            if (hakemusOid === results[0][i].applicationAdditionalDataDTO.oid) {
+                                pistetieto = results[0][i];
+                                break;
+                            }
+                        }
+                        if (pistetieto.hakukohteidenOsallistumistiedot &&
+                            pistetieto.hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid] &&
+                            pistetieto.hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid].valintakokeidenOsallistumistiedot) {
+                            hakutoive.osallistuu = pistetieto.hakukohteidenOsallistumistiedot[hakutoive.hakukohdeOid].valintakokeidenOsallistumistiedot;
                         } else {
                             hakutoive.osallistuu = {};
                         }
-                        hakutoive.additionalData = results[0][0].applicationAdditionalDataDTO.additionalData;
+                        hakutoive.additionalData = pistetieto.applicationAdditionalDataDTO.additionalData;
                         hakutoive.naytaPistesyotto = false;
                         hakutoive.avaimet.forEach(function (a) {
                             if (hakutoive.osallistuu[a.tunniste] &&
