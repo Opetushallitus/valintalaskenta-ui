@@ -45,7 +45,7 @@ window.urls.addProperties({
     "valintalaskentakoostepalvelu.parametrit" : "/valintalaskentakoostepalvelu/resources/parametrit/$1",
     "valintalaskentakoostepalvelu.pistesyotto.koosta": "/valintalaskentakoostepalvelu/resources/pistesyotto/koostaPistetiedotHakemuksille/haku/$1/hakukohde/$2",
     "valintalaskentakoostepalvelu.pistesyotto.tallenna": "/valintalaskentakoostepalvelu/resources/pistesyotto/tallennaKoostetutPistetiedot/haku/$1/hakukohde/$2",
-    "valintalaskentakoostepalvelu.pistesyotto.hakemus": "/valintalaskentakoostepalvelu/resources/pistesyotto/koostetutPistetiedot/hakemus/{hakemusOid}",
+    "valintalaskentakoostepalvelu.pistesyotto.hakemus": "/valintalaskentakoostepalvelu/resources/pistesyotto/koostetutPistetiedot/hakemus/$1",
     "valintalaskentakoostepalvelu.pistesyotto.tuonti" : "/valintalaskentakoostepalvelu/resources/pistesyotto/tuonti",
     "valintalaskentakoostepalvelu.pistesyotto.vienti" : "/valintalaskentakoostepalvelu/resources/pistesyotto/vienti",
     "valintalaskentakoostepalvelu.proxy.erillishaku.haku.hakukohde" : "/valintalaskentakoostepalvelu/resources/proxy/erillishaku/haku/$1/hakukohde/$2",
