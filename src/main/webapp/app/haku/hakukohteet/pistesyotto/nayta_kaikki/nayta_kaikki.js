@@ -1,4 +1,4 @@
-app.factory('PistesyottoNaytaKaikkiModel', function ($q, HakukohdeAvaimet, HakemusAdditionalData, KoostettuHakemusAdditionalDataByOids, _) {
+app.factory('PistesyottoNaytaKaikkiModel', function ($q, HakukohdeAvaimet, KoostettuHakemusAdditionalData) {
     "use strict";
 
     var model;
@@ -17,7 +17,7 @@ app.factory('PistesyottoNaytaKaikkiModel', function ($q, HakukohdeAvaimet, Hakem
 
             model.avaimet = HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid});
 
-            KoostettuHakemusAdditionalDataByOids.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+            KoostettuHakemusAdditionalData.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
                 .then(function (koostetutPistetiedot) {
                     model.hakeneet = koostetutPistetiedot.map(function (pistetieto) {
                         return pistetieto.applicationAdditionalDataDTO;

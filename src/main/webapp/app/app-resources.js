@@ -480,19 +480,12 @@ app.factory('OsoitetarratHakemuksille', function($resource) {
         post:  {method:'POST', isArray:false}
     });
 });
-app.factory('KoostettuHakemusAdditionalDataByOids', function($resource) {
-    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.koosta", ":hakuOid", ":hakukohdeOid"), {
-        hakuOid: "@hakuOid",
-        hakukohdeOid: "@hakukohdeOid"
-    }, {
-        get: {method: "GET", isArray: true}
-    });
-});
 app.factory('KoostettuHakemusAdditionalData', function($resource) {
-    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.tallenna", ":hakuOid", ":hakukohdeOid"), {
+    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakukohde", ":hakuOid", ":hakukohdeOid"), {
         hakuOid: "@hakuOid",
         hakukohdeOid: "@hakukohdeOid"
     },{
+        get: {method: "GET", isArray: true},
         put: {method: "PUT", isArray: true}
     });
 });

@@ -3,7 +3,6 @@ app.factory('PistesyottoModel', function (
     HakukohdeHenkilotFull,
     HakukohdeAvaimet,
     KoostettuHakemusAdditionalData,
-    KoostettuHakemusAdditionalDataByOids,
     Valintakoetulokset,
     Ilmoitus,
     IlmoitusTila,
@@ -31,7 +30,7 @@ app.factory('PistesyottoModel', function (
 
             $q.all([
                 HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}).$promise,
-                KoostettuHakemusAdditionalDataByOids.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                KoostettuHakemusAdditionalData.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
             ]).then(function(results) {
                 model.avaimet = results[0];
                 HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
