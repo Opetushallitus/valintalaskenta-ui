@@ -497,7 +497,10 @@ app.factory('KoostettuHakemusAdditionalData', function($resource) {
     });
 });
 app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
-    return $resource(window.url("valintalaskentakoostepalvelu.pistesyotto.hakemus.tallenna"), {}, {
+    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", ":hakemusOid"), {
+      hakemusOid: "@hakemusOid",
+    }, {
+        get: {method: "GET", isArray: false},
         put: {method: "PUT", isArray: false}
     });
 });
