@@ -24,7 +24,7 @@ function parametritFixturesWithOverrides(overrides) {
 
 function koostettuPistetietoKaksiHenkiloaFixtures() {
   var httpBackend = testFrame().httpBackend;
-  httpBackend.when('POST', /.*\/valintalaskentakoostepalvelu\/resources\/pistesyotto\/koostetutPistetiedot\/haku\/h\/hakukohde\/h0/).respond([
+  httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/pistesyotto\/koostetutPistetiedot\/haku\/h\/hakukohde\/h0/).respond([
     {
       "applicationAdditionalDataDTO": {
         "oid": "1.2.246.562.11.00000000181",
@@ -126,7 +126,7 @@ function koostettuPistetietoGeneroitava(count) {
 
     return function() {
         var httpBackend = testFrame().httpBackend;
-        httpBackend.when('POST', /.*\/valintalaskentakoostepalvelu\/resources\/pistesyotto\/koostetutPistetiedot.*/).respond(hakuAppPisteFixtures);
+        httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/pistesyotto\/koostetutPistetiedot.*/).respond(hakuAppPisteFixtures);
     }
 }
 
