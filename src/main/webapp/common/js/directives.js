@@ -1039,7 +1039,8 @@ app.directive('pisteidenSyottaminen', function () {
       inputdisabled: '='
     },
     templateUrl: '../common/html/pisteidenSyottaminen.html',
-    controller: function ($scope, $modal) {
+    controller: function ($scope, $modal, LocalisationService) {
+        $scope.t = LocalisationService.tl;
         $scope.changeOsallistuminen = function (hakija, tunniste, value, vaatiiOsallistumisen) {
             if (value) {
                 hakija.additionalData[tunniste] = "OSALLISTUI";
