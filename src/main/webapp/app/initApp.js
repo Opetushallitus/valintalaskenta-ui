@@ -12,7 +12,8 @@
             window.url("valintalaskentakoostepalvelu.buildversion"),
             window.url("sijoittelu-service.buildversion"),
             window.url("viestintapalvelu.buildversion"),
-            window.url("haku-app.buildversion")
+            window.url("haku-app.buildversion"),
+            window.url("valinta-tulos-service.login")
         ];
         return $q.all(services.map(loadBuildversion));
     }

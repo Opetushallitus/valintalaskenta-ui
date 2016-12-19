@@ -91,3 +91,16 @@ app.factory('HakemustenVastaanottotilaHakijalle', function($resource) {
             post: {method: "POST", isArray: true }
         });
 });
+
+app.factory('ValinnanTulos', function($http, $httpProvider) {
+    var plainUrls = window.urls().noEncode();
+    $httpProvider.defaults.headers.patch({'Content-Type': 'application/json'});
+    return {
+        get: function(params, config) {
+            $http.get(plainUrls.url("valinta-tulos-service.valinnan-tulos", params["valintatapajonoOid"]), config || {});
+        },
+        patch: function(params, data, config) {
+            $http.patch(plainUrls.url("valinta-tulos-service.valinnan-tulos", params["valintatapajonoOid"]), data, config || {});
+        }
+    };
+});

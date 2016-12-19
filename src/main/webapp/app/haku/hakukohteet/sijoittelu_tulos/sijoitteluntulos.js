@@ -1,10 +1,10 @@
 angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
-        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
+        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter',
         function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, ValintaesityksenHyvaksyminen,
-                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
+                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
                                                IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
 
@@ -16,6 +16,7 @@ angular.module('valintalaskenta')
         this.latestSijoitteluajo = {};
         this.sijoitteluTulokset = {};
         this.errors = [];
+        this.valintatapajonoLastModified = {};
 
         this.hakemusErittelyt = []; //dataa perustietonäkymälle
         this.sijoitteluntulosHakijoittain = {};
@@ -83,6 +84,7 @@ angular.module('valintalaskenta')
             model.sijoitteluajoId = 0;
             model.myohastymistietoLadattu = false;
             model.eraantyneitaHakemuksia = false;
+            model.valintatapajonoLastModified = {};
 
             HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
                 model.haku = resultWrapper.result;
@@ -344,12 +346,19 @@ angular.module('valintalaskenta')
             LatestSijoitteluajoHakukohde.get({
                 hakukohdeOid: hakukohdeOid,
                 hakuOid: hakuOid
-            },
-              function (result) {
-                  sijoitteluajoDeferred.resolve(result);
-
+            }, function (result) {
+                // Result intentionally unused, used for integration testing
+                result.valintatapajonot.forEach(function(v) {
+                    ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
+                        var forBreakpoint = response;
+                        model.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
+                    }, function(error) {
+                        var forBreakpoint = error;
+                    });
+                });
+                sijoitteluajoDeferred.resolve(result);
             }, function (error) {
-                  sijoitteluajoDeferred.reject(error);
+                sijoitteluajoDeferred.reject(error);
             });
         };
 
@@ -453,6 +462,18 @@ angular.module('valintalaskenta')
 
             var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
             VastaanottoTila.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess, muokatutHakemukset), this.reportFailedSave(afterFailure, muokatutHakemukset));
+            // Used for integration testing
+            ValinnanTulos.patch({valintatapajonoOid: valintatapajonoOid}, _.map(muokatutHakemukset, function(h) {
+                return {
+                    hakemusOid: h.hakemusOid,
+                    vastaanottotila: h.muokattuVastaanottoTila,
+                    ilmoittautumistila: muokattuIlmoittautumisTila
+                };
+            }), {
+                headers: {
+                    'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]
+                }
+            });
         };
 
     }();

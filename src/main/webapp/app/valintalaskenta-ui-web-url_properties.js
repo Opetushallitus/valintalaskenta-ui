@@ -111,6 +111,9 @@ window.urls.addProperties({
     "valintalaskenta-laskenta-service.valintatapajono.jarjestyskriteeritulos" : "/valintalaskenta-laskenta-service/resources/valintatapajono/$1/jarjestyskriteeritulos",
     "valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi" : "/valintalaskenta-laskenta-service/resources/valintatapajono/$1/valmissijoiteltavaksi",
 
+    "valinta-tulos-service.login": "/valinta-tulos-service/auth/login",
+    "valinta-tulos-service.valinnan-tulos": "/valinta-tulos-service/auth/valinnan-tulos/$1",
+
     "organisaatio-service.organisaatio" : "/organisaatio-service/rest/organisaatio/$1",
     "organisaatio-service.organisaatio.hierarkia.hae" : "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae",
     "organisaatio-service.organisaatio.parentoids" : "/organisaatio-service/rest/organisaatio/$1/parentoids",
