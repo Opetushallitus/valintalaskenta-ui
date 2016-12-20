@@ -36,6 +36,7 @@
                                     for (var j = 0; j < hakija.preferenceEligibilities.length; j++) {
                                         if (hakija.preferenceEligibilities[j].aoId === hakukohdeOid) {
                                             hakija.hakukelpoisuus = hakija.preferenceEligibilities[j].status;
+                                            hakija.maksuvelvollisuus = hakija.preferenceEligibilities[j].maksuvelvollisuus;
                                         }
 
                                     }
