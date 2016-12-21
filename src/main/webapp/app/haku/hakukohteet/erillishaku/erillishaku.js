@@ -4,11 +4,11 @@ angular.module('valintalaskenta')
               'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
               'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService', 'ErillishakuVienti',
               'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
-              'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat',
+              'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull',
     function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
               ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-              VastaanottoUtil, NgTableParams, TallennaValinnat) {
+              VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull) {
       "use strict";
 
       $scope.muokatutHakemukset = {};
@@ -81,7 +81,11 @@ angular.module('valintalaskenta')
         {value: "POISSA", text_prop: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"},
         {value: "", default_text: ""}
       ];
-
+      $scope.maksuvelvollisuus = [
+        {value: "NOT_CHECKED", text_prop: "maksuvelvollisuus.not_checked", default_text:"Ei tarkistettu"},
+        {value: "NOT_REQUIRED", text_prop: "maksuvelvollisuus.not_required", default_text:"Ei maksuvelvollinen"},
+        {value: "REQUIRED", text_prop: "maksuvelvollisuus.required", default_text:"Maksuvelvollinen"}
+      ];
       $scope.valintaTuloksenTilaToHakemuksenTila = {
         "EHDOLLISESTI_VASTAANOTTANUT": "HYVAKSYTTY",
         "VASTAANOTTANUT_SITOVASTI": "HYVAKSYTTY",
@@ -167,7 +171,9 @@ angular.module('valintalaskenta')
       LocalisationService.getTranslationsForArray($scope.ilmoittautumistilat).then(function () {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
       });
-
+      LocalisationService.getTranslationsForArray($scope.maksuvelvollisuus).then(function () {
+        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+      });
       $scope.isVaaraVastaanottotila = function(tila) {
         return tila === 'VASTAANOTTANUT';
       };
@@ -258,7 +264,7 @@ angular.module('valintalaskenta')
         }
       };
 
-      var processErillishaku = function(erillishaku) {
+      var processErillishaku = function(erillishaku, oidToMaksuvelvollisuus) {
         var hakemukset = _.chain(erillishaku)
           .map(function (e) {
             return e.valintatapajonot;
@@ -287,25 +293,45 @@ angular.module('valintalaskenta')
           if (hakemus.valintatuloksentila === "" || !_.isString(hakemus.valintatuloksentila)) {
             hakemus.valintatuloksentila = 'KESKEN';
           }
-
+          var maksuvelvollisuus = oidToMaksuvelvollisuus[hakemus.hakemusOid];
+          if(maksuvelvollisuus) {
+            hakemus.maksuvelvollisuus = maksuvelvollisuus;
+          } else {
+            hakemus.maksuvelvollisuus = 'NOT_CHECKED';
+          }
           $scope.validateHakemuksenTilat(hakemus);
         });
 
         $scope.erillishaku = erillishaku;
       };
 
-      var getHakumodelValintatapaJonot = function(valinnanvaiheet) {
+      var getHakumodelValintatapaJonot = function(valinnanvaiheet, oidToMaksuvelvollisuus) {
         if (valinnanvaiheet) {
-          processErillishaku(valinnanvaiheet);
+          processErillishaku(valinnanvaiheet, oidToMaksuvelvollisuus);
         } else {
           ErillishakuProxy.hae({
             hakuOid: $routeParams.hakuOid,
             hakukohdeOid: $routeParams.hakukohdeOid
           }, function (erillishaku) {
-            processErillishaku(erillishaku)
+            processErillishaku(erillishaku, oidToMaksuvelvollisuus)
           });
         }
       };
+      var hakemuksetToMaksuvelvollisuus = function(hakemukset) {
+        var hakukohdeOid = $routeParams.hakukohdeOid;
+        var oidToMaksuvelvollisuus = _.reduce(_.map(hakemukset, function(hakemus) {
+          var eligibility = _.find(hakemus.preferenceEligibilities, {'aoId': hakukohdeOid});
+          var maksuvelvollisuus = 'NOT_CHECKED';
+          if(eligibility && eligibility.maksuvelvollisuus) {
+            maksuvelvollisuus = eligibility.maksuvelvollisuus;
+          }
+          return {'oid': hakemus.oid, 'maksuvelvollisuus': maksuvelvollisuus}
+        }), function(result, hakemus) {
+          result[hakemus.oid] = hakemus.maksuvelvollisuus;
+          return result;
+        }, {});
+        return oidToMaksuvelvollisuus;
+      }
 
       $scope.hakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
         $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOids', function () {
@@ -314,9 +340,12 @@ angular.module('valintalaskenta')
           });
         });
 
+        var hk = HakukohdeHenkilotFull.get({aoOid: $routeParams.hakukohdeOid, rows: 100000, asId: $routeParams.hakuOid})
+        var vv = $scope.hakukohdeModel.valinnanVaiheetPromise.promise
         // Do this here to ensure valinnanVaiheetPromise is defined
-        $scope.hakukohdeModel.valinnanVaiheetPromise.promise.then(function() {
-          getHakumodelValintatapaJonot($scope.hakukohdeModel.valinnanvaiheet);
+        $q.all([hk,vv]).then(function(resolved) {
+          var hakemukset = resolved[0];
+          getHakumodelValintatapaJonot($scope.hakukohdeModel.valinnanvaiheet, hakemuksetToMaksuvelvollisuus(hakemukset));
         });
       });
 
@@ -389,6 +418,7 @@ angular.module('valintalaskenta')
           personOid: hakemus.hakijaOid,
           hakemuksenTila: hakemus.hakemuksentila,
           ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
+          maksuvelvollisuus: hakemus.maksuvelvollisuus ? hakemus.maksuvelvollisuus : 'NOT_CHECKED',
           hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty ? hakemus.hyvaksymiskirjeLahetettyPvm : null,
           vastaanottoTila: hakemus.valintatuloksentila,
           ilmoittautumisTila: hakemus.ilmoittautumistila,
@@ -543,7 +573,7 @@ angular.module('valintalaskenta')
             headers: {'Content-Type': 'application/octet-stream'},
             data: e.target.result
           }).progress(function(evt) {
-            //console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+
           }).success(function(id, status, headers, config) {
             Latausikkuna.avaaKustomoitu(id, "Valintatapajonon tuonti", "", "../common/modaalinen/tuontiikkuna.html",
               function(dokumenttiId) {
@@ -584,7 +614,6 @@ angular.module('valintalaskenta')
             headers: {'Content-Type': 'application/octet-stream'},
             data: e.target.result
           }).progress(function(evt) {
-            //console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
           }).success(function(id, status, headers, config) {
             Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
               function(dokumenttiId) {

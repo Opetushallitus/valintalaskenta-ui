@@ -196,7 +196,21 @@
                                                     </ul>
                                                 </div>
                                             </td>
-
+                                            <td data-title="t('sijoitteluntulos.maksuvelvollisuus') || 'Maksuvelvollisuus'">
+                                                <div ng-switch="updateOrg">
+                                                    <select ng-switch-when="true"
+                                                            ng-model="tulos.maksuvelvollisuus"
+                                                            ng-options="opt.value as opt.text for opt in maksuvelvollisuus"
+                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
+                                                    </select>
+                                                    <select disabled="disabled"
+                                                            ng-switch-default
+                                                            ng-model="tulos.maksuvelvollisuus"
+                                                            ng-options="opt.value as opt.text for opt in maksuvelvollisuus"
+                                                            ng-change="addMuokattuHakemus(tulos, valintatapajono)">
+                                                    </select>
+                                                </div>
+                                            </td>
                                             <td data-title="t('sijoitteluntulos.toiminto') || 'Toiminto'">
                                                 <div ng-if="tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY'">
                                                     <a ng-click="luoHyvaksymiskirjeetPDF([tulos.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
