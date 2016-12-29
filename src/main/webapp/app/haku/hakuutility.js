@@ -15,4 +15,19 @@ angular.module('valintalaskenta')
         }
         return false;
       }
+
+      this.isYhteishaku = function(haku) {
+        if(haku && haku.hakutapaUri) {
+            return haku.hakutapaUri.indexOf('_01') !== -1;
+        }
+        return false;
+      }
+
+      this.isVarsinainenhaku = function(haku) {
+          if(haku && haku.hakutyyppiUri) {
+              return haku.hakutyyppiUri.indexOf('_01') !== -1;
+          }
+          return false;
+       }
+
     }]);

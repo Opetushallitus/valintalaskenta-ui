@@ -811,9 +811,14 @@ angular.module('valintalaskenta')
         return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     };
     $scope.showJalkiohjaus = function() {
-        return UserModel.isOphUser || !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
+        return UserModel.isOphUser ||
+            !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
+            !(HakuUtility.isYhteishaku(HakuModel.hakuOid) && HakuUtility.isVarsinainenhaku(HakuModel.hakuOid));
     };
     $scope.enableTulostus = function() {
+        console.log('Kohdejoukko: ' + HakuModel.hakuOid.kohdejoukkoUri);
+        console.log('Hakutyyppi: ' + HakuModel.hakuOid.hakutyyppiUri);
+        console.log('Hakutapa: ' + HakuModel.hakuOid.hakutapaUri);
         return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
                 UserModel.isOphUser ||
                 _.every($scope.model.sijoitteluTulokset.valintatapajonot, 'valintaesitysHyvaksytty');
