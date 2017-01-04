@@ -36,6 +36,12 @@
                                     for (var j = 0; j < hakija.preferenceEligibilities.length; j++) {
                                         if (hakija.preferenceEligibilities[j].aoId === hakukohdeOid) {
                                             hakija.hakukelpoisuus = hakija.preferenceEligibilities[j].status;
+                                            if(hakija.preferenceEligibilities[j].maksuvelvollisuus) {
+                                                hakija.maksuvelvollisuus = hakija.preferenceEligibilities[j].maksuvelvollisuus;
+                                            } else {
+                                                hakija.maksuvelvollisuus = 'NOT_CHECKED';
+                                            }
+
                                         }
 
                                     }
@@ -85,6 +91,11 @@ angular.module('valintalaskenta').
     $scope.tila = {
         ACTIVE: $scope.t('tila.active') || 'Aktiivinen',
         INCOMPLETE: $scope.t('tila.incomplete') || 'Puutteellinen'
+    };
+    $scope.maksuvelvollisuus = {
+        NOT_CHECKED: $scope.t('maksuvelvollisuus.not_checked') || 'Ei tarkistettu',
+        NOT_REQUIRED: $scope.t('maksuvelvollisuus.not_required') || 'Ei maksuvelvollinen',
+        REQUIRED: $scope.t('maksuvelvollisuus.required') || 'Maksuvelvollinen'
     };
 
     $scope.tableParams = new ngTableParams({
