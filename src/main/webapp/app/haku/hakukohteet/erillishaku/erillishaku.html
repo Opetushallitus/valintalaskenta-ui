@@ -196,6 +196,8 @@
                                                     </ul>
                                                 </div>
                                             </td>
+                                            <!-- TODO: Toteutetaan loppuun myöhemmin (OK-100). Toistaiseksi ei näytetä, koska tiedon päivittäminen ei vielä onnnistu tätä kautta -->
+                                            <!--
                                             <td data-title="t('sijoitteluntulos.maksuvelvollisuus') || 'Maksuvelvollisuus'">
                                                 <div ng-switch="updateOrg">
                                                     <select ng-switch-when="true"
@@ -211,6 +213,7 @@
                                                     </select>
                                                 </div>
                                             </td>
+                                            -->
                                             <td data-title="t('sijoitteluntulos.toiminto') || 'Toiminto'">
                                                 <div ng-if="tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY'">
                                                     <a ng-click="luoHyvaksymiskirjeetPDF([tulos.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
