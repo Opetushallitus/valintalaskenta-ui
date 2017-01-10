@@ -76,7 +76,7 @@ app.factory('PistesyottoModel', function (
                 hakeneet.forEach(function(hakija) {
                     // Filteröidään pois arvot, joita ei voi syöttää, koska haku-app mergaa
                     model.avaimet.forEach(function(avain) {
-                        if (hakija.osallistuu[avain.tunniste].osallistumistieto !== "OSALLISTUI") {
+                        if (!(hakija.osallistuu[avain.tunniste] && hakija.osallistuu[avain.tunniste].osallistumistieto === "OSALLISTUI")) {
                             delete hakija.additionalData[avain.tunniste];
                             delete hakija.additionalData[avain.osallistuminenTunniste];
                         }
