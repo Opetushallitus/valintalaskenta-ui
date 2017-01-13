@@ -7,6 +7,7 @@ function commonFixtures(roles) {
         httpBackend.when('GET', /.*\/lokalisointi\/.*/).respond([]);
         httpBackend.when('GET', /.*\/localisation?.*/).respond([]);
         httpBackend.when('GET', /.*maxinactiveinterval.*/).respond();
+        httpBackend.when('GET', /.*\/valinta-tulos-service\/auth\/login/).respond();
         httpBackend.whenGET(/\.html$/).passThrough();
     }
 }
