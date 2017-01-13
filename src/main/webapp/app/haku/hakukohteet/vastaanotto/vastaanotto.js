@@ -92,9 +92,9 @@ app.factory('HakemustenVastaanottotilaHakijalle', function($resource) {
         });
 });
 
-app.factory('ValinnanTulos', function($http, $httpProvider) {
+app.factory('ValinnanTulos', function($http) {
     var plainUrls = window.urls().noEncode();
-    $httpProvider.defaults.headers.patch({'Content-Type': 'application/json'});
+    $http.defaults.headers.patch = {"Content-Type": "application/json"};
     return {
         get: function(params, config) {
             $http.get(plainUrls.url("valinta-tulos-service.valinnan-tulos", params["valintatapajonoOid"]), config || {});
