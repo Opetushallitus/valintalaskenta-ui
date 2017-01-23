@@ -6,7 +6,7 @@ describe('Sijoittelun tulokset välilehti', function () {
         }
     })
 
-    describe('Opiskelijan valintatulokset sijoittelu välilehdellä', function () {
+    describe('Opiskelijan valintatulokset, kun valinta on kesken', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.20.37731636579");
         before(function (done) {
             addTestHook(tarjontaFixtures)()
@@ -25,11 +25,13 @@ describe('Sijoittelun tulokset välilehti', function () {
             page.openPage(done);
         })
 
-        it('sijoittelu normi case', seqDone(
-            wait.forAngular,
-            click(sijoitteluntulokset.iirisHenkilotiedot),
-            visible(sijoitteluntulokset.modaali),
-            function () {
+        describe('avattaessa Iiris Vitsijärven tulokset', function () {
+            before(seqDone(
+                wait.forAngular,
+                click(sijoitteluntulokset.iirisHenkilotiedot),
+                visible(sijoitteluntulokset.modaali)
+            ))
+            it('näkyy, että sijoittelu kesken', function() {
                 expect(sijoitteluntulokset.koulunNimi().is(':visible')).to.equal(true)
                 assertText(sijoitteluntulokset.valintatilanne, "Kesken")
                 assertText(sijoitteluntulokset.valintatulosTableIndex(1, 1), "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
@@ -38,11 +40,11 @@ describe('Sijoittelun tulokset välilehti', function () {
                 assertText(sijoitteluntulokset.valintatulosTableIndex(2, 2), "Tietotekniikka, diplomi-insinööri KOULUTUS")
                 assertText(sijoitteluntulokset.valintatulosTilaIndex(1), "Opiskelupaikka vastaanotettu")
                 assertText(sijoitteluntulokset.valintatulosTilaIndex(2), "Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä")
-            }
-        ))
+            })
+        })
     })
 
-    describe('Opiskelijan valintatulokset, kun valinta kesken', function () {
+    describe('Opiskelijan valintatulokset, kun valinta on lopullinen', function () {
         var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.11.00000000220");
         before(function (done) {
             addTestHook(tarjontaFixtures)()
@@ -61,24 +63,35 @@ describe('Sijoittelun tulokset välilehti', function () {
             page.openPage(done);
         })
 
-        it('sijoittelu kesken', seqDone(
-            wait.forAngular,
-            click(sijoitteluntulokset.teppoHenkilotiedot),
-            visible(sijoitteluntulokset.modaali),
-            function () {
-                expect(true).to.equal(true)
+        it('julkaistavissa-täppä on enabloitu', function() {
+            enabled(sijoitteluntulokset.julkaistavissa(2))
+        })
+
+        describe('avattaessa Teppo Testaajan tulokset', function () {
+            before(seqDone(
+                wait.forAngular,
+                click(sijoitteluntulokset.teppoHenkilotiedot),
+                visible(sijoitteluntulokset.modaali)
+            ))
+            it('näkyy, että sijoittelu on lopullinen', function() {
+                expect(sijoitteluntulokset.koulunNimi().is(':visible')).to.equal(true)
+                assertText(sijoitteluntulokset.valintatilanne, "Lopullinen")
                 assertText(sijoitteluntulokset.valintatulosTableIndex(1, 1), "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
                 assertText(sijoitteluntulokset.valintatulosTilaIndex(1), "Hyväksytty")
                 assertText(sijoitteluntulokset.valintatulosTilaIndex(2), "Peruuntunut")
-            }
-        ))
+            })
+        })
 
-        it('vastaanottotilaa muutettaessa julkaistavissa-täppä muuttuu disabloiduksi', seqDone(
-            wait.forAngular,
-            click(sijoitteluntulokset.julkaistavissa(2)),
-            select(sijoitteluntulokset.vastaanottoDropdown(2), "string:VASTAANOTTANUT_SITOVASTI"),
-            disabled(sijoitteluntulokset.julkaistavissa(2))
-        ))
+        describe('vastaanottotilaa muutettaessa', function () {
+            before(seqDone(
+                wait.forAngular,
+                click(sijoitteluntulokset.julkaistavissa(2)),
+                select(sijoitteluntulokset.vastaanottoDropdown(2), "string:VASTAANOTTANUT_SITOVASTI")
+            ))
+            it('julkaistavissa-täppä muuttuu disabloiduksi', function() {
+                disabled(sijoitteluntulokset.julkaistavissa(2))
+            })
+        })
     })
 
     describe('Sijoittelun tulokset -välilehdellä Kk haussa OPH oikeuksilla', function () {
