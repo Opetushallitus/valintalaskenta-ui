@@ -33,7 +33,7 @@ window.urls.addProperties({
     "valintalaskentakoostepalvelu.buildversion" : "/valintalaskentakoostepalvelu/buildversion.txt?auth",
     "valintalaskentakoostepalvelu.status" : "/valintalaskentakoostepalvelu/resources/$1/status",
     "valintalaskentakoostepalvelu.dokumenttiprosessi" : "/valintalaskentakoostepalvelu/resources/dokumenttiprosessi/$1",
-    "valintalaskentakoostepalvelu.erillishaku.tuonti.json" : "/valintalaskentakoostepalvelu/resources/erillishaku/tuonti/json",
+    "valintalaskentakoostepalvelu.erillishaku.tuonti.json" : "/valintalaskentakoostepalvelu/resources/erillishaku/tuonti/ui",
     "valintalaskentakoostepalvelu.erillishaku.tuonti" : "/valintalaskentakoostepalvelu/resources/erillishaku/tuonti",
     "valintalaskentakoostepalvelu.erillishaku.vienti" : "/valintalaskentakoostepalvelu/resources/erillishaku/vienti",
     "valintalaskentakoostepalvelu.hakuimport.aktivoi" : "/valintalaskentakoostepalvelu/resources/hakuimport/aktivoi",
