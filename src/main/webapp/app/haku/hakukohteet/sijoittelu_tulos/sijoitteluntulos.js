@@ -473,7 +473,11 @@ angular.module('valintalaskenta')
                 headers: {
                     'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]
                 }
-            });
+            }).then(function(response) {
+                    var forBreakpoint = response;
+                }, function(error) {
+                    var forBreakpoint = error;
+                });
         };
 
     }();
