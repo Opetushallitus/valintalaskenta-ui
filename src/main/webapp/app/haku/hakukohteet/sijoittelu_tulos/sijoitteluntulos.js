@@ -467,7 +467,7 @@ angular.module('valintalaskenta')
                 return {
                     hakemusOid: h.hakemusOid,
                     vastaanottotila: h.muokattuVastaanottoTila,
-                    ilmoittautumistila: muokattuIlmoittautumisTila
+                    ilmoittautumistila: h.muokattuIlmoittautumisTila
                 };
             }), {
                 headers: {
