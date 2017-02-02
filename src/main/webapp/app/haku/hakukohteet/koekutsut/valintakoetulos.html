@@ -62,7 +62,7 @@
                                     <span ng-switch-default></span>
                                 </div>
                                 <div ng-if="!hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut || !hakemus.kokeet[koetyyppi].aktiivinen">
-                                    <span></span>
+                                    <spant></span>
                                 </div>
                             </div>
                         </td>
@@ -116,6 +116,7 @@
 	                                <th><a href=""
 	                                       ng-click="predicate = 'osallistuminen'; reverse=!reverse">{{ t('valintakoetulos.osallistuminen') || 'Osallistuminen' }}</a>
 	                                </th>
+                                    <th>{{ t('valintakoetulos.lisatiedot') || 'Lisätietoja' }}</th>
 	                                <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">{{ t('valintakoetulos.laskettupvm') || 'Laskettu pvm' }}</a>
 	                                </th>
                                     <th>{{ t('valintakoetulos.asiointikieli') || 'Asiointikieli' }}</a>
@@ -137,9 +138,21 @@
 	                                <td>
 	                                    <div ng-switch="koe.osallistuminen">
 	                                        <span ng-switch-when="OSALLISTUU">{{ t('valintakoetulos.kutsutaan') || 'Kutsutaan' }}</span>
+                                            <span ng-switch-when="EI_OSALLISTU">{{ t('valintakoetulos.ei_kutsuta') || 'Ei kutsuta' }}</span>
+                                            <span ng-switch-when="EI_VAADITA">{{ t('valintakoetulos.ei_vaadita') || 'Ei vaadita' }}</span>
+                                            <span ng-switch-when="VIRHE">{{ t('valintakoetulos.virhe') || 'Virhe' }}</span>
 	                                        <span ng-switch-default></span>
 	                                    </div>
 	                                </td>
+                                    <td>
+                                        <div ng-switch="koe.osallistuminen">
+                                            <span ng-switch-when="OSALLISTUU"></span>
+                                            <span ng-switch-when="EI_OSALLISTU">{{koe.lisatiedot}}</span>
+                                            <span ng-switch-when="EI_VAADITA">{{koe.lisatiedot}}</span>
+                                            <span ng-switch-when="VIRHE">{{koe.lisatiedot}}</span>
+                                            <span ng-switch-default></span>
+                                        </div>
+                                    </td>
 	                                <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
                                     <td><span>{{ koe.asiointikieli }}</span></td>
 	                            </tr>
