@@ -465,9 +465,17 @@ angular.module('valintalaskenta')
             // Used for integration testing
             ValinnanTulos.patch({valintatapajonoOid: valintatapajonoOid}, _.map(muokatutHakemukset, function(h) {
                 return {
+                    hakukohdeOid: h.hakukohdeOid,
+                    valintatapajonoOid: h.valintatapajonoOid,
                     hakemusOid: h.hakemusOid,
+                    henkiloOid: h.hakijaOid,
                     vastaanottotila: h.muokattuVastaanottoTila,
-                    ilmoittautumistila: h.muokattuIlmoittautumisTila
+                    ilmoittautumistila: h.muokattuIlmoittautumisTila,
+                    valinnantila: h.tila,
+                    julkaistavissa: h.julkaistavissa,
+                    ehdollisestiHyvaksyttavissa: h.ehdollisestiHyvaksyttavissa,
+                    hyvaksyttyVarasijalta: h.hyvaksyttyVarasijalta,
+                    hyvaksyPeruuntunut: h.hyvaksyPeruuntunut
                 };
             }), {
                 headers: {
