@@ -4,11 +4,11 @@ angular.module('valintalaskenta')
               'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
               'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService', 'ErillishakuVienti',
               'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
-              'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull',
+              'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'ValinnanTulos',
     function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
               ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-              VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull) {
+              VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, ValinnanTulos) {
       "use strict";
 
       $scope.muokatutHakemukset = {};
@@ -520,11 +520,39 @@ angular.module('valintalaskenta')
         };
       };
 
+      $scope.valinnantulosTallennus = function(valintatapajonoOid, json) {
+          // Used for integration testing
+          ValinnanTulos.patch({valintatapajonoOid: valintatapajonoOid}, _.map(json, function(rivi) {
+              return {
+                  hakukohdeOid: $scope.hakukohdeOid,
+                  valintatapajonoOid: valintatapajonoOid,
+                  hakemusOid: rivi.hakemusOid,
+                  henkiloOid: rivi.personOid,
+                  vastaanottotila: rivi.vastaanottoTila,
+                  ilmoittautumistila: rivi.ilmoittautumisTila,
+                  valinnantila: rivi.hakemuksenTila,
+                  julkaistavissa: rivi.julkaistaankoTiedot
+              };
+          }), {
+              headers: {
+                  'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]
+              },
+              params: {
+                  'erillishaku' : true
+              }
+          }).then(function(response) {
+              var forBreakpoint = response;
+          }, function(error) {
+              var forBreakpoint = error;
+          });
+      };
+
       $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
         ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
           {rivit: json}, function (id) {
             Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
               function() {
+                $scope.valinnantulosTallennus(valintatapajonoOid, json);
                 $window.location.reload();
               }
             );
