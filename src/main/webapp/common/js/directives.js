@@ -903,6 +903,7 @@ app.directive('muokattuVastaanottoTila', function () {
         },
         templateUrl: '../common/html/muokattuvastaanottotila.html',
         controller: function ($scope, AuthService, Korkeakoulu) {
+            $scope.isEhdollisestiHyvaksyttavissaOlevaEhtoEditable = true;
             var updateEditable = function(hakemus, isKk, updateOph) {
                 $scope.isEditable =
                     (hakemus.muokattuVastaanottoTila !== "OTTANUT_VASTAAN_TOISEN_PAIKAN"

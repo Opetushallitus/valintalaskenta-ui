@@ -172,6 +172,15 @@
                                     <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap testEhdollinenValinta">
                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                         <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="hakemus.ehdollisestiHyvaksyttavissa" ng-change="addMuokattuHakemus(hakemus)"/>
+
+                                        <select ng-disabled="!isEhdollisestiHyvaksyttavissaOlevaEhtoEditable" ng-model="hakemus.ehdollisenHyvaksymisenEhtoKoodi"
+                                                ng-options="ehdollisestiHyvaksyttavissaOlevatEhdot.value as tila.default_text" ng-options="ehto.koodiUri as ehto.nimi for ehto in in customHakuUtil.ehdollisestiHyvaksyttavissaOlevatOpts">
+                                        </select>
+                                        <!--select ng-disabled="!isEditable" ng-change="handleTilaChange(hakemus)" ng-model="hakemus.muokattuVastaanottoTila"
+                                                ng-options="tila.value as tila.default_text disable when tila.disable for tila in hakemuksenMuokattuVastaanottoTilat">
+                                        </select-->
+
+
                                     </div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.varasijatoiminto') || 'Varasijalta hyväksyminen')" sortable="'tila'">

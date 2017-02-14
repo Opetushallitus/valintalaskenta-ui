@@ -167,9 +167,9 @@ angular.module('valintalaskenta')
             };
         }])
 
-    .service('CustomHakuUtil', ['$q', '_', 'HakujenHakutyypit', 'HakujenKohdejoukot', 'HakujenHakutavat', 'HakujenHakukaudet', 'HakuModel',
+    .service('CustomHakuUtil', ['$q', '_', 'HakujenHakutyypit', 'HakujenKohdejoukot', 'HakujenHakutavat', 'HakujenHakukaudet', 'HakuModel', 'EhdollisenHyvaksymisenEhdot',
         '$rootScope',
-        function ($q, _, HakujenHakutyypit, HakujenKohdejoukot, HakujenHakutavat, HakujenHakukaudet, HakuModel, $rootScope) {
+        function ($q, _, HakujenHakutyypit, HakujenKohdejoukot, HakujenHakutavat, HakujenHakukaudet, HakuModel, EhdollisenHyvaksymisenEhdot, $rootScope) {
 
             var that = this;
 
@@ -182,6 +182,7 @@ angular.module('valintalaskenta')
             this.hakutapaOpts = undefined;
             this.hakukausiOpts = undefined;
             this.hakuvuodetOpts = undefined;
+            this.ehdollisestiHyvaksyttavissaOlevatOpts = undefined;
 
             function metaInUserLang(meta) {
                 return _.findWhere(meta, {kieli: $rootScope.userLang.toUpperCase()}) ||
@@ -214,6 +215,10 @@ angular.module('valintalaskenta')
 
                 HakujenHakukaudet.query(function (result) {
                     that.hakukausiOpts = filterByLang(result);
+                });
+
+                EhdollisenHyvaksymisenEhdot.query(function (result) {
+                    that.ehdollisestiHyvaksyttavissaOlevatOpts = filterByLang(result);
                 });
 
                 if(_.isEmpty(HakuModel.deferred)) {
