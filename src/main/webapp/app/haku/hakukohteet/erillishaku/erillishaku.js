@@ -302,7 +302,7 @@ angular.module('valintalaskenta')
           }
           $scope.validateHakemuksenTilat(hakemus);
         });
-          
+
         $scope.erillishaku = erillishaku;
         getErillishaunValinnantulokset();
       };
@@ -552,7 +552,7 @@ angular.module('valintalaskenta')
               };
           }), {
               headers: {
-                  'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]
+                  'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()
               },
               params: {
                   'erillishaku' : true
