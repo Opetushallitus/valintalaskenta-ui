@@ -23,6 +23,7 @@ angular.module('valintalaskenta')
       $scope.korkeakoulu;
       $scope.pageSize = 50;
       $scope.deleting = null;
+      $scope.valintatapajonoLastModified = {};
 
       function valintatuloksenTilojenKielistykset(valintatuloksentilat) {
         return valintatuloksentilat.reduce(function(o, tila) {
@@ -301,8 +302,24 @@ angular.module('valintalaskenta')
           }
           $scope.validateHakemuksenTilat(hakemus);
         });
-
+          
         $scope.erillishaku = erillishaku;
+        getErillishaunValinnantulokset();
+      };
+
+      var getErillishaunValinnantulokset = function () {
+          $scope.erillishaku.forEach(function (e) {
+              e.valintatapajonot.forEach(function(v) {
+                  ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
+                      var forBreakpoint = response;
+                      $scope.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
+                  }, function(error) {
+                      var forBreakpoint = error;
+                  });
+              });
+          });
+
+          return erillishaku;
       };
 
       var getHakumodelValintatapaJonot = function(valinnanvaiheet, oidToMaksuvelvollisuus) {
