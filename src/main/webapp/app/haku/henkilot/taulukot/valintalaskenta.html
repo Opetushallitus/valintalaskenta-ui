@@ -21,11 +21,14 @@
         </tr>
         </thead>
         <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'" >
-        <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot">
-            <td colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
+        <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot && hakutoive.hasDoneOrganizationCheck">
+            <td ng-if="updateOph || hakutoive.showAsLink" colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
                 <a target="_blank" href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                     {{hakutoive.oppilaitos}} <i class="fa fa-external-link"></i>
                 </a>
+            </td>
+            <td ng-if="!updateOph && !hakutoive.showAsLink" colspan="8">
+                {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} - {{hakutoive.oppilaitos}}
             </td>
         </tr>
         <tr ng-if="hakutoive.valintalaskenta">

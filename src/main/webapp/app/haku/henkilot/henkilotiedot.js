@@ -24,6 +24,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             var errors = [];
             var haku = {};
             var sijoittelu = {};
+            var hakutoiveetLoaded = $q.defer();
 
             HaunTiedot.get({hakuOid: hakuOid}, function (resultWrapper) {
                 for (var attr in resultWrapper.result) {
@@ -52,17 +53,20 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             hakutoiveNumero: i,
                             koulutuksenNimi: hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"],
                             oppilaitos: hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"],
+                            oppilaitosId: hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste-id"],
                             hakemusOid: hakemus.oid,
                             hakenutHarkinnanvaraisesti: (harkinnanvarainen || discretionary) === "true",
-                            additionalData: hakemus.additionalInfo
+                            additionalData: hakemus.additionalInfo,
+                            hasDoneOrganizationCheck: false,
+                            showAsLink: false
                         };
-
                         hakutoiveetMap[oid] = hakutoive;
                         hakutoiveet.push(hakutoive);
                         if (hakutoive.hakenutHarkinnanvaraisesti) {
                             model.hakenutHarkinnanvaraisesti = true;
                         }
                     }
+                    hakutoiveetLoaded.resolve();
                 }
                 HarkinnanvaraisestiHyvaksytty.get({hakemusOid: hakemusOid, hakuOid: hakuOid}, function (result) {
                     result.forEach(function (harkinnanvarainen) {
@@ -192,6 +196,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             model.errors = errors;
             model.haku = haku;
             model.sijoittelu = sijoittelu;
+            return hakutoiveetLoaded.promise;
         };
 
         this.vastaanottoTilaOptionsToShow = function(hakutoive) {
@@ -243,7 +248,7 @@ angular.module('valintalaskenta').
     "use strict";
 
     $scope.model = HenkiloTiedotModel;
-    $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
+    $scope.hakutoiveetLoadedPromise = $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
     $scope.url = window.url;
     $scope.hakuModel = HakuModel;
     $scope.korkeakoulu = Korkeakoulu;
@@ -310,6 +315,22 @@ angular.module('valintalaskenta').
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
     });
+
+    $scope.hakutoiveetLoadedPromise.then(function() {
+        $scope.model.hakutoiveet.forEach(function(h) {
+            $scope.hasOrganizationReadAccess(h).then(function () {
+                h.hasDoneOrganizationCheck = true;
+                h.showAsLink = true;
+            }, function () {
+                h.hasDoneOrganizationCheck = true;
+                h.showAsLink = false;
+            })
+        });
+    });
+
+    $scope.hasOrganizationReadAccess = function (hakutoive) {
+        return AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINENKK", hakutoive.oppilaitosId);
+    };
 
     $scope.isValinnanvaiheVisible = function (index, valinnanvaiheet) {
         var orderBy = $filter('orderBy');
