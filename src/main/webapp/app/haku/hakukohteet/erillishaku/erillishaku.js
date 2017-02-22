@@ -528,6 +528,7 @@ angular.module('valintalaskenta')
 
       $scope.erillisHakuTuontiParams = function(valintatapajonoOid, valintatapajononNimi) {
         return {
+          ifUnmodifiedSince : $scope.valintatapajonoLastModified[valintatapajonoOid],
           hakutyyppi: $scope.getHakutyyppi(),
           hakukohdeOid: $scope.hakukohdeOid,
           hakuOid: $routeParams.hakuOid,
