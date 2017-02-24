@@ -437,10 +437,12 @@ app.factory('ErillishakuVienti', function($resource) {
         vie: {method:'POST', isArray:false}
     });
 });
-app.factory('ErillishakuTuonti', function($resource) {
-    return $resource(window.url("valintalaskentakoostepalvelu.erillishaku.tuonti.json"), {}, {
-        tuo: {method:'POST', isArray:false, headers:{'If-Unmodified-Since' : '@ifUnmodifiedSince'}}
-    });
+app.factory('ErillishakuTuonti', function($http) {
+    return {
+        tuo: function(params, data, config) {
+            return $http.post(window.url("valintalaskentakoostepalvelu.erillishaku.tuonti.json"), data, config || {});
+        }
+    };
 });
 app.factory('ErillishakuProxy', function($resource) {
         return $resource(

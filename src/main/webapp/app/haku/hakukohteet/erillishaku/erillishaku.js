@@ -539,16 +539,20 @@ angular.module('valintalaskenta')
       };
 
       $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
-        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
-          {rivit: json}, function (id) {
+        ErillishakuTuonti.tuo(
+            $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
+            {rivit: json},
+            {headers: {'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]}}
+        ).then(function(id) {
             Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
-              function() {
-                $window.location.reload();
-              }
+                function() {
+                    $window.location.reload();
+                }
             );
-          }, function () {
+          }, function(error) {
             Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
-          });
+          }
+        );
       };
 
       $scope.erillishaunVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
@@ -724,8 +728,11 @@ angular.module('valintalaskenta')
       };
 
       $scope.saveIlmoitettuToAll = function(valintatapajonoOid, valintatapajononNimi, json) {
-        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
-          {rivit: json}, function () {
+        ErillishakuTuonti.tuo(
+          $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
+          {rivit: json},
+          {headers: {'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]}}
+        ).then(function() {
             Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
               function() {
                 $window.location.reload();
@@ -759,8 +766,11 @@ angular.module('valintalaskenta')
         hakemus.poistetaankoRivi = true;
 
         console.log($scope.hakemusToErillishakuRivi(hakemus));
-        ErillishakuTuonti.tuo($scope.erillisHakuTuontiParams(valintatapajono.oid, valintatapajono.nimi),
-          {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]}, function(res) {
+        ErillishakuTuonti.tuo(
+          $scope.erillisHakuTuontiParams(valintatapajono.oid, valintatapajono.nimi),
+          {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]},
+          {headers: {'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajono.oid]}}
+        ).then(function(res) {
             console.log(res);
           }, function(e) {
             console.log(e);
