@@ -542,7 +542,7 @@ angular.module('valintalaskenta')
         ErillishakuTuonti.tuo(
             $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
             {rivit: json},
-            {headers: {'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]}}
+            {headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid]}}
         ).then(function(id) {
             Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
                 function() {
@@ -731,7 +731,7 @@ angular.module('valintalaskenta')
         ErillishakuTuonti.tuo(
           $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
           {rivit: json},
-          {headers: {'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]}}
+          {headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid]}}
         ).then(function() {
             Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
               function() {
@@ -769,7 +769,7 @@ angular.module('valintalaskenta')
         ErillishakuTuonti.tuo(
           $scope.erillisHakuTuontiParams(valintatapajono.oid, valintatapajono.nimi),
           {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]},
-          {headers: {'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajono.oid]}}
+          {headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajono.oid]}}
         ).then(function(res) {
             console.log(res);
           }, function(e) {
