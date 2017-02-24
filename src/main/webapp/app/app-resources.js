@@ -439,7 +439,7 @@ app.factory('ErillishakuVienti', function($resource) {
 });
 app.factory('ErillishakuTuonti', function($http) {
     return {
-        tuo: function(params, data, config) {
+        tuo: function(data, config) {
             return $http.post(window.url("valintalaskentakoostepalvelu.erillishaku.tuonti.json"), data, config || {});
         }
     };

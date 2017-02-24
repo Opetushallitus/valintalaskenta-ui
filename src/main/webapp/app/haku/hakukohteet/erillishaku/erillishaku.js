@@ -528,7 +528,6 @@ angular.module('valintalaskenta')
 
       $scope.erillisHakuTuontiParams = function(valintatapajonoOid, valintatapajononNimi) {
         return {
-          ifUnmodifiedSince : $scope.valintatapajonoLastModified[valintatapajonoOid],
           hakutyyppi: $scope.getHakutyyppi(),
           hakukohdeOid: $scope.hakukohdeOid,
           hakuOid: $routeParams.hakuOid,
@@ -540,9 +539,9 @@ angular.module('valintalaskenta')
 
       $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
         ErillishakuTuonti.tuo(
-            $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
             {rivit: json},
-            {headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid]}}
+            {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
+             headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid]}}
         ).then(function(id) {
             Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
                 function() {
@@ -729,9 +728,9 @@ angular.module('valintalaskenta')
 
       $scope.saveIlmoitettuToAll = function(valintatapajonoOid, valintatapajononNimi, json) {
         ErillishakuTuonti.tuo(
-          $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
           {rivit: json},
-          {headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid]}}
+          {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
+           headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid]}}
         ).then(function() {
             Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
               function() {
@@ -767,9 +766,9 @@ angular.module('valintalaskenta')
 
         console.log($scope.hakemusToErillishakuRivi(hakemus));
         ErillishakuTuonti.tuo(
-          $scope.erillisHakuTuontiParams(valintatapajono.oid, valintatapajono.nimi),
           {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]},
-          {headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajono.oid]}}
+          {params: $scope.erillisHakuTuontiParams(valintatapajono.oid, valintatapajono.nimi),
+           headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajono.oid]}}
         ).then(function(res) {
             console.log(res);
           }, function(e) {
