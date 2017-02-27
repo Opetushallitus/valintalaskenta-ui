@@ -542,13 +542,14 @@ angular.module('valintalaskenta')
             {rivit: json},
             {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
              headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()}}
-        ).then(function(id) {
+        ).progress(function(evt) {
+        }).success(function(id, status, headers, config) {
             Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
                 function() {
                     $window.location.reload();
                 }
             );
-          }, function(error) {
+          }).error(function(error) {
             Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
           }
         );
@@ -591,7 +592,7 @@ angular.module('valintalaskenta')
           $scope.upload = $upload.http({
             url: window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti", params),
             method: "POST",
-            headers: {'Content-Type': 'application/octet-stream'},
+            headers: {'Content-Type': 'application/octet-stream', 'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()},
             data: e.target.result
           }).progress(function(evt) {
 
@@ -632,7 +633,7 @@ angular.module('valintalaskenta')
           $scope.upload = $upload.http({
             url: window.url("valintalaskentakoostepalvelu.erillishaku.tuonti", params),
             method: "POST",
-            headers: {'Content-Type': 'application/octet-stream'},
+            headers: {'Content-Type': 'application/octet-stream', 'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()},
             data: e.target.result
           }).progress(function(evt) {
           }).success(function(id, status, headers, config) {
@@ -731,13 +732,14 @@ angular.module('valintalaskenta')
           {rivit: json},
           {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
            headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()}}
-        ).then(function() {
+        ).progress(function(evt) {
+        }).success(function(id, status, headers, config) {
             Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
               function() {
                 $window.location.reload();
               }
             );
-          }, function () {
+          }).error(function (data) {
             Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
           });
       };
@@ -769,9 +771,10 @@ angular.module('valintalaskenta')
           {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]},
           {params: $scope.erillisHakuTuontiParams(valintatapajono.oid, valintatapajono.nimi),
            headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajono.oid] || (new Date()).toUTCString()}}
-        ).then(function(res) {
+        ).progress(function(evt) {
+        }).success(function(res, status, headers, config) {
             console.log(res);
-          }, function(e) {
+          }).error(function(e) {
             console.log(e);
           });
       };
