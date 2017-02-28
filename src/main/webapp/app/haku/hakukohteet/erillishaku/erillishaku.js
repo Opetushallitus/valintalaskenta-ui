@@ -311,7 +311,7 @@ angular.module('valintalaskenta')
         $scope.erillishaku.forEach(function (e) {
           e.valintatapajonot.forEach(function(v) {
             ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
-              Valinnantulokset.compareOldAndNewVtsResponse(v, response.data);
+              Valinnantulokset.compareErillishakuOldAndNewVtsResponse(v, response.data);
               $scope.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
             }, function(error) {
               console.log(error);

@@ -1,10 +1,10 @@
 angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
-        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
+        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter',
         function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, ValintaesityksenHyvaksyminen,
-                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
+                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
                                                IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
 
@@ -350,7 +350,7 @@ angular.module('valintalaskenta')
                 // Result intentionally unused, used for integration testing
                 result.valintatapajonot.forEach(function(v) {
                     ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
-                        var forBreakpoint = response;
+                        Valinnantulokset.compareSijoitteluOldAndNewVtsResponse(v, response.data);
                         model.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
                     }, function(error) {
                         var forBreakpoint = error;
