@@ -4,11 +4,11 @@ angular.module('valintalaskenta')
               'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
               'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService', 'ErillishakuVienti',
               'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
-              'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'ValinnanTulos',
+              'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'ValinnanTulos', 'Valinnantulokset',
     function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
               ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
               ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-              VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, ValinnanTulos) {
+              VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, ValinnanTulos, Valinnantulokset) {
       "use strict";
 
       $scope.muokatutHakemukset = {};
@@ -308,15 +308,16 @@ angular.module('valintalaskenta')
       };
 
       var getErillishaunValinnantulokset = function () {
-          $scope.erillishaku.forEach(function (e) {
-              e.valintatapajonot.forEach(function(v) {
-                  ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
-                    $scope.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
-                  }, function(error) {
-                    console.log(error);
-                  });
-              });
+        $scope.erillishaku.forEach(function (e) {
+          e.valintatapajonot.forEach(function(v) {
+            ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
+              Valinnantulokset.compareOldAndNewVtsResponse(v, response.data);
+              $scope.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
+            }, function(error) {
+              console.log(error);
+            });
           });
+        });
       };
 
       var getHakumodelValintatapaJonot = function(valinnanvaiheet, oidToMaksuvelvollisuus) {
