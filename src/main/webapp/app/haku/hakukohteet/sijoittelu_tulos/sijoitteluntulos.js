@@ -324,7 +324,6 @@ angular.module('valintalaskenta')
                             });
 
                             categorizeHakemusForErittely(hakemuserittely, hakemus);
-
                             if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                 var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
                                 model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
