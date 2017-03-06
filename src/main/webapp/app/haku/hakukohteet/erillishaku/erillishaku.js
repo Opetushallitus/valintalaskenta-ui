@@ -485,9 +485,33 @@ angular.module('valintalaskenta')
 
       $scope.hakemuksetByValintatapajonoOid = hakemuksetByValintatapajonoOid;
 
+      $scope.validateEhdollisenHyvaksymisenKoodi = function(hakemukset){
+        var valid = true;
+        hakemukset.forEach(function (hakemus){
+            if(hakemus.ehdollisestiHyvaksyttavissa &&
+                (
+                (hakemus.ehdollisenHyvaksymisenEhtoKoodi != "" && hakemus.ehdollisenHyvaksymisenEhtoKoodi != "hyvaksynnanehdot_muu") ||
+                (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "hyvaksynnanehdot_muu" && hakemus.ehdollisenHyvaksymisenEhtoFI != undefined &&
+                  hakemus.ehdollisenHyvaksymisenEhtoSV != undefined && hakemus.ehdollisenHyvaksymisenEhtoEN != undefined && hakemus.ehdollisenHyvaksymisenEhtoFI != "" &&
+                  hakemus.ehdollisenHyvaksymisenEhtoSV != "" && hakemus.ehdollisenHyvaksymisenEhtoEN != "")
+                )
+            ){
+              // ok
+            } else {
+              valid = false; // not valid row
+            }
+        });
+        return valid;
+      };
+
       $scope.submitIlmanLaskentaa = function (valintatapajono) {
         var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
-        $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
+        if($scope.validateEhdollisenHyvaksymisenKoodi(hakemukset)){
+          $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
+        } else {
+          return false;
+        }
+
       };
 
       var addToMuokattuHakemusList = function (joMuokatut, hakemus, valintatapajonoOid) {

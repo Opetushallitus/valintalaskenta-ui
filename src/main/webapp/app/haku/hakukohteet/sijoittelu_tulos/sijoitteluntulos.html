@@ -174,15 +174,16 @@
                                         <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="hakemus.ehdollisestiHyvaksyttavissa" ng-change="addMuokattuHakemus(hakemus)"/><br />
 
                                         <select id="ehdollisenHyvaksymisenEhtoKoodi"
-                                                ng-change="showEhdot(hakemus, hakemus.ehdollisenHyvaksymisenEhtoKoodi)"
+                                                ng-change="showEhdot(hakemus, hakemus.ehdollisenHyvaksymisenEhtoKoodi);addMuokattuHakemus(hakemus)"
                                                 ng-model="hakemus.ehdollisenHyvaksymisenEhtoKoodi"
                                                 ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'ehto.nimi'" style="width: 200px;">
                                             <option></option>
                                         </select>
-                                        <input ng-show="hakemus.ehtoInputFields == true" class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="hakemus.ehdollisenHyvaksymisenEhtoFI" placeholder="FI"/>
-                                        <input ng-show="hakemus.ehtoInputFields == true" class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="hakemus.ehdollisenHyvaksymisenEhtoSV" placeholder="SV"/>
-                                        <input ng-show="hakemus.ehtoInputFields == true" class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="hakemus.ehdollisenHyvaksymisenEhtoEN" placeholder="EN"/>
-
+                                        <div ng-if="hakemus.ehtoInputFields == true">
+                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="hakemus.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required/>
+                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="hakemus.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required/>
+                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="hakemus.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required/>
+                                        </div>
                                     </div>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.varasijatoiminto') || 'Varasijalta hyväksyminen')" sortable="'tila'">

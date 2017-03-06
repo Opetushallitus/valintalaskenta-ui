@@ -110,14 +110,17 @@
                                                         <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
                                                                ng-change="addMuokattuHakemus(tulos, valintatapajono)"/><br />
                                                         <select id="ehdollisenHyvaksymisenEhtoKoodi"
-                                                                ng-change="showEhdot(tulos, tulos.ehdollisenHyvaksymisenEhtoKoodi)"
+                                                                ng-change="showEhdot(tulos, tulos.ehdollisenHyvaksymisenEhtoKoodi);addMuokattuHakemus(tulos, valintatapajono)"
                                                                 ng-model="tulos.ehdollisenHyvaksymisenEhtoKoodi"
-                                                                ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'ehto.nimi'" style="width: 200px;">
+                                                                ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'ehto.nimi'" style="width: 200px;"
+                                                                ng-required="tulos.ehdollisestiHyvaksyttavissa">
                                                             <option></option>
                                                         </select>
-                                                        <input ng-show="tulos.ehtoInputFields == true" class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="tulos.ehdollisenHyvaksymisenEhtoFI" placeholder="FI"/>
-                                                        <input ng-show="tulos.ehtoInputFields == true" class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="tulos.ehdollisenHyvaksymisenEhtoSV" placeholder="SV"/>
-                                                        <input ng-show="tulos.ehtoInputFields == true" class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="tulos.ehdollisenHyvaksymisenEhtoEN" placeholder="EN"/>
+                                                        <div ng-if="tulos.ehtoInputFields == true">
+                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="tulos.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required/>
+                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="tulos.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required/>
+                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="tulos.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </td>
