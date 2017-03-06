@@ -180,9 +180,9 @@
                                             <option></option>
                                         </select>
                                         <div ng-if="hakemus.ehtoInputFields == true">
-                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="hakemus.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required/>
-                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="hakemus.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required/>
-                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="hakemus.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required/>
+                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="hakemus.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required ng-readonly="!hakemus.ehtoEditableInputFields"/>
+                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="hakemus.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required ng-readonly="!hakemus.ehtoEditableInputFields"/>
+                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="hakemus.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required ng-readonly="!hakemus.ehtoEditableInputFields"/>
                                         </div>
                                     </div>
                                 </td>

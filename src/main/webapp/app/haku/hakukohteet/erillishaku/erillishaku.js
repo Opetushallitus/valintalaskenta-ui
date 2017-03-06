@@ -29,8 +29,20 @@ angular.module('valintalaskenta')
       $scope.showEhdot = function (model, value) {
           if (value == 'hyvaksynnanehdot_muu') {
               model.ehtoInputFields = true;
+              model.ehtoEditableInputFields = true;
+              model.ehdollisenHyvaksymisenEhtoFI = '';
+              model.ehdollisenHyvaksymisenEhtoSV = '';
+              model.ehdollisenHyvaksymisenEhtoEN = '';
           } else {
-              model.ehtoInputFields = false;
+              model.ehtoInputFields = true;
+              model.ehtoEditableInputFields = false;
+              $scope.ehdollisestiHyvaksyttavissaOlevatOpts.forEach(function(op){
+                  if(op.koodiUri == value){
+                      model.ehdollisenHyvaksymisenEhtoFI = op.nimiFI;
+                      model.ehdollisenHyvaksymisenEhtoSV = op.nimiSV;
+                      model.ehdollisenHyvaksymisenEhtoEN = op.nimiEN;
+                  }
+              });
           }
       };
 
@@ -39,7 +51,10 @@ angular.module('valintalaskenta')
               $scope.ehdollisestiHyvaksyttavissaOlevatOpts.push(
                   {
                       koodiUri: ehto.koodiUri,
-                      nimi: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi
+                      nimi: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
+                      nimiFI: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
+                      nimiSV: _.findWhere(ehto.metadata, {kieli: 'SV'}).nimi,
+                      nimiEN: _.findWhere(ehto.metadata, {kieli: 'EN'}).nimi
                   });
           });
       });
@@ -452,7 +467,8 @@ angular.module('valintalaskenta')
           poistetaankoRivi: hakemus.poistetaankoRivi,
           julkaistaankoTiedot: hakemus.julkaistavissa,
           hakemusOid: hakemus.hakemusOid,
-          ehtoInputFields: false
+          ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "hyvaksynnanehdot_muu"),
+          ehtoInputFields: hakemus.ehdollisestiHyvaksyttavissa // use this
         };
       };
 
@@ -474,7 +490,8 @@ angular.module('valintalaskenta')
             ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
             hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty ? hakemus.hyvaksymiskirjeLahetettyPvm : null,
             hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
-            ehtoInputFields: false
+            ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "hyvaksynnanehdot_muu"),
+            ehtoInputFields: hakemus.ehdollisestiHyvaksyttavissa
           };
         };
       };

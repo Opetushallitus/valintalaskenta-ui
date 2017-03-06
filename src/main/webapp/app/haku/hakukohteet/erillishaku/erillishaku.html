@@ -116,10 +116,10 @@
                                                                 ng-required="tulos.ehdollisestiHyvaksyttavissa">
                                                             <option></option>
                                                         </select>
-                                                        <div ng-if="tulos.ehtoInputFields == true">
-                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="tulos.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required/>
-                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="tulos.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required/>
-                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="tulos.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required/>
+                                                        <div ng-if="tulos.ehtoInputFields">
+                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="tulos.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required ng-readonly="!tulos.ehtoEditableInputFields"/>
+                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="tulos.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required ng-readonly="!tulos.ehtoEditableInputFields"/>
+                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="tulos.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required ng-readonly="!tulos.ehtoEditableInputFields"/>
                                                         </div>
                                                     </div>
                                                 </div>

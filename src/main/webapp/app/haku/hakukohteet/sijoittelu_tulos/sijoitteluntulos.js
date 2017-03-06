@@ -640,7 +640,10 @@ angular.module('valintalaskenta')
              $scope.ehdollisestiHyvaksyttavissaOlevatOpts.push(
                 {
                     koodiUri: ehto.koodiUri,
-                    nimi: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi
+                    nimi: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
+                    nimiFI: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
+                    nimiSV: _.findWhere(ehto.metadata, {kieli: 'SV'}).nimi,
+                    nimiEN: _.findWhere(ehto.metadata, {kieli: 'EN'}).nimi
                 });
             });
     });
