@@ -109,17 +109,21 @@
                                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                                         <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="tulos.ehdollisestiHyvaksyttavissa"
                                                                ng-change="addMuokattuHakemus(tulos, valintatapajono)"/><br />
-                                                        <select id="ehdollisenHyvaksymisenEhtoKoodi"
-                                                                ng-change="showEhdot(tulos, tulos.ehdollisenHyvaksymisenEhtoKoodi);addMuokattuHakemus(tulos, valintatapajono)"
-                                                                ng-model="tulos.ehdollisenHyvaksymisenEhtoKoodi"
-                                                                ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'ehto.nimi'" style="width: 200px;"
-                                                                ng-required="tulos.ehdollisestiHyvaksyttavissa">
-                                                            <option></option>
-                                                        </select>
-                                                        <div ng-if="tulos.ehtoInputFields">
-                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="tulos.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required ng-readonly="!tulos.ehtoEditableInputFields"/>
-                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="tulos.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required ng-readonly="!tulos.ehtoEditableInputFields"/>
-                                                            <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="tulos.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required ng-readonly="!tulos.ehtoEditableInputFields"/>
+
+                                                        <div ng-if="getHakutyyppi() == 'KORKEAKOULU'">
+
+                                                            <select id="ehdollisenHyvaksymisenEhtoKoodi"
+                                                                    ng-change="showEhdot(tulos, tulos.ehdollisenHyvaksymisenEhtoKoodi);addMuokattuHakemus(tulos, valintatapajono)"
+                                                                    ng-model="tulos.ehdollisenHyvaksymisenEhtoKoodi"
+                                                                    ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'ehto.nimi'" style="width: 200px;"
+                                                                    ng-required="tulos.ehdollisestiHyvaksyttavissa">
+                                                                <option></option>
+                                                            </select>
+                                                            <div ng-if="tulos.ehtoInputFields">
+                                                                <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="tulos.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required ng-readonly="!tulos.ehtoEditableInputFields"/>
+                                                                <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="tulos.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required ng-readonly="!tulos.ehtoEditableInputFields"/>
+                                                                <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="tulos.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required ng-readonly="!tulos.ehtoEditableInputFields"/>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

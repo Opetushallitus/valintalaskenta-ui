@@ -503,6 +503,7 @@ angular.module('valintalaskenta')
       $scope.hakemuksetByValintatapajonoOid = hakemuksetByValintatapajonoOid;
 
       $scope.validateEhdollisenHyvaksymisenKoodi = function(hakemukset){
+        if (!$scope.korkeakoulu) { return true; }
         var valid = true;
         hakemukset.forEach(function (hakemus){
             if(hakemus.ehdollisestiHyvaksyttavissa &&
@@ -515,7 +516,7 @@ angular.module('valintalaskenta')
             ){
               // ok
             } else {
-              valid = false; // not valid row
+              valid = false;
             }
         });
         return valid;

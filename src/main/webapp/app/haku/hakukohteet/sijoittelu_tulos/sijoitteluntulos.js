@@ -557,6 +557,7 @@ angular.module('valintalaskenta')
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.model = SijoitteluntulosModel;
     $scope.korkeakouluService = Korkeakoulu;
+    $scope.isKorkeakoulu = false;
     $scope.tilaFilterValue = "";
     $scope.valintaesitysJulkaistavissa = false;
     $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
@@ -575,6 +576,7 @@ angular.module('valintalaskenta')
     HakuModel.promise.then(function(haku) {
         if (haku.korkeakoulu) {
             $scope.valintaesitysJulkaistavissa = true;
+            $scope.isKorkeakoulu = true;
         }
     });
 
@@ -695,6 +697,7 @@ angular.module('valintalaskenta')
     };
 
     $scope.validateEhdollisenHyvaksymisenKoodi = function(hakemukset){
+        if(!$scope.isKorkeakoulu){ return true; }
         var valid = true;
         hakemukset.forEach(function (hakemus){
             if(hakemus.ehdollisestiHyvaksyttavissa &&
