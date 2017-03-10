@@ -8,6 +8,30 @@ angular.module('valintalaskenta')
                                                IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
 
+    var categorizeHakemusForErittely = function(hakemuserittely, valintatapajono, hakemus, tilat) {
+        if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
+            hakemuserittely.hyvaksytyt.push(hakemus);
+
+            if (hakemus.hyvaksyttyHarkinnanvaraisesti) {
+                hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
+            }
+
+            var vastaanottotila = null;
+            tilat.forEach(function(t) {
+                if (t.hakemusOid === hakemus.hakemusOid && t.valintatapajonoOid === valintatapajono.oid) {
+                    vastaanottotila = t.tila;
+                }
+            });
+            if (vastaanottotila === "VASTAANOTTANUT_SITOVASTI") {
+                hakemuserittely.paikanVastaanottaneet.push(hakemus);
+            } else if (vastaanottotila === "EHDOLLISESTI_VASTAANOTTANUT") {
+                hakemuserittely.ehdollisesti.push(hakemus);
+            }
+        } else if (hakemus.tila === "VARALLA") {
+            hakemuserittely.varasijoilla.push(hakemus);
+        }
+    };
+
     var model = new function () {
 
         this.hakuOid = null;
@@ -126,6 +150,7 @@ angular.module('valintalaskenta')
                             model.hakemusErittelyt.push(hakemuserittely);
                             var sija = 0;
                             valintatapajono.hakemukset.forEach(function (hakemus, index) {
+                                categorizeHakemusForErittely(hakemuserittely, valintatapajono, hakemus, tilat);
                                 var jono = {
                                     nimi: valintatapajono.nimi,
                                     pisteet: hakemus.pisteet,
@@ -157,19 +182,12 @@ angular.module('valintalaskenta')
                                 if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
                                     sija++;
                                     hakemus.valittu = true;
-                                    hakemuserittely.hyvaksytyt.push(hakemus);
                                     hakemus.sija = sija;
                                     jono.sija = sija;
                                 }
 
-                                if ((hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && hakemus.hyvaksyttyHarkinnanvaraisesti) {
-                                    hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
-                                }
-
-
                                 if (hakemus.tila === "VARALLA") {
                                     sija++;
-                                    hakemuserittely.varasijoilla.push(hakemus);
                                     hakemus.sija = sija;
                                     jono.sija = sija;
                                 }
@@ -217,14 +235,6 @@ angular.module('valintalaskenta')
                                             }
                                             currentHakemus.vastaanottoTila = vastaanottotila.tila;
                                             currentHakemus.muokattuVastaanottoTila = vastaanottotila.tila;
-
-                                            if (_.contains(['HYVAKSYTTY', 'VARASIJALTA_HYVAKSYTTY'], currentHakemus.tila)) {
-                                                if (_.contains(['VASTAANOTTANUT', 'VASTAANOTTANUT_SITOVASTI'], currentHakemus.vastaanottoTila)) {
-                                                    hakemuserittely.paikanVastaanottaneet.push(currentHakemus);
-                                                } else if (currentHakemus.vastaanottoTila === 'EHDOLLISESTI_VASTAANOTTANUT') {
-                                                    hakemuserittely.ehdollisesti.push(currentHakemus);
-                                                }
-                                            }
 
                                             if (vastaanottotila.ilmoittautumisTila === null) {
                                                 vastaanottotila.ilmoittautumisTila = "EI_TEHTY";
