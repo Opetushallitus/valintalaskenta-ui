@@ -41,7 +41,7 @@ angular.module('valintalaskenta')
     };
 
     var createHakijanSijoitteluntuloksenJono = function(valintatapajono, hakemus) {
-        return {
+        var jono = {
             nimi: valintatapajono.nimi,
             pisteet: hakemus.pisteet,
             tila: hakemus.tila,
@@ -49,7 +49,11 @@ angular.module('valintalaskenta')
             prioriteetti: valintatapajono.prioriteetti,
             tilaHistoria: hakemus.tilaHistoria,
             varasijanNumero: hakemus.varasijanNumero
+        };
+        if (hakemus.sija) {
+            jono.sija = hakemus.sija;
         }
+        return jono;
     };
 
     var categorizeHakemusForErittely = function(hakemuserittely, hakemus) {
@@ -293,15 +297,6 @@ angular.module('valintalaskenta')
                                     }
                                 }
 
-                                categorizeHakemusForErittely(hakemuserittely, hakemus);
-                                var jono = createHakijanSijoitteluntuloksenJono(valintatapajono, hakemus);
-                                if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
-                                    var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
-                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
-                                    model.sijoitteluntulosHakijoittainArray.push(hakijanSijoitteluntulos);
-                                }
-                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
-
                                 hakemus.valittu = (
                                     hakemus.tila === "HYVAKSYTTY" ||
                                     hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
@@ -318,10 +313,19 @@ angular.module('valintalaskenta')
                                     hakemus.tila === "VARALLA") {
                                     sija++;
                                     hakemus.sija = sija;
-                                    jono.sija = sija;
                                 }
 
                                 hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
+
+                                categorizeHakemusForErittely(hakemuserittely, hakemus);
+                                if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
+                                    var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
+                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
+                                    model.sijoitteluntulosHakijoittainArray.push(hakijanSijoitteluntulos);
+                                }
+                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(
+                                    createHakijanSijoitteluntuloksenJono(valintatapajono, hakemus)
+                                );
                             });
 
                             valintatapajono.tableParams = createValintatapajonoTableParams(valintatapajono);
