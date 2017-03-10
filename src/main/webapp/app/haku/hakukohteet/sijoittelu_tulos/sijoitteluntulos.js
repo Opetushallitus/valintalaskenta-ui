@@ -232,7 +232,9 @@ angular.module('valintalaskenta')
                                 categorizeHakemusForErittely(hakemuserittely, hakemus);
                                 var jono = createHakijanSijoitteluntuloksenJono(valintatapajono, hakemus);
                                 if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
-                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = createHakijanSijoitteluntulos(hakemus);
+                                    var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
+                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
+                                    model.sijoitteluntulosHakijoittainArray.push(hakijanSijoitteluntulos);
                                 }
                                 model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
 
@@ -294,12 +296,6 @@ angular.module('valintalaskenta')
                         });
 
                     }
-
-                    for (var key in model.sijoitteluntulosHakijoittain) {
-                        if (model.sijoitteluntulosHakijoittain.hasOwnProperty(key)) {
-                            model.sijoitteluntulosHakijoittainArray.push(model.sijoitteluntulosHakijoittain[key]);
-                        }
-                    };
 
                     model.sijoitteluntulosHakijoittainTableParams = new ngTableParams({
                         page: 1,            // show first page
