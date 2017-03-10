@@ -493,7 +493,7 @@ angular.module('valintalaskenta')
 
     return model;
 
-    function fetchAndPopulateVastaanottoAikarajaMennyt(tilat) {
+    function fetchAndPopulateVastaanottoAikarajaMennyt() {
         if ("false" !== SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
             var hakemuksetOnLadattu = _.size(model.sijoitteluntulosHakijoittain) > 0;
             if (hakemuksetOnLadattu) {
@@ -515,7 +515,6 @@ angular.module('valintalaskenta')
                     });
             }
         }
-        return tilat;
     }
 
     function haeTilaHakijalleTarvitsevilleHakemuksille(nakyvatJononHakemukset, valintatapajonoOid) {
