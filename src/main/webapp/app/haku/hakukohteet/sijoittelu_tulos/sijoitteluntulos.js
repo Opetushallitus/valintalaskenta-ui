@@ -290,6 +290,8 @@ angular.module('valintalaskenta')
                     model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
                         valintatapajono.index = index;
                         valintatapajono.valittu = true;
+                        var hakemuserittely = createHakemuserittely(valintatapajono);
+                        model.hakemusErittelyt.push(hakemuserittely);
                         calculateSijat(valintatapajono);
                         valintatapajono.hakemukset.forEach(function (hakemus) {
                             hakemus.valittu = (
@@ -315,9 +317,7 @@ angular.module('valintalaskenta')
                                 }
                             });
 
-                            var hakemuserittely = createHakemuserittely(valintatapajono);
                             categorizeHakemusForErittely(hakemuserittely, hakemus);
-                            model.hakemusErittelyt.push(hakemuserittely);
 
                             if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                 var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
