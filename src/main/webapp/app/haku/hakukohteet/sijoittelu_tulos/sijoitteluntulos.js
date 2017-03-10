@@ -107,12 +107,10 @@ angular.module('valintalaskenta')
                     if (result.sijoitteluajoId) {
                         model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
                         model.sijoitteluTulokset = result;
-                        var valintatapajonot = model.sijoitteluTulokset.valintatapajonot;
-                        valintatapajonot.forEach(function (valintatapajono, index) {
+                        model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
                             valintatapajono.index = index;
                             valintatapajono.valittu = true;
                             var valintatapajonoOid = valintatapajono.oid;
-                            var hakemukset = valintatapajono.hakemukset;
                             //pick up data to be shown in basicinformation vie
                             var hakemuserittely = {
                                 nimi: valintatapajono.nimi,
@@ -128,7 +126,7 @@ angular.module('valintalaskenta')
                             model.hakemusErittelyt.push(hakemuserittely);
                             var lastTasaSija = 1;
                             var sija = 0;
-                            hakemukset.forEach(function (hakemus, index) {
+                            valintatapajono.hakemukset.forEach(function (hakemus, index) {
                                 var jono = {
                                     nimi: valintatapajono.nimi,
                                     pisteet: hakemus.pisteet,
@@ -198,8 +196,8 @@ angular.module('valintalaskenta')
                             });
 
                             // HERE
-                            if (hakemukset) {
-                                hakemukset.forEach(function (currentHakemus) {
+                            if (valintatapajono.hakemukset) {
+                                valintatapajono.hakemukset.forEach(function (currentHakemus) {
 
                                     //make rest calls in separate scope to prevent hakemusOid to be overridden during rest call
                                     currentHakemus.vastaanottoTila = "KESKEN";
