@@ -40,6 +40,18 @@ angular.module('valintalaskenta')
         }
     };
 
+    var createHakijanSijoitteluntuloksenJono = function(valintatapajono, hakemus) {
+        return {
+            nimi: valintatapajono.nimi,
+            pisteet: hakemus.pisteet,
+            tila: hakemus.tila,
+            jonosija: hakemus.jonosija,
+            prioriteetti: valintatapajono.prioriteetti,
+            tilaHistoria: hakemus.tilaHistoria,
+            varasijanNumero: hakemus.varasijanNumero
+        }
+    };
+
     var categorizeHakemusForErittely = function(hakemuserittely, valintatapajono, hakemus, tilat) {
         if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
             hakemuserittely.hyvaksytyt.push(hakemus);
@@ -173,15 +185,7 @@ angular.module('valintalaskenta')
                             var sija = 0;
                             valintatapajono.hakemukset.forEach(function (hakemus, index) {
                                 categorizeHakemusForErittely(hakemuserittely, valintatapajono, hakemus, tilat);
-                                var jono = {
-                                    nimi: valintatapajono.nimi,
-                                    pisteet: hakemus.pisteet,
-                                    tila: hakemus.tila,
-                                    jonosija: hakemus.jonosija,
-                                    prioriteetti: valintatapajono.prioriteetti,
-                                    tilaHistoria: hakemus.tilaHistoria,
-                                    varasijanNumero: hakemus.varasijanNumero
-                                };
+                                var jono = createHakijanSijoitteluntuloksenJono(valintatapajono, hakemus);
                                 if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                     model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = createHakijanSijoitteluntulos(hakemus);
                                 }
