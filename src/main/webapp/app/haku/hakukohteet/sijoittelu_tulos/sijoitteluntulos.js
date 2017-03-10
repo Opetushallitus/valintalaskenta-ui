@@ -172,8 +172,6 @@ angular.module('valintalaskenta')
                         model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
                             valintatapajono.index = index;
                             valintatapajono.valittu = true;
-                            var valintatapajonoOid = valintatapajono.oid;
-                            //pick up data to be shown in basicinformation vie
                             var hakemuserittely = createHakemuserittely(valintatapajono);
                             model.hakemusErittelyt.push(hakemuserittely);
                             var sija = 0;
