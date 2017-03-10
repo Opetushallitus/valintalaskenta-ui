@@ -138,6 +138,46 @@ angular.module('valintalaskenta')
         })
     };
 
+    var enrichHakemusWithValintatulos = function(hakemus, valintatulos) {
+        hakemus.logEntries = valintatulos.logEntries;
+        if (!hakemus.hakijaOid) {
+            hakemus.hakijaOid = valintatulos.hakijaOid;
+        }
+        if (valintatulos.tila === null) {
+            valintatulos.tila = "KESKEN";
+        }
+        if (valintatulos.tilaHakijalle === null) {
+            valintatulos.tilaHakijalle = "";
+            hakemus.tilaHakijalleTaytyyLadataPalvelimelta = true;
+        }
+        hakemus.vastaanottoTila = valintatulos.tila;
+        hakemus.muokattuVastaanottoTila = valintatulos.tila;
+
+        if (valintatulos.ilmoittautumisTila === null) {
+            valintatulos.ilmoittautumisTila = "EI_TEHTY";
+        }
+        hakemus.tilaHakijalle = valintatulos.tilaHakijalle;
+        hakemus.viimeinenMuutos = valintatulos.viimeinenMuutos;
+        hakemus.onkoMuuttunutViimeSijoittelussa =
+            hakemus.onkoMuuttunutViimeSijoittelussa ||
+            model.latestSijoitteluajo.sijoitteluajoId <= hakemus.viimeinenMuutos;
+        hakemus.ilmoittautumisTila = valintatulos.ilmoittautumisTila;
+        hakemus.muokattuIlmoittautumisTila = valintatulos.ilmoittautumisTila;
+        hakemus.julkaistavissa = valintatulos.julkaistavissa;
+        hakemus.ehdollisestiHyvaksyttavissa = valintatulos.ehdollisestiHyvaksyttavissa;
+        hakemus.hyvaksyttyVarasijalta = valintatulos.hyvaksyttyVarasijalta;
+        hakemus.read = valintatulos.read;
+        hakemus.hyvaksyPeruuntunut = valintatulos.hyvaksyPeruuntunut;
+
+        if (valintatulos.hyvaksymiskirjeLahetetty) {
+            hakemus.hyvaksymiskirjeLahetetty = true;
+            hakemus.hyvaksymiskirjeLahetettyPvm = valintatulos.hyvaksymiskirjeLahetetty;
+        }
+        else {
+            valintatulos.hyvaksymiskirjeLahetetty = false;
+        }
+    };
+
     var model = new function () {
 
         this.hakuOid = null;
@@ -242,11 +282,11 @@ angular.module('valintalaskenta')
                             valintatapajono.valittu = true;
                             var sija = 0;
                             valintatapajono.hakemukset.forEach(function (hakemus, index) {
-                                var vastaanottotila = null;
+                                var valintatulos = null;
                                 tilat.forEach(function(t) {
                                     if (t.hakemusOid === hakemus.hakemusOid &&
                                         t.valintatapajonoOid === valintatapajono.oid) {
-                                        vastaanottotila = t;
+                                        valintatulos = t;
                                     }
                                 });
 
@@ -255,44 +295,8 @@ angular.module('valintalaskenta')
                                 hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
                                 hakemus.tilaHakijalle = "KESKEN";
 
-                                if (vastaanottotila) {
-                                    hakemus.logEntries = vastaanottotila.logEntries;
-                                    if (!hakemus.hakijaOid) {
-                                        hakemus.hakijaOid = vastaanottotila.hakijaOid;
-                                    }
-                                    if (vastaanottotila.tila === null) {
-                                        vastaanottotila.tila = "KESKEN";
-                                    }
-                                    if (vastaanottotila.tilaHakijalle === null) {
-                                        vastaanottotila.tilaHakijalle = "";
-                                        hakemus.tilaHakijalleTaytyyLadataPalvelimelta = true;
-                                    }
-                                    hakemus.vastaanottoTila = vastaanottotila.tila;
-                                    hakemus.muokattuVastaanottoTila = vastaanottotila.tila;
-
-                                    if (vastaanottotila.ilmoittautumisTila === null) {
-                                        vastaanottotila.ilmoittautumisTila = "EI_TEHTY";
-                                    }
-                                    hakemus.tilaHakijalle = vastaanottotila.tilaHakijalle;
-                                    hakemus.viimeinenMuutos = vastaanottotila.viimeinenMuutos;
-                                    hakemus.onkoMuuttunutViimeSijoittelussa =
-                                        hakemus.onkoMuuttunutViimeSijoittelussa ||
-                                        model.latestSijoitteluajo.sijoitteluajoId <= hakemus.viimeinenMuutos;
-                                    hakemus.ilmoittautumisTila = vastaanottotila.ilmoittautumisTila;
-                                    hakemus.muokattuIlmoittautumisTila = vastaanottotila.ilmoittautumisTila;
-                                    hakemus.julkaistavissa = vastaanottotila.julkaistavissa;
-                                    hakemus.ehdollisestiHyvaksyttavissa = vastaanottotila.ehdollisestiHyvaksyttavissa;
-                                    hakemus.hyvaksyttyVarasijalta = vastaanottotila.hyvaksyttyVarasijalta;
-                                    hakemus.read = vastaanottotila.read;
-                                    hakemus.hyvaksyPeruuntunut = vastaanottotila.hyvaksyPeruuntunut;
-
-                                    if (vastaanottotila.hyvaksymiskirjeLahetetty) {
-                                        hakemus.hyvaksymiskirjeLahetetty = true;
-                                        hakemus.hyvaksymiskirjeLahetettyPvm = vastaanottotila.hyvaksymiskirjeLahetetty;
-                                    }
-                                    else {
-                                        vastaanottotila.hyvaksymiskirjeLahetetty = false;
-                                    }
+                                if (valintatulos) {
+                                    enrichHakemusWithValintatulos(hakemus, valintatulos);
                                 }
 
                                 hakemus.valittu = (
