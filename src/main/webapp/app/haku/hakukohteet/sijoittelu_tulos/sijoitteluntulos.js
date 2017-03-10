@@ -52,7 +52,7 @@ angular.module('valintalaskenta')
         }
     };
 
-    var categorizeHakemusForErittely = function(hakemuserittely, hakemus, vastaanottotila) {
+    var categorizeHakemusForErittely = function(hakemuserittely, hakemus) {
         if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
             hakemuserittely.hyvaksytyt.push(hakemus);
 
@@ -60,9 +60,9 @@ angular.module('valintalaskenta')
                 hakemuserittely.hyvaksyttyHarkinnanvaraisesti.push(hakemus);
             }
 
-            if (vastaanottotila === "VASTAANOTTANUT_SITOVASTI") {
+            if (hakemus.vastaanottoTila === "VASTAANOTTANUT_SITOVASTI") {
                 hakemuserittely.paikanVastaanottaneet.push(hakemus);
-            } else if (vastaanottotila === "EHDOLLISESTI_VASTAANOTTANUT") {
+            } else if (hakemus.vastaanottoTila === "EHDOLLISESTI_VASTAANOTTANUT") {
                 hakemuserittely.ehdollisesti.push(hakemus);
             }
         } else if (hakemus.tila === "VARALLA") {
@@ -233,7 +233,7 @@ angular.module('valintalaskenta')
                                     }
                                 }
 
-                                categorizeHakemusForErittely(hakemuserittely, hakemus, vastaanottotila ? vastaanottotila.tila : null);
+                                categorizeHakemusForErittely(hakemuserittely, hakemus);
                                 var jono = createHakijanSijoitteluntuloksenJono(valintatapajono, hakemus);
                                 if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                     model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = createHakijanSijoitteluntulos(hakemus);
