@@ -183,6 +183,12 @@ angular.module('valintalaskenta')
                                     hakemus.tila === "HYVAKSYTTY" ||
                                     hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
                                 );
+                                hakemus.naytetaanVastaanottotieto = (
+                                    hakemus.tila == 'HYVAKSYTTY' ||
+                                    hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' ||
+                                    hakemus.tila == 'PERUNUT' ||
+                                    hakemus.tila == 'PERUUTETTU'
+                                );
 
                                 if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
                                     sija++;
@@ -195,13 +201,6 @@ angular.module('valintalaskenta')
                                     hakemus.sija = sija;
                                     jono.sija = sija;
                                 }
-
-                                if(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || hakemus.tila == 'PERUUTETTU') {
-                                    hakemus.naytetaanVastaanottotieto = true;
-                                } else {
-                                    hakemus.naytetaanVastaanottotieto = false;
-                                }
-
 
                                 hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
 
