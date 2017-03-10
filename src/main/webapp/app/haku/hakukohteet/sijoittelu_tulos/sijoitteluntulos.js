@@ -138,6 +138,18 @@ angular.module('valintalaskenta')
         })
     };
 
+    var calculateSijat = function(valintatapajono) {
+        valintatapajono.hakemukset.filter(function(hakemus) {
+            return (
+                hakemus.tila === "HYVAKSYTTY" ||
+                hakemus.tila === "VARASIJALTA_HYVAKSYTTY" ||
+                hakemus.tila === "VARALLA"
+            );
+        }).forEach(function(hakemus, i) {
+            hakemus.sija = i + 1;
+        });
+    };
+
     var enrichHakemusWithValintatulos = function(hakemus, valintatulos) {
         hakemus.logEntries = valintatulos.logEntries;
         if (!hakemus.hakijaOid) {
@@ -280,8 +292,8 @@ angular.module('valintalaskenta')
                         model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
                             valintatapajono.index = index;
                             valintatapajono.valittu = true;
-                            var sija = 0;
-                            valintatapajono.hakemukset.forEach(function (hakemus, index) {
+                            calculateSijat(valintatapajono);
+                            valintatapajono.hakemukset.forEach(function (hakemus) {
                                 hakemus.valittu = (
                                     hakemus.tila === "HYVAKSYTTY" ||
                                     hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
@@ -292,12 +304,6 @@ angular.module('valintalaskenta')
                                     hakemus.tila == 'PERUNUT' ||
                                     hakemus.tila == 'PERUUTETTU'
                                 );
-                                if (hakemus.tila === "HYVAKSYTTY" ||
-                                    hakemus.tila === "VARASIJALTA_HYVAKSYTTY" ||
-                                    hakemus.tila === "VARALLA") {
-                                    sija++;
-                                    hakemus.sija = sija;
-                                }
                                 hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
 
                                 hakemus.vastaanottoTila = "KESKEN";
