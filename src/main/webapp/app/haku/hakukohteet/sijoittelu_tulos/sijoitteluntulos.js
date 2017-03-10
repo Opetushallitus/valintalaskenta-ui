@@ -272,94 +272,79 @@ angular.module('valintalaskenta')
                 model.haku = resultWrapper.result;
             });
 
-            var vastaanottotilatDeferred = $q.defer();
-            var sijoitteluajoDeferred = $q.defer();
+            $q.all({
+                sijoittelunTulokset: LatestSijoitteluajoHakukohde.get({
+                    hakukohdeOid: hakukohdeOid,
+                    hakuOid: hakuOid
+                }).$promise,
+                valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({
+                    hakukohdeOid: hakukohdeOid,
+                    hakuOid: hakuOid
+                }).$promise
+            }).then(function(o) {
+                var sijoittelunTulokset = o.sijoittelunTulokset;
+                var valintatulokset = o.valintatulokset;
+                if (sijoittelunTulokset.sijoitteluajoId) {
+                    model.latestSijoitteluajo.sijoitteluajoId = sijoittelunTulokset.sijoitteluajoId;
+                    model.sijoitteluTulokset = sijoittelunTulokset;
+                    model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
+                        valintatapajono.index = index;
+                        valintatapajono.valittu = true;
+                        calculateSijat(valintatapajono);
+                        valintatapajono.hakemukset.forEach(function (hakemus) {
+                            hakemus.valittu = (
+                                hakemus.tila === "HYVAKSYTTY" ||
+                                hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
+                            );
+                            hakemus.naytetaanVastaanottotieto = (
+                                hakemus.tila == 'HYVAKSYTTY' ||
+                                hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' ||
+                                hakemus.tila == 'PERUNUT' ||
+                                hakemus.tila == 'PERUUTETTU'
+                            );
+                            hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
 
-            HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({hakukohdeOid: hakukohdeOid,
-                hakuOid: hakuOid},
-              function (result) {
-                  vastaanottotilatDeferred.resolve(result);
-            }, function (error) {
-                  vastaanottotilatDeferred.reject(error);
-            });
-
-            sijoitteluajoDeferred.promise.then(function(result) {
-                vastaanottotilatDeferred.promise
-                  .then(function(tilat) {
-                    if (result.sijoitteluajoId) {
-                        model.latestSijoitteluajo.sijoitteluajoId = result.sijoitteluajoId;
-                        model.sijoitteluTulokset = result;
-                        model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
-                            valintatapajono.index = index;
-                            valintatapajono.valittu = true;
-                            calculateSijat(valintatapajono);
-                            valintatapajono.hakemukset.forEach(function (hakemus) {
-                                hakemus.valittu = (
-                                    hakemus.tila === "HYVAKSYTTY" ||
-                                    hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
-                                );
-                                hakemus.naytetaanVastaanottotieto = (
-                                    hakemus.tila == 'HYVAKSYTTY' ||
-                                    hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' ||
-                                    hakemus.tila == 'PERUNUT' ||
-                                    hakemus.tila == 'PERUUTETTU'
-                                );
-                                hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
-
-                                hakemus.vastaanottoTila = "KESKEN";
-                                hakemus.muokattuVastaanottoTila = "KESKEN";
-                                hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
-                                hakemus.tilaHakijalle = "KESKEN";
-                                tilat.forEach(function(valintatulos) {
-                                    if (valintatulos.hakemusOid === hakemus.hakemusOid &&
-                                        valintatulos.valintatapajonoOid === valintatapajono.oid) {
-                                        enrichHakemusWithValintatulos(hakemus, valintatulos);
-                                    }
-                                });
-
-                                var hakemuserittely = createHakemuserittely(valintatapajono);
-                                categorizeHakemusForErittely(hakemuserittely, hakemus);
-                                model.hakemusErittelyt.push(hakemuserittely);
-
-                                if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
-                                    var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
-                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
-                                    model.sijoitteluntulosHakijoittainArray.push(hakijanSijoitteluntulos);
+                            hakemus.vastaanottoTila = "KESKEN";
+                            hakemus.muokattuVastaanottoTila = "KESKEN";
+                            hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
+                            hakemus.tilaHakijalle = "KESKEN";
+                            valintatulokset.forEach(function(valintatulos) {
+                                if (valintatulos.hakemusOid === hakemus.hakemusOid &&
+                                    valintatulos.valintatapajonoOid === valintatapajono.oid) {
+                                    enrichHakemusWithValintatulos(hakemus, valintatulos);
                                 }
-                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(
-                                    createHakijanSijoitteluntuloksenJono(valintatapajono, hakemus)
-                                );
                             });
 
-                            valintatapajono.tableParams = createValintatapajonoTableParams(valintatapajono);
-                        });
-                    }
-                    model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
-                }, function(error) {
-                    model.errors.push(error.data.message);
-                }).then(function() {
-                    model.sijoitteluTulokset.valintatapajonot.forEach(function(v) {
-                        // Result intentionally unused, used for integration testing
-                        ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
-                            Valinnantulokset.compareSijoitteluOldAndNewVtsResponse(v, response.data);
-                            model.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
-                        }, function(error) {
-                            var forBreakpoint = error;
-                        });
-                    });
-                }).then(fetchAndPopulateVastaanottoAikarajaMennyt)
-            }, function(error) {
-                model.errors.push(error.data.message);
-            });
+                            var hakemuserittely = createHakemuserittely(valintatapajono);
+                            categorizeHakemusForErittely(hakemuserittely, hakemus);
+                            model.hakemusErittelyt.push(hakemuserittely);
 
-            LatestSijoitteluajoHakukohde.get({
-                hakukohdeOid: hakukohdeOid,
-                hakuOid: hakuOid
-            }, function (result) {
-                sijoitteluajoDeferred.resolve(result);
-            }, function (error) {
-                sijoitteluajoDeferred.reject(error);
-            });
+                            if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
+                                var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
+                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
+                                model.sijoitteluntulosHakijoittainArray.push(hakijanSijoitteluntulos);
+                            }
+                            model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(
+                                createHakijanSijoitteluntuloksenJono(valintatapajono, hakemus)
+                            );
+                        });
+
+                        valintatapajono.tableParams = createValintatapajonoTableParams(valintatapajono);
+                    });
+                }
+                model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
+            }).then(function() {
+                model.sijoitteluTulokset.valintatapajonot.forEach(function(v) {
+                    // Result intentionally unused, used for integration testing
+                    ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
+                        Valinnantulokset.compareSijoitteluOldAndNewVtsResponse(v, response.data);
+                        model.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
+                    }, function(error) {
+                        var forBreakpoint = error;
+                    });
+                });
+            }).then(fetchAndPopulateVastaanottoAikarajaMennyt)
+                .catch(function(error) { model.errors.push(error.data.message); });
         };
 
         //refresh if haku or hakukohde has changed
