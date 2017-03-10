@@ -335,7 +335,6 @@ angular.module('valintalaskenta')
                         });
                     }
                     model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
-                    return tilat;
                 }, function(error) {
                     model.errors.push(error.data.message);
                 })
