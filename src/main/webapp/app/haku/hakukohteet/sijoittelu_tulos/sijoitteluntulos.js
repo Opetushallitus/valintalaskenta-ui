@@ -176,8 +176,8 @@ angular.module('valintalaskenta')
                                         ilmoittautumisTila: 'EI_TEHTY',
                                         jonot: []
                                     };
-
                                 }
+                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
 
                                 hakemus.valittu = (
                                     hakemus.tila === "HYVAKSYTTY" ||
@@ -203,13 +203,6 @@ angular.module('valintalaskenta')
                                 }
 
                                 hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
-
-                                var found = false;
-                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.forEach(function (j) {
-                                    if (j.nimi === jono.nimi) found = true;
-                                });
-                                if (!found)
-                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
                             });
 
                             // HERE
