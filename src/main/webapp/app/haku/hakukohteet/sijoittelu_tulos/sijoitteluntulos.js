@@ -22,6 +22,24 @@ angular.module('valintalaskenta')
         }
     };
 
+    var createHakijanSijoitteluntulos = function(hakemus) {
+        return {
+            onkoMuuttunutViimeSijoittelussa: hakemus.onkoMuuttunutViimeSijoittelussa,
+            etunimi: hakemus.etunimi,
+            sukunimi: hakemus.sukunimi,
+            hakemusOid: hakemus.hakemusOid,
+            hakijaOid: hakemus.hakijaOid,
+            tilanKuvaukset: hakemus.tilanKuvaukset,
+            hyvaksyttyHarkinnanvaraisesti: hakemus.hyvaksyttyHarkinnanvaraisesti,
+            varasijanNumero: hakemus.varasijanNumero,
+            tila: hakemus.tila,
+            tilaHistoria: hakemus.tilaHistoria,
+            vastaanottoTila: 'KESKEN',
+            ilmoittautumisTila: 'EI_TEHTY',
+            jonot: []
+        }
+    };
+
     var categorizeHakemusForErittely = function(hakemuserittely, valintatapajono, hakemus, tilat) {
         if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
             hakemuserittely.hyvaksytyt.push(hakemus);
@@ -165,21 +183,7 @@ angular.module('valintalaskenta')
                                     varasijanNumero: hakemus.varasijanNumero
                                 };
                                 if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
-                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = {
-                                        onkoMuuttunutViimeSijoittelussa: hakemus.onkoMuuttunutViimeSijoittelussa,
-                                        etunimi: hakemus.etunimi,
-                                        sukunimi: hakemus.sukunimi,
-                                        hakemusOid: hakemus.hakemusOid,
-                                        hakijaOid: hakemus.hakijaOid,
-                                        tilanKuvaukset: hakemus.tilanKuvaukset,
-                                        hyvaksyttyHarkinnanvaraisesti: hakemus.hyvaksyttyHarkinnanvaraisesti,
-                                        varasijanNumero: hakemus.varasijanNumero,
-                                        tila: hakemus.tila,
-                                        tilaHistoria: hakemus.tilaHistoria,
-                                        vastaanottoTila: 'KESKEN',
-                                        ilmoittautumisTila: 'EI_TEHTY',
-                                        jonot: []
-                                    };
+                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = createHakijanSijoitteluntulos(hakemus);
                                 }
                                 model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
 
