@@ -240,8 +240,6 @@ angular.module('valintalaskenta')
                         model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
                             valintatapajono.index = index;
                             valintatapajono.valittu = true;
-                            var hakemuserittely = createHakemuserittely(valintatapajono);
-                            model.hakemusErittelyt.push(hakemuserittely);
                             var sija = 0;
                             valintatapajono.hakemukset.forEach(function (hakemus, index) {
                                 var vastaanottotila = null;
@@ -317,7 +315,10 @@ angular.module('valintalaskenta')
 
                                 hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
 
+                                var hakemuserittely = createHakemuserittely(valintatapajono);
                                 categorizeHakemusForErittely(hakemuserittely, hakemus);
+                                model.hakemusErittelyt.push(hakemuserittely);
+
                                 if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                     var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
                                     model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
