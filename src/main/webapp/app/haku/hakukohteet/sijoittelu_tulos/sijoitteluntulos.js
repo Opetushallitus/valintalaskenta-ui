@@ -337,8 +337,17 @@ angular.module('valintalaskenta')
                     model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
                 }, function(error) {
                     model.errors.push(error.data.message);
-                })
-                .then(fetchAndPopulateVastaanottoAikarajaMennyt)
+                }).then(function() {
+                    model.sijoitteluTulokset.valintatapajonot.forEach(function(v) {
+                        // Result intentionally unused, used for integration testing
+                        ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
+                            Valinnantulokset.compareSijoitteluOldAndNewVtsResponse(v, response.data);
+                            model.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
+                        }, function(error) {
+                            var forBreakpoint = error;
+                        });
+                    });
+                }).then(fetchAndPopulateVastaanottoAikarajaMennyt)
             }, function(error) {
                 model.errors.push(error.data.message);
             });
@@ -347,15 +356,6 @@ angular.module('valintalaskenta')
                 hakukohdeOid: hakukohdeOid,
                 hakuOid: hakuOid
             }, function (result) {
-                // Result intentionally unused, used for integration testing
-                result.valintatapajonot.forEach(function(v) {
-                    ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
-                        Valinnantulokset.compareSijoitteluOldAndNewVtsResponse(v, response.data);
-                        model.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
-                    }, function(error) {
-                        var forBreakpoint = error;
-                    });
-                });
                 sijoitteluajoDeferred.resolve(result);
             }, function (error) {
                 sijoitteluajoDeferred.reject(error);
