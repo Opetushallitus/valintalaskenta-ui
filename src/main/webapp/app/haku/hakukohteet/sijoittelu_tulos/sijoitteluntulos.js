@@ -190,13 +190,9 @@ angular.module('valintalaskenta')
                                     hakemus.tila == 'PERUUTETTU'
                                 );
 
-                                if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
-                                    sija++;
-                                    hakemus.sija = sija;
-                                    jono.sija = sija;
-                                }
-
-                                if (hakemus.tila === "VARALLA") {
+                                if (hakemus.tila === "HYVAKSYTTY" ||
+                                    hakemus.tila === "VARASIJALTA_HYVAKSYTTY" ||
+                                    hakemus.tila === "VARALLA") {
                                     sija++;
                                     hakemus.sija = sija;
                                     jono.sija = sija;
