@@ -8,7 +8,7 @@ angular.module('valintalaskenta')
 
   .factory('Valinnantulokset', [function () {
     var valinnantulokset = {},
-      useVtsData = READ_FROM_VALINTAREKISTERI;
+      useVtsData = READ_FROM_VALINTAREKISTERI === "true";
 
     valinnantulokset.compareOldAndNewVtsResponse = function(oldVtsValintatapajono, newVtsValinnantulokset, checkKeys) {
       compareValintatapajonoValinnantulokset(oldVtsValintatapajono, newVtsValinnantulokset);
