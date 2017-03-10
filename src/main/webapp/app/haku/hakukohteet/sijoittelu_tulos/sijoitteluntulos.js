@@ -179,9 +179,13 @@ angular.module('valintalaskenta')
 
                                 }
 
+                                hakemus.valittu = (
+                                    hakemus.tila === "HYVAKSYTTY" ||
+                                    hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
+                                );
+
                                 if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
                                     sija++;
-                                    hakemus.valittu = true;
                                     hakemus.sija = sija;
                                     jono.sija = sija;
                                 }
