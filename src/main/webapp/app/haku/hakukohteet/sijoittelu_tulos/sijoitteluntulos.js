@@ -282,23 +282,6 @@ angular.module('valintalaskenta')
                             valintatapajono.valittu = true;
                             var sija = 0;
                             valintatapajono.hakemukset.forEach(function (hakemus, index) {
-                                var valintatulos = null;
-                                tilat.forEach(function(t) {
-                                    if (t.hakemusOid === hakemus.hakemusOid &&
-                                        t.valintatapajonoOid === valintatapajono.oid) {
-                                        valintatulos = t;
-                                    }
-                                });
-
-                                hakemus.vastaanottoTila = "KESKEN";
-                                hakemus.muokattuVastaanottoTila = "KESKEN";
-                                hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
-                                hakemus.tilaHakijalle = "KESKEN";
-
-                                if (valintatulos) {
-                                    enrichHakemusWithValintatulos(hakemus, valintatulos);
-                                }
-
                                 hakemus.valittu = (
                                     hakemus.tila === "HYVAKSYTTY" ||
                                     hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
@@ -309,15 +292,24 @@ angular.module('valintalaskenta')
                                     hakemus.tila == 'PERUNUT' ||
                                     hakemus.tila == 'PERUUTETTU'
                                 );
-
                                 if (hakemus.tila === "HYVAKSYTTY" ||
                                     hakemus.tila === "VARASIJALTA_HYVAKSYTTY" ||
                                     hakemus.tila === "VARALLA") {
                                     sija++;
                                     hakemus.sija = sija;
                                 }
-
                                 hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
+
+                                hakemus.vastaanottoTila = "KESKEN";
+                                hakemus.muokattuVastaanottoTila = "KESKEN";
+                                hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
+                                hakemus.tilaHakijalle = "KESKEN";
+                                tilat.forEach(function(valintatulos) {
+                                    if (valintatulos.hakemusOid === hakemus.hakemusOid &&
+                                        valintatulos.valintatapajonoOid === valintatapajono.oid) {
+                                        enrichHakemusWithValintatulos(hakemus, valintatulos);
+                                    }
+                                });
 
                                 var hakemuserittely = createHakemuserittely(valintatapajono);
                                 categorizeHakemusForErittely(hakemuserittely, hakemus);
