@@ -124,7 +124,6 @@ angular.module('valintalaskenta')
                                 prioriteetti: valintatapajono.prioriteetti
                             };
                             model.hakemusErittelyt.push(hakemuserittely);
-                            var lastTasaSija = 1;
                             var sija = 0;
                             valintatapajono.hakemukset.forEach(function (hakemus, index) {
                                 var jono = {
@@ -190,9 +189,6 @@ angular.module('valintalaskenta')
                                 });
                                 if (!found)
                                     model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(jono);
-
-
-                                lastTasaSija = hakemus.tasasijaJonosija;
                             });
 
                             // HERE
