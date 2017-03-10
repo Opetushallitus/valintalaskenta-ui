@@ -70,6 +70,40 @@ angular.module('valintalaskenta')
         }
     };
 
+    var createValintatapajonoTableParams = function(valintatapajono) {
+        return new ngTableParams({
+            page: 1,
+            count: 50,
+            filters: {
+                'sukunimi' : ''
+            },
+            sorting: {
+                'tilaPrioriteetti': 'asc',
+                'varasijanNumero': 'asc',
+                'sija': 'asc'
+            }
+        }, {
+            total: valintatapajono.hakemukset.length,
+            getData: function ($defer, params) {
+                var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                var orderedData = params.sorting() ?
+                    $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
+                    valintatapajono.hakemukset;
+                orderedData = params.filter() ?
+                    $filter('filter')(orderedData, filters) :
+                    orderedData;
+
+                params.total(orderedData.length); // set total for recalc pagination
+                var visibleSlice = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                if ("false" !== SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
+                    haeTilaHakijalleTarvitsevilleHakemuksille(visibleSlice, valintatapajono.oid);
+                }
+                $defer.resolve(visibleSlice);
+            }
+        })
+    };
+
     var model = new function () {
 
         this.hakuOid = null;
@@ -260,39 +294,7 @@ angular.module('valintalaskenta')
                                 hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
                             });
 
-                            valintatapajono.tableParams = new ngTableParams({
-                                page: 1,            // show first page
-                                count: 50,          // count per page
-                                filters: {
-                                    'sukunimi' : ''
-                                },
-                                sorting: {
-                                    'tilaPrioriteetti': 'asc',     // initial sorting
-                                    'varasijanNumero': 'asc',
-                                    'sija': 'asc'
-                                }
-                            }, {
-                                total: valintatapajono.hakemukset.length, // length of data
-                                getData: function ($defer, params) {
-                                    var filters = FilterService.fixFilterWithNestedProperty(params.filter());
-
-                                    var orderedData = params.sorting() ?
-                                      $filter('orderBy')(valintatapajono.hakemukset, params.orderBy()) :
-                                      valintatapajono.hakemukset;
-                                    orderedData = params.filter() ?
-                                      $filter('filter')(orderedData, filters) :
-                                      orderedData;
-
-                                    params.total(orderedData.length); // set total for recalc pagination
-                                    var visibleSlice = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                                    if ("false" !== SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
-                                        haeTilaHakijalleTarvitsevilleHakemuksille(visibleSlice, valintatapajono.oid);
-                                    }
-                                    $defer.resolve(visibleSlice);
-
-                                }
-                            });
-
+                            valintatapajono.tableParams = createValintatapajonoTableParams(valintatapajono);
                         });
 
                     }
