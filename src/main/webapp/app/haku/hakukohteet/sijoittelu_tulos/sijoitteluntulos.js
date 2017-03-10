@@ -104,6 +104,36 @@ angular.module('valintalaskenta')
         })
     };
 
+    var createSijoittelutulosHakijoittainTableParams = function(sijoitteluntulosHakijoittainArray) {
+        return new ngTableParams({
+            page: 1,
+            count: 50,
+            filters: {
+                'sukunimi' : ''
+            },
+            sorting: {
+                'tilaPrioriteetti': 'asc',
+                'varasijanNumero': 'asc',
+                'sija': 'asc'
+            }
+        }, {
+            total: sijoitteluntulosHakijoittainArray.length,
+            getData: function ($defer, params) {
+                var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+
+                var orderedData = params.sorting() ?
+                    $filter('orderBy')(sijoitteluntulosHakijoittainArray, params.orderBy()) :
+                    sijoitteluntulosHakijoittainArray;
+                orderedData = params.filter() ?
+                    $filter('filter')(orderedData, filters) :
+                    orderedData;
+                params.total(orderedData.length); // set total for recalc pagination
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+            }
+        })
+    };
+
     var model = new function () {
 
         this.hakuOid = null;
@@ -296,36 +326,8 @@ angular.module('valintalaskenta')
 
                             valintatapajono.tableParams = createValintatapajonoTableParams(valintatapajono);
                         });
-
                     }
-
-                    model.sijoitteluntulosHakijoittainTableParams = new ngTableParams({
-                        page: 1,            // show first page
-                        count: 50,          // count per page
-                        filters: {
-                            'sukunimi' : ''
-                        },
-                        sorting: {
-                            'tilaPrioriteetti': 'asc',     // initial sorting
-                            'varasijanNumero': 'asc',
-                            'sija': 'asc'
-                        }
-                    }, {
-                        total: model.sijoitteluntulosHakijoittainArray.length, // length of data
-                        getData: function ($defer, params) {
-                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
-
-                            var orderedData = params.sorting() ?
-                              $filter('orderBy')(model.sijoitteluntulosHakijoittainArray, params.orderBy()) :
-                              model.sijoitteluntulosHakijoittainArray;
-                            orderedData = params.filter() ?
-                              $filter('filter')(orderedData, filters) :
-                              orderedData;
-                            params.total(orderedData.length); // set total for recalc pagination
-                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-
-                        }
-                    });
+                    model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
                     return tilat;
                 }, function(error) {
                     model.errors.push(error.data.message);
