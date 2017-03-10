@@ -34,8 +34,8 @@ angular.module('valintalaskenta')
             varasijanNumero: hakemus.varasijanNumero,
             tila: hakemus.tila,
             tilaHistoria: hakemus.tilaHistoria,
-            vastaanottoTila: 'KESKEN',
-            ilmoittautumisTila: 'EI_TEHTY',
+            vastaanottoTila: hakemus.vastaanottoTila,
+            ilmoittautumisTila: hakemus.ilmoittautumisTila,
             jonot: []
         }
     };
@@ -219,8 +219,6 @@ angular.module('valintalaskenta')
                                     hakemus.hyvaksyttyVarasijalta = vastaanottotila.hyvaksyttyVarasijalta;
                                     hakemus.read = vastaanottotila.read;
                                     hakemus.hyvaksyPeruuntunut = vastaanottotila.hyvaksyPeruuntunut;
-                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].vastaanottoTila = hakemus.vastaanottoTila;
-                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].ilmoittautumisTila = hakemus.ilmoittautumisTila;
 
                                     if (vastaanottotila.hyvaksymiskirjeLahetetty) {
                                         hakemus.hyvaksymiskirjeLahetetty = true;
