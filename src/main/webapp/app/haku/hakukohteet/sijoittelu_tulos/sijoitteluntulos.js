@@ -8,6 +8,20 @@ angular.module('valintalaskenta')
                                                IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter) {
     "use strict";
 
+    var createHakemuserittely = function(valintatapajono) {
+        return {
+            nimi: valintatapajono.nimi,
+            hyvaksytyt: [],
+            paikanVastaanottaneet: [],
+            hyvaksyttyHarkinnanvaraisesti: [],
+            varasijoilla: [],
+            ehdollisesti: [],
+            aloituspaikat: valintatapajono.aloituspaikat,
+            alkuperaisetAloituspaikat: valintatapajono.alkuperaisetAloituspaikat,
+            prioriteetti: valintatapajono.prioriteetti
+        }
+    };
+
     var categorizeHakemusForErittely = function(hakemuserittely, valintatapajono, hakemus, tilat) {
         if (hakemus.tila === "HYVAKSYTTY" || hakemus.tila === "VARASIJALTA_HYVAKSYTTY") {
             hakemuserittely.hyvaksytyt.push(hakemus);
@@ -136,17 +150,7 @@ angular.module('valintalaskenta')
                             valintatapajono.valittu = true;
                             var valintatapajonoOid = valintatapajono.oid;
                             //pick up data to be shown in basicinformation vie
-                            var hakemuserittely = {
-                                nimi: valintatapajono.nimi,
-                                hyvaksytyt: [],
-                                paikanVastaanottaneet: [],
-                                hyvaksyttyHarkinnanvaraisesti: [],
-                                varasijoilla: [],
-                                ehdollisesti: [],
-                                aloituspaikat: valintatapajono.aloituspaikat,
-                                alkuperaisetAloituspaikat: valintatapajono.alkuperaisetAloituspaikat,
-                                prioriteetti: valintatapajono.prioriteetti
-                            };
+                            var hakemuserittely = createHakemuserittely(valintatapajono);
                             model.hakemusErittelyt.push(hakemuserittely);
                             var sija = 0;
                             valintatapajono.hakemukset.forEach(function (hakemus, index) {
