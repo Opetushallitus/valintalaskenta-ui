@@ -789,6 +789,17 @@ app.factory('LatestSijoitteluajoHakukohde', function($resource) {
         });
 });
 
+app.factory('VtsLatestSijoitteluajoHakukohde', function($resource) {
+    return $resource(plainUrl("valinta-tulos-service.sijoittelu.sijoitteluajo.hakukohde",
+        ":hakuOid", "latest", ":hakukohdeOid"),
+        {
+            hakukohdeOid: "@hakukohdeOid",
+            hakuOid:"@hakuOid"
+        }, {
+            get: {method: "GET", cache: false}
+        });
+});
+
 app.factory('ErillisHakuSijoitteluajoHakukohde', function($resource) {
         return $resource(plainUrl("sijoittelu-service.erillissijoittelu.sijoitteluajo.hakukohde",
         ":hakuOid", ":sijoitteluajoId", ":hakukohdeOid"),

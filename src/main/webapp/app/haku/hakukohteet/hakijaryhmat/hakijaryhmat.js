@@ -1,7 +1,7 @@
 app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                                                         HakukohdeValinnanvaihe,
                                                         HakukohteenValintatuloksetIlmanTilaHakijalleTietoa,
-                                                        LatestSijoitteluajoHakukohde,
+                                                        VtsLatestSijoitteluajoHakukohde,
                                                         ngTableParams,
                                                         $q,
                                                         $filter) {
@@ -50,7 +50,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
         }
         return $q.all({
             hakijaryhmat: HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}).$promise,
-            sijoittelunTulos: LatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
+            sijoittelunTulos: VtsLatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
             valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
         }).then(function (o) {
             var valintatapajonot = _.indexBy(o.sijoittelunTulos.valintatapajonot, 'oid');
