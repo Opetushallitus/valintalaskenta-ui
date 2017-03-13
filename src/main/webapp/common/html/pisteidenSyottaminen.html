@@ -1,7 +1,7 @@
 <div ng-if="hakija.osallistuu[avain.tunniste] && hakija.osallistuu[avain.tunniste].osallistumistieto !== 'EI_KUTSUTTU'" ng-switch on="avain.lahde">
     <div ng-switch-when="SYOTETTAVA_ARVO">
         <div ng-switch on="avain.tyyppi()">
-            <div ng-switch-when="input">
+            <div ng-switch-when="input" ng-if="hakija.osallistuu[avain.tunniste].osallistumistieto !== 'TOISESSA_HAKUTOIVEESSA' || hakija.osallistuu[avain.tunniste].osallistumistieto !== 'TOISELLA_HAKEMUKSELLA'">
                 <input ng-show="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                        min="{{avain.min}}"
                        max="{{avain.max}}"
@@ -24,7 +24,7 @@
                 <span style="color: red;"></span>
             </div>
 
-            <div ng-switch-when="combo">
+            <div ng-switch-when="combo" ng-if="hakija.osallistuu[avain.tunniste].osallistumistieto !== 'TOISESSA_HAKUTOIVEESSA' && hakija.osallistuu[avain.tunniste].osallistumistieto !== 'TOISELLA_HAKEMUKSELLA'">
                 <select ng-model="hakija.additionalData[avain.tunniste]"
                         osallistuminen="hakija.additionalData[avain.osallistuminenTunniste]"
                         ng-change="changeOsallistuminen(hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste, avain.vaatiiOsallistumisen)"
