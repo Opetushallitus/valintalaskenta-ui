@@ -778,6 +778,17 @@ app.factory('LatestSijoittelunTilat', function($resource) {
         });
 });
 
+app.factory('VtsLatestSijoittelunTilat', function($resource) {
+    return $resource(plainUrl("valinta-tulos-service.sijoittelu.sijoitteluajo.hakemus",
+        ":hakuOid", "latest", ":hakemusOid"),
+        {
+            hakemusOid: "@hakemusOid",
+            hakuOid:"@hakuOid"
+        }, {
+            get: {method: "GET", cache: false}
+        });
+});
+
 app.factory('LatestSijoitteluajoHakukohde', function($resource) {
         return $resource(plainUrl("sijoittelu-service.sijoittelu.sijoitteluajo.hakukohde",
         ":hakuOid", "latest", ":hakukohdeOid"),

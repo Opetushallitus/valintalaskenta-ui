@@ -1,9 +1,9 @@
 app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus, HakukohdeNimi,
                                             ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe,
-                                            SijoittelunVastaanottotilat, LatestSijoittelunTilat,
+                                            SijoittelunVastaanottotilat, VtsLatestSijoittelunTilat,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakemuksenValintatulokset,
-                                            LatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
+                                            VtsLatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
                                             KoostettuHakemusAdditionalDataForHakemus) {
     "use strict";
 
@@ -81,7 +81,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                 });
 
                 //fetch sijoittelun tilat and extend hakutoiveet
-                LatestSijoittelunTilat.get({hakemusOid: hakemus.oid, hakuOid: hakuOid}, function (latest) {
+                VtsLatestSijoittelunTilat.get({hakemusOid: hakemus.oid, hakuOid: hakuOid}, function (latest) {
                     if (latest.hakutoiveet) {
                         latest.hakutoiveet.forEach(function (hakutoive) {
                             if (hakutoiveetMap[hakutoive.hakukohdeOid]) {
@@ -113,7 +113,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             });
                         });
                         hakutoiveet.forEach(function(hakutoive) {
-                            LatestSijoitteluajoHakukohde.get({
+                            VtsLatestSijoitteluajoHakukohde.get({
                                 hakukohdeOid: hakutoive.hakukohdeOid,
                                 hakuOid: hakuOid
                             }, function (result) {
