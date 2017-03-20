@@ -2,11 +2,13 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                                                         HakukohdeValinnanvaihe,
                                                         HakukohteenValintatuloksetIlmanTilaHakijalleTietoa,
                                                         VtsLatestSijoitteluajoHakukohde,
+                                                        LatestSijoitteluajoHakukohde,
                                                         ngTableParams,
                                                         $q,
                                                         $filter) {
     "use strict";
     return function (hakuOid, hakukohdeOid) {
+        var useVtsData = READ_FROM_VALINTAREKISTERI === "true";
         var sijoittelunTilaOrdinal = function (tila) {
             return ["VARALLA", "HYVAKSYTTY", "VARASIJALTA_HYVAKSYTTY", "HARKINNANVARAISESTI_HYVAKSYTTY"].indexOf(tila);
         };
@@ -50,7 +52,9 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
         }
         return $q.all({
             hakijaryhmat: HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}).$promise,
-            sijoittelunTulos: VtsLatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
+            sijoittelunTulos: useVtsData ?
+                VtsLatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+              : LatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
             valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
         }).then(function (o) {
             var valintatapajonot = _.indexBy(o.sijoittelunTulos.valintatapajonot, 'oid');

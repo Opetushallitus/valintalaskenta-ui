@@ -40,7 +40,7 @@ angular.module('valintalaskenta').
         'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', 'ViestintapalveluProxy', 'ViestintapalveluJulkaiseProxy',
         '$log', '$timeout', '$q','$location', 'ViestintapalveluEPosti',
         'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
-        '$http', '$route', '$window', 'VtsSijoitteluAjoPerustiedot', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
+        '$http', '$route', '$window', 'VtsSijoitteluAjoPerustiedot', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
         'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat', 'Korkeakoulu',
         'CustomHakuUtil','Hyvaksymiskirjepohjat',
         function ($scope, $modal, $interval, _, 
@@ -48,10 +48,13 @@ angular.module('valintalaskenta').
         		Jalkiohjauskirjepohjat, AktivoiKelaFtp, ViestintapalveluProxy, ViestintapalveluJulkaiseProxy,
         		$log, $timeout, $q, $location, ViestintapalveluEPosti,
         		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
-                $http, $route, $window, VtsSijoitteluAjoPerustiedot, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
+                $http, $route, $window, VtsSijoitteluAjoPerustiedot, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
                 HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat, Korkeakoulu,
                 CustomHakuUtil,Hyvaksymiskirjepohjat) {
     "use strict";
+
+    var useVtsData = READ_FROM_VALINTAREKISTERI === "true";
+
     $scope.naytetaanHaut = false;
     $scope.kaikkiHautValittu = false;
     $scope.customHakuUtil = CustomHakuUtil;
@@ -252,9 +255,16 @@ angular.module('valintalaskenta').
             });
     };
     // KELA TAULUKON CHECKBOXIT LOPPUU
-    VtsSijoitteluAjoPerustiedot.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function (result) {
-        $scope.sijoitteluModel = result;
-    });
+    if(useVtsData) {
+        VtsSijoitteluAjoPerustiedot.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function (result) {
+            $scope.sijoitteluModel = result;
+        });
+    } else {
+        SijoitteluAjo.get({hakuOid: $routeParams.hakuOid, sijoitteluajoOid: 'latest'}, function (result) {
+            $scope.sijoitteluModel = result;
+        });
+    }
+
     $scope.sijoittelunTuloksetHyvaksymiskirjeiksi = function() {
         var hakuoid = $routeParams.hakuOid;
         SijoittelunTulosHyvaksymiskirjeet.aktivoi({hakuOid: hakuoid}, {}, function (id) {
