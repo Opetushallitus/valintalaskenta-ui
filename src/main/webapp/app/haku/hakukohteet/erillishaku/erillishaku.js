@@ -4,11 +4,11 @@ angular.module('valintalaskenta')
         'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
         'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
-        'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
+        'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset', 'HenkiloPerustietosByHenkiloOidList',
         function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                   ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
                   ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-                  VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset) {
+                  VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList) {
       "use strict";
 
       $scope.muokatutHakemukset = {};
@@ -299,6 +299,17 @@ angular.module('valintalaskenta')
         }
       };
 
+      var enrichHakemuksetWithHakijat = function(valintatapajono) {
+        var henkiloOids = _.uniq(_.map(valintatapajono.hakemukset, function(h) { return h.hakijaOid }));
+        HenkiloPerustietosByHenkiloOidList.post(henkiloOids).$promise.then(function(henkiloPerustiedot) {
+          _.forEach(valintatapajono.hakemukset, function(hakemus) {
+            var henkilo = _.find(henkiloPerustiedot, function(henkilo) { return henkilo.oidHenkilo == hakemus.hakijaOid });
+            hakemus.etunimi = henkilo.etunimet;
+            hakemus.sukunimi = henkilo.sukunimi;
+          });
+        });
+      };
+
       var processErillishaku = function(erillishaku, oidToMaksuvelvollisuus) {
         var hakemukset = _.chain(erillishaku)
           .map(function (e) {
@@ -306,6 +317,7 @@ angular.module('valintalaskenta')
           })
           .flatten()
           .map(function (v) {
+            enrichHakemuksetWithHakijat(v);
             createTableParamsForValintatapaJono(v);
             return v.hakemukset;
           })
