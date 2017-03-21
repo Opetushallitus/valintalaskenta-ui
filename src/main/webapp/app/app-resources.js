@@ -988,6 +988,11 @@ app.factory('OrganizationHierarchy', function ($resource) {
     });
 });
 
+app.factory('HenkiloPerustietosByHenkiloOidList', function ($resource) {
+    return $resource(window.url("oppijanumerorekisteri-service.henkilo.henkiloPerustietosByHenkiloOidList"), {}, {
+        post:  {method:'POST', isArray:true}
+    });
+});
 
 angular.module('valintalaskenta')
 

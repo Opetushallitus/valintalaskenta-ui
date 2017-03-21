@@ -2,10 +2,10 @@ angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
         '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
-        'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter',
+        'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList',
         function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, ValintaesityksenHyvaksyminen,
                                                $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
-                                               IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter) {
+                                               IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList) {
     "use strict";
 
     var createHakemuserittely = function(valintatapajono) {
@@ -257,6 +257,16 @@ angular.module('valintalaskenta')
 			valintatapajono.valittu = this.isAllValittu(valintatapajono);
 		};
 
+		var createSijoittelunHakijaOidArray = function(sijoitteluTulokset) {
+            return _.uniq(_.flatten(_.map(
+                sijoitteluTulokset.valintatapajonot, function(jono) {
+                    return _.map(jono.hakemukset, function(hakemus) {
+                        return hakemus.hakijaOid;
+                    });
+                }
+            )));
+        };
+
         this.refresh = function (hakuOid, hakukohdeOid) {
             model.errors = [];
             model.errors.length = 0;
@@ -282,17 +292,29 @@ angular.module('valintalaskenta')
                 sijoittelunTulokset: LatestSijoitteluajoHakukohde.get({
                     hakukohdeOid: hakukohdeOid,
                     hakuOid: hakuOid
-                }).$promise,
+                }),
                 valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({
                     hakukohdeOid: hakukohdeOid,
                     hakuOid: hakuOid
                 }).$promise
-            }).then(function(o) {
-                var sijoittelunTulokset = o.sijoittelunTulokset;
-                var valintatulokset = o.valintatulokset;
-                if (sijoittelunTulokset.sijoitteluajoId) {
-                    model.latestSijoitteluajo.sijoitteluajoId = sijoittelunTulokset.sijoitteluajoId;
-                    model.sijoitteluTulokset = sijoittelunTulokset;
+            }).then(function(tulokset) {
+                return HenkiloPerustietosByHenkiloOidList.post(
+                    createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset)).$promise.then(function(henkiloPerustiedot) {
+                        tulokset.henkilot = _.map(henkiloPerustiedot, function(henkilo) {
+                            return {
+                                oid : henkilo.oidHenkilo,
+                                etunimi : henkilo.etunimet,
+                                sukunimi : henkilo.sukunimi
+                            }
+                        });
+                        return tulokset;
+                    }
+                );
+            }).then(function(tulokset) {
+                if (tulokset.sijoittelunTulokset.sijoitteluajoId) {
+                    model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
+                    model.sijoitteluTulokset = tulokset.sijoittelunTulokset;
+                    model.henkilot = tulokset.henkilot;
                     model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
                         valintatapajono.index = index;
                         valintatapajono.valittu = true;
@@ -300,6 +322,10 @@ angular.module('valintalaskenta')
                         model.hakemusErittelyt.push(hakemuserittely);
                         calculateSijat(valintatapajono);
                         valintatapajono.hakemukset.forEach(function (hakemus) {
+                            var hakija = _.find(model.henkilot, function(henkilo) { return henkilo.oid == hakemus.hakijaOid });
+                            hakemus.etunimi = hakija.etunimi;
+                            hakemus.sukunimi = hakija.sukunimi;
+
                             hakemus.valittu = (
                                 hakemus.tila === "HYVAKSYTTY" ||
                                 hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
@@ -316,7 +342,7 @@ angular.module('valintalaskenta')
                             hakemus.muokattuVastaanottoTila = "KESKEN";
                             hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
                             hakemus.tilaHakijalle = "KESKEN";
-                            valintatulokset.forEach(function(valintatulos) {
+                            tulokset.valintatulokset.forEach(function(valintatulos) {
                                 if (valintatulos.hakemusOid === hakemus.hakemusOid &&
                                     valintatulos.valintatapajonoOid === valintatapajono.oid) {
                                     enrichHakemusWithValintatulos(hakemus, valintatulos);

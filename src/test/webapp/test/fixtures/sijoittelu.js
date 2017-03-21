@@ -141,7 +141,7 @@ function sijoitteluAjoFixtures(valintaesitysHyvaksytty) {
             "kaikkiEhdonTayttavatHyvaksytaan": false,
             "poissaOlevaTaytto": false,
             "hakemukset": [{
-                "hakijaOid": null,
+                "hakijaOid": "1.2.246.562.11.00000000220",
                 "hakemusOid": "1.2.246.562.11.00000000220",
                 "pisteet": -2,
                 "paasyJaSoveltuvuusKokeenTulos": null,
@@ -818,7 +818,6 @@ function sijoitteluAjoFixtures(valintaesitysHyvaksytty) {
       "sijoitteluajoId": 1434513756673
     });
 
-
     function tilaIs(tila) {
         return function(data) {
             return JSON.parse(data)[0].tila === tila;
@@ -831,6 +830,96 @@ function sijoitteluAjoFixtures(valintaesitysHyvaksytty) {
     // Taustajärjestelmä voi oikessa ympäristössä tuottaa tämän virheen siirryttäessä tilaan joka muutetaan VTS:ssä
     httpBackend.when('POST', /.*resources\/proxy\/valintatulosservice\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hyvaksyttyJonoOid=&hakemusOid=.*/, tilaIs("PERUUTETTU")).respond(400, '{"message": "VTS vastaanottovirhe"}');
     httpBackend.when('POST', /.*resources\/proxy\/valintatulosservice\/haku\/LISAHAKU\/hakukohde\/LISAHAKUKOHDE\?selite=&hyvaksyttyJonoOid=&hakemusOid=.*/).respond();
+
+    httpBackend.when('POST', /.*\/oppijanumerorekisteri-service\/henkilo\/henkiloPerustietosByHenkiloOidList/).respond(
+        [
+            {
+                "oidHenkilo": "1.2.246.562.24.28860135980",
+                "etunimet": "Iiris VII",
+                "sukunimi": "Vitsijärvi"
+            },
+            {
+                "oidHenkilo": "1.2.246.562.24.28860135981",
+                "etunimet": "Pekka III",
+                "sukunimi": "Testauspastori"
+            },
+            {
+                "etunimet": "Isla",
+                "sukunimi": "Alaniemi",
+                "oidHenkilo": "1.2.246.562.11.00002651295"
+            },
+            {
+                "sukunimi": "Alalahti",
+                "etunimet": "Atte",
+                "oidHenkilo": "1.2.246.562.24.72070423946"
+            },
+            {
+                "sukunimi": "Alaj\u00e4rvi",
+                "etunimet": "Ilona",
+                "oidHenkilo": "1.2.246.562.24.88000104119"
+            },
+            {
+                "sukunimi": "Alalahti",
+                "etunimet": "Maija",
+                "oidHenkilo": "1.2.246.562.24.96931075215"
+            },
+            {
+                "sukunimi": "Alajoki",
+                "etunimet": "Benjamin",
+                "oidHenkilo": "1.2.246.562.24.55536433785"
+            },
+            {
+                "sukunimi": "Alajoki",
+                "etunimet": "Eero",
+                "oidHenkilo": "1.2.246.562.24.59123585000"
+            },
+            {
+                "sukunimi": "Alajoki",
+                "etunimet": "Olavi",
+                "oidHenkilo": "1.2.246.562.24.68014983799"
+            },
+            {
+                "sukunimi": "Alalahti",
+                "etunimet": "Akseli",
+                "oidHenkilo": "1.2.246.562.24.77495737092"
+            },
+            {
+                "sukunimi": "Alalahti",
+                "etunimet": "Maija",
+                "oidHenkilo": "1.2.246.562.24.96931075215"
+            },
+            {
+                "sukunimi": "Kelpo-Suonio",
+                "etunimet": "Veikko VIII",
+                "oidHenkilo": "1.2.246.562.24.96271318661"
+            },
+            {
+                "sukunimi": "Sallilahti",
+                "etunimet": "Emma V",
+                "oidHenkilo": "1.2.246.562.24.27210964812"
+            },
+            {
+                "sukunimi": "Hippim\u00e4ki",
+                "etunimet": "Nelli X",
+                "oidHenkilo": "1.2.246.562.24.79882755575"
+            },
+            {
+                "sukunimi": "Hoppuvirta",
+                "etunimet": "Kristiina XX",
+                "oidHenkilo": "1.2.246.562.24.14015124844"
+            },
+            {
+                "oidHenkilo": "1.2.246.562.11.00000000220",
+                "etunimet": "Teppo",
+                "sukunimi": "Testaaja"
+            },
+            {
+                "sukunimi": "Alaniemi",
+                "etunimet": "Isla",
+                "oidHenkilo": "1.2.246.562.24.99005406636"
+            }
+        ]
+    );
 
     var lisahakuTila = [{
         "id": {
