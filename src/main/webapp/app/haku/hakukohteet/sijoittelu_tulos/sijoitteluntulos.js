@@ -1,12 +1,14 @@
 angular.module('valintalaskenta')
 
-.factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'Sijoittelu', 'LatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
-        '$timeout', 'SijoitteluAjo', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
+.factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'LatestSijoitteluajoHakukohde', 'VtsLatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
+        '$timeout', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList',
-        function ($q, Ilmoitus, Sijoittelu, LatestSijoitteluajoHakukohde, VastaanottoTila, ValintaesityksenHyvaksyminen,
-                                               $timeout, SijoitteluAjo, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
-                                               IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList) {
+        function ($q, Ilmoitus, LatestSijoitteluajoHakukohde, VtsLatestSijoitteluajoHakukohde, VastaanottoTila, ValintaesityksenHyvaksyminen,
+                  $timeout, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
+                  IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList) {
     "use strict";
+
+    var useVtsData = READ_FROM_VALINTAREKISTERI === "true";
 
     var createHakemuserittely = function(valintatapajono) {
         return {
@@ -267,6 +269,20 @@ angular.module('valintalaskenta')
             )));
         };
 
+		var sijoittelunTuloksetPromise = function(hakuOid, hakukohdeOid) {
+		    if(useVtsData) {
+		        return VtsLatestSijoitteluajoHakukohde.get({
+                    hakukohdeOid: hakukohdeOid,
+                    hakuOid: hakuOid
+                }).$promise
+            } else {
+		        return LatestSijoitteluajoHakukohde.get({
+                    hakukohdeOid: hakukohdeOid,
+                    hakuOid: hakuOid
+                }).$promise;
+            }
+        };
+
         this.refresh = function (hakuOid, hakukohdeOid) {
             model.errors = [];
             model.errors.length = 0;
@@ -289,10 +305,7 @@ angular.module('valintalaskenta')
             });
 
             $q.all({
-                sijoittelunTulokset: LatestSijoitteluajoHakukohde.get({
-                    hakukohdeOid: hakukohdeOid,
-                    hakuOid: hakuOid
-                }),
+                sijoittelunTulokset: sijoittelunTuloksetPromise(hakuOid, hakukohdeOid),
                 valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({
                     hakukohdeOid: hakukohdeOid,
                     hakuOid: hakuOid
