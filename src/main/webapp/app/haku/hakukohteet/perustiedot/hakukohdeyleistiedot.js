@@ -97,6 +97,8 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _) {
     "use strict";
 
+    $scope.useVtsData = READ_FROM_VALINTAREKISTERI === "true";
+
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
 
@@ -109,7 +111,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     }
 
     $scope.isKorkeakoulu = function () {
-        if($scope.isErillishakuIlmanValintalaskentaa()) {
+        if($scope.useVtsData && $scope.isErillishakuIlmanValintalaskentaa()) {
             return HakuModel.korkeakoulu;
         } else {
             return Korkeakoulu.isKorkeakoulu($scope.sijoitteluntulosModel.haku.kohdejoukkoUri);
@@ -145,11 +147,11 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     };
 
     if($routeParams.hakukohdeOid) {
-        if($scope.isErillishakuIlmanValintalaskentaa()) {
+        if($scope.useVtsData && $scope.isErillishakuIlmanValintalaskentaa()) {
             HakukohdeModel.valinnanvaiheet.forEach(function (e) {
                 e.valintatapajonot.forEach(function(v) {
                     ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
-                        $scope.updateErillishaunHakemusErittelyt(response.data);
+                        updateErillishaunHakemusErittelyt(response.data);
                     }, function(error) {
                         console.log(error);
                     });
