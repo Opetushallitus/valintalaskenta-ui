@@ -221,21 +221,10 @@ angular.module('valintalaskenta')
         return !oid ? false : /MISSING/.test(oid);
       };
 
-      var addKeinotekoinenOidIfMissing = function (valintatapajono, i) {
+      var addKeinotekoinenOidIfMissing = function (valintatapajono) {
         if (!valintatapajono.oid) {
-          valintatapajono.oid = "MISSING_OID_" + (i + 1);
-          createTableParamsForValintatapaJono(valintatapajono);
+          valintatapajono.oid = "MISSING_OID";
         }
-
-        return valintatapajono;
-      };
-
-      var populateValintatapajonoOidsIfMissing = function (erillishaku) {
-        erillishaku.forEach(function (e) {
-          e.valintatapajonot.forEach(addKeinotekoinenOidIfMissing);
-        });
-
-        return erillishaku;
       };
 
       var toLowerStripUnderscore = function(str) {
@@ -311,24 +300,21 @@ angular.module('valintalaskenta')
       };
 
       var processErillishaku = function(erillishaku, oidToMaksuvelvollisuus) {
-        var hakemukset = _.chain(erillishaku)
-          .map(function (e) {
-            return e.valintatapajonot;
-          })
-          .flatten()
-          .map(function (v) {
-            enrichHakemuksetWithHakijat(v);
-            createTableParamsForValintatapaJono(v);
-            return v.hakemukset;
-          })
-          .flatten();
+        if (erillishaku.length !== 1) {
+          console.log("Erillishaku should have one valinnan vaihe");
+          return;
+        }
+        if (erillishaku[0].valintatapajonot.length !== 1) {
+          console.log("Erillishaku should have one valintatapajono");
+          return;
+        }
+        var valintatapajono = erillishaku[0].valintatapajonot[0];
+        addKeinotekoinenOidIfMissing(valintatapajono);
+        enrichHakemuksetWithHakijat(valintatapajono);
+        createTableParamsForValintatapaJono(valintatapajono);
+        fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, valintatapajono.hakemukset);
 
-        // Populate valintatapajonoOids if they are missing to "MISSING_OID"
-        erillishaku = populateValintatapajonoOidsIfMissing(erillishaku);
-
-        fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, hakemukset.value());
-
-        hakemukset.each(function (hakemus) {
+        valintatapajono.hakemukset.forEach(function (hakemus) {
           hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI';
           if (hakemus.hyvaksymiskirjeLahetetty) {
             hakemus.hyvaksymiskirjeLahetettyPvm = hakemus.hyvaksymiskirjeLahetetty;
@@ -349,20 +335,16 @@ angular.module('valintalaskenta')
           $scope.validateHakemuksenTilat(hakemus);
         });
 
-        $scope.erillishaku = erillishaku;
-        getErillishaunValinnantulokset();
+        $scope.valintatapajono = valintatapajono;
+        getErillishaunValinnantulokset(valintatapajono);
       };
 
-      var getErillishaunValinnantulokset = function () {
-        $scope.erillishaku.forEach(function (e) {
-          e.valintatapajonot.forEach(function(v) {
-            ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
-              Valinnantulokset.compareErillishakuOldAndNewVtsResponse(v, response.data);
-              $scope.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
-            }, function(error) {
-              console.log(error);
-            });
-          });
+      var getErillishaunValinnantulokset = function (v) {
+        ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
+          Valinnantulokset.compareErillishakuOldAndNewVtsResponse(v, response.data);
+          $scope.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
+        }, function(error) {
+          console.log(error);
         });
       };
 
