@@ -93,8 +93,8 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
 }])
     
 .controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
-        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull',
-        function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull) {
+        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull', 'ValinnanTulos', '_',
+        function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _) {
     "use strict";
 
     $scope.hakuOid = $routeParams.hakuOid;
@@ -109,12 +109,55 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     }
 
     $scope.isKorkeakoulu = function () {
-        return Korkeakoulu.isKorkeakoulu($scope.sijoitteluntulosModel.haku.kohdejoukkoUri);
+        if($scope.isErillishakuIlmanValintalaskentaa()) {
+            return HakuModel.korkeakoulu;
+        } else {
+            return Korkeakoulu.isKorkeakoulu($scope.sijoitteluntulosModel.haku.kohdejoukkoUri);
+        }
+    };
+
+    $scope.isErillishakuIlmanValintalaskentaa = function () {
+        return HakuModel.hakuOid.erillishaku == true && !HakukohdeModel.kaytetaanValintalaskentaa
+    };
+
+    $scope.erillishaunHakemusErittelyt = {
+            hyvaksytyt : [],
+            ehdollisestiVastaanottaneet : [],
+            paikanVastaanottaneet: []
+    };
+
+    var updateErillishaunHakemusErittelyt = function(valintatapajono) {
+      _.forEach(valintatapajono.hakemukset, function(hakemus) {
+          if("HYVAKSYTTY" === hakemus.valinnantila || "VARASIJALTA_HYVAKSYTTY" === hakemus.valinnantila) {
+              $scope.erillishaunHakemusErittelyt.hyvaksytyt.push(hakemus)
+          }
+          if("VASTAANOTTANUT_SITOVASTI" === hakemus.vastaanottotila) {
+              $scope.erillishaunHakemusErittelyt.paikanVastaanottaneet.push(hakemus)
+          } else if ("EHDOLLISESTI_VASTAANOTTANUT" === hakemus.vastaanottotila) {
+              $scope.erillishaunHakemusErittelyt.ehdollisestiVastaanottaneet.push(hakemus)
+          }
+      });
+    };
+
+    var updateSijoitteluntulosModel = function() {
+        $scope.sijoitteluntulosModel = SijoitteluntulosModel;
+        $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
     };
 
     if($routeParams.hakukohdeOid) {
-        $scope.sijoitteluntulosModel = SijoitteluntulosModel;
-        $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
+        if($scope.isErillishakuIlmanValintalaskentaa()) {
+            HakukohdeModel.valinnanvaiheet.forEach(function (e) {
+                e.valintatapajonot.forEach(function(v) {
+                    ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
+                        $scope.updateErillishaunHakemusErittelyt(response.data);
+                    }, function(error) {
+                        console.log(error);
+                    });
+                });
+            });
+        } else {
+            updateSijoitteluntulosModel()
+        }
     }
 }])
 

@@ -28,7 +28,7 @@
                 </div>
 
                 <h3>{{ t('hakukohteethakukohdeperustiedot.valintatapajonokohtaiset') || 'Valintatapajonokohtaiset tiedot' }}</h3>
-                <table class="virkailija-table-1">
+                <table class="virkailija-table-1" ng-if="!isErillishakuIlmanValintalaskentaa()">
                     <thead>
                     <tr>
                         <th>{{ t('hakukohteethakukohdeperustiedot.valintatapajono') || 'Valintatapajono' }}</th>
@@ -56,7 +56,22 @@
                     </tr>
                     </tbody>
                 </table>
-
+                <table class="virkailija-table-1" ng-if="isErillishakuIlmanValintalaskentaa()">
+                    <thead>
+                    <tr>
+                        <th>{{ t('hakukohteethakukohdeperustiedot.hyvaksytyt') || 'Hyväksytyt yhteensä' }}</th>
+                        <th ng-if="isKorkeakoulu()">{{ t('hakukohteethakukohdeperustiedot.ehdollisesti') || 'Ehdollisesti vastaanottanut' }}</th>
+                        <th>{{ t('hakukohteethakukohdeperustiedot.vastaanottaneet') || 'Paikan vastaanottaneet yhteensä' }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{erillishaunHakemusErittelyt.hyvaksytyt.length}}</td>
+                        <td ng-if="isKorkeakoulu()">{{erillishaunHakemusErittelyt.ehdollisestiVastaanottaneet.length}}</td>
+                        <td>{{erillishaunHakemusErittelyt.paikanVastaanottaneet.length}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="clear"></div>
