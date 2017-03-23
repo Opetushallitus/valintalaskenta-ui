@@ -151,9 +151,24 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         });
     };
 
+    var haeValinnanvaiheet = function () {
+        ErillishakuProxy.hae({
+            hakuOid: $routeParams.hakuOid,
+            hakukohdeOid: $routeParams.hakukohdeOid
+        }, function (erillishaku) {
+            return erillishaku;
+        });
+    };
+
+    var getValintatapajonoOid = function(erillishaku) {
+        if(0 < erillishaku.length && 0 < _.first(erillishaku).valintatapajonot.length) {
+            return _.first(_.first(erillishaku).valintatapajonot).oid;
+        }
+    };
+
     var refreshErillishaku = function() {
-        if(0 < HakukohdeModel.valinnanvaiheet.length && 0 < _.first(HakukohdeModel.valinnanvaiheet).valintatapajonot.length) {
-            var valintatapajonoOid = _.first(_.first(HakukohdeModel.valinnanvaiheet).valintatapajonot).oid;
+        var valintatapajonoOid = getValintatapajonoOid(HakukohdeModel.valinnanvaiheet || haeValinnanvaiheet());
+        if(!valintatapajonoOid) {
             ValinnanTulos.get({valintatapajonoOid: valintatapajonoOid}).then(function(response) {
                 updateErillishaunHakemusErittelyt(response.data);
             }, function(error) {
