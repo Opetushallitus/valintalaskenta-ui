@@ -28,7 +28,7 @@
                 </div>
 
                 <h3>{{ t('hakukohteethakukohdeperustiedot.valintatapajonokohtaiset') || 'Valintatapajonokohtaiset tiedot' }}</h3>
-                <table class="virkailija-table-1" ng-if="!($scope.useVtsData && isErillishakuIlmanValintalaskentaa())">
+                <table class="virkailija-table-1" ng-if="!showErillishakuTaulukko()">
                     <thead>
                     <tr>
                         <th>{{ t('hakukohteethakukohdeperustiedot.valintatapajono') || 'Valintatapajono' }}</th>
@@ -56,7 +56,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <table class="virkailija-table-1" ng-if="$scope.useVtsData && isErillishakuIlmanValintalaskentaa()">
+                <table class="virkailija-table-1" ng-if="showErillishakuTaulukko()">
                     <thead>
                     <tr>
                         <th>{{ t('hakukohteethakukohdeperustiedot.hyvaksytyt') || 'Hyväksytyt yhteensä' }}</th>

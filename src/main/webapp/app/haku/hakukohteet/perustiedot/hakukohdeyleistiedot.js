@@ -92,76 +92,87 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     return model;
 }])
     
-.controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HakuModel',
-        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull', 'ValinnanTulos', '_',
-        function ($scope, $location, $routeParams, HakukohdeModel, HakuModel, SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _) {
+.controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HaunTiedot',
+        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull', 'ValinnanTulos', '_', 'HakuHelper',
+        function ($scope, $location, $routeParams, HakukohdeModel, HaunTiedot, SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _, HakuHelper) {
     "use strict";
 
     $scope.useVtsData = READ_FROM_VALINTAREKISTERI === "true";
 
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
-            
-    $scope.hakumodel = HakuModel;
-    $scope.hakumodel.refreshIfNeeded($scope.hakuOid);
-
     $scope.model = HakukohdeModel;
+
+    var refreshHaunTiedot = function() {
+        HaunTiedot.get({hakuOid: $scope.hakuOid}, function(resultWrapper) {
+            $scope.haku = HakuHelper.setErillishaku(resultWrapper.result);
+        });
+    };
+
     if($routeParams.hakukohdeOid) {
-        // Haetaan henkilöt kakkuun
         HakukohdeHenkilotFull.get({aoOid: $scope.hakukohdeOid, rows: 100000, asId: $scope.hakuOid}, function (result) {});
         $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+        refreshHaunTiedot();
     }
 
-    $scope.isKorkeakoulu = function () {
-        if($scope.useVtsData && $scope.isErillishakuIlmanValintalaskentaa()) {
-            return HakuModel.korkeakoulu;
-        } else {
-            return Korkeakoulu.isKorkeakoulu($scope.sijoitteluntulosModel.haku.kohdejoukkoUri);
-        }
-    };
-
-    $scope.isErillishakuIlmanValintalaskentaa = function () {
-        return HakuModel.hakuOid.erillishaku == true && !HakukohdeModel.kaytetaanValintalaskentaa
-    };
-
-    $scope.erillishaunHakemusErittelyt = {
-            hyvaksytyt : [],
-            ehdollisestiVastaanottaneet : [],
-            paikanVastaanottaneet: []
-    };
-
-    var updateErillishaunHakemusErittelyt = function(valintatapajono) {
-      _.forEach(valintatapajono.hakemukset, function(hakemus) {
-          if("HYVAKSYTTY" === hakemus.valinnantila || "VARASIJALTA_HYVAKSYTTY" === hakemus.valinnantila) {
-              $scope.erillishaunHakemusErittelyt.hyvaksytyt.push(hakemus)
-          }
-          if("VASTAANOTTANUT_SITOVASTI" === hakemus.vastaanottotila) {
-              $scope.erillishaunHakemusErittelyt.paikanVastaanottaneet.push(hakemus)
-          } else if ("EHDOLLISESTI_VASTAANOTTANUT" === hakemus.vastaanottotila) {
-              $scope.erillishaunHakemusErittelyt.ehdollisestiVastaanottaneet.push(hakemus)
-          }
-      });
-    };
-
-    var updateSijoitteluntulosModel = function() {
+    var refreshSijoitteluntulosModel = function() {
         $scope.sijoitteluntulosModel = SijoitteluntulosModel;
         $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
     };
 
-    if($routeParams.hakukohdeOid) {
-        if($scope.useVtsData && $scope.isErillishakuIlmanValintalaskentaa()) {
-            HakukohdeModel.valinnanvaiheet.forEach(function (e) {
-                e.valintatapajonot.forEach(function(v) {
-                    ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
-                        updateErillishaunHakemusErittelyt(response.data);
-                    }, function(error) {
-                        console.log(error);
-                    });
-                });
+    $scope.isKorkeakoulu = function() {
+      return $scope.haku && Korkeakoulu.isKorkeakoulu($scope.haku.kohdejoukkoUri);
+    };
+
+    $scope.isErillishakuIlmanValintalaskentaa = function() {
+        return $scope.haku && $scope.haku.erillishaku && !HakukohdeModel.kaytetaanValintalaskentaa;
+    };
+
+    $scope.showErillishakuTaulukko = function() {
+        return $scope.useVtsData && $scope.isErillishakuIlmanValintalaskentaa();
+    };
+
+    $scope.erillishaunHakemusErittelyt = {
+        hyvaksytyt : [],
+        ehdollisestiVastaanottaneet : [],
+        paikanVastaanottaneet: []
+    };
+
+    var updateErillishaunHakemusErittelyt = function(valintatapajono) {
+        _.forEach(valintatapajono.hakemukset, function(hakemus) {
+            if("HYVAKSYTTY" === hakemus.valinnantila || "VARASIJALTA_HYVAKSYTTY" === hakemus.valinnantila) {
+                $scope.erillishaunHakemusErittelyt.hyvaksytyt.push(hakemus)
+            }
+            if("VASTAANOTTANUT_SITOVASTI" === hakemus.vastaanottotila) {
+                $scope.erillishaunHakemusErittelyt.paikanVastaanottaneet.push(hakemus)
+            } else if ("EHDOLLISESTI_VASTAANOTTANUT" === hakemus.vastaanottotila) {
+                $scope.erillishaunHakemusErittelyt.ehdollisestiVastaanottaneet.push(hakemus)
+            }
+        });
+    };
+
+    var refreshErillishaku = function() {
+        if(0 < HakukohdeModel.valinnanvaiheet.length && 0 < _.first(HakukohdeModel.valinnanvaiheet).valintatapajonot.length) {
+            var valintatapajonoOid = _.first(_.first(HakukohdeModel.valinnanvaiheet).valintatapajonot).oid;
+            ValinnanTulos.get({valintatapajonoOid: valintatapajonoOid}).then(function(response) {
+                updateErillishaunHakemusErittelyt(response.data);
+            }, function(error) {
+                console.log(error);
             });
         } else {
-            updateSijoitteluntulosModel()
+            console.log("Erillishaulla ei ole valinnanvaihetta tai valintatapajonoa");
         }
+    };
+
+    var refreshHaunTiedot = function() {
+        HaunTiedot.get({hakuOid: $scope.hakuOid}, function(resultWrapper) {
+            $scope.haku = HakuHelper.setErillishaku(resultWrapper.result);
+            $scope.showErillishakuTaulukko() ? refreshErillishaku() : refreshSijoitteluntulosModel();
+        });
+    };
+
+    if($routeParams.hakukohdeOid) {
+        refreshHaunTiedot();
     }
 }])
 

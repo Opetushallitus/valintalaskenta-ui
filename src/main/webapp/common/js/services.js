@@ -23,6 +23,29 @@ angular.module('oph.services', [])
 
     }])
 
+    .factory('HakuHelper',[ function () {
+        "use strict";
+        var service =
+        {
+            setErillishaku: function(haku) {
+                var hakutyyppi = haku.hakutyyppiUri;
+                var hakutapa = haku.hakutapaUri;
+
+                var erillishakutapaRegExp = /(hakutapa_02).*/;
+                var jatkuvahakuRegExp = /(hakutapa_03).*/;
+                var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
+
+                var matchErillishaku = erillishakutapaRegExp.exec(hakutapa);
+                var matchJatkuvahaku = jatkuvahakuRegExp.exec(hakutapa);
+                var matchLisahaku = lisahakutyyppiRegExp.exec(hakutyyppi);
+
+                ((matchErillishaku || matchJatkuvahaku || matchLisahaku) && !haku.sijoittelu) ? haku.erillishaku = true : haku.erillishaku = false;
+                return haku;
+            }
+        };
+        return service;
+    }])
+
     .factory('Korkeakoulu',[ function () {
         "use strict";
         var service =
