@@ -15,7 +15,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.valinnanVaiheetPromise = undefined;
         this.valintaryhma = {};
         this.kaytetaanValintalaskentaa = false;
-        this.valinnanvaiheet = [];
         this.haku = HakuModel;
 
         this.refresh = function (hakukohdeOid) {
@@ -25,7 +24,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                 model.hakukohde = hakukohde;
                 model.setHakukohdeNames();
                 model.setHakukohdeValintaRyhma(hakukohdeOid);
-                model.setHakukohdeValinnanvaiheet(hakukohdeOid, hakukohde.hakuOid);
+                model.setKaytetaanValintalaskentaa(hakukohdeOid, hakukohde.hakuOid);
                 model.deferred.resolve();
             }, function(error) {
                 $log.error('Hakukohteen tietojen hakeminen epäonnistui', error);
@@ -74,7 +73,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
             })
         };
 
-        this.setHakukohdeValinnanvaiheet = function (hakukohdeOid, hakuOid) {
+        this.setKaytetaanValintalaskentaa = function (hakukohdeOid, hakuOid) {
             model.valinnanVaiheetPromise = $q.defer();
             model.haku.promise.then(function() {
                 if (model.haku.hakuOid.sijoittelu) model.valinnanVaiheetPromise.resolve();
@@ -85,7 +84,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                         })[0].valintatapajonot.some(function (e) {
                             return e.kaytetaanValintalaskentaa;
                         });
-                        model.valinnanvaiheet = result;
                         model.valinnanVaiheetPromise.resolve();
                     }, function (error) {
                         console.log(error);

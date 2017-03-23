@@ -320,19 +320,6 @@ angular.module('valintalaskenta')
         });
       };
 
-      var getHakumodelValintatapaJonot = function(valinnanvaiheet, oidToMaksuvelvollisuus) {
-        if (valinnanvaiheet) {
-          processErillishaku(valinnanvaiheet, oidToMaksuvelvollisuus);
-        } else {
-          ErillishakuProxy.hae({
-            hakuOid: $routeParams.hakuOid,
-            hakukohdeOid: $routeParams.hakukohdeOid
-          }, function (erillishaku) {
-            processErillishaku(erillishaku, oidToMaksuvelvollisuus)
-          });
-        }
-      };
-
       var hakemuksetToMaksuvelvollisuus = function(hakemukset) {
         var hakukohdeOid = $routeParams.hakukohdeOid;
         var oidToMaksuvelvollisuus = _.reduce(_.map(hakemukset, function(hakemus) {
@@ -356,12 +343,13 @@ angular.module('valintalaskenta')
           });
         });
 
-        var hk = HakukohdeHenkilotFull.get({aoOid: $routeParams.hakukohdeOid, rows: 100000, asId: $routeParams.hakuOid})
-        var vv = $scope.hakukohdeModel.valinnanVaiheetPromise.promise
-        // Do this here to ensure valinnanVaiheetPromise is defined
-        $q.all([hk,vv]).then(function(resolved) {
+        $q.all([
+          HakukohdeHenkilotFull.get({aoOid: $routeParams.hakukohdeOid, rows: 100000, asId: $routeParams.hakuOid}).$promise,
+          ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}).$promise
+        ]).then(function(resolved) {
           var hakemukset = resolved[0];
-          getHakumodelValintatapaJonot($scope.hakukohdeModel.valinnanvaiheet, hakemuksetToMaksuvelvollisuus(hakemukset));
+          var erillishaku = resolved[1];
+          processErillishaku(erillishaku, hakemuksetToMaksuvelvollisuus(hakemukset));
         });
       });
 
