@@ -455,6 +455,16 @@ app.factory('ErillishakuProxy', function($resource) {
         }
     );
 });
+app.factory('KayttaaValintalaskentaa', function($resource) {
+  return $resource(
+      plainUrl("valintalaskentakoostepalvelu.valintaperusteet.kayttaavalintalaskentaa", ":hakukohdeOid"),
+      {
+        hakukohdeOid: "@hakukohdeOid"
+      }, {
+        get: {method: 'GET', isArray: false, cache: false}
+      }
+  );
+});
 app.factory('PistesyottoVienti', function($resource) {
         return $resource(window.url("valintalaskentakoostepalvelu.pistesyotto.vienti"), {}, {
         vie: {method:'POST', isArray:false}

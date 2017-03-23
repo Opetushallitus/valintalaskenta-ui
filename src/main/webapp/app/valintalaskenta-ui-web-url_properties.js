@@ -71,6 +71,7 @@ window.urls.addProperties({
     "valintalaskentakoostepalvelu.valintalaskentakerralla.status" : "/valintalaskentakoostepalvelu/resources/valintalaskentakerralla/status/$1",
     "valintalaskentakoostepalvelu.valitalaskentakerralla.status.xls" : "/valintalaskentakoostepalvelu/resources/valintalaskentakerralla/status/$1/xls",
     "valintalaskentakoostepalvelu.valintalaskentakerralla.uudelleenyrita" : "/valintalaskentakoostepalvelu/resources/valintalaskentakerralla/uudelleenyrita/$1",
+    "valintalaskentakoostepalvelu.valintaperusteet.kayttaavalintalaskentaa": "/valintalaskentakoostepalvelu/resources/valintaperusteet/hakukohde/$1/kayttaaValintalaskentaa",
     "valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti" : "/valintalaskentakoostepalvelu/resources/valintatapajonolaskenta/tuonti",
     "valintalaskentakoostepalvelu.valintatapajonolaskenta.vienti" : "/valintalaskentakoostepalvelu/resources/valintatapajonolaskenta/vienti",
     "valintalaskentakoostepalvelu.viestintapalvelu.hakukohteessahylatyt.aktivoi" : "/valintalaskentakoostepalvelu/resources/viestintapalvelu/hakukohteessahylatyt/aktivoi",

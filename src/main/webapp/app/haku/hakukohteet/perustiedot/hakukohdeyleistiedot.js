@@ -1,7 +1,7 @@
 
 angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'HakukohdeNimiService',
-    'ValintaperusteetHakukohdeValintaryhma','ErillishakuProxy', '_', 'HakuModel',
-    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimiService,ValintaperusteetHakukohdeValintaryhma, ErillishakuProxy, _, HakuModel) {
+    'ValintaperusteetHakukohdeValintaryhma','KayttaaValintalaskentaa', '_', 'HakuModel',
+    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimiService,ValintaperusteetHakukohdeValintaryhma, KayttaaValintalaskentaa, _, HakuModel) {
     "use strict";
 
     var model;
@@ -19,11 +19,10 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.refresh = function (hakukohdeOid) {
             model.hakukohdeOid = hakukohdeOid;
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (resultWrapper) {
-                var hakukohde = resultWrapper.result;
-                model.hakukohde = hakukohde;
+                model.hakukohde = resultWrapper.result;
                 model.setHakukohdeNames();
                 model.setHakukohdeValintaRyhma(hakukohdeOid);
-                model.fetchKaytetaanValintalaskentaa(hakukohdeOid, hakukohde.hakuOid).then(function(kaytetaanValintalaskentaa) {
+                model.fetchKaytetaanValintalaskentaa(hakukohdeOid).then(function(kaytetaanValintalaskentaa) {
                     model.kaytetaanValintalaskentaa = kaytetaanValintalaskentaa;
                     model.deferred.resolve();
                 }, function(error) {
@@ -77,17 +76,13 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
             })
         };
 
-        this.fetchKaytetaanValintalaskentaa = function (hakukohdeOid, hakuOid) {
+        this.fetchKaytetaanValintalaskentaa = function (hakukohdeOid) {
             return model.haku.promise.then(function() {
                 if (model.haku.hakuOid.sijoittelu) {
                     return false;
                 } else {
-                    return ErillishakuProxy.hae({hakukohdeOid: hakukohdeOid, hakuOid: hakuOid}).$promise.then(function (result) {
-                        return _(result).filter(function (e) {
-                            return e.viimeinenVaihe;
-                        })[0].valintatapajonot.some(function (e) {
-                            return e.kaytetaanValintalaskentaa;
-                        });
+                    return KayttaaValintalaskentaa.get({hakukohdeOid: hakukohdeOid}).$promise.then(function(result) {
+                        return result.kayttaaValintalaskentaa;
                     });
                 }
             });
