@@ -260,13 +260,13 @@ angular.module('valintalaskenta')
 		};
 
 		var createSijoittelunHakijaOidArray = function(sijoitteluTulokset) {
-            return _.uniq(_.flatten(_.map(
+            return _.reject(_.uniq(_.flatten(_.map(
                 sijoitteluTulokset.valintatapajonot, function(jono) {
                     return _.map(jono.hakemukset, function(hakemus) {
                         return hakemus.hakijaOid;
                     });
                 }
-            )));
+            ))), function(hakijaOid) {return _.isEmpty(hakijaOid)});
         };
 
 		var sijoittelunTuloksetPromise = function(hakuOid, hakukohdeOid) {
@@ -311,18 +311,23 @@ angular.module('valintalaskenta')
                     hakuOid: hakuOid
                 }).$promise
             }).then(function(tulokset) {
-                return HenkiloPerustietosByHenkiloOidList.post(
-                    createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset)).$promise.then(function(henkiloPerustiedot) {
-                        tulokset.henkilot = _.map(henkiloPerustiedot, function(henkilo) {
-                            return {
-                                oid : henkilo.oidHenkilo,
-                                etunimi : henkilo.etunimet,
-                                sukunimi : henkilo.sukunimi
-                            }
-                        });
-                        return tulokset;
-                    }
-                );
+                var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
+                if(hakijaOidArray && 0 < hakijaOidArray.length) {
+                    return HenkiloPerustietosByHenkiloOidList.post(
+                        createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset)).$promise.then(function(henkiloPerustiedot) {
+                            tulokset.henkilot = _.map(henkiloPerustiedot, function(henkilo) {
+                                return {
+                                    oid : henkilo.oidHenkilo,
+                                    etunimi : henkilo.etunimet,
+                                    sukunimi : henkilo.sukunimi
+                                }
+                            });
+                            return tulokset;
+                        }
+                    );
+                } else {
+                    return tulokset;
+                }
             }).then(function(tulokset) {
                 if (tulokset.sijoittelunTulokset.sijoitteluajoId) {
                     model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
@@ -336,9 +341,12 @@ angular.module('valintalaskenta')
                         calculateSijat(valintatapajono);
                         valintatapajono.hakemukset.forEach(function (hakemus) {
                             var hakija = _.find(model.henkilot, function(henkilo) { return henkilo.oid == hakemus.hakijaOid });
-                            hakemus.etunimi = hakija.etunimi;
-                            hakemus.sukunimi = hakija.sukunimi;
-
+                            if(hakija) {
+                                hakemus.etunimi = hakija.etunimi;
+                                hakemus.sukunimi = hakija.sukunimi;
+                            } else {
+                                console.log("Hakijan " + hakemus.hakijaOid + " nimeä ei löytynyt oppijanumerorekisteristä.")
+                            }
                             hakemus.valittu = (
                                 hakemus.tila === "HYVAKSYTTY" ||
                                 hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
