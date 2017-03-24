@@ -139,8 +139,8 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         paikanVastaanottaneet: []
     };
 
-    var updateErillishaunHakemusErittelyt = function(valintatapajono) {
-        _.forEach(valintatapajono.hakemukset, function(hakemus) {
+    var updateErillishaunHakemusErittelyt = function(hakemukset) {
+        _.forEach(hakemukset, function(hakemus) {
             if("HYVAKSYTTY" === hakemus.valinnantila || "VARASIJALTA_HYVAKSYTTY" === hakemus.valinnantila) {
                 $scope.erillishaunHakemusErittelyt.hyvaksytyt.push(hakemus)
             }
@@ -152,32 +152,32 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         });
     };
 
-    var haeValinnanvaiheet = function () {
-        ErillishakuProxy.hae({
-            hakuOid: $routeParams.hakuOid,
-            hakukohdeOid: $routeParams.hakukohdeOid
-        }, function (erillishaku) {
-            return erillishaku;
-        });
-    };
-
-    var getValintatapajonoOid = function(erillishaku) {
-        if(0 < erillishaku.length && 0 < _.first(erillishaku).valintatapajonot.length) {
-            return _.first(_.first(erillishaku).valintatapajonot).oid;
+    var readValintatapajonoOid = function() {
+        var checkArrayLength = function(array) {
+            return array && 0 < array.length;
+        };
+        if(checkArrayLength($scope.erillishaku) && checkArrayLength(_.first($scope.erillishaku).valintatapajonot)) {
+           return _.first(_.first($scope.erillishaku).valintatapajonot).oid;
+        } else {
+           console.log("Erillishaulla ei ole valinnanvaihetta tai valintatapajonoa");
         }
     };
 
     var refreshErillishaku = function() {
-        var valintatapajonoOid = getValintatapajonoOid(HakukohdeModel.valinnanvaiheet || haeValinnanvaiheet());
-        if(!valintatapajonoOid) {
-            ValinnanTulos.get({valintatapajonoOid: valintatapajonoOid}).then(function(response) {
-                updateErillishaunHakemusErittelyt(response.data);
-            }, function(error) {
-                console.log(error);
-            });
-        } else {
-            console.log("Erillishaulla ei ole valinnanvaihetta tai valintatapajonoa");
-        }
+        ErillishakuProxy.hae({
+            hakuOid: $routeParams.hakuOid,
+            hakukohdeOid: $routeParams.hakukohdeOid
+        }).$promise.then(function(erillishaku) {
+            $scope.erillishaku = erillishaku;
+            $scope.valintatapajonoOid = readValintatapajonoOid();
+            if($scope.valintatapajonoOid) {
+                ValinnanTulos.get({valintatapajonoOid: $scope.valintatapajonoOid}).then(function(response) {
+                    updateErillishaunHakemusErittelyt(response.data);
+                }, function(error) {
+                    console.log(error);
+                });
+            }
+        });
     };
 
     var refreshHaunTiedot = function() {
