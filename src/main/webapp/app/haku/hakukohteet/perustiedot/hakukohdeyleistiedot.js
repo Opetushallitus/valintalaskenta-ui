@@ -93,8 +93,9 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
 }])
     
 .controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HaunTiedot',
-        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull', 'ValinnanTulos', '_', 'HakuHelper',
-        function ($scope, $location, $routeParams, HakukohdeModel, HaunTiedot, SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _, HakuHelper) {
+        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull', 'ValinnanTulos', '_', 'HakuHelper', 'ErillishakuProxy',
+        function ($scope, $location, $routeParams, HakukohdeModel, HaunTiedot,
+                  SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _, HakuHelper, ErillishakuProxy) {
     "use strict";
 
     $scope.useVtsData = READ_FROM_VALINTAREKISTERI === "true";
