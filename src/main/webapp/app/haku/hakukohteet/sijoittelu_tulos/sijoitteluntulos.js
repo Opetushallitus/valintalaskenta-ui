@@ -386,7 +386,7 @@ angular.module('valintalaskenta')
                 }
                 model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
             }).then(function() {
-                model.sijoitteluTulokset.valintatapajonot.forEach(function(v) {
+                _.forEach(model.sijoitteluTulokset.valintatapajonot, function(v) {
                     // Result intentionally unused, used for integration testing
                     ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
                         Valinnantulokset.compareSijoitteluOldAndNewVtsResponse(v, response.data);
@@ -396,7 +396,7 @@ angular.module('valintalaskenta')
                     });
                 });
             }).then(fetchAndPopulateVastaanottoAikarajaMennyt)
-                .catch(function(error) { model.errors.push(error.data.message); });
+                .catch(function(error) { error.data ? model.errors.push(error.data.message) : model.errors.push(error); });
         };
 
         //refresh if haku or hakukohde has changed
