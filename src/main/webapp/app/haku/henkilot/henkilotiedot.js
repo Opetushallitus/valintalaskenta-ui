@@ -159,7 +159,9 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 
                 if(useVtsData) {
                     VtsLatestSijoittelunTilat.get({hakemusOid: hakemus.oid, hakuOid: hakuOid}, extendHakutoiveet, function (error) {
-                        errors.push(error);
+                        if(400 !== error.status) {
+                            errors.push(error);
+                        }
                     });
                 } else {
                     LatestSijoittelunTilat.get({hakemusOid: hakemus.oid, hakuOid: hakuOid}, extendHakutoiveet, function (error) {
