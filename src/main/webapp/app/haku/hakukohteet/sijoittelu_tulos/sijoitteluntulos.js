@@ -177,7 +177,7 @@ angular.module('valintalaskenta')
         hakemus.muokattuIlmoittautumisTila = valintatulos.ilmoittautumisTila;
         hakemus.julkaistavissa = valintatulos.julkaistavissa;
         hakemus.ehdollisestiHyvaksyttavissa = valintatulos.ehdollisestiHyvaksyttavissa;
-        hakemus.ehtoEditableInputFields = (valintatulos.ehdollisenHyvaksymisenEhtoKoodi == "hyvaksynnanehdot_muu");
+        hakemus.ehtoEditableInputFields = (valintatulos.ehdollisenHyvaksymisenEhtoKoodi == "muu");
         hakemus.ehtoInputFields = valintatulos.ehdollisestiHyvaksyttavissa;
         hakemus.ehdollisenHyvaksymisenEhtoKoodi = valintatulos.ehdollisenHyvaksymisenEhtoKoodi;
         hakemus.ehdollisenHyvaksymisenEhtoFI = valintatulos.ehdollisenHyvaksymisenEhtoFI;
@@ -455,8 +455,6 @@ angular.module('valintalaskenta')
             };
 
             var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
-            console.log(tilaObj);
-            console.log(tilaParams);
             VastaanottoTila.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess, muokatutHakemukset), this.reportFailedSave(afterFailure, muokatutHakemukset));
             // Used for integration testing
             ValinnanTulos.patch({valintatapajonoOid: valintatapajonoOid}, _.map(muokatutHakemukset, function(h) {
@@ -641,7 +639,7 @@ angular.module('valintalaskenta')
          result.forEach(function(ehto){
              $scope.ehdollisestiHyvaksyttavissaOlevatOpts.push(
                 {
-                    koodiUri: ehto.koodiUri,
+                    koodiUri: ehto.koodiArvo,
                     nimi: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
                     nimiFI: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
                     nimiSV: _.findWhere(ehto.metadata, {kieli: 'SV'}).nimi,
@@ -660,7 +658,7 @@ angular.module('valintalaskenta')
 */
 
     $scope.showEhdot = function (model, value) {
-        if (value == 'hyvaksynnanehdot_muu') {
+        if (value == 'muu') {
             model.ehtoInputFields = true;
             model.ehtoEditableInputFields = true;
             model.ehdollisenHyvaksymisenEhtoFI = '';
@@ -702,8 +700,8 @@ angular.module('valintalaskenta')
         hakemukset.forEach(function (hakemus){
             if(hakemus.ehdollisestiHyvaksyttavissa &&
                 (
-                    (hakemus.ehdollisenHyvaksymisenEhtoKoodi != "" && hakemus.ehdollisenHyvaksymisenEhtoKoodi != "hyvaksynnanehdot_muu") ||
-                    (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "hyvaksynnanehdot_muu" && hakemus.ehdollisenHyvaksymisenEhtoFI != undefined &&
+                    (hakemus.ehdollisenHyvaksymisenEhtoKoodi != "" && hakemus.ehdollisenHyvaksymisenEhtoKoodi != "muu") ||
+                    (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu" && hakemus.ehdollisenHyvaksymisenEhtoFI != undefined &&
                     hakemus.ehdollisenHyvaksymisenEhtoSV != undefined && hakemus.ehdollisenHyvaksymisenEhtoEN != undefined && hakemus.ehdollisenHyvaksymisenEhtoFI != "" &&
                     hakemus.ehdollisenHyvaksymisenEhtoSV != "" && hakemus.ehdollisenHyvaksymisenEhtoEN != "")
                 )

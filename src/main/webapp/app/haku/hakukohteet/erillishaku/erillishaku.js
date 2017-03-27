@@ -27,7 +27,7 @@ angular.module('valintalaskenta')
       $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
 
       $scope.showEhdot = function (model, value) {
-          if (value == 'hyvaksynnanehdot_muu') {
+          if (value == 'muu') {
               model.ehtoInputFields = true;
               model.ehtoEditableInputFields = true;
               model.ehdollisenHyvaksymisenEhtoFI = '';
@@ -50,7 +50,7 @@ angular.module('valintalaskenta')
           result.forEach(function(ehto){
               $scope.ehdollisestiHyvaksyttavissaOlevatOpts.push(
                   {
-                      koodiUri: ehto.koodiUri,
+                      koodiUri: ehto.koodiArvo,
                       nimi: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
                       nimiFI: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
                       nimiSV: _.findWhere(ehto.metadata, {kieli: 'SV'}).nimi,
@@ -467,7 +467,7 @@ angular.module('valintalaskenta')
           poistetaankoRivi: hakemus.poistetaankoRivi,
           julkaistaankoTiedot: hakemus.julkaistavissa,
           hakemusOid: hakemus.hakemusOid,
-          ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "hyvaksynnanehdot_muu"),
+          ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu"),
           ehtoInputFields: hakemus.ehdollisestiHyvaksyttavissa // use this
         };
       };
@@ -490,7 +490,7 @@ angular.module('valintalaskenta')
             ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
             hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty ? hakemus.hyvaksymiskirjeLahetettyPvm : null,
             hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
-            ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "hyvaksynnanehdot_muu"),
+            ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu"),
             ehtoInputFields: hakemus.ehdollisestiHyvaksyttavissa
           };
         };
@@ -508,8 +508,8 @@ angular.module('valintalaskenta')
         hakemukset.forEach(function (hakemus){
             if(hakemus.ehdollisestiHyvaksyttavissa &&
                 (
-                (hakemus.ehdollisenHyvaksymisenEhtoKoodi != "" && hakemus.ehdollisenHyvaksymisenEhtoKoodi != "hyvaksynnanehdot_muu") ||
-                (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "hyvaksynnanehdot_muu" && hakemus.ehdollisenHyvaksymisenEhtoFI != undefined &&
+                (hakemus.ehdollisenHyvaksymisenEhtoKoodi != "" && hakemus.ehdollisenHyvaksymisenEhtoKoodi != "muu") ||
+                (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu" && hakemus.ehdollisenHyvaksymisenEhtoFI != undefined &&
                   hakemus.ehdollisenHyvaksymisenEhtoSV != undefined && hakemus.ehdollisenHyvaksymisenEhtoEN != undefined && hakemus.ehdollisenHyvaksymisenEhtoFI != "" &&
                   hakemus.ehdollisenHyvaksymisenEhtoSV != "" && hakemus.ehdollisenHyvaksymisenEhtoEN != "")
                 )
