@@ -720,11 +720,11 @@ angular.module('valintalaskenta')
         var body = LocalisationService.tl('oletTallentamassaMuutoksia') || 'Olet tallentamassa muutoksia: ';
         var kpl = LocalisationService.tl('kpl') || 'kpl';
 
-        if($scope.validateEhdollisenHyvaksymisenKoodi($scope.muokatutHakemukset)) {
+//        if($scope.validateEhdollisenHyvaksymisenKoodi($scope.muokatutHakemukset)) {
             TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function (success, failure) {
                 $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
             });
-        }
+ //       }
     };
 
     $scope.luoJalkiohjauskirjeetPDF = function() {

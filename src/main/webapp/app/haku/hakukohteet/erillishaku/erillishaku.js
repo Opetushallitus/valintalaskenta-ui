@@ -524,11 +524,11 @@ angular.module('valintalaskenta')
 
       $scope.submitIlmanLaskentaa = function (valintatapajono) {
         var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
-        if($scope.validateEhdollisenHyvaksymisenKoodi(hakemukset)){
-          $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
-        } else {
+//        if($scope.validateEhdollisenHyvaksymisenKoodi(hakemukset)){
+        $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
+ /*       } else {
           return false;
-        }
+        }*/
 
       };
 
