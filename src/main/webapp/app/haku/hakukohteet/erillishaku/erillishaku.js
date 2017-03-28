@@ -358,13 +358,14 @@ angular.module('valintalaskenta')
             kirjeLahetetty[kirje.henkiloOid] = kirje.lahetetty;
           });
           valintatapajono.hakemukset.forEach(function(hakemus) {
-            if (new Date(hakemus.hyvaksymiskirjeLahetettyPvm) !== new Date(kirjeLahetetty[hakemus.henkiloOid])) {
-              console.log("Mismatch of hyvaksymiskirjeLahetettyPvm for person: " + hakemus.henkiloOid + ", " +
-                  hakemus.hyvaksymiskirjeLahetettyPvm + " !=== " + kirjeLahetetty[hakemus.henkiloOid]);
+            var henkiloOid = hakemus.personOid;
+            if (new Date(hakemus.hyvaksymiskirjeLahetettyPvm) !== new Date(kirjeLahetetty[henkiloOid])) {
+              console.log("Mismatch of hyvaksymiskirjeLahetettyPvm for person: " + henkiloOid + ", " +
+                  hakemus.hyvaksymiskirjeLahetettyPvm + " !=== " + kirjeLahetetty[henkiloOid]);
             }
             if (READ_FROM_VALINTAREKISTERI === "true") {
-              if (kirjeLahetetty[hakemus.henkiloOid]) {
-                hakemus.hyvaksymiskirjeLahetettyPvm = kirjeLahetetty[hakemus.henkiloOid];
+              if (kirjeLahetetty[henkiloOid]) {
+                hakemus.hyvaksymiskirjeLahetettyPvm = kirjeLahetetty[henkiloOid];
                 hakemus.hyvaksymiskirjeLahetetty = true;
               } else {
                 hakemus.hyvaksymiskirjeLahetetty = false;
