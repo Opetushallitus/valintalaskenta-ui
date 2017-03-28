@@ -361,12 +361,12 @@ angular.module('valintalaskenta')
             var henkiloOid = hakemus.hakijaOid;
             var oldTime = (new Date(hakemus.hyvaksymiskirjeLahetettyPvm)).getTime();
             var newTime = (new Date(kirjeLahetetty[henkiloOid])).getTime();
-            if (oldTime !== newTime) {
+            if (!(isNaN(oldTime) && isNaN(newTime)) && oldTime !== newTime) {
               console.log("Mismatch of hyvaksymiskirjeLahetettyPvm for person: " + henkiloOid + ", " +
                   oldTime + " !=== " + newTime);
             }
             if (READ_FROM_VALINTAREKISTERI === "true") {
-              if (newTime) {
+              if (!isNaN(newTime)) {
                 hakemus.hyvaksymiskirjeLahetettyPvm = newTime;
                 hakemus.hyvaksymiskirjeLahetetty = true;
               } else {
