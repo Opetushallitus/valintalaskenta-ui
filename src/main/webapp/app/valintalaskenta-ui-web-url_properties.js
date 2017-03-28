@@ -114,6 +114,7 @@ window.urls.addProperties({
 
     "valinta-tulos-service.login": "/valinta-tulos-service/auth/login",
     "valinta-tulos-service.valinnan-tulos": "/valinta-tulos-service/auth/valinnan-tulos/$1",
+    "valinta-tulos-service.hyvaksymiskirje": "/valinta-tulos-service/auth/hyvaksymiskirje/$1",
     "valinta-tulos-service.sijoittelu.sijoitteluajo.hakukohde": "/valinta-tulos-service/auth/sijoittelu/$1/sijoitteluajo/$2/hakukohde/$3",
     "valinta-tulos-service.sijoittelu.sijoitteluajo.hakemus": "/valinta-tulos-service/auth/sijoittelu/$1/sijoitteluajo/$2/hakemus/$3",
     "valinta-tulos-service.sijoittelu.sijoitteluajo.perustiedot": "/valinta-tulos-service/auth/sijoittelu/$1/sijoitteluajo/$2/perustiedot",

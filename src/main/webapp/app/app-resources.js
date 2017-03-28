@@ -455,6 +455,17 @@ app.factory('ErillishakuProxy', function($resource) {
         }
     );
 });
+app.factory('ErillishakuHyvaksymiskirjeet', function($resource) {
+  return $resource(
+      plainUrl("valinta-tulos-service.hyvaksymiskirje", ":hakukohdeOid"),
+      {
+        hakukohdeOid: "@hakukohdeOid"
+      }, {
+        get: {method: 'GET', isArray: true, cache: false},
+        post: {method: 'POST', isArray: true}
+      }
+  );
+});
 app.factory('KayttaaValintalaskentaa', function($resource) {
   return $resource(
       plainUrl("valintalaskentakoostepalvelu.valintaperusteet.kayttaavalintalaskentaa", ":hakukohdeOid"),

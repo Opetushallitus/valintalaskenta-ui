@@ -4,11 +4,13 @@ angular.module('valintalaskenta')
         'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
         'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
-        'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset', 'HenkiloPerustietosByHenkiloOidList',
+        'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
+        'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet',
         function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                   ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
                   ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-                  VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList) {
+                  VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
+                  ErillishakuHyvaksymiskirjeet) {
       "use strict";
 
       $scope.muokatutHakemukset = {};
@@ -337,12 +339,38 @@ angular.module('valintalaskenta')
 
         $scope.valintatapajono = valintatapajono;
         getErillishaunValinnantulokset(valintatapajono);
+        getHyvaksymiskirjeet(valintatapajono);
       };
 
       var getErillishaunValinnantulokset = function (v) {
         ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
           Valinnantulokset.compareErillishakuOldAndNewVtsResponse(v, response.data);
           $scope.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
+        }, function(error) {
+          console.log(error);
+        });
+      };
+
+      var getHyvaksymiskirjeet = function(valintatapajono) {
+        ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: $scope.hakukohdeOid}).$promise.then(function(r) {
+          var kirjeLahetetty = {};
+          r.forEach(function(kirje) {
+            kirjeLahetetty[kirje.henkiloOid] = kirje.lahetetty;
+          });
+          valintatapajono.forEach(function(hakemus) {
+            if (new Date(hakemus.hyvaksymiskirjeLahetettyPvm) !== new Date(kirjeLahetetty[hakemus.henkiloOid])) {
+              console.log("Mismatch of hyvaksymiskirjeLahetettyPvm for person: " + hakemus.henkiloOid + ", " +
+                  hakemus.hyvaksymiskirjeLahetettyPvm + " !=== " + kirjeLahetetty[hakemus.henkiloOid]);
+            }
+            if (READ_FROM_VALINTAREKISTERI === "true") {
+              if (kirjeLahetetty[hakemus.henkiloOid]) {
+                hakemus.hyvaksymiskirjeLahetettyPvm = kirjeLahetetty[hakemus.henkiloOid];
+                hakemus.hyvaksymiskirjeLahetetty = true;
+              } else {
+                hakemus.hyvaksymiskirjeLahetetty = false;
+              }
+            }
+          });
         }, function(error) {
           console.log(error);
         });
@@ -580,6 +608,22 @@ angular.module('valintalaskenta')
             Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
           }
         );
+        saveHyvaksymiskirjeet(json);
+      };
+
+      var saveHyvaksymiskirjeet = function(hakemukset) {
+        var hyvaksymiskirjeet = hakemukset
+            .filter(function(hakemus) { return hakemus.hyvaksymiskirjeLahetetty; })
+            .map(function(hakemus) {
+              return {
+                henkiloOid: hakemus.henkiloOid,
+                hakukohdeOid: $scope.hakukohdeOid,
+                lahetetty: hakemus.hyvaksymiskirjeLahetetty
+              };
+            });
+        ErillishakuHyvaksymiskirjeet.post({hakukohdeOid: $scope.hakukohdeOid}, hyvaksymiskirjeet).$promise.catch(function(error) {
+          console.log(error);
+        });
       };
 
       $scope.erillishaunVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
