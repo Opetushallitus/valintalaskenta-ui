@@ -358,7 +358,7 @@ angular.module('valintalaskenta')
             kirjeLahetetty[kirje.henkiloOid] = kirje.lahetetty;
           });
           valintatapajono.hakemukset.forEach(function(hakemus) {
-            var henkiloOid = hakemus.personOid;
+            var henkiloOid = hakemus.hakijaOid;
             if (new Date(hakemus.hyvaksymiskirjeLahetettyPvm) !== new Date(kirjeLahetetty[henkiloOid])) {
               console.log("Mismatch of hyvaksymiskirjeLahetettyPvm for person: " + henkiloOid + ", " +
                   hakemus.hyvaksymiskirjeLahetettyPvm + " !=== " + kirjeLahetetty[henkiloOid]);
