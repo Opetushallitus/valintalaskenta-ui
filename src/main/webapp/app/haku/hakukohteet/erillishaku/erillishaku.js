@@ -359,13 +359,15 @@ angular.module('valintalaskenta')
           });
           valintatapajono.hakemukset.forEach(function(hakemus) {
             var henkiloOid = hakemus.hakijaOid;
-            if (new Date(hakemus.hyvaksymiskirjeLahetettyPvm) !== new Date(kirjeLahetetty[henkiloOid])) {
+            var oldTime = (new Date(hakemus.hyvaksymiskirjeLahetettyPvm)).getTime();
+            var newTime = (new Date(kirjeLahetetty[henkiloOid])).getTime();
+            if (oldTime !== newTime) {
               console.log("Mismatch of hyvaksymiskirjeLahetettyPvm for person: " + henkiloOid + ", " +
-                  hakemus.hyvaksymiskirjeLahetettyPvm + " !=== " + kirjeLahetetty[henkiloOid]);
+                  oldTime + " !=== " + newTime);
             }
             if (READ_FROM_VALINTAREKISTERI === "true") {
-              if (kirjeLahetetty[henkiloOid]) {
-                hakemus.hyvaksymiskirjeLahetettyPvm = kirjeLahetetty[henkiloOid];
+              if (newTime) {
+                hakemus.hyvaksymiskirjeLahetettyPvm = newTime;
                 hakemus.hyvaksymiskirjeLahetetty = true;
               } else {
                 hakemus.hyvaksymiskirjeLahetetty = false;
