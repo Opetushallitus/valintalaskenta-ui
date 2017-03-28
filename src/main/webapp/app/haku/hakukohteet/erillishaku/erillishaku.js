@@ -357,7 +357,7 @@ angular.module('valintalaskenta')
           r.forEach(function(kirje) {
             kirjeLahetetty[kirje.henkiloOid] = kirje.lahetetty;
           });
-          valintatapajono.forEach(function(hakemus) {
+          valintatapajono.hakemukset.forEach(function(hakemus) {
             if (new Date(hakemus.hyvaksymiskirjeLahetettyPvm) !== new Date(kirjeLahetetty[hakemus.henkiloOid])) {
               console.log("Mismatch of hyvaksymiskirjeLahetettyPvm for person: " + hakemus.henkiloOid + ", " +
                   hakemus.hyvaksymiskirjeLahetettyPvm + " !=== " + kirjeLahetetty[hakemus.henkiloOid]);
@@ -616,7 +616,7 @@ angular.module('valintalaskenta')
             .filter(function(hakemus) { return hakemus.hyvaksymiskirjeLahetetty; })
             .map(function(hakemus) {
               return {
-                henkiloOid: hakemus.henkiloOid,
+                henkiloOid: hakemus.personOid,
                 hakukohdeOid: $scope.hakukohdeOid,
                 lahetetty: hakemus.hyvaksymiskirjeLahetetty
               };
