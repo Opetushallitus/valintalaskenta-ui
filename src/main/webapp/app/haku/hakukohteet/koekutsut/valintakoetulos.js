@@ -3,7 +3,7 @@
     "use strict";
 	var model;
 	model = new function() {
-
+		this.loading = true;
 		this.hakuOid = undefined;
 		this.hakukohdeOid = {};
 		this.koetulokset = [];
@@ -33,15 +33,16 @@
 		}
 
 		this.refresh = function(hakukohdeOid, hakuOid) {
-		    model.hakukohdeOid = {};
-            model.koetulokset = [];
-            model.valintakokeet = {};
-            model.valintakokeetHakijoittain = {};
-            model.valintakokeetHakijoittainArray = [];
-            model.koetyypit = [];
-            model.errors = [];
-            model.errors.length = 0;
-            model.hakukohdeOid = hakukohdeOid;
+			model.loading = true;
+			model.hakukohdeOid = {};
+			model.koetulokset = [];
+			model.valintakokeet = {};
+			model.valintakokeetHakijoittain = {};
+			model.valintakokeetHakijoittainArray = [];
+			model.koetyypit = [];
+			model.errors = [];
+			model.errors.length = 0;
+			model.hakukohdeOid = hakukohdeOid;
 			model.hakuOid = hakuOid;
 			model.hakukohteenValintakokeet = [];
 
@@ -74,6 +75,9 @@
 				} else {
 					kaikkiTarvittavatHakemukset.resolve(hakemukset);
 				}
+				kaikkiTarvittavatHakemukset.promise.then(function() {
+					model.loading = false;
+				});
 				kaikkiTarvittavatHakemukset.promise.then(function(kaikkiHakemukset) {
 					var byHakemusOidPromise = $q.defer();
 					byHakemusOidPromise.resolve(_.object(_.map(kaikkiHakemukset, function(val) {
