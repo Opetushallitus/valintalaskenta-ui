@@ -694,37 +694,15 @@ angular.module('valintalaskenta')
         $scope.addMuokattuHakemus(hakemus);
     };
 
-    $scope.validateEhdollisenHyvaksymisenKoodi = function(hakemukset){
-        if(!$scope.isKorkeakoulu){ return true; }
-        var valid = true;
-        hakemukset.forEach(function (hakemus){
-            if(hakemus.ehdollisestiHyvaksyttavissa &&
-                (
-                    (hakemus.ehdollisenHyvaksymisenEhtoKoodi != "" && hakemus.ehdollisenHyvaksymisenEhtoKoodi != "muu") ||
-                    (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu" && hakemus.ehdollisenHyvaksymisenEhtoFI != undefined &&
-                    hakemus.ehdollisenHyvaksymisenEhtoSV != undefined && hakemus.ehdollisenHyvaksymisenEhtoEN != undefined && hakemus.ehdollisenHyvaksymisenEhtoFI != "" &&
-                    hakemus.ehdollisenHyvaksymisenEhtoSV != "" && hakemus.ehdollisenHyvaksymisenEhtoEN != "")
-                )
-            ){
-                // ok
-            } else {
-                valid = false; // not valid row
-            }
-        });
-        return valid;
-    };
-
     $scope.submit = function (valintatapajonoOid) {
 
         var title = LocalisationService.tl('tallennaMuutokset') || 'Tallenna muutokset.';
         var body = LocalisationService.tl('oletTallentamassaMuutoksia') || 'Olet tallentamassa muutoksia: ';
         var kpl = LocalisationService.tl('kpl') || 'kpl';
 
-//        if($scope.validateEhdollisenHyvaksymisenKoodi($scope.muokatutHakemukset)) {
-            TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function (success, failure) {
-                $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
-            });
- //       }
+        TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function (success, failure) {
+            $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
+        });
     };
 
     $scope.luoJalkiohjauskirjeetPDF = function() {

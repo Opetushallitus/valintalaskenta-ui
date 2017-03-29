@@ -502,34 +502,10 @@ angular.module('valintalaskenta')
 
       $scope.hakemuksetByValintatapajonoOid = hakemuksetByValintatapajonoOid;
 
-      $scope.validateEhdollisenHyvaksymisenKoodi = function(hakemukset){
-        if (!$scope.korkeakoulu) { return true; }
-        var valid = true;
-        hakemukset.forEach(function (hakemus){
-            if(hakemus.ehdollisestiHyvaksyttavissa &&
-                (
-                (hakemus.ehdollisenHyvaksymisenEhtoKoodi != "" && hakemus.ehdollisenHyvaksymisenEhtoKoodi != "muu") ||
-                (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu" && hakemus.ehdollisenHyvaksymisenEhtoFI != undefined &&
-                  hakemus.ehdollisenHyvaksymisenEhtoSV != undefined && hakemus.ehdollisenHyvaksymisenEhtoEN != undefined && hakemus.ehdollisenHyvaksymisenEhtoFI != "" &&
-                  hakemus.ehdollisenHyvaksymisenEhtoSV != "" && hakemus.ehdollisenHyvaksymisenEhtoEN != "")
-                )
-            ){
-              // ok
-            } else {
-              valid = false;
-            }
-        });
-        return valid;
-      };
 
       $scope.submitIlmanLaskentaa = function (valintatapajono) {
         var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
-//        if($scope.validateEhdollisenHyvaksymisenKoodi(hakemukset)){
         $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
- /*       } else {
-          return false;
-        }*/
-
       };
 
       var addToMuokattuHakemusList = function (joMuokatut, hakemus, valintatapajonoOid) {
