@@ -462,7 +462,8 @@ app.factory('ErillishakuHyvaksymiskirjeet', function($resource) {
         hakukohdeOid: "@hakukohdeOid"
       }, {
         get: {method: 'GET', isArray: true, cache: false},
-        post: {method: 'POST', isArray: true}
+        post: {method: 'POST', isArray: true},
+        delete: {method: 'DELETE', isArray: true}
       }
   );
 });

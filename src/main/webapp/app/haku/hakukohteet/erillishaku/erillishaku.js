@@ -615,18 +615,25 @@ angular.module('valintalaskenta')
       };
 
       var saveHyvaksymiskirjeet = function(hakemukset) {
-        var hyvaksymiskirjeet = hakemukset
+        var muuttuneetHyvaksymiskirjeet = hakemukset
             .filter(function(hakemus) { return hakemus.hyvaksymiskirjeLahetetty; })
             .map(function(hakemus) {
               return {
                 henkiloOid: hakemus.personOid,
-                hakukohdeOid: $scope.hakukohdeOid,
                 lahetetty: hakemus.hyvaksymiskirjeLahetetty
               };
             });
-        ErillishakuHyvaksymiskirjeet.post({hakukohdeOid: $scope.hakukohdeOid}, hyvaksymiskirjeet).$promise.catch(function(error) {
+        var poistetutHyvaksymiskirjeet = hakemukset
+            .filter(function(hakemus) { return !hakemus.hyvaksymiskirjeLahetetty; })
+            .map(function(hakemus) {
+              return hakemus.personOid;
+            });
+        ErillishakuHyvaksymiskirjeet.post({hakukohdeOid: $scope.hakukohdeOid}, muuttuneetHyvaksymiskirjeet).$promise.catch(function(error) {
           console.log(error);
         });
+        ErillishakuHyvaksymiskirjeet.delete({hakukohdeOid: $scope.hakukohdeOid}, poistetutHyvaksymiskirjeet).$promise.catch(function(error) {
+          console.log(error);
+        })
       };
 
       $scope.erillishaunVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
