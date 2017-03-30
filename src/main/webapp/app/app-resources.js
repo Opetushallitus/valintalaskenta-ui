@@ -457,13 +457,10 @@ app.factory('ErillishakuProxy', function($resource) {
 });
 app.factory('ErillishakuHyvaksymiskirjeet', function($resource) {
   return $resource(
-      plainUrl("valinta-tulos-service.hyvaksymiskirje", ":hakukohdeOid"),
-      {
-        hakukohdeOid: "@hakukohdeOid"
-      }, {
+      window.url("valinta-tulos-service.hyvaksymiskirje"),
+      null, {
         get: {method: 'GET', isArray: true, cache: false},
-        post: {method: 'POST', isArray: true},
-        delete: {method: 'DELETE', isArray: true}
+        post: {method: 'POST', isArray: true}
       }
   );
 });
