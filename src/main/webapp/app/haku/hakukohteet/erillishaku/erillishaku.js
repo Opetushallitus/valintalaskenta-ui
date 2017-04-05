@@ -2,12 +2,12 @@ angular.module('valintalaskenta')
 
     .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
         'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
-        'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService', 'ErillishakuVienti',
+        'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet',
         function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
-                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
+                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                   ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                   VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
                   ErillishakuHyvaksymiskirjeet) {
@@ -410,53 +410,6 @@ angular.module('valintalaskenta')
         });
       });
 
-      AuthService.crudOph("APP_SIJOITTELU").then(function () {
-        $scope.updateOph = true;
-        $scope.jkmuokkaus = true;
-      });
-
-      $scope.user = UserModel;
-      UserModel.refreshIfNeeded().then(function(){
-        $scope.jkmuokkaus = UserModel.isKKUser;
-        $scope.jkmuokkaus = true;
-      });
-
-      $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
-        ValintatapajonoVienti.vie({
-            valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid,
-            valintatapajononNimi: valintatapajononNimi,
-            hakukohdeOid: $scope.hakukohdeOid,
-            hakuOid: $routeParams.hakuOid},
-          {}, function (id) {
-            Latausikkuna.avaa(id, "Valintatapajonon vienti taulukkolaskentaan", "");
-          }, function () {
-            Ilmoitus.avaa("Valintatapajonon vienti epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
-          });
-      };
-
-      $scope.valintalaskentaTulosXLS = function() {
-        TulosXls.query({hakukohdeOid:$routeParams.hakukohdeOid});
-      };
-
-      $scope.showHistory = function(valintatapajonoOid, hakemusOid) {
-        $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
-      };
-
-      $scope.showTilaPartial = function(valintatulos) {
-        if (valintatulos.showTilaPartial === null || valintatulos.showTilaPartial === false) {
-          valintatulos.showTilaPartial = true;
-        } else {
-          valintatulos.showTilaPartial = false;
-        }
-      };
-      $scope.showHenkiloPartial = function(valintatulos) {
-        if (valintatulos.showHenkiloPartial === null || valintatulos.showHenkiloPartial === false) {
-          valintatulos.showHenkiloPartial = true;
-        } else {
-          valintatulos.showHenkiloPartial = false;
-        }
-      };
-
       $scope.hakemusToErillishakuRivi = function (hakemus) {
         return {
           etunimi: hakemus.etunimi,
@@ -537,32 +490,6 @@ angular.module('valintalaskenta')
         $scope.validateHakemuksenTilat(hakemus);
       };
 
-      $scope.muutaSijoittelunStatus = function (jono, status) {
-        ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status);
-      };
-
-      $scope.changeTila = function (jonosija, value) {
-        if (_.isNumber(value)) {
-          $timeout(function(){
-            jonosija.tuloksenTila = "HYVAKSYTTAVISSA";
-          });
-        } else {
-          $timeout(function(){
-            jonosija.tuloksenTila = "";
-            delete jonosija.jonosija;
-          });
-        }
-
-      };
-
-      $scope.changeSija = function (jonosija, value) {
-        if (value !== 'HYVAKSYTTAVISSA') {
-          $timeout(function(){
-            delete jonosija.jonosija;
-          });
-        }
-      };
-
       $scope.getHakutyyppi = function() {
         if($scope.hakuModel.korkeakoulu) {
           return "KORKEAKOULU";
@@ -629,43 +556,6 @@ angular.module('valintalaskenta')
           }, function () {
             Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
           });
-      };
-
-      $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files, valintatapajononNimi) {
-        var file = $files[0];
-        var fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(file);
-        var hakukohdeOid = $scope.hakukohdeOid;
-        var hakuOid = $routeParams.hakuOid;
-        var params = {
-          hakuOid : hakuOid,
-          hakukohdeOid : hakukohdeOid
-        };
-        if(!isKeinotekoinenOid(valintatapajonoOid)) {
-          params.valintatapajonoOid=valintatapajonoOid;
-        }
-        if(valintatapajononNimi) {
-          params.valintatapajononNimi=valintatapajononNimi;
-        }
-        fileReader.onload = function(e) {
-          $scope.upload = $upload.http({
-            url: window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti", params),
-            method: "POST",
-            headers: {'Content-Type': 'application/octet-stream', 'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()},
-            data: e.target.result
-          }).progress(function(evt) {
-
-          }).success(function(id, status, headers, config) {
-            Latausikkuna.avaaKustomoitu(id, "Valintatapajonon tuonti", "", "../common/modaalinen/tuontiikkuna.html",
-              function(dokumenttiId) {
-                // tee paivitys
-                $scope.model.refresh(hakukohdeOid, hakuOid);
-              }
-            );
-          }).error(function(data) {
-            //error
-          });
-        };
       };
 
       $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid, valintatapajononNimi) {
