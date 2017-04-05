@@ -104,18 +104,6 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
 
-    var refreshHaunTiedot = function() {
-        HaunTiedot.get({hakuOid: $scope.hakuOid}, function(resultWrapper) {
-            $scope.haku = HakuHelper.setErillishaku(resultWrapper.result);
-        });
-    };
-
-    if($routeParams.hakukohdeOid) {
-        HakukohdeHenkilotFull.get({aoOid: $scope.hakukohdeOid, rows: 100000, asId: $scope.hakuOid}, function (result) {});
-        $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
-        refreshHaunTiedot();
-    }
-
     var refreshSijoitteluntulosModel = function() {
         $scope.sijoitteluntulosModel = SijoitteluntulosModel;
         $scope.sijoitteluntulosModel.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid, HakukohdeModel.isHakukohdeChanged($routeParams.hakukohdeOid));
@@ -187,8 +175,10 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         });
     };
 
-    if($routeParams.hakukohdeOid) {
-        refreshHaunTiedot();
+    if ($routeParams.hakukohdeOid) {
+      HakukohdeHenkilotFull.get({aoOid: $scope.hakukohdeOid, rows: 100000, asId: $scope.hakuOid}, function (result) {});
+      $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
+      refreshHaunTiedot();
     }
 }])
 
