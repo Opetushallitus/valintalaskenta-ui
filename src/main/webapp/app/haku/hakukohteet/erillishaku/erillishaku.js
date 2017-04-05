@@ -421,18 +421,6 @@ angular.module('valintalaskenta')
         $scope.jkmuokkaus = true;
       });
 
-      $scope.getHakijanSijoitteluTulos = function (valintatapajono, hakija) {
-        var jono = _.find($scope.model.erillishakuSijoitteluajoTulos.valintatapajonot, function (item) {
-          return item.oid === valintatapajono.oid || !item.oid;
-        });
-
-        if(!_.isEmpty(jono)) {
-          return _.find(jono.hakemukset, function (item) {
-            return item.hakijaOid === hakija.hakijaOid;
-          });
-        }
-      };
-
       $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
         ValintatapajonoVienti.vie({
             valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid,
