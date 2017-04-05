@@ -140,31 +140,11 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         });
     };
 
-    var readValintatapajonoOid = function() {
-        var checkArrayLength = function(array) {
-            return array && 0 < array.length;
-        };
-        if(checkArrayLength($scope.erillishaku) && checkArrayLength(_.first($scope.erillishaku).valintatapajonot)) {
-           return _.first(_.first($scope.erillishaku).valintatapajonot).oid;
-        } else {
-           console.log("Erillishaulla ei ole valinnanvaihetta tai valintatapajonoa");
-        }
-    };
-
     var refreshErillishaku = function() {
-        ErillishakuProxy.hae({
-            hakuOid: $routeParams.hakuOid,
-            hakukohdeOid: $routeParams.hakukohdeOid
-        }).$promise.then(function(erillishaku) {
-            $scope.erillishaku = erillishaku;
-            $scope.valintatapajonoOid = readValintatapajonoOid();
-            if($scope.valintatapajonoOid) {
-                ValinnanTulos.get({valintatapajonoOid: $scope.valintatapajonoOid}).then(function(response) {
-                    updateErillishaunHakemusErittelyt(response.data);
-                }, function(error) {
-                    console.log(error);
-                });
-            }
+        ValinnanTulos.get({hakukohdeOid: $routeParams.hakukohdeOid}).then(function(response) {
+            updateErillishaunHakemusErittelyt(response.data);
+        }, function(error) {
+            console.log(error);
         });
     };
 
