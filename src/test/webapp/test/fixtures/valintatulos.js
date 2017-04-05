@@ -102,5 +102,5 @@ function valintatulosFixture() {
 
     httpBackend.when('GET', /.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulos\/haku\/1\.2\.246\.562\.29\.11735171271\/hakemusOid\/1\.2\.246\.562\.11\.00003935855/).respond(valintatulos1);
     httpBackend.when('GET', /.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulos\/haku\/1\.2\.246\.562\.29\.11735171271\/hakemusOid\/1\.2\.246\.562\.11\.00000000220/).respond(valintatulos2);
-    httpBackend.when('GET', /.*valinta-tulos-service\/auth\/valinnan-tulos\/.*/).respond([]);
+    httpBackend.when('GET', /.*valinta-tulos-service\/auth\/valinnan-tulos.*/).respond([]);
 }

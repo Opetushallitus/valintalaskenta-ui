@@ -22,10 +22,8 @@ angular.module('valintalaskenta')
       $scope.tableParams = {};
       $scope.showInvalidsOnly = false;
       $scope.valintatuloksentilat = [];
-      $scope.korkeakoulu;
       $scope.pageSize = 50;
       $scope.deleting = null;
-      $scope.valintatapajonoLastModified = {};
       $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
 
       $scope.showEhdot = function (model, value) {
@@ -343,9 +341,9 @@ angular.module('valintalaskenta')
       };
 
       var getErillishaunValinnantulokset = function (v) {
-        ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
+        ValinnanTulos.get({hakukohdeOid: $scope.hakukohdeOid}).then(function(response) {
           Valinnantulokset.compareErillishakuOldAndNewVtsResponse(v, response.data);
-          $scope.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
+          $scope.valintatapajonoLastModified = response.headers("Last-Modified");
         }, function(error) {
           console.log(error);
         });
@@ -600,7 +598,7 @@ angular.module('valintalaskenta')
         ErillishakuTuonti.tuo(
             {rivit: json},
             {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
-             headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()}}
+             headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
         ).success(function(id, status, headers, config) {
             Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
                 function() {
@@ -665,7 +663,7 @@ angular.module('valintalaskenta')
           $scope.upload = $upload.http({
             url: window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti", params),
             method: "POST",
-            headers: {'Content-Type': 'application/octet-stream', 'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()},
+            headers: {'Content-Type': 'application/octet-stream', 'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()},
             data: e.target.result
           }).progress(function(evt) {
 
@@ -706,7 +704,7 @@ angular.module('valintalaskenta')
           $scope.upload = $upload.http({
             url: window.url("valintalaskentakoostepalvelu.erillishaku.tuonti", params),
             method: "POST",
-            headers: {'Content-Type': 'application/octet-stream', 'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()},
+            headers: {'Content-Type': 'application/octet-stream', 'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()},
             data: e.target.result
           }).progress(function(evt) {
           }).success(function(id, status, headers, config) {
@@ -808,7 +806,7 @@ angular.module('valintalaskenta')
         ErillishakuTuonti.tuo(
           {rivit: json},
           {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
-           headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()}}
+           headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
         ).success(function(id, status, headers, config) {
             Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
               function() {
@@ -846,7 +844,7 @@ angular.module('valintalaskenta')
         ErillishakuTuonti.tuo(
           {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]},
           {params: $scope.erillisHakuTuontiParams(valintatapajono.oid, valintatapajono.nimi),
-           headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajono.oid] || (new Date()).toUTCString()}}
+           headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
         ).success(function(res, status, headers, config) {
             console.log(res);
           }).error(function(e) {

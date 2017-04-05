@@ -97,10 +97,10 @@ app.factory('ValinnanTulos', function($http) {
     $http.defaults.headers.patch = {"Content-Type": "application/json"};
     return {
         get: function(params, config) {
-            return $http.get(plainUrls.url("valinta-tulos-service.valinnan-tulos", params["valintatapajonoOid"]), config || {});
+            return $http.get(plainUrls.url("valinta-tulos-service.valinnan-tulos", params), config || {});
         },
         patch: function(params, data, config) {
-            return $http.patch(plainUrls.url("valinta-tulos-service.valinnan-tulos", params["valintatapajonoOid"]), data, config || {});
+            return $http.patch(plainUrls.url("valinta-tulos-service.valinnan-tulos", params), data, config || {});
         }
     };
 });
