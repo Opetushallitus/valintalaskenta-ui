@@ -24,7 +24,15 @@ angular.module('valintalaskenta')
           _(checkKeys).forEach(function (key) {
             var newValue = newValinnantulos[key.newKey],
               oldValue = oldHakemus[key.oldKey];
-            if (oldValue !== newValue) {
+            if (newValue instanceof Date || oldValue instanceof Date) {
+              var newTime = newValue instanceof Date ? newValue.getTime() : newValue;
+              var oldTime = oldValue instanceof Date ? oldValue.getTime() : oldValue;
+              if (!(isNaN(newTime) && isNaN(oldTime)) && newTime !== oldTime) {
+                console.log('Mismatch with old and new valinnantulos for hakemus: ' + oldHakemus.hakemusOid +
+                    ' on key ' + key.oldKey + ' (' + key.newKey + ')' + ': ' + oldValue + ' != ' + newValue);
+                logValinnantulos = true;
+              }
+            } else if (oldValue !== newValue) {
               console.log('Mismatch with old and new valinnantulos for hakemus: ' + oldHakemus.hakemusOid +
                 ' on key ' + key.oldKey + ' (' + key.newKey + ')' + ': ' + oldValue + ' != ' + newValue);
               logValinnantulos = true;
