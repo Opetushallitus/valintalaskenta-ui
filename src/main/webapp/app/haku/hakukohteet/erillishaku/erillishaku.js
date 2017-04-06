@@ -394,10 +394,8 @@ angular.module('valintalaskenta')
       };
 
       $scope.hakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
-        $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOids', function () {
-          AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
-            $scope.updateOrg = true;
-          });
+        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
+          $scope.updateOrg = true;
         });
 
         $q.all([
