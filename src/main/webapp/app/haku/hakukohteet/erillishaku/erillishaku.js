@@ -14,6 +14,7 @@ angular.module('valintalaskenta')
       "use strict";
 
       $scope.muokatutHakemukset = {};
+      $scope.hyvaksymiskirjeLahetettyCheckbox = {};
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
       $scope.hakuOid =  $routeParams.hakuOid;
       $scope.url = window.url;
@@ -316,13 +317,7 @@ angular.module('valintalaskenta')
 
         valintatapajono.hakemukset.forEach(function (hakemus) {
           hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI';
-          if (hakemus.hyvaksymiskirjeLahetetty) {
-            hakemus.hyvaksymiskirjeLahetettyPvm = hakemus.hyvaksymiskirjeLahetetty;
-            hakemus.hyvaksymiskirjeLahetetty = true;
-          }
-          else {
-            hakemus.hyvaksymiskirjeLahetetty = false;
-          }
+          $scope.hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid] = !!hakemus.hyvaksymiskirjeLahetetty;
           if (hakemus.valintatuloksentila === "" || !_.isString(hakemus.valintatuloksentila)) {
             hakemus.valintatuloksentila = 'KESKEN';
           }
@@ -357,18 +352,17 @@ angular.module('valintalaskenta')
           });
           valintatapajono.hakemukset.forEach(function(hakemus) {
             var henkiloOid = hakemus.hakijaOid;
-            var oldTime = (new Date(hakemus.hyvaksymiskirjeLahetettyPvm)).getTime();
+            var oldTime = (new Date(hakemus.hyvaksymiskirjeLahetetty)).getTime();
             var newTime = (new Date(kirjeLahetetty[henkiloOid])).getTime();
             if (!(isNaN(oldTime) && isNaN(newTime)) && oldTime !== newTime) {
-              console.log("Mismatch of hyvaksymiskirjeLahetettyPvm for person: " + henkiloOid + ", " +
+              console.log("Mismatch of hyvaksymiskirjeLahetetty for person: " + henkiloOid + ", " +
                   oldTime + " !=== " + newTime);
             }
             if (READ_FROM_VALINTAREKISTERI === "true") {
-              if (!isNaN(newTime)) {
-                hakemus.hyvaksymiskirjeLahetettyPvm = newTime;
-                hakemus.hyvaksymiskirjeLahetetty = true;
+              if (isNaN(newTime)) {
+                hakemus.hyvaksymiskirjeLahetetty = null;
               } else {
-                hakemus.hyvaksymiskirjeLahetetty = false;
+                hakemus.hyvaksymiskirjeLahetetty = newTime;
               }
             }
           });
@@ -406,6 +400,11 @@ angular.module('valintalaskenta')
         processErillishaku(erillishaku, hakemuksetToMaksuvelvollisuus(hakemukset));
       });
 
+      $scope.updateHyvaksymiskirjeLahetetty = function(hakemus, valintatapajono) {
+        hakemus.hyvaksymiskirjeLahetetty = $scope.hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid] ? new Date() : null;
+        $scope.addMuokattuHakemus(hakemus, valintatapajono);
+      };
+
       $scope.hakemusToErillishakuRivi = function (hakemus) {
         return {
           etunimi: hakemus.etunimi,
@@ -421,7 +420,7 @@ angular.module('valintalaskenta')
           ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
           ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
           maksuvelvollisuus: hakemus.maksuvelvollisuus ? hakemus.maksuvelvollisuus : 'NOT_CHECKED',
-          hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty ? hakemus.hyvaksymiskirjeLahetettyPvm : null,
+          hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
           vastaanottoTila: hakemus.valintatuloksentila,
           ilmoittautumisTila: hakemus.ilmoittautumistila,
           poistetaankoRivi: hakemus.poistetaankoRivi,
@@ -448,7 +447,7 @@ angular.module('valintalaskenta')
             ehdollisenHyvaksymisenEhtoFI: hakemus.ehdollisenHyvaksymisenEhtoFI,
             ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
             ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
-            hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty ? hakemus.hyvaksymiskirjeLahetettyPvm : null,
+            hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
             hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
             ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu"),
             ehtoInputFields: hakemus.ehdollisestiHyvaksyttavissa
@@ -594,16 +593,6 @@ angular.module('valintalaskenta')
         };
       };
 
-      $scope.updateHyvaksymiskirjeLahetettyPvm = function (hakemus, valintatapajono) {
-        if (hakemus.hyvaksymiskirjeLahetetty) {
-          hakemus.hyvaksymiskirjeLahetettyPvm = new Date();
-        }
-        else {
-          hakemus.hyvaksymiskirjeLahetettyPvm = null;
-        }
-        $scope.addMuokattuHakemus(hakemus, valintatapajono);
-      };
-
       $scope.luoHyvaksymiskirjeetPDF = function(hakemusOids, sijoitteluajoId) {
         var hakukohde = $scope.hakukohdeModel.hakukohde;
         var tag = null;
@@ -636,7 +625,6 @@ angular.module('valintalaskenta')
             ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
             ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
             hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
-            hyvaksymiskirjeLahetettyPvm: hakemus.hyvaksymiskirjeLahetettyPvm,
             tila: hakemus.valintatuloksenTila,
             tilaHakijalle: hakemus.valintatuloksenTilaHakijalle,
             hakemusOid: hakemus.hakemusOid,
