@@ -393,19 +393,17 @@ angular.module('valintalaskenta')
         return oidToMaksuvelvollisuus;
       };
 
-      $scope.hakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
+      $q.all([
+        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid),
+        HakukohdeHenkilotFull.get({aoOid: $routeParams.hakukohdeOid, rows: 100000, asId: $routeParams.hakuOid}).$promise,
+        ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}).$promise
+      ]).then(function (resolved) {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
           $scope.updateOrg = true;
         });
-
-        $q.all([
-          HakukohdeHenkilotFull.get({aoOid: $routeParams.hakukohdeOid, rows: 100000, asId: $routeParams.hakuOid}).$promise,
-          ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}).$promise
-        ]).then(function(resolved) {
-          var hakemukset = resolved[0];
-          var erillishaku = resolved[1];
-          processErillishaku(erillishaku, hakemuksetToMaksuvelvollisuus(hakemukset));
-        });
+        var hakemukset = resolved[1];
+        var erillishaku = resolved[2];
+        processErillishaku(erillishaku, hakemuksetToMaksuvelvollisuus(hakemukset));
       });
 
       $scope.hakemusToErillishakuRivi = function (hakemus) {
