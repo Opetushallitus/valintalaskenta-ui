@@ -320,12 +320,7 @@ angular.module('valintalaskenta')
           if (hakemus.valintatuloksentila === "" || !_.isString(hakemus.valintatuloksentila)) {
             hakemus.valintatuloksentila = 'KESKEN';
           }
-          var maksuvelvollisuus = oidToMaksuvelvollisuus[hakemus.hakemusOid];
-          if(maksuvelvollisuus) {
-            hakemus.maksuvelvollisuus = maksuvelvollisuus;
-          } else {
-            hakemus.maksuvelvollisuus = 'NOT_CHECKED';
-          }
+          hakemus.maksuvelvollisuus = oidToMaksuvelvollisuus[hakemus.hakemusOid] || 'NOT_CHECKED';
           $scope.validateHakemuksenTilat(hakemus);
         });
 
