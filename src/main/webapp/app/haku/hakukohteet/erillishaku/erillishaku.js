@@ -331,40 +331,23 @@ angular.module('valintalaskenta')
 
         $scope.valintatapajono = valintatapajono;
         getErillishaunValinnantulokset(valintatapajono);
-        getHyvaksymiskirjeet(valintatapajono);
       };
 
       var getErillishaunValinnantulokset = function (v) {
-        ValinnanTulos.get({hakukohdeOid: $scope.hakukohdeOid}).then(function(response) {
-          Valinnantulokset.compareErillishakuOldAndNewVtsResponse(v, response.data);
-          $scope.valintatapajonoLastModified = response.headers("Last-Modified");
-        }, function(error) {
-          console.log(error);
-        });
-      };
-
-      var getHyvaksymiskirjeet = function(valintatapajono) {
-        ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: $scope.hakukohdeOid}).$promise.then(function(r) {
-          var kirjeLahetetty = {};
-          r.forEach(function(kirje) {
-            kirjeLahetetty[kirje.henkiloOid] = kirje.lahetetty;
+        $q.all([
+          ValinnanTulos.get({hakukohdeOid: $scope.hakukohdeOid}),
+          ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: $scope.hakukohdeOid}).$promise
+        ]).then(function(result) {
+          $scope.valintatapajonoLastModified = result[0].headers("Last-Modified");
+          var hakemukset = result[0].data;
+          var kirjeLahetetty = result[1].reduce(function(acc, kirje) {
+            acc[kirje.henkiloOid] = new Date(kirje.lahetetty);
+            return acc;
+          }, {});
+          hakemukset.forEach(function(hakemus) {
+            hakemus.hyvaksymiskirjeLahetetty = kirjeLahetetty[hakemus.henkiloOid] || null;
           });
-          valintatapajono.hakemukset.forEach(function(hakemus) {
-            var henkiloOid = hakemus.hakijaOid;
-            var oldTime = (new Date(hakemus.hyvaksymiskirjeLahetetty)).getTime();
-            var newTime = (new Date(kirjeLahetetty[henkiloOid])).getTime();
-            if (!(isNaN(oldTime) && isNaN(newTime)) && oldTime !== newTime) {
-              console.log("Mismatch of hyvaksymiskirjeLahetetty for person: " + henkiloOid + ", " +
-                  oldTime + " !=== " + newTime);
-            }
-            if (READ_FROM_VALINTAREKISTERI === "true") {
-              if (isNaN(newTime)) {
-                hakemus.hyvaksymiskirjeLahetetty = null;
-              } else {
-                hakemus.hyvaksymiskirjeLahetetty = newTime;
-              }
-            }
-          });
+          Valinnantulokset.compareErillishakuOldAndNewVtsResponse(v, hakemukset);
         }, function(error) {
           console.log(error);
         });

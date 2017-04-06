@@ -128,7 +128,8 @@ angular.module('valintalaskenta')
       {oldKey: 'ilmoittautumistila', newKey: 'ilmoittautumistila'},
       {oldKey: 'julkaistavissa', newKey: 'julkaistavissa'},
       {oldKey: 'hakemuksentila', newKey: 'valinnantila'},
-      {oldKey: 'valintatuloksentila', newKey: 'vastaanottotila'}
+      {oldKey: 'valintatuloksentila', newKey: 'vastaanottotila'},
+      {oldKey: 'hyvaksymiskirjeLahetetty', newKey: 'hyvaksymiskirjeLahetetty'}
     ];
     
     var sijoittelunTulosKeys = [
