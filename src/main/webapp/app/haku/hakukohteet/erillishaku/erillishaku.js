@@ -316,7 +316,6 @@ angular.module('valintalaskenta')
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, valintatapajono.hakemukset);
 
         valintatapajono.hakemukset.forEach(function (hakemus) {
-          hakemus.onkoVastaanottanut = hakemus.valintatuloksentila === 'VASTAANOTTANUT_SITOVASTI';
           $scope.hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid] = !!hakemus.hyvaksymiskirjeLahetetty;
           if (hakemus.valintatuloksentila === "" || !_.isString(hakemus.valintatuloksentila)) {
             hakemus.valintatuloksentila = 'KESKEN';
