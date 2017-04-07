@@ -382,7 +382,7 @@ angular.module('valintalaskenta')
         $scope.addMuokattuHakemus(hakemus);
       };
 
-      $scope.hakemusToErillishakuRivi = function (hakemus) {
+      var hakemusToErillishakuRivi = function (hakemus) {
         return {
           etunimi: hakemus.etunimi,
           sukunimi: hakemus.sukunimi,
@@ -433,7 +433,7 @@ angular.module('valintalaskenta')
       };
 
       $scope.submitIlmanLaskentaa = function (valintatapajono) {
-        var erillishakuRivit = _.map($scope.muokatutHakemukset, $scope.hakemusToErillishakuRivi);
+        var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
         ErillishakuTuonti.tuo(
             {rivit: erillishakuRivit},
             {
@@ -632,9 +632,9 @@ angular.module('valintalaskenta')
         $scope.removeHakemusRow(hakemus, $event.target, valintatapajono);
         hakemus.poistetaankoRivi = true;
 
-        console.log($scope.hakemusToErillishakuRivi(hakemus));
+        console.log(hakemusToErillishakuRivi(hakemus));
         ErillishakuTuonti.tuo(
-          {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]},
+          {rivit: [hakemusToErillishakuRivi(hakemus)]},
           {params: $scope.erillisHakuTuontiParams(valintatapajono.oid),
            headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
         ).success(function(res, status, headers, config) {
