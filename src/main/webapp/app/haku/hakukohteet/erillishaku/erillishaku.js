@@ -153,11 +153,6 @@ angular.module('valintalaskenta')
         else hakemus.isValid = false
       };
 
-      $scope.toggleShowInvalidsOnly = function(tableParams) {
-        $scope.showInvalidsOnly = !$scope.showInvalidsOnly;
-        tableParams.reload();
-      };
-
       $scope.invalidsAmount = function(hakemukset) {
         return _(hakemukset).filter(function(hakemus) {
           return hakemus.isValid == false;

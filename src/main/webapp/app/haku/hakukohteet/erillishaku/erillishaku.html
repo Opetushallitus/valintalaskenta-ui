@@ -43,16 +43,13 @@
 
                     <br />
 
-                    <span class="filter-invalid"
-                          ng-if="invalidsAmount(valintatapajono.hakemukset)"
-                          ng-click="toggleShowInvalidsOnly(tableParams[valintatapajono.oid])">
-                                        <input type="checkbox"
-                                               ng-model="showInvalidsOnly"/>
-                                        {{ t('sijoitteluntulos.naytavainvirheelliset') || 'Näytä vain virheelliset' }}
-                                        <span class="circled-character error-exclamation">
-                                            {{ (invalidsAmount(valintatapajono.hakemukset)) }}
-                                        </span>
-                                    </span>
+                    <span class="filter-invalid" ng-if="invalidsAmount(valintatapajono.hakemukset)">
+                        <input type="checkbox" ng-model="showInvalidsOnly" ng-change="tableParams[valintatapajono.oid].reload()"/>
+                        {{ t('sijoitteluntulos.naytavainvirheelliset') || 'Näytä vain virheelliset' }}
+                        <span class="circled-character error-exclamation">
+                            {{ (invalidsAmount(valintatapajono.hakemukset)) }}
+                        </span>
+                    </span>
 
                     <table ng-table="tableParams[valintatapajono.oid]" class="virkailija-table-1 erillishaku-table" show-filter="true">
                         <tr ng-repeat="tulos in $data">
