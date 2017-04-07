@@ -604,11 +604,7 @@ angular.module('valintalaskenta')
             $scope.addMuokattuHakemus(hakemus);
           }
         });
-        $scope.submitIlmoitettuToall(valintatapajono, counter);
-      };
-
-      $scope.submitIlmoitettuToall = function (valintatapajono, hakemuksetSize) {
-        TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + hakemuksetSize + " kpl. hakemuksia.", function (success, failure) {
+        TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + counter + " kpl. hakemuksia.", function (success) {
           success();
           $scope.submitIlmanLaskentaa(valintatapajono);
         });
