@@ -16,38 +16,38 @@
             <div>
                 <form name="form">
                     <button ng-disabled="muokatutHakemukset.length == 0"
-                            ng-click="submitIlmanLaskentaa(valintatapajono)"
+                            ng-click="submitIlmanLaskentaa()"
                             class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
 
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                            ng-click="erillishaunVientiXlsx(valintatapajono.oid)"
+                            ng-click="erillishaunVientiXlsx()"
                             class="btn btn-default btn-sm margin-bottom-2">{{t('erillishaku.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</button>
 
                     <span ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                           class="btn btn-primary btn-sm margin-bottom-2 btn-file">
                                         {{ t('erillishaku.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }}
                                         <input type="file"
-                                               ng-file-select="erillishaunTuontiXlsx($files,valintatapajono.oid)">
+                                               ng-file-select="erillishaunTuontiXlsx($files)">
                                     </span>
                     <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm margin-bottom-2 pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
 
-                    <button ng-click="selectEiVastanotettuMaaraaikanaToAll(valintatapajono)"
+                    <button ng-click="selectEiVastanotettuMaaraaikanaToAll()"
                             class="btn btn-default btn-sm margin-bottom-2">
                         {{ t('sijoitteluntulos.merkitsemyohastyneeksi') || 'Merkitse myöhästyneeksi' }}
                     </button>
 
-                    <button ng-click="selectIlmoitettuToAll(valintatapajono)"
+                    <button ng-click="selectIlmoitettuToAll()"
                             class="btn btn-default btn-sm margin-bottom-2">
                         {{ t('sijoitteluntulos.hyvaksyvalintaesitys') || 'Hyväksy ja tallenna valintaesitys' }}
                     </button>
 
                     <br />
 
-                    <span class="filter-invalid" ng-if="invalidsAmount(valintatapajono.hakemukset)">
+                    <span class="filter-invalid" ng-if="invalidsAmount()">
                         <input type="checkbox" ng-model="showInvalidsOnly" ng-change="tableParams.reload()"/>
                         {{ t('sijoitteluntulos.naytavainvirheelliset') || 'Näytä vain virheelliset' }}
                         <span class="circled-character error-exclamation">
-                            {{ (invalidsAmount(valintatapajono.hakemukset)) }}
+                            {{ (invalidsAmount()) }}
                         </span>
                     </span>
 
@@ -255,9 +255,9 @@
                             <td ng-show="updateOrg" class="width100">
                                 <div>
                                     <i class="fa fa-times-circle delete-button" aria-hidden="true"
-                                       ng-click="handleRemoveHakemus(tulos, valintatapajono, $event)"></i>
+                                       ng-click="handleRemoveHakemus(tulos, $event)"></i>
 
-                                    <button ng-click="removeHakemus(tulos, valintatapajono, $event)"
+                                    <button ng-click="removeHakemus(tulos, $event)"
                                             class="display-none confirm-delete">{{ t('sijoitteluntulos.vahvistaPoisto') || 'Vahvista poisto' }}</button>
                                 </div>
                             </td>
@@ -265,7 +265,7 @@
                         <tfoot>
                         <tr>
                             <td>
-                                <button ng-disabled="muokatutHakemukset.length == 0" ng-click="submitIlmanLaskentaa(valintatapajono)" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
+                                <button ng-disabled="muokatutHakemukset.length == 0" ng-click="submitIlmanLaskentaa()" class="btn btn-primary btn-sm margin-top-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
                             </td>
                         </tr>
                         </tfoot>

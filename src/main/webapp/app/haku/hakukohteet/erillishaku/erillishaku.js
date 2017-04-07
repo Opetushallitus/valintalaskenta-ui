@@ -152,8 +152,8 @@ angular.module('valintalaskenta')
         else hakemus.isValid = false
       };
 
-      $scope.invalidsAmount = function(hakemukset) {
-        return _(hakemukset).filter(function(hakemus) {
+      $scope.invalidsAmount = function() {
+        return _($scope.valintatapajono.hakemukset).filter(function(hakemus) {
           return hakemus.isValid == false;
         }).length;
       };
@@ -402,12 +402,12 @@ angular.module('valintalaskenta')
         };
       };
 
-      $scope.submitIlmanLaskentaa = function (valintatapajono) {
+      $scope.submitIlmanLaskentaa = function () {
         var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
         ErillishakuTuonti.tuo(
             {rivit: erillishakuRivit},
             {
-              params: $scope.erillisHakuTuontiParams(valintatapajono.oid),
+              params: $scope.erillisHakuTuontiParams($scope.valintatapajono.oid),
               headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}
             }
         ).success(function(id) {
@@ -462,7 +462,8 @@ angular.module('valintalaskenta')
         });
       };
 
-      $scope.erillishaunVientiXlsx = function(valintatapajonoOid) {
+      $scope.erillishaunVientiXlsx = function() {
+        var valintatapajonoOid = $scope.valintatapajono.oid;
         var hakutyyppi = $scope.getHakutyyppi();
         ErillishakuVienti.vie({
             hakutyyppi: hakutyyppi,
@@ -478,7 +479,8 @@ angular.module('valintalaskenta')
           });
       };
 
-      $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid) {
+      $scope.erillishaunTuontiXlsx = function($files) {
+        var valintatapajonoOid = $scope.valintatapajono.oid;
         var file = $files[0];
         var fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
@@ -536,8 +538,8 @@ angular.module('valintalaskenta')
         });
       };
 
-      $scope.selectEiVastanotettuMaaraaikanaToAll = function(valintatapajono) {
-        var valintatulokset = _.map(valintatapajono.hakemukset, function(hakemus) {
+      $scope.selectEiVastanotettuMaaraaikanaToAll = function() {
+        var valintatulokset = _.map($scope.valintatapajono.hakemukset, function(hakemus) {
           return {
             julkaistavissa: hakemus.julkaistavissa,
             ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
@@ -556,16 +558,16 @@ angular.module('valintalaskenta')
         VastaanottoUtil.merkitseMyohastyneeksi(valintatulokset);
         _.forEach(valintatulokset, function(valintatulos) {
           if (valintatulos.muokattuVastaanottoTila && valintatulos.muokattuVastaanottoTila !== valintatulos.tila) {
-            var vastaavaHakemus = _.find(valintatapajono.hakemukset, function(hakemus) { return hakemus.hakemusOid === valintatulos.hakemusOid; });
+            var vastaavaHakemus = _.find($scope.valintatapajono.hakemukset, function(hakemus) { return hakemus.hakemusOid === valintatulos.hakemusOid; });
             vastaavaHakemus.valintatuloksentila = valintatulos.muokattuVastaanottoTila;
             $scope.addMuokattuHakemus(vastaavaHakemus);
           }
         });
       };
 
-      $scope.selectIlmoitettuToAll = function (valintatapajono) {
+      $scope.selectIlmoitettuToAll = function () {
         var counter = 0;
-        _(valintatapajono.hakemukset).forEach(function(hakemus) {
+        _($scope.valintatapajono.hakemukset).forEach(function(hakemus) {
           if (!hakemus.julkaistavissa && hakemus.hakemuksentila) {
             counter ++;
             hakemus.julkaistavissa = true;
@@ -576,7 +578,7 @@ angular.module('valintalaskenta')
         });
         TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + counter + " kpl. hakemuksia.", function (success) {
           success();
-          $scope.submitIlmanLaskentaa(valintatapajono);
+          $scope.submitIlmanLaskentaa();
         });
       };
 
@@ -585,27 +587,27 @@ angular.module('valintalaskenta')
         angular.element(button).attr('disabled', true);
       };
 
-      $scope.removeHakemusRow = function(hakemus, eventTarget, valintatapajono) {
+      $scope.removeHakemusRow = function(hakemus, eventTarget) {
         $(eventTarget).closest('tr').find('td > div').slideUp();
         $timeout(function() {
-          valintatapajono.hakemukset = _(valintatapajono.hakemukset).filter(function(o) {
+          $scope.valintatapajono.hakemukset = _($scope.valintatapajono.hakemukset).filter(function(o) {
             return o.hakemusOid != hakemus.hakemusOid;
           });
           $scope.tableParams.reload();
         }, 500);
       };
 
-      $scope.removeHakemus = function(hakemus, valintatapajono, $event) {
+      $scope.removeHakemus = function(hakemus, $event) {
         $timeout.cancel($scope.deleting);
         $scope.deleting = null;
         $scope.disableButton(angular.element($event.target).prev());
-        $scope.removeHakemusRow(hakemus, $event.target, valintatapajono);
+        $scope.removeHakemusRow(hakemus, $event.target);
         hakemus.poistetaankoRivi = true;
 
         console.log(hakemusToErillishakuRivi(hakemus));
         ErillishakuTuonti.tuo(
           {rivit: [hakemusToErillishakuRivi(hakemus)]},
-          {params: $scope.erillisHakuTuontiParams(valintatapajono.oid),
+          {params: $scope.erillisHakuTuontiParams($scope.valintatapajono.oid),
            headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
         ).success(function(res, status, headers, config) {
             console.log(res);
@@ -614,7 +616,7 @@ angular.module('valintalaskenta')
           });
       };
 
-      $scope.handleRemoveHakemus = function(hakemus, valintatapajono, $event) {
+      $scope.handleRemoveHakemus = function(hakemus, $event) {
         if (!$scope.deleting) {
           angular.element($event.target).hide().next().show();
           angular.element($event.target).parent('td').siblings().addClass('deleting-row');
