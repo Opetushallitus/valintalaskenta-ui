@@ -13,6 +13,8 @@ angular.module('valintalaskenta')
                   ErillishakuHyvaksymiskirjeet) {
       "use strict";
 
+      var valintatapajonoOid = null;
+      var hakemukset = [];
       $scope.muokatutHakemukset = [];
       $scope.hyvaksymiskirjeLahetettyCheckbox = {};
       $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -153,7 +155,7 @@ angular.module('valintalaskenta')
       };
 
       $scope.invalidsAmount = function() {
-        return _($scope.valintatapajono.hakemukset).filter(function(hakemus) {
+        return _(hakemukset).filter(function(hakemus) {
           return hakemus.isValid == false;
         }).length;
       };
@@ -318,7 +320,8 @@ angular.module('valintalaskenta')
           $scope.validateHakemuksenTilat(hakemus);
         });
 
-        $scope.valintatapajono = valintatapajono;
+        valintatapajonoOid = valintatapajono.oid;
+        hakemukset = valintatapajono.hakemukset;
         getErillishaunValinnantulokset(valintatapajono);
       };
 
@@ -407,7 +410,7 @@ angular.module('valintalaskenta')
         ErillishakuTuonti.tuo(
             {rivit: erillishakuRivit},
             {
-              params: $scope.erillisHakuTuontiParams($scope.valintatapajono.oid),
+              params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
               headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}
             }
         ).success(function(id) {
@@ -463,7 +466,6 @@ angular.module('valintalaskenta')
       };
 
       $scope.erillishaunVientiXlsx = function() {
-        var valintatapajonoOid = $scope.valintatapajono.oid;
         var hakutyyppi = $scope.getHakutyyppi();
         ErillishakuVienti.vie({
             hakutyyppi: hakutyyppi,
@@ -480,7 +482,6 @@ angular.module('valintalaskenta')
       };
 
       $scope.erillishaunTuontiXlsx = function($files) {
-        var valintatapajonoOid = $scope.valintatapajono.oid;
         var file = $files[0];
         var fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
@@ -539,7 +540,7 @@ angular.module('valintalaskenta')
       };
 
       $scope.selectEiVastanotettuMaaraaikanaToAll = function() {
-        var valintatulokset = _.map($scope.valintatapajono.hakemukset, function(hakemus) {
+        var valintatulokset = _.map(hakemukset, function(hakemus) {
           return {
             julkaistavissa: hakemus.julkaistavissa,
             ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
@@ -558,7 +559,7 @@ angular.module('valintalaskenta')
         VastaanottoUtil.merkitseMyohastyneeksi(valintatulokset);
         _.forEach(valintatulokset, function(valintatulos) {
           if (valintatulos.muokattuVastaanottoTila && valintatulos.muokattuVastaanottoTila !== valintatulos.tila) {
-            var vastaavaHakemus = _.find($scope.valintatapajono.hakemukset, function(hakemus) { return hakemus.hakemusOid === valintatulos.hakemusOid; });
+            var vastaavaHakemus = _.find(hakemukset, function(hakemus) { return hakemus.hakemusOid === valintatulos.hakemusOid; });
             vastaavaHakemus.valintatuloksentila = valintatulos.muokattuVastaanottoTila;
             $scope.addMuokattuHakemus(vastaavaHakemus);
           }
@@ -567,7 +568,7 @@ angular.module('valintalaskenta')
 
       $scope.selectIlmoitettuToAll = function () {
         var counter = 0;
-        _($scope.valintatapajono.hakemukset).forEach(function(hakemus) {
+        _(hakemukset).forEach(function(hakemus) {
           if (!hakemus.julkaistavissa && hakemus.hakemuksentila) {
             counter ++;
             hakemus.julkaistavissa = true;
@@ -590,7 +591,7 @@ angular.module('valintalaskenta')
       $scope.removeHakemusRow = function(hakemus, eventTarget) {
         $(eventTarget).closest('tr').find('td > div').slideUp();
         $timeout(function() {
-          $scope.valintatapajono.hakemukset = _($scope.valintatapajono.hakemukset).filter(function(o) {
+          hakemukset = _(hakemukset).filter(function(o) {
             return o.hakemusOid != hakemus.hakemusOid;
           });
           $scope.tableParams.reload();
@@ -607,7 +608,7 @@ angular.module('valintalaskenta')
         console.log(hakemusToErillishakuRivi(hakemus));
         ErillishakuTuonti.tuo(
           {rivit: [hakemusToErillishakuRivi(hakemus)]},
-          {params: $scope.erillisHakuTuontiParams($scope.valintatapajono.oid),
+          {params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
            headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
         ).success(function(res, status, headers, config) {
             console.log(res);
