@@ -610,24 +610,8 @@ angular.module('valintalaskenta')
       $scope.submitIlmoitettuToall = function (valintatapajono, hakemuksetSize) {
         TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + hakemuksetSize + " kpl. hakemuksia.", function (success, failure) {
           success();
-          $scope.saveIlmoitettuToAll(valintatapajono.oid, _.map($scope.muokatutHakemukset, $scope.hakemusToErillishakuRivi));
+          $scope.submitIlmanLaskentaa(valintatapajono);
         });
-      };
-
-      $scope.saveIlmoitettuToAll = function(valintatapajonoOid, json) {
-        ErillishakuTuonti.tuo(
-          {rivit: json},
-          {params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
-           headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
-        ).success(function(id, status, headers, config) {
-            Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
-              function() {
-                $window.location.reload();
-              }
-            );
-          }).error(function (data) {
-            Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
-          });
       };
 
       $scope.disableButton = function(button) {
