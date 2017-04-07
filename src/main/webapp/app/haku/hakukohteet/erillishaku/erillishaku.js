@@ -408,30 +408,6 @@ angular.module('valintalaskenta')
         };
       };
 
-      $scope.hakemusToValintatulos = function (valintatapajono) {
-        return function(hakemus) {
-          return {
-            tila: hakemus.valintatuloksentila,
-            ilmoittautumisTila: hakemus.ilmoittautumistila,
-            hakukohdeOid: $scope.hakukohdeOid,
-            hakuOid: $routeParams.hakuOid,
-            valintatapajonoOid: isKeinotekoinenOid(valintatapajono.oid) ? null : valintatapajono.oid,
-            hakemusOid: hakemus.hakemusOid,
-            hakijaOid: hakemus.hakijaOid,
-            julkaistavissa: hakemus.julkaistavissa,
-            ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
-            ehdollisenHyvaksymisenEhtoKoodi: hakemus.ehdollisenHyvaksymisenEhtoKoodi,
-            ehdollisenHyvaksymisenEhtoFI: hakemus.ehdollisenHyvaksymisenEhtoFI,
-            ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
-            ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
-            hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
-            hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
-            ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu"),
-            ehtoInputFields: hakemus.ehdollisestiHyvaksyttavissa
-          };
-        };
-      };
-
       $scope.submitIlmanLaskentaa = function (valintatapajono) {
         var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
         ErillishakuTuonti.tuo(
