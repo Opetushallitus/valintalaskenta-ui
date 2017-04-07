@@ -433,7 +433,24 @@ angular.module('valintalaskenta')
       };
 
       $scope.submitIlmanLaskentaa = function (valintatapajono) {
-        $scope.erillishaunTuontiJson(valintatapajono.oid, _.map($scope.muokatutHakemukset, $scope.hakemusToErillishakuRivi));
+        var erillishakuRivit = _.map($scope.muokatutHakemukset, $scope.hakemusToErillishakuRivi);
+        ErillishakuTuonti.tuo(
+            {rivit: erillishakuRivit},
+            {
+              params: $scope.erillisHakuTuontiParams(valintatapajono.oid),
+              headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}
+            }
+        ).success(function(id) {
+          Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
+              function() {
+                $window.location.reload();
+              }
+          );
+        }).error(function(error) {
+          console.log(error);
+          Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+        });
+        saveHyvaksymiskirjeet(erillishakuRivit);
       };
 
       $scope.addMuokattuHakemus = function (hakemus) {
@@ -459,24 +476,6 @@ angular.module('valintalaskenta')
           tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
           valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
         };
-      };
-
-      $scope.erillishaunTuontiJson = function(valintatapajonoOid, json) {
-        ErillishakuTuonti.tuo(
-            {rivit: json},
-            {params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
-             headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
-        ).success(function(id, status, headers, config) {
-            Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
-                function() {
-                    $window.location.reload();
-                }
-            );
-          }).error(function(error) {
-            Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
-          }
-        );
-        saveHyvaksymiskirjeet(json);
       };
 
       var saveHyvaksymiskirjeet = function(hakemukset) {
