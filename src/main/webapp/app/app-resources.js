@@ -720,20 +720,6 @@ app.factory('ValintaesityksenHyvaksyminen', function($resource) {
         });
 });
 
-app.factory('SijoitteluTila', function($resource) {
-        return $resource(plainUrl("sijoittelu-service.tila.haku.hakukohde.hakemus.tarjoaja",
-        ":hakuoid", ":hakukohdeOid", ":hakemusOid", {tarjoajaOid : ":tarjoajaOid"}),
-        {
-            hakuoid: "@hakuoid",
-            hakukohdeOid: "@hakukohdeoid",
-            hakemusOid: "@hakemusOid",
-            tarjoajaOid: "@tarjoajaOid"
-        }, {
-            post: {method: "POST"}
-        });
-});
-
-
 app.factory('HakemuksenVastaanottoTila', function($resource) {
         return $resource(
         plainUrl("valintalaskentakoostepalvelu.proxy.valintatulosservice.hakemus.haku.hakukohde.valintatapajono",

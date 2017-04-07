@@ -92,7 +92,6 @@ window.urls.addProperties({
     "sijoittelu-service.sijoittelu.sijoitteluajo.hakemukset" : "/sijoittelu-service/resources/sijoittelu/$1/sijoitteluajo/$2/hakemukset",
     "sijoittelu-service.sijoittelu.sijoitteluajo.hakemus" : "/sijoittelu-service/resources/sijoittelu/$1/sijoitteluajo/$2/hakemus/$3",
     "sijoittelu-service.sijoittelu.sijoitteluajo.hakukohde" : "/sijoittelu-service/resources/sijoittelu/$1/sijoitteluajo/$2/hakukohde/$3",
-    "sijoittelu-service.tila.haku.hakukohde.hakemus.tarjoaja" : "/sijoittelu-service/resources/tila/haku/$1/hakukohde/$2/hakemus/$3",
     "sijoittelu-service.tila.haku.hakukohde.valintatapajono.valintaesitys" : "/sijoittelu-service/resources/tila/haku/$1/hakukohde/$2/valintatapajono/$3/valintaesitys",
 
     "valintalaskenta-laskenta-service.buildversion" : "/valintalaskenta-laskenta-service/buildversion.txt?auth",
