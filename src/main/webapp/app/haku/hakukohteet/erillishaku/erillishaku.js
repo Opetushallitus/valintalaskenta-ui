@@ -545,7 +545,7 @@ angular.module('valintalaskenta')
         };
       };
 
-      $scope.luoHyvaksymiskirjeetPDF = function(hakemusOids, sijoitteluajoId) {
+      $scope.luoHyvaksymiskirjeetPDF = function(hakemusOids) {
         var hakukohde = $scope.hakukohdeModel.hakukohde;
         var tag = null;
         if (hakukohde.hakukohdeNimiUri) {
@@ -556,7 +556,6 @@ angular.module('valintalaskenta')
         Kirjeet.hyvaksymiskirjeet({
           hakuOid: $routeParams.hakuOid,
           hakukohdeOid: $routeParams.hakukohdeOid,
-          sijoitteluajoId : sijoitteluajoId,
           hakemusOids: hakemusOids,
           tarjoajaOid: hakukohde.tarjoajaOids[0],
           hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
