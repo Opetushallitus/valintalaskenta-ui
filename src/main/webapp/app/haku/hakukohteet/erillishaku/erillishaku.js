@@ -296,16 +296,7 @@ angular.module('valintalaskenta')
         });
       };
 
-      var processErillishaku = function(erillishaku, oidToMaksuvelvollisuus) {
-        if (erillishaku.length !== 1) {
-          console.log("Erillishaku should have one valinnan vaihe");
-          return;
-        }
-        if (erillishaku[0].valintatapajonot.length !== 1) {
-          console.log("Erillishaku should have one valintatapajono");
-          return;
-        }
-        var valintatapajono = erillishaku[0].valintatapajonot[0];
+      var processErillishaku = function(valintatapajono, oidToMaksuvelvollisuus) {
         addKeinotekoinenOidIfMissing(valintatapajono);
         enrichHakemuksetWithHakijat(valintatapajono);
         createTableParamsForValintatapaJono(valintatapajono);
@@ -322,11 +313,10 @@ angular.module('valintalaskenta')
 
         valintatapajonoOid = valintatapajono.oid;
         hakemukset = valintatapajono.hakemukset;
-        getErillishaunValinnantulokset(valintatapajono);
       };
 
-      var getErillishaunValinnantulokset = function (v) {
-        $q.all([
+      var getErillishaunValinnantuloksetFromVts = function() {
+        return $q.all([
           ValinnanTulos.get({hakukohdeOid: $scope.hakukohdeOid}),
           ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: $scope.hakukohdeOid}).$promise
         ]).then(function(result) {
@@ -339,10 +329,45 @@ angular.module('valintalaskenta')
           hakemukset.forEach(function(hakemus) {
             hakemus.hyvaksymiskirjeLahetetty = kirjeLahetetty[hakemus.henkiloOid] || null;
           });
-          Valinnantulokset.compareErillishakuOldAndNewVtsResponse(v, hakemukset);
+          return hakemukset;
         }, function(error) {
           console.log(error);
         });
+      };
+
+      var getErillishaunValinnantulokset = function () {
+        var fromVts = getErillishaunValinnantuloksetFromVts();
+        if (READ_FROM_VALINTAREKISTERI === "true") {
+          return fromVts.then(function(vt) {
+            vt.forEach(function(v) {
+              v.hakijaOid = v.henkiloOid;
+              v.hakemuksentila = v.valinnantila;
+              v.valintatuloksentila = v.vastaanottotila;
+              v.loytyiSijoittelusta = true;
+            });
+            return {
+              oid: vt.length === 0 ? null : vt[0].valintatapajonoOid,
+              hakemukset: vt
+            };
+          })
+        } else {
+          return ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}).$promise
+              .then(function(fromSijoitteluService) {
+                if (fromSijoitteluService.length !== 1) {
+                  console.log("Erillishaku should have one valinnan vaihe");
+                  return {};
+                }
+                if (fromSijoitteluService[0].valintatapajonot.length !== 1) {
+                  console.log("Erillishaku should have one valintatapajono");
+                  return {};
+                }
+                var valintatapajono = fromSijoitteluService[0].valintatapajonot[0];
+                fromVts.then(function(vt) {
+                  Valinnantulokset.compareErillishakuOldAndNewVtsResponse(valintatapajono, vt);
+                });
+                return valintatapajono;
+              });
+        }
       };
 
       var hakemuksetToMaksuvelvollisuus = function(hakemukset) {
@@ -364,14 +389,14 @@ angular.module('valintalaskenta')
       $q.all([
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid),
         HakukohdeHenkilotFull.get({aoOid: $routeParams.hakukohdeOid, rows: 100000, asId: $routeParams.hakuOid}).$promise,
-        ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}).$promise
+        getErillishaunValinnantulokset()
       ]).then(function (resolved) {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
           $scope.updateOrg = true;
         });
         var hakemukset = resolved[1];
-        var erillishaku = resolved[2];
-        processErillishaku(erillishaku, hakemuksetToMaksuvelvollisuus(hakemukset));
+        var valintatapajono = resolved[2];
+        processErillishaku(valintatapajono, hakemuksetToMaksuvelvollisuus(hakemukset));
       });
 
       $scope.updateHyvaksymiskirjeLahetetty = function(hakemus) {
