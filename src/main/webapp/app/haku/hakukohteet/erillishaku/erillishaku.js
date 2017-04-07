@@ -287,18 +287,18 @@ angular.module('valintalaskenta')
 
       var enrichHakemuksetWithHakijat = function(valintatapajono) {
         var henkiloOids = _.uniq(_.map(valintatapajono.hakemukset, function(h) { return h.hakijaOid }));
-        HenkiloPerustietosByHenkiloOidList.post(henkiloOids).$promise.then(function(henkiloPerustiedot) {
+        return HenkiloPerustietosByHenkiloOidList.post(henkiloOids).$promise.then(function(henkiloPerustiedot) {
           _.forEach(valintatapajono.hakemukset, function(hakemus) {
             var henkilo = _.find(henkiloPerustiedot, function(henkilo) { return henkilo.oidHenkilo == hakemus.hakijaOid });
             hakemus.etunimi = henkilo.etunimet;
             hakemus.sukunimi = henkilo.sukunimi;
           });
+          return valintatapajono;
         });
       };
 
       var processErillishaku = function(valintatapajono, oidToMaksuvelvollisuus) {
         addKeinotekoinenOidIfMissing(valintatapajono);
-        enrichHakemuksetWithHakijat(valintatapajono);
         createTableParamsForValintatapaJono(valintatapajono);
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, valintatapajono.hakemukset);
 
@@ -402,7 +402,9 @@ angular.module('valintalaskenta')
         });
         var hakemukset = resolved[1];
         var valintatapajono = resolved[2];
-        processErillishaku(valintatapajono, hakemuksetToMaksuvelvollisuus(hakemukset));
+        enrichHakemuksetWithHakijat(valintatapajono).then(function(valintatapajono) {
+          processErillishaku(valintatapajono, hakemuksetToMaksuvelvollisuus(hakemukset));
+        });
       });
 
       $scope.updateHyvaksymiskirjeLahetetty = function(hakemus) {
