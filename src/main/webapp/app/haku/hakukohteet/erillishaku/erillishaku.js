@@ -20,7 +20,6 @@ angular.module('valintalaskenta')
       $scope.url = window.url;
       $scope.hakukohdeModel = HakukohdeModel;
       $scope.hakuModel = HakuModel;
-      $scope.tableParams = {};
       $scope.showInvalidsOnly = false;
       $scope.valintatuloksentilat = [];
       $scope.pageSize = 50;
@@ -237,7 +236,7 @@ angular.module('valintalaskenta')
 
       var createTableParamsForValintatapaJono = function (valintatapajono) {
         if (valintatapajono.oid) {
-          $scope.tableParams[valintatapajono.oid] = new NgTableParams({
+          $scope.tableParams = new NgTableParams({
             page: 1,
             count: 50,
             filters: {
@@ -592,7 +591,7 @@ angular.module('valintalaskenta')
           valintatapajono.hakemukset = _(valintatapajono.hakemukset).filter(function(o) {
             return o.hakemusOid != hakemus.hakemusOid;
           });
-          $scope.tableParams[valintatapajono.oid].reload();
+          $scope.tableParams.reload();
         }, 500);
       };
 
