@@ -307,7 +307,13 @@ angular.module('valintalaskenta')
           if (hakemus.valintatuloksentila === "" || !_.isString(hakemus.valintatuloksentila)) {
             hakemus.valintatuloksentila = 'KESKEN';
           }
-          hakemus.maksuvelvollisuus = oidToMaksuvelvollisuus[hakemus.hakemusOid] || 'NOT_CHECKED';
+          if (oidToMaksuvelvollisuus[hakemus.hakemusOid]) {
+            hakemus.maksuvelvollisuus = oidToMaksuvelvollisuus[hakemus.hakemusOid];
+            hakemus.loytyiHakemuksista = true;
+          } else {
+            hakemus.maksuvelvollisuus = 'NOT_CHECKED';
+            hakemus.loytyiHakemuksista = false;
+          }
           $scope.validateHakemuksenTilat(hakemus);
         });
 
