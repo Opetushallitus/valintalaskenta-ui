@@ -20,14 +20,14 @@
                             class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</button>
 
                     <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                            ng-click="erillishaunVientiXlsx(valintatapajono.oid, valintatapajono.nimi)"
+                            ng-click="erillishaunVientiXlsx(valintatapajono.oid)"
                             class="btn btn-default btn-sm margin-bottom-2">{{t('erillishaku.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</button>
 
                     <span ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
                           class="btn btn-primary btn-sm margin-bottom-2 btn-file">
                                         {{ t('erillishaku.tuotaulukkolaskennasta') || 'Tuo taulukkolaskennasta' }}
                                         <input type="file"
-                                               ng-file-select="erillishaunTuontiXlsx($files,valintatapajono.oid, valintatapajono.nimi)">
+                                               ng-file-select="erillishaunTuontiXlsx($files,valintatapajono.oid)">
                                     </span>
                     <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm margin-bottom-2 pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
 

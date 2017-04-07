@@ -433,7 +433,7 @@ angular.module('valintalaskenta')
       };
 
       $scope.submitIlmanLaskentaa = function (valintatapajono) {
-        $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map($scope.muokatutHakemukset, $scope.hakemusToErillishakuRivi));
+        $scope.erillishaunTuontiJson(valintatapajono.oid, _.map($scope.muokatutHakemukset, $scope.hakemusToErillishakuRivi));
       };
 
       $scope.addMuokattuHakemus = function (hakemus) {
@@ -451,21 +451,20 @@ angular.module('valintalaskenta')
         }
       };
 
-      $scope.erillisHakuTuontiParams = function(valintatapajonoOid, valintatapajononNimi) {
+      $scope.erillisHakuTuontiParams = function(valintatapajonoOid) {
         return {
           hakutyyppi: $scope.getHakutyyppi(),
           hakukohdeOid: $scope.hakukohdeOid,
           hakuOid: $routeParams.hakuOid,
-          valintatapajononNimi: valintatapajononNimi,
           tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
           valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
         };
       };
 
-      $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
+      $scope.erillishaunTuontiJson = function(valintatapajonoOid, json) {
         ErillishakuTuonti.tuo(
             {rivit: json},
-            {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
+            {params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
              headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
         ).success(function(id, status, headers, config) {
             Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
@@ -494,13 +493,12 @@ angular.module('valintalaskenta')
         });
       };
 
-      $scope.erillishaunVientiXlsx = function(valintatapajonoOid, valintatapajononNimi) {
+      $scope.erillishaunVientiXlsx = function(valintatapajonoOid) {
         var hakutyyppi = $scope.getHakutyyppi();
         ErillishakuVienti.vie({
             hakutyyppi: hakutyyppi,
             hakukohdeOid: $scope.hakukohdeOid,
             hakuOid: $routeParams.hakuOid,
-            valintatapajononNimi: valintatapajononNimi,
             tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
             valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
           },
@@ -511,7 +509,7 @@ angular.module('valintalaskenta')
           });
       };
 
-      $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid, valintatapajononNimi) {
+      $scope.erillishaunTuontiXlsx = function($files, valintatapajonoOid) {
         var file = $files[0];
         var fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
@@ -527,9 +525,6 @@ angular.module('valintalaskenta')
         };
         if(!isKeinotekoinenOid(valintatapajonoOid)) {
           params.valintatapajonoOid=valintatapajonoOid;
-        }
-        if(valintatapajononNimi) {
-          params.valintatapajononNimi=valintatapajononNimi;
         }
         fileReader.onload = function(e) {
           $scope.upload = $upload.http({
@@ -617,14 +612,14 @@ angular.module('valintalaskenta')
       $scope.submitIlmoitettuToall = function (valintatapajono, hakemuksetSize) {
         TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + hakemuksetSize + " kpl. hakemuksia.", function (success, failure) {
           success();
-          $scope.saveIlmoitettuToAll(valintatapajono.oid, valintatapajono.nimi, _.map($scope.muokatutHakemukset, $scope.hakemusToErillishakuRivi));
+          $scope.saveIlmoitettuToAll(valintatapajono.oid, _.map($scope.muokatutHakemukset, $scope.hakemusToErillishakuRivi));
         });
       };
 
-      $scope.saveIlmoitettuToAll = function(valintatapajonoOid, valintatapajononNimi, json) {
+      $scope.saveIlmoitettuToAll = function(valintatapajonoOid, json) {
         ErillishakuTuonti.tuo(
           {rivit: json},
-          {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
+          {params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
            headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
         ).success(function(id, status, headers, config) {
             Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
@@ -662,7 +657,7 @@ angular.module('valintalaskenta')
         console.log($scope.hakemusToErillishakuRivi(hakemus));
         ErillishakuTuonti.tuo(
           {rivit: [$scope.hakemusToErillishakuRivi(hakemus)]},
-          {params: $scope.erillisHakuTuontiParams(valintatapajono.oid, valintatapajono.nimi),
+          {params: $scope.erillisHakuTuontiParams(valintatapajono.oid),
            headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}}
         ).success(function(res, status, headers, config) {
             console.log(res);
