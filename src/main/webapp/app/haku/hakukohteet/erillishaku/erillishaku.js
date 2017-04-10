@@ -1,15 +1,35 @@
 angular.module('valintalaskenta')
-
+    .service('Maksuvelvollisuus', ['HakukohdeHenkilotFull'], function(HakukohdeHenkilotFull) {
+        this.get = function(hakuOid, hakukohdeOid) {
+            return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
+                .then(function(hakemukset) {
+                    return _.reduce(
+                        _.map(hakemukset, function (hakemus) {
+                            var eligibility = _.find(hakemus.preferenceEligibilities, {'aoId': hakukohdeOid});
+                            var maksuvelvollisuus = 'NOT_CHECKED';
+                            if (eligibility && eligibility.maksuvelvollisuus) {
+                                maksuvelvollisuus = eligibility.maksuvelvollisuus;
+                            }
+                            return {'oid': hakemus.oid, 'maksuvelvollisuus': maksuvelvollisuus}
+                        }),
+                        function (result, hakemus) {
+                            result[hakemus.oid] = hakemus.maksuvelvollisuus;
+                            return result;
+                        },
+                        {});
+                });
+        }
+    })
     .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
         'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
         'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
-        'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
+        'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Maksuvelvollisuus', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet',
         function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                   ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                   ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-                  VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
+                  VastaanottoUtil, NgTableParams, TallennaValinnat, Maksuvelvollisuus, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
                   ErillishakuHyvaksymiskirjeet) {
       "use strict";
 
@@ -376,34 +396,18 @@ angular.module('valintalaskenta')
         }
       };
 
-      var hakemuksetToMaksuvelvollisuus = function(hakemukset) {
-        var hakukohdeOid = $routeParams.hakukohdeOid;
-        var oidToMaksuvelvollisuus = _.reduce(_.map(hakemukset, function(hakemus) {
-          var eligibility = _.find(hakemus.preferenceEligibilities, {'aoId': hakukohdeOid});
-          var maksuvelvollisuus = 'NOT_CHECKED';
-          if(eligibility && eligibility.maksuvelvollisuus) {
-            maksuvelvollisuus = eligibility.maksuvelvollisuus;
-          }
-          return {'oid': hakemus.oid, 'maksuvelvollisuus': maksuvelvollisuus}
-        }), function(result, hakemus) {
-          result[hakemus.oid] = hakemus.maksuvelvollisuus;
-          return result;
-        }, {});
-        return oidToMaksuvelvollisuus;
-      };
-
       $q.all([
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid),
-        HakukohdeHenkilotFull.get({aoOid: $routeParams.hakukohdeOid, rows: 100000, asId: $routeParams.hakuOid}).$promise,
+        Maksuvelvollisuus.get($routeParams.hakuOid, $routeParams.hakukohdeOid),
         getErillishaunValinnantulokset()
       ]).then(function (resolved) {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
           $scope.updateOrg = true;
         });
-        var hakemukset = resolved[1];
+        var maksuvelvollisuudet = resolved[1];
         var valintatapajono = resolved[2];
         enrichHakemuksetWithHakijat(valintatapajono).then(function(valintatapajono) {
-          processErillishaku(valintatapajono, hakemuksetToMaksuvelvollisuus(hakemukset));
+          processErillishaku(valintatapajono, maksuvelvollisuudet);
         });
       });
 
