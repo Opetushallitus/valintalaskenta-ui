@@ -534,8 +534,8 @@ angular.module('valintalaskenta')
             // Used for integration testing
             ValinnanTulos.patch({valintatapajonoOid: valintatapajonoOid}, _.map(muokatutHakemukset, function(h) {
                 return {
-                    hakukohdeOid: h.hakukohdeOid,
-                    valintatapajonoOid: h.valintatapajonoOid,
+                    hakukohdeOid: model.hakukohdeOid,
+                    valintatapajonoOid: valintatapajonoOid,
                     hakemusOid: h.hakemusOid,
                     henkiloOid: h.hakijaOid,
                     vastaanottotila: h.muokattuVastaanottoTila,
