@@ -153,6 +153,14 @@ angular.module('valintalaskenta')
     };
 
     var enrichHakemusWithValintatulos = function(hakemus, valintatulos) {
+        hakemus.vastaanottoTila = "KESKEN";
+        hakemus.muokattuVastaanottoTila = "KESKEN";
+        hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
+        hakemus.tilaHakijalle = "KESKEN";
+        if (!valintatulos) {
+            return;
+        }
+
         hakemus.logEntries = valintatulos.logEntries;
         if (!hakemus.hakijaOid) {
             hakemus.hakijaOid = valintatulos.hakijaOid;
@@ -269,19 +277,66 @@ angular.module('valintalaskenta')
             ))), function(hakijaOid) {return _.isEmpty(hakijaOid)});
         };
 
-		var sijoittelunTuloksetPromise = function(hakuOid, hakukohdeOid) {
-		    if(useVtsData) {
-		        return VtsLatestSijoitteluajoHakukohde.get({
+		var enrichWithValintatulokset = function(results) {
+        (results.sijoittelunTulokset.valintatapajonot || []).forEach(function (valintatapajono) {
+            valintatapajono.hakemukset.forEach(function (hakemus) {
+                enrichHakemusWithValintatulos(hakemus, _.find(results.valintatulokset, function (v) {
+                    return v.valintatapajonoOid === valintatapajono.oid && v.hakemusOid === hakemus.hakemusOid;
+                }));
+            });
+        });
+    };
+
+		var sijoittelunTuloksetPromise = function(hakuOid, hakukohdeOid, valintatapajonoLastModified) {
+        var fromVts = $q.all({
+            sijoittelunTulokset: VtsLatestSijoitteluajoHakukohde.get({
+                hakukohdeOid: hakukohdeOid,
+                hakuOid: hakuOid
+            }).$promise,
+            valintatulokset: ValinnanTulos.get({hakukohdeOid: hakukohdeOid})
+        }).then(function (results) {
+            (results.sijoittelunTulokset.valintatapajonot || []).forEach(function(valintatapajono) {
+               valintatapajonoLastModified[valintatapajono.oid] = results.valintatulokset.headers("Last-Modified");
+            });
+            results.valintatulokset = results.valintatulokset.data;
+            results.valintatulokset.forEach(function (v) {
+                v.logEntries = [];
+                v.hakijaOid = v.henkiloOid;
+                v.tila = v.vastaanottotila;
+                v.tilaHakijalle = null;
+                v.ilmoittautumisTila = v.ilmoittautumistila;
+            });
+            enrichWithValintatulokset(results);
+            return results;
+        });
+        if (useVtsData) {
+            return fromVts;
+        } else {
+            return $q.all({
+                sijoittelunTulokset: LatestSijoitteluajoHakukohde.get({
+                    hakukohdeOid: hakukohdeOid,
+                    hakuOid: hakuOid
+                }).$promise,
+                valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({
                     hakukohdeOid: hakukohdeOid,
                     hakuOid: hakuOid
                 }).$promise
-            } else {
-		        return LatestSijoitteluajoHakukohde.get({
-                    hakukohdeOid: hakukohdeOid,
-                    hakuOid: hakuOid
-                }).$promise;
-            }
-        };
+            }).then(function (results) {
+                enrichWithValintatulokset(results);
+                fromVts.then(function(sijoittelunTulosFromVts) {
+                    (results.sijoittelunTulokset.valintatapajonot || []).forEach(function(v) {
+                        var vtsJono = _.find(sijoittelunTulosFromVts.sijoittelunTulokset.valintatapajonot, function(vv) {
+                            return vv.oid === v.oid;
+                        });
+                        Valinnantulokset.compareSijoitteluOldAndNewVtsResponse(v, vtsJono.hakemukset);
+                    });
+                }, function(error) {
+                    console.log(error);
+                });
+                return results;
+            });
+        }
+    };
 
         this.refresh = function (hakuOid, hakukohdeOid) {
             model.errors = [];
@@ -304,13 +359,7 @@ angular.module('valintalaskenta')
                 model.haku = resultWrapper.result;
             });
 
-            $q.all({
-                sijoittelunTulokset: sijoittelunTuloksetPromise(hakuOid, hakukohdeOid),
-                valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({
-                    hakukohdeOid: hakukohdeOid,
-                    hakuOid: hakuOid
-                }).$promise
-            }).then(function(tulokset) {
+            sijoittelunTuloksetPromise(hakuOid, hakukohdeOid, model.valintatapajonoLastModified).then(function(tulokset) {
                 var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
                 if(hakijaOidArray && 0 < hakijaOidArray.length) {
                     return HenkiloPerustietosByHenkiloOidList.post(
@@ -359,17 +408,6 @@ angular.module('valintalaskenta')
                             );
                             hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
 
-                            hakemus.vastaanottoTila = "KESKEN";
-                            hakemus.muokattuVastaanottoTila = "KESKEN";
-                            hakemus.muokattuIlmoittautumisTila = "EI_TEHTY";
-                            hakemus.tilaHakijalle = "KESKEN";
-                            tulokset.valintatulokset.forEach(function(valintatulos) {
-                                if (valintatulos.hakemusOid === hakemus.hakemusOid &&
-                                    valintatulos.valintatapajonoOid === valintatapajono.oid) {
-                                    enrichHakemusWithValintatulos(hakemus, valintatulos);
-                                }
-                            });
-
                             categorizeHakemusForErittely(hakemuserittely, hakemus);
                             if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                 var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
@@ -385,16 +423,6 @@ angular.module('valintalaskenta')
                     });
                 }
                 model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
-            }).then(function() {
-                _.forEach(model.sijoitteluTulokset.valintatapajonot, function(v) {
-                    // Result intentionally unused, used for integration testing
-                    ValinnanTulos.get({valintatapajonoOid: v.oid}).then(function(response) {
-                        Valinnantulokset.compareSijoitteluOldAndNewVtsResponse(v, response.data);
-                        model.valintatapajonoLastModified[v.oid] = response.headers("Last-Modified");
-                    }, function(error) {
-                        var forBreakpoint = error;
-                    });
-                });
             }).then(fetchAndPopulateVastaanottoAikarajaMennyt)
                 .catch(function(error) { error.data ? model.errors.push(error.data.message) : model.errors.push(error); });
         };
