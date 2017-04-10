@@ -131,17 +131,40 @@ angular.module('valintalaskenta')
       {oldKey: 'valintatuloksentila', newKey: 'vastaanottotila'},
       {oldKey: 'hyvaksymiskirjeLahetetty', newKey: 'hyvaksymiskirjeLahetetty'}
     ];
-    
-    var sijoittelunTulosKeys = [
-      {oldKey: 'ehdollisestiHyvaksyttavissa', newKey: 'ehdollisestiHyvaksyttavissa'},
-      {oldKey: 'hakemusOid', newKey: 'hakemusOid'},
-      {oldKey: 'hakijaOid', newKey: 'henkiloOid'},
-      {oldKey: 'hyvaksyttyVarasijalta', newKey: 'hyvaksyttyVarasijalta'},
-      {oldKey: 'ilmoittautumisTila', newKey: 'ilmoittautumistila'},
-      {oldKey: 'julkaistavissa', newKey: 'julkaistavissa'},
-      {oldKey: 'tila', newKey: 'valinnantila'},
-      {oldKey: 'vastaanottoTila', newKey: 'vastaanottotila'}
-    ];
+
+    var sijoittelunTulosKeys =[
+      "hakijaOid",
+      "hakemusOid",
+      "pisteet",
+      "paasyJaSoveltuvuusKokeenTulos",
+      "etunimi",
+      "sukunimi",
+      "prioriteetti",
+      "jonosija",
+      "tasasijaJonosija",
+      "tila",
+      "tilanKuvaukset",
+      "tilaHistoria",
+      "hyvaksyttyHarkinnanvaraisesti",
+      "varasijanNumero",
+      "valintatapajonoOid",
+      "hakuOid",
+      "onkoMuuttunutViimeSijoittelussa",
+      "hyvaksyttyHakijaryhmista",
+      "siirtynytToisestaValintatapajonosta",
+      "todellinenJonosija",
+      "vastaanottoTila",
+      "muokattuVastaanottoTila",
+      "muokattuIlmoittautumisTila",
+      "tilaHakijalle",
+      "logEntries",
+      "tilaHakijalleTaytyyLadataPalvelimelta",
+      "ilmoittautumisTila",
+      "julkaistavissa",
+      "ehdollisestiHyvaksyttavissa",
+      "hyvaksyttyVarasijalta",
+      "hyvaksyPeruuntunut"
+    ].map(function(key) { return {oldKey: key, newKey: key }; });
 
     return valinnantulokset;
   }]);
