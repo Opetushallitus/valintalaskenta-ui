@@ -196,14 +196,7 @@ angular.module('valintalaskenta')
         hakemus.hyvaksyttyVarasijalta = valintatulos.hyvaksyttyVarasijalta;
         hakemus.read = valintatulos.read;
         hakemus.hyvaksyPeruuntunut = valintatulos.hyvaksyPeruuntunut;
-
-        if (valintatulos.hyvaksymiskirjeLahetetty) {
-            hakemus.hyvaksymiskirjeLahetetty = true;
-            hakemus.hyvaksymiskirjeLahetettyPvm = valintatulos.hyvaksymiskirjeLahetetty;
-        }
-        else {
-            valintatulos.hyvaksymiskirjeLahetetty = false;
-        }
+        hakemus.hyvaksymiskirjeLahetetty = valintatulos.hyvaksymiskirjeLahetetty || null;
     };
 
     var model = new function () {
@@ -460,7 +453,7 @@ angular.module('valintalaskenta')
                     ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
                     hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
                     hyvaksyPeruuntunut: hakemus.hyvaksyPeruuntunut,
-                    hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetettyPvm,
+                    hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
                     read: hakemus.read
                 };
             };
@@ -634,6 +627,16 @@ angular.module('valintalaskenta')
     $scope.tilaFilterValue = "";
     $scope.valintaesitysJulkaistavissa = false;
     $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
+    $scope.hyvaksymiskirjeLahetettyCheckbox = {};
+
+    $scope.$watch('model.sijoitteluTulokset.valintatapajonot', function () {
+        ($scope.model.sijoitteluTulokset.valintatapajonot || []).forEach(function (valintatapajono) {
+            valintatapajono.hakemukset.forEach(function (hakemus) {
+                $scope.hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid] =
+                    $scope.hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid] || !!hakemus.hyvaksymiskirjeLahetetty;
+            });
+        });
+    });
 
     $scope.tilaFilterValues = [
         {value: "", text_prop: "sijoitteluntulos.alasuodatatilan", default_text:"Älä suodata tilan mukaan"},
@@ -760,12 +763,7 @@ angular.module('valintalaskenta')
     };
 
     $scope.updateHyvaksymiskirjeLahetettyPvm = function (hakemus) {
-        if (hakemus.hyvaksymiskirjeLahetetty) {
-            hakemus.hyvaksymiskirjeLahetettyPvm = new Date();
-        }
-        else {
-            hakemus.hyvaksymiskirjeLahetettyPvm = null;
-        }
+        hakemus.hyvaksymiskirjeLahetetty = $scope.hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid] ? new Date() : null;
         $scope.addMuokattuHakemus(hakemus);
     };
 
