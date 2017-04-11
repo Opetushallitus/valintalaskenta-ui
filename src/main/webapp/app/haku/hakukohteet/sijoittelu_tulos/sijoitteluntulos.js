@@ -2,10 +2,10 @@ angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'LatestSijoitteluajoHakukohde', 'VtsLatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
         '$timeout', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
-        'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList',
+        'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet',
         function ($q, Ilmoitus, LatestSijoitteluajoHakukohde, VtsLatestSijoitteluajoHakukohde, VastaanottoTila, ValintaesityksenHyvaksyminen,
                   $timeout, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
-                  IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList) {
+                  IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, ErillishakuHyvaksymiskirjeet) {
     "use strict";
 
     var useVtsData = READ_FROM_VALINTAREKISTERI === "true";
@@ -286,11 +286,16 @@ angular.module('valintalaskenta')
                 hakukohdeOid: hakukohdeOid,
                 hakuOid: hakuOid
             }).$promise,
-            valintatulokset: ValinnanTulos.get({hakukohdeOid: hakukohdeOid})
+            valintatulokset: ValinnanTulos.get({hakukohdeOid: hakukohdeOid}),
+            kirjeLahetetty: ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: hakukohdeOid}).$promise
         }).then(function (results) {
             (results.sijoittelunTulokset.valintatapajonot || []).forEach(function(valintatapajono) {
                valintatapajonoLastModified[valintatapajono.oid] = results.valintatulokset.headers("Last-Modified");
             });
+            var kirjeLahetetty = results.kirjeLahetetty.reduce(function(acc, kirje) {
+                acc[kirje.henkiloOid] = new Date(kirje.lahetetty);
+                return acc;
+            }, {});
             results.valintatulokset = results.valintatulokset.data;
             results.valintatulokset.forEach(function (v) {
                 v.logEntries = [];
@@ -298,6 +303,7 @@ angular.module('valintalaskenta')
                 v.tila = v.vastaanottotila;
                 v.tilaHakijalle = null;
                 v.ilmoittautumisTila = v.ilmoittautumistila;
+                v.hyvaksymiskirjeLahetetty = kirjeLahetetty[v.henkiloOid];
             });
             enrichWithValintatulokset(results);
             return results;
@@ -524,7 +530,6 @@ angular.module('valintalaskenta')
 
             var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
             VastaanottoTila.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess, muokatutHakemukset), this.reportFailedSave(afterFailure, muokatutHakemukset));
-            // Used for integration testing
             ValinnanTulos.patch({valintatapajonoOid: valintatapajonoOid}, _.map(muokatutHakemukset, function(h) {
                 return {
                     hakukohdeOid: model.hakukohdeOid,
@@ -544,10 +549,21 @@ angular.module('valintalaskenta')
                     'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]
                 }
             }).then(function(response) {
-                    var forBreakpoint = response;
-                }, function(error) {
-                    var forBreakpoint = error;
+                var forBreakpoint = response;
+            }, function(error) {
+                var forBreakpoint = error;
+            });
+            var muuttuneetHyvaksymiskirjeet = muokatutHakemukset
+                .map(function(hakemus) {
+                    return {
+                        henkiloOid: hakemus.hakijaOid,
+                        hakukohdeOid: model.hakukohdeOid,
+                        lahetetty: hakemus.hyvaksymiskirjeLahetetty
+                    };
                 });
+            ErillishakuHyvaksymiskirjeet.post({}, muuttuneetHyvaksymiskirjeet).$promise.catch(function(error) {
+                console.log(error);
+            });
         };
 
     }();

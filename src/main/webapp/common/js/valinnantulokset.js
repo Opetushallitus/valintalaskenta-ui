@@ -163,7 +163,8 @@ angular.module('valintalaskenta')
       "julkaistavissa",
       "ehdollisestiHyvaksyttavissa",
       "hyvaksyttyVarasijalta",
-      "hyvaksyPeruuntunut"
+      "hyvaksyPeruuntunut",
+      "hyvaksymiskirjeLahetetty"
     ].map(function(key) { return {oldKey: key, newKey: key }; });
 
     return valinnantulokset;
