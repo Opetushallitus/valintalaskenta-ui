@@ -1,0 +1,18 @@
+<table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+        <th></th>
+        <th>{{ t('sijoitteluntulos.muutos') || 'Muutos' }}</th>
+    </tr>
+    </thead>
+    <tr ng-repeat="muutos in historia">
+        <td>{{muutos.timestamp | date:'dd.MM.yyyy HH:mm'}}</td>
+        <td>
+            <ul class="list-unstyled">
+                <li ng-repeat="kentanMuutos in muutos.changes">
+                    {{kentanMuutos.field}}: {{kentanMuutos.from}} -> {{kentanMuutos.to}}
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>

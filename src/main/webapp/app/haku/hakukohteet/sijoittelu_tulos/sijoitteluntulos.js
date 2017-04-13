@@ -627,12 +627,13 @@ angular.module('valintalaskenta')
     .controller('SijoitteluntulosController', ['$scope', '$modal', 'TallennaValinnat', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
         'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
-        'Kirjeet','UserModel', 'VastaanottoUtil', 'HakemuksenValintatulokset', 'EhdollisenHyvaksymisenEhdot',
+        'Kirjeet','UserModel', 'VastaanottoUtil', 'HakemuksenValintatulokset', 'EhdollisenHyvaksymisenEhdot', 'valinnantuloksenHistoriaService',
         function ($scope, $modal, TallennaValinnat, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService,
-                                    Kirjeet, UserModel, VastaanottoUtil, HakemuksenValintatulokset, EhdollisenHyvaksymisenEhdot) {
+                                    Kirjeet, UserModel, VastaanottoUtil, HakemuksenValintatulokset, EhdollisenHyvaksymisenEhdot, valinnantuloksenHistoriaService) {
     "use strict";
+    $scope.readFromVts = READ_FROM_VALINTAREKISTERI === 'true';
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.url = window.url;
     $scope.hakuModel = HakuModel;
@@ -776,6 +777,19 @@ angular.module('valintalaskenta')
     $scope.addMuokattuHakemus = function (hakemus) {
         $scope.muokatutHakemukset.push(hakemus);
         $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset, 'hakemusOid');
+    };
+
+    $scope.openValinnantuloksenHistoriaModal = function(valintatapajonoOid, hakemusOid) {
+        $modal.open({
+            templateUrl: 'vtsLogModal.html',
+            controller: 'ValinnantuloksenHistoriaModalController',
+            size: 'lg',
+            resolve: {
+                historia: function() {
+                    return valinnantuloksenHistoriaService.get(valintatapajonoOid, hakemusOid);
+                }
+            }
+        });
     };
 
     $scope.updateHyvaksymiskirjeLahetettyPvm = function (hakemus) {
