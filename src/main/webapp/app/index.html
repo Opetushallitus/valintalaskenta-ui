@@ -108,13 +108,14 @@
 
 </head>
 <body idle ng-cloak data-ng-controller="RootCtrl">
+    <div ng-controller="LoadingCtrl">
+        <div ng-show="loading" style="z-index: 200; top: 0px; width: 100%; text-align: center; background: #FFF7BC none repeat scroll 0% 0%; padding: 0.3em; font-weight: bold; font-style: italic;">Käsitellään...</div>
+    </div>
     <div id="application-wrapper">
         <div id="angularbox" ng-view="">
             <div ng-include="'../common/modaalinen/sessionTimeout.html'"/>
         </div>
     </div>
-
-    <div ng-controller="LoadingCtrl"><div ng-show="loading" style="position: fixed; top:0; left: 0; background: gold; padding: 0.3em; font-weight: bold;">käsitellään...</div></div>
 </body>
 
 </html>
