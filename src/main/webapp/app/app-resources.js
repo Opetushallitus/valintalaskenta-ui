@@ -395,15 +395,6 @@ app.factory('TulosXls', function($window) {
         }
     };
 });
-app.factory('JalkiohjausXls', function($window) {
-    return {
-        query: function(data) {
-            $window.location.href
-                = window.url("valintalaskentakoostepalvelu.valintalaskentaexcel.jalkiohjaustulos.aktivoi",
-                {hakuOid : data.hakuOid});
-        }
-    };
-});
 app.factory('ValintakoeXls', function($resource) {
     return $resource(window.url("valintalaskentakoostepalvelu.valintalaskentaexcel.valintakoekutsut.aktivoi"), {},
         {lataa: {method: "POST"}});

@@ -40,7 +40,7 @@ angular.module('valintalaskenta').
         'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', 'ViestintapalveluProxy', 'ViestintapalveluJulkaiseProxy',
         '$log', '$timeout', '$q','$location', 'ViestintapalveluEPosti',
         'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
-        '$http', '$route', '$window', 'VtsSijoitteluAjoPerustiedot', 'SijoitteluAjo', 'JalkiohjausXls', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
+        '$http', '$route', '$window', 'VtsSijoitteluAjoPerustiedot', 'SijoitteluAjo', 'Jalkiohjauskirjeet', 'SijoitteluAktivointi',
         'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat', 'Korkeakoulu',
         'CustomHakuUtil','Hyvaksymiskirjepohjat',
         function ($scope, $modal, $interval, _, 
@@ -48,7 +48,7 @@ angular.module('valintalaskenta').
         		Jalkiohjauskirjepohjat, AktivoiKelaFtp, ViestintapalveluProxy, ViestintapalveluJulkaiseProxy,
         		$log, $timeout, $q, $location, ViestintapalveluEPosti,
         		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
-                $http, $route, $window, VtsSijoitteluAjoPerustiedot, SijoitteluAjo, JalkiohjausXls, Jalkiohjauskirjeet, SijoitteluAktivointi,
+                $http, $route, $window, VtsSijoitteluAjoPerustiedot, SijoitteluAjo, Jalkiohjauskirjeet, SijoitteluAktivointi,
                 HakuModel, VirheModel, JatkuvaSijoittelu, IlmoitusTila, SeurantaPalveluHaunLaskennat, Korkeakoulu,
                 CustomHakuUtil,Hyvaksymiskirjepohjat) {
     "use strict";
@@ -365,9 +365,6 @@ angular.module('valintalaskenta').
         });
     };
 
-    $scope.aktivoiJalkiohjaustuloksetXls = function () {
-        JalkiohjausXls.query({hakuOid: $routeParams.hakuOid});
-    };
 	$scope.sijoittelunTuloksetTaulukkolaskentaan = function() {
 		var hakuoid = $routeParams.hakuOid;
         SijoittelunTulosTaulukkolaskenta.aktivoi({hakuOid: hakuoid}, {}, function (id) {

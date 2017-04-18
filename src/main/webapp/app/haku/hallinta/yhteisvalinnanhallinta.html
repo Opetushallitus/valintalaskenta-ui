@@ -112,15 +112,6 @@
     <button ng-click="sijoittelunTuloksetOsoitetarrat()"
             class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieosoitetarroiksi') || 'Vie osoitetarroiksi' }}
     </button>
-
-    <button ng-if="!iskorkeakoulu" ng-click="aktivoiJalkiohjaustuloksetXls()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viejalkiohjaustuloksettaulukkolaskentaan') || 'Vie jälkiohjaustulokset taulukkolaskentaan' }}
-    </button>
-
-    <button ng-if="iskorkeakoulu" ng-click="aktivoiJalkiohjaustuloksetXls()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieeihyvaksyttyjentuloksettaulukkolaskentaan') || 'Vie ei-hyväksyttyjen tulokset taulukkolaskentaan' }}
-    </button>
-
     <button privileges="valintalaskenta"
             href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
             class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
