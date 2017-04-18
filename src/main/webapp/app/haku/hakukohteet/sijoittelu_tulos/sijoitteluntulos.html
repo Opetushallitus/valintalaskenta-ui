@@ -182,9 +182,9 @@
                                                     <option ng-if="!hakemus.ehdollisenHyvaksymisenEhtoKoodi"></option>
                                                 </select>
                                                 <div ng-if="hakemus.ehtoEditableInputFields">
-                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="hakemus.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required/>
-                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="hakemus.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required/>
-                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="hakemus.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required/>
+                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="hakemus.ehdollisenHyvaksymisenEhtoFI" ng-change="addMuokattuHakemus(hakemus)" placeholder="FI" required/>
+                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="hakemus.ehdollisenHyvaksymisenEhtoSV" ng-change="addMuokattuHakemus(hakemus)" placeholder="SV" required/>
+                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="hakemus.ehdollisenHyvaksymisenEhtoEN" ng-change="addMuokattuHakemus(hakemus)" placeholder="EN" required/>
                                                 </div>
                                             </div>
 

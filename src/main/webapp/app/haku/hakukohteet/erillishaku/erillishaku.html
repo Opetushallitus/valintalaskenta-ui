@@ -121,9 +121,9 @@
                                                                     <option ng-if="!hakemus.ehdollisenHyvaksymisenEhtoKoodi"></option>
                                                                 </select>
                                                                 <div ng-if="tulos.ehdollisenHyvaksymisenEhtoKoodi == 'muu'">
-                                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="tulos.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required/>
-                                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="tulos.ehdollisenHyvaksymisenEhtoSV" placeholder="SV" required/>
-                                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="tulos.ehdollisenHyvaksymisenEhtoEN" placeholder="EN" required/>
+                                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="tulos.ehdollisenHyvaksymisenEhtoFI" ng-change="addMuokattuHakemus(hakemus)" placeholder="FI" required/>
+                                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="tulos.ehdollisenHyvaksymisenEhtoSV" ng-change="addMuokattuHakemus(hakemus)" placeholder="SV" required/>
+                                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="tulos.ehdollisenHyvaksymisenEhtoEN" ng-change="addMuokattuHakemus(hakemus)" placeholder="EN" required/>
                                                                 </div>
                                                             </div>
                                                         </div>
