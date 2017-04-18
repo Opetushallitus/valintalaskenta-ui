@@ -116,9 +116,9 @@
                                                                 <select id="ehdollisenHyvaksymisenEhtoKoodi"
                                                                         ng-change="showEhdot(tulos, tulos.ehdollisenHyvaksymisenEhtoKoodi);addMuokattuHakemus(tulos, valintatapajono)"
                                                                         ng-model="tulos.ehdollisenHyvaksymisenEhtoKoodi"
-                                                                        ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'ehto.nimi'" style="width: 200px;"
+                                                                        ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'nimi'" style="width: 200px;"
                                                                         ng-required="tulos.ehdollisestiHyvaksyttavissa">
-                                                                    <option></option>
+                                                                    <option ng-if="!hakemus.ehdollisenHyvaksymisenEhtoKoodi"></option>
                                                                 </select>
                                                                 <div ng-if="tulos.ehdollisenHyvaksymisenEhtoKoodi == 'muu'">
                                                                     <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="tulos.ehdollisenHyvaksymisenEhtoFI" placeholder="FI" required/>
