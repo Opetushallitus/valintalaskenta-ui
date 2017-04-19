@@ -1,14 +1,14 @@
 angular.module('valintalaskenta')
 
-  .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
-              'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
-              'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService', 'ErillishakuVienti',
-              'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
-              'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'ValinnanTulos', 'Valinnantulokset',
-    function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
-              ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-              VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, ValinnanTulos, Valinnantulokset) {
+    .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
+        'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
+        'HakuModel', 'HakuUtility', '$http', 'AuthService', 'UserModel','_', 'LocalisationService', 'ErillishakuVienti',
+        'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
+        'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'HakukohdeHenkilotFull', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
+        function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
+                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, UserModel, _, LocalisationService,
+                  ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
+                  VastaanottoUtil, NgTableParams, TallennaValinnat, HakukohdeHenkilotFull, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset) {
       "use strict";
 
       $scope.muokatutHakemukset = {};
@@ -24,6 +24,40 @@ angular.module('valintalaskenta')
       $scope.pageSize = 50;
       $scope.deleting = null;
       $scope.valintatapajonoLastModified = {};
+      $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
+
+      $scope.showEhdot = function (model, value) {
+          if (value == 'muu') {
+              model.ehtoInputFields = true;
+              model.ehtoEditableInputFields = true;
+              model.ehdollisenHyvaksymisenEhtoFI = '';
+              model.ehdollisenHyvaksymisenEhtoSV = '';
+              model.ehdollisenHyvaksymisenEhtoEN = '';
+          } else {
+              model.ehtoInputFields = true;
+              model.ehtoEditableInputFields = false;
+              $scope.ehdollisestiHyvaksyttavissaOlevatOpts.forEach(function(op){
+                  if(op.koodiUri == value){
+                      model.ehdollisenHyvaksymisenEhtoFI = op.nimiFI;
+                      model.ehdollisenHyvaksymisenEhtoSV = op.nimiSV;
+                      model.ehdollisenHyvaksymisenEhtoEN = op.nimiEN;
+                  }
+              });
+          }
+      };
+
+      EhdollisenHyvaksymisenEhdot.query(function (result) {
+          result.forEach(function(ehto){
+              $scope.ehdollisestiHyvaksyttavissaOlevatOpts.push(
+                  {
+                      koodiUri: ehto.koodiArvo,
+                      nimi: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
+                      nimiFI: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
+                      nimiSV: _.findWhere(ehto.metadata, {kieli: 'SV'}).nimi,
+                      nimiEN: _.findWhere(ehto.metadata, {kieli: 'EN'}).nimi
+                  });
+          });
+      });
 
       function valintatuloksenTilojenKielistykset(valintatuloksentilat) {
         return valintatuloksentilat.reduce(function(o, tila) {
@@ -422,13 +456,19 @@ angular.module('valintalaskenta')
           personOid: hakemus.hakijaOid,
           hakemuksenTila: hakemus.hakemuksentila,
           ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
+          ehdollisenHyvaksymisenEhtoKoodi: hakemus.ehdollisenHyvaksymisenEhtoKoodi,
+          ehdollisenHyvaksymisenEhtoFI: hakemus.ehdollisenHyvaksymisenEhtoFI,
+          ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
+          ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
           maksuvelvollisuus: hakemus.maksuvelvollisuus ? hakemus.maksuvelvollisuus : 'NOT_CHECKED',
           hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty ? hakemus.hyvaksymiskirjeLahetettyPvm : null,
           vastaanottoTila: hakemus.valintatuloksentila,
           ilmoittautumisTila: hakemus.ilmoittautumistila,
           poistetaankoRivi: hakemus.poistetaankoRivi,
           julkaistaankoTiedot: hakemus.julkaistavissa,
-          hakemusOid: hakemus.hakemusOid
+          hakemusOid: hakemus.hakemusOid,
+          ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu"),
+          ehtoInputFields: hakemus.ehdollisestiHyvaksyttavissa // use this
         };
       };
 
@@ -444,8 +484,14 @@ angular.module('valintalaskenta')
             hakijaOid: hakemus.hakijaOid,
             julkaistavissa: hakemus.julkaistavissa,
             ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
+            ehdollisenHyvaksymisenEhtoKoodi: hakemus.ehdollisenHyvaksymisenEhtoKoodi,
+            ehdollisenHyvaksymisenEhtoFI: hakemus.ehdollisenHyvaksymisenEhtoFI,
+            ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
+            ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
             hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty ? hakemus.hyvaksymiskirjeLahetettyPvm : null,
-            hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta
+            hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
+            ehtoEditableInputFields: (hakemus.ehdollisenHyvaksymisenEhtoKoodi == "muu"),
+            ehtoInputFields: hakemus.ehdollisestiHyvaksyttavissa
           };
         };
       };
@@ -455,6 +501,7 @@ angular.module('valintalaskenta')
       };
 
       $scope.hakemuksetByValintatapajonoOid = hakemuksetByValintatapajonoOid;
+
 
       $scope.submitIlmanLaskentaa = function (valintatapajono) {
         var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
@@ -672,6 +719,10 @@ angular.module('valintalaskenta')
           return {
             julkaistavissa: hakemus.julkaistavissa,
             ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
+            ehdollisenHyvaksymisenEhtoKoodi: hakemus.ehdollisenHyvaksymisenEhtoKoodi,
+            ehdollisenHyvaksymisenEhtoFI: hakemus.ehdollisenHyvaksymisenEhtoFI,
+            ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
+            ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
             hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
             hyvaksymiskirjeLahetettyPvm: hakemus.hyvaksymiskirjeLahetettyPvm,
             tila: hakemus.valintatuloksenTila,

@@ -2477,6 +2477,10 @@ div.tilaParial {
   box-shadow: none;
 }
 
+.required-empty {
+  border: 2px solid #ec6b6b !important;
+}
+
 .circled-character {
   background: #A0A0A0;
   border-radius: 50%;

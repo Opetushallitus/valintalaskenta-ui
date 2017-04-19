@@ -177,6 +177,12 @@ angular.module('valintalaskenta')
         hakemus.muokattuIlmoittautumisTila = valintatulos.ilmoittautumisTila;
         hakemus.julkaistavissa = valintatulos.julkaistavissa;
         hakemus.ehdollisestiHyvaksyttavissa = valintatulos.ehdollisestiHyvaksyttavissa;
+        hakemus.ehtoEditableInputFields = (valintatulos.ehdollisenHyvaksymisenEhtoKoodi == "muu");
+        hakemus.ehtoInputFields = valintatulos.ehdollisestiHyvaksyttavissa;
+        hakemus.ehdollisenHyvaksymisenEhtoKoodi = valintatulos.ehdollisenHyvaksymisenEhtoKoodi;
+        hakemus.ehdollisenHyvaksymisenEhtoFI = valintatulos.ehdollisenHyvaksymisenEhtoFI;
+        hakemus.ehdollisenHyvaksymisenEhtoSV = valintatulos.ehdollisenHyvaksymisenEhtoSV;
+        hakemus.ehdollisenHyvaksymisenEhtoEN = valintatulos.ehdollisenHyvaksymisenEhtoEN;
         hakemus.hyvaksyttyVarasijalta = valintatulos.hyvaksyttyVarasijalta;
         hakemus.read = valintatulos.read;
         hakemus.hyvaksyPeruuntunut = valintatulos.hyvaksyPeruuntunut;
@@ -318,7 +324,6 @@ angular.module('valintalaskenta')
                             });
 
                             categorizeHakemusForErittely(hakemuserittely, hakemus);
-
                             if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                 var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
                                 model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
@@ -374,6 +379,10 @@ angular.module('valintalaskenta')
                     hakukohdeOid: model.hakukohdeOid,
                     julkaistavissa: hakemus.julkaistavissa,
                     ehdollisestiHyvaksyttavissa: hakemus.ehdollisestiHyvaksyttavissa,
+                    ehdollisenHyvaksymisenEhtoKoodi: hakemus.ehdollisenHyvaksymisenEhtoKoodi,
+                    ehdollisenHyvaksymisenEhtoFI: hakemus.ehdollisenHyvaksymisenEhtoFI,
+                    ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
+                    ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
                     hyvaksyttyVarasijalta: hakemus.hyvaksyttyVarasijalta,
                     hyvaksyPeruuntunut: hakemus.hyvaksyPeruuntunut,
                     hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetettyPvm,
@@ -534,11 +543,11 @@ angular.module('valintalaskenta')
     .controller('SijoitteluntulosController', ['$scope', '$modal', 'TallennaValinnat', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
         'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
-        'Kirjeet','UserModel', 'VastaanottoUtil', 'HakemuksenValintatulokset',
+        'Kirjeet','UserModel', 'VastaanottoUtil', 'HakemuksenValintatulokset', 'EhdollisenHyvaksymisenEhdot',
         function ($scope, $modal, TallennaValinnat, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService,
-                                    Kirjeet, UserModel, VastaanottoUtil, HakemuksenValintatulokset) {
+                                    Kirjeet, UserModel, VastaanottoUtil, HakemuksenValintatulokset, EhdollisenHyvaksymisenEhdot) {
     "use strict";
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.url = window.url;
@@ -546,8 +555,10 @@ angular.module('valintalaskenta')
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.model = SijoitteluntulosModel;
     $scope.korkeakouluService = Korkeakoulu;
+    $scope.isKorkeakoulu = false;
     $scope.tilaFilterValue = "";
     $scope.valintaesitysJulkaistavissa = false;
+    $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
 
     $scope.tilaFilterValues = [
         {value: "", text_prop: "sijoitteluntulos.alasuodatatilan", default_text:"Älä suodata tilan mukaan"},
@@ -563,6 +574,7 @@ angular.module('valintalaskenta')
     HakuModel.promise.then(function(haku) {
         if (haku.korkeakoulu) {
             $scope.valintaesitysJulkaistavissa = true;
+            $scope.isKorkeakoulu = true;
         }
     });
 
@@ -590,7 +602,7 @@ angular.module('valintalaskenta')
     });
 
     //
-    // pikalatauslinkit on harmaannettuna jos ei ensimmaistakaan generointia 
+    // pikalatauslinkit on harmaannettuna jos ei ensimmaistakaan generointia
     $scope.osoitetarratUrl = null;
     $scope.hyvaksymiskirjeetUrl = null;
     $scope.sijoitteluntuloksetUrl = null;
@@ -611,7 +623,6 @@ angular.module('valintalaskenta')
 	});
 
 
-	
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
         {value: "EI_TEHTY", text_prop: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},
         {value: "LASNA_KOKO_LUKUVUOSI", text_prop: "sijoitteluntulos.enrollmentinfo.present", default_text:"Läsnä (koko lukuvuosi)"},
@@ -623,6 +634,20 @@ angular.module('valintalaskenta')
         {value: "POISSA", text_prop: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"}
     ];
 
+
+     EhdollisenHyvaksymisenEhdot.query(function (result) {
+         result.forEach(function(ehto){
+             $scope.ehdollisestiHyvaksyttavissaOlevatOpts.push(
+                {
+                    koodiUri: ehto.koodiArvo,
+                    nimi: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
+                    nimiFI: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi,
+                    nimiSV: _.findWhere(ehto.metadata, {kieli: 'SV'}).nimi,
+                    nimiEN: _.findWhere(ehto.metadata, {kieli: 'EN'}).nimi
+                });
+            });
+    });
+
     $scope.pageSize = 50;
 
 /*
@@ -631,6 +656,26 @@ angular.module('valintalaskenta')
         hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
     };
 */
+
+    $scope.showEhdot = function (model, value) {
+        if (value == 'muu') {
+            model.ehtoInputFields = true;
+            model.ehtoEditableInputFields = true;
+            model.ehdollisenHyvaksymisenEhtoFI = '';
+            model.ehdollisenHyvaksymisenEhtoSV = '';
+            model.ehdollisenHyvaksymisenEhtoEN = '';
+        } else {
+            model.ehtoInputFields = true;
+            model.ehtoEditableInputFields = false;
+            $scope.ehdollisestiHyvaksyttavissaOlevatOpts.forEach(function(op){
+                if(op.koodiUri == value){
+                    model.ehdollisenHyvaksymisenEhtoFI = op.nimiFI;
+                    model.ehdollisenHyvaksymisenEhtoSV = op.nimiSV;
+                    model.ehdollisenHyvaksymisenEhtoEN = op.nimiEN;
+                }
+            });
+        }
+    };
 
     $scope.muokatutHakemukset = [];
 
@@ -655,7 +700,7 @@ angular.module('valintalaskenta')
         var body = LocalisationService.tl('oletTallentamassaMuutoksia') || 'Olet tallentamassa muutoksia: ';
         var kpl = LocalisationService.tl('kpl') || 'kpl';
 
-        TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function(success, failure) {
+        TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function (success, failure) {
             $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
         });
     };
@@ -686,15 +731,15 @@ angular.module('valintalaskenta')
                     	toimintoNimi: "Muodosta jälkiohjauskirjeet",
                     	toiminto: function(sisalto) {
                     		HakukohteelleJalkiohjauskirjeet.post({
-					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
-					        	hakuOid: $routeParams.hakuOid, 
+					        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId,
+					        	hakuOid: $routeParams.hakuOid,
 					        	tarjoajaOid: hakukohde.tarjoajaOids[0],
 					        	templateName: templateName,
 					        	tag: tag,
 					        	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: null,letterBodyText:sisalto} , function (id) {
 					            Latausikkuna.avaa(id, "Hakukohteessa hylätyille jälkiohjauskirjeet", "");
 					        }, function () {
-					            
+
 					        });
                     	},
                         showDateFields: false,
@@ -732,26 +777,26 @@ angular.module('valintalaskenta')
             templateName: "hyvaksymiskirje"
         });
     };
-    
+
     $scope.createHyvaksymisosoitteetPDF = function (oidit) {
         OsoitetarratSijoittelussaHyvaksytyille.post({
-        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId, 
-        	hakuOid: $routeParams.hakuOid, 
+        	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId,
+        	hakuOid: $routeParams.hakuOid,
         	hakukohdeOid: $routeParams.hakukohdeOid}, {hakemusOids: oidit }, function (id) {
             Latausikkuna.avaa(id, "Sijoittelussa hyväksytyille osoitetarrat", "");
         }, function () {
-            
+
         });
     };
-    
+
      $scope.sijoittelunTulosXLS = function () {
         SijoitteluXls.post({
-        	hakuOid: $routeParams.hakuOid, 
-        	hakukohdeOid: $routeParams.hakukohdeOid, 
+        	hakuOid: $routeParams.hakuOid,
+        	hakukohdeOid: $routeParams.hakukohdeOid,
         	sijoitteluajoId: $scope.model.sijoitteluTulokset.sijoitteluajoId}, {}, function (id) {
             Latausikkuna.avaa(id, "Sijoittelun tulokset taulukkolaskentaan", "");
         }, function () {
-            
+
         });
     };
 
@@ -765,8 +810,8 @@ angular.module('valintalaskenta')
 
     $scope.createJalkiohjauskirjeetPDF = function () {
         Jalkiohjauskirjeet.post({
-        	sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId, 
-        	hakuOid: $routeParams.hakuOid, 
+        	sijoitteluajoId: $scope.model.latestSijoitteluajo.sijoitteluajoId,
+        	hakuOid: $routeParams.hakuOid,
         	hakukohdeOid: $routeParams.hakukohdeOid}, function (resurssi) {
             $window.location.href = resurssi.latausUrl;
         }, function (response) {

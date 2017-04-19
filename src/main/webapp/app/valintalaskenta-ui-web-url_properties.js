@@ -140,6 +140,7 @@ window.urls.addProperties({
     "koodisto-service.codeelement.codes.hakutyyppi" : "/koodisto-service/rest/codeelement/codes/hakutyyppi/$1",
     "koodisto-service.codeelement.codes.haunkohdejoukko" : "/koodisto-service/rest/codeelement/codes/haunkohdejoukko/$1",
     "koodisto-service.codeelement.codes.kausi" : "/koodisto-service/rest/codeelement/codes/kausi/$1",
+    "koodisto-service.codeelement.codes.ehdollisenHyvaksymisenEhto" : "/koodisto-service/rest/codeelement/codes/hyvaksynnanehdot/$1",
     "koodisto-service.hakukohdenimi" : "/koodisto-service/rest/hakukohdenimi/$1",
     "koodisto-service.json.hakukohteet.koodi" : "/koodisto-service/rest/json/hakukohteet/koodi/$1",
 

@@ -594,7 +594,16 @@ app.directive("valintatulos", function ($rootScope) {
                     if (valintatulos.valintatila === "HYLATTY") {
                         return resultState[key] + " " + tilankuvaus;
                     } else if(hyvaksytty(valintatulos) && valintatulos.ehdollisestiHyvaksyttavissa) {
-                        return resultState[key] + " (ehdollinen)"
+                        var ehdollinenSyy = "ehdollinen";
+                        if(valintatulos.ehdollisenHyvaksymisenEhtoKoodi != ""){
+                            ehdollinenSyy = valintatulos.ehdollisenHyvaksymisenEhtoFI;
+                            if(lang == "SV"){
+                                ehdollinenSyy = valintatulos.ehdollisenHyvaksymisenEhtoSV;
+                            } else if(lang == "EN"){
+                                ehdollinenSyy = valintatulos.ehdollisenHyvaksymisenEhtoEN;
+                            }
+                        }
+                        return resultState[key] + " ("+ehdollinenSyy+")"
                     } else {
                         return tilankuvaus;
                     }
@@ -604,7 +613,16 @@ app.directive("valintatulos", function ($rootScope) {
                     if(valintatulos.valintatila === 'VARALLA') {
                         return valintatulos.varasijanumero + ". varasijalla";
                     } else if(hyvaksytty(valintatulos) && valintatulos.ehdollisestiHyvaksyttavissa) {
-                        return resultState[key] + " (ehdollinen)"
+                        var ehdollinenSyy = "ehdollinen";
+                        if(valintatulos.ehdollisenHyvaksymisenEhtoKoodi != ""){
+                            ehdollinenSyy = valintatulos.ehdollisenHyvaksymisenEhtoFI;
+                            if(lang == "SV"){
+                                ehdollinenSyy = valintatulos.ehdollisenHyvaksymisenEhtoSV;
+                            } else if(lang == "EN"){
+                                ehdollinenSyy = valintatulos.ehdollisenHyvaksymisenEhtoEN;
+                            }
+                        }
+                        return resultState[key] + " ("+ehdollinenSyy+")"
                     } else {
                         return resultState[key];
                     }
@@ -903,6 +921,7 @@ app.directive('muokattuVastaanottoTila', function () {
         },
         templateUrl: '../common/html/muokattuvastaanottotila.html',
         controller: function ($scope, AuthService, Korkeakoulu) {
+            $scope.isEhdollisestiHyvaksyttavissaOlevaEhtoEditable = true;
             var updateEditable = function(hakemus, isKk, updateOph) {
                 $scope.isEditable =
                     (hakemus.muokattuVastaanottoTila !== "OTTANUT_VASTAAN_TOISEN_PAIKAN"
