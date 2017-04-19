@@ -182,9 +182,27 @@
                                                     <option ng-if="!hakemus.ehdollisenHyvaksymisenEhtoKoodi"></option>
                                                 </select>
                                                 <div ng-if="hakemus.ehtoEditableInputFields">
-                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoFI" ng-model="hakemus.ehdollisenHyvaksymisenEhtoFI" ng-change="addMuokattuHakemus(hakemus)" placeholder="FI" required/>
-                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoSV" ng-model="hakemus.ehdollisenHyvaksymisenEhtoSV" ng-change="addMuokattuHakemus(hakemus)" placeholder="SV" required/>
-                                                    <input class="form-control" type="text" id="ehdollisenHyvaksymisenEhtoEN" ng-model="hakemus.ehdollisenHyvaksymisenEhtoEN" ng-change="addMuokattuHakemus(hakemus)" placeholder="EN" required/>
+                                                    <input class="form-control"
+                                                           ng-class="{'required-empty': hakemus.ehdollisenHyvaksymisenEhtoFI.length < 1}"
+                                                           type="text"
+                                                           id="ehdollisenHyvaksymisenEhtoFI"
+                                                           ng-model="hakemus.ehdollisenHyvaksymisenEhtoFI"
+                                                           ng-change="addMuokattuHakemus(hakemus)"
+                                                           placeholder="FI"/>
+                                                    <input class="form-control"
+                                                           ng-class="{'required-empty': hakemus.ehdollisenHyvaksymisenEhtoSV.length < 1}"
+                                                           type="text"
+                                                           id="ehdollisenHyvaksymisenEhtoSV"
+                                                           ng-model="hakemus.ehdollisenHyvaksymisenEhtoSV"
+                                                           ng-change="addMuokattuHakemus(hakemus)"
+                                                           placeholder="SV"/>
+                                                    <input class="form-control"
+                                                           ng-class="{'required-empty': hakemus.ehdollisenHyvaksymisenEhtoEN.length < 1}"
+                                                           type="text"
+                                                           id="ehdollisenHyvaksymisenEhtoEN"
+                                                           ng-model="hakemus.ehdollisenHyvaksymisenEhtoEN"
+                                                           ng-change="addMuokattuHakemus(hakemus)"
+                                                           placeholder="EN"/>
                                                 </div>
                                             </div>
 
