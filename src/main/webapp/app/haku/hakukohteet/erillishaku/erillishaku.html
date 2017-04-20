@@ -118,6 +118,7 @@
                                                                         ng-model="tulos.ehdollisenHyvaksymisenEhtoKoodi"
                                                                         ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'nimi'" style="width: 200px;"
                                                                         ng-required="tulos.ehdollisestiHyvaksyttavissa">
+                                                                        ng-class="{'required-empty': !hakemus.ehdollisenHyvaksymisenEhtoKoodi}"
                                                                     <option ng-if="!hakemus.ehdollisenHyvaksymisenEhtoKoodi"></option>
                                                                 </select>
                                                                 <div ng-if="tulos.ehdollisenHyvaksymisenEhtoKoodi == 'muu'">
