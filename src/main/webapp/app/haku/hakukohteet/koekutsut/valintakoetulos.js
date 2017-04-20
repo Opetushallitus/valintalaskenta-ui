@@ -67,6 +67,9 @@
 				if(puuttuvienHakemustenOidit) {
 					HenkilotByOid.hae(puuttuvienHakemustenOidit, function(puuttuvatHakemukset){
 						kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset, hakemukset));
+					}, function() {
+						model.errors.push("Hakukohteen ulkopuolisten osallistujien haku epäonnistui");
+						kaikkiTarvittavatHakemukset.resolve(hakemukset);
 					});
 				} else {
 					kaikkiTarvittavatHakemukset.resolve(hakemukset);
@@ -129,6 +132,9 @@
 
 											var entry = {};
 											var hakija = byHakemusOid[koetulos.hakemusOid];
+											if (!hakija) {
+												return;
+											}
 											entry.etunimi = hakija.answers.henkilotiedot.Etunimet;
 											entry.sukunimi = hakija.answers.henkilotiedot.Sukunimi;
 											entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
