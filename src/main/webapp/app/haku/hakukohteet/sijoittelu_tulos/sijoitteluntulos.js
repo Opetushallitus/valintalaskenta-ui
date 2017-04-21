@@ -527,10 +527,15 @@ angular.module('valintalaskenta')
                 hyvaksyttyJonoOid: "",
                 selite: "Massamuokkaus"
             };
-
-            var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
-            VastaanottoTila.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess, muokatutHakemukset), this.reportFailedSave(afterFailure, muokatutHakemukset));
-            ValinnanTulos.patch(valintatapajonoOid, _.map(muokatutHakemukset, function(h) {
+            var muuttuneetHyvaksymiskirjeet = muokatutHakemukset
+                .map(function(hakemus) {
+                    return {
+                        henkiloOid: hakemus.hakijaOid,
+                        hakukohdeOid: model.hakukohdeOid,
+                        lahetetty: hakemus.hyvaksymiskirjeLahetetty
+                    };
+                });
+            var valinnantilanMuutokset = _.map(muokatutHakemukset, function(h) {
                 return {
                     hakukohdeOid: model.hakukohdeOid,
                     valintatapajonoOid: valintatapajonoOid,
@@ -544,26 +549,36 @@ angular.module('valintalaskenta')
                     hyvaksyttyVarasijalta: h.hyvaksyttyVarasijalta,
                     hyvaksyPeruuntunut: h.hyvaksyPeruuntunut
                 };
-            }), {
-                headers: {
-                    'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]
-                }
-            }).then(function(response) {
-                var forBreakpoint = response;
-            }, function(error) {
-                var forBreakpoint = error;
             });
-            var muuttuneetHyvaksymiskirjeet = muokatutHakemukset
-                .map(function(hakemus) {
-                    return {
-                        henkiloOid: hakemus.hakijaOid,
-                        hakukohdeOid: model.hakukohdeOid,
-                        lahetetty: hakemus.hyvaksymiskirjeLahetetty
-                    };
-                });
-            ErillishakuHyvaksymiskirjeet.post({}, muuttuneetHyvaksymiskirjeet).$promise.catch(function(error) {
-                console.log(error);
-            });
+            var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
+
+            var reportSuccessfulSave = this.reportSuccessfulSave;
+            var reportFailedSave = this.reportFailedSave;
+            var p = $q.all([
+                ValinnanTulos.patch(
+                    valintatapajonoOid,
+                    valinnantilanMuutokset,
+                    {headers: {'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]}}
+                ),
+                ErillishakuHyvaksymiskirjeet.post({}, muuttuneetHyvaksymiskirjeet).$promise
+            ]);
+            if (READ_FROM_VALINTAREKISTERI === "true") {
+                p.then(
+                    reportSuccessfulSave(afterSuccess, valinnantilanMuutokset),
+                    function(error) {
+                        if (error.data.error) {
+                            afterFailure(function () { document.location.reload(); }, error.data.error, []);
+                        } else {
+                            reportFailedSave(afterFailure, valinnantilanMuutokset)({data: {statuses: error.data}});
+                        }
+                    }
+                );
+            } else {
+                VastaanottoTila.post(tilaParams, tilaObj,
+                    reportSuccessfulSave(afterSuccess, muokatutHakemukset),
+                    reportFailedSave(afterFailure, muokatutHakemukset)
+                );
+            }
         };
 
     }();
