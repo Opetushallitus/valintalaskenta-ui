@@ -530,7 +530,7 @@ angular.module('valintalaskenta')
 
             var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
             VastaanottoTila.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess, muokatutHakemukset), this.reportFailedSave(afterFailure, muokatutHakemukset));
-            ValinnanTulos.patch({valintatapajonoOid: valintatapajonoOid}, _.map(muokatutHakemukset, function(h) {
+            ValinnanTulos.patch(valintatapajonoOid, _.map(muokatutHakemukset, function(h) {
                 return {
                     hakukohdeOid: model.hakukohdeOid,
                     valintatapajonoOid: valintatapajonoOid,

@@ -111,7 +111,8 @@ window.urls.addProperties({
     "valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi" : "/valintalaskenta-laskenta-service/resources/valintatapajono/$1/valmissijoiteltavaksi",
 
     "valinta-tulos-service.login": "/valinta-tulos-service/auth/login",
-    "valinta-tulos-service.valinnan-tulos": "/valinta-tulos-service/auth/valinnan-tulos",
+    "valinta-tulos-service.valinnan-tulos.haku": "/valinta-tulos-service/auth/valinnan-tulos",
+    "valinta-tulos-service.valinnan-tulos.tallennus": "/valinta-tulos-service/auth/valinnan-tulos/$1",
     "valinta-tulos-service.hyvaksymiskirje": "/valinta-tulos-service/auth/hyvaksymiskirje",
     "valinta-tulos-service.muutoshistoria": "/valinta-tulos-service/auth/muutoshistoria",
     "valinta-tulos-service.sijoittelu.sijoitteluajo.hakukohde": "/valinta-tulos-service/auth/sijoittelu/$1/sijoitteluajo/$2/hakukohde/$3",
