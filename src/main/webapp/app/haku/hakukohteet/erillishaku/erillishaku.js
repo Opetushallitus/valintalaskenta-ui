@@ -460,7 +460,6 @@ angular.module('valintalaskenta')
           console.log(error);
           Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
         });
-        saveHyvaksymiskirjeet(erillishakuRivit);
       };
 
       $scope.addMuokattuHakemus = function (hakemus) {
@@ -486,20 +485,6 @@ angular.module('valintalaskenta')
           tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0],
           valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
         };
-      };
-
-      var saveHyvaksymiskirjeet = function(hakemukset) {
-        var muuttuneetHyvaksymiskirjeet = hakemukset
-            .map(function(hakemus) {
-              return {
-                henkiloOid: hakemus.personOid,
-                hakukohdeOid: $scope.hakukohdeOid,
-                lahetetty: hakemus.hyvaksymiskirjeLahetetty
-              };
-            });
-        ErillishakuHyvaksymiskirjeet.post({}, muuttuneetHyvaksymiskirjeet).$promise.catch(function(error) {
-          console.log(error);
-        });
       };
 
       $scope.erillishaunVientiXlsx = function() {
