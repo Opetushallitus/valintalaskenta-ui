@@ -1,5 +1,5 @@
 angular.module('valintalaskenta')
-    .service('Maksuvelvollisuus', ['HakukohdeHenkilotFull'], function(HakukohdeHenkilotFull) {
+    .service('Maksuvelvollisuus', ['HakukohdeHenkilotFull', function(HakukohdeHenkilotFull) {
         this.get = function(hakuOid, hakukohdeOid) {
             return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
                 .then(function(hakemukset) {
@@ -19,7 +19,7 @@ angular.module('valintalaskenta')
                         {});
                 });
         }
-    })
+    }])
     .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
         'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
         'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
