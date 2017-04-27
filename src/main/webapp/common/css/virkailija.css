@@ -139,7 +139,8 @@ img.center-horizontal-32px {
 /*** Overflow
 ************************************************/
 .overflow-x-scroll {
-  overflow-x: scroll; }
+  overflow-x: scroll;
+  overflow-x: hidden;}
 
 /*** Table
 ************************************************/
@@ -2549,7 +2550,15 @@ div.tilaParial {
 .tabsheets {
   background-color: #ffffff;
   border: solid 1px #bdbdbd;
-  padding: 10px; }
+  padding: 10px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  display: inline-block;
+}
+
+#angularbox > .tabsheets {
+  width:100%;
+}
 
 .tabs {
   font-size: 0; }
