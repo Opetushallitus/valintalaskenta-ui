@@ -3,20 +3,7 @@ angular.module('valintalaskenta')
         this.get = function(hakuOid, hakukohdeOid) {
             return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
                 .then(function(hakemukset) {
-                    return _.reduce(
-                        _.map(hakemukset, function (hakemus) {
-                            var eligibility = _.find(hakemus.preferenceEligibilities, {'aoId': hakukohdeOid});
-                            var maksuvelvollisuus = 'NOT_CHECKED';
-                            if (eligibility && eligibility.maksuvelvollisuus) {
-                                maksuvelvollisuus = eligibility.maksuvelvollisuus;
-                            }
-                            return {'oid': hakemus.oid, 'maksuvelvollisuus': maksuvelvollisuus}
-                        }),
-                        function (result, hakemus) {
-                            result[hakemus.oid] = hakemus.maksuvelvollisuus;
-                            return result;
-                        },
-                        {});
+                    return hakemukset;
                 });
         }
     }])
@@ -317,10 +304,30 @@ angular.module('valintalaskenta')
         });
       };
 
-      var processErillishaku = function(valintatapajono, oidToMaksuvelvollisuus) {
+      var createHakemuksetWithoutValinnantulosForValintatapajono = function(kaikkiHakemukset, valintatapajono) {
+        var valintatapajononHakemusOidit = _.map(valintatapajono.hakemukset, function(h) {return h.hakemusOid});
+        var missingHakemukset = _.filter(kaikkiHakemukset, function(hakemus) {
+          return !_.contains(valintatapajononHakemusOidit, hakemus.oid)
+        });
+        Array.prototype.push.apply(valintatapajono.hakemukset, _.map(missingHakemukset, function(missing) {
+          return createHakemusWithoutValinnantulos(missing);
+        }))
+      };
+
+      var createHakemusWithoutValinnantulos = function(hakemus) {
+        return {
+            etunimi: hakemus.answers.henkilotiedot.Etunimet,
+            sukunimi: hakemus.answers.henkilotiedot.Sukunimi,
+            hakijaOid: hakemus.personOid,
+            hakemusOid: hakemus.oid
+        }
+      };
+
+      var processErillishaku = function(valintatapajono, oidToMaksuvelvollisuus, kaikkiHakemukset) {
         addKeinotekoinenOidIfMissing(valintatapajono);
         createTableParamsForValintatapaJono(valintatapajono);
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, valintatapajono.hakemukset);
+        createHakemuksetWithoutValinnantulosForValintatapajono(kaikkiHakemukset, valintatapajono);
 
         valintatapajono.hakemukset.forEach(function (hakemus) {
           $scope.hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid] = !!hakemus.hyvaksymiskirjeLahetetty;
@@ -396,6 +403,23 @@ angular.module('valintalaskenta')
         }
       };
 
+      var getMaksuvelvollisuudet = function(hakemukset, hakukohdeOid) {
+        return _.reduce(
+          _.map(hakemukset, function (hakemus) {
+            var eligibility = _.find(hakemus.preferenceEligibilities, {'aoId': hakukohdeOid});
+            var maksuvelvollisuus = 'NOT_CHECKED';
+            if (eligibility && eligibility.maksuvelvollisuus) {
+                maksuvelvollisuus = eligibility.maksuvelvollisuus;
+            }
+            return {'oid': hakemus.oid, 'maksuvelvollisuus': maksuvelvollisuus}
+          }),
+          function (result, hakemus) {
+            result[hakemus.oid] = hakemus.maksuvelvollisuus;
+            return result;
+          },
+          {})
+      };
+
       $q.all([
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid),
         Maksuvelvollisuus.get($routeParams.hakuOid, $routeParams.hakukohdeOid),
@@ -404,10 +428,11 @@ angular.module('valintalaskenta')
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
           $scope.updateOrg = true;
         });
-        var maksuvelvollisuudet = resolved[1];
+        var kaikkiHakemukset = resolved[1];
+        var maksuvelvollisuudet = getMaksuvelvollisuudet(kaikkiHakemukset, $routeParams.hakukohdeOid);
         var valintatapajono = resolved[2];
         enrichHakemuksetWithHakijat(valintatapajono).then(function(valintatapajono) {
-          processErillishaku(valintatapajono, maksuvelvollisuudet);
+          processErillishaku(valintatapajono, maksuvelvollisuudet, kaikkiHakemukset);
         });
       });
 
