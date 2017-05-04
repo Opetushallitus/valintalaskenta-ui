@@ -41,9 +41,9 @@ angular.module('valintalaskenta')
                     }
                 };
 
-                this.init = function (oid) {
+                this.init = function (oid, virkailijaTyyppi) {
                     if (model.haut.length === 0 || oid !== model.hakuOid) {
-                        TarjontaHaut.get({}, function (resultWrapper) {
+                        TarjontaHaut.get({virkailijaTyyppi: virkailijaTyyppi}, function (resultWrapper) {
                             model.haut = resultWrapper.result;
                             model.haut.forEach(function (haku) {
                                 if (haku.oid === oid) {
@@ -96,13 +96,6 @@ angular.module('valintalaskenta')
     .controller('HakuController', ['$log', '$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService', 'UserModel', 'CustomHakuUtil',
         function ($log, $scope, $location, $routeParams, HakuModel, ParametriService, UserModel, CustomHakuUtil) {
             "use strict";
-            $scope.hakumodel = HakuModel;
-            HakuModel.init($routeParams.hakuOid);
-
-            UserModel.refreshIfNeeded();
-            $scope.customHakuUtil = CustomHakuUtil;
-            CustomHakuUtil.refreshIfNeeded($routeParams.hakuOid);
-
             //determining if haku-listing should be filtered based on users organizations
             UserModel.organizationsDeferred.promise.then(function () {
                 if (UserModel.isOphUser || UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser) {
@@ -114,7 +107,14 @@ angular.module('valintalaskenta')
                 } else {
                     $scope.hakufiltering = "all";
                 }
+                HakuModel.init($routeParams.hakuOid, $scope.hakufiltering);
+                UserModel.refreshIfNeeded();
+                CustomHakuUtil.refreshIfNeeded($routeParams.hakuOid);
             });
+
+            $scope.hakumodel = HakuModel;
+
+            $scope.customHakuUtil = CustomHakuUtil;
 
             ParametriService($routeParams.hakuOid);
 
@@ -127,7 +127,7 @@ angular.module('valintalaskenta')
             });
 
         }])
-    
+
     .controller('CustomHakuFilterController', ['$scope', function ($scope) {
         $scope.$on('rajaaHakuja', function () {
            $scope.show();
