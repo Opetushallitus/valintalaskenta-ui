@@ -55,6 +55,12 @@
 .vertical-align-middle {
   vertical-align: middle; }
 
+img.center-horizontal-32px {
+  position: absolute;
+  left: 50%;
+  margin-left: -16px;
+}
+
 /*** Width
 ************************************************/
 .width-25 {
