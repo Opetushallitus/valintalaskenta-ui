@@ -167,7 +167,7 @@ angular.module('valintalaskenta').
 				Latausikkuna.avaaKustomoitu(id, "Pistesyöttötietojen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
 	            function(dokumenttiId) {
 	            	// tee paivitys
-	            	$scope.model.refresh(hakukohdeOid, hakuOid);
+                    $window.location.reload();
 	            }
 	            );
 			}).error(function(data) {
