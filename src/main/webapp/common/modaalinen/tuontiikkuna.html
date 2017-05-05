@@ -6,7 +6,7 @@
 		<h3>{{lisatiedot}}</h3>
 		<br>
 		<div ng-hide="onVirheita()">
-			<img ng-show="onKesken()" class="spinner" alt="loading" src="../common/img/ajax-loader-big.gif" />
+			<img ng-show="onKesken()" class="spinner align-center" alt="loading" src="../common/img/ajax-loader-big.gif" />
 			<!-- Korvattu ainakin tilapäisesti yllä olevalla karvalakki-spinnerillä, koska progress bar näytti aivan mitä sattui
 			<div class="col-sm-9"><progressbar ng-class="{progressBarDanger: onVirheita()}" class="progress-striped active" value="getProsentit(prosessi.kokonaistyo)" type="info">{{getProsentit(prosessi.kokonaistyo)}}%</progressbar></div>				
 			<div class="col-sm-3" ng-show="prosessi.kokonaistyo.kokonaismaara">{{prosessi.kokonaistyo.tehty}} / {{prosessi.kokonaistyo.kokonaismaara}}</div>
