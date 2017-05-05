@@ -304,20 +304,16 @@ angular.module('valintalaskenta')
         });
       };
 
-      var createHakemuksetWithoutValinnantulosForValintatapajono = function(kaikkiHakemukset, valintatapajono) {
+      var addHakemuksetWithoutValinnantulos = function(kaikkiHakemukset, valintatapajono) {
         var valintatapajononHakemusOidit = _.map(valintatapajono.hakemukset, function(h) {return h.hakemusOid});
         var missingHakemukset = _.filter(kaikkiHakemukset, function(hakemus) {
           return !_.contains(valintatapajononHakemusOidit, hakemus.oid)
         });
-        Array.prototype.push.apply(valintatapajono.hakemukset, _.map(missingHakemukset, function(missing) {
-          return createHakemusWithoutValinnantulos(missing);
-        }))
+        Array.prototype.push.apply(valintatapajono.hakemukset, _.map(missingHakemukset, createHakemusWithoutValinnantulos));
       };
 
       var createHakemusWithoutValinnantulos = function(hakemus) {
         return {
-            etunimi: hakemus.answers.henkilotiedot.Etunimet,
-            sukunimi: hakemus.answers.henkilotiedot.Sukunimi,
             hakijaOid: hakemus.personOid,
             hakemusOid: hakemus.oid
         }
@@ -327,7 +323,6 @@ angular.module('valintalaskenta')
         addKeinotekoinenOidIfMissing(valintatapajono);
         createTableParamsForValintatapaJono(valintatapajono);
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, valintatapajono.hakemukset);
-        createHakemuksetWithoutValinnantulosForValintatapajono(kaikkiHakemukset, valintatapajono);
 
         valintatapajono.hakemukset.forEach(function (hakemus) {
           $scope.hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid] = !!hakemus.hyvaksymiskirjeLahetetty;
@@ -430,7 +425,7 @@ angular.module('valintalaskenta')
         });
         var kaikkiHakemukset = resolved[1];
         var maksuvelvollisuudet = getMaksuvelvollisuudet(kaikkiHakemukset, $routeParams.hakukohdeOid);
-        var valintatapajono = resolved[2];
+        var valintatapajono = addHakemuksetWithoutValinnantulos(kaikkiHakemukset, resolved[2]);
         enrichHakemuksetWithHakijat(valintatapajono).then(function(valintatapajono) {
           processErillishaku(valintatapajono, maksuvelvollisuudet, kaikkiHakemukset);
         });
