@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu', '_', '$rootScope',
-        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu, _, $rootScope) {
+    .factory('HakuModel', ['$q', '$log', 'Haku', 'UserModel', 'TarjontaHaut', 'Korkeakoulu', '_', '$rootScope',
+        function ($q, $log, Haku, UserModel, TarjontaHaut, Korkeakoulu, _, $rootScope) {
             "use strict";
 
             var model;
@@ -41,8 +41,17 @@ angular.module('valintalaskenta')
                     }
                 };
 
-                this.init = function (oid, virkailijaTyyppi) {
+                this.init = function (oid) {
                     if (model.haut.length === 0 || oid !== model.hakuOid) {
+                        UserModel.refreshIfNeeded();
+
+                        var virkailijaTyyppi = "all";
+                        if (UserModel.isKKUser && !UserModel.hasOtherThanKKUserOrgs) {
+                            virkailijaTyyppi = "kkUser";
+                        } else if (!UserModel.isKKUser && UserModel.hasOtherThanKKUserOrgs) {
+                            virkailijaTyyppi = "toinenAsteUser";
+                        }
+
                         TarjontaHaut.get({virkailijaTyyppi: virkailijaTyyppi}, function (resultWrapper) {
                             model.haut = resultWrapper.result;
                             model.haut.forEach(function (haku) {
@@ -96,6 +105,15 @@ angular.module('valintalaskenta')
     .controller('HakuController', ['$log', '$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService', 'UserModel', 'CustomHakuUtil',
         function ($log, $scope, $location, $routeParams, HakuModel, ParametriService, UserModel, CustomHakuUtil) {
             "use strict";
+            UserModel.refreshIfNeeded();
+            $scope.customHakuUtil = CustomHakuUtil;
+
+            // done after UserModel refresh to ensure UserModel is available for HakuModel's internals
+            $scope.hakumodel = HakuModel;
+            HakuModel.init($routeParams.hakuOid);
+
+            CustomHakuUtil.refreshIfNeeded($routeParams.hakuOid);
+
             //determining if haku-listing should be filtered based on users organizations
             UserModel.organizationsDeferred.promise.then(function () {
                 if (UserModel.isOphUser || UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser) {
@@ -107,14 +125,7 @@ angular.module('valintalaskenta')
                 } else {
                     $scope.hakufiltering = "all";
                 }
-                HakuModel.init($routeParams.hakuOid, $scope.hakufiltering);
-                UserModel.refreshIfNeeded();
-                CustomHakuUtil.refreshIfNeeded($routeParams.hakuOid);
             });
-
-            $scope.hakumodel = HakuModel;
-
-            $scope.customHakuUtil = CustomHakuUtil;
 
             ParametriService($routeParams.hakuOid);
 
