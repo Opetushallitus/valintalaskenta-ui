@@ -6,11 +6,17 @@
 		<h3>{{lisatiedot}}</h3>
 		<br>
 		<div ng-hide="onVirheita()">
+			<img ng-show="onKesken()" class="spinner center-horizontal-32px" alt="loading" src="../common/img/ajax-loader-big.gif" />
+			<!-- Korvattu ainakin tilapäisesti yllä olevalla karvalakki-spinnerillä, koska progress bar näytti aivan mitä sattui
 			<div class="col-sm-9"><progressbar ng-class="{progressBarDanger: onVirheita()}" class="progress-striped active" value="getProsentit(prosessi.kokonaistyo)" type="info">{{getProsentit(prosessi.kokonaistyo)}}%</progressbar></div>				
 			<div class="col-sm-3" ng-show="prosessi.kokonaistyo.kokonaismaara">{{prosessi.kokonaistyo.tehty}} / {{prosessi.kokonaistyo.kokonaismaara}}</div>
+			-->
 			<br>
-			<div class="col-sm-12">
+			<div ng-show="onKesken()" class="col-sm-12 padding-top-7 align-center">
                 {{ t('tuontiikkuna.suoritusetenee') || 'Suoritus etenee virheettömästi ja varoituksetta' }}
+			</div>
+			<div ng-hide="onKesken()" class="col-sm-12 align-center">
+				{{ t('tuontiikkuna.suoritusvalmis') || 'Suoritus valmis' }}
 			</div>
 		</div>
 		<div ng-show="onVirheita()">

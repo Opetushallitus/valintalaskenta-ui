@@ -114,9 +114,9 @@ app.factory('PistesyottoModel', function (
 
 
 angular.module('valintalaskenta').
-    controller('PistesyottoController', ['$scope', '$log', '$timeout', '$routeParams', '$upload', 'PistesyottoVienti',
+    controller('PistesyottoController', ['$scope', '$window', '$log', '$timeout', '$routeParams', '$upload', 'PistesyottoVienti',
         'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel', 'ParametriService',
-        function ($scope, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
+        function ($scope, $window, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
                   IlmoitusTila, Latausikkuna, HakukohdeModel, ParametriService) {
     "use strict";
 
@@ -167,7 +167,7 @@ angular.module('valintalaskenta').
 				Latausikkuna.avaaKustomoitu(id, "Pistesyöttötietojen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
 	            function(dokumenttiId) {
 	            	// tee paivitys
-	            	$scope.model.refresh(hakukohdeOid, hakuOid);
+                    $window.location.reload();
 	            }
 	            );
 			}).error(function(data) {
