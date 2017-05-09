@@ -425,7 +425,8 @@ angular.module('valintalaskenta')
         });
         var kaikkiHakemukset = resolved[1];
         var maksuvelvollisuudet = getMaksuvelvollisuudet(kaikkiHakemukset, $routeParams.hakukohdeOid);
-        var valintatapajono = addHakemuksetWithoutValinnantulos(kaikkiHakemukset, resolved[2]);
+        var valintatapajono = resolved[2];
+        addHakemuksetWithoutValinnantulos(kaikkiHakemukset, valintatapajono);
         enrichHakemuksetWithHakijat(valintatapajono).then(function(valintatapajono) {
           processErillishaku(valintatapajono, maksuvelvollisuudet, kaikkiHakemukset);
         });
