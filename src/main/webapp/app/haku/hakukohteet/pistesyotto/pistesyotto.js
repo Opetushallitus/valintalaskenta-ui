@@ -224,12 +224,19 @@ angular.module('valintalaskenta').
 
         return show;
     };
+
     $scope.filteredResult = [];
+
+    $scope.updateFilteredResult = function () {
+        $scope.filteredResult = $scope.$eval("model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter");
+    };
+
     $scope.$watch('model.hakeneet', function () {
-        $scope.filteredResult = $scope.$eval("model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter");
-    }, true);
+        $scope.updateFilteredResult();
+    });
+
     $scope.$watchGroup(['hakijaFilter','koeFilter','osallistuminenFilter'], function () {
-        $scope.filteredResult = $scope.$eval("model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter");
+        $scope.updateFilteredResult();
     });
 
     $scope.updateFilterData = function () {
