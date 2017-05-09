@@ -141,6 +141,13 @@ angular.module('valintalaskenta')
     };
 
     var calculateSijat = function(valintatapajono) {
+        valintatapajono.hakemukset.sort(function(a, b) {
+           if (a.jonosija === b.jonosija) {
+               return a.tasasijaJonosija - b.tasasijaJonosija;
+           }  else {
+               return a.jonosija - b.jonosija;
+           }
+        });
         valintatapajono.hakemukset.filter(function(hakemus) {
             return (
                 hakemus.tila === "HYVAKSYTTY" ||
