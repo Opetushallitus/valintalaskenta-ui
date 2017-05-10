@@ -19,6 +19,7 @@ app.factory('PistesyottoModel', function (
         this.filter = "OSALLISTUU";
         this.tunnisteet = [];
         this.laskentaonly = true;
+        this.hakeneetIsLoaded = false;
 
         this.refresh = function (hakukohdeOid, hakuOid) {
             model.hakeneet.length = 0;
@@ -27,6 +28,7 @@ app.factory('PistesyottoModel', function (
             model.hakukohdeOid = hakukohdeOid;
             model.hakuOid = hakuOid;
             model.tunnisteet.length = 0;
+            model.hakeneetIsLoaded = false;
 
             $q.all([
                 HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}).$promise,
@@ -53,6 +55,7 @@ app.factory('PistesyottoModel', function (
                     });
                     return h;
                 });
+                model.hakeneetIsLoaded = true;
             }, function(error) {
                 model.errors.push(error);
             });
@@ -231,7 +234,7 @@ angular.module('valintalaskenta').
         $scope.filteredResult = $scope.$eval("model.hakeneet | orderBy:predicate:reverse | filter:hakijaFilter | filter:osallistuvatFilter");
     };
 
-    $scope.$watch('model.hakeneet', function () {
+    $scope.$watch('model.hakeneetIsLoaded', function () {
         $scope.updateFilteredResult();
     });
 
