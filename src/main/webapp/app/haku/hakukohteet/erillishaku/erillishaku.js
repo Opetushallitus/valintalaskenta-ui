@@ -12,12 +12,12 @@ angular.module('valintalaskenta')
         'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Maksuvelvollisuus', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
-        'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet',
+        'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
         function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                   ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                   ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                   VastaanottoUtil, NgTableParams, TallennaValinnat, Maksuvelvollisuus, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
-                  ErillishakuHyvaksymiskirjeet) {
+                  ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut) {
       "use strict";
 
       var valintatapajonoOid = null;
@@ -130,6 +130,11 @@ angular.module('valintalaskenta')
         {value: "NOT_REQUIRED", text_prop: "maksuvelvollisuus.not_required", default_text:"Ei maksuvelvollinen"},
         {value: "REQUIRED", text_prop: "maksuvelvollisuus.required", default_text:"Maksuvelvollinen"}
       ];
+      $scope.maksuntilat = [
+        {value: "MAKSAMATTA", text_prop: "sijoitteluntulos.maksuntila.maksamatta", default_text:"Maksamatta"},
+        {value: "MAKSETTU", text_prop: "sijoitteluntulos.maksuntila.maksettu", default_text:"Maksettu"},
+        {value: "VAPAUTETTU", text_prop: "sijoitteluntulos.maksuntila.vapautettu", default_text:"Vapautettu"}
+      ];
       $scope.valintaTuloksenTilaToHakemuksenTila = {
         "EHDOLLISESTI_VASTAANOTTANUT": "HYVAKSYTTY",
         "VASTAANOTTANUT_SITOVASTI": "HYVAKSYTTY",
@@ -199,20 +204,19 @@ angular.module('valintalaskenta')
           && (hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT" || hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI");
       };
 
-      LocalisationService.getTranslationsForArray($scope.hakemuksentilat).then(function () {
-        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-      });
-
       $scope.showEhdollinenHyvaksynta = function() {
         return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
       };
 
-      LocalisationService.getTranslationsForArray($scope.ilmoittautumistilat).then(function () {
+      $q.all([
+        LocalisationService.getTranslationsForArray($scope.hakemuksentilat),
+        LocalisationService.getTranslationsForArray($scope.ilmoittautumistilat),
+        LocalisationService.getTranslationsForArray($scope.maksuvelvollisuus),
+        LocalisationService.getTranslationsForArray($scope.maksuntilat)
+      ]).then(function () {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
       });
-      LocalisationService.getTranslationsForArray($scope.maksuvelvollisuus).then(function () {
-        HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-      });
+
       $scope.isVaaraVastaanottotila = function(tila) {
         return tila === 'VASTAANOTTANUT';
       };
@@ -319,7 +323,17 @@ angular.module('valintalaskenta')
         }
       };
 
-      var processErillishaku = function(valintatapajono, oidToMaksuvelvollisuus, kaikkiHakemukset) {
+      var processErillishaku = function(erillishaku, oidToMaksuvelvollisuus, lukuvuosimaksut) {
+            var hakemukset = _.chain(erillishaku)
+              .map(function (e) {
+                return e.valintatapajonot;
+              })
+              .flatten()
+              .map(function (v) {
+                createTableParamsForValintatapaJono(v);
+                return v.hakemukset;
+              })
+              .flatten();
         addKeinotekoinenOidIfMissing(valintatapajono);
         createTableParamsForValintatapaJono(valintatapajono);
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, valintatapajono.hakemukset);
@@ -335,6 +349,14 @@ angular.module('valintalaskenta')
           } else {
             hakemus.maksuvelvollisuus = 'NOT_CHECKED';
             hakemus.loytyiHakemuksista = false;
+          }
+          if('REQUIRED' === maksuvelvollisuus) {
+            hakemus.isMaksuvelvollinen = true
+            var lukuvuosimaksu = _.find(lukuvuosimaksut, {"personOid": hakemus.hakijaOid});
+            if(lukuvuosimaksu) {
+              hakemus.muokattuMaksuntila = lukuvuosimaksu.maksuntila;
+              hakemus.maksuntila = lukuvuosimaksu.maksuntila;
+            }
           }
           $scope.validateHakemuksenTilat(hakemus);
         });
@@ -422,6 +444,15 @@ angular.module('valintalaskenta')
       ]).then(function (resolved) {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
           $scope.updateOrg = true;
+        $q.all([
+          HakukohdeHenkilotFull.get({aoOid: $routeParams.hakukohdeOid, rows: 100000, asId: $routeParams.hakuOid}).$promise,
+          ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}).$promise,
+          Lukuvuosimaksut.get({hakukohdeOid: hakukohdeOid})
+        ]).then(function(resolved) {
+          var hakemukset = resolved[0];
+          var erillishaku = resolved[1];
+          var lukuvuosimaksut = resolved[2];
+          processErillishaku(erillishaku, hakemuksetToMaksuvelvollisuus(hakemukset), lukuvuosimaksut);
         });
         var kaikkiHakemukset = resolved[1];
         var maksuvelvollisuudet = getMaksuvelvollisuudet(kaikkiHakemukset, $routeParams.hakukohdeOid);
@@ -622,8 +653,45 @@ angular.module('valintalaskenta')
         });
         TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + counter + " kpl. hakemuksia.", function (success) {
           success();
-          $scope.submitIlmanLaskentaa();
+          var muokatutMaksuntilat = _.filter(hakemukset, function(h) { return h.maksuntila !== h.muokattuMaksuntila; });
+          var afterLukuvuosimaksutTallennettu = function() {
+            $scope.saveIlmoitettuToAll(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
+          };
+
+          if(muokatutMaksuntilat.length != 0) {
+            this.muokattuHakemusToLukuvuosimaksu = function(hakemus) {
+              return {
+                personOid: hakemus.hakijaOid,
+                maksuntila: hakemus.muokattuMaksuntila
+              };
+            };
+            var lukuvuosimaksut = _.map(muokatutMaksuntilat, this.muokattuHakemusToLukuvuosimaksu);
+            Lukuvuosimaksut.post({hakukohdeOid: model.hakukohdeOid}, lukuvuosimaksut).then(
+              afterLukuvuosimaksutTallennettu,
+              function(error) {
+                Ilmoitus.avaa("Erillishaun hakukohteen tallennus epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+              }
+            );
+          } else {
+            afterLukuvuosimaksutTallennettu();
+          }
         });
+      });
+
+      $scope.saveIlmoitettuToAll = function(valintatapajonoOid, valintatapajononNimi, json) {
+        ErillishakuTuonti.tuo(
+          {rivit: json},
+          {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
+           headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()}}
+        ).success(function(id, status, headers, config) {
+            Ilmoitus.avaa("Erillishaun hakukohteen tallennus", "Tallennus onnistui. Paina OK ladataksesi sivu uudelleen.", "",
+              function() {
+                $window.location.reload();
+              }
+            );
+          }).error(function (data) {
+            Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+          });
       };
 
       $scope.disableButton = function(button) {

@@ -251,7 +251,13 @@
                                     </div>
                                 </div>
                             </td>
-
+                            <td data-title="(t('sijoitteluntulos.maksuntila') || 'Maksun tila')">
+                                <div ng-show="tulos.isMaksuvelvollinen">
+                                    <select ng-model="tulos.muokattuMaksuntila" ng-change="addMuokattuHakemus(tulos, valintatapajono)"
+                                            ng-options="tila.value as tila.text for tila in maksuntilat">
+                                    </select>
+                                </div>
+                            </td>
                             <td ng-show="updateOrg" class="width100">
                                 <div>
                                     <i class="fa fa-times-circle delete-button" aria-hidden="true"
