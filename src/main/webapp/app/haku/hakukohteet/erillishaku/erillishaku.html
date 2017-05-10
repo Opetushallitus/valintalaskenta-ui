@@ -253,7 +253,7 @@
                             </td>
                             <td data-title="(t('sijoitteluntulos.maksuntila') || 'Maksun tila')">
                                 <div ng-show="tulos.isMaksuvelvollinen">
-                                    <select ng-model="tulos.muokattuMaksuntila" ng-change="addMuokattuHakemus(tulos, valintatapajono)"
+                                    <select ng-model="tulos.muokattuMaksuntila" ng-change="addMuokattuHakemus(tulos)"
                                             ng-options="tila.value as tila.text for tila in maksuntilat">
                                     </select>
                                 </div>
