@@ -2,10 +2,10 @@ angular.module('valintalaskenta')
 
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'LatestSijoitteluajoHakukohde', 'VtsLatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
         '$timeout', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
-        'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet',
+        'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut', 'HakemusEligibilities',
         function ($q, Ilmoitus, LatestSijoitteluajoHakukohde, VtsLatestSijoitteluajoHakukohde, VastaanottoTila, ValintaesityksenHyvaksyminen,
                   $timeout, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
-                  IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, ErillishakuHyvaksymiskirjeet) {
+                  IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, HakemusEligibilities) {
     "use strict";
 
     var useVtsData = READ_FROM_VALINTAREKISTERI === "true";
@@ -413,7 +413,17 @@ angular.module('valintalaskenta')
                                 hakemus.tila == 'PERUUTETTU'
                             );
                             hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
-
+                            hakemus.isMaksuvelvollinen = _.indexOf(eligibilities, hakemus.hakemusOid) !== -1
+                            if(hakemus.isMaksuvelvollinen) {
+                                var lukuvuosimaksu = _.find(lukuvuosimaksut, {"personOid": hakemus.hakijaOid})
+                                if(lukuvuosimaksu) {
+                                    hakemus.maksuntila = lukuvuosimaksu.maksuntila
+                                    hakemus.muokattuMaksuntila = lukuvuosimaksu.maksuntila
+                                } else {
+                                    hakemus.maksuntila = "MAKSAMATTA";
+                                    hakemus.muokattuMaksuntila = "MAKSAMATTA";
+                                }
+                            }
                             categorizeHakemusForErittely(hakemuserittely, hakemus);
                             if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
                                 var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
@@ -442,6 +452,12 @@ angular.module('valintalaskenta')
         	}
         };
 
+        this.muokattuHakemusToLukuvuosimaksu = function(hakemus) {
+            return {
+                personOid: hakemus.hakijaOid,
+                maksuntila: hakemus.muokattuMaksuntila
+            };
+        };
         this.muokattuHakemusToServerRequestObject = function(valintatapajonoOid) {
             return function(hakemus) {
                 if (hakemus.muokattuVastaanottoTila === '') {
@@ -492,7 +508,7 @@ angular.module('valintalaskenta')
             }
         };
 
-        this.updateHakemuksienTila = function (jononHyvaksynta, valintatapajonoOid, uiMuokatutHakemukset, afterSuccess, afterFailure) {
+        this.updateHakemuksienTila = function (jononHyvaksynta, valintatapajonoOid, uiMuokatutHakemukset, uiMuokatutMaksuntilat, afterSuccess, afterFailure) {
             var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
                 return valintatapajono.oid === valintatapajonoOid;
             });
@@ -504,11 +520,19 @@ angular.module('valintalaskenta')
             })), function (hakemus) {
                 return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
             });
+            var tallennaMuokatutHakemukset = function() {
+                if (jononHyvaksynta) {
+                    model.merkitseJonoHyvaksytyksi(muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
+                } else {
+                    model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
+                }
+            };
 
-            if (jononHyvaksynta) {
-                model.merkitseJonoHyvaksytyksi(muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
+            if(_.isEmpty(uiMuokatutMaksuntilat)) {
+                tallennaMuokatutHakemukset()
             } else {
-                model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
+                var lukuvuosimaksut = _.map(uiMuokatutMaksuntilat, this.muokattuHakemusToLukuvuosimaksu);
+                Lukuvuosimaksut.post({hakukohdeOid: model.hakukohdeOid}, lukuvuosimaksut, tallennaMuokatutHakemukset, this.reportFailedSave(afterFailure, muokatutHakemukset));
             }
         };
 
@@ -750,8 +774,11 @@ angular.module('valintalaskenta')
         {value: "LASNA", text_prop: "sijoitteluntulos.enrollmentinfo.presentspring", default_text:"Läsnä, keväällä alkava koulutus"},
         {value: "POISSA", text_prop: "sijoitteluntulos.enrollmentinfo.notpresentspring", default_text:"Poissa, keväällä alkava koulutus"}
     ];
-
-
+    $scope.hakemuksenMuokattuMaksunTilat = [
+        {value: "MAKSAMATTA", text_prop: "sijoitteluntulos.maksuntila.maksamatta", default_text:"Maksamatta"},
+        {value: "MAKSETTU", text_prop: "sijoitteluntulos.maksuntila.maksettu", default_text:"Maksettu"},
+        {value: "VAPAUTETTU", text_prop: "sijoitteluntulos.maksuntila.vapautettu", default_text:"Vapautettu"}
+    ];
      EhdollisenHyvaksymisenEhdot.query(function (result) {
          result.forEach(function(ehto){
              $scope.ehdollisestiHyvaksyttavissaOlevatOpts.push(
@@ -795,8 +822,14 @@ angular.module('valintalaskenta')
     };
 
     $scope.muokatutHakemukset = [];
+    $scope.muokatutMaksuntilat = [];
 
     $scope.addMuokattuHakemus = function (hakemus) {
+        $scope.muokatutMaksuntilat.push(hakemus);
+        $scope.muokatutMaksuntilat = _.uniq($scope.muokatutMaksuntilat, 'hakemusOid');
+        $scope.muokatutMaksuntilat = _.filter($scope.muokatutMaksuntilat, function(h) {
+            return h.maksuntila !== h.muokattuMaksuntila
+        });
         $scope.muokatutHakemukset.push(hakemus);
         $scope.muokatutHakemukset = _.uniq($scope.muokatutHakemukset, 'hakemusOid');
     };
@@ -825,8 +858,8 @@ angular.module('valintalaskenta')
         var body = LocalisationService.tl('oletTallentamassaMuutoksia') || 'Olet tallentamassa muutoksia: ';
         var kpl = LocalisationService.tl('kpl') || 'kpl';
 
-        TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function (success, failure) {
-            $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
+        TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function(success, failure) {
+            $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat, success, failure);
         });
     };
 

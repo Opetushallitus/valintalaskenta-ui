@@ -118,6 +118,7 @@ window.urls.addProperties({
     "valinta-tulos-service.sijoittelu.sijoitteluajo.hakukohde": "/valinta-tulos-service/auth/sijoittelu/$1/sijoitteluajo/$2/hakukohde/$3",
     "valinta-tulos-service.sijoittelu.sijoitteluajo.hakemus": "/valinta-tulos-service/auth/sijoittelu/$1/sijoitteluajo/$2/hakemus/$3",
     "valinta-tulos-service.sijoittelu.sijoitteluajo.perustiedot": "/valinta-tulos-service/auth/sijoittelu/$1/sijoitteluajo/$2/perustiedot",
+    "valinta-tulos-service.lukuvuosimaksut": "/valinta-tulos-service/auth/lukuvuosimaksu/$1",
 
     "organisaatio-service.organisaatio" : "/organisaatio-service/rest/organisaatio/$1",
     "organisaatio-service.organisaatio.hierarkia.hae" : "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae",
@@ -129,6 +130,7 @@ window.urls.addProperties({
     "haku-app.application.oid.key" : "/haku-app/applications/$1/$2",
     "haku-app.applications.additionaldata" : "/haku-app/applications/additionalData",
     "haku-app.applications.additionaldata.haku.hakukohde" : "/haku-app/applications/additionalData/$1/$2",
+    "haku-app.applications.eligibilities" : "/haku-app/applications/eligibilities/$1/$2",
     "haku-app.applications.list" : "/haku-app/applications/list",
     "haku-app.applications.listfull" : "/haku-app/applications/listfull",
     "haku-app.virkailija.hakemus.esikatselu" : "/haku-app/virkailija/hakemus/$1/esikatselu/$2",

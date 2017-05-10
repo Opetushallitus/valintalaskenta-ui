@@ -614,6 +614,15 @@ app.factory('HakemusAdditionalData', function($resource) {
             put: {method: "PUT", isArray: true}
         });
 });
+app.factory('HakemusEligibilities', function($resource) {
+  return $resource(plainUrl("haku-app.applications.eligibilities", ":hakuOid", ":hakukohdeOid"),
+    {
+      hakuOid: "@hakuOid",
+      hakukohdeOid: "@hakukohdeOid"
+    }, {
+      get: {method: "GET", isArray: true, cache: false}
+    });
+});
 app.factory('HakukohdeHenkilot', function($resource) {
     return $resource(window.url("haku-app.applications"),
         {

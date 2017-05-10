@@ -104,3 +104,15 @@ app.factory('ValinnanTulos', function($http) {
         }
     };
 });
+app.factory('Lukuvuosimaksut', function($http) {
+  var plainUrls = window.urls().noEncode();
+  $http.defaults.headers.patch = {"Content-Type": "application/json"};
+  return {
+    get: function(params, config) {
+      return $http.get(plainUrls.url("valinta-tulos-service.lukuvuosimaksut", params["hakukohdeOid"]), config || {});
+    },
+    post: function(params, data, config) {
+      return $http.post(plainUrls.url("valinta-tulos-service.lukuvuosimaksut", params["hakukohdeOid"]), data, config || {});
+    }
+  };
+});
