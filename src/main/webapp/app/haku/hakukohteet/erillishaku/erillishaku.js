@@ -356,6 +356,9 @@ angular.module('valintalaskenta')
             if(lukuvuosimaksu) {
               hakemus.muokattuMaksuntila = lukuvuosimaksu.maksuntila;
               hakemus.maksuntila = lukuvuosimaksu.maksuntila;
+            } else {
+              hakemus.muokattuMaksuntila = 'MAKSAMATTA';
+              hakemus.maksuntila = 'MAKSAMATTA';
             }
           }
           $scope.validateHakemuksenTilat(hakemus);
