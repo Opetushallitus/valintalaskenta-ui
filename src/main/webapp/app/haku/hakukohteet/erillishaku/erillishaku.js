@@ -451,7 +451,7 @@ angular.module('valintalaskenta')
         ]).then(function(resolved) {
           var hakemukset = resolved[0];
           var erillishaku = resolved[1];
-          var lukuvuosimaksut = resolved[2];
+          var lukuvuosimaksut = resolved[2].data;
           processErillishaku(erillishaku, hakemuksetToMaksuvelvollisuus(hakemukset), lukuvuosimaksut);
         });
         var kaikkiHakemukset = resolved[1];
@@ -512,6 +512,49 @@ angular.module('valintalaskenta')
           console.log(error);
           Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
         });
+      };
+
+      var hakemuksetByValintatapajonoOid = function (muokatutHakemukset, valintatapajonoOid) {
+        return muokatutHakemukset[valintatapajonoOid] || [];
+      };
+
+      $scope.hakemuksetByValintatapajonoOid = hakemuksetByValintatapajonoOid;
+
+
+      $scope.submitLukuvuosimaksut = function (hakemukset, onSuccess) {
+        var muokatutMaksuntilat = _.filter(hakemukset, function(h) { return h.maksuntila !== h.muokattuMaksuntila; });
+        if(muokatutMaksuntilat.length != 0) {
+          var muokattuHakemusToLukuvuosimaksu = function(hakemus) {
+            return {
+              personOid: hakemus.hakijaOid,
+              maksuntila: hakemus.muokattuMaksuntila
+            };
+          };
+          var lukuvuosimaksut = _.map(muokatutMaksuntilat, muokattuHakemusToLukuvuosimaksu);
+          Lukuvuosimaksut.post({hakukohdeOid: $scope.hakukohdeOid}, lukuvuosimaksut).then(
+            onSuccess,
+            function(error) {
+              Ilmoitus.avaa("Erillishaun hakukohteen tallennus epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+            }
+          );
+        } else {
+          onSuccess();
+        }
+      };
+
+      $scope.submitIlmanLaskentaa = function (valintatapajono) {
+        var hakemukset = hakemuksetByValintatapajonoOid($scope.muokatutHakemukset, valintatapajono.oid);
+
+        var afterLukuvuosimaksutTallennettu = function() {
+          $scope.erillishaunTuontiJson(valintatapajono.oid, valintatapajono.nimi, _.map(hakemukset, $scope.hakemusToErillishakuRivi));
+        };
+        $scope.submitLukuvuosimaksut(hakemukset, afterLukuvuosimaksutTallennettu);
+      };
+
+      var addToMuokattuHakemusList = function (joMuokatut, hakemus, valintatapajonoOid) {
+        joMuokatut.push(hakemus);
+        joMuokatut = _.uniq(joMuokatut);
+        $scope.muokatutHakemukset[valintatapajonoOid] = joMuokatut;
       };
 
       $scope.addMuokattuHakemus = function (hakemus) {
