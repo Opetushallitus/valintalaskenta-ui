@@ -364,11 +364,11 @@ angular.module('valintalaskenta')
             HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
                 model.haku = resultWrapper.result;
             });
-
-            sijoittelunTuloksetPromise(hakuOid, hakukohdeOid, model.valintatapajonoLastModified).then(function(tulokset) {
-                var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
-                if(hakijaOidArray && 0 < hakijaOidArray.length) {
-                    return HenkiloPerustietosByHenkiloOidList.post(
+            $q.all([
+              sijoittelunTuloksetPromise(hakuOid, hakukohdeOid, model.valintatapajonoLastModified).then(function(tulokset) {
+                  var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
+                  if(hakijaOidArray && 0 < hakijaOidArray.length) {
+                      return HenkiloPerustietosByHenkiloOidList.post(
                         createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset)).$promise.then(function(henkiloPerustiedot) {
                             tulokset.henkilot = _.map(henkiloPerustiedot, function(henkilo) {
                                 return {
@@ -379,11 +379,18 @@ angular.module('valintalaskenta')
                             });
                             return tulokset;
                         }
-                    );
-                } else {
-                    return tulokset;
-                }
-            }).then(function(tulokset) {
+                      );
+                  } else {
+                      return tulokset;
+                  }
+              }),
+              HakemusEligibilities.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
+              Lukuvuosimaksut.get({hakukohdeOid: hakukohdeOid})
+            ])
+            .then(function(o) {
+                var tulokset = o[0];
+                var eligibilities = o[1];
+                var lukuvuosimaksut = o[2].data;
                 if (tulokset.sijoittelunTulokset.sijoitteluajoId) {
                     model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
                     model.sijoitteluTulokset = tulokset.sijoittelunTulokset;
@@ -532,7 +539,7 @@ angular.module('valintalaskenta')
                 tallennaMuokatutHakemukset()
             } else {
                 var lukuvuosimaksut = _.map(uiMuokatutMaksuntilat, this.muokattuHakemusToLukuvuosimaksu);
-                Lukuvuosimaksut.post({hakukohdeOid: model.hakukohdeOid}, lukuvuosimaksut, tallennaMuokatutHakemukset, this.reportFailedSave(afterFailure, muokatutHakemukset));
+                Lukuvuosimaksut.post({hakukohdeOid: model.hakukohdeOid}, lukuvuosimaksut).then(tallennaMuokatutHakemukset, this.reportFailedSave(afterFailure, muokatutHakemukset));
             }
         };
 
