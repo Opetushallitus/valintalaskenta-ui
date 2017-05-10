@@ -673,11 +673,11 @@ angular.module('valintalaskenta')
     .controller('SijoitteluntulosController', ['$scope', '$modal', 'TallennaValinnat', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
         'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
         'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
-        'Kirjeet','UserModel', 'VastaanottoUtil', 'HakemuksenValintatulokset', 'EhdollisenHyvaksymisenEhdot', 'valinnantuloksenHistoriaService',
+        'Kirjeet','UserModel', 'VastaanottoUtil', 'HakemuksenValintatulokset', 'EhdollisenHyvaksymisenEhdot', 'valinnantuloksenHistoriaService', '$q',
         function ($scope, $modal, TallennaValinnat, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
                                     SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
                                     Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService,
-                                    Kirjeet, UserModel, VastaanottoUtil, HakemuksenValintatulokset, EhdollisenHyvaksymisenEhdot, valinnantuloksenHistoriaService) {
+                                    Kirjeet, UserModel, VastaanottoUtil, HakemuksenValintatulokset, EhdollisenHyvaksymisenEhdot, valinnantuloksenHistoriaService, $q) {
     "use strict";
     $scope.readFromVts = READ_FROM_VALINTAREKISTERI === 'true';
     $scope.hakuOid = $routeParams.hakuOid;
@@ -793,13 +793,6 @@ angular.module('valintalaskenta')
     });
 
     $scope.pageSize = 50;
-
-/*
-    $scope.updateVastaanottoTila = function (hakemus, valintatapajonoOid) {
-        $scope.model.updateVastaanottoTila(hakemus, valintatapajonoOid);
-        hakemus.showMuutaHakemus = !hakemus.showMuutaHakemus;
-    };
-*/
 
     $scope.showEhdot = function (model, value) {
         if (value == 'muu') {
@@ -1020,13 +1013,15 @@ angular.module('valintalaskenta')
         return LocalisationService.tl('sijoitteluntulos.jonosija') ? LocalisationService.tl('sijoitteluntulos.jonosija') +  " ("+length+")" : 'Jonosija' +  " ("+length+")";
     };
 
-    LocalisationService.getTranslationsForArray($scope.tilaFilterValues).then(function () {
-    });
-
-    LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat).then(function () {
+    $q.all([
+      LocalisationService.getTranslationsForArray($scope.tilaFilterValues),
+      LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuIlmoittautumisTilat),
+      LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuMaksunTilat)
+    ]).then(function () {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
         $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
     });
+
     $scope.showEhdollinenHyvaksynta = function() {
         return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     };
