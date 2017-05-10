@@ -447,7 +447,7 @@ angular.module('valintalaskenta')
         $q.all([
           HakukohdeHenkilotFull.get({aoOid: $routeParams.hakukohdeOid, rows: 100000, asId: $routeParams.hakuOid}).$promise,
           ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}).$promise,
-          Lukuvuosimaksut.get({hakukohdeOid: hakukohdeOid})
+          Lukuvuosimaksut.get({hakukohdeOid: $routeParams.hakukohdeOid})
         ]).then(function(resolved) {
           var hakemukset = resolved[0];
           var erillishaku = resolved[1];
@@ -538,6 +538,46 @@ angular.module('valintalaskenta')
           valintatapajonoOid: isKeinotekoinenOid(valintatapajonoOid) ? null : valintatapajonoOid
         };
       };
+
+        $scope.erillishaunTuontiJson = function(valintatapajonoOid, valintatapajononNimi, json) {
+          var muokatutMaksuntilat = _.filter(hakemukset, function(h) { return h.maksuntila !== h.muokattuMaksuntila; });
+          var afterLukuvuosimaksutTallennettu = function() {
+            ErillishakuTuonti.tuo(
+              {rivit: json},
+              {params: $scope.erillisHakuTuontiParams(valintatapajonoOid, valintatapajononNimi),
+                headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified[valintatapajonoOid] || (new Date()).toUTCString()}}
+            ).success(function(id, status, headers, config) {
+              Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
+                function() {
+                  $window.location.reload();
+                }
+              );
+            }).error(function(error) {
+                Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+              }
+            );
+          };
+
+          if(muokatutMaksuntilat.length != 0) {
+            var muokattuHakemusToLukuvuosimaksu = function(hakemus) {
+              return {
+                personOid: hakemus.hakijaOid,
+                maksuntila: hakemus.muokattuMaksuntila
+              };
+            };
+            var lukuvuosimaksut = _.map(muokatutMaksuntilat, this.muokattuHakemusToLukuvuosimaksu);
+            Lukuvuosimaksut.post({hakukohdeOid: $scope.hakukohdeOid}, lukuvuosimaksut).then(
+              afterLukuvuosimaksutTallennettu,
+              function(error) {
+                Ilmoitus.avaa("Erillishaun hakukohteen tallennus epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+              }
+            );
+          } else {
+            afterLukuvuosimaksutTallennettu();
+          }
+
+
+        };
 
       $scope.erillishaunVientiXlsx = function() {
         var hakutyyppi = $scope.getHakutyyppi();
@@ -676,7 +716,7 @@ angular.module('valintalaskenta')
             afterLukuvuosimaksutTallennettu();
           }
         });
-      });
+      }
 
       $scope.saveIlmoitettuToAll = function(valintatapajonoOid, valintatapajononNimi, json) {
         ErillishakuTuonti.tuo(
