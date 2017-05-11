@@ -44,11 +44,15 @@ angular.module('valintalaskenta')
                 this.init = function (oid) {
                     if (model.haut.length === 0 || oid !== model.hakuOid) {
                         UserModel.refreshIfNeeded().then(function() {
-                          var virkailijaTyyppi = "all";
-                          if (UserModel.isKKUser && !UserModel.hasOtherThanKKUserOrgs) {
-                              virkailijaTyyppi = "kkUser";
+                          var virkailijaTyyppi;
+                          if (UserModel.isOphUser || UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser) {
+                            virkailijaTyyppi = "all";
+                          } else if (UserModel.isKKUser && !UserModel.hasOtherThanKKUserOrgs) {
+                            virkailijaTyyppi = "kkUser";
                           } else if (!UserModel.isKKUser && UserModel.hasOtherThanKKUserOrgs) {
-                              virkailijaTyyppi = "toinenAsteUser";
+                            virkailijaTyyppi = "toinenAsteUser";
+                          } else {
+                            virkailijaTyyppi = "all";
                           }
 
                           TarjontaHaut.get({virkailijaTyyppi: virkailijaTyyppi}, function (resultWrapper) {
