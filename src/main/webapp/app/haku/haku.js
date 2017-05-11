@@ -43,54 +43,55 @@ angular.module('valintalaskenta')
 
                 this.init = function (oid) {
                     if (model.haut.length === 0 || oid !== model.hakuOid) {
-                        UserModel.refreshIfNeeded();
+                        UserModel.refreshIfNeeded().then(function() {
+                          var virkailijaTyyppi = "all";
+                          if (UserModel.isKKUser && !UserModel.hasOtherThanKKUserOrgs) {
+                              virkailijaTyyppi = "kkUser";
+                          } else if (!UserModel.isKKUser && UserModel.hasOtherThanKKUserOrgs) {
+                              virkailijaTyyppi = "toinenAsteUser";
+                          }
 
-                        var virkailijaTyyppi = "all";
-                        if (UserModel.isKKUser && !UserModel.hasOtherThanKKUserOrgs) {
-                            virkailijaTyyppi = "kkUser";
-                        } else if (!UserModel.isKKUser && UserModel.hasOtherThanKKUserOrgs) {
-                            virkailijaTyyppi = "toinenAsteUser";
-                        }
+                          TarjontaHaut.get({virkailijaTyyppi: virkailijaTyyppi}, function (resultWrapper) {
+                              model.haut = resultWrapper.result;
+                              model.haut.forEach(function (haku) {
+                                  if (haku.oid === oid) {
+                                      model.hakuOid = haku;
+                                      model.korkeakoulu = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
+                                  }
 
-                        TarjontaHaut.get({virkailijaTyyppi: virkailijaTyyppi}, function (resultWrapper) {
-                            model.haut = resultWrapper.result;
-                            model.haut.forEach(function (haku) {
-                                if (haku.oid === oid) {
-                                    model.hakuOid = haku;
-                                    model.korkeakoulu = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
-                                }
+                                  haku.uiNimi = model.getHakuNimi(haku);
 
-                                haku.uiNimi = model.getHakuNimi(haku);
+                                  var kohdejoukkoUri = haku.kohdejoukkoUri;
+                                  var nivelKohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
+                                  var nivelvaihe = nivelKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
+                                  nivelvaihe ? haku.nivelvaihe = true : haku.nivelvaihe = false;
 
-                                var kohdejoukkoUri = haku.kohdejoukkoUri;
-                                var nivelKohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
-                                var nivelvaihe = nivelKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
-                                nivelvaihe ? haku.nivelvaihe = true : haku.nivelvaihe = false;
+                                  var erityisKohdejoukkoUriRegExp = /(haunkohdejoukko_20).*/;
+                                  var erityis = erityisKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
+                                  erityis ? haku.erityisopetus = true : haku.erityisopetus = false;
 
-                                var erityisKohdejoukkoUriRegExp = /(haunkohdejoukko_20).*/;
-                                var erityis = erityisKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
-                                erityis ? haku.erityisopetus = true : haku.erityisopetus = false;
+                                  var hakutyyppi = haku.hakutyyppiUri;
+                                  var hakutapa = haku.hakutapaUri;
 
-                                var hakutyyppi = haku.hakutyyppiUri;
-                                var hakutapa = haku.hakutapaUri;
+                                  var erillishakutapaRegExp = /(hakutapa_02).*/;
+                                  var jatkuvahakuRegExp = /(hakutapa_03).*/;
+                                  var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
 
-                                var erillishakutapaRegExp = /(hakutapa_02).*/;
-                                var jatkuvahakuRegExp = /(hakutapa_03).*/;
-                                var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
+                                  var matchErillishaku = erillishakutapaRegExp.exec(hakutapa);
+                                  var matchJatkuvahaku = jatkuvahakuRegExp.exec(hakutapa);
+                                  var matchLisahaku = lisahakutyyppiRegExp.exec(hakutyyppi);
 
-                                var matchErillishaku = erillishakutapaRegExp.exec(hakutapa);
-                                var matchJatkuvahaku = jatkuvahakuRegExp.exec(hakutapa);
-                                var matchLisahaku = lisahakutyyppiRegExp.exec(hakutyyppi);
-
-                                ((matchErillishaku || matchJatkuvahaku || matchLisahaku) && !haku.sijoittelu) ? haku.erillishaku = true : haku.erillishaku = false;
-
-                            });
-                            model.deferred.resolve(model);
+                                  ((matchErillishaku || matchJatkuvahaku || matchLisahaku) && !haku.sijoittelu) ? haku.erillishaku = true : haku.erillishaku = false;
+                              });
+                              model.deferred.resolve(model);
+                          }, function (error) {
+                              model.deferred.reject('Hakulistan hakeminen epäonnistui');
+                              $log.error(error);
+                          });
                         }, function (error) {
-                            model.deferred.reject('Hakulistan hakeminen epäonnistui');
-                            $log.error(error);
+                          model.deferred.reject('Käyttäjän tietojen lataaminen epäonnistui');
+                          $log.error(error);
                         });
-
                     }
                     return model.deferred.promise;
 
