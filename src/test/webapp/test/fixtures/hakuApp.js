@@ -194,3 +194,9 @@ function hakuAppKaksiHenkiloaFixtures() {
     ]);
 }
 
+function hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures(hakemukset) {
+  return function () {
+    var httpBackend = testFrame().httpBackend
+    httpBackend.when('GET', /.*\/haku-app\/applications\/eligibilities\/.*\/.*/).respond([]);
+  }
+}
