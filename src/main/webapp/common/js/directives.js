@@ -1062,13 +1062,19 @@ app.directive('pisteidenSyottaminen', function () {
         $scope.t = LocalisationService.tl;
         $scope.changeOsallistuminen = function (hakija, tunniste, value, vaatiiOsallistumisen) {
             if (value) {
+                if (hakija.additionalData[tunniste] !== "OSALLISTUI") {
+                    $scope.$parent.updateFilteredResult();
+                }
                 hakija.additionalData[tunniste] = "OSALLISTUI";
             } else {
-              if (vaatiiOsallistumisen) {
-                hakija.additionalData[tunniste] = "MERKITSEMATTA";
-              } else {
-                hakija.additionalData[tunniste] = "EI_VAADITA";
-              }
+                if (hakija.additionalData[tunniste] !== "MERKITSEMATTA" && hakija.additionalData[tunniste] !== "EI_VAADITA") {
+                    $scope.$parent.updateFilteredResult();
+                }
+                if (vaatiiOsallistumisen) {
+                    hakija.additionalData[tunniste] = "MERKITSEMATTA";
+                } else {
+                    hakija.additionalData[tunniste] = "EI_VAADITA";
+                }
             }
         };
 
@@ -1081,6 +1087,7 @@ app.directive('pisteidenSyottaminen', function () {
               hakija.additionalData[tunniste] = undefined;
             }
           }
+            $scope.$parent.updateFilteredResult();
         };
     }
   };
