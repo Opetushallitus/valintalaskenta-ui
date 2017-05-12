@@ -23,6 +23,7 @@ describe('Perustiedot', function() {
             addTestHook(httpFixtures().hakukohde37731636579Tila)()
             addTestHook(valintatulosFixture)()
             addTestHook(commonFixtures())()
+            addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             page.openPage(done);
         })
 
