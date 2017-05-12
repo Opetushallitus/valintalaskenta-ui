@@ -163,7 +163,11 @@ angular.module('valintalaskenta')
         else if (hakemus.hakemuksentila == "HYVAKSYTTY" && hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "PERUNUT" && hakemus.valintatuloksentila == "PERUNUT") hakemus.isValid = true;
         else if (hakemus.hakemuksentila == "PERUUTETTU" && hakemus.valintatuloksentila == "PERUUTETTU") hakemus.isValid = true;
-        else hakemus.isValid = false
+        else hakemus.isValid = false;
+
+        if (!(hakemus.etunimi && hakemus.sukunimi)) {
+          hakemus.isValid = false;
+        }
       };
 
       $scope.invalidsAmount = function() {
@@ -299,10 +303,18 @@ angular.module('valintalaskenta')
       var enrichHakemuksetWithHakijat = function(valintatapajono) {
         var henkiloOids = _.uniq(_.map(valintatapajono.hakemukset, function(h) { return h.hakijaOid }));
         return HenkiloPerustietosByHenkiloOidList.post(henkiloOids).$promise.then(function(henkiloPerustiedot) {
+          var henkilotByOid = _.groupBy(henkiloPerustiedot, function(henkilo) {
+            return henkilo.oidHenkilo;
+          });
+
           _.forEach(valintatapajono.hakemukset, function(hakemus) {
-            var henkilo = _.find(henkiloPerustiedot, function(henkilo) { return henkilo.oidHenkilo == hakemus.hakijaOid });
-            hakemus.etunimi = henkilo.etunimet;
-            hakemus.sukunimi = henkilo.sukunimi;
+            var henkilo = (henkilotByOid[hakemus.hakijaOid] || [])[0];
+            if (henkilo) {
+              hakemus.etunimi = henkilo.etunimet;
+              hakemus.sukunimi = henkilo.sukunimi;
+            } else {
+              console.log('Ei löytynyt henkiloä', hakemus.hakijaOid, 'oppijanumerorekisteristä');
+            }
           });
           return valintatapajono;
         });
