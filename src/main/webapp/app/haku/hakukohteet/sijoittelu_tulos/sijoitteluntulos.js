@@ -584,6 +584,10 @@ angular.module('valintalaskenta')
                     valinnantila: h.tila,
                     julkaistavissa: h.julkaistavissa,
                     ehdollisestiHyvaksyttavissa: h.ehdollisestiHyvaksyttavissa,
+                    ehdollisenHyvaksymisenEhtoKoodi: h.ehdollisenHyvaksymisenEhtoKoodi,
+                    ehdollisenHyvaksymisenEhtoFI: h.ehdollisenHyvaksymisenEhtoFI,
+                    ehdollisenHyvaksymisenEhtoSV: h.ehdollisenHyvaksymisenEhtoSV,
+                    ehdollisenHyvaksymisenEhtoEN: h.ehdollisenHyvaksymisenEhtoEN,
                     hyvaksyttyVarasijalta: h.hyvaksyttyVarasijalta,
                     hyvaksyPeruuntunut: h.hyvaksyPeruuntunut
                 };
