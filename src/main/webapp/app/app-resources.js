@@ -720,6 +720,12 @@ app.factory('ValintaesityksenHyvaksyminen', function($resource) {
         });
 });
 
+app.service('Valintaesitys', ['$http', function($http) {
+    this.hyvaksy = function(valintatapajonoOid) {
+        return $http.post(window.url('valinta-tulos-service.valintaesitys.hyvaksytty', valintatapajonoOid), {});
+    };
+}]);
+
 app.factory('HakemuksenVastaanottoTila', function($resource) {
         return $resource(
         plainUrl("valintalaskentakoostepalvelu.proxy.valintatulosservice.hakemus.haku.hakukohde.valintatapajono",

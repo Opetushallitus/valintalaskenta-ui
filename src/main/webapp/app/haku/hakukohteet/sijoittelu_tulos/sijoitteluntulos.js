@@ -1,5 +1,4 @@
 angular.module('valintalaskenta')
-
 .factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'LatestSijoitteluajoHakukohde', 'VtsLatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
         '$timeout', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut', 'HakemusEligibilities',
@@ -702,16 +701,71 @@ angular.module('valintalaskenta')
         }
     }
 }])
-
-
-    .controller('SijoitteluntulosController', ['$scope', '$modal', 'TallennaValinnat', '$routeParams', '$window', 'Kirjepohjat', 'Latausikkuna', 'HakukohdeModel',
-        'SijoitteluntulosModel', 'OsoitetarratSijoittelussaHyvaksytyille', 'Hyvaksymiskirjeet', 'HakukohteelleJalkiohjauskirjeet',
-        'Jalkiohjauskirjeet', 'SijoitteluXls', 'AuthService', 'HaeDokumenttipalvelusta', 'LocalisationService','HakuModel', 'Ohjausparametrit', 'HakuUtility', '_', '$log', 'Korkeakoulu', 'HakukohdeNimiService',
-        'Kirjeet','UserModel', 'VastaanottoUtil', 'HakemuksenValintatulokset', 'EhdollisenHyvaksymisenEhdot', 'valinnantuloksenHistoriaService', '$q',
-        function ($scope, $modal, TallennaValinnat, $routeParams, $window, Kirjepohjat, Latausikkuna, HakukohdeModel,
-                                    SijoitteluntulosModel, OsoitetarratSijoittelussaHyvaksytyille, Hyvaksymiskirjeet, HakukohteelleJalkiohjauskirjeet,
-                                    Jalkiohjauskirjeet, SijoitteluXls, AuthService, HaeDokumenttipalvelusta, LocalisationService, HakuModel, Ohjausparametrit, HakuUtility, _, $log, Korkeakoulu, HakukohdeNimiService,
-                                    Kirjeet, UserModel, VastaanottoUtil, HakemuksenValintatulokset, EhdollisenHyvaksymisenEhdot, valinnantuloksenHistoriaService, $q) {
+    .controller('SijoitteluntulosController', [
+        '$scope',
+        '$modal',
+        'TallennaValinnat',
+        '$routeParams',
+        '$window',
+        'Kirjepohjat',
+        'Latausikkuna',
+        'HakukohdeModel',
+        'SijoitteluntulosModel',
+        'OsoitetarratSijoittelussaHyvaksytyille',
+        'Hyvaksymiskirjeet',
+        'HakukohteelleJalkiohjauskirjeet',
+        'Jalkiohjauskirjeet',
+        'SijoitteluXls',
+        'AuthService',
+        'HaeDokumenttipalvelusta',
+        'LocalisationService',
+        'HakuModel',
+        'Ohjausparametrit',
+        'HakuUtility',
+        '_',
+        '$log',
+        'Korkeakoulu',
+        'HakukohdeNimiService',
+        'Kirjeet',
+        'UserModel',
+        'VastaanottoUtil',
+        'HakemuksenValintatulokset',
+        'EhdollisenHyvaksymisenEhdot',
+        'valinnantuloksenHistoriaService',
+        '$q',
+        'Valintaesitys',
+        function ($scope,
+                  $modal,
+                  TallennaValinnat,
+                  $routeParams,
+                  $window,
+                  Kirjepohjat,
+                  Latausikkuna,
+                  HakukohdeModel,
+                  SijoitteluntulosModel,
+                  OsoitetarratSijoittelussaHyvaksytyille,
+                  Hyvaksymiskirjeet,
+                  HakukohteelleJalkiohjauskirjeet,
+                  Jalkiohjauskirjeet,
+                  SijoitteluXls,
+                  AuthService,
+                  HaeDokumenttipalvelusta,
+                  LocalisationService,
+                  HakuModel,
+                  Ohjausparametrit,
+                  HakuUtility,
+                  _,
+                  $log,
+                  Korkeakoulu,
+                  HakukohdeNimiService,
+                  Kirjeet,
+                  UserModel,
+                  VastaanottoUtil,
+                  HakemuksenValintatulokset,
+                  EhdollisenHyvaksymisenEhdot,
+                  valinnantuloksenHistoriaService,
+                  $q,
+                  Valintaesitys) {
     "use strict";
     $scope.readFromVts = READ_FROM_VALINTAREKISTERI === 'true';
     $scope.hakuOid = $routeParams.hakuOid;
@@ -1034,7 +1088,30 @@ angular.module('valintalaskenta')
             "Hyväksy jonon valintaesitys",
             'Olet hyväksymässä muutoksia jonosta "' + valintatapajono.nimi + '": ' + hakemuksiaInJono + ' kpl.',
             function () {
-                return $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat);
+                var hyvaksy = function() {
+                    return Valintaesitys.hyvaksy(valintatapajonoOid).then(
+                        function () {
+                            return "Valintaesitys hyväksytty";
+                        }, function (response) {
+                            console.log(response);
+                            var msg = "Valintaesityksen hyväksyntä epäonnistui";
+                            if (response.data && response.data.error) {
+                                msg = response.data.error;
+                            }
+                            return $q.reject({
+                                message: msg,
+                                errorRows: []
+                            });
+                        });
+                };
+                if (READ_FROM_VALINTAREKISTERI === "true") {
+                    return $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat)
+                        .then(hyvaksy);
+                } else {
+                    var p = $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat);
+                    p.then(hyvaksy);
+                    return p;
+                }
             }
         ).then(reload, reload);
     };

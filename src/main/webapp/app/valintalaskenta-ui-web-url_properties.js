@@ -119,6 +119,7 @@ window.urls.addProperties({
     "valinta-tulos-service.sijoittelu.sijoitteluajo.hakemus": "/valinta-tulos-service/auth/sijoittelu/$1/sijoitteluajo/$2/hakemus/$3",
     "valinta-tulos-service.sijoittelu.sijoitteluajo.perustiedot": "/valinta-tulos-service/auth/sijoittelu/$1/sijoitteluajo/$2/perustiedot",
     "valinta-tulos-service.lukuvuosimaksut": "/valinta-tulos-service/auth/lukuvuosimaksu/$1",
+    "valinta-tulos-service.valintaesitys.hyvaksytty": "/valinta-tulos-service/auth/valintaesitys/$1/hyvaksytty",
 
     "organisaatio-service.organisaatio" : "/organisaatio-service/rest/organisaatio/$1",
     "organisaatio-service.organisaatio.hierarkia.hae" : "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae",

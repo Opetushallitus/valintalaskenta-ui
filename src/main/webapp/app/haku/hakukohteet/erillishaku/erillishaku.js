@@ -13,11 +13,13 @@ angular.module('valintalaskenta')
         'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Maksuvelvollisuus', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
+        'Valintaesitys',
         function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                   ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                   ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                   VastaanottoUtil, NgTableParams, TallennaValinnat, Maksuvelvollisuus, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
-                  ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut) {
+                  ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut,
+                  Valintaesitys) {
       "use strict";
 
       var valintatapajonoOid = null;
@@ -531,7 +533,7 @@ angular.module('valintalaskenta')
               }
             }
           );
-          return p;
+          return p.promise;
         });
       };
 
@@ -672,20 +674,34 @@ angular.module('valintalaskenta')
 
       $scope.selectIlmoitettuToAll = function () {
         var counter = 0;
-        _(hakemukset).forEach(function(hakemus) {
-          if (!hakemus.julkaistavissa && hakemus.hakemuksentila) {
-            counter ++;
-            hakemus.julkaistavissa = true;
-            if (!hakemus.valintatuloksentila) hakemus.valintatuloksentila = "KESKEN";
-            if (!hakemus.ilmoittautumistila) hakemus.ilmoittautumistila = "EI_TEHTY";
-            $scope.addMuokattuHakemus(hakemus);
-          }
-        });
+        if (READ_FROM_VALINTAREKISTERI === "true") {
+          counter = $scope.muokatutHakemukset.length;
+        } else {
+          _(hakemukset).forEach(function (hakemus) {
+            if (!hakemus.julkaistavissa && hakemus.hakemuksentila) {
+              counter++;
+              hakemus.julkaistavissa = true;
+              if (!hakemus.valintatuloksentila) hakemus.valintatuloksentila = "KESKEN";
+              if (!hakemus.ilmoittautumistila) hakemus.ilmoittautumistila = "EI_TEHTY";
+              $scope.addMuokattuHakemus(hakemus);
+            }
+          });
+        }
         var reload = document.location.reload.bind(document.location);
         TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + counter + " kpl. hakemuksia.", function () {
-          return saveChanges().catch(function() {
+          return saveChanges().then(function() {
+            var p = Valintaesitys.hyvaksy(valintatapajonoOid);
+            if (READ_FROM_VALINTAREKISTERI !== "true") {
+              p = $q.resolve();
+            }
+            return p.then(function() { return "Valintaesitys hyväksytty"; });
+          }).catch(function (response) {
+            var msg = "Valintaesityksen hyväksyntä epäonnistui";
+            if (response && response.data && response.data.error) {
+              msg = response.data.error;
+            }
             return $q.reject({
-              message: "Valintaesityksen hyväksyntä epäonnistui",
+              message: msg,
               errorRows: []
             });
           });
