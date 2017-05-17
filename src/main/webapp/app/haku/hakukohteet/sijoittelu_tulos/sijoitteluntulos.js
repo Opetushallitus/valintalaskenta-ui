@@ -1025,19 +1025,15 @@ angular.module('valintalaskenta')
     };
 
     $scope.selectIlmoitettuToAll = function(valintatapajonoOid) {
-
-        var jonoonLiittyvat = _.filter($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
+        var valintatapajono = _.find($scope.model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
             return valintatapajono.oid === valintatapajonoOid;
         });
-        var muokattavatHakemukset = _.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
-            return valintatapajono.hakemukset;
-        }));
-
+        var hakemuksiaInJono = valintatapajono.hakemukset.length;
         var reload = document.location.reload.bind(document.location);
         TallennaValinnat.avaa(
             "Hyväksy jonon valintaesitys",
-            "Olet hyväksymässä muutoksia jonosta 1/" + $scope.model.sijoitteluTulokset.valintatapajonot.length + ": " + muokattavatHakemukset.length + " kpl.",
-            function() {
+            'Olet hyväksymässä muutoksia jonosta "' + valintatapajono.nimi + '": ' + hakemuksiaInJono + ' kpl.',
+            function () {
                 return $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat);
             }
         ).then(reload, reload);
