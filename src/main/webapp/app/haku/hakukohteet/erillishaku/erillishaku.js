@@ -493,7 +493,7 @@ angular.module('valintalaskenta')
       };
 
       $scope.submitIlmanLaskentaa = function () {
-        submitLukuvuosimaksut($scope.muokatutHakemukset, function() {
+        submitLukuvuosimaksut($scope.muokatutHakemukset).then(function() {
           var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
           ErillishakuTuonti.tuo(
               {rivit: erillishakuRivit},
@@ -514,24 +514,23 @@ angular.module('valintalaskenta')
         });
       };
 
-      var submitLukuvuosimaksut = function (hakemukset, onSuccess) {
+      var submitLukuvuosimaksut = function (hakemukset) {
         var muokatutMaksuntilat = _.filter(hakemukset, function(h) { return h.maksuntila !== h.muokattuMaksuntila; });
-        if(muokatutMaksuntilat.length != 0) {
-          var muokattuHakemusToLukuvuosimaksu = function(hakemus) {
+        if (muokatutMaksuntilat.length !== 0) {
+          var lukuvuosimaksut = _.map(muokatutMaksuntilat, function(hakemus) {
             return {
               personOid: hakemus.hakijaOid,
               maksuntila: hakemus.muokattuMaksuntila
             };
-          };
-          var lukuvuosimaksut = _.map(muokatutMaksuntilat, muokattuHakemusToLukuvuosimaksu);
-          Lukuvuosimaksut.post({hakukohdeOid: $scope.hakukohdeOid}, lukuvuosimaksut).then(
-            onSuccess,
+          });
+          return Lukuvuosimaksut.post({hakukohdeOid: $scope.hakukohdeOid}, lukuvuosimaksut).catch(
             function(error) {
+              console.log(error);
               Ilmoitus.avaa("Erillishaun hakukohteen tallennus epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
             }
           );
         } else {
-          onSuccess();
+          return $q.resolve();
         }
       };
 
