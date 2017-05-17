@@ -112,7 +112,7 @@ angular.module('valintalaskenta')
 .factory('TallennaValinnat', ['$modal', function($modal) {
     return {
         avaa: function(otsikko, ilmoitus, action) {
-            $modal.open({
+            return $modal.open({
                 backdrop: 'static',
                 templateUrl: '../common/modaalinen/tallennavalinnat-ilmoitus.html',
                 controller: function($scope, $window, $modalInstance, LocalisationService) {
@@ -124,23 +124,26 @@ angular.module('valintalaskenta')
                     $scope.ok = function() {
                         $scope.working = true;
                         $scope.peruuta = null;
-                        action(function(successAction, message) {
-                                   $scope.working = null;
-                                   $scope.ilmoitus = message;
-                                   $scope.state="success";
-                                   $scope.ok = function() {
-                                       $modalInstance.dismiss('cancel');
-                                       successAction();
-                                   }}
-                               ,function(failAction, message, errorRows) {
-                                   $scope.working = null;
-                                   $scope.ilmoitus = message;
-                                   $scope.errorRows = errorRows;
-                                   $scope.state="danger";
-                                   $scope.ok = function() {
-                                       $modalInstance.dismiss('cancel');
-                                       failAction();
-                                   }});
+                        action().then(
+                            function(message) {
+                                $scope.working = null;
+                                $scope.ilmoitus = message;
+                                $scope.errorRows = [];
+                                $scope.state = "success";
+                                $scope.ok = function() {
+                                    $modalInstance.dismiss('cancel');
+                                }
+                            },
+                            function(o) {
+                                $scope.working = null;
+                                $scope.ilmoitus = o.message;
+                                $scope.errorRows = (o.errorRows || []);
+                                $scope.state = "danger";
+                                $scope.ok = function() {
+                                    $modalInstance.dismiss('cancel');
+                                }
+                            }
+                        );
                     };
                     $scope.peruuta = function() {
                         $modalInstance.dismiss('cancel');
@@ -149,10 +152,7 @@ angular.module('valintalaskenta')
                 resolve: {
 
                 }
-            }).result.then(function() {
-                }, function() {
-                });
-
+            }).result;
         }
     };
 }])

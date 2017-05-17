@@ -492,46 +492,56 @@ angular.module('valintalaskenta')
         };
       };
 
-      $scope.submitIlmanLaskentaa = function () {
-        submitLukuvuosimaksut($scope.muokatutHakemukset).then(function() {
-          var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
-          ErillishakuTuonti.tuo(
-              {rivit: erillishakuRivit},
-              {
-                  params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
-                  headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}
-              }
-          ).success(function (id) {
-              Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
-                  function () {
-                      $window.location.reload();
-                  }
-              );
-          }).error(function (error) {
-              console.log(error);
-              Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
-          });
-        });
-      };
-
       var submitLukuvuosimaksut = function (hakemukset) {
-        var muokatutMaksuntilat = _.filter(hakemukset, function(h) { return h.maksuntila !== h.muokattuMaksuntila; });
+        var muokatutMaksuntilat = _.filter(hakemukset, function (h) {
+          return h.maksuntila !== h.muokattuMaksuntila;
+        });
         if (muokatutMaksuntilat.length !== 0) {
-          var lukuvuosimaksut = _.map(muokatutMaksuntilat, function(hakemus) {
+          var lukuvuosimaksut = _.map(muokatutMaksuntilat, function (hakemus) {
             return {
               personOid: hakemus.hakijaOid,
               maksuntila: hakemus.muokattuMaksuntila
             };
           });
-          return Lukuvuosimaksut.post({hakukohdeOid: $scope.hakukohdeOid}, lukuvuosimaksut).catch(
-            function(error) {
-              console.log(error);
-              Ilmoitus.avaa("Erillishaun hakukohteen tallennus epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
-            }
-          );
+          return Lukuvuosimaksut.post({hakukohdeOid: $scope.hakukohdeOid}, lukuvuosimaksut);
         } else {
           return $q.resolve();
         }
+      };
+
+      var saveChanges = function() {
+        return submitLukuvuosimaksut($scope.muokatutHakemukset).then(function() {
+          var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
+          return ErillishakuTuonti.tuo(
+            {rivit: erillishakuRivit},
+            {
+              params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
+              headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}
+            }
+          )
+        }).then(function(response) {
+          var id = { id: response.data.id };
+          var p = $q.defer();
+          Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
+            function(dokumenttiId) {
+              if (dokumenttiId) {
+                p.resolve();
+              } else {
+                p.reject();
+              }
+            }
+          );
+          return p;
+        });
+      };
+
+      $scope.submitIlmanLaskentaa = function () {
+        saveChanges().then(function() {
+          $window.location.reload();
+        }, function(response) {
+          console.log(response);
+          Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+        });
       };
 
       $scope.addMuokattuHakemus = function (hakemus) {
@@ -671,10 +681,15 @@ angular.module('valintalaskenta')
             $scope.addMuokattuHakemus(hakemus);
           }
         });
-        TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + counter + " kpl. hakemuksia.", function (success) {
-          success();
-          $scope.submitIlmanLaskentaa();
-        });
+        var reload = document.location.reload.bind(document.location);
+        TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + counter + " kpl. hakemuksia.", function () {
+          return saveChanges().catch(function() {
+            return $q.reject({
+              message: "Valintaesityksen hyväksyntä epäonnistui",
+              errorRows: []
+            });
+          });
+        }).then(reload, reload);
       };
 
       $scope.disableButton = function(button) {

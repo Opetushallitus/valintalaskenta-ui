@@ -501,13 +501,13 @@ angular.module('valintalaskenta')
             };
         };
 
-        this.reportSuccessfulSave = function(afterSuccess, muokatutHakemukset) {
-            return function(result) {
-                afterSuccess(function () { document.location.reload(); }, muokatutHakemukset.length + " muutosta tallennettu.");
+        this.reportSuccessfulSave = function(muokatutHakemukset) {
+            return function() {
+                return muokatutHakemukset.length + " muutosta tallennettu.";
             }
         };
 
-        this.reportFailedSave = function(afterFailure, muokatutHakemukset) {
+        this.reportFailedSave = function(muokatutHakemukset) {
             return function(error) {
                 var errorCount = error.data.statuses.length;
                 var errorMsg = errorCount + "/" + muokatutHakemukset.length + " hakemuksen päivitys epäonnistui. ";
@@ -517,11 +517,14 @@ angular.module('valintalaskenta')
                     errorMsg += "Yritä uudelleen tai ota yhteyttä ylläpitoon.";
                 }
                 var errorRows = _.map(error.data.statuses, function(status) { return status.message; });
-                afterFailure(function() { document.location.reload(); }, errorMsg, errorRows);
+                return $q.reject({
+                    message: errorMsg,
+                    errorRows: errorRows
+                });
             }
         };
 
-        this.updateHakemuksienTila = function (jononHyvaksynta, valintatapajonoOid, uiMuokatutHakemukset, uiMuokatutMaksuntilat, afterSuccess, afterFailure) {
+        this.updateHakemuksienTila = function (jononHyvaksynta, valintatapajonoOid, uiMuokatutHakemukset, uiMuokatutMaksuntilat) {
             var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
                 return valintatapajono.oid === valintatapajonoOid;
             });
@@ -535,21 +538,24 @@ angular.module('valintalaskenta')
             });
             var tallennaMuokatutHakemukset = function() {
                 if (jononHyvaksynta) {
-                    model.merkitseJonoHyvaksytyksi(muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
+                    return model.merkitseJonoHyvaksytyksi(muokatutHakemukset, valintatapajonoOid);
                 } else {
-                    model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure);
+                    return model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid);
                 }
             };
 
             if(_.isEmpty(uiMuokatutMaksuntilat)) {
-                tallennaMuokatutHakemukset()
+                return tallennaMuokatutHakemukset();
             } else {
                 var lukuvuosimaksut = _.map(uiMuokatutMaksuntilat, this.muokattuHakemusToLukuvuosimaksu);
-                Lukuvuosimaksut.post({hakukohdeOid: model.hakukohdeOid}, lukuvuosimaksut).then(tallennaMuokatutHakemukset, this.reportFailedSave(afterFailure, muokatutHakemukset));
+                return Lukuvuosimaksut.post({hakukohdeOid: model.hakukohdeOid}, lukuvuosimaksut).then(
+                    tallennaMuokatutHakemukset,
+                    this.reportFailedSave(muokatutHakemukset)
+                );
             }
         };
 
-        this.merkitseJonoHyvaksytyksi = function (muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure) {
+        this.merkitseJonoHyvaksytyksi = function (muokatutHakemukset, valintatapajonoOid) {
             model.errors.length = 0;
             var tilaParams = {
                 hakuOid: model.hakuOid,
@@ -559,11 +565,14 @@ angular.module('valintalaskenta')
             };
 
             var tilaObj = _.map(muokatutHakemukset, this.muokattuHakemusToServerRequestObject(valintatapajonoOid));
-            ValintaesityksenHyvaksyminen.post(tilaParams, tilaObj, this.reportSuccessfulSave(afterSuccess, muokatutHakemukset), this.reportFailedSave(afterFailure, muokatutHakemukset));
+            return ValintaesityksenHyvaksyminen.post(tilaParams, tilaObj).$promise.then(
+                this.reportSuccessfulSave(muokatutHakemukset),
+                this.reportFailedSave(muokatutHakemukset)
+            );
         };
 
 
-        this.updateVastaanottoTila = function (muokatutHakemukset, valintatapajonoOid, afterSuccess, afterFailure) {
+        this.updateVastaanottoTila = function (muokatutHakemukset, valintatapajonoOid) {
             model.errors.length = 0;
             var tilaParams = {
                 hakuOid: model.hakuOid,
@@ -611,20 +620,23 @@ angular.module('valintalaskenta')
                 ErillishakuHyvaksymiskirjeet.post({}, muuttuneetHyvaksymiskirjeet).$promise
             ]);
             if (READ_FROM_VALINTAREKISTERI === "true") {
-                p.then(
-                    reportSuccessfulSave(afterSuccess, valinnantilanMuutokset),
+                return p.then(
+                    reportSuccessfulSave(valinnantilanMuutokset),
                     function(error) {
                         if (error.data.error) {
-                            afterFailure(function () { document.location.reload(); }, error.data.error, []);
+                            return $q.reject({
+                                message: error.data.error,
+                                errorRows: []
+                            });
                         } else {
-                            reportFailedSave(afterFailure, valinnantilanMuutokset)({data: {statuses: error.data}});
+                            return reportFailedSave(valinnantilanMuutokset)({data: {statuses: error.data}});
                         }
                     }
                 );
             } else {
-                VastaanottoTila.post(tilaParams, tilaObj,
-                    reportSuccessfulSave(afterSuccess, muokatutHakemukset),
-                    reportFailedSave(afterFailure, muokatutHakemukset)
+                return VastaanottoTila.post(tilaParams, tilaObj,
+                    reportSuccessfulSave(muokatutHakemukset),
+                    reportFailedSave(muokatutHakemukset)
                 );
             }
         };
@@ -868,9 +880,10 @@ angular.module('valintalaskenta')
         var body = LocalisationService.tl('oletTallentamassaMuutoksia') || 'Olet tallentamassa muutoksia: ';
         var kpl = LocalisationService.tl('kpl') || 'kpl';
 
-        TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function(success, failure) {
-            $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat, success, failure);
-        });
+        var reload = document.location.reload.bind(document.location);
+        TallennaValinnat.avaa(title, body + $scope.muokatutHakemukset.length + ' ' + kpl + '.', function() {
+            return $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat);
+        }).then(reload, reload);
     };
 
     $scope.luoJalkiohjauskirjeetPDF = function() {
@@ -1015,15 +1028,18 @@ angular.module('valintalaskenta')
             return valintatapajono.hakemukset;
         }));
 
-        TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä muutoksia jonosta 1/" + $scope.model.sijoitteluTulokset.valintatapajonot.length + ": " + muokattavatHakemukset.length + " kpl.", function(success, failure) {
-            muokattavatHakemukset.forEach(function (hakemus) {
-                hakemus.julkaistavissa = true;
-                $scope.addMuokattuHakemus(hakemus);
-            });
-
-            $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset, success, failure);
-
-        });
+        var reload = document.location.reload.bind(document.location);
+        TallennaValinnat.avaa(
+            "Hyväksy jonon valintaesitys",
+            "Olet hyväksymässä muutoksia jonosta 1/" + $scope.model.sijoitteluTulokset.valintatapajonot.length + ": " + muokattavatHakemukset.length + " kpl.",
+            function() {
+                muokattavatHakemukset.forEach(function (hakemus) {
+                    hakemus.julkaistavissa = true;
+                    $scope.addMuokattuHakemus(hakemus);
+                });
+                return $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset);
+            }
+        ).then(reload, reload);
     };
 
     $scope.jonoLength = function(length) {
