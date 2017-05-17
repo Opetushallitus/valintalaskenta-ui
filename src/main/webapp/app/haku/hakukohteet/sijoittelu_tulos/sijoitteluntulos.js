@@ -525,21 +525,26 @@ angular.module('valintalaskenta')
         };
 
         this.updateHakemuksienTila = function (jononHyvaksynta, valintatapajonoOid, uiMuokatutHakemukset, uiMuokatutMaksuntilat) {
-            var jonoonLiittyvat = _.filter(model.sijoitteluTulokset.valintatapajonot, function(valintatapajono) {
-                return valintatapajono.oid === valintatapajonoOid;
-            });
-
-            var muokatutHakemuksetOids = _.pluck(uiMuokatutHakemukset, 'hakemusOid');
-
-            var muokatutHakemukset = _.filter(_.flatten(_.map(jonoonLiittyvat, function(valintatapajono) {
-                return valintatapajono.hakemukset;
-            })), function (hakemus) {
-                return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
-            });
+            var jonoonLiittyvat = _.chain(model.sijoitteluTulokset.valintatapajonot)
+                .filter(function(valintatapajono) {
+                    return valintatapajono.oid === valintatapajonoOid;
+                })
+                .map(function(valintatapajono) {
+                    return valintatapajono.hakemukset;
+                })
+                .flatten()
+                .value();
             var tallennaMuokatutHakemukset = function() {
                 if (jononHyvaksynta) {
-                    return model.merkitseJonoHyvaksytyksi(muokatutHakemukset, valintatapajonoOid);
+                    jonoonLiittyvat.forEach(function(hakemus) {
+                        hakemus.julkaistavissa = true;
+                    });
+                    return model.merkitseJonoHyvaksytyksi(jonoonLiittyvat, valintatapajonoOid);
                 } else {
+                    var muokatutHakemuksetOids = _.pluck(uiMuokatutHakemukset, 'hakemusOid');
+                    var muokatutHakemukset = _.filter(jonoonLiittyvat, function(hakemus) {
+                       return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
+                    });
                     return model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid);
                 }
             };
@@ -1033,10 +1038,6 @@ angular.module('valintalaskenta')
             "Hyväksy jonon valintaesitys",
             "Olet hyväksymässä muutoksia jonosta 1/" + $scope.model.sijoitteluTulokset.valintatapajonot.length + ": " + muokattavatHakemukset.length + " kpl.",
             function() {
-                muokattavatHakemukset.forEach(function (hakemus) {
-                    hakemus.julkaistavissa = true;
-                    $scope.addMuokattuHakemus(hakemus);
-                });
                 return $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset);
             }
         ).then(reload, reload);
