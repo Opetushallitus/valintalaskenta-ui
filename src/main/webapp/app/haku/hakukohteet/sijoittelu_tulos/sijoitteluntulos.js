@@ -1038,7 +1038,7 @@ angular.module('valintalaskenta')
             "Hyväksy jonon valintaesitys",
             "Olet hyväksymässä muutoksia jonosta 1/" + $scope.model.sijoitteluTulokset.valintatapajonot.length + ": " + muokattavatHakemukset.length + " kpl.",
             function() {
-                return $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset);
+                return $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat);
             }
         ).then(reload, reload);
     };
