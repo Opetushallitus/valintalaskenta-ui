@@ -555,7 +555,7 @@ angular.module('valintalaskenta')
                 var lukuvuosimaksut = _.map(uiMuokatutMaksuntilat, this.muokattuHakemusToLukuvuosimaksu);
                 return Lukuvuosimaksut.post({hakukohdeOid: model.hakukohdeOid}, lukuvuosimaksut).then(
                     tallennaMuokatutHakemukset,
-                    this.reportFailedSave(muokatutHakemukset)
+                    this.reportFailedSave(lukuvuosimaksut)
                 );
             }
         };
