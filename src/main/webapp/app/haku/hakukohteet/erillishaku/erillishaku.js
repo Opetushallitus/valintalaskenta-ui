@@ -493,7 +493,7 @@ angular.module('valintalaskenta')
       };
 
       $scope.submitIlmanLaskentaa = function () {
-        $scope.submitLukuvuosimaksut($scope.muokatutHakemukset, function() {
+        submitLukuvuosimaksut($scope.muokatutHakemukset, function() {
           var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
           ErillishakuTuonti.tuo(
               {rivit: erillishakuRivit},
@@ -514,7 +514,7 @@ angular.module('valintalaskenta')
         });
       };
 
-      $scope.submitLukuvuosimaksut = function (hakemukset, onSuccess) {
+      var submitLukuvuosimaksut = function (hakemukset, onSuccess) {
         var muokatutMaksuntilat = _.filter(hakemukset, function(h) { return h.maksuntila !== h.muokattuMaksuntila; });
         if(muokatutMaksuntilat.length != 0) {
           var muokattuHakemusToLukuvuosimaksu = function(hakemus) {
