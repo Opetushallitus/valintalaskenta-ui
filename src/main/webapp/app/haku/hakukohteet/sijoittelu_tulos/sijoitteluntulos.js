@@ -292,7 +292,13 @@ angular.module('valintalaskenta')
             sijoittelunTulokset: VtsLatestSijoitteluajoHakukohde.get({
                 hakukohdeOid: hakukohdeOid,
                 hakuOid: hakuOid
-            }).$promise,
+            }).$promise.catch(function(vtsError) {
+              if (vtsError.status === 404) {
+                  console.log('Ei löytynyt sijoitteluajoa valintarekisteristä. hakuOid', hakuOid, 'hakukohdeOid', hakukohdeOid);
+                  return { valintatapajonot: [] };
+              }
+              return $q.reject(vtsError);
+            }),
             valintatulokset: ValinnanTulos.get({hakukohdeOid: hakukohdeOid}),
             kirjeLahetetty: ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: hakukohdeOid}).$promise
         }).then(function (results) {
