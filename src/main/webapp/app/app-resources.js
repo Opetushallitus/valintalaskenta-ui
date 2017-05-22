@@ -721,6 +721,9 @@ app.factory('ValintaesityksenHyvaksyminen', function($resource) {
 });
 
 app.service('Valintaesitys', ['$http', function($http) {
+    this.findByHakukohde = function(hakukohdeOid) {
+        return $http.get(window.url('valinta-tulos-service.valintaesitys', {hakukohdeOid: hakukohdeOid}));
+    };
     this.hyvaksy = function(valintatapajonoOid) {
         return $http.post(window.url('valinta-tulos-service.valintaesitys.hyvaksytty', valintatapajonoOid), {});
     };

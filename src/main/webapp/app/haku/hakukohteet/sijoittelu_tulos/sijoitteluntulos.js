@@ -1137,11 +1137,27 @@ angular.module('valintalaskenta')
             !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
             !(HakuUtility.isYhteishaku(HakuModel.hakuOid) && HakuUtility.isVarsinainenhaku(HakuModel.hakuOid));
     };
-    $scope.enableTulostus = function() {
-        return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
+    if (READ_FROM_VALINTAREKISTERI === "true") {
+        $scope.enableTulostus = function() { return false; };
+        $q.all([
+            UserModel.refreshIfNeeded(),
+            HakuModel.promise,
+            Valintaesitys.findByHakukohde($routeParams.hakukohdeOid)
+        ]).then(function(all) {
+            var kaikkiJonotHyvaksytty = _.every(all[2].data, 'hyvaksytty');
+            $scope.enableTulostus = function() {
+                return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
+                    UserModel.isOphUser ||
+                    kaikkiJonotHyvaksytty;
+            };
+        });
+    } else {
+        $scope.enableTulostus = function () {
+            return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
                 UserModel.isOphUser ||
                 _.every($scope.model.sijoitteluTulokset.valintatapajonot, 'valintaesitysHyvaksytty');
-    };
+        };
+    }
 
     $scope.currentHakuIsToinenAsteHaku = function() {
         return isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
