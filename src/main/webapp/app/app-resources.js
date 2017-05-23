@@ -34,7 +34,7 @@ app.factory('HakukohdeNimi', function($resource) {
 });
 
 app.factory('TarjontaHaut', function($resource) {
-    return $resource(window.url("tarjonta-service.haku.find", {addHakukohdes : "false"}),
+    return $resource(window.url("tarjonta-service.haku.find", {addHakukohdes : "false", cache: "true"}),
         {virkailijaTyyppi:"@virkailijaTyyppi"},
         {get: {method: "GET", cache: true}});
 });
