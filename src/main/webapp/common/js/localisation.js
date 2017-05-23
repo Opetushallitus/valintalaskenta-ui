@@ -104,20 +104,17 @@ angular.module('oph.localisation', [])
              * @param key: käännöstekstin avain
              * @returns {promise}
              */
-            this.getTranslation = function(key){
-                var deferred = $q.defer();
-                if(!hasTranslation(key)){
-                    this.getUserLang().then(function(data){
-                        getTranslations(data).then(function(){
-                            var locale = cache.get(key);
-                            deferred.resolve( locale ? cache.get(key) : undefined );
-                        });
+            this.getTranslation = function(key) {
+                var t = cache.get(key);
+                if (t) {
+                    return $q.resolve(t);
+                } else {
+                    return this.getUserLang().then(function(userLang) {
+                        return getTranslations(userLang);
+                    }).then(function() {
+                        return cache.get(key);
                     });
-                }else{
-                    var locale = cache.get(key);
-                    deferred.resolve( locale ? cache.get(key) : undefined );
                 }
-                return deferred.promise;
             };
             /**
              * Laittaa käännöstekstit välimuistiin avain arvo pareine
