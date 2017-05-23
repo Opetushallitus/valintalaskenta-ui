@@ -19,19 +19,19 @@
                 NÄYTÄ
                 <button class="btn btn-stateSelectorButton" ng-model="stateFilters.MENEILLAAN" uib-btn-checkbox>
                     <img ng-src="../../common/img/selection_checked.png" ng-show="stateFilters.MENEILLAAN" class="selectionIcon"/>
-                    Käynnissä <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.MENEILLAAN}]">{{ jobsByState.MENEILLAAN.length || 0 }}</span>
+                    Käynnissä <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.MENEILLAAN}]">{{ jobsByState.running }}</span>
                 </button>
                 <button class="btn btn-stateSelectorButton" ng-model="stateFilters.ALOITTAMATTA" uib-btn-checkbox>
                     <img ng-src="../../common/img/selection_checked.png" ng-show="stateFilters.ALOITTAMATTA" class="selectionIcon"/>
-                    Jonossa <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.ALOITTAMATTA}]">{{ jobsByState.ALOITTAMATTA.length || 0 }}</span>
+                    Jonossa <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.ALOITTAMATTA}]">{{ jobsByState.queueing }}</span>
                 </button>
                 <button class="btn btn-stateSelectorButton" ng-model="stateFilters.PERUUTETTU " uib-btn-checkbox>
                     <img ng-src="../../common/img/selection_checked.png" ng-show="stateFilters.PERUUTETTU" class="selectionIcon"/>
-                    Keskeytynyt <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.PERUUTETTU}]">{{ jobsByState.PERUUTETTU.length || 0 }}</span>
+                    Keskeytynyt <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.PERUUTETTU}]">{{ jobsByState.cancelled }}</span>
                 </button>
                 <button class="btn btn-stateSelectorButton" ng-model="stateFilters.VALMIS" uib-btn-checkbox>
                     <img ng-src="../../common/img/selection_checked.png" ng-show="stateFilters.VALMIS" class="selectionIcon"/>
-                    Valmis <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.VALMIS}]">{{ jobsByState.VALMIS.length || 0 }}</span>
+                    Valmis <span ng-class="['stateFilterItemCount', {stateFilterItemCountActive: stateFilters.VALMIS}]">{{ jobsByState.completed }}</span>
                 </button>
             </div>
         </div>
