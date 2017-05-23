@@ -638,10 +638,10 @@ angular.module('valintalaskenta')
                     }
                 );
             } else {
-                return VastaanottoTila.post(tilaParams, tilaObj,
+                return VastaanottoTila.post(tilaParams, tilaObj).$promise.then(
                     reportSuccessfulSave(muokatutHakemukset),
                     reportFailedSave(muokatutHakemukset)
-                ).$promise;
+                );
             }
         };
 
