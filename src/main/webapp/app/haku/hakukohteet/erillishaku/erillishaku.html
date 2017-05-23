@@ -102,8 +102,8 @@
                                                         ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'nimi'"
                                                         style="width: 200px;"
                                                         ng-required="tulos.ehdollisestiHyvaksyttavissa"
-                                                        ng-class="{'required-empty': !hakemus.ehdollisenHyvaksymisenEhtoKoodi}">
-                                                    <option ng-if="!hakemus.ehdollisenHyvaksymisenEhtoKoodi"></option>
+                                                        ng-class="{'required-empty': !tulos.ehdollisenHyvaksymisenEhtoKoodi}">
+                                                    <option ng-if="!tulos.ehdollisenHyvaksymisenEhtoKoodi"></option>
                                                 </select>
                                                 <div ng-if="tulos.ehdollisenHyvaksymisenEhtoKoodi == 'muu'">
                                                     <input class="form-control"
@@ -111,21 +111,21 @@
                                                            type="text"
                                                            id="ehdollisenHyvaksymisenEhtoFI"
                                                            ng-model="tulos.ehdollisenHyvaksymisenEhtoFI"
-                                                           ng-change="addMuokattuHakemus(hakemus)"
+                                                           ng-change="addMuokattuHakemus(tulos)"
                                                            placeholder="FI"/>
                                                     <input class="form-control"
                                                            ng-class="{'required-empty': tulos.ehdollisenHyvaksymisenEhtoSV.length < 1}"
                                                            type="text"
                                                            id="ehdollisenHyvaksymisenEhtoSV"
                                                            ng-model="tulos.ehdollisenHyvaksymisenEhtoSV"
-                                                           ng-change="addMuokattuHakemus(hakemus)"
+                                                           ng-change="addMuokattuHakemus(tulos)"
                                                            placeholder="SV"/>
                                                     <input class="form-control"
                                                            ng-class="{'required-empty': tulos.ehdollisenHyvaksymisenEhtoEN.length < 1}"
                                                            type="text"
                                                            id="ehdollisenHyvaksymisenEhtoEN"
                                                            ng-model="tulos.ehdollisenHyvaksymisenEhtoEN"
-                                                           ng-change="addMuokattuHakemus(hakemus)"
+                                                           ng-change="addMuokattuHakemus(tulos)"
                                                            placeholder="EN"/>
                                                 </div>
                                             </div>
