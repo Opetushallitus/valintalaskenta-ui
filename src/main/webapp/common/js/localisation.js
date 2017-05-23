@@ -58,23 +58,22 @@ angular.module('oph.localisation', [])
              * @param userLang : käyttäjän käyttökieli oletus arvo 'fi'
              * @returns {promise}
              */
-            function getTranslations(userLang){
-                var deferred = $q.defer();
-                if(cache.info().size == 0){
-                     Localisations.getLocalisations().then(function(data){
-                        for(var trl in data){
-                            if(data[trl].id !== undefined && data[trl].locale === userLang){
-                                putCachedLocalisation(data[trl].key, data[trl].value );
+            function getTranslations(userLang) {
+                if (cache.info().size === 0) {
+                    return Localisations.getLocalisations().then(function (localisations) {
+                        localisations.forEach(function (localisation) {
+                            if (localisation.locale === userLang) {
+                                cache.put(localisation.key, localisation.value);
                             }
-                        }
-                        deferred.resolve();
-                    }, function(localeRetrievalError) {
-                         console.warn("Locale retrieval error, returning empty array for localisations", localeRetrievalError);
-                         deferred.resolve([]);
-                     });
-                };
-                return deferred.promise;
-            };
+                        });
+                    }, function (error) {
+                        console.warn("Failed to retrieve locales", error);
+                        return $q.resolve();
+                    });
+                } else {
+                    return $q.resolve();
+                }
+            }
 
             this.getTranslationsForArray = function(array){
                 var deferred = $q.defer();
