@@ -547,10 +547,12 @@ angular.module('valintalaskenta')
       };
 
       $scope.addMuokattuHakemus = function (hakemus) {
-        if ($scope.muokatutHakemukset.indexOf(hakemus) === -1) {
-          $scope.muokatutHakemukset.push(hakemus);
+        if(hakemus) {
+          if ($scope.muokatutHakemukset.indexOf(hakemus) === -1) {
+            $scope.muokatutHakemukset.push(hakemus);
+          }
+          $scope.validateHakemuksenTilat(hakemus);
         }
-        $scope.validateHakemuksenTilat(hakemus);
       };
 
       $scope.getHakutyyppi = function() {
