@@ -1,7 +1,7 @@
 angular.module('valintalaskenta')
 
-    .factory('HakuModel', ['$q', '$log', 'Haku', 'TarjontaHaut', 'Korkeakoulu', '_', '$rootScope',
-        function ($q, $log, Haku, TarjontaHaut, Korkeakoulu, _, $rootScope) {
+    .factory('HakuModel', ['$q', '$log', 'Haku', 'UserModel', 'TarjontaHaut', 'Korkeakoulu', '_', '$rootScope',
+        function ($q, $log, Haku, UserModel, TarjontaHaut, Korkeakoulu, _, $rootScope) {
             "use strict";
 
             var model;
@@ -43,45 +43,59 @@ angular.module('valintalaskenta')
 
                 this.init = function (oid) {
                     if (model.haut.length === 0 || oid !== model.hakuOid) {
-                        TarjontaHaut.get({}, function (resultWrapper) {
-                            model.haut = resultWrapper.result;
-                            model.haut.forEach(function (haku) {
-                                if (haku.oid === oid) {
-                                    model.hakuOid = haku;
-                                    model.korkeakoulu = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
-                                }
+                        UserModel.refreshIfNeeded().then(function() {
+                          var virkailijaTyyppi;
+                          if (UserModel.isOphUser || UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser) {
+                            virkailijaTyyppi = "all";
+                          } else if (UserModel.isKKUser && !UserModel.hasOtherThanKKUserOrgs) {
+                            virkailijaTyyppi = "kkUser";
+                          } else if (!UserModel.isKKUser && UserModel.hasOtherThanKKUserOrgs) {
+                            virkailijaTyyppi = "toinenAsteUser";
+                          } else {
+                            virkailijaTyyppi = "all";
+                          }
 
-                                haku.uiNimi = model.getHakuNimi(haku);
+                          TarjontaHaut.get({virkailijaTyyppi: virkailijaTyyppi}, function (resultWrapper) {
+                              model.haut = resultWrapper.result;
+                              model.haut.forEach(function (haku) {
+                                  if (haku.oid === oid) {
+                                      model.hakuOid = haku;
+                                      model.korkeakoulu = Korkeakoulu.isKorkeakoulu(haku.kohdejoukkoUri);
+                                  }
 
-                                var kohdejoukkoUri = haku.kohdejoukkoUri;
-                                var nivelKohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
-                                var nivelvaihe = nivelKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
-                                nivelvaihe ? haku.nivelvaihe = true : haku.nivelvaihe = false;
+                                  haku.uiNimi = model.getHakuNimi(haku);
 
-                                var erityisKohdejoukkoUriRegExp = /(haunkohdejoukko_20).*/;
-                                var erityis = erityisKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
-                                erityis ? haku.erityisopetus = true : haku.erityisopetus = false;
+                                  var kohdejoukkoUri = haku.kohdejoukkoUri;
+                                  var nivelKohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/;
+                                  var nivelvaihe = nivelKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
+                                  nivelvaihe ? haku.nivelvaihe = true : haku.nivelvaihe = false;
 
-                                var hakutyyppi = haku.hakutyyppiUri;
-                                var hakutapa = haku.hakutapaUri;
+                                  var erityisKohdejoukkoUriRegExp = /(haunkohdejoukko_20).*/;
+                                  var erityis = erityisKohdejoukkoUriRegExp.exec(kohdejoukkoUri);
+                                  erityis ? haku.erityisopetus = true : haku.erityisopetus = false;
 
-                                var erillishakutapaRegExp = /(hakutapa_02).*/;
-                                var jatkuvahakuRegExp = /(hakutapa_03).*/;
-                                var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
+                                  var hakutyyppi = haku.hakutyyppiUri;
+                                  var hakutapa = haku.hakutapaUri;
 
-                                var matchErillishaku = erillishakutapaRegExp.exec(hakutapa);
-                                var matchJatkuvahaku = jatkuvahakuRegExp.exec(hakutapa);
-                                var matchLisahaku = lisahakutyyppiRegExp.exec(hakutyyppi);
+                                  var erillishakutapaRegExp = /(hakutapa_02).*/;
+                                  var jatkuvahakuRegExp = /(hakutapa_03).*/;
+                                  var lisahakutyyppiRegExp = /(hakutyyppi_03).*/;
 
-                                ((matchErillishaku || matchJatkuvahaku || matchLisahaku) && !haku.sijoittelu) ? haku.erillishaku = true : haku.erillishaku = false;
+                                  var matchErillishaku = erillishakutapaRegExp.exec(hakutapa);
+                                  var matchJatkuvahaku = jatkuvahakuRegExp.exec(hakutapa);
+                                  var matchLisahaku = lisahakutyyppiRegExp.exec(hakutyyppi);
 
-                            });
-                            model.deferred.resolve(model);
+                                  ((matchErillishaku || matchJatkuvahaku || matchLisahaku) && !haku.sijoittelu) ? haku.erillishaku = true : haku.erillishaku = false;
+                              });
+                              model.deferred.resolve(model);
+                          }, function (error) {
+                              model.deferred.reject('Hakulistan hakeminen epäonnistui');
+                              $log.error(error);
+                          });
                         }, function (error) {
-                            model.deferred.reject('Hakulistan hakeminen epäonnistui');
-                            $log.error(error);
+                          model.deferred.reject('Käyttäjän tietojen lataaminen epäonnistui');
+                          $log.error(error);
                         });
-
                     }
                     return model.deferred.promise;
 
@@ -96,11 +110,13 @@ angular.module('valintalaskenta')
     .controller('HakuController', ['$log', '$scope', '$location', '$routeParams', 'HakuModel', 'ParametriService', 'UserModel', 'CustomHakuUtil',
         function ($log, $scope, $location, $routeParams, HakuModel, ParametriService, UserModel, CustomHakuUtil) {
             "use strict";
+            UserModel.refreshIfNeeded();
+            $scope.customHakuUtil = CustomHakuUtil;
+
+            // done after UserModel refresh to ensure UserModel is available for HakuModel's internals
             $scope.hakumodel = HakuModel;
             HakuModel.init($routeParams.hakuOid);
 
-            UserModel.refreshIfNeeded();
-            $scope.customHakuUtil = CustomHakuUtil;
             CustomHakuUtil.refreshIfNeeded($routeParams.hakuOid);
 
             //determining if haku-listing should be filtered based on users organizations
@@ -127,7 +143,7 @@ angular.module('valintalaskenta')
             });
 
         }])
-    
+
     .controller('CustomHakuFilterController', ['$scope', function ($scope) {
         $scope.$on('rajaaHakuja', function () {
            $scope.show();
