@@ -138,14 +138,9 @@ angular.module('oph.localisation', [])
              * @param key: käännöksen avain
              * @returns {*}
              */
-            this.tl = function(key){
-                if(hasTranslation(key)){
-                    return cache.get(key);
-                }else{
-                    return undefined;
-                }
+            this.tl = function(key) {
+                return cache.get(key);
             };
-
         }])
 /**
  * UI-directive käännösten käyttämiseen
