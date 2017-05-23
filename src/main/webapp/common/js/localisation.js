@@ -38,23 +38,17 @@ angular.module('oph.localisation', [])
              * Palauttaa käyttäjän käyttökielen ( fi | sv | en )cas/myroles:sta oletus kieli on fi
              * @returns {promise}
              */
-            this.getUserLang = function(){
-                var deferred = $q.defer();
-                MyRolesModel.then(
-                    function(data){
-                        var found = true;
-                        // oletus kieli fi, jos käyttäjällä ei kieltä asetettu cas/myroles:ssa
-                        var userLang = 'fi';
-                        for(var i=0 ; i < data.length && found ; i++ ){
-                            if( data[i].match("LANG_") !== null){
-                                userLang = data[i].slice(5);
-                                found = false;
-                            }
+            this.getUserLang = function() {
+                return MyRolesModel.then(function (data) {
+                    var userLang = null;
+                    for (var i = 0; i < data.length && userLang === null; i++) {
+                        var m = data[i].match("LANG_(.*)");
+                        if (m) {
+                            userLang = m[1];
                         }
-                        deferred.resolve(userLang);
                     }
-                );
-                return deferred.promise;
+                    return (userLang || "fi");
+                });
             };
 
             /**
