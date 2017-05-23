@@ -641,7 +641,7 @@ angular.module('valintalaskenta')
                 return VastaanottoTila.post(tilaParams, tilaObj,
                     reportSuccessfulSave(muokatutHakemukset),
                     reportFailedSave(muokatutHakemukset)
-                );
+                ).$promise;
             }
         };
 
