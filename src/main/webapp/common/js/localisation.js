@@ -75,28 +75,21 @@ angular.module('oph.localisation', [])
                 }
             }
 
-            this.getTranslationsForArray = function(array){
-                var deferred = $q.defer();
-                if(array === undefined) {
-
-                } else {
-                    var self = this;
-                    var promises = [];
-
-                    array.forEach(function(item) {
+            this.getTranslationsForArray = function(array) {
+                if (!array) {
+                    return $q.resolve();
+                }
+                var self = this;
+                return $q.all(
+                    array.map(function (item) {
                         item.text = item.default_text;
-                        promises.push(self.getTranslation(item.text_prop).then(function (text) {
+                        return self.getTranslation(item.text_prop).then(function (text) {
                             if (text) {
                                 item.text = text;
                             }
-                        }));
-
-                    });
-                    $q.all(promises).then(function () {
-                        deferred.resolve();
-                    });
-                }
-                return deferred.promise;
+                        });
+                    })
+                );
             };
 
             /**
