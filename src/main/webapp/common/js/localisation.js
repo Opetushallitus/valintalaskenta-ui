@@ -116,22 +116,6 @@ angular.module('oph.localisation', [])
                     });
                 }
             };
-            /**
-             * Laittaa käännöstekstit välimuistiin avain arvo pareine
-             * @param key: käännöstekstin avain
-             * @param newEntry: käännnösteksi
-             */
-            function putCachedLocalisation(key,newEntry) {
-                cache.put(key, newEntry);
-            };
-            /**
-             * Tarkistaa onko käännösteksti olemassa
-             * @param key: käännöstekstin avain
-             * @returns {*|boolean}
-             */
-            function hasTranslation(key){
-                return angular.isDefined(cache.get(key));
-            }
 
             /**
              * Palauttaa käännötekstin käännös avaimella
