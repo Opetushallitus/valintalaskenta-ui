@@ -12,7 +12,10 @@
         <div class="tabsheets">
 
             <div ng-include="'../common/html/errors.html'"></div>
-            <div>
+            <div ng-hide="model.errors.length > 0">
+                <img ng-show="model.loading" src="../common/img/ajax-loader-big.gif">
+            </div>
+            <div ng-hide="model.loading">
 
                 <div>
                     <span>{{ t('valintakoetulos.nayta') || 'Näytä' }}</span>
@@ -28,142 +31,142 @@
                     <label for="osallistuu">{{ t('valintakoetulos.vainkutsuttavat') || 'Vain kutsuttavat' }}</label>
 
                 </div>
-            </div>
 
-            <div id="hakijoittainNakyma" ng-if="nakymanTila == 'Hakijoittain'">
-                <h2>{{ t('valintakoetulos.hakijoittain') || 'Hakijoittain' }}</h2>
-                <a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('valintakoetulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
-                <a ng-click="allAddressLabelPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('valintakoetulos.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
+                <div id="hakijoittainNakyma" ng-if="nakymanTila == 'Hakijoittain'">
+                    <h2>{{ t('valintakoetulos.hakijoittain') || 'Hakijoittain' }}</h2>
+                    <a ng-click="allValintakoeTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('valintakoetulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
+                    <a ng-click="allAddressLabelPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('valintakoetulos.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
 
-                <table class="virkailija-table-1">
-                    <thead>
-                    <tr>
-                        <th rowspan="2"><a href=""
-                                           ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">{{ t('valintakoetulos.nimi') || 'Nimi' }}</a></th>
-                        <th colspan="{{model.koetyypit.length}}">{{ t('valintakoetulos.kokeet') || 'Kokeet' }}</th>
-                    </tr>
-                    <tr>
-                        <th ng-repeat="koetyyppi in model.koetyypit">{{koetyyppi}}</th>
-                    </tr>
-                    </thead>
+                    <table class="virkailija-table-1">
+                        <thead>
+                        <tr>
+                            <th rowspan="2"><a href=""
+                                               ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">{{ t('valintakoetulos.nimi') || 'Nimi' }}</a></th>
+                            <th colspan="{{model.koetyypit.length}}">{{ t('valintakoetulos.kokeet') || 'Kokeet' }}</th>
+                        </tr>
+                        <tr>
+                            <th ng-repeat="koetyyppi in model.koetyypit">{{koetyyppi}}</th>
+                        </tr>
+                        </thead>
 
-                    <tr ng-repeat="hakemus in filteredResults = (model.valintakokeetHakijoittainArray | filter:model.filter | orderBy:predicate:reverse) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
-                        <td class="leftorientedcolumn">
-                            <show-person-information sukunimi="{{hakemus.sukunimi}}"
-                                                     etunimi="{{hakemus.etunimi}}"
-                                                     hakemus-oid="{{hakemus.hakemusOid}}"
-                                                     haku-oid="{{hakuOid}}"
-                                                     henkilo-oid="{{hakemus.hakijaOid}}"/>
-                        </td>
-                        <td ng-repeat="koetyyppi in model.koetyypit | orderBy:koetyyppi">
-                            <div ng-switch="hakemus.kokeet[koetyyppi].osallistuminen">
-                                <div ng-if="hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut && hakemus.kokeet[koetyyppi].aktiivinen">
-                                    <span ng-switch-when="OSALLISTUU">{{ t('valintakoetulos.kutsutaan') || 'Kutsutaan' }}</span>
-                                    <span ng-switch-default></span>
+                        <tr ng-repeat="hakemus in filteredResults = (model.valintakokeetHakijoittainArray | filter:model.filter | orderBy:predicate:reverse) | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
+                            <td class="leftorientedcolumn">
+                                <show-person-information sukunimi="{{hakemus.sukunimi}}"
+                                                         etunimi="{{hakemus.etunimi}}"
+                                                         hakemus-oid="{{hakemus.hakemusOid}}"
+                                                         haku-oid="{{hakuOid}}"
+                                                         henkilo-oid="{{hakemus.hakijaOid}}"/>
+                            </td>
+                            <td ng-repeat="koetyyppi in model.koetyypit | orderBy:koetyyppi">
+                                <div ng-switch="hakemus.kokeet[koetyyppi].osallistuminen">
+                                    <div ng-if="hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut && hakemus.kokeet[koetyyppi].aktiivinen">
+                                        <span ng-switch-when="OSALLISTUU">{{ t('valintakoetulos.kutsutaan') || 'Kutsutaan' }}</span>
+                                        <span ng-switch-default></span>
+                                    </div>
+                                    <div ng-if="!hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut || !hakemus.kokeet[koetyyppi].aktiivinen">
+                                        <spant></span>
+                                    </div>
                                 </div>
-                                <div ng-if="!hakemus.kokeet[koetyyppi].lahetetaankoKoekutsut || !hakemus.kokeet[koetyyppi].aktiivinen">
-                                    <spant></span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults.length" ng-model="currentPage" ng-init="currentPage=1" items-per-page="pageSize"></pagination>
-            </div>
-
-            <div id="kokeittainNakyma" ng-if="nakymanTila == 'Kokeittain'">
-                <div ng-repeat="valintakoe in model.valintakokeet track by $index">
-                	<div ng-if="valintakoe.hakijat && valintakoe.lahetetaankoKoekutsut && valintakoe.aktiivinen" class="panel panel-default">
-
-	                    <div class="panel-heading">
-	                        <div class="panel-title">{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></div>
-	                    </div>
-
-						<div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length==0">
-                            {{ t('valintakoetulos.eiosallistujia') || 'Valintakokeeseen ei ole osallistujia' }}
-	                    </div>
-
-	                    <div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length>0">
-	                    	
-	                        <div ng-if="(valintakoe.hakijat|filter:model.filterImmutable).length>0" ng-show="valintakoe.aktiivinen">
-	                            <div class="btn-toolbar margin-top-2 margin-bottom-2" role="toolbar">
-	                                <a ng-click="valintakoeTulosXLS(valintakoe); $event.stopPropagation()"
-	                                   class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('valintakoetulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
-									
-	                                <a ng-click="createKoekutsukirjeetPDF(valintakoe);$event.stopPropagation()"
-	                                   class="btn btn-default btn-sm" ng-disabled="inputdisabled">
-	                                    <i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostakoekutsut') || 'Muodosta koekutsut' }}
-	                                </a>
-	
-	                                <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()"
-	                                   class="btn btn-default btn-sm" ng-disabled="inputdisabled"><i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
-	                            </div>
-	                        </div>
-	                        <div ng-hide="valintakoe.aktiivinen">
-	                            <p>{{ t('valintakoetulos.eivoimuodostaa') || 'Tälle valintakokeelle ei voi muodostaa osoitetarroja tai koekutsuja. Asetus on muokattavissa valintaperusteiden mallinnuksessa.' }}</p>
-	
-	                            <div ng-show="valintakoe.virheIlmoitus" class="alert alert-danger">
-	                                <h3>{{valintakoe.virheIlmoitus}}</h3>
-	                            </div>
-	                        </div>
-	                        <table class="virkailija-table-1">
-	                            <thead>
-	                            <tr>
-	                                <th><input ng-if="(valintakoe.hakijat|filter:model.filterImmutable).length>0" type="checkbox" ng-model="valintakoe.valittu"
-	                                           ng-change="model.checkAll(valintakoe);"/></th>
-	                                <th><a href="" ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">{{ t('valintakoetulos.nimi') || 'Nimi' }}</a>
-	                                </th>
-	                                <th><a href=""
-	                                       ng-click="predicate = 'osallistuminen'; reverse=!reverse">{{ t('valintakoetulos.osallistuminen') || 'Osallistuminen' }}</a>
-	                                </th>
-                                    <th>{{ t('valintakoetulos.lisatiedot') || 'Lisätietoja' }}</th>
-	                                <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">{{ t('valintakoetulos.laskettupvm') || 'Laskettu pvm' }}</a>
-	                                </th>
-                                    <th>{{ t('valintakoetulos.asiointikieli') || 'Asiointikieli' }}</a>
-                                    </th>
-	                            </tr>
-	                            </thead>
-	                            <tbody>
-
-	                            <tr ng-repeat="koe in valintakoe.filteredResults = (valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter) | startFrom:(valintakoe.currentPage-1)*pageSize | limitTo:pageSize">
-	                                 <td><input ng-if="koe.osallistuminen == 'OSALLISTUU'" type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
-	                                </td>
-	                                <td class="leftorientedcolumn">
-	                                    <show-person-information sukunimi="{{koe.sukunimi}}"
-	                                                             etunimi="{{koe.etunimi}}"
-	                                                             hakemus-oid="{{koe.hakemusOid}}"
-	                                                             haku-oid="{{hakuOid}}"
-	                                                             henkilo-oid="{{koe.hakijaOid}}"/>
-	                                </td>
-	                                <td>
-	                                    <div ng-switch="koe.osallistuminen">
-	                                        <span ng-switch-when="OSALLISTUU">{{ t('valintakoetulos.kutsutaan') || 'Kutsutaan' }}</span>
-                                            <span ng-switch-when="EI_OSALLISTU">{{ t('valintakoetulos.ei_kutsuta') || 'Ei kutsuta' }}</span>
-                                            <span ng-switch-when="EI_VAADITA">{{ t('valintakoetulos.ei_vaadita') || 'Ei vaadita' }}</span>
-                                            <span ng-switch-when="VIRHE">{{ t('valintakoetulos.virhe') || 'Virhe' }}</span>
-	                                        <span ng-switch-default></span>
-	                                    </div>
-	                                </td>
-                                    <td>
-                                        <div ng-switch="koe.osallistuminen">
-                                            <span ng-switch-when="OSALLISTUU"></span>
-                                            <span ng-switch-when="EI_OSALLISTU">{{koe.lisatiedot}}</span>
-                                            <span ng-switch-when="EI_VAADITA">{{koe.lisatiedot}}</span>
-                                            <span ng-switch-when="VIRHE">{{koe.lisatiedot}}</span>
-                                            <span ng-switch-default></span>
-                                        </div>
-                                    </td>
-	                                <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
-                                    <td><span>{{ koe.asiointikieli }}</span></td>
-	                            </tr>
-	
-	                            </tbody>
-	                        </table>
-                            <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="valintakoe.filteredResults.length" ng-model="valintakoe.currentPage" ng-init="valintakoe.currentPage=1" items-per-page="pageSize"></pagination>
-	                    </div>
-	                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="filteredResults.length" ng-model="currentPage" ng-init="currentPage=1" items-per-page="pageSize"></pagination>
                 </div>
 
+                <div id="kokeittainNakyma" ng-if="nakymanTila == 'Kokeittain'">
+                    <div ng-repeat="valintakoe in model.valintakokeet track by $index">
+                        <div ng-if="valintakoe.hakijat && valintakoe.lahetetaankoKoekutsut && valintakoe.aktiivinen" class="panel panel-default">
+
+                            <div class="panel-heading">
+                                <div class="panel-title">{{valintakoe.valintakoeTunniste}}<span ng-show="{{valintakoe.valinnanVaihe}}">- {{valintakoe.valinnanVaihe}}</span></div>
+                            </div>
+
+                            <div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length==0">
+                                {{ t('valintakoetulos.eiosallistujia') || 'Valintakokeeseen ei ole osallistujia' }}
+                            </div>
+
+                            <div class="panel-body" ng-if="(valintakoe.hakijat|filter:model.filter).length>0">
+
+                                <div ng-if="(valintakoe.hakijat|filter:model.filterImmutable).length>0" ng-show="valintakoe.aktiivinen">
+                                    <div class="btn-toolbar margin-top-2 margin-bottom-2" role="toolbar">
+                                        <a ng-click="valintakoeTulosXLS(valintakoe); $event.stopPropagation()"
+                                           class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('valintakoetulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
+
+                                        <a ng-click="createKoekutsukirjeetPDF(valintakoe);$event.stopPropagation()"
+                                           class="btn btn-default btn-sm" ng-disabled="inputdisabled">
+                                            <i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostakoekutsut') || 'Muodosta koekutsut' }}
+                                        </a>
+
+                                        <a ng-click="addressLabelPDF(valintakoe); $event.stopPropagation()"
+                                           class="btn btn-default btn-sm" ng-disabled="inputdisabled"><i class="fa fa-file"></i>&nbsp;{{ t('valintakoetulos.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
+                                    </div>
+                                </div>
+                                <div ng-hide="valintakoe.aktiivinen">
+                                    <p>{{ t('valintakoetulos.eivoimuodostaa') || 'Tälle valintakokeelle ei voi muodostaa osoitetarroja tai koekutsuja. Asetus on muokattavissa valintaperusteiden mallinnuksessa.' }}</p>
+
+                                    <div ng-show="valintakoe.virheIlmoitus" class="alert alert-danger">
+                                        <h3>{{valintakoe.virheIlmoitus}}</h3>
+                                    </div>
+                                </div>
+                                <table class="virkailija-table-1">
+                                    <thead>
+                                    <tr>
+                                        <th><input ng-if="(valintakoe.hakijat|filter:model.filterImmutable).length>0" type="checkbox" ng-model="valintakoe.valittu"
+                                                   ng-change="model.checkAll(valintakoe);"/></th>
+                                        <th><a href="" ng-click="predicate = ['sukunimi','etunimi']; reverse=!reverse">{{ t('valintakoetulos.nimi') || 'Nimi' }}</a>
+                                        </th>
+                                        <th><a href=""
+                                               ng-click="predicate = 'osallistuminen'; reverse=!reverse">{{ t('valintakoetulos.osallistuminen') || 'Osallistuminen' }}</a>
+                                        </th>
+                                        <th>{{ t('valintakoetulos.lisatiedot') || 'Lisätietoja' }}</th>
+                                        <th><a href="" ng-click="predicate = 'createdAt'; reverse=!reverse">{{ t('valintakoetulos.laskettupvm') || 'Laskettu pvm' }}</a>
+                                        </th>
+                                        <th>{{ t('valintakoetulos.asiointikieli') || 'Asiointikieli' }}</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr ng-repeat="koe in valintakoe.filteredResults = (valintakoe.hakijat | orderBy:predicate:reverse | filter:model.filter) | startFrom:(valintakoe.currentPage-1)*pageSize | limitTo:pageSize">
+                                        <td><input ng-if="koe.osallistuminen == 'OSALLISTUU'" type="checkbox" ng-model="koe.valittu" ng-change="model.check(valintakoe);">
+                                        </td>
+                                        <td class="leftorientedcolumn">
+                                            <show-person-information sukunimi="{{koe.sukunimi}}"
+                                                                     etunimi="{{koe.etunimi}}"
+                                                                     hakemus-oid="{{koe.hakemusOid}}"
+                                                                     haku-oid="{{hakuOid}}"
+                                                                     henkilo-oid="{{koe.hakijaOid}}"/>
+                                        </td>
+                                        <td>
+                                            <div ng-switch="koe.osallistuminen">
+                                                <span ng-switch-when="OSALLISTUU">{{ t('valintakoetulos.kutsutaan') || 'Kutsutaan' }}</span>
+                                                <span ng-switch-when="EI_OSALLISTU">{{ t('valintakoetulos.ei_kutsuta') || 'Ei kutsuta' }}</span>
+                                                <span ng-switch-when="EI_VAADITA">{{ t('valintakoetulos.ei_vaadita') || 'Ei vaadita' }}</span>
+                                                <span ng-switch-when="VIRHE">{{ t('valintakoetulos.virhe') || 'Virhe' }}</span>
+                                                <span ng-switch-default></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div ng-switch="koe.osallistuminen">
+                                                <span ng-switch-when="OSALLISTUU"></span>
+                                                <span ng-switch-when="EI_OSALLISTU">{{koe.lisatiedot}}</span>
+                                                <span ng-switch-when="EI_VAADITA">{{koe.lisatiedot}}</span>
+                                                <span ng-switch-when="VIRHE">{{koe.lisatiedot}}</span>
+                                                <span ng-switch-default></span>
+                                            </div>
+                                        </td>
+                                        <td><span ng-bind="koe.createdAt | date:'dd.MM.yyyy HH:mm:ss'">-</span></td>
+                                        <td><span>{{ koe.asiointikieli }}</span></td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                                <pagination previous-text="{{ t('valintakoetulos.edellinen') || 'Edellinen' }}" next-text="{{ t('valintakoetulos.seuraava') || 'Seuraava' }}" total-items="valintakoe.filteredResults.length" ng-model="valintakoe.currentPage" ng-init="valintakoe.currentPage=1" items-per-page="pageSize"></pagination>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
