@@ -544,7 +544,12 @@ angular.module('valintalaskenta')
                     var muokatutHakemukset = _.filter(jonoonLiittyvat, function(hakemus) {
                        return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
                     });
-                    return model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid);
+                    if(muokatutHakemukset.length > 0) {
+                        return model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid);
+                    } else {
+                        return Promise.resolve();
+                    }
+
                 }
             };
 
