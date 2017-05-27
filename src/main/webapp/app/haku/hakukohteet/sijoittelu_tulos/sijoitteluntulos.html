@@ -219,7 +219,7 @@
                                         <input ng-disabled="(hakemus.muokattuVastaanottoTila === 'VASTAANOTTANUT_SITOVASTI' || hakemus.muokattuVastaanottoTila === 'EHDOLLISESTI_VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila === 'VASTAANOTTANUT' || hakemus.muokattuVastaanottoTila === 'PERUUTETTU' || hakemus.muokattuVastaanottoTila === 'PERUNUT') || !(updateOph || valintaesitysJulkaistavissa)" type="checkbox" ng-change="addMuokattuHakemus(hakemus)" ng-model="hakemus.julkaistavissa"/>
                                     </div>
                                     <div ng-if="hakemus.naytetaanVastaanottotieto">
-                                        <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
+                                        <div ng-show="hakemus.julkaistavissa && (updateOrg && (hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || hakemus.tila == 'PERUUTETTU' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))) || hakemus.julkaistavissa && updateOph">
                                             <div>
                                                 <span ng-bind="t('sijoitteluntulos.hakijallenaytetaan') || 'Hakijalle näytetään'"></span>
                                                 <span>: </span>
@@ -229,7 +229,7 @@
                                                     <span>{{hakemus.vastaanottoAikaraja | date:'dd.MM.yyyy HH:mm'}}</span>
                                                 </div>
                                             </div>
-                                            <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
+                                            <span ng-show="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' || hakemus.tila == 'PERUNUT' || hakemus.tila == 'PERUUTETTU' || (jono.eiVarasijatayttoa && hakemus.tila == 'VARALLA'))">
                                                 <muokattu-vastaanotto-tila haku="model.haku" hakemus="hakemus" on-hakemus-update="addMuokattuHakemus(hakemus)"/>
                                             </span>
                                         </div>
