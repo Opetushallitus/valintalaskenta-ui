@@ -630,7 +630,13 @@ angular.module('valintalaskenta')
             ]);
             if (READ_FROM_VALINTAREKISTERI === "true") {
                 return p.then(
-                    reportSuccessfulSave(valinnantilanMuutokset),
+                    function(response) {
+                        if (response.data.length === 0) {
+                            return valinnantilanMuutokset.length + " muutosta tallennettu.";
+                        } else {
+                            return reportFailedSave(valinnantilanMuutokset)({data: {statuses: response.data}});
+                        }
+                    },
                     function(error) {
                         if (error.data.error) {
                             return $q.reject({
