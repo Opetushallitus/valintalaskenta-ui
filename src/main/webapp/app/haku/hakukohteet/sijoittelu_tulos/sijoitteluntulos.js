@@ -544,7 +544,12 @@ angular.module('valintalaskenta')
                     var muokatutHakemukset = _.filter(jonoonLiittyvat, function(hakemus) {
                        return _.contains(muokatutHakemuksetOids, hakemus.hakemusOid);
                     });
-                    return model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid);
+                    if(muokatutHakemukset.length > 0) {
+                        return model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid);
+                    } else {
+                        return $q.resolve();
+                    }
+
                 }
             };
 
@@ -625,7 +630,14 @@ angular.module('valintalaskenta')
             ]);
             if (READ_FROM_VALINTAREKISTERI === "true") {
                 return p.then(
-                    reportSuccessfulSave(valinnantilanMuutokset),
+                    function(o) {
+                        var statuses = o[0].data;
+                        if (statuses.length === 0) {
+                            return valinnantilanMuutokset.length + " muutosta tallennettu.";
+                        } else {
+                            return reportFailedSave(valinnantilanMuutokset)({data: {statuses: statuses}});
+                        }
+                    },
                     function(error) {
                         if (error.data.error) {
                             return $q.reject({

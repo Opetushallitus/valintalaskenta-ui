@@ -512,7 +512,10 @@ angular.module('valintalaskenta')
       };
 
       var saveChanges = function() {
-        return submitLukuvuosimaksut($scope.muokatutHakemukset).then(function() {
+        if (($scope.muokatutHakemukset || []).length === 0) {
+          return $q.resolve();
+        }
+        return submitLukuvuosimaksut($scope.muokatutHakemukset).then(function () {
           var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
           return ErillishakuTuonti.tuo(
             {rivit: erillishakuRivit},
@@ -521,11 +524,11 @@ angular.module('valintalaskenta')
               headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}
             }
           )
-        }).then(function(response) {
-          var id = { id: response.data.id };
+        }).then(function (response) {
+          var id = {id: response.data.id};
           var p = $q.defer();
           Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
-            function(dokumenttiId) {
+            function (dokumenttiId) {
               if (dokumenttiId) {
                 p.resolve();
               } else {
@@ -677,7 +680,7 @@ angular.module('valintalaskenta')
       $scope.selectIlmoitettuToAll = function () {
         var counter = 0;
         if (READ_FROM_VALINTAREKISTERI === "true") {
-          counter = $scope.muokatutHakemukset.length;
+          counter = hakemukset.filter(function(hakemus) { return !hakemus.julkaistavissa && hakemus.hakemuksentila }).length;
         } else {
           _(hakemukset).forEach(function (hakemus) {
             if (!hakemus.julkaistavissa && hakemus.hakemuksentila) {
