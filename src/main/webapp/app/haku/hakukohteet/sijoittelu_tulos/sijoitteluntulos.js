@@ -547,7 +547,7 @@ angular.module('valintalaskenta')
                     if(muokatutHakemukset.length > 0) {
                         return model.updateVastaanottoTila(muokatutHakemukset, valintatapajonoOid);
                     } else {
-                        return Promise.resolve();
+                        return $q.resolve();
                     }
 
                 }
