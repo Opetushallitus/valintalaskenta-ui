@@ -512,33 +512,32 @@ angular.module('valintalaskenta')
       };
 
       var saveChanges = function() {
-        if($scope.muokatutHakemukset && $scope.muokatutHakemukset.length > 0) {
-            return submitLukuvuosimaksut($scope.muokatutHakemukset).then(function () {
-                var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
-                return ErillishakuTuonti.tuo(
-                    {rivit: erillishakuRivit},
-                    {
-                        params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
-                        headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}
-                    }
-                )
-            }).then(function (response) {
-                var id = {id: response.data.id};
-                var p = $q.defer();
-                Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
-                    function (dokumenttiId) {
-                        if (dokumenttiId) {
-                            p.resolve();
-                        } else {
-                            p.reject();
-                        }
-                    }
-                );
-                return p.promise;
-            });
-        } else {
-          return Promise.resolve();
+        if (($scope.muokatutHakemukset || []).length === 0) {
+          return $q.resolve();
         }
+        return submitLukuvuosimaksut($scope.muokatutHakemukset).then(function () {
+          var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
+          return ErillishakuTuonti.tuo(
+            {rivit: erillishakuRivit},
+            {
+              params: $scope.erillisHakuTuontiParams(valintatapajonoOid),
+              headers: {'If-Unmodified-Since': $scope.valintatapajonoLastModified || (new Date()).toUTCString()}
+            }
+          )
+        }).then(function (response) {
+          var id = {id: response.data.id};
+          var p = $q.defer();
+          Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
+            function (dokumenttiId) {
+              if (dokumenttiId) {
+                p.resolve();
+              } else {
+                p.reject();
+              }
+            }
+          );
+          return p.promise;
+        });
       };
 
       $scope.submitIlmanLaskentaa = function () {
