@@ -681,7 +681,7 @@ angular.module('valintalaskenta')
       $scope.selectIlmoitettuToAll = function () {
         var counter = 0;
         if (READ_FROM_VALINTAREKISTERI === "true") {
-          counter = $scope.muokatutHakemukset.length;
+          counter = hakemukset.filter(function(hakemus) { return !hakemus.julkaistavissa && hakemus.hakemuksentila }).length;
         } else {
           _(hakemukset).forEach(function (hakemus) {
             if (!hakemus.julkaistavissa && hakemus.hakemuksentila) {
