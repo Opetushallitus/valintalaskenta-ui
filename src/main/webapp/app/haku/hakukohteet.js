@@ -20,7 +20,7 @@ angular.module('valintalaskenta')
                 this.valmiitJaJulkaistutHakukohteet = "JULKAISTU,VALMIS";
                 this.readyToQueryForNextPage = true;
                 this.deferred = undefined;
-                this.hakukohteetVisible = true;
+                this.hakukohteetVisible = !$routeParams.hakukohdeOid;
 
                 this.getCount = function () {
                     if (this.hakukohteet === undefined) {
