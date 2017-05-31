@@ -72,14 +72,18 @@
 
 angular.module('valintalaskenta').
     controller('HakeneetController', ['$scope', '$location', '$routeParams', 'HakeneetModel', 'HakukohdeModel',
-        'ngTableParams','$filter','FilterService',
-        function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel, ngTableParams, $filter, FilterService) {
+        'ngTableParams','$filter','FilterService', 'Korkeakoulu', 'HakuModel',
+        function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel, ngTableParams, $filter, FilterService, Korkeakoulu, HakuModel) {
     'use strict';
 
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.url = window.url;
+
+    //$scope.isKkHaku = Korkeakoulu.isKorkeakoulu(HakuModel.hakuOid.kohdejoukkoUri);
+    $scope.hakuModel = HakuModel;
+    $scope.korkeakouluService = Korkeakoulu;
 
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
     $scope.hakukohdeModel = HakukohdeModel;

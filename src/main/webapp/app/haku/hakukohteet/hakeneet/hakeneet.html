@@ -1,4 +1,4 @@
-<h1>{{ t('hakukohteethakeneet.header') || 'Valintojen toteuttaminen' }}</h1>
+    <h1>{{ t('hakukohteethakeneet.header') || 'Valintojen toteuttaminen' }}</h1>
 <div ng-include="'../common/js/topnavigation/topNavigation.html'" />
 
 <div class="tabsheets">
@@ -29,7 +29,8 @@
                                                          haku-oid="{{hakuOid}}"
                                                          henkilo-oid="{{hakija.personOid}}" />
                             </td>
-                            <td data-title="(t('hakukohteethakeneet.tila') || 'Tila')" sortable="'tila[hakija.state]'">
+                            <!-- td ng-show="isKkHaku" data-title="(t('hakukohteethakeneet.tila') || 'Tila')" sortable="'tila[hakija.state]'" -->
+                            <td ng-show="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" data-title="(t('hakukohteethakeneet.tila') || 'Tila')" sortable="'tila[hakija.state]'">
                                 {{tila[hakija.state]}}
                             </td>
                             <td data-title="(t('hakukohteethakeneet.hakukelpoisuustieto') || 'Hakukelpoisuustieto')" sortable="'hakukelpoisuus'">
@@ -38,9 +39,9 @@
                             <td data-title="(t('hakukohteethakeneet.hakutoiveennumero') || 'Hakutoiveen numero')" sortable="'hakutoiveNumero'">
                                 {{hakija.hakutoiveNumero}}
                             </td>
-                            <!--td data-title="(t('hakukohteethakeneet.maksuvelvollisuus') || 'Maksuvelvollisuus')" sortable="'maksuvelvollisuus[hakija.maksuvelvollisuus]'">
+                            <td ng-show="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" data-title="(t('hakukohteethakeneet.maksuvelvollisuus') || 'Maksuvelvollisuus')" sortable="'maksuvelvollisuus[hakija.maksuvelvollisuus]'">
                                 {{maksuvelvollisuus[hakija.maksuvelvollisuus]}}
-                            </td-->
+                            </td>
                         </tr>
                     </table>
                 </form>
