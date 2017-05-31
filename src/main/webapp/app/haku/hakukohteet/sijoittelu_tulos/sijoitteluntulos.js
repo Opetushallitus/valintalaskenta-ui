@@ -362,7 +362,7 @@ angular.module('valintalaskenta')
             model.sijoitteluntulosHakijoittain = {};
             model.sijoitteluntulosHakijoittainArray = [];
             model.sijoitteluajoId = 0;
-            model.myohastymistietoLadattu = false;
+            model.myohastymistietoLadattu = SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET === "false";
             model.eraantyneitaHakemuksia = false;
             model.valintatapajonoLastModified = {};
 
