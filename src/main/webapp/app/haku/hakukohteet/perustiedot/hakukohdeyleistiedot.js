@@ -93,9 +93,9 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
 }])
     
 .controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HaunTiedot',
-        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull', 'ValinnanTulos', '_', 'HakuHelper', 'ErillishakuProxy',
+        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull', 'ValinnanTulos', '_', 'HakuHelper', 'ErillishakuProxy', '$q',
         function ($scope, $location, $routeParams, HakukohdeModel, HaunTiedot,
-                  SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _, HakuHelper, ErillishakuProxy) {
+                  SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _, HakuHelper, ErillishakuProxy, $q) {
     "use strict";
 
     $scope.useVtsData = READ_FROM_VALINTAREKISTERI === "true";
@@ -149,16 +149,20 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     };
 
     var refreshHaunTiedot = function() {
-        HaunTiedot.get({hakuOid: $scope.hakuOid}, function(resultWrapper) {
-            $scope.haku = HakuHelper.setErillishaku(resultWrapper.result);
-            $scope.showErillishakuTaulukko() ? refreshErillishaku() : refreshSijoitteluntulosModel();
+        return HaunTiedot.get({hakuOid: $scope.hakuOid}).$promise.then(function(resultWrapper) {
+          $scope.haku = HakuHelper.setErillishaku(resultWrapper.result);
+          return Promise.resolve($scope.haku);
         });
     };
 
     if ($routeParams.hakukohdeOid) {
-      HakukohdeHenkilotFull.get({aoOid: $scope.hakukohdeOid, rows: 100000, asId: $scope.hakuOid}, function (result) {});
-      $scope.model.refreshIfNeeded($routeParams.hakukohdeOid);
-      refreshHaunTiedot();
+        HakukohdeHenkilotFull.get({aoOid: $scope.hakukohdeOid, rows: 100000, asId: $scope.hakuOid}, function (result) {});
+        $q.all([
+          $scope.model.refreshIfNeeded($routeParams.hakukohdeOid),
+          refreshHaunTiedot()
+        ]).then(function(alldone) {
+          $scope.showErillishakuTaulukko() ? refreshErillishaku() : refreshSijoitteluntulosModel();
+        });
     }
 }])
 
