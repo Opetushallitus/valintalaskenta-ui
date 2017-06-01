@@ -29,11 +29,10 @@
                                                          haku-oid="{{hakuOid}}"
                                                          henkilo-oid="{{hakija.personOid}}" />
                             </td>
-                            <!-- td ng-show="isKkHaku" data-title="(t('hakukohteethakeneet.tila') || 'Tila')" sortable="'tila[hakija.state]'" -->
-                            <td ng-show="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" data-title="(t('hakukohteethakeneet.tila') || 'Tila')" sortable="'tila[hakija.state]'">
+                            <td data-title="(t('hakukohteethakeneet.tila') || 'Tila')" sortable="'tila[hakija.state]'">
                                 {{tila[hakija.state]}}
                             </td>
-                            <td data-title="(t('hakukohteethakeneet.hakukelpoisuustieto') || 'Hakukelpoisuustieto')" sortable="'hakukelpoisuus'">
+                            <td ng-show="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" data-title="(t('hakukohteethakeneet.hakukelpoisuustieto') || 'Hakukelpoisuustieto')" sortable="'hakukelpoisuus'">
                                 {{ t(hakija.hakukelpoisuus) || hakija.hakukelpoisuus }}
                             </td>
                             <td data-title="(t('hakukohteethakeneet.hakutoiveennumero') || 'Hakutoiveen numero')" sortable="'hakutoiveNumero'">
