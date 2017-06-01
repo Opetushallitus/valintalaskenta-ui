@@ -925,6 +925,7 @@ app.directive('muokattuVastaanottoTila', function () {
             var updateEditable = function(hakemus, isKk, updateOph) {
                 $scope.isEditable =
                     (hakemus.muokattuVastaanottoTila !== "OTTANUT_VASTAAN_TOISEN_PAIKAN"
+                    && hakemus.muokattuIlmoittautumisTila === "EI_TEHTY"
                     && (isKk || updateOph || hakemus.muokattuVastaanottoTila !== "PERUUTETTU"));
                 return $scope.isEditable;
             };
