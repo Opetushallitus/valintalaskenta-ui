@@ -151,7 +151,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     var refreshHaunTiedot = function() {
         return HaunTiedot.get({hakuOid: $scope.hakuOid}).$promise.then(function(resultWrapper) {
           $scope.haku = HakuHelper.setErillishaku(resultWrapper.result);
-          return Promise.resolve($scope.haku);
+          return $scope.haku;
         });
     };
 
