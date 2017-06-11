@@ -106,16 +106,18 @@
 
 <!-- SIJOITTELUN TULOKSET -->
 <collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Kirjeet ja sijoittelun tulokset' }}">
-    <button ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}
-    </button>
-    <button ng-click="sijoittelunTuloksetOsoitetarrat()"
-            class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieosoitetarroiksi') || 'Vie osoitetarroiksi' }}
-    </button>
-    <button privileges="valintalaskenta"
-            href="#/haku/{{hakumodel.hakuOid.oid}}/yhteisvalinnanhallinta/valintatulos"
-            class="btn btn-default btn-sm">{{ t('yhteisvalinnanhallinta.valinnantulokset') || 'Valinnan tulokset' }}
-    </button>
+    <div
+        <label>Hakukohteittain: </label>
+        <button ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
+                class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Muodosta sijoittelun tulokset hakukohteittain' }}
+        </button>
+        <button ng-click="sijoittelunTuloksetOsoitetarrat()"
+                class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vieosoitetarroiksi') || 'Muodosta osoitetarrat hakukohteittain' }}
+        </button>
+        <button ng-click="sijoittelunTuloksetHyvaksymiskirjeetHakukohteille()"
+                class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.viehyvaksymiskirjeiksi') || 'Muodosta hyväksymiskirjeet hakukohteittain' }}
+        </button>
+    </div>
 
     <br>
     <hr>

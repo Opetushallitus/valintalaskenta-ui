@@ -382,6 +382,15 @@ angular.module('valintalaskenta').
             Ilmoitus.avaa("Sijoittelun tulokset osoitetarrat epäonnistui", "Sijoittelun tulokset osoitetarrat epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
         });
 	};
+
+    $scope.sijoittelunTuloksetHyvaksymiskirjeetHakukohteille = function() {
+        var hakuoid = $routeParams.hakuOid;
+        SijoittelunTulosHyvaksymiskirjeet.aktivoi({hakuOid: hakuoid}, {}, function (id) {
+            Latausikkuna.avaa(id, "Sijoitteluntulokset hyväksymiskirjeiksi hakukohteittain", "", {});
+        }, function () {
+            Ilmoitus.avaa("Sijoittelun tulokset hyväksymiskirjeiksi hakukohteittain epäonnistui", "Sijoittelun tulokset hyväksymiskirjeiksi hakukohteittain epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
+        });
+    };
 	
     $scope.kaynnistaSijoittelu = function () {
     	var valintalaskentaInstance = $modal.open({
