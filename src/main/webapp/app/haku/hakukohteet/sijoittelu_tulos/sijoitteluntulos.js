@@ -458,7 +458,7 @@ angular.module('valintalaskenta')
         //refresh if haku or hakukohde has changed
         this.refreshIfNeeded = function (hakuOid, hakukohdeOid, isHakukohdeChanged) {
         	if(hakukohdeOid && hakuOid) {
-	            if (model.sijoittelu.hakuOid !== hakuOid || isHakukohdeChanged) {
+	            if (model.hakuOid !== hakuOid || isHakukohdeChanged) {
 	                model.refresh(hakuOid, hakukohdeOid);
 	            }
         	}
@@ -1138,7 +1138,7 @@ angular.module('valintalaskenta')
       LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuMaksunTilat)
     ]).then(function () {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-        $scope.model.refresh($routeParams.hakuOid, $routeParams.hakukohdeOid);
+        $scope.model.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid);
     });
 
     $scope.showEhdollinenHyvaksynta = function() {
