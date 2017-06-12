@@ -458,7 +458,7 @@ angular.module('valintalaskenta')
         //refresh if haku or hakukohde has changed
         this.refreshIfNeeded = function (hakuOid, hakukohdeOid, isHakukohdeChanged) {
         	if(hakukohdeOid && hakuOid) {
-	            if (model.hakuOid !== hakuOid || isHakukohdeChanged) {
+	            if (model.hakuOid !== hakuOid || model.hakukohdeOid !== hakukohdeOid || isHakukohdeChanged) {
 	                model.refresh(hakuOid, hakukohdeOid);
 	            }
         	}
