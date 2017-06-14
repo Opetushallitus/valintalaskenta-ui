@@ -787,16 +787,16 @@ angular.module('valintalaskenta')
     $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
     $scope.hyvaksymiskirjeLahetettyCheckbox = {};
     $scope.userModelPromise = UserModel.refreshIfNeeded();
-    $scope.hakuModelPromise = HakuModel.promise;
-    $scope.enableTulostus = false;
+    $scope.hakuModelPromise = $scope.hakuModel.promise;
+    $scope.enableTulostus = function() {return false;};
 
     $scope.$watch('model.valintaesitys', function () {
       $q.all([
         $scope.userModelPromise,
         $scope.hakuModelPromise
       ]).then(function() {
-        var kaikkiJonotHyvaksytty = _.every($scope.model.valintaesitys, 'hyvaksytty');
-        $scope.enableTulostus = !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) || UserModel.isOphUser || kaikkiJonotHyvaksytty;
+        var isEnableTulostus = !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) || UserModel.isOphUser || _.every($scope.model.valintaesitys, 'hyvaksytty');
+        $scope.enableTulostus = function() {return isEnableTulostus;};
       })
     });
 
@@ -820,7 +820,7 @@ angular.module('valintalaskenta')
         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
     ];
 
-    hakuModelPromise.then(function(haku) {
+    $scope.hakuModelPromise.then(function(haku) {
         if (haku.korkeakoulu) {
             $scope.valintaesitysJulkaistavissa = true;
             $scope.isKorkeakoulu = true;
