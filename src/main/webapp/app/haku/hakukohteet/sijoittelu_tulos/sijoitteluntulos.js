@@ -390,6 +390,7 @@ angular.module('valintalaskenta')
                 var tulokset = o[0];
                 var eligibilities = o[1];
                 var lukuvuosimaksut = o[0].lukuvuosimaksut;
+                model.valintaesitys = tulokset.valintaesitys;
                 if (tulokset.sijoittelunTulokset.sijoitteluajoId) {
                     model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
                     model.sijoitteluTulokset = tulokset.sijoittelunTulokset;
@@ -785,6 +786,19 @@ angular.module('valintalaskenta')
     $scope.valintaesitysJulkaistavissa = false;
     $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
     $scope.hyvaksymiskirjeLahetettyCheckbox = {};
+    $scope.userModelPromise = UserModel.refreshIfNeeded();
+    $scope.hakuModelPromise = HakuModel.promise;
+    $scope.enableTulostus = false;
+
+    $scope.$watch('model.valintaesitys', function () {
+      $q.all([
+        $scope.userModelPromise,
+        $scope.hakuModelPromise
+      ]).then(function() {
+        var kaikkiJonotHyvaksytty = _.every($scope.model.valintaesitys, 'hyvaksytty');
+        $scope.enableTulostus = !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) || UserModel.isOphUser || kaikkiJonotHyvaksytty;
+      })
+    });
 
     $scope.$watch('model.sijoitteluTulokset.valintatapajonot', function () {
         ($scope.model.sijoitteluTulokset.valintatapajonot || []).forEach(function (valintatapajono) {
@@ -806,7 +820,7 @@ angular.module('valintalaskenta')
         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
     ];
 
-    HakuModel.promise.then(function(haku) {
+    hakuModelPromise.then(function(haku) {
         if (haku.korkeakoulu) {
             $scope.valintaesitysJulkaistavissa = true;
             $scope.isKorkeakoulu = true;
@@ -1132,8 +1146,8 @@ angular.module('valintalaskenta')
       LocalisationService.getTranslationsForArray($scope.hakemuksenMuokattuMaksunTilat)
     ]).then(function () {
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-        $scope.model.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid);
-    });
+        $scope.model.refreshIfNeeded($routeParams.hakuOid, $routeParams.hakukohdeOid)
+    })
 
     $scope.showEhdollinenHyvaksynta = function() {
         return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
@@ -1143,27 +1157,6 @@ angular.module('valintalaskenta')
             !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
             !(HakuUtility.isYhteishaku(HakuModel.hakuOid) && HakuUtility.isVarsinainenhaku(HakuModel.hakuOid));
     };
-    if (READ_FROM_VALINTAREKISTERI === "true") {
-        $scope.enableTulostus = function() { return false; };
-        $q.all([
-            UserModel.refreshIfNeeded(),
-            HakuModel.promise,
-            Valintaesitys.findByHakukohde($routeParams.hakukohdeOid)
-        ]).then(function(all) {
-            var kaikkiJonotHyvaksytty = _.every(all[2].data, 'hyvaksytty');
-            $scope.enableTulostus = function() {
-                return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
-                    UserModel.isOphUser ||
-                    kaikkiJonotHyvaksytty;
-            };
-        });
-    } else {
-        $scope.enableTulostus = function () {
-            return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) ||
-                UserModel.isOphUser ||
-                _.every($scope.model.sijoitteluTulokset.valintatapajonot, 'valintaesitysHyvaksytty');
-        };
-    }
 
     $scope.currentHakuIsToinenAsteHaku = function() {
         return isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
@@ -1175,7 +1168,7 @@ angular.module('valintalaskenta')
         else return hakemuksenTila;
     };
 
-    UserModel.refreshIfNeeded()
+
 }]);
 
 app.filter('removeUnderscores', function() {
