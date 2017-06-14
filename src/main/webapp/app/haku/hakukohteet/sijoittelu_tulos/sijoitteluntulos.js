@@ -304,7 +304,6 @@ angular.module('valintalaskenta')
                 acc[kirje.henkiloOid] = new Date(kirje.lahetetty);
                 return acc;
             }, {});
-            results.valintatulokset = results.valintatulokset.data;
             results.valintatulokset.forEach(function (v) {
                 v.logEntries = [];
                 v.hakijaOid = v.henkiloOid;
