@@ -287,23 +287,18 @@ angular.module('valintalaskenta')
     };
 
 		var sijoittelunTuloksetPromise = function(hakuOid, hakukohdeOid, valintatapajonoLastModified) {
-
-        var fromVts = $q.all({
-            sijoittelunTulokset: VtsLatestSijoitteluajoHakukohde.get({
-                hakukohdeOid: hakukohdeOid,
-                hakuOid: hakuOid
-            }).$promise.catch(function(vtsError) {
+        var fromVts = VtsSijoittelunTulos.get({
+            hakukohdeOid: hakukohdeOid,
+            hakuOid: hakuOid
+          }).$promise.catch(function(vtsError) {
               if (vtsError.status === 404) {
                   console.log('Ei löytynyt sijoitteluajoa valintarekisteristä. hakuOid', hakuOid, 'hakukohdeOid', hakukohdeOid);
                   return { valintatapajonot: [] };
               }
               return $q.reject(vtsError);
-            }),
-            valintatulokset: ValinnanTulos.get({hakukohdeOid: hakukohdeOid}),
-            kirjeLahetetty: ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: hakukohdeOid}).$promise
-        }).then(function (results) {
+            }).then(function (results) {
             (results.sijoittelunTulokset.valintatapajonot || []).forEach(function(valintatapajono) {
-               valintatapajonoLastModified[valintatapajono.oid] = results.valintatulokset.headers("Last-Modified");
+               valintatapajonoLastModified[valintatapajono.oid] = results.lastModified;
             });
             var kirjeLahetetty = results.kirjeLahetetty.reduce(function(acc, kirje) {
                 acc[kirje.henkiloOid] = new Date(kirje.lahetetty);
@@ -390,13 +385,12 @@ angular.module('valintalaskenta')
                       return tulokset;
                   }
               }),
-              HakemusEligibilities.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
-              Lukuvuosimaksut.get({hakukohdeOid: hakukohdeOid})
+              HakemusEligibilities.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
             ])
             .then(function(o) {
                 var tulokset = o[0];
                 var eligibilities = o[1];
-                var lukuvuosimaksut = o[2].data;
+                var lukuvuosimaksut = o[0].lukuvuosimaksut;
                 if (tulokset.sijoittelunTulokset.sijoitteluajoId) {
                     model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
                     model.sijoitteluTulokset = tulokset.sijoittelunTulokset;
