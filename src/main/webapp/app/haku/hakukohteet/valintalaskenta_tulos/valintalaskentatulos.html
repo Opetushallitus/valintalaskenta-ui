@@ -190,6 +190,7 @@
                                                 <modal-open>
                                                     {{t('valintalaskentatulos.' + (tulos.tuloksenTila.toLowerCase() | removeUnderscores) ) || tulos.tuloksenTila}}
                                                 </modal-open>
+                                                <span ng-show="tulos.muokattu" class="glyphicon glyphicon-asterisk" aria-hidden="true" style="font-size: 10px"></span>
                                             </modal>
                                         </td>
                                         <td data-title="(t('valintalaskentatulos.syy') || 'Syy')" sortable="'jarjestyskriteerit[0].kuvaus.FI'">
