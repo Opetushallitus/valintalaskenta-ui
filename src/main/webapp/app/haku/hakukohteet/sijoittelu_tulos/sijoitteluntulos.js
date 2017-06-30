@@ -293,10 +293,13 @@ angular.module('valintalaskenta')
           }).$promise.catch(function(vtsError) {
               if (vtsError.status === 404) {
                   console.log('Ei löytynyt sijoitteluajoa valintarekisteristä. hakuOid', hakuOid, 'hakukohdeOid', hakukohdeOid);
-                  return { valintatapajonot: [] };
+                  return {};
               }
               return $q.reject(vtsError);
             }).then(function (results) {
+            if(!results.sijoittelunTulokset) {
+                return results;
+            }
             (results.sijoittelunTulokset.valintatapajonot || []).forEach(function(valintatapajono) {
                valintatapajonoLastModified[valintatapajono.oid] = results.lastModified;
             });
@@ -366,6 +369,9 @@ angular.module('valintalaskenta')
             });
             $q.all([
               sijoittelunTuloksetPromise(hakuOid, hakukohdeOid, model.valintatapajonoLastModified).then(function(tulokset) {
+                  if(!tulokset.sijoittelunTulokset) {
+                      return tulokset;
+                  }
                   var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
                   if(hakijaOidArray && 0 < hakijaOidArray.length) {
                       return HenkiloPerustietosByHenkiloOidList.post(
@@ -391,61 +397,63 @@ angular.module('valintalaskenta')
                 var eligibilities = o[1];
                 var lukuvuosimaksut = o[0].lukuvuosimaksut;
                 model.valintaesitys = tulokset.valintaesitys;
-                if (tulokset.sijoittelunTulokset.sijoitteluajoId) {
-                    model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
-                    model.sijoitteluTulokset = tulokset.sijoittelunTulokset;
-                    model.henkilot = tulokset.henkilot;
-                    model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
-                        valintatapajono.index = index;
-                        valintatapajono.valittu = true;
-                        var hakemuserittely = createHakemuserittely(valintatapajono);
-                        model.hakemusErittelyt.push(hakemuserittely);
-                        calculateSijat(valintatapajono);
-                        valintatapajono.hakemukset.forEach(function (hakemus) {
-                            var hakija = _.find(model.henkilot, function(henkilo) { return henkilo.oid == hakemus.hakijaOid });
-                            if(hakija) {
-                                hakemus.etunimi = hakija.etunimi;
-                                hakemus.sukunimi = hakija.sukunimi;
-                            } else {
-                                console.log("Hakijan " + hakemus.hakijaOid + " nimeä ei löytynyt oppijanumerorekisteristä.")
-                            }
-                            hakemus.valittu = (
-                                hakemus.tila === "HYVAKSYTTY" ||
-                                hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
-                            );
-                            hakemus.naytetaanVastaanottotieto = (
-                                hakemus.tila == 'HYVAKSYTTY' ||
-                                hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' ||
-                                hakemus.tila == 'PERUNUT' ||
-                                hakemus.tila == 'PERUUTETTU'
-                            );
-                            hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
-                            hakemus.isMaksuvelvollinen = _.indexOf(eligibilities, hakemus.hakemusOid) !== -1
-                            if(hakemus.isMaksuvelvollinen) {
-                                var lukuvuosimaksu = _.find(lukuvuosimaksut, {"personOid": hakemus.hakijaOid})
-                                if(lukuvuosimaksu) {
-                                    hakemus.maksuntila = lukuvuosimaksu.maksuntila
-                                    hakemus.muokattuMaksuntila = lukuvuosimaksu.maksuntila
+                if(tulokset.sijoittelunTulokset) {
+                    if (tulokset.sijoittelunTulokset.sijoitteluajoId) {
+                        model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
+                        model.sijoitteluTulokset = tulokset.sijoittelunTulokset;
+                        model.henkilot = tulokset.henkilot;
+                        model.sijoitteluTulokset.valintatapajonot.forEach(function (valintatapajono, index) {
+                            valintatapajono.index = index;
+                            valintatapajono.valittu = true;
+                            var hakemuserittely = createHakemuserittely(valintatapajono);
+                            model.hakemusErittelyt.push(hakemuserittely);
+                            calculateSijat(valintatapajono);
+                            valintatapajono.hakemukset.forEach(function (hakemus) {
+                                var hakija = _.find(model.henkilot, function(henkilo) { return henkilo.oid == hakemus.hakijaOid });
+                                if(hakija) {
+                                    hakemus.etunimi = hakija.etunimi;
+                                    hakemus.sukunimi = hakija.sukunimi;
                                 } else {
-                                    hakemus.maksuntila = "MAKSAMATTA";
-                                    hakemus.muokattuMaksuntila = "MAKSAMATTA";
+                                    console.log("Hakijan " + hakemus.hakijaOid + " nimeä ei löytynyt oppijanumerorekisteristä.")
                                 }
-                            }
-                            categorizeHakemusForErittely(hakemuserittely, hakemus);
-                            if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
-                                var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
-                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
-                                model.sijoitteluntulosHakijoittainArray.push(hakijanSijoitteluntulos);
-                            }
-                            model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(
-                                createHakijanSijoitteluntuloksenJono(valintatapajono, hakemus)
-                            );
-                        });
+                                hakemus.valittu = (
+                                    hakemus.tila === "HYVAKSYTTY" ||
+                                    hakemus.tila === "VARASIJALTA_HYVAKSYTTY"
+                                );
+                                hakemus.naytetaanVastaanottotieto = (
+                                    hakemus.tila == 'HYVAKSYTTY' ||
+                                    hakemus.tila == 'VARASIJALTA_HYVAKSYTTY' ||
+                                    hakemus.tila == 'PERUNUT' ||
+                                    hakemus.tila == 'PERUUTETTU'
+                                );
+                                hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
+                                hakemus.isMaksuvelvollinen = _.indexOf(eligibilities, hakemus.hakemusOid) !== -1
+                                if(hakemus.isMaksuvelvollinen) {
+                                    var lukuvuosimaksu = _.find(lukuvuosimaksut, {"personOid": hakemus.hakijaOid})
+                                    if(lukuvuosimaksu) {
+                                        hakemus.maksuntila = lukuvuosimaksu.maksuntila
+                                        hakemus.muokattuMaksuntila = lukuvuosimaksu.maksuntila
+                                    } else {
+                                        hakemus.maksuntila = "MAKSAMATTA";
+                                        hakemus.muokattuMaksuntila = "MAKSAMATTA";
+                                    }
+                                }
+                                categorizeHakemusForErittely(hakemuserittely, hakemus);
+                                if (!model.sijoitteluntulosHakijoittain[hakemus.hakemusOid]) {
+                                    var hakijanSijoitteluntulos = createHakijanSijoitteluntulos(hakemus);
+                                    model.sijoitteluntulosHakijoittain[hakemus.hakemusOid] = hakijanSijoitteluntulos;
+                                    model.sijoitteluntulosHakijoittainArray.push(hakijanSijoitteluntulos);
+                                }
+                                model.sijoitteluntulosHakijoittain[hakemus.hakemusOid].jonot.push(
+                                    createHakijanSijoitteluntuloksenJono(valintatapajono, hakemus)
+                                );
+                            });
 
-                        valintatapajono.tableParams = createValintatapajonoTableParams(valintatapajono);
-                    });
+                            valintatapajono.tableParams = createValintatapajonoTableParams(valintatapajono);
+                        });
+                    }
+                    model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
                 }
-                model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
             }).then(fetchAndPopulateVastaanottoAikarajaMennyt)
                 .catch(function(error) { error.data ? model.errors.push(error.data.message) : model.errors.push(error); });
         };

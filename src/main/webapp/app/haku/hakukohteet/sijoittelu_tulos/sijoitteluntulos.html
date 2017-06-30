@@ -13,6 +13,9 @@
         <div class="tabsheets">
 
             <div ng-include="'../common/html/errors.html'"></div>
+            <div ng-show="!model.sijoitteluTulokset.sijoitteluajoId" class="alert alert-info">
+                <h3>{{ t('info.eiSijoittelunTuloksia') || 'Sijoittelun tuloksia ei löytynyt.' }}</h3>
+            </div>
 
             <div ng-show="model.sijoitteluTulokset.sijoitteluajoId">
                 <!--Väliaikaisesti pois suorituskyvyn parantamiseksi-->
