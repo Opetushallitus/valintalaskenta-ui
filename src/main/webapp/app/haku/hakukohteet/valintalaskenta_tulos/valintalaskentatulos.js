@@ -36,9 +36,14 @@
             model.tarjoajaOid = "";
             model.hakeneet = [];
             model.ilmanLaskentaaOids = [];
+
             ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
                 model.tarjoajaOid = result.tarjoajaOid;
+            }, function(error) {
+                model.errors.push(error);
+                defer.reject("tarjoajaOidin hakeminen epäonnistui");
             });
+
 			ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
 			    model.valinnanvaiheet = result;
 
