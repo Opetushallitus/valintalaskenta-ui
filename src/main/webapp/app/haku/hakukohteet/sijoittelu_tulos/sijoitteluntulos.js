@@ -400,7 +400,7 @@ angular.module('valintalaskenta')
                 var tulokset = o[0];
                 var eligibilities = o[1];
                 var lukuvuosimaksut = o[0].lukuvuosimaksut;
-                model.valintaesitys = tulokset.valintaesitys;
+                model.valintaesitys = tulokset.valintaesitysHyvaksytty;
                 if(tulokset.sijoittelunTulokset) {
                     if (tulokset.sijoittelunTulokset.sijoitteluajoId) {
                         model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
@@ -782,7 +782,8 @@ angular.module('valintalaskenta')
         $scope.userModelPromise,
         $scope.hakuModelPromise
       ]).then(function() {
-        var isEnableTulostus = !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) || UserModel.isOphUser || _.every($scope.model.valintaesitys, 'hyvaksytty');
+        var kaikkiJonotHyvaksytty = (typeof $scope.model.valintaesitys !== 'undefined') && $scope.model.valintaesitys;
+        var isEnableTulostus = !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) || UserModel.isOphUser || kaikkiJonotHyvaksytty;
         $scope.enableTulostus = function() {return isEnableTulostus;};
       })
     });

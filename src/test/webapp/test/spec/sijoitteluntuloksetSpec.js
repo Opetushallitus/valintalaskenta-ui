@@ -376,11 +376,11 @@ describe('Sijoittelun tulokset välilehti', function () {
             wait.forAngular,
             waitJqueryIs(sijoitteluntulokset.jalkiohjaus, ':visible', false)
         ))
-        it('Tulostus buttons are enabled', seqDone(
+        it('Tulostus buttons are disabled', seqDone(
             wait.forAngular,
-            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, '.disabled', false),
-            waitJqueryIs(sijoitteluntulokset.luoHyvaksymiskirjeet, '[class~="disabled"]', false),
-            waitJqueryIs(sijoitteluntulokset.createHyvaksymisosoitteet, '[class~="disabled"]', false)
+            waitJqueryIs(sijoitteluntulokset.jalkiohjaus, '.disabled', true),
+            waitJqueryIs(sijoitteluntulokset.luoHyvaksymiskirjeet, '[class~="disabled"]', true),
+            waitJqueryIs(sijoitteluntulokset.createHyvaksymisosoitteet, '[class~="disabled"]', true)
         ))
     })
 
