@@ -453,6 +453,10 @@ angular.module('valintalaskenta')
                         });
                     }
                     model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
+                    var kaikkiHakemukset = _.flatten(_.map(model.sijoitteluTulokset.valintatapajonot, function (valintatapajono) {
+                        return valintatapajono.hakemukset;
+                    }));
+                    VastaanottoUtil.populateVastaanottoDeadlineDetails(kaikkiHakemukset, tulokset.takarajat);
                 }
             }).then(fetchAndPopulateVastaanottoAikarajaMennyt)
                 .catch(function(error) { error.data ? model.errors.push(error.data.message) : model.errors.push(error); });
@@ -668,9 +672,7 @@ angular.module('valintalaskenta')
         if ("false" !== SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
             var hakemuksetOnLadattu = _.size(model.sijoitteluntulosHakijoittain) > 0;
             if (hakemuksetOnLadattu) {
-                var kaikkiHakemukset = _.flatten(_.map(model.sijoitteluTulokset.valintatapajonot, function (valintatapajono) {
-                    return valintatapajono.hakemukset;
-                }));
+
 
                 var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function (h) {
                     return h.vastaanottoTila === "KESKEN" && h.julkaistavissa &&
@@ -679,11 +681,6 @@ angular.module('valintalaskenta')
                     return relevanttiHakemus.hakemusOid;
                 });
 
-                VastaanottoUtil.fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously(model.hakuOid, model.hakukohdeOid, kaikkiHakemukset,
-                    oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, function (eraantyneitaHakemuksia) {
-                        model.myohastymistietoLadattu = true;
-                        model.eraantyneitaHakemuksia = eraantyneitaHakemuksia;
-                    });
             }
         }
     }
