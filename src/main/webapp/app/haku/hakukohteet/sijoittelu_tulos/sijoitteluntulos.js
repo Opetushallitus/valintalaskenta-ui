@@ -203,6 +203,10 @@ angular.module('valintalaskenta')
         hakemus.read = valintatulos.read;
         hakemus.hyvaksyPeruuntunut = valintatulos.hyvaksyPeruuntunut;
         hakemus.hyvaksymiskirjeLahetetty = valintatulos.hyvaksymiskirjeLahetetty || null;
+        if(valintatulos.vastaanottoDeadline) {
+          hakemus.vastaanottoAikarajaMennyt = true;
+          hakemus.vastaanottoAikaraja = valintatulos.vastaanottoDeadline
+        }
     };
 
     var model = new function () {
@@ -453,13 +457,8 @@ angular.module('valintalaskenta')
                         });
                     }
                     model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
-                    var kaikkiHakemukset = _.flatten(_.map(model.sijoitteluTulokset.valintatapajonot, function (valintatapajono) {
-                        return valintatapajono.hakemukset;
-                    }));
-                    VastaanottoUtil.populateVastaanottoDeadlineDetails(kaikkiHakemukset, tulokset.takarajat);
                 }
-            }).then(fetchAndPopulateVastaanottoAikarajaMennyt)
-                .catch(function(error) { error.data ? model.errors.push(error.data.message) : model.errors.push(error); });
+            }).catch(function(error) { error.data ? model.errors.push(error.data.message) : model.errors.push(error); });
         };
 
         //refresh if haku or hakukohde has changed
@@ -667,23 +666,6 @@ angular.module('valintalaskenta')
     }();
 
     return model;
-
-    function fetchAndPopulateVastaanottoAikarajaMennyt() {
-        if ("false" !== SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET) {
-            var hakemuksetOnLadattu = _.size(model.sijoitteluntulosHakijoittain) > 0;
-            if (hakemuksetOnLadattu) {
-
-
-                var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function (h) {
-                    return h.vastaanottoTila === "KESKEN" && h.julkaistavissa &&
-                        (h.tila === 'HYVAKSYTTY' || h.tila === 'VARASIJALTA_HYVAKSYTTY' || h.tila === 'PERUNUT');
-                }), function (relevanttiHakemus) {
-                    return relevanttiHakemus.hakemusOid;
-                });
-
-            }
-        }
-    }
 
     function haeTilaHakijalleTarvitsevilleHakemuksille(nakyvatJononHakemukset, valintatapajonoOid) {
         var oiditHakemuksilleJotkaTarvitsevatTilanHakijalle = _.map(_.filter(nakyvatJononHakemukset, function(h) {
