@@ -204,7 +204,7 @@ angular.module('valintalaskenta')
         hakemus.hyvaksyPeruuntunut = valintatulos.hyvaksyPeruuntunut;
         hakemus.hyvaksymiskirjeLahetetty = valintatulos.hyvaksymiskirjeLahetetty || null;
         if(valintatulos.vastaanottoDeadline) {
-          hakemus.vastaanottoAikarajaMennyt = true;
+          hakemus.vastaanottoAikarajaMennyt = valintatulos.vastaanottoDeadlineMennyt;
           hakemus.vastaanottoAikaraja = valintatulos.vastaanottoDeadline
         }
     };
