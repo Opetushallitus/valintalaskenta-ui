@@ -13,7 +13,7 @@
         <div class="tabsheets">
 
             <div ng-include="'../common/html/errors.html'"></div>
-            <div ng-show="!model.sijoitteluTulokset.sijoitteluajoId && model.errors.length < 1" class="alert alert-info">
+            <div ng-show="sijoittelunTuloksiaEiLoytynyt" class="alert alert-info">
                 <h3>{{ t('info.eiSijoittelunTuloksia') || 'Sijoittelun tuloksia ei löytynyt.' }}</h3>
             </div>
 
