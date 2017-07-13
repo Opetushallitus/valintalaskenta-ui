@@ -1128,7 +1128,7 @@ angular.module('valintalaskenta')
             $scope.userModelPromise,
             $scope.hakuModelPromise
           ]).then(function(all) {
-            $scope.sijoittelunTuloksiaEiLoytynyt = !model.sijoitteluTulokset.sijoitteluajoId && model.errors.length < 1;
+            $scope.sijoittelunTuloksiaEiLoytynyt = !$scope.model.sijoitteluTulokset.sijoitteluajoId && $scope.model.errors.length < 1;
             var isEnableTulostus = !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri) || UserModel.isOphUser || $scope.model.kaikkiJonotHyvaksytty;
             $scope.enableTulostus = function() {return isEnableTulostus;};
           });
