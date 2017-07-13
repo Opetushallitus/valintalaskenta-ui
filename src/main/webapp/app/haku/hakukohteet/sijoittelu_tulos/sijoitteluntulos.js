@@ -399,7 +399,11 @@ angular.module('valintalaskenta')
                 var tulokset = o[0];
                 var eligibilities = o[1];
                 var lukuvuosimaksut = o[0].lukuvuosimaksut;
-                model.kaikkiJonotHyvaksytty = _.every(tulokset.valintaesitys, 'hyvaksytty')
+                if(tulokset.valintaesitys) {
+                  model.kaikkiJonotHyvaksytty = _.every(tulokset.valintaesitys, 'hyvaksytty')
+                } else {
+                  model.kaikkiJonotHyvaksytty = false
+                }
                 if(tulokset.sijoittelunTulokset) {
                     if (tulokset.sijoittelunTulokset.sijoitteluajoId) {
                         model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
