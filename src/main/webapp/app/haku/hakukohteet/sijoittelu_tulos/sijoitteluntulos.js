@@ -461,6 +461,21 @@ angular.module('valintalaskenta')
                     }
                     model.sijoitteluntulosHakijoittainTableParams = createSijoittelutulosHakijoittainTableParams(model.sijoitteluntulosHakijoittainArray);
                 }
+                var kaikkiHakemukset = _.flatten(_.map(model.sijoitteluTulokset.valintatapajonot, function (valintatapajono) {
+                    return valintatapajono.hakemukset;
+                }));
+                var oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon = _.map(_.filter(kaikkiHakemukset, function (h) {
+                    return h.vastaanottoTila === "KESKEN" && h.julkaistavissa &&
+                        (h.tila === 'HYVAKSYTTY' || h.tila === 'VARASIJALTA_HYVAKSYTTY' || h.tila === 'PERUNUT');
+                }), function (relevanttiHakemus) {
+                    return relevanttiHakemus.hakemusOid;
+                });
+                var dataLoadedCallback = function (eraantyneitaHakemuksia) {
+                    model.myohastymistietoLadattu = true;
+                    model.eraantyneitaHakemuksia = eraantyneitaHakemuksia;
+                };
+                VastaanottoUtil.fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously(hakuOid, hakukohdeOid, kaikkiHakemukset,
+                    oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, dataLoadedCallback);
             }).catch(function(error) { error.data ? model.errors.push(error.data.message) : model.errors.push(error); });
         };
 

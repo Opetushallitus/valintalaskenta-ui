@@ -19,7 +19,6 @@ angular.module('valintalaskenta')
     fetchAndPopulateVastaanottoDeadlineDetailsAsynchronously: function(hakuOid, hakukohdeOid, kaikkiHakemukset, oiditHakemuksilleJotkaTarvitsevatAikarajaMennytTiedon, dataloadedCallback) {
       var aikarajaMennytDeferred = $q.defer();
       aikarajaMennytDeferred.promise.then(function (aikarajaMennytTiedot) {
-        populateVastaanottoDeadlineDetails(kaikkiHakemukset, aikarajaMennytTiedot)
         _.forEach(aikarajaMennytTiedot, function (vastaanottoAikarajaMennyt) {
           _.forEach(kaikkiHakemukset, function (hakemus) {
             if (hakemus && (hakemus.hakemusOid === vastaanottoAikarajaMennyt.hakemusOid)) {
