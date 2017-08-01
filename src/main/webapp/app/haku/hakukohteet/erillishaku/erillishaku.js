@@ -660,7 +660,8 @@ angular.module('valintalaskenta')
             ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
             ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
             hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
-            tila: hakemus.valintatuloksenTila,
+            tila: hakemus.valintatuloksentila,
+            vastaanottoAikarajaMennyt: hakemus.vastaanottoAikarajaMennyt,
             tilaHakijalle: hakemus.valintatuloksenTilaHakijalle,
             hakemusOid: hakemus.hakemusOid,
             hakijaOid: hakemus.hakijaOid
