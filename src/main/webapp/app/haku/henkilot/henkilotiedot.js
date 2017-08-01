@@ -317,7 +317,7 @@ angular.module('valintalaskenta').
                     		Jalkiohjauskirjeet.post({
 					        	hakuOid: $routeParams.hakuOid,
 					        	applicationPeriod: applicationPeriod, templateName: templateName}, {hakemusOids: [hakemusOid],
-					        	letterBodyText: sisalto} , function (id) {
+					        	letterBodyText: sisalto, languageCode: langcode} , function (id) {
 					            Latausikkuna.avaa(id, latausikkunaTeksti, "");
 					        }, function () {
 					            
@@ -326,7 +326,7 @@ angular.module('valintalaskenta').
                         showDateFields: true,
                         hakuOid: $routeParams.hakuOid,
                         pohjat: function() {
-                        	return Jalkiohjauskirjepohjat.get({templateName: templateName,languageCode: langcode, applicationPeriod: applicationPeriod});
+                        	return Jalkiohjauskirjepohjat.get({templateName: templateName, languageCode: langcode, applicationPeriod: applicationPeriod});
                         }
                     };
                 }
