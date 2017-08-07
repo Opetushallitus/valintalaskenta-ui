@@ -374,7 +374,7 @@ angular.module('valintalaskenta')
 
       var getErillishaunValinnantuloksetFromVts = function() {
         return $q.all([
-          ValinnanTulos.get({hakukohdeOid: $scope.hakukohdeOid}),
+          ValinnanTulos.get({hakukohdeOid: $scope.hakukohdeOid, hakuOid: $scope.hakuOid}),
           ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: $scope.hakukohdeOid}).$promise
         ]).then(function(result) {
           $scope.valintatapajonoLastModified = result[0].headers("Last-Modified");
@@ -401,6 +401,7 @@ angular.module('valintalaskenta')
               v.hakemuksentila = v.valinnantila;
               v.valintatuloksentila = v.vastaanottotila;
               v.loytyiSijoittelusta = true;
+              v.vastaanottoAikaraja = v.vastaanottoDeadline;
             });
             return {
               oid: vt.length === 0 ? null : vt[0].valintatapajonoOid,
