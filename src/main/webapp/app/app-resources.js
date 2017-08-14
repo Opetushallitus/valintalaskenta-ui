@@ -433,17 +433,7 @@ app.factory('ErillishakuTuonti', function($http) {
         }
     };
 });
-app.factory('ErillishakuProxy', function($resource) {
-        return $resource(
-        plainUrl("valintalaskentakoostepalvelu.proxy.erillishaku.haku.hakukohde", ":hakuOid", ":hakukohdeOid"),
-        {
-            hakuOid: "@hakuOid",
-            hakukohdeOid: "@hakukohdeOid"
-        }, {
-            hae: {method:'GET', isArray:true, cache: false}
-        }
-    );
-});
+
 app.factory('ErillishakuHyvaksymiskirjeet', function($resource) {
   return $resource(
       window.url("valinta-tulos-service.hyvaksymiskirje"),
@@ -735,23 +725,6 @@ app.factory('SijoittelunVastaanottotilat', function($resource) {
         });
 });
 
-app.factory('Sijoittelu', function($resource) {
-        return $resource(plainUrl("sijoittelu-service.sijoittelu", ":hakuOid"),
-        {hakuOid: "@hakuOid"},
-        {get: {method: "GET", cache: false}
-    });
-});
-app.factory('SijoitteluAjo', function($resource) {
-        return $resource(
-        plainUrl("sijoittelu-service.sijoittelu.sijoitteluajo", ":hakuOid", ":sijoitteluajoOid"),
-        {
-            hakuOid: "@hakuOid",
-            sijoitteluajoOid:"@sijoitteluajoOid"
-        }, {
-            get: {method: "GET", cache: false}
-        });
-});
-
 app.factory('VtsSijoitteluAjoPerustiedot', function($resource) {
     return $resource(
         plainUrl("valinta-tulos-service.sijoittelu.sijoitteluajo.perustiedot", ":hakuOid", ":sijoitteluajoOid"),
@@ -818,14 +791,6 @@ app.factory('VtsLatestSijoitteluajoHakukohde', function($resource) {
             get: {method: "GET", cache: false}
         });
 });
-
-app.factory('Valintatulos', function($resource) {
-        return $resource(plainUrl("sijoittelu-service.sijoittelu.sijoitteluajo.hakemukset", ":hakuOid", "latest"),
-        {hakuOid:"@hakuOid"},
-        {get: {method: "GET", cache: false}
-    });
-});
-
 
 // Valintakoetulokset
 app.factory('Valintakoetulokset', function($resource) {
