@@ -84,14 +84,12 @@ window.urls.addProperties({
     "valintalaskentakoostepalvelu.viestintapalvelu.securelinkit.esikatselu" : "/valintalaskentakoostepalvelu/resources/viestintapalvelu/securelinkit/esikatselu?hakuOid=$1&kirjeenTyyppi=$2&asiointikieli=$3",
 
     "sijoittelu-service.buildversion" : "/sijoittelu-service/buildversion.txt?auth",
-    "sijoittelu-service.erillissijoittelu.sijoitteluajo.hakukohde" : "/sijoittelu-service/resources/erillissijoittelu/$1/sijoitteluajo/$2/hakukohde/$3",
     "sijoittelu-service.session.maxinactiveinterval" : "/sijoittelu-service/resources/session/maxinactiveinterval",
     "sijoittelu-service.sijoittelu" : "/sijoittelu-service/resources/sijoittelu/$1/",
     "sijoittelu-service.sijoittelu.sijoitteluajo" : "/sijoittelu-service/resources/sijoittelu/$1/sijoitteluajo/$2",
     "sijoittelu-service.sijoittelu.sijoitteluajo.hakemukset" : "/sijoittelu-service/resources/sijoittelu/$1/sijoitteluajo/$2/hakemukset",
     "sijoittelu-service.sijoittelu.sijoitteluajo.hakemus" : "/sijoittelu-service/resources/sijoittelu/$1/sijoitteluajo/$2/hakemus/$3",
     "sijoittelu-service.sijoittelu.sijoitteluajo.hakukohde" : "/sijoittelu-service/resources/sijoittelu/$1/sijoitteluajo/$2/hakukohde/$3",
-    "sijoittelu-service.tila.haku.hakukohde.valintatapajono.valintaesitys" : "/sijoittelu-service/resources/tila/haku/$1/hakukohde/$2/valintatapajono/$3/valintaesitys",
 
     "valintalaskenta-laskenta-service.buildversion" : "/valintalaskenta-laskenta-service/buildversion.txt?auth",
     "valintalaskenta-laskenta-service.hakemus" : "/valintalaskenta-laskenta-service/resources/hakemus/$1/$2",
