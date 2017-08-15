@@ -1,7 +1,6 @@
 app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus, HakukohdeNimi,
                                             ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe,
                                             SijoittelunVastaanottotilat, VtsLatestSijoittelunTilat,
-                                            LatestSijoittelunTilat, LatestSijoitteluajoHakukohde,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakemuksenValintatulokset,
                                             VtsLatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
@@ -17,8 +16,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
         this.sijoittelu = {};
         this.hakenutHarkinnanvaraisesti = false;
         this.naytaPistesyotto = false;
-
-        var useVtsData = READ_FROM_VALINTAREKISTERI === "true";
 
         this.refresh = function (hakuOid, hakemusOid) {
             var hakemus = {};
@@ -126,21 +123,13 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                 });
                             };
 
-                            if(useVtsData) {
-                                VtsLatestSijoitteluajoHakukohde.get({
-                                    hakukohdeOid: hakutoive.hakukohdeOid,
-                                    hakuOid: hakuOid
-                                }, hadleValintatapajonot, function (error) {
-                                    errors.push(error);
-                                });
-                            } else {
-                                LatestSijoitteluajoHakukohde.get({
-                                    hakukohdeOid: hakutoive.hakukohdeOid,
-                                    hakuOid: hakuOid
-                                }, hadleValintatapajonot, function (error) {
-                                    errors.push(error);
-                                });
-                            }
+                            VtsLatestSijoitteluajoHakukohde.get({
+                                hakukohdeOid: hakutoive.hakukohdeOid,
+                                hakuOid: hakuOid
+                            }, hadleValintatapajonot, function (error) {
+                                errors.push(error);
+                            });
+
                         });
 
                         //fetch sijoittelun vastaanottotilat and extend hakutoiveet
@@ -157,17 +146,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     }
                 };
 
-                if(useVtsData) {
-                    VtsLatestSijoittelunTilat.get({hakemusOid: hakemus.oid, hakuOid: hakuOid}, extendHakutoiveet, function (error) {
-                        if(400 !== error.status) {
-                            errors.push(error);
-                        }
-                    });
-                } else {
-                    LatestSijoittelunTilat.get({hakemusOid: hakemus.oid, hakuOid: hakuOid}, extendHakutoiveet, function (error) {
+                VtsLatestSijoittelunTilat.get({hakemusOid: hakemus.oid, hakuOid: hakuOid}, extendHakutoiveet, function (error) {
+                    if(400 !== error.status) {
                         errors.push(error);
-                    });
-                }
+                    }
+                });
 
                 KoostettuHakemusAdditionalDataForHakemus.get({hakemusOid: model.hakemus.oid}, function (pistetiedotByHakukohdeOid) {
                     hakutoiveet.forEach(function (hakutoive) {

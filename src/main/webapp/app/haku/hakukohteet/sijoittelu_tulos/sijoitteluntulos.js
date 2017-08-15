@@ -1,13 +1,11 @@
 angular.module('valintalaskenta')
-.factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'LatestSijoitteluajoHakukohde', 'VtsLatestSijoitteluajoHakukohde', 'VastaanottoTila', 'ValintaesityksenHyvaksyminen',
+.factory('SijoitteluntulosModel', [ '$q', 'Ilmoitus', 'ValintaesityksenHyvaksyminen',
         '$timeout', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut', 'HakemusEligibilities', 'VtsSijoittelunTulos',
-        function ($q, Ilmoitus, LatestSijoitteluajoHakukohde, VtsLatestSijoitteluajoHakukohde, VastaanottoTila, ValintaesityksenHyvaksyminen,
+        function ($q, Ilmoitus, ValintaesityksenHyvaksyminen,
                   $timeout, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
                   IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, HakemusEligibilities, VtsSijoittelunTulos) {
     "use strict";
-
-    var useVtsData = READ_FROM_VALINTAREKISTERI === "true";
 
     var createHakemuserittely = function(valintatapajono) {
         return {
@@ -290,7 +288,7 @@ angular.module('valintalaskenta')
     };
 
 		var sijoittelunTuloksetPromise = function(hakuOid, hakukohdeOid, valintatapajonoLastModified) {
-        var fromVts = VtsSijoittelunTulos.get({
+        return VtsSijoittelunTulos.get({
             hakukohdeOid: hakukohdeOid,
             hakuOid: hakuOid
           }).$promise.catch(function(vtsError) {
@@ -321,33 +319,6 @@ angular.module('valintalaskenta')
             enrichWithValintatulokset(results);
             return results;
         });
-        if (useVtsData) {
-            return fromVts;
-        } else {
-            return $q.all({
-                sijoittelunTulokset: LatestSijoitteluajoHakukohde.get({
-                    hakukohdeOid: hakukohdeOid,
-                    hakuOid: hakuOid
-                }).$promise,
-                valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({
-                    hakukohdeOid: hakukohdeOid,
-                    hakuOid: hakuOid
-                }).$promise
-            }).then(function (results) {
-                enrichWithValintatulokset(results);
-                fromVts.then(function(sijoittelunTulosFromVts) {
-                    (results.sijoittelunTulokset.valintatapajonot || []).forEach(function(v) {
-                        var vtsJono = _.find(sijoittelunTulosFromVts.sijoittelunTulokset.valintatapajonot, function(vv) {
-                            return vv.oid === v.oid;
-                        });
-                        Valinnantulokset.compareSijoitteluOldAndNewVtsResponse(v, vtsJono.hakemukset);
-                    });
-                }, function(error) {
-                    console.log(error);
-                });
-                return results;
-            });
-        }
     };
 
         this.refresh = function (hakuOid, hakukohdeOid) {
@@ -653,33 +624,26 @@ angular.module('valintalaskenta')
                 ),
                 ErillishakuHyvaksymiskirjeet.post({}, muuttuneetHyvaksymiskirjeet).$promise
             ]);
-            if (READ_FROM_VALINTAREKISTERI === "true") {
-                return p.then(
-                    function(o) {
-                        var statuses = o[0].data;
-                        if (statuses.length === 0) {
-                            return valinnantilanMuutokset.length + " muutosta tallennettu.";
-                        } else {
-                            return reportFailedSave(valinnantilanMuutokset)({data: {statuses: statuses}});
-                        }
-                    },
-                    function(error) {
-                        if (error.data.error) {
-                            return $q.reject({
-                                message: error.data.error,
-                                errorRows: []
-                            });
-                        } else {
-                            return reportFailedSave(valinnantilanMuutokset)({data: {statuses: error.data}});
-                        }
+            return p.then(
+                function(o) {
+                    var statuses = o[0].data;
+                    if (statuses.length === 0) {
+                        return valinnantilanMuutokset.length + " muutosta tallennettu.";
+                    } else {
+                        return reportFailedSave(valinnantilanMuutokset)({data: {statuses: statuses}});
                     }
-                );
-            } else {
-                return VastaanottoTila.post(tilaParams, tilaObj).$promise.then(
-                    reportSuccessfulSave(muokatutHakemukset),
-                    reportFailedSave(muokatutHakemukset)
-                );
-            }
+                },
+                function(error) {
+                    if (error.data.error) {
+                        return $q.reject({
+                            message: error.data.error,
+                            errorRows: []
+                        });
+                    } else {
+                        return reportFailedSave(valinnantilanMuutokset)({data: {statuses: error.data}});
+                    }
+                }
+            );
         };
 
     }();
@@ -780,7 +744,6 @@ angular.module('valintalaskenta')
                   $q,
                   Valintaesitys) {
     "use strict";
-    $scope.readFromVts = READ_FROM_VALINTAREKISTERI === 'true';
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.url = window.url;
     $scope.hakuModel = HakuModel;
@@ -1120,14 +1083,8 @@ angular.module('valintalaskenta')
                             });
                         });
                 };
-                if (READ_FROM_VALINTAREKISTERI === "true") {
-                    return $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat)
-                        .then(hyvaksy);
-                } else {
-                    var p = $scope.model.updateHakemuksienTila(true, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat);
-                    p.then(hyvaksy);
-                    return p;
-                }
+                return $scope.model.updateHakemuksienTila(false, valintatapajonoOid, $scope.muokatutHakemukset, $scope.muokatutMaksuntilat)
+                    .then(hyvaksy);
             }
         ).then(reload, reload);
     };

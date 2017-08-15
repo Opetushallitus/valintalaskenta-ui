@@ -10,13 +10,13 @@ angular.module('valintalaskenta')
     .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
         'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
         'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
-        'ErillishakuProxy','ErillishakuTuonti','VastaanottoTila', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
+        'ErillishakuTuonti', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Maksuvelvollisuus', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
         'Valintaesitys',
         function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                   ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
-                  ErillishakuVienti, ErillishakuProxy, ErillishakuTuonti, VastaanottoTila, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
+                  ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                   VastaanottoUtil, NgTableParams, TallennaValinnat, Maksuvelvollisuus, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
                   ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut,
                   Valintaesitys) {
@@ -394,38 +394,19 @@ angular.module('valintalaskenta')
 
       var getErillishaunValinnantulokset = function () {
         var fromVts = getErillishaunValinnantuloksetFromVts();
-        if (READ_FROM_VALINTAREKISTERI === "true") {
-          return fromVts.then(function(vt) {
-            vt.forEach(function(v) {
-              v.hakijaOid = v.henkiloOid;
-              v.hakemuksentila = v.valinnantila;
-              v.valintatuloksentila = v.vastaanottotila;
-              v.loytyiSijoittelusta = true;
-              v.vastaanottoAikaraja = v.vastaanottoDeadline;
-            });
-            return {
-              oid: vt.length === 0 ? null : vt[0].valintatapajonoOid,
-              hakemukset: vt
-            };
-          })
-        } else {
-          return ErillishakuProxy.hae({hakuOid: $routeParams.hakuOid, hakukohdeOid: $routeParams.hakukohdeOid}).$promise
-              .then(function(fromSijoitteluService) {
-                if (fromSijoitteluService.length !== 1) {
-                  console.log("Erillishaku should have one valinnan vaihe");
-                  return {};
-                }
-                if (fromSijoitteluService[0].valintatapajonot.length !== 1) {
-                  console.log("Erillishaku should have one valintatapajono");
-                  return {};
-                }
-                var valintatapajono = fromSijoitteluService[0].valintatapajonot[0];
-                fromVts.then(function(vt) {
-                  Valinnantulokset.compareErillishakuOldAndNewVtsResponse(valintatapajono, vt);
-                });
-                return valintatapajono;
-              });
-        }
+        return fromVts.then(function(vt) {
+          vt.forEach(function(v) {
+            v.hakijaOid = v.henkiloOid;
+            v.hakemuksentila = v.valinnantila;
+            v.valintatuloksentila = v.vastaanottotila;
+            v.loytyiSijoittelusta = true;
+            v.vastaanottoAikaraja = v.vastaanottoDeadline;
+          });
+          return {
+            oid: vt.length === 0 ? null : vt[0].valintatapajonoOid,
+            hakemukset: vt
+          };
+        })
       };
 
       var getMaksuvelvollisuudet = function(hakemukset, hakukohdeOid) {
@@ -682,26 +663,12 @@ angular.module('valintalaskenta')
 
       $scope.selectIlmoitettuToAll = function () {
         var counter = 0;
-        if (READ_FROM_VALINTAREKISTERI === "true") {
-          counter = hakemukset.filter(function(hakemus) { return !hakemus.julkaistavissa && hakemus.hakemuksentila }).length;
-        } else {
-          _(hakemukset).forEach(function (hakemus) {
-            if (!hakemus.julkaistavissa && hakemus.hakemuksentila) {
-              counter++;
-              hakemus.julkaistavissa = true;
-              if (!hakemus.valintatuloksentila) hakemus.valintatuloksentila = "KESKEN";
-              if (!hakemus.ilmoittautumistila) hakemus.ilmoittautumistila = "EI_TEHTY";
-              $scope.addMuokattuHakemus(hakemus);
-            }
-          });
-        }
+        counter = hakemukset.filter(function(hakemus) { return !hakemus.julkaistavissa && hakemus.hakemuksentila }).length;
         var reload = document.location.reload.bind(document.location);
         TallennaValinnat.avaa("Hyväksy jonon valintaesitys", "Olet hyväksymässä " + counter + " kpl. hakemuksia.", function () {
           return saveChanges().then(function() {
             var p = Valintaesitys.hyvaksy(valintatapajonoOid);
-            if (READ_FROM_VALINTAREKISTERI !== "true") {
-              p = $q.resolve();
-            }
+            p = $q.resolve();
             return p.then(function() { return "Valintaesitys hyväksytty"; });
           }).catch(function (response) {
             var msg = "Valintaesityksen hyväksyntä epäonnistui";

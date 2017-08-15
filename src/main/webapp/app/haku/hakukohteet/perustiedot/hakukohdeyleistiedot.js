@@ -93,12 +93,10 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
 }])
     
 .controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'HaunTiedot',
-        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull', 'ValinnanTulos', '_', 'HakuHelper', 'ErillishakuProxy', '$q',
+        'SijoitteluntulosModel', 'Korkeakoulu', 'HakukohdeHenkilotFull', 'ValinnanTulos', '_', 'HakuHelper', '$q',
         function ($scope, $location, $routeParams, HakukohdeModel, HaunTiedot,
-                  SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _, HakuHelper, ErillishakuProxy, $q) {
+                  SijoitteluntulosModel, Korkeakoulu, HakukohdeHenkilotFull, ValinnanTulos, _, HakuHelper, $q) {
     "use strict";
-
-    $scope.useVtsData = READ_FROM_VALINTAREKISTERI === "true";
 
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -118,7 +116,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
     };
 
     $scope.showErillishakuTaulukko = function() {
-        return $scope.useVtsData && $scope.isErillishakuIlmanValintalaskentaa();
+        return $scope.isErillishakuIlmanValintalaskentaa();
     };
 
     $scope.erillishaunHakemusErittelyt = {

@@ -18,6 +18,4 @@ public class Config {
     @Value("${valintalaskenta-ui.sijoitteluntulokset.show-tila-hakijalle:true}")
     public boolean showTilaHakijalleInSijoittelunTulokset;
 
-    @Value("${valintalaskenta-ui.read-from-valintarekisteri:false}")
-    public boolean readFromValintarekisteri;
 }

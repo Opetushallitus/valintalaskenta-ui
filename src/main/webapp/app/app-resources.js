@@ -433,17 +433,7 @@ app.factory('ErillishakuTuonti', function($http) {
         }
     };
 });
-app.factory('ErillishakuProxy', function($resource) {
-        return $resource(
-        plainUrl("valintalaskentakoostepalvelu.proxy.erillishaku.haku.hakukohde", ":hakuOid", ":hakukohdeOid"),
-        {
-            hakuOid: "@hakuOid",
-            hakukohdeOid: "@hakukohdeOid"
-        }, {
-            hae: {method:'GET', isArray:true, cache: false}
-        }
-    );
-});
+
 app.factory('ErillishakuHyvaksymiskirjeet', function($resource) {
   return $resource(
       window.url("valinta-tulos-service.hyvaksymiskirje"),
@@ -689,18 +679,6 @@ app.factory('HenkilotByOid', function($resource) {
     });
 });
 
-app.factory('VastaanottoTila', function($resource) {
-        return $resource(plainUrl("valintalaskentakoostepalvelu.proxy.valintatulosservice.haku.hakukohde",
-        ":hakuOid", ":hakukohdeOid", {selite : ":selite"}),
-        {
-            hakuOid: "@hakuOid",
-            hakukohdeOid: "@hakukohdeOid",
-            selite: "@selite"
-        }, {
-            post: {method: "POST"}
-        });
-});
-
 app.factory('ValintaesityksenHyvaksyminen', function($resource) {
         return $resource(plainUrl("sijoittelu-service.tila.haku.hakukohde.valintatapajono.valintaesitys",
         ":hakuOid", ":hakukohdeOid", ":hyvaksyttyJonoOid",
@@ -758,16 +736,6 @@ app.factory('Sijoittelu', function($resource) {
         {get: {method: "GET", cache: false}
     });
 });
-app.factory('SijoitteluAjo', function($resource) {
-        return $resource(
-        plainUrl("sijoittelu-service.sijoittelu.sijoitteluajo", ":hakuOid", ":sijoitteluajoOid"),
-        {
-            hakuOid: "@hakuOid",
-            sijoitteluajoOid:"@sijoitteluajoOid"
-        }, {
-            get: {method: "GET", cache: false}
-        });
-});
 
 app.factory('VtsSijoitteluAjoPerustiedot', function($resource) {
     return $resource(
@@ -780,33 +748,11 @@ app.factory('VtsSijoitteluAjoPerustiedot', function($resource) {
         });
 });
 
-app.factory('LatestSijoittelunTilat', function($resource) {
-        return $resource(plainUrl("sijoittelu-service.sijoittelu.sijoitteluajo.hakemus",
-        ":hakuOid", "latest", ":hakemusOid"),
-        {
-            hakemusOid: "@hakemusOid",
-            hakuOid:"@hakuOid"
-        }, {
-            get: {method: "GET", cache: false}
-        });
-});
-
 app.factory('VtsLatestSijoittelunTilat', function($resource) {
     return $resource(plainUrl("valinta-tulos-service.sijoittelu.sijoitteluajo.hakemus",
         ":hakuOid", "latest", ":hakemusOid"),
         {
             hakemusOid: "@hakemusOid",
-            hakuOid:"@hakuOid"
-        }, {
-            get: {method: "GET", cache: false}
-        });
-});
-
-app.factory('LatestSijoitteluajoHakukohde', function($resource) {
-        return $resource(plainUrl("sijoittelu-service.sijoittelu.sijoitteluajo.hakukohde",
-        ":hakuOid", "latest", ":hakukohdeOid"),
-        {
-            hakukohdeOid: "@hakukohdeOid",
             hakuOid:"@hakuOid"
         }, {
             get: {method: "GET", cache: false}

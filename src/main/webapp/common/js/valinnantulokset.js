@@ -7,8 +7,7 @@
 angular.module('valintalaskenta')
 
   .factory('Valinnantulokset', [function () {
-    var valinnantulokset = {},
-      useVtsData = READ_FROM_VALINTAREKISTERI === "true";
+    var valinnantulokset = {};
 
     valinnantulokset.compareOldAndNewVtsResponse = function(oldVtsValintatapajono, newVtsValinnantulokset, checkKeys) {
       compareValintatapajonoValinnantulokset(oldVtsValintatapajono, newVtsValinnantulokset);
@@ -37,7 +36,7 @@ angular.module('valintalaskenta')
                 ' on key ' + key.oldKey + ' (' + key.newKey + ')' + ': ' + oldValue + ' != ' + newValue);
               logValinnantulos = true;
             }
-            if (useVtsData) oldHakemus[key.oldKey] = newValue;
+            oldHakemus[key.oldKey] = newValue;
           });
           if (logValinnantulos) {
             console.log(newValinnantulos);
