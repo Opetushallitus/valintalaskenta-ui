@@ -166,6 +166,12 @@
                                 <td data-title="(t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila')" sortable="'tilaPrioriteetti'">
                                     <show-sijoittelun-tila hakemus="hakemus" user-lang="userLang" on-edit="addMuokattuHakemus(hakemus)"></show-sijoittelun-tila>
                                     <siirtynyt-toisesta-valintatapajonosta-indicator hakemus="hakemus"></siirtynyt-toisesta-valintatapajonosta-indicator>
+                                    <modal ng-if="!readFromVts" modal-template="sijoitteluTilaHistoriaModal.html">
+                                        <modal-open>
+                                            {{(hakemus.tilaHistoria
+                                            | orderBy:'luotu':true | limitTo:1)[0].luotu | date:'dd.MM.yyyy HH:mm'}}
+                                        </modal-open>
+                                    </modal>
                                     <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap testEhdollinenValinta">
                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                         <input ng-disabled="!(updateOrg)" type="checkbox" ng-model="hakemus.ehdollisestiHyvaksyttavissa" ng-change="addMuokattuHakemus(hakemus)"/><br />
@@ -243,9 +249,18 @@
                                     <a href=""
                                        class="btn btn-default btn-sm"
                                        role="button"
+                                       ng-if="readFromVts"
                                        ng-click="openValinnantuloksenHistoriaModal(jono.oid, hakemus.hakemusOid)">
                                         {{ t('sijoitteluntulos.muutoshistoria') || 'Muutoshistoria' }}
                                     </a>
+                                    <span ng-if="!readFromVts && hakemus.naytetaanVastaanottotieto && hakemus.logEntries[hakemus.logEntries.length-1].luotu">{{showCorrectHakemuksenTila(hakemus.muokattuVastaanottoTila)}}</span>
+                                    <modal ng-if="!readFromVts && hakemus.naytetaanVastaanottotieto" modal-template="sijoitteluLogModal.html">
+                                        <modal-open>
+                                            {{hakemus.logEntries[hakemus.logEntries.length-1].luotu
+                                            | date:'dd.MM.yyyy HH:mm'}}
+                                        </modal-open>
+
+                                    </modal>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.muokkaa') || 'Muokkaa')" sortable="'muokattuIlmoittautumisTila'">
                                     <sijoittelu-vastaanotto-tila hakemus="hakemus"

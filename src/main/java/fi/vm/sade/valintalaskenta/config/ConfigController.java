@@ -27,6 +27,7 @@ public class ConfigController {
             append(b, "AUTH_MODE", config.authMode);
         }
         append(b, "SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET", Boolean.toString(config.showTilaHakijalleInSijoittelunTulokset));
+        append(b, "READ_FROM_VALINTAREKISTERI", Boolean.toString(config.readFromValintarekisteri));
         return b.toString();
     }
 
