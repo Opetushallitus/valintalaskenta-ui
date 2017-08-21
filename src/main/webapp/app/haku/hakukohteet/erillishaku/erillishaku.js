@@ -674,6 +674,7 @@ angular.module('valintalaskenta')
           if (valintatulos.muokattuVastaanottoTila && valintatulos.muokattuVastaanottoTila !== valintatulos.tila) {
             var vastaavaHakemus = _.find(hakemukset, function(hakemus) { return hakemus.hakemusOid === valintatulos.hakemusOid; });
             vastaavaHakemus.valintatuloksentila = valintatulos.muokattuVastaanottoTila;
+            vastaavaHakemus.hakemuksentila = $scope.valintaTuloksenTilaToHakemuksenTila[valintatulos.muokattuVastaanottoTila];
             $scope.addMuokattuHakemus(vastaavaHakemus);
           }
         });

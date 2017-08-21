@@ -9,7 +9,7 @@ angular.module('valintalaskenta')
       var muokatutValintatulokset = [];
       valintatulokset.forEach(function(valintatulos) {
         if (valintatulos.julkaistavissa && "HYLATTY" !== valintatulos.tila && ("EI_VASTAANOTETTU_MAARA_AIKANA" === valintatulos.tilaHakijalle || valintatulos.vastaanottoAikarajaMennyt)) {
-          valintatulos.muokattuVastaanottoTila = "EI_VASTAANOTETTU_MAARA_AIKANA"
+          valintatulos.muokattuVastaanottoTila = "EI_VASTAANOTETTU_MAARA_AIKANA";
           muokatutValintatulokset.push(valintatulos);
         }
       });
