@@ -206,7 +206,7 @@ angular.module('valintalaskenta')
           hakemus.vastaanottoAikaraja = valintatulos.vastaanottoDeadline
         }
     };
-
+    var modelLoader = null;
     var model = new function () {
         this.hakuOid = null;
         this.hakukohdeOid = null;
@@ -454,10 +454,11 @@ angular.module('valintalaskenta')
         this.refreshIfNeeded = function (hakuOid, hakukohdeOid, isHakukohdeChanged) {
         	if(hakukohdeOid && hakuOid) {
 	            if (model.hakuOid !== hakuOid || model.hakukohdeOid !== hakukohdeOid || isHakukohdeChanged) {
-	                return model.refresh(hakuOid, hakukohdeOid);
+                    modelLoader = model.refresh(hakuOid, hakukohdeOid);
+                    return modelLoader;
 	            }
         	}
-        	return $q.when(true);
+        	return modelLoader;
         };
 
         this.muokattuHakemusToLukuvuosimaksu = function(hakemus) {
