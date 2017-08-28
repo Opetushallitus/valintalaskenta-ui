@@ -231,7 +231,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
         link: function ($scope) {
 
         },
-        controller: function ($scope, VastaanottoTila, HakemuksenVastaanottoTila, $modal, LocalisationService, ValinnanTulos) {
+        controller: function ($scope, HakemuksenVastaanottoTila, $modal, LocalisationService, ValinnanTulos) {
 
             $scope.t = LocalisationService.tl;
             $scope.show = function () {
