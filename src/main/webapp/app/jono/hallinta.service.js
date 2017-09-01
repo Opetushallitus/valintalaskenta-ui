@@ -38,7 +38,7 @@ function seurantaservice($http, CacheFactory) {
 
   function queryUsernameByOid(userOID) {
     var userCache = CacheFactory.get('userCache');
-    return $http.get(window.url("authentication-service.henkilo", userOID), {cache: userCache})
+    return $http.get(window.url("oppijanumerorekisteri-service.henkilo", userOID), {cache: userCache})
       .then(function(response) {
         return response.data;
       })

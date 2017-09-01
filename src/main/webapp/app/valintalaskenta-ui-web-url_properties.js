@@ -163,7 +163,7 @@ window.urls.addProperties({
 
     "authentication-henkiloui.henkilo" : "/authentication-henkiloui/html/index.html#/henkilo/$1",
     "authentication-henkiloui.henkilo.permissioncheckservice" : "/authentication-henkiloui/html/henkilo/$1/?permissionCheckService=$2",
-    "authentication-service.henkilo" : "/authentication-service/resources/henkilo/$1",
+    "oppijanumerorekisteri-service.henkilo" : "/oppijanumerorekisteri-service/henkilo/$1",
 
     "oppijanumerorekisteri-service.login" :"/oppijanumerorekisteri-service/cas/prequel",
     "oppijanumerorekisteri-service.henkilo.henkiloPerustietosByHenkiloOidList" : "/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList",
