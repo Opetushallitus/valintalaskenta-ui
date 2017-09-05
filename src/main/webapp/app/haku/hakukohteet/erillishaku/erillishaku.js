@@ -116,6 +116,10 @@ angular.module('valintalaskenta')
         {value: "PERUUTETTU", text_prop: "sijoitteluntulos.peruutettu", default_text:"Peruutettu"}
       ];
 
+      $scope.hakemuksenTilaToText = function(tila) {
+        return _.findWhere($scope.hakemuksentilat, {value: tila}).text_prop;
+      };
+
       $scope.ilmoittautumistilat = [
         {value: "EI_TEHTY", text_prop: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},
         {value: "LASNA_KOKO_LUKUVUOSI", text_prop: "sijoitteluntulos.enrollmentinfo.present", default_text:"Läsnä (koko lukuvuosi)"},
