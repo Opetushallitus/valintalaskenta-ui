@@ -127,7 +127,7 @@ angular.module('valintalaskenta')
     });
 
     function metaInUserLang(meta) {
-        return _.findWhere(meta, {kieli: $rootScope.userLang.toUpperCase()}) ||
+        return _.findWhere(meta, {kieli: $scope.userLang.toUpperCase()}) ||
             _.findWhere(meta, {kieli: 'FI'});
     }
 
