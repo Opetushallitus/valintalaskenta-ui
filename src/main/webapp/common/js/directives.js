@@ -538,43 +538,52 @@ app.directive("valintatulos", function ($rootScope) {
             "SV": "Godkänd"
         },
         "Kesken": {
-            "FI": "Opiskelijavalinta kesken"
+            "FI": "Opiskelijavalinta kesken",
+            "SV": "[sv] Opiskelijavalinta kesken"
         },
         "HarkinnanvaraisestiHyvaksytty": {
             "FI": "Hyväksytty",
             "SV": "Godkänd"
         },
         "Varalla": {
-            "FI": "__varasija__. varasijalla"
+            "FI": "__varasija__. varasijalla",
+            "SV": "[sv] __varasija__. varasijalla"
         },
         "VarallaPvm": {
-            "FI": "__varasija__._varasijalla. Varasijoja täytetään __varasijaPvm__ asti."
+            "FI": "__varasija__._varasijalla. Varasijoja täytetään __varasijaPvm__ asti.",
+            "SV": "[sv] __varasija__._varasijalla. Varasijoja täytetään __varasijaPvm__ asti."
         },
         "Peruutettu": {
             "FI": "Peruutettu",
             "SV": "Annullerad"
         },
         "Perunut": {
-            "FI": "Peruit opiskelupaikan"
+            "FI": "Peruit opiskelupaikan",
+            "SV": "[sv] Peruit opiskelupaikan"
         },
         "Peruuntunut": {
-            "FI": "Peruuntunut"
+            "FI": "Peruuntunut",
+            "SV": "[sv] Peruuntunut"
         },
         "VarasijaltaHyvaksytty": {
-            "FI": "Hyväksytty varasijalta"
+            "FI": "Hyväksytty varasijalta",
+            "SV": "[sv] Hyväksytty varasijalta varasijaltauntunut"
         },
         "VastaanottanutSitovasti": {
             "FI": "Opiskelupaikka vastaanotettu",
             "SV": "Studieplatsen mottagits"
         },
         "Hylatty": {
-            "FI": "Et saanut opiskelupaikkaa."
+            "FI": "Et saanut opiskelupaikkaa.",
+            "SV": "[sv] Et saanut opiskelupaikkaa."
         },
         "EhdollisestiVastaanottanut": {
-            "FI": "Opiskelupaikka vastaanotettu ehdollisesti"
+            "FI": "Opiskelupaikka vastaanotettu ehdollisesti",
+            "SV": "[sv] Opiskelupaikka vastaanotettu ehdollisesti"
         },
         "EiVastaanotettuMaaraAikana": {
-            "FI": "Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä"
+            "FI": "Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä",
+            "SV": "[sv] Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä"
         }
     };
 
@@ -700,7 +709,7 @@ app.directive('showPersonInfoWithVtsData', ["ValintaTulosProxy", function (Valin
             henkiloOid: '@'
         },
         templateUrl: '../common/html/personInformationPartial.html',
-        controller: function ($modal, $scope) {
+        controller: function ($modal, $scope, LocalisationService) {
             $scope.url = window.url;
             $scope.show = function () {
                 fetchVTSData($scope, $scope.hakuOid, $scope.hakemusOid);
@@ -950,8 +959,9 @@ app.directive('muokattuVastaanottoTila', function () {
             onHakemusUpdate: '&'
         },
         templateUrl: '../common/html/muokattuvastaanottotila.html',
-        controller: function ($scope, AuthService, Korkeakoulu) {
+        controller: function ($scope, AuthService, Korkeakoulu, LocalisationService) {
             $scope.isEhdollisestiHyvaksyttavissaOlevaEhtoEditable = true;
+            $scope.t = LocalisationService.tl;
             var updateEditable = function(hakemus, isKk, updateOph) {
                 $scope.isEditable =
                     (hakemus.muokattuVastaanottoTila !== "OTTANUT_VASTAAN_TOISEN_PAIKAN"
@@ -1029,7 +1039,8 @@ app.directive('showSijoittelunTila', function () {
             onEdit: '&'
         },
         templateUrl: '../common/html/showSijoittelunTila.html',
-        controller: function ($modal, $scope, AuthService) {
+        controller: function ($modal, $scope, AuthService, LocalisationService) {
+            $scope.t = LocalisationService.tl;
             var l = function (newval, oldval) {
                 if (newval !== oldval) {
                     var peruuntunut = "PERUUNTUNUT" === $scope.hakemus.tila;
@@ -1039,7 +1050,18 @@ app.directive('showSijoittelunTila', function () {
                         hyvaksyttyPeruuntuneena ||
                         $scope.showHyvaksyPeruuntunut);
                     $scope.id = $scope.hakemus.valintatapajonoOid + "-" + $scope.hakemus.hakemusOid.replace(/\./g, "");
-                    $scope.tilaText = $scope.hakemuksenTilaToText($scope.hakemus.tila) || $scope.hakemus.tila;
+
+                    var hakemuksenTilaToText = {
+                        "HYLATTY": "sijoitteluntulos.hylatty",
+                        "VARALLA": "sijoitteluntulos.varalla",
+                        "PERUUNTUNUT": "sijoitteluntulos.peruuntunut",
+                        "VARASIJALTA_HYVAKSYTTY": "sijoitteluntulos.varasijalta",
+                        "HYVAKSYTTY": "sijoitteluntulos.hyvaksytty",
+                        "PERUNUT": "sijoitteluntulos.perunut",
+                        "PERUUTETTU": "sijoitteluntulos.peruutettu"
+                    };
+
+                    $scope.tilaText = hakemuksenTilaToText[$scope.hakemus.tila] || $scope.hakemus.tila;
                 }
             };
             $scope.canHyvaksyPeruuntunut = false;
