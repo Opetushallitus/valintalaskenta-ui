@@ -13,5 +13,9 @@
     <mvc:annotation-driven/>
     <context:annotation-config />
     <bean id="configController" class="fi.vm.sade.valintalaskenta.config.OverridingConfigController"/>
+    <bean id="urlConfiguration" class="fi.vm.sade.valintalaskenta.config.UrlConfiguration"/>
+    <bean id="frontPropertiesResource" class="fi.vm.sade.valintalaskenta.config.FrontPropertiesResource">
+        <constructor-arg name="urlConfiguration" ref="urlConfiguration"/>
+    </bean>
 
 </beans>
