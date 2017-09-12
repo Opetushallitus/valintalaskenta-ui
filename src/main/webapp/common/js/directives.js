@@ -567,7 +567,7 @@ app.directive("valintatulos", function ($rootScope) {
         },
         "VarasijaltaHyvaksytty": {
             "FI": "Hyväksytty varasijalta",
-            "SV": "[sv] Hyväksytty varasijalta varasijaltauntunut"
+            "SV": "[sv] Hyväksytty varasijalta"
         },
         "VastaanottanutSitovasti": {
             "FI": "Opiskelupaikka vastaanotettu",
@@ -618,7 +618,7 @@ app.directive("valintatulos", function ($rootScope) {
             };
 
             $scope.$watch("isFinal()", function (value) {
-                $scope.status = value ? "personinformationmodal.lopullinen" : "personinformationmodal.keske";
+                $scope.status = value ? "personinformationmodal.lopullinen" : "personinformationmodal.kesken";
             });
 
             $scope.valintatulosText = function (valintatulos) {
