@@ -539,7 +539,7 @@ app.directive("valintatulos", function ($rootScope) {
         },
         "Kesken": {
             "FI": "Opiskelijavalinta kesken",
-            "SV": "[sv] Opiskelijavalinta kesken"
+            "SV": "Antagningen inte färdig"
         },
         "HarkinnanvaraisestiHyvaksytty": {
             "FI": "Hyväksytty",
@@ -547,11 +547,11 @@ app.directive("valintatulos", function ($rootScope) {
         },
         "Varalla": {
             "FI": "__varasija__. varasijalla",
-            "SV": "[sv] __varasija__. varasijalla"
+            "SV": "På __varasija__. reservplats"
         },
         "VarallaPvm": {
             "FI": "__varasija__._varasijalla. Varasijoja täytetään __varasijaPvm__ asti.",
-            "SV": "[sv] __varasija__._varasijalla. Varasijoja täytetään __varasijaPvm__ asti."
+            "SV": "På __varasija__._reservplats. Reservplatser besätts fram till __varasijaPvm__."
         },
         "Peruutettu": {
             "FI": "Peruutettu",
@@ -559,15 +559,15 @@ app.directive("valintatulos", function ($rootScope) {
         },
         "Perunut": {
             "FI": "Peruit opiskelupaikan",
-            "SV": "[sv] Peruit opiskelupaikan"
+            "SV": "Du har annullerat studieplatsen"
         },
         "Peruuntunut": {
             "FI": "Peruuntunut",
-            "SV": "[sv] Peruuntunut"
+            "SV": "Annullerad"
         },
         "VarasijaltaHyvaksytty": {
             "FI": "Hyväksytty varasijalta",
-            "SV": "[sv] Hyväksytty varasijalta"
+            "SV": "Godkänd från reservplats"
         },
         "VastaanottanutSitovasti": {
             "FI": "Opiskelupaikka vastaanotettu",
@@ -575,15 +575,15 @@ app.directive("valintatulos", function ($rootScope) {
         },
         "Hylatty": {
             "FI": "Et saanut opiskelupaikkaa.",
-            "SV": "[sv] Et saanut opiskelupaikkaa."
+            "SV": "Du fick inte en studieplats."
         },
         "EhdollisestiVastaanottanut": {
             "FI": "Opiskelupaikka vastaanotettu ehdollisesti",
-            "SV": "[sv] Opiskelupaikka vastaanotettu ehdollisesti"
+            "SV": "Du har tagit emot studieplatsen villkorligt"
         },
         "EiVastaanotettuMaaraAikana": {
             "FI": "Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä",
-            "SV": "[sv] Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä"
+            "SV": "Du tog inte emot studieplatsen inom utsatt tid"
         }
     };
 
