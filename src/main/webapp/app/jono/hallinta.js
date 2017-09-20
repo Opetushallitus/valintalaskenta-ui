@@ -1,5 +1,5 @@
 angular
-  .module('valintalaskenta.jononhallinta', ['ui.bootstrap', 'angular-cache'])
+  .module('valintalaskenta.jononhallinta', ['ui.bootstrap', 'angular-cache', 'ngCookies'])
   .constant("JOB_STATES", {
     RUNNING: "MENEILLAAN",
     QUEUEING: "ALOITTAMATTA",
@@ -14,6 +14,23 @@ angular
   .config(function(CacheFactoryProvider) {
     angular.extend(CacheFactoryProvider.defaults, { maxAge: 15 * 60 * 1000 });
   })
+  .config(['$httpProvider', function ($httpProvider) {
+      $httpProvider.interceptors.push(function ($cookies) {
+          return {
+              request: function (config) {
+                  config.headers['clientSubSystemCode'] = "valintaperusteet.valintalaskenta-ui.valintalaskenta.jononhallinta";
+
+                  var csrfToken = $cookies.get('CSRF');
+                  if (csrfToken) {
+                      config.headers['CSRF'] = csrfToken;
+                      console.debug("CSRF header '%s' set", csrfToken);
+                  }
+
+                  return config;
+              }
+          }
+      })
+  }])
   .filter('timeFromNow', function() {
     return function(input) {
         return moment(new Date(input).toISOString()).fromNow();

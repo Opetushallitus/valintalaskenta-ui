@@ -993,4 +993,3 @@ angular.module('valintalaskenta')
                 return $resource(plainUrl("ohjausparametrit-service.parametri", ":hakuOid"),
             {hakuOid: "@hakuOid"});
     }]);
-
