@@ -116,7 +116,20 @@ angular.module('valintalaskenta')
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
     $scope.muutettu = false;
 
-    $scope.pohjakoulutukset = Pohjakoulutukset;
+    Pohjakoulutukset.query(function (result) {
+        $scope.pohjakoulutukset = {};
+
+        result.forEach(function (koodi) {
+            const numero = (koodi.koodiUri.split('_'))[1];
+            const nimi = metaInUserLang(koodi.metadata).nimi;
+            $scope.pohjakoulutukset[numero] = nimi;
+        });
+    });
+
+    function metaInUserLang(meta) {
+        return _.findWhere(meta, {kieli: $scope.userLang.toUpperCase()}) ||
+            _.findWhere(meta, {kieli: 'FI'});
+    }
 
     ParametriService($routeParams.hakuOid).then(function (privileges) {
         $scope.inputdisabled = !privileges["harkinnanvarainenpaatostallennus"];

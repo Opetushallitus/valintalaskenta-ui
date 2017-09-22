@@ -972,6 +972,10 @@ angular.module('valintalaskenta')
         return $resource(window.url("koodisto-service.codeelement.codes.kausi", 1));
     }])
 
+    .factory('Pohjakoulutukset', ['$resource', function ($resource) {
+        return $resource(window.url("koodisto-service.codeelement.codes.pohjakoulutus", 1));
+    }])
+
     .factory('EhdollisenHyvaksymisenEhdot', ['$resource', function ($resource) {
         return $resource(window.url("koodisto-service.codeelement.codes.ehdollisenHyvaksymisenEhto", 1));
     }])

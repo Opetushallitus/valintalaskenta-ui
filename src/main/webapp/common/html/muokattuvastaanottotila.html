@@ -1,3 +1,3 @@
 <select ng-disabled="!isEditable" ng-change="handleTilaChange(hakemus)" ng-model="hakemus.muokattuVastaanottoTila"
-        ng-options="tila.value as tila.default_text disable when tila.disable for tila in hakemuksenMuokattuVastaanottoTilat">
+        ng-options="tila.value as t(tila.text_prop) disable when tila.disable for tila in hakemuksenMuokattuVastaanottoTilat">
 </select>

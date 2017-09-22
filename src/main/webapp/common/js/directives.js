@@ -533,20 +533,67 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
 
 app.directive("valintatulos", function ($rootScope) {
     var resultState = {
-        "Hyvaksytty": "Hyväksytty",
-            "Kesken": "Opiskelijavalinta kesken",
-            "HarkinnanvaraisestiHyvaksytty": "Hyväksytty",
-            "Varalla": "__varasija__. varasijalla",
-            "VarallaPvm": "__varasija__._varasijalla. Varasijoja täytetään __varasijaPvm__ asti.",
-            "Peruutettu": "Peruutettu",
-            "Perunut": "Peruit opiskelupaikan",
-            "Peruuntunut": "Peruuntunut",
-            "VarasijaltaHyvaksytty": "Hyväksytty varasijalta",
-            "VastaanottanutSitovasti": "Opiskelupaikka vastaanotettu",
-            "Hylatty": "Et saanut opiskelupaikkaa.",
-            "EhdollisestiVastaanottanut": "Opiskelupaikka vastaanotettu ehdollisesti",
-            "EiVastaanotettuMaaraAikana": "Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä"
+        "Hyvaksytty": {
+            "FI": "Hyväksytty",
+            "SV": "Godkänd"
+        },
+        "Kesken": {
+            "FI": "Opiskelijavalinta kesken",
+            "SV": "Antagningen inte färdig"
+        },
+        "HarkinnanvaraisestiHyvaksytty": {
+            "FI": "Hyväksytty",
+            "SV": "Godkänd"
+        },
+        "Varalla": {
+            "FI": "__varasija__. varasijalla",
+            "SV": "På __varasija__. reservplats"
+        },
+        "VarallaPvm": {
+            "FI": "__varasija__._varasijalla. Varasijoja täytetään __varasijaPvm__ asti.",
+            "SV": "På __varasija__._reservplats. Reservplatser besätts fram till __varasijaPvm__."
+        },
+        "Peruutettu": {
+            "FI": "Peruutettu",
+            "SV": "Annullerad"
+        },
+        "Perunut": {
+            "FI": "Peruit opiskelupaikan",
+            "SV": "Du har annullerat studieplatsen"
+        },
+        "Peruuntunut": {
+            "FI": "Peruuntunut",
+            "SV": "Annullerad"
+        },
+        "VarasijaltaHyvaksytty": {
+            "FI": "Hyväksytty varasijalta",
+            "SV": "Godkänd från reservplats"
+        },
+        "VastaanottanutSitovasti": {
+            "FI": "Opiskelupaikka vastaanotettu",
+            "SV": "Studieplatsen mottagits"
+        },
+        "Hylatty": {
+            "FI": "Et saanut opiskelupaikkaa.",
+            "SV": "Du fick inte en studieplats."
+        },
+        "EhdollisestiVastaanottanut": {
+            "FI": "Opiskelupaikka vastaanotettu ehdollisesti",
+            "SV": "Du har tagit emot studieplatsen villkorligt"
+        },
+        "EiVastaanotettuMaaraAikana": {
+            "FI": "Et ottanut opiskelupaikkaa vastaan määräaikaan mennessä",
+            "SV": "Du tog inte emot studieplatsen inom utsatt tid"
+        }
     };
+
+    function resultStateToText(value) {
+        var language =  $rootScope.userLang.toUpperCase();
+        var translations = resultState[value];
+        return translations
+            ? (translations[language] || translations['FI'])
+            : value;
+    }
 
     function underscoreToCamelCase(str) {
         return str.toLowerCase().replace(/^(.)|_(.)/g, function (match, char1, char2) {
@@ -571,7 +618,7 @@ app.directive("valintatulos", function ($rootScope) {
             };
 
             $scope.$watch("isFinal()", function (value) {
-                $scope.status = value ? "Lopullinen" : "Kesken";
+                $scope.status = value ? "personinformationmodal.lopullinen" : "personinformationmodal.kesken";
             });
 
             $scope.valintatulosText = function (valintatulos) {
@@ -579,11 +626,11 @@ app.directive("valintatulos", function ($rootScope) {
                 var lang = ($rootScope.userLang || 'FI').toUpperCase();
                 if (["VASTAANOTTANUT_SITOVASTI", "EI_VASTAANOTETTU_MAARA_AIKANA", "EHDOLLISESTI_VASTAANOTTANUT"].indexOf(valintatulos.vastaanottotila) >= 0) {
                     key = underscoreToCamelCase(valintatulos.vastaanottotila)
-                    return resultState[key]
+                    return resultStateToText(key);
                 } else if (!_.isEmpty(valintatulos.tilanKuvaukset) && !_.isEmpty(valintatulos.tilanKuvaukset[lang])) {
                     var tilankuvaus = valintatulos.tilanKuvaukset[lang];
                     if (valintatulos.valintatila === "HYLATTY") {
-                        return resultState[key] + " " + tilankuvaus;
+                        return resultStateToText(key) + " " + tilankuvaus;
                     } else if(hyvaksytty(valintatulos) && valintatulos.ehdollisestiHyvaksyttavissa) {
                         var ehdollinenSyy = "ehdollinen";
                         if(valintatulos.ehdollisenHyvaksymisenEhtoKoodi != ""){
@@ -594,7 +641,7 @@ app.directive("valintatulos", function ($rootScope) {
                                 ehdollinenSyy = valintatulos.ehdollisenHyvaksymisenEhtoEN;
                             }
                         }
-                        return resultState[key] + " ("+ehdollinenSyy+")"
+                        return resultStateToText(key) + " ("+ehdollinenSyy+")"
                     } else {
                         return tilankuvaus;
                     }
@@ -613,9 +660,9 @@ app.directive("valintatulos", function ($rootScope) {
                                 ehdollinenSyy = valintatulos.ehdollisenHyvaksymisenEhtoEN;
                             }
                         }
-                        return resultState[key] + " ("+ehdollinenSyy+")"
+                        return resultStateToText(key) + " ("+ehdollinenSyy+")"
                     } else {
-                        return resultState[key];
+                        return resultStateToText(key);
                     }
                 }
             };
@@ -662,10 +709,11 @@ app.directive('showPersonInfoWithVtsData', ["ValintaTulosProxy", function (Valin
             henkiloOid: '@'
         },
         templateUrl: '../common/html/personInformationPartial.html',
-        controller: function ($modal, $scope) {
+        controller: function ($modal, $scope, LocalisationService) {
             $scope.url = window.url;
             $scope.show = function () {
                 fetchVTSData($scope, $scope.hakuOid, $scope.hakemusOid);
+                $scope.t = LocalisationService.tl;
                 $modal.open({
                     scope: $scope,
                     templateUrl: '../common/html/personInformationModalWithVTSData.html',
@@ -911,8 +959,9 @@ app.directive('muokattuVastaanottoTila', function () {
             onHakemusUpdate: '&'
         },
         templateUrl: '../common/html/muokattuvastaanottotila.html',
-        controller: function ($scope, AuthService, Korkeakoulu) {
+        controller: function ($scope, AuthService, Korkeakoulu, LocalisationService) {
             $scope.isEhdollisestiHyvaksyttavissaOlevaEhtoEditable = true;
+            $scope.t = LocalisationService.tl;
             var updateEditable = function(hakemus, isKk, updateOph) {
                 $scope.isEditable =
                     (hakemus.muokattuVastaanottoTila !== "OTTANUT_VASTAAN_TOISEN_PAIKAN"
@@ -990,7 +1039,8 @@ app.directive('showSijoittelunTila', function () {
             onEdit: '&'
         },
         templateUrl: '../common/html/showSijoittelunTila.html',
-        controller: function ($modal, $scope, AuthService) {
+        controller: function ($modal, $scope, AuthService, LocalisationService) {
+            $scope.t = LocalisationService.tl;
             var l = function (newval, oldval) {
                 if (newval !== oldval) {
                     var peruuntunut = "PERUUNTUNUT" === $scope.hakemus.tila;
@@ -1000,6 +1050,18 @@ app.directive('showSijoittelunTila', function () {
                         hyvaksyttyPeruuntuneena ||
                         $scope.showHyvaksyPeruuntunut);
                     $scope.id = $scope.hakemus.valintatapajonoOid + "-" + $scope.hakemus.hakemusOid.replace(/\./g, "");
+
+                    var hakemuksenTilaToText = {
+                        "HYLATTY": "sijoitteluntulos.hylatty",
+                        "VARALLA": "sijoitteluntulos.varalla",
+                        "PERUUNTUNUT": "sijoitteluntulos.peruuntunut",
+                        "VARASIJALTA_HYVAKSYTTY": "sijoitteluntulos.varasijalta",
+                        "HYVAKSYTTY": "sijoitteluntulos.hyvaksytty",
+                        "PERUNUT": "sijoitteluntulos.perunut",
+                        "PERUUTETTU": "sijoitteluntulos.peruutettu"
+                    };
+
+                    $scope.tilaText = hakemuksenTilaToText[$scope.hakemus.tila] || $scope.hakemus.tila;
                 }
             };
             $scope.canHyvaksyPeruuntunut = false;

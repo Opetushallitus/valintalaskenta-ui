@@ -28,16 +28,6 @@ if (window.mocksOn) {
     angular.module('valintalaskenta').requires.push('e2e-mocks');
 }
 
-app.constant('Pohjakoulutukset', {
-	0: "Ulkomailla suoritettu koulutus",
-	1: "Perusopetuksen oppimäärä",
-	2: "Perusopetuksen osittain yksilöllistetty oppimäärä",
-	3: "Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain",
-	6: "Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä",
-	7: "Oppivelvollisuuden suorittaminen keskeytynyt (ei päättötodistusta)",
-	9: "Lukion päättötodistus, ylioppilastutkinto tai abiturientti"
-});
-
 app.constant('IlmoitusTila', {
 	INFO: 'success',
 	WARNING: 'warning',
