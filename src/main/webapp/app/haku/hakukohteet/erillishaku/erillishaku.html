@@ -235,6 +235,16 @@
                                 </div>
                             </td>
                             -->
+                            <td data-title="(t('sijoitteluntulos.muokattu') || 'Muokattu')" sortable="'muokattuVastaanottoTila'">
+                                <div ng-if="tulos.loytyiSijoittelusta">
+                                    <a href=""
+                                       class="btn btn-default btn-sm"
+                                       role="button"
+                                       ng-click="openValinnantuloksenHistoriaModal(tulos.valintatapajonoOid, tulos.hakemusOid)">
+                                        {{ t('sijoitteluntulos.muutoshistoria') || 'Muutoshistoria' }}
+                                    </a>
+                                </div>
+                            </td>
                             <td data-title="t('sijoitteluntulos.toiminto') || 'Toiminto'">
                                 <div ng-if="tulos.hakemuksentila == 'HYVAKSYTTY' || tulos.hakemuksentila == 'VARASIJALTA_HYVAKSYTTY'">
                                     <a ng-click="luoHyvaksymiskirjeetPDF([tulos.hakemusOid]); $event.stopPropagation()" class="btn btn-default btn-sm pdf">{{ t('sijoitteluntulos.hyvaksymiskirje') || 'Hyväksymiskirje' }}</a>
@@ -286,3 +296,20 @@
         t('valintalaskentatulos.kasitellaan') || 'käsitellään' }}...
     </div>
 </div>
+
+<script type="text/ng-template" id="vtsLogModal.html">
+    <div class="modal-header">
+        {{ t('sijoitteluntulos.muutokset') || 'Muutokset' }}
+    </div>
+
+    <div class="modal-body">
+        <valinnantuloksen-historia historia="historia" />
+    </div>
+
+    <div class="modal-footer">
+        <div class="row">
+            <a class="btn btn-default btn-sm" ng-click="close()"
+               role="button">{{ t('sijoitteluntulos.sulje') || 'Sulje' }}</a>
+        </div>
+    </div>
+</script>

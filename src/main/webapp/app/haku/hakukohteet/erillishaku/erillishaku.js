@@ -13,13 +13,13 @@ angular.module('valintalaskenta')
         'ErillishakuTuonti', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Maksuvelvollisuus', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
-        'Valintaesitys',
+        'Valintaesitys', 'valinnantuloksenHistoriaService',
         function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                   ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                   ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                   VastaanottoUtil, NgTableParams, TallennaValinnat, Maksuvelvollisuus, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
                   ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut,
-                  Valintaesitys) {
+                  Valintaesitys, valinnantuloksenHistoriaService) {
       "use strict";
 
       var valintatapajonoOid = null;
@@ -728,6 +728,19 @@ angular.module('valintalaskenta')
             angular.element($event.target).parent('td').siblings().removeClass('deleting-row');
           }, 3000);
         }
+      };
+
+      $scope.openValinnantuloksenHistoriaModal = function(valintatapajonoOid, hakemusOid) {
+          $modal.open({
+              templateUrl: 'vtsLogModal.html',
+              controller: 'ValinnantuloksenHistoriaModalController',
+              size: 'lg',
+              resolve: {
+                  historia: function() {
+                      return valinnantuloksenHistoriaService.get(valintatapajonoOid, hakemusOid);
+                  }
+              }
+          });
       };
 
       function fetchAndPopulateVastaanottoAikaraja(hakuOid, hakukohdeOid, kaikkiHakemukset) {
