@@ -608,6 +608,9 @@ app.directive("valintatulos", function ($rootScope) {
             isFinal: '&final'
         },
         templateUrl: '../common/html/valintatulos.html',
+        controller: function($modal, $scope, LocalisationService) {
+            $scope.t = LocalisationService.tl;
+        },
         link: function ($scope, element) {
             $scope.formatDate = function (dt) {
                 if (dt == null)
