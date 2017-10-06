@@ -36,7 +36,8 @@ app.factory('PistesyottoModel', function (
             ]).then(function(results) {
                 model.avaimet = results[0];
                 HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
-                model.hakeneet = results[1].map(function(pistetieto) {
+                model.lastmodified = results[1].lastmodified;
+                model.hakeneet = results[1].valintapisteet.map(function(pistetieto) {
                     var h = pistetieto.applicationAdditionalDataDTO;
                     h.filterData = {};
                     if (pistetieto.hakukohteidenOsallistumistiedot &&
@@ -93,7 +94,8 @@ app.factory('PistesyottoModel', function (
                     delete hakija.filterData;
                     delete hakija.osallistuu;
                 });
-                KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid}, hakeneet, function(success) {
+                KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid, lastmodified: model.lastmodified},
+                    hakeneet, function(success) {
                     Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
                     blockSubmit = false;
                 }, function(error) {

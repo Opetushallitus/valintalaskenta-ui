@@ -486,7 +486,7 @@ app.factory('KoostettuHakemusAdditionalData', function($resource) {
         hakukohdeOid: "@hakukohdeOid"
     },{
         get: {method: "GET", isArray: true},
-        put: {method: "PUT", isArray: true}
+        put: {method: "PUT", isArray: true, headers: {"If-Unmodified-Since": "@lastmodified"}}
     });
 });
 app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
@@ -494,7 +494,7 @@ app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
       hakemusOid: "@hakemusOid",
     }, {
         get: {method: "GET", isArray: false},
-        put: {method: "PUT", isArray: false}
+        put: {method: "PUT", isArray: false, headers: {"If-Unmodified-Since": "@lastmodified"}}
     });
 });
 app.factory('HakukohteelleJalkiohjauskirjeet', function($resource) {

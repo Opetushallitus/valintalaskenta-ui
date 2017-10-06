@@ -152,7 +152,9 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     }
                 });
 
-                KoostettuHakemusAdditionalDataForHakemus.get({hakemusOid: model.hakemus.oid}, function (pistetiedotByHakukohdeOid) {
+                KoostettuHakemusAdditionalDataForHakemus.get({hakemusOid: model.hakemus.oid}, function (pistetiedot) {
+                    var pistetiedotByHakukohdeOid = pistetiedot.hakukohteittain;
+                    model.lastmodified = pistetiedot.lastmodified;
                     hakutoiveet.forEach(function (hakutoive) {
                         HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (avaimet) {
                             hakutoive.avaimet = avaimet;
@@ -232,7 +234,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             return $q.all(model.hakutoiveet.map(function(h) {
                 return KoostettuHakemusAdditionalDataForHakemus.put(
                     {
-                        hakemusOid: model.hakemus.oid
+                        hakemusOid: model.hakemus.oid,
+                        lastmodified: model.lastmodified
                     },
                     {
                         oid: model.hakemus.oid,
