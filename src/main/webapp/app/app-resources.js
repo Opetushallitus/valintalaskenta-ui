@@ -485,7 +485,7 @@ app.factory('KoostettuHakemusAdditionalData', function($resource) {
         hakuOid: "@hakuOid",
         hakukohdeOid: "@hakukohdeOid"
     },{
-        get: {method: "GET", isArray: true},
+        get: {method: "GET", isArray: false},
         put: {method: "PUT", isArray: true, headers: {"If-Unmodified-Since": "@lastmodified"}}
     });
 });
