@@ -480,21 +480,21 @@ app.factory('OsoitetarratHakemuksille', function($resource) {
         post:  {method:'POST', isArray:false}
     });
 });
-app.factory('KoostettuHakemusAdditionalData', function($scope, $resource) {
+app.factory('KoostettuHakemusAdditionalData', function($resource) {
     return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakukohde", ":hakuOid", ":hakukohdeOid"), {
         hakuOid: "@hakuOid",
         hakukohdeOid: "@hakukohdeOid"
     },{
         get: {method: "GET", isArray: false},
-        put: {method: "PUT", isArray: true, headers: {"If-Unmodified-Since": $scope.model.lastmodified}}
+        put: {method: "PUT", isArray: true, headers: {"If-Unmodified-Since": "@lastmodified"}}
     });
 });
-app.factory('KoostettuHakemusAdditionalDataForHakemus', function($scope, $resource) {
+app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
     return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", ":hakemusOid"), {
       hakemusOid: "@hakemusOid",
     }, {
         get: {method: "GET", isArray: false},
-        put: {method: "PUT", isArray: false, headers: {"If-Unmodified-Since": $scope.model.lastmodified}}
+        put: {method: "PUT", isArray: false, headers: {"If-Unmodified-Since": "@lastmodified"}}
     });
 });
 app.factory('HakukohteelleJalkiohjauskirjeet', function($resource) {
