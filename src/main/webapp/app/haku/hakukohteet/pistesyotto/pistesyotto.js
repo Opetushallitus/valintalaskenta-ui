@@ -94,8 +94,8 @@ app.factory('PistesyottoModel', function (
                     delete hakija.filterData;
                     delete hakija.osallistuu;
                 });
-                KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid, lastmodified: model.lastmodified},
-                    hakeneet, function(success) {
+                KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid},
+                    {lastmodified: model.lastmodified, hakeneet: hakeneet}, function(success) {
                     Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
                     blockSubmit = false;
                 }, function(error) {

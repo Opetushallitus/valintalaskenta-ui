@@ -486,7 +486,14 @@ app.factory('KoostettuHakemusAdditionalData', function($resource) {
         hakukohdeOid: "@hakukohdeOid"
     },{
         get: {method: "GET", isArray: false},
-        put: {method: "PUT", isArray: true, headers: {"If-Unmodified-Since": "@lastmodified"}}
+        put: {method: "PUT", isArray: true, headers: {},
+        transformRequest : function (data, headersGetter) {
+            var headers = headersGetter();
+            if(data.lastmodified) {
+                headers["If-Unmodified-Since"] = data.lastmodified;
+            }
+            return JSON.stringify(data.hakeneet);
+        }}
     });
 });
 app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
@@ -494,7 +501,17 @@ app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
       hakemusOid: "@hakemusOid",
     }, {
         get: {method: "GET", isArray: false},
-        put: {method: "PUT", isArray: false, headers: {"If-Unmodified-Since": "@lastmodified"}}
+        put: {
+                method: "PUT", isArray: false,
+                headers: {},
+                transformRequest : function (data, headersGetter) {
+                    var headers = headersGetter();
+                    if(data.lastmodified) {
+                        headers["If-Unmodified-Since"] = data.lastmodified;
+                    }
+                    return JSON.stringify(data.hakemus);
+                }
+             }
     });
 });
 app.factory('HakukohteelleJalkiohjauskirjeet', function($resource) {
