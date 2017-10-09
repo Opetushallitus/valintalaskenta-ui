@@ -17,7 +17,7 @@ app.factory('PistesyottoNaytaKaikkiModel', function ($q, HakukohdeAvaimet, Koost
 
             model.avaimet = HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid});
 
-            KoostettuHakemusAdditionalData.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+            KoostettuHakemusAdditionalData.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid})
                 .then(function (koostetutPistetiedot) {
                     model.hakeneet = koostetutPistetiedot.map(function (pistetieto) {
                         return pistetieto.applicationAdditionalDataDTO;

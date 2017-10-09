@@ -32,7 +32,7 @@ app.factory('PistesyottoModel', function (
 
             $q.all([
                 HakukohdeAvaimet.get({hakukohdeOid: hakukohdeOid}).$promise,
-                KoostettuHakemusAdditionalData.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                KoostettuHakemusAdditionalData.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid})
             ]).then(function(results) {
                 model.avaimet = results[0];
                 HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
@@ -95,7 +95,7 @@ app.factory('PistesyottoModel', function (
                     delete hakija.osallistuu;
                 });
                 KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid},
-                    {lastmodified: model.lastmodified, hakeneet: hakeneet}, function(success) {
+                    {lastmodified: model.lastmodified, hakeneet: hakeneet}).then(function(success) {
                     Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
                     blockSubmit = false;
                 }, function(error) {

@@ -1,5 +1,54 @@
 var plainUrl = window.urls().noEncode().url;
 
+/*
+app.service('Valintaesitys', ['$http', function($http) {
+    this.findByHakukohde = function(hakukohdeOid) {
+        return $http.get(window.url('valinta-tulos-service.valintaesitys', {hakukohdeOid: hakukohdeOid}));
+    };
+    this.hyvaksy = function(valintatapajonoOid) {
+        return $http.post(window.url('valinta-tulos-service.valintaesitys.hyvaksytty', valintatapajonoOid), {});
+    };
+}]);
+*/
+
+app.factory('KoostettuHakemusAdditionalData', function($http) {
+    return {
+        get: function(query) {
+            var url = window.url("valintalaskentakoostepalvelu.pistesyotto.hakukohde", query);
+            return $http.get(url);
+        },
+        put: function(query, data) {
+            var url = window.url("valintalaskentakoostepalvelu.pistesyotto.hakukohde", query);
+            return $http({
+                method: 'PUT',
+                url: url,
+                headers: {
+                    'If-Unmodified-Since': data.lastmodified
+                },
+                data: JSON.stringify(data.hakeneet)
+            });
+        }
+    };
+});
+app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
+    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", ":hakemusOid"), {
+        hakemusOid: "@hakemusOid",
+    }, {
+        get: {method: "GET", isArray: false},
+        put: {
+            method: "PUT", isArray: false,
+            headers: {},
+            transformRequest : function (data, headersGetter) {
+                var headers = headersGetter();
+                if(data.lastmodified) {
+                    headers["If-Unmodified-Since"] = data.lastmodified;
+                }
+                return JSON.stringify(data.hakemus);
+            }
+        }
+    });
+});
+
 //TARJONTA RESOURCES
 app.factory('Haku', function($resource) {
     return $resource(window.url("tarjonta-service.haku"), {},
@@ -480,40 +529,7 @@ app.factory('OsoitetarratHakemuksille', function($resource) {
         post:  {method:'POST', isArray:false}
     });
 });
-app.factory('KoostettuHakemusAdditionalData', function($resource) {
-    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakukohde", ":hakuOid", ":hakukohdeOid"), {
-        hakuOid: "@hakuOid",
-        hakukohdeOid: "@hakukohdeOid"
-    },{
-        get: {method: "GET", isArray: false},
-        put: {method: "PUT", isArray: true, headers: {},
-        transformRequest : function (data, headersGetter) {
-            var headers = headersGetter();
-            if(data.lastmodified) {
-                headers["If-Unmodified-Since"] = data.lastmodified;
-            }
-            return JSON.stringify(data.hakeneet);
-        }}
-    });
-});
-app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
-    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", ":hakemusOid"), {
-      hakemusOid: "@hakemusOid",
-    }, {
-        get: {method: "GET", isArray: false},
-        put: {
-                method: "PUT", isArray: false,
-                headers: {},
-                transformRequest : function (data, headersGetter) {
-                    var headers = headersGetter();
-                    if(data.lastmodified) {
-                        headers["If-Unmodified-Since"] = data.lastmodified;
-                    }
-                    return JSON.stringify(data.hakemus);
-                }
-             }
-    });
-});
+
 app.factory('HakukohteelleJalkiohjauskirjeet', function($resource) {
     return $resource(window.url("valintalaskentakoostepalvelu.viestintapalvelu.hakukohteessahylatyt.aktivoi"), {}, {
         post:  {method:'POST', isArray:false}
