@@ -1,24 +1,13 @@
 var plainUrl = window.urls().noEncode().url;
 
-/*
-app.service('Valintaesitys', ['$http', function($http) {
-    this.findByHakukohde = function(hakukohdeOid) {
-        return $http.get(window.url('valinta-tulos-service.valintaesitys', {hakukohdeOid: hakukohdeOid}));
-    };
-    this.hyvaksy = function(valintatapajonoOid) {
-        return $http.post(window.url('valinta-tulos-service.valintaesitys.hyvaksytty', valintatapajonoOid), {});
-    };
-}]);
-*/
-
 app.factory('KoostettuHakemusAdditionalData', function($http) {
     return {
         get: function(query) {
-            var url = window.url("valintalaskentakoostepalvelu.pistesyotto.hakukohde", query);
-            return $http.get(url);
+            var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakukohde", query.hakuOid, query.hakukohdeOid);
+            return $http.get(url).then(function(r) { return r.data; });
         },
         put: function(query, data) {
-            var url = window.url("valintalaskentakoostepalvelu.pistesyotto.hakukohde", query);
+            var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakukohde", query.hakuOid, query.hakukohdeOid);
             return $http({
                 method: 'PUT',
                 url: url,
@@ -31,22 +20,23 @@ app.factory('KoostettuHakemusAdditionalData', function($http) {
     };
 });
 app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
-    return $resource(plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", ":hakemusOid"), {
-        hakemusOid: "@hakemusOid",
-    }, {
-        get: {method: "GET", isArray: false},
-        put: {
-            method: "PUT", isArray: false,
-            headers: {},
-            transformRequest : function (data, headersGetter) {
-                var headers = headersGetter();
-                if(data.lastmodified) {
-                    headers["If-Unmodified-Since"] = data.lastmodified;
-                }
-                return JSON.stringify(data.hakemus);
-            }
+    return {
+        get: function(query) {
+            var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", query.hakemusOid);
+            return $http.get(url).then(function(r) { return r.data; });
+        },
+        put: function(query, data) {
+            var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", query.hakemusOid);
+            return $http({
+                method: 'PUT',
+                url: url,
+                headers: {
+                    'If-Unmodified-Since': data.lastmodified
+                },
+                data: JSON.stringify(data.hakemus)
+            });
         }
-    });
+    };
 });
 
 //TARJONTA RESOURCES
