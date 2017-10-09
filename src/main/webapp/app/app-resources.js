@@ -19,7 +19,7 @@ app.factory('KoostettuHakemusAdditionalData', function($http) {
         }
     };
 });
-app.factory('KoostettuHakemusAdditionalDataForHakemus', function($resource) {
+app.factory('KoostettuHakemusAdditionalDataForHakemus', function($http) {
     return {
         get: function(query) {
             var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", query.hakemusOid);

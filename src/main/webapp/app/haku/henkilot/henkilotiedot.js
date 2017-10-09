@@ -152,7 +152,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     }
                 });
 
-                KoostettuHakemusAdditionalDataForHakemus.get({hakemusOid: model.hakemus.oid}, function (pistetiedot) {
+                KoostettuHakemusAdditionalDataForHakemus.get({hakemusOid: model.hakemus.oid}).then(function (pistetiedot) {
                     var pistetiedotByHakukohdeOid = pistetiedot.hakukohteittain;
                     model.lastmodified = pistetiedot.lastmodified;
                     hakutoiveet.forEach(function (hakutoive) {
@@ -244,7 +244,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             additionalData: h.additionalData
                         }
                     }
-                ).$promise;
+                );
             }));
         };
     }();
