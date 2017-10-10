@@ -1,5 +1,6 @@
 app.factory('PistesyottoModel', function (
     $q,
+    $window,
     HakukohdeHenkilotFull,
     HakukohdeAvaimet,
     KoostettuHakemusAdditionalData,
