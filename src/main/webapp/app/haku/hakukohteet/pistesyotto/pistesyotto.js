@@ -96,10 +96,14 @@ app.factory('PistesyottoModel', function (
                 });
                 KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid},
                     {lastmodified: model.lastmodified, hakeneet: hakeneet}).then(function(success) {
-                    Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.");
+                    Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.", IlmoitusTila.INFO, function() {
+                        $window.location.reload();
+                    });
                     blockSubmit = false;
                 }, function(error) {
-                    Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                    Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR, function() {
+                        $window.location.reload();
+                    });
                     console.log(error);
                     blockSubmit = false;
                 });
