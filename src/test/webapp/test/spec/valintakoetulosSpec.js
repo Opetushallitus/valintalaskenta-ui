@@ -79,9 +79,10 @@ describe('Valintakoetulos', function() {
                 expect(page.findNthHakijaWithPanelTitle(1, VALINTAKOE2)).to.contain('Hakija2');
             }
         ))
-        xit('Hakijat näkyy hakijoittain näkymässä ja kutsutaan oikeisiin valintakokeisiin', seqDone(
+        it('Hakijat näkyy hakijoittain näkymässä ja kutsutaan oikeisiin valintakokeisiin', seqDone(
             wait.forAngular,
             select(page.nakymaDropDown, "Hakijoittain"),
+            click(page.vainKutsuttavat),
             //wait.forAngular,
             function() {
                 expect(page.findNthHakija(0).find("td:nth(0) a").text().trim()).to.contain('Hakija1');

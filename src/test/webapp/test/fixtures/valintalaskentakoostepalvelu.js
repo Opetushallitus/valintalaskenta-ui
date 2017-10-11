@@ -145,3 +145,19 @@ function kirjeFixtures() {
     }
   });
 }
+function valintalaskentakoostepalveluFixtures() {
+    var httpBackend = testFrame().httpBackend;
+    console.log("valintalaskentakoostepalveluFixtures")
+
+    //expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.true
+    var data = [{
+        "hyvaksyPeruuntunut": true
+    }];
+    httpBackend.whenPOST(/.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/myohastyneet\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874/).respond(200,data);
+    httpBackend.whenPOST(/.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/myohastyneet\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874/).respond(200,data);
+    httpBackend.whenPOST(/.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/tilahakijalle\/haku\/.*\/hakukohde\/.*\/valintatapajono\/.*/).respond(200,'[]');
+
+}
+
+
+//valintalaskentakoostepalvelu/resources/proxy/valintatulos/haku/1.2.246.562.29.11735171271/hakemusOid/1.2.246.562.11.00007967463

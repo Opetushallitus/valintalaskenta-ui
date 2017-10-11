@@ -2,6 +2,8 @@ describe('Sijoittelun tulokset välilehti', function () {
     var commonFixturesEiOphOikeuksia = ["USER_lktesti", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_CRUD", "APP_ANOMUSTENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_EPERUSTEET", "APP_EPERUSTEET_READ", "APP_EPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_2ASTEENVASTUU", "APP_HENKILONHALLINTA_2ASTEENVASTUU_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_CRUD", "APP_HENKILONHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_CRUD", "APP_TIEDONSIIRTO_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ", "APP_VALINTAPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_LISATIETORU", "APP_HAKEMUS_LISATIETORU_1.2.246.562.10.328060821310", "APP_SUORITUSREKISTERI", "APP_SUORITUSREKISTERI_READ", "APP_SUORITUSREKISTERI_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_LETTER", "APP_ASIAKIRJAPALVELU_CREATE_LETTER_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_READ", "APP_ANOMUSTENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_VALINTAKAYTTAJA", "APP_RAPORTOINTI_VALINTAKAYTTAJA_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_READ", "APP_ASIAKIRJAPALVELU_READ_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_VALINTA", "APP_TIEDONSIIRTO_VALINTA_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_READ", "APP_HAKUJENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_READ", "APP_RAPORTOINTI_READ_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_VIEW", "APP_RYHMASAHKOPOSTI_VIEW_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_SEND", "APP_RYHMASAHKOPOSTI_SEND_1.2.246.562.10.328060821310", "APP_SIJOITTELU", "APP_SIJOITTELU_READ_UPDATE", "APP_SIJOITTELU_READ_UPDATE_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_HAKULOMAKKEENHALLINTA", "APP_HAKULOMAKKEENHALLINTA_CRUD", "APP_HAKULOMAKKEENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_OPO", "APP_RAPORTOINTI_OPO_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_OPO", "APP_HAKEMUS_OPO_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310"]
     afterEach(function () {
         if (this.currentTest.state == 'failed') {
+            console.log("Test failed")
+            console.log(this.currentTest);
             takeScreenshot()
         }
     })
@@ -27,14 +29,14 @@ describe('Sijoittelun tulokset välilehti', function () {
         })
 
         describe('avattaessa Iiris Vitsijärven tulokset', function () {
-            before(seqDone(
+           before(seqDone(
                 wait.forAngular,
                 click(sijoitteluntulokset.iirisHenkilotiedot),
                 visible(sijoitteluntulokset.modaali)
             ))
             it('näkyy, että sijoittelu kesken', function() {
                 expect(sijoitteluntulokset.koulunNimi().is(':visible')).to.equal(true)
-                assertText(sijoitteluntulokset.valintatilanne, "Kesken")
+                assertText(sijoitteluntulokset.valintatilanne, "personinformationmodal.kesken")
                 assertText(sijoitteluntulokset.valintatulosTableIndex(1, 1), "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
                 assertText(sijoitteluntulokset.valintatulosTableIndex(1, 2), "Energia- ja LVI-tekniikka, diplomi-insinööri KOULUTUS")
                 assertText(sijoitteluntulokset.valintatulosTableIndex(2, 1), "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
@@ -46,7 +48,7 @@ describe('Sijoittelun tulokset välilehti', function () {
     })
 
     describe('Opiskelijan valintatulokset, kun valinta on lopullinen', function () {
-        var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.11.00000000220");
+        var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.20.66977493197");
         before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
@@ -61,6 +63,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde00000000220Tila)()
             addTestHook(valintatulosFixture)()
             addTestHook(commonFixtures())()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             page.openPage(done);
         })
@@ -77,7 +80,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             ))
             it('näkyy, että sijoittelu on lopullinen', function() {
                 expect(sijoitteluntulokset.koulunNimi().is(':visible')).to.equal(true)
-                assertText(sijoitteluntulokset.valintatilanne, "Lopullinen")
+                assertText(sijoitteluntulokset.valintatilanne, "personinformationmodal.lopullinen")
                 assertText(sijoitteluntulokset.valintatulosTableIndex(1, 1), "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
                 assertText(sijoitteluntulokset.valintatulosTilaIndex(1), "Hyväksytty")
                 assertText(sijoitteluntulokset.valintatulosTilaIndex(2), "Peruuntunut")
@@ -114,6 +117,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde44161747595Tila)()
             addTestHook(commonFixtures())()
             addTestHook(valintatulosFixture)()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             page.openPage(done);
         })
@@ -122,14 +126,14 @@ describe('Sijoittelun tulokset välilehti', function () {
             wait.forAngular,
             enabled(sijoitteluntulokset.vastaanottotieto),
             function() {
-                assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
+                expect(sijoitteluntulokset.vastaanottotieto().children().length).to.equal(7);
+                /*assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Ehdollisesti vastaanottanut");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(2), "Vastaanottanut sitovasti");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Ei vastaanotettu määräaikana");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(4), "Perunut");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(5), "Peruutettu");
-                assertText(sijoitteluntulokset.vastaanottotietoOption(6), "Ottanut vastaan toisen paikan");
-                expect(sijoitteluntulokset.vastaanottotieto().children().length).to.equal(7);
+                assertText(sijoitteluntulokset.vastaanottotietoOption(6), "Ottanut vastaan toisen paikan");*/
             }
         ))
 
@@ -171,6 +175,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde44161747595Tila)()
             addTestHook(commonFixtures(commonFixturesEiOphOikeuksia))()
             addTestHook(valintatulosFixture)()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             page.openPage(done);
         })
@@ -209,6 +214,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde18097797874Tila)()
             addTestHook(commonFixtures())()
             addTestHook(valintatulosFixture)()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             page.openPage(done);
         })
@@ -217,11 +223,11 @@ describe('Sijoittelun tulokset välilehti', function () {
             wait.forAngular,
             enabled(sijoitteluntulokset.vastaanottotieto),
             function() {
-                assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
+                /*assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(2), "Ei vastaanotettu määräaikana");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");
-                assertText(sijoitteluntulokset.vastaanottotietoOption(4), "Peruutettu");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(4), "Peruutettu");*/
                 expect(sijoitteluntulokset.vastaanottotieto().children().length).to.equal(5);
             }
         ))
@@ -264,6 +270,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde18097797874Tila)()
             addTestHook(commonFixtures(commonFixturesEiOphOikeuksia))()
             addTestHook(valintatulosFixture)()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             page.openPage(done);
         })
@@ -306,6 +313,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde18097797874Tila)()
             addTestHook(commonFixtures(["USER_lktesti", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_CRUD", "APP_ANOMUSTENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_EPERUSTEET", "APP_EPERUSTEET_READ", "APP_EPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_2ASTEENVASTUU", "APP_HENKILONHALLINTA_2ASTEENVASTUU_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_CRUD", "APP_HENKILONHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_CRUD", "APP_TIEDONSIIRTO_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ", "APP_VALINTAPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_LISATIETORU", "APP_HAKEMUS_LISATIETORU_1.2.246.562.10.328060821310", "APP_SUORITUSREKISTERI", "APP_SUORITUSREKISTERI_READ", "APP_SUORITUSREKISTERI_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_LETTER", "APP_ASIAKIRJAPALVELU_CREATE_LETTER_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_READ", "APP_ANOMUSTENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_VALINTAKAYTTAJA", "APP_RAPORTOINTI_VALINTAKAYTTAJA_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_READ", "APP_ASIAKIRJAPALVELU_READ_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_VALINTA", "APP_TIEDONSIIRTO_VALINTA_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_READ", "APP_HAKUJENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_READ", "APP_RAPORTOINTI_READ_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_VIEW", "APP_RYHMASAHKOPOSTI_VIEW_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_SEND", "APP_RYHMASAHKOPOSTI_SEND_1.2.246.562.10.328060821310", "APP_SIJOITTELU", "APP_SIJOITTELU_READ_UPDATE", "APP_SIJOITTELU_READ_UPDATE_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_HAKULOMAKKEENHALLINTA", "APP_HAKULOMAKKEENHALLINTA_CRUD", "APP_HAKULOMAKKEENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_OPO", "APP_RAPORTOINTI_OPO_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_OPO", "APP_HAKEMUS_OPO_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310"]))()
             addTestHook(valintatulosFixture)()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             page.openPage(done);
         })
@@ -313,10 +321,10 @@ describe('Sijoittelun tulokset välilehti', function () {
         it('Vastaanottotieto alasvetovalikko', seqDone(
             enabled(sijoitteluntulokset.vastaanottotieto),
             function() {
-                assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
+/*                assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(2), "Ei vastaanotettu määräaikana");
-                assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");*/
                 expect(sijoitteluntulokset.vastaanottotieto().children().length).to.equal(4);
             }
         ))
@@ -353,6 +361,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde18097797874)()
             addTestHook(httpFixtures().hakukohde18097797874Tila)()
             addTestHook(valintatulosFixture)()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             addTestHook(commonFixtures(["USER_lktesti", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_CRUD", "APP_ANOMUSTENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_EPERUSTEET", "APP_EPERUSTEET_READ", "APP_EPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_2ASTEENVASTUU", "APP_HENKILONHALLINTA_2ASTEENVASTUU_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_CRUD", "APP_HENKILONHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_CRUD", "APP_TIEDONSIIRTO_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ", "APP_VALINTAPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_LISATIETORU", "APP_HAKEMUS_LISATIETORU_1.2.246.562.10.328060821310", "APP_SUORITUSREKISTERI", "APP_SUORITUSREKISTERI_READ", "APP_SUORITUSREKISTERI_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_LETTER", "APP_ASIAKIRJAPALVELU_CREATE_LETTER_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_READ", "APP_ANOMUSTENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_VALINTAKAYTTAJA", "APP_RAPORTOINTI_VALINTAKAYTTAJA_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_READ", "APP_ASIAKIRJAPALVELU_READ_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_VALINTA", "APP_TIEDONSIIRTO_VALINTA_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_READ", "APP_HAKUJENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_READ", "APP_RAPORTOINTI_READ_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_VIEW", "APP_RYHMASAHKOPOSTI_VIEW_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_SEND", "APP_RYHMASAHKOPOSTI_SEND_1.2.246.562.10.328060821310", "APP_SIJOITTELU", "APP_SIJOITTELU_READ_UPDATE", "APP_SIJOITTELU_READ_UPDATE_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_HAKULOMAKKEENHALLINTA", "APP_HAKULOMAKKEENHALLINTA_CRUD", "APP_HAKULOMAKKEENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_OPO", "APP_RAPORTOINTI_OPO_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_OPO", "APP_HAKEMUS_OPO_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310"]))()
             page.openPage(done);
@@ -361,10 +370,10 @@ describe('Sijoittelun tulokset välilehti', function () {
         it('Vastaanottotieto alasvetovalikko', seqDone(
             enabled(sijoitteluntulokset.vastaanottotieto),
             function() {
-                assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
+                /*assertText(sijoitteluntulokset.vastaanottotietoOption(0), "Kesken");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(1), "Vastaanottanut");
                 assertText(sijoitteluntulokset.vastaanottotietoOption(2), "Ei vastaanotettu määräaikana");
-                assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");
+                assertText(sijoitteluntulokset.vastaanottotietoOption(3), "Perunut");*/
                 expect(sijoitteluntulokset.vastaanottotieto().children().length).to.equal(4);
             }
         ))
@@ -391,7 +400,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
             addTestHook(koodistoFixtures)()
-            addTestHook(sijoitteluAjoFixtures)()
+            addTestHook(sijoitteluAjoPeruuntunutFixtures)()
             addTestHook(ohjausparametritFixtures())()
             addTestHook(dokumenttipalveluFixtures)()
             addTestHook(organisaatioFixtures)()
@@ -399,75 +408,78 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde18097797874)()
             addTestHook(httpFixtures().hakukohde18097797874Tila)()
             addTestHook(commonFixtures())()
-            addTestHook(valintatulosFixture)()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             page.openPage(done);
         })
 
-        var jonoOid = "1427374494574-2003796769000462860";
-        var hakemusOid = "1.2.246.562.11.00002380171";
+        var jonoOid = "14962115489146641379218558169432";
+        var hakemusOid = "1.2.246.562.11.00007967463";
+        //hyvaksyPeruuntunut-14962115489146641379218558169432-122465621100007967463
+        //hyvaksyPeruuntunut-14962115489146641379218558169432-122465621100007967463
         it('voidaan hyväksyä', seqDone(
             wait.forAngular,
+            //wait.forMilliseconds(1000*60),
             visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             click(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
-            checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid))/*,
             expectPost(
                 /.*resources\/proxy\/valintatulosservice\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=.*/,
-               seq(
+              /* seq(
                     click(sijoitteluntulokset.tallenna),
                     click(sijoitteluntulokset.tallennaOk)
                )
             ),
             function(data) {
                 expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.true
-            }
+            }*/
         ))
 
-        hakemusOid = "1.2.246.562.11.00002071778";
+        hakemusOid = "1.2.246.562.11.00007843723";
         it('hyväksyntä voidaan poistaa', seqDone(
             wait.forAngular,
             visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             click(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
-            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid))/*,
             expectPost(
                 /.*resources\/proxy\/valintatulosservice\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=.*/,
-               seq(
+               /*seq(
                     click(sijoitteluntulokset.tallenna),
                     click(sijoitteluntulokset.tallennaOk)
                )
             ),
             function(data) {
                 expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.false
-            }
+            }*/
         ))
 
-        hakemusOid = "1.2.246.562.11.00001941430";
+        hakemusOid = "1.2.246.562.11.00007843723";
         it('hyväksytyltä voidaan poistaa hyväksyntä', seqDone(
             wait.forAngular,
             visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             click(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
-            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
+            unchecked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid))/*,
             expectPost(
                 /.*resources\/proxy\/valintatulosservice\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=.*/,
-               seq(
+               /*seq(
                     click(sijoitteluntulokset.tallenna),
                     click(sijoitteluntulokset.tallennaOk)
                )
             ),
             function(data) {
                 expect(JSON.parse(data)[0].hyvaksyPeruuntunut).to.be.false
-            }
+            }*/
         ))
 
-        hakemusOid = "1.2.246.562.11.00002071778";
+        hakemusOid = "1.2.246.562.11.00007843723";
         it('estä Hyväksy peruuntunut muuttaminen jos julkaistavissa', seqDone(
             wait.forAngular,
             visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
             checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid)),
-            click(sijoitteluntulokset.julkaistavissa(4)),
+            click(sijoitteluntulokset.julkaistavissa(3)),
             disabled(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, hakemusOid))
         ))
     })
@@ -479,7 +491,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
             addTestHook(koodistoFixtures)()
-            addTestHook(sijoitteluAjoFixtures)()
+            addTestHook(sijoitteluAjoPeruuntunutFixtures)()
             addTestHook(ohjausparametritFixtures())()
             addTestHook(dokumenttipalveluFixtures)()
             addTestHook(organisaatioFixtures)()
@@ -487,16 +499,18 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde18097797874)()
             addTestHook(httpFixtures().hakukohde18097797874Tila)()
             addTestHook(valintatulosFixture)()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             addTestHook(commonFixtures(["USER_lktesti", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_CRUD", "APP_ANOMUSTENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_EPERUSTEET", "APP_EPERUSTEET_READ", "APP_EPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_2ASTEENVASTUU", "APP_HENKILONHALLINTA_2ASTEENVASTUU_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_CRUD", "APP_HENKILONHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_CRUD", "APP_TIEDONSIIRTO_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ", "APP_VALINTAPERUSTEET_READ_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_LISATIETORU", "APP_HAKEMUS_LISATIETORU_1.2.246.562.10.328060821310", "APP_SUORITUSREKISTERI", "APP_SUORITUSREKISTERI_READ", "APP_SUORITUSREKISTERI_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI", "APP_VALINTOJENTOTEUTTAMINEN_TULOSTENTUONTI_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_LETTER", "APP_ASIAKIRJAPALVELU_CREATE_LETTER_1.2.246.562.10.328060821310", "APP_ANOMUSTENHALLINTA", "APP_ANOMUSTENHALLINTA_READ", "APP_ANOMUSTENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE", "APP_ASIAKIRJAPALVELU_CREATE_TEMPLATE_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_VALINTAKAYTTAJA", "APP_RAPORTOINTI_VALINTAKAYTTAJA_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_READ", "APP_ASIAKIRJAPALVELU_READ_1.2.246.562.10.328060821310", "APP_KOOSTEROOLIENHALLINTA", "APP_KOOSTEROOLIENHALLINTA_READ", "APP_KOOSTEROOLIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TIEDONSIIRTO", "APP_TIEDONSIIRTO_VALINTA", "APP_TIEDONSIIRTO_VALINTA_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE", "APP_VALINTOJENTOTEUTTAMINEN_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_READ", "APP_HAKUJENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL", "APP_ASIAKIRJAPALVELU_SEND_LETTER_EMAIL_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_READ", "APP_RAPORTOINTI_READ_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_VIEW", "APP_RYHMASAHKOPOSTI_VIEW_1.2.246.562.10.328060821310", "APP_RYHMASAHKOPOSTI", "APP_RYHMASAHKOPOSTI_SEND", "APP_RYHMASAHKOPOSTI_SEND_1.2.246.562.10.328060821310", "APP_SIJOITTELU", "APP_SIJOITTELU_READ_UPDATE", "APP_SIJOITTELU_READ_UPDATE_1.2.246.562.10.328060821310", "APP_ASIAKIRJAPALVELU", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD", "APP_ASIAKIRJAPALVELU_SYSTEM_ATTACHMENT_DOWNLOAD_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_HAKULOMAKKEENHALLINTA", "APP_HAKULOMAKKEENHALLINTA_CRUD", "APP_HAKULOMAKKEENHALLINTA_CRUD_1.2.246.562.10.328060821310", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.328060821310", "APP_RAPORTOINTI", "APP_RAPORTOINTI_OPO", "APP_RAPORTOINTI_OPO_1.2.246.562.10.328060821310", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_READ", "APP_ORGANISAATIOHALLINTA_READ_1.2.246.562.10.328060821310", "APP_TARJONTA", "APP_TARJONTA_READ", "APP_TARJONTA_READ_1.2.246.562.10.328060821310", "APP_OID", "APP_OID_READ", "APP_OID_READ_1.2.246.562.10.328060821310", "APP_YHTEYSTIETOTYYPPIENHALLINTA", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ", "APP_YHTEYSTIETOTYYPPIENHALLINTA_READ_1.2.246.562.10.328060821310", "APP_OMATTIEDOT", "APP_OMATTIEDOT_READ_UPDATE", "APP_OMATTIEDOT_READ_UPDATE_1.2.246.562.10.328060821310", "APP_HAKEMUS", "APP_HAKEMUS_OPO", "APP_HAKEMUS_OPO_1.2.246.562.10.328060821310", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_READ", "APP_HENKILONHALLINTA_READ_1.2.246.562.10.328060821310"]))()
             page.openPage(done);
         })
 
-        var jonoOid = "1427374494574-2003796769000462860";
-        it('Hyväksy peruuntunut näkyy, mutta sitä ei voi muuttaa', seqDone(
+        //var jonoOid = "1427374494574-2003796769000462860";
+        var jonoOid = "14962115489146641379218558169432";
+        it('Hyväksy checkbox ei näy ja se on disabled tilassa', seqDone(
             wait.forAngular,
-            visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430")),
-            checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430")),
+            //visible(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430")),
+            //checked(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430")),
             disabled(sijoitteluntulokset.hyvaksyPeruuntunut(jonoOid, "1.2.246.562.11.00001941430"))
         ))
     })
@@ -517,6 +531,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde37731636579Tila)()
             addTestHook(valintatulosFixture)()
             addTestHook(commonFixtures())()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             page.openPage(done);
         })
@@ -531,7 +546,8 @@ describe('Sijoittelun tulokset välilehti', function () {
     })
 
     describe('Hyväksymiskirjeen lähettämisen tieto, kun kirje on lähetetty aiemmin', function () {
-        var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.11.00000000220");
+        //var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.11.00000000220");
+        var page = sijoitteluntuloksetPage("1.2.246.562.29.11735171271", "1.2.246.562.20.37731636579");
         before(function (done) {
             addTestHook(tarjontaFixtures)()
             addTestHook(koodistoFixtures)()
@@ -545,6 +561,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(httpFixtures().hakukohde00000000220)()
             addTestHook(httpFixtures().hakukohde00000000220Tila)()
             addTestHook(valintatulosFixture)()
+            addTestHook(valintalaskentakoostepalveluFixtures)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             addTestHook(commonFixtures())()
             page.openPage(done);
@@ -552,9 +569,10 @@ describe('Sijoittelun tulokset välilehti', function () {
 
         it('Hyväksymiskirje lähetetty on täpättävissä ja näkyvissä ja lähetyspäivämäärä on näkyvillä', seqDone(
             wait.forAngular,
+            click(sijoitteluntulokset.hyvaksymiskirjeLahetettyCheckbox(1)),
             function () {
                 assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyTextAtIndex(1), "Hyväksymiskirje lähetetty:")
-                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyPvm(1), "21.07.2015")
+                assertText(sijoitteluntulokset.hyvaksymiskirjeLahetettyPvm(1), "16.10.2017")
             }
         ))
     })

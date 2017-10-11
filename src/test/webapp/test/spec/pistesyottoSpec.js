@@ -19,6 +19,7 @@ describe('Pistesyöttö', function() {
         addTestHook(dokumenttipalveluFixtures)();
         addTestHook(organisaatioFixtures)();
         addTestHook(koostettuPistetietoGeneroitava(55))();
+        //addTestHook(common)();
         addTestHook(valintakokeetFixtures([
             {
                 valintakoeOid: VALINTAKOE1

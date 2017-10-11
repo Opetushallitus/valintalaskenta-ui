@@ -14,36 +14,35 @@ describe('Perustiedot', function() {
             addTestHook(koodistoFixtures)()
             addTestHook(parametritFixtures)()
             addTestHook(koodistoFixtures)()
+
             addTestHook(sijoitteluAjoFixtures)()
+
             addTestHook(ohjausparametritFixtures())()
             addTestHook(dokumenttipalveluFixtures)()
             addTestHook(organisaatioFixtures)()
             addTestHook(httpFixtures().hakukohteenAvaimet)()
             addTestHook(httpFixtures().hakukohde37731636579)()
             addTestHook(httpFixtures().hakukohde37731636579Tila)()
-            addTestHook(valintatulosFixture)()
-            addTestHook(commonFixtures())()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
+             addTestHook(valintatulosFixture)()
+            addTestHook(commonFixtures())()
+            addTestHook(perustiedotFixtures())()
+
             page.openPage(done);
-        })
+        });
 
         it('sisältää kaikki valintatapajonot', seqDone(
             wait.forAngular,
             function () {
-                expect(true).to.equal(true)
-                assertText(perustiedotSelectors.valintatapajonoAtIndex(1), "valintatapajono1")
-                assertText(perustiedotSelectors.valintatapajonoAtIndex(2), "valintatapajono2")
+                assertText(perustiedotSelectors.valintatapajonoAtIndex(1), "Valintaryhmä I")
             }
         ))
 
         it('ainoastaan hyväksytyt hakemukset lasketaan mukaan vastaanottaneisiin', seqDone(
             wait.forAngular,
             function () {
-                expect(true).to.equal(true)
-                assertText(perustiedotSelectors.hyvaksytytAtIndex(1), "2")
-                assertText(perustiedotSelectors.hyvaksytytAtIndex(2), "0")
-                assertText(perustiedotSelectors.vastaanottaneetAtIndex(1), "1")
-                assertText(perustiedotSelectors.vastaanottaneetAtIndex(2), "0")
+                assertText(perustiedotSelectors.hyvaksytytAtIndex(1), "14")
+                assertText(perustiedotSelectors.vastaanottaneetAtIndex(1), "0")
             }
         ))
     })

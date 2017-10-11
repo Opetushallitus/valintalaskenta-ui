@@ -12,6 +12,9 @@ function valintakoetulosPage() {
         kokeittainNakyma: function () {
             return S("#kokeittainNakyma").first()
         },
+        vainKutsuttavat: function() {
+            return S("#osallistuu");
+        },
         findTableWithPanelTitle: function (panelTitle) {
             return S("#kokeittainNakyma div.panel-title:contains(" + panelTitle+ ")").parent().parent().find("table");// tr:nth(1) td:nth(1)").text().trim();
         },

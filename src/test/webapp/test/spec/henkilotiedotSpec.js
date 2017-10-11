@@ -1,14 +1,9 @@
-function asyncPrint(s) {
-  return function () {
-    console.log(s)
-  }
-}
-
-describe('Henkilötiedot', function() {
-  var page = henkilotiedotPage();
+describe('Henkilötiedot näkymä', function() {
     var HAKEMUS1 = "HAKEMUS1";
+    var hakemus1Oid = "1.2.246.562.11.00003935855";
     var HAKEMUS2 = "HAKEMUS2";
-    var HAKU1 = "{hakuOid}";
+    var hakuOid =  "1.2.246.562.29.11735171271";
+    var page = henkilotiedotPage(hakemus1Oid, hakuOid);
 
   beforeEach(function(done) {
       addTestHook(tarjontaFixtures)();
@@ -18,6 +13,7 @@ describe('Henkilötiedot', function() {
       addTestHook(sijoitteluAjoFixtures)();
       addTestHook(harkinnanvarainenhyvaksyntaFixtures)();
       addTestHook(commonFixtures())();
+      addTestHook(organisaatioFixtures)();
 
       addTestHook(hakemusByOidFixtures(
           {
@@ -60,7 +56,7 @@ describe('Henkilötiedot', function() {
     it('henkilön valintalaskennan tulokset', seqDone(
         wait.forAngular,
         function() {
-          expect(page.allStudentsTable().length).to.equal(1)
+          expect(nayta_kaikkiPage().allStudentsTable().length).to.equal(1)
         }
     ))
   })
