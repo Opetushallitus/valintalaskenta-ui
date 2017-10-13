@@ -1,8 +1,12 @@
-<span ng-if="!hakemus.tilanKuvaukset.FI || hakemus.tila == 'HYLATTY' || hakemus.tila == 'PERUUTETTU' ">{{ t(tilaText) || tilaText }}</span>
-<span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI && hakemus.tila == 'PERUUNTUNUT'">{{hakemus.tilanKuvaukset.FI}}</span>
-<span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.FI && hakemus.tila == 'PERUUNTUNUT'">{{hakemus.tilanKuvaukset.SV}}</span>
-<span ng-if="userLang=='en' && hakemus.tilanKuvaukset.FI && hakemus.tila == 'PERUUNTUNUT'">{{hakemus.tilanKuvaukset.EN}}</span>
-<span ng-if="(hakemus.tila == 'HYVAKSYTTY' || hakemus.tila == 'VARASIJALTA_HYVAKSYTTY') && hakemus.hyvaksyttyHarkinnanvaraisesti == true">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
+<span ng-if="hakemus.tila != 'PERUUNTUNUT'">
+    <span ng-if="isHarkinnanvaraisestiHyvaksytty">({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
+    <span ng-if="!isHarkinnanvaraisestiHyvaksytty">{{ t(tilaText) || tilaText }}</span>
+</span>
+<span ng-if="hakemus.tila == 'PERUUNTUNUT'">
+    <span ng-if="userLang=='fi' && hakemus.tilanKuvaukset.FI">{{hakemus.tilanKuvaukset.FI}}</span>
+    <span ng-if="userLang=='sv' && hakemus.tilanKuvaukset.SV">{{hakemus.tilanKuvaukset.SV}}</span>
+    <span ng-if="userLang=='en' && hakemus.tilanKuvaukset.EN">{{hakemus.tilanKuvaukset.EN}}</span>
+</span>
 <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
 <div ng-if="showHyvaksyPeruuntunut">
     <label for="hyvaksyPeruuntunut-{{id}}">Hyväksy peruuntunut</label>
