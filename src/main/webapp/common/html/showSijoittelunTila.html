@@ -1,5 +1,5 @@
 <span ng-if="hakemus.tila != 'PERUUNTUNUT'">
-    <span ng-if="isHarkinnanvaraisestiHyvaksytty">{{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }}</span>
+    <span ng-if="isHarkinnanvaraisestiHyvaksytty">{{ t(tilaText) || tilaText }} ({{ t('sijoitteluntulos.harkinnanvaraisesti') || 'Harkinnanvaraisesti' }})</span>
     <span ng-if="!isHarkinnanvaraisestiHyvaksytty">{{ t(tilaText) || tilaText }}</span>
 </span>
 <span ng-if="hakemus.tila == 'PERUUNTUNUT'">
