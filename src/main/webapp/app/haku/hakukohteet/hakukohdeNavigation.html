@@ -23,11 +23,11 @@
         <span>{{ t('hakukohdenavigation.pistesyotto') || 'Pistesyöttö' }}</span>
     </a>
 
-    <a korkeakoulu-check="{{hakuModel.korkeakoulu}}" auth-additional-check="harkinnanvaraiset" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
+    <a ng-if="!hakuModel.korkeakoulu" auth-additional-check="harkinnanvaraiset" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
         <span>{{ t('hakukohdenavigation.harkinnanvaraiset') || 'Harkinnanvaraiset' }}</span>
     </a>
 
-    <a ng-if="hakuModel.hakuOid.erillishaku == false || (hakuModel.hakuOid.erillishaku == true && hakukohdeModel.kaytetaanValintalaskentaa == true)" auth-additional-check="hakijaryhmat" auth="crud" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('hakijaryhmat', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakijaryhmat" class="tab">
+    <a ng-if="hakuModel.korkeakoulu && (hakuModel.hakuOid.erillishaku == false || (hakuModel.hakuOid.erillishaku == true && hakukohdeModel.kaytetaanValintalaskentaa == true))" auth-additional-check="hakijaryhmat" auth="crud" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('hakijaryhmat', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakijaryhmat" class="tab">
         <span>{{ t('hakukohdenavigation.hakijaryhmat') || 'Hakijaryhmät' }}</span>
     </a>
 

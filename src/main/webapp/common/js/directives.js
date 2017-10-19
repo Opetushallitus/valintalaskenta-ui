@@ -1054,6 +1054,8 @@ app.directive('showSijoittelunTila', function () {
                         $scope.showHyvaksyPeruuntunut);
                     $scope.id = $scope.hakemus.valintatapajonoOid + "-" + $scope.hakemus.hakemusOid.replace(/\./g, "");
 
+                    $scope.isHarkinnanvaraisestiHyvaksytty = ($scope.hakemus.tila === "HYVAKSYTTY" || $scope.hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && $scope.hakemus.hyvaksyttyHarkinnanvaraisesti == true;
+
                     var hakemuksenTilaToText = {
                         "HYLATTY": "sijoitteluntulos.hylatty",
                         "VARALLA": "sijoitteluntulos.varalla",
