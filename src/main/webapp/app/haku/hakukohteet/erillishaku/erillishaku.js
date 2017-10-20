@@ -1,9 +1,21 @@
 angular.module('valintalaskenta')
-    .service('Maksuvelvollisuus', ['HakukohdeHenkilotFull', function(HakukohdeHenkilotFull) {
+    .service('Maksuvelvollisuus', ['HakukohdeHenkilotFull', 'AtaruApplications', function(HakukohdeHenkilotFull, AtaruApplications) {
         this.get = function(hakuOid, hakukohdeOid) {
             return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
                 .then(function(hakemukset) {
-                    return hakemukset;
+                    if (hakemukset.length) {
+                        return hakemukset;
+                    } else {
+                        console.log("Couldn't find any applications in Haku-app. Trying Ataru next");
+                        return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                            .then(function(ataruHakemukset) {
+                                if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
+                                return ataruHakemukset.map(function(hakemus) {
+                                    hakemus.personOid = hakemus.henkiloOid;
+                                    return hakemus;
+                                });
+                            });
+                    }
                 });
         }
     }])
