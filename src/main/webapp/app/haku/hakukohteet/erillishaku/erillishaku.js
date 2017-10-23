@@ -1,22 +1,26 @@
 angular.module('valintalaskenta')
-    .service('Maksuvelvollisuus', ['HakukohdeHenkilotFull', 'AtaruApplications', function(HakukohdeHenkilotFull, AtaruApplications) {
+    .service('Maksuvelvollisuus', ['HakukohdeHenkilotFull', 'AtaruApplications', 'HakuModel', function(HakukohdeHenkilotFull, AtaruApplications, HakuModel) {
         this.get = function(hakuOid, hakukohdeOid) {
-            return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
-                .then(function(hakemukset) {
-                    if (hakemukset.length) {
+            return HakuModel.promise.then(function(hakuModel) {
+                if (hakuModel.hakuOid.ataruLomakeAvain) {
+                    console.log('Getting applications from ataru.');
+                    return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                        .then(function(ataruHakemukset) {
+                            if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
+                            return ataruHakemukset.map(function(hakemus) {
+                                hakemus.personOid = hakemus.henkiloOid;
+                                return hakemus;
+                      });
+                    });
+                } else {
+                console.log('Getting applications from hakuApp.');
+                return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
+                    .then(function(hakemukset) {
+                        if (!hakemukset.length) console.log("Couldn't find any applications in Hakuapp.");
                         return hakemukset;
-                    } else {
-                        console.log("Couldn't find any applications in Haku-app. Trying Ataru next");
-                        return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
-                            .then(function(ataruHakemukset) {
-                                if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
-                                return ataruHakemukset.map(function(hakemus) {
-                                    hakemus.personOid = hakemus.henkiloOid;
-                                    return hakemus;
-                                });
-                            });
-                    }
-                });
+                    });
+                  }
+            })
         }
     }])
     .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
