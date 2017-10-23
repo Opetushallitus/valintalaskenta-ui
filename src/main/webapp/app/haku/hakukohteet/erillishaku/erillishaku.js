@@ -52,6 +52,7 @@ angular.module('valintalaskenta')
       $scope.pageSize = 50;
       $scope.deleting = null;
       $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
+      $scope.excelDisabled = true;
 
       $scope.showEhdot = function (model, value) {
           if (value == 'muu') {
@@ -95,6 +96,7 @@ angular.module('valintalaskenta')
 
       HakuModel.promise.then(function(model) {
         $scope.korkeakoulu = model.korkeakoulu;
+        $scope.excelDisabled = Boolean(model.hakuOid.ataruLomakeAvain);
         if ($scope.korkeakoulu) {
           $scope.valintatuloksentilat = [
             {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
