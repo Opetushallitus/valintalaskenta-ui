@@ -137,6 +137,7 @@ window.urls.addProperties({
     "haku-app.applications.list" : "/haku-app/applications/list",
     "haku-app.applications.listfull" : "/haku-app/applications/listfull",
     "ataru.applications" : "/lomake-editori/api/external/applications",
+    "ataru.login": "/lomake-editori/auth/cas",
     "haku-app.virkailija.hakemus.esikatselu" : "/haku-app/virkailija/hakemus/$1/esikatselu/$2",
 
     "viestintapalvelu.buildversion" : "/viestintapalvelu/buildversion.txt?auth",

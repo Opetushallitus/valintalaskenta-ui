@@ -14,7 +14,8 @@
             window.url("viestintapalvelu.buildversion"),
             window.url("haku-app.buildversion"),
             window.url("valinta-tulos-service.login"),
-            window.url("oppijanumerorekisteri-service.login")
+            window.url("oppijanumerorekisteri-service.login"),
+            window.url("ataru.login")
         ];
         return $q.all(services.map(loadBuildversion));
     }
