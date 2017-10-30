@@ -52,7 +52,7 @@ angular.module('valintalaskenta')
       $scope.pageSize = 50;
       $scope.deleting = null;
       $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
-      $scope.excelDisabled = true;
+      $scope.excelEnabled = false;
       $scope.hyvaksymiskirjeetEnabled = false;
 
       $scope.showEhdot = function (model, value) {
@@ -97,7 +97,7 @@ angular.module('valintalaskenta')
 
       HakuModel.promise.then(function(model) {
         $scope.korkeakoulu = model.korkeakoulu;
-        $scope.excelDisabled = Boolean(model.hakuOid.ataruLomakeAvain);
+        $scope.excelEnabled = !model.hakuOid.ataruLomakeAvain;
         $scope.hyvaksymiskirjeetEnabled = !model.hakuOid.ataruLomakeAvain;
         if ($scope.korkeakoulu) {
           $scope.valintatuloksentilat = [
