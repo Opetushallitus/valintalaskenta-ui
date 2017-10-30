@@ -740,7 +740,8 @@ app.directive('showPersonInformation', function () {
             etunimi: '@',
             hakemusOid: '@',
             hakuOid: '@',
-            henkiloOid: '@'
+            henkiloOid: '@',
+            reviewUrlKey: '@'
         },
         templateUrl: '../common/html/personInformationPartial.html',
         controller: function ($modal, $scope) {

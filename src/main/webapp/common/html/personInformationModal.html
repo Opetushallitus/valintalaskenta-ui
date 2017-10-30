@@ -6,7 +6,7 @@
 
         <dt>{{ t('personinformationmodal.oid') || 'Hakemuksen tekninen tunniste (OID)' }}</dt>
         <dd>
-            <a href="{{url('haku-app.virkailija.hakemus.esikatselu', hakuOid, hakemusOid)}}" target="_blank"
+            <a href="{{url(reviewUrlKey, hakuOid, hakemusOid)}}" target="_blank"
                fast-bind-once="hakemusOid"></a>
         </dd>
 
