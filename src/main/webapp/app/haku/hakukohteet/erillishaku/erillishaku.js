@@ -1,25 +1,25 @@
 angular.module('valintalaskenta')
-    .service('Maksuvelvollisuus', ['HakukohdeHenkilotFull', 'AtaruApplications', 'HakuModel', function(HakukohdeHenkilotFull, AtaruApplications, HakuModel) {
+    .service('Hakemukset', ['HakukohdeHenkilotFull', 'AtaruApplications', 'HakuModel', function(HakukohdeHenkilotFull, AtaruApplications, HakuModel) {
         this.get = function(hakuOid, hakukohdeOid) {
-            return HakuModel.promise.then(function(hakuModel) {
+            return HakuModel.promise.then(function (hakuModel) {
                 if (hakuModel.hakuOid.ataruLomakeAvain) {
                     console.log('Getting applications from ataru.');
                     return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
-                        .then(function(ataruHakemukset) {
+                        .then(function (ataruHakemukset) {
                             if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
-                            return ataruHakemukset.map(function(hakemus) {
+                            return ataruHakemukset.map(function (hakemus) {
                                 hakemus.personOid = hakemus.henkiloOid;
                                 return hakemus;
-                      });
-                    });
+                            });
+                        });
                 } else {
-                console.log('Getting applications from hakuApp.');
-                return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
-                    .then(function(hakemukset) {
-                        if (!hakemukset.length) console.log("Couldn't find any applications in Hakuapp.");
-                        return hakemukset;
-                    });
-                  }
+                    console.log('Getting applications from hakuApp.');
+                    return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
+                        .then(function (hakemukset) {
+                            if (!hakemukset.length) console.log("Couldn't find any applications in Hakuapp.");
+                            return hakemukset;
+                        });
+                }
             })
         }
     }])
@@ -27,13 +27,13 @@ angular.module('valintalaskenta')
         'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
         'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuTuonti', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
-        'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Maksuvelvollisuus', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
+        'Kirjepohjat','Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Hakemukset', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
         'Valintaesitys', 'valinnantuloksenHistoriaService',
         function ($scope, $modal, $log, $location, $routeParams, $timeout,  $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                   ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                   ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-                  VastaanottoUtil, NgTableParams, TallennaValinnat, Maksuvelvollisuus, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
+                  VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
                   ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut,
                   Valintaesitys, valinnantuloksenHistoriaService) {
       "use strict";
@@ -446,7 +446,7 @@ angular.module('valintalaskenta')
 
       $q.all([
         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid),
-        Maksuvelvollisuus.get($routeParams.hakuOid, $routeParams.hakukohdeOid),
+        Hakemukset.get($routeParams.hakuOid, $routeParams.hakukohdeOid),
         Lukuvuosimaksut.get({hakukohdeOid: $routeParams.hakukohdeOid}),
         getErillishaunValinnantulokset()
       ]).then(function (resolved) {
