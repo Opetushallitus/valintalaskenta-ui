@@ -29,7 +29,11 @@
                                         <input type="file"
                                                ng-file-select="erillishaunTuontiXlsx($files)">
                                     </span>
-                    <a ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm margin-bottom-2 pdf">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
+                    <a ng-if="hyvaksymiskirjeetEnabled"
+                       ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()"
+                       class="btn btn-default btn-sm margin-bottom-2 pdf">
+                        {{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}
+                    </a>
 
                     <button ng-click="selectEiVastanotettuMaaraaikanaToAll()"
                             class="btn btn-default btn-sm margin-bottom-2">
