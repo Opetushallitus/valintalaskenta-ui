@@ -54,6 +54,7 @@ angular.module('valintalaskenta')
       $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
       $scope.excelEnabled = false;
       $scope.hyvaksymiskirjeetEnabled = false;
+      $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
 
       $scope.showEhdot = function (model, value) {
           if (value == 'muu') {
@@ -97,8 +98,11 @@ angular.module('valintalaskenta')
 
       HakuModel.promise.then(function(model) {
         $scope.korkeakoulu = model.korkeakoulu;
-        $scope.excelEnabled = !model.hakuOid.ataruLomakeAvain;
-        $scope.hyvaksymiskirjeetEnabled = !model.hakuOid.ataruLomakeAvain;
+        if (model.hakuOid.ataruLomakeAvain) {
+            $scope.excelEnabled = false;
+            $scope.hyvaksymiskirjeetEnabled = false;
+            $scope.reviewUrlKey = "ataru.application.review";
+        }
         if ($scope.korkeakoulu) {
           $scope.valintatuloksentilat = [
             {value: "KESKEN", text_prop: "sijoitteluntulos.kesken", default_text:"Kesken"},
