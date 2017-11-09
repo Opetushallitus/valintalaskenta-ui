@@ -9,8 +9,7 @@
 </span>
 <span ng-if="hakemus.varasijanNumero != undefined">({{hakemus.varasijanNumero}})</span>
 <div ng-if="showHyvaksyPeruuntunut">
-    <label for="hyvaksyPeruuntunut-{{id}}">Hyväksy peruuntunut</label>
-    <input id="hyvaksyPeruuntunut-{{id}}"
+    {{ t('sijoitteluntulos.hyvaksyperuuntunut') || 'Hyväksy peruuntunut' }}: <input id="hyvaksyPeruuntunut-{{id}}"
            ng-disabled="!canHyvaksyPeruuntunut || hakemus.julkaistavissa"
            ng-model="hakemus.hyvaksyPeruuntunut"
            type="checkbox"
