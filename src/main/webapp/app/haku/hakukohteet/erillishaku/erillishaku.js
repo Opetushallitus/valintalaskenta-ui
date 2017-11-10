@@ -433,14 +433,29 @@ angular.module('valintalaskenta')
         })
       };
 
+      var getHakuappHakemusMaksuvelvollisuus = function(hakemus, hakukohdeOid) {
+        var eligibility = _.find(hakemus.preferenceEligibilities, {'aoId': hakukohdeOid});
+        if (eligibility && eligibility.maksuvelvollisuus) {
+          return eligibility.maksuvelvollisuus;
+        } else return null;
+      };
+
+      var getAtaruHakemusMaksuvelvollisuus = function(hakemus, hakukohdeOid) {
+        switch (hakemus["payment-obligations"][hakukohdeOid]) {
+          case "obligated":
+            return "REQUIRED";
+          case "not-obligated":
+            return "NOT_REQUIRED"
+          default:
+            return null;
+        }
+      };
+
       var getMaksuvelvollisuudet = function(hakemukset, hakukohdeOid) {
         return _.reduce(
           _.map(hakemukset, function (hakemus) {
-            var eligibility = _.find(hakemus.preferenceEligibilities, {'aoId': hakukohdeOid});
-            var maksuvelvollisuus = 'NOT_CHECKED';
-            if (eligibility && eligibility.maksuvelvollisuus) {
-                maksuvelvollisuus = eligibility.maksuvelvollisuus;
-            }
+            var maksuvelvollisuus = getHakuappHakemusMaksuvelvollisuus(hakemus, hakukohdeOid) ||
+              getAtaruHakemusMaksuvelvollisuus(hakemus, hakukohdeOid) || 'NOT_CHECKED';
             return {'oid': hakemus.oid, 'maksuvelvollisuus': maksuvelvollisuus}
           }),
           function (result, hakemus) {
