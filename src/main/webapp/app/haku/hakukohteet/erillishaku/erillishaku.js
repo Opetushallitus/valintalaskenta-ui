@@ -441,7 +441,7 @@ angular.module('valintalaskenta')
       };
 
       var getAtaruHakemusMaksuvelvollisuus = function(hakemus, hakukohdeOid) {
-        var paymentObligation = hakemus["payment-obligations"] ? hakemus["payment-obligations"][hakukohdeOid] : null;
+        var paymentObligation = hakemus.paymentObligations ? hakemus.paymentObligations[hakukohdeOid] : null;
         switch (paymentObligation) {
           case "obligated":
             return "REQUIRED";
