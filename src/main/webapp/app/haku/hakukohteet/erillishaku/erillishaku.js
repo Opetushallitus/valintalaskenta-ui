@@ -99,9 +99,13 @@ angular.module('valintalaskenta')
       HakuModel.promise.then(function(model) {
         $scope.korkeakoulu = model.korkeakoulu;
         if (model.hakuOid.ataruLomakeAvain) {
-            $scope.excelEnabled = false;
-            $scope.hyvaksymiskirjeetEnabled = false;
-            $scope.reviewUrlKey = "ataru.application.review";
+          $scope.excelEnabled = false;
+          $scope.hyvaksymiskirjeetEnabled = false;
+          $scope.reviewUrlKey = "ataru.application.review";
+        } else {
+          $scope.excelEnabled = true;
+          $scope.hyvaksymiskirjeetEnabled = true;
+          $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
         }
         if ($scope.korkeakoulu) {
           $scope.valintatuloksentilat = [
