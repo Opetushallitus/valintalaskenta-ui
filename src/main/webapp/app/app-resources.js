@@ -8,12 +8,16 @@ app.factory('KoostettuHakemusAdditionalData', function($http) {
         },
         put: function(query, data) {
             var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakukohde", query.hakuOid, query.hakukohdeOid);
+            var headers = {};
+            if(data.lastmodified) {
+                headers = {
+                    'If-Unmodified-Since': data.lastmodified
+                };
+            }
             return $http({
                 method: 'PUT',
                 url: url,
-                headers: {
-                    'If-Unmodified-Since': data.lastmodified
-                },
+                headers: headers,
                 data: JSON.stringify(data.hakeneet)
             });
         }
@@ -27,12 +31,16 @@ app.factory('KoostettuHakemusAdditionalDataForHakemus', function($http) {
         },
         put: function(query, data) {
             var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", query.hakemusOid);
+            var headers = {};
+            if(data.lastmodified) {
+                headers = {
+                    'If-Unmodified-Since': data.lastmodified
+                };
+            }
             return $http({
                 method: 'PUT',
                 url: url,
-                headers: {
-                    'If-Unmodified-Since': data.lastmodified
-                },
+                headers: headers,
                 data: JSON.stringify(data.hakemus)
             });
         }
