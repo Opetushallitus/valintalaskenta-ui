@@ -1050,8 +1050,8 @@ app.directive('showSijoittelunTila', function () {
                     var hyvaksytty = "HYVAKSYTTY" === $scope.hakemus.tila || "VARASIJALTA_HYVAKSYTTY" === $scope.hakemus.tila;
                     var peruuntunut = "PERUUNTUNUT" === $scope.hakemus.tila;
                     $scope.showHyvaksyPeruuntunut = $scope.onEdit &&
-                        ($scope.canHyvaksyPeruuntunut && (peruuntunut || hyvaksytty)) ||
-                        ($scope.hakemus.hyvaksyPeruuntunut && hyvaksytty);
+                        ($scope.canHyvaksyPeruuntunut || $scope.hakemus.hyvaksyPeruuntunut) &&
+                        (hyvaksytty || peruuntunut);
 
                     $scope.id = $scope.hakemus.valintatapajonoOid + "-" + $scope.hakemus.hakemusOid.replace(/\./g, "");
 
