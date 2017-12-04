@@ -1160,7 +1160,7 @@ app.directive('linkToHenkiloInHenkilopalvelu', function () {
             text: '@'
         },
         link: function ($scope, element, attrs) {
-            $scope.url = window.url("authentication-henkiloui.henkilo.permissioncheckservice", $scope.henkiloOid, "HAKU_APP");
+            $scope.url = window.url("henkilo-ui.henkilo.permissioncheckservice", $scope.henkiloOid, "HAKU_APP");
             $scope.txt = $scope.text || $scope.henkiloOid;
         },
         template: '<a ng-if="henkiloOid" href="{{url}}" target="_blank">{{txt}}</a>'
