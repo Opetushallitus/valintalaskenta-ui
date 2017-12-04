@@ -106,12 +106,12 @@ angular
 
     var me = seurantaservice.getMyInfo();
     $scope.showRemoveOption = function(job){
-      if (_.isEmpty(job) || _.isEmpty(me)) {
+      if (_.isEmpty(job) || _.isEmpty(me)) {
         return false;
       }
       return job.tila === JOB_STATES.QUEUEING && (
           job.userOID === me.oid ||
-          _.isEmpty(_.filter(me.roles, function(x)  {return _.includes(x, '1.2.246.562.10.00000000001')})));
+          _.isEmpty(_.filter(me.roles, function(x)  {return _.includes(x, '1.2.246.562.10.00000000001')})));
     };
 
     var updateJobList = function() {

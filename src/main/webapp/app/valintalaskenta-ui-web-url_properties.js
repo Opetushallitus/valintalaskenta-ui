@@ -161,8 +161,8 @@ window.urls.addProperties({
 
     "lokalisointi.localisation" : "/lokalisointi/cxf/rest/v1/localisation",
 
-    "authentication-henkiloui.henkilo" : "/authentication-henkiloui/html/index.html#/henkilo/$1",
-    "authentication-henkiloui.henkilo.permissioncheckservice" : "/authentication-henkiloui/html/henkilo/$1/?permissionCheckService=$2",
+    "authentication-henkiloui.henkilo" : "/henkilo-ui/virkailija/$1",
+    "authentication-henkiloui.henkilo.permissioncheckservice" : "/henkilo-ui/oppija/$1?permissionCheckService=$2",
     "oppijanumerorekisteri-service.henkilo" : "/oppijanumerorekisteri-service/henkilo/$1",
 
     "oppijanumerorekisteri-service.login" :"/oppijanumerorekisteri-service/cas/prequel",

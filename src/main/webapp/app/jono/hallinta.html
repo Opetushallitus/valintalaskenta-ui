@@ -45,11 +45,11 @@
                     <div class="middle">
                         <img ng-src="../../common/img/person_icon.png" class="jobItemUser" /> 
                         <a tooltip-placement="top-left"
-                          uib-tooltip="{{ job.userFullname }}"
+                          uib-tooltip="{{ job.userFullname }}"
                           href="{{url('authentication-henkiloui.henkilo', job.userOID)}}/">
                           {{ job.userNameInitials }}
                         </a>
-                        <img ng-src="../../common/img/clock_icon.png" class="jobItemRunningTime" /> {{ job.luotu | timeFromNow }}
+                        <img ng-src="../../common/img/clock_icon.png" class="jobItemRunningTime" /> {{ job.luotu | timeFromNow }}
                         <span ng-show="job.hakukohteitaKeskeytetty > 0">
                           <img ng-src="../../common/img/warning_icon.png" class="jobItemErrors" />
                           <a href="" class="errorLink" ng-click="fetchSummaryXLS(job)" >Virheitä ({{ job.hakukohteitaKeskeytetty}})</a>
