@@ -4,7 +4,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakemuksenValintatulokset,
                                             VtsLatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
-                                            KoostettuHakemusAdditionalDataForHakemus) {
+                                            KoostettuHakemusAdditionalDataForHakemus, R) {
     "use strict";
 
     var model = new function () {
