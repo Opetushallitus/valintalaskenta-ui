@@ -69,7 +69,8 @@ function koostettuPistetietoKaksiHenkiloaFixtures() {
 }
 
 function koostettuPistetietoGeneroitava(count) {
-    var hakuAppPisteFixtures = [{
+    var hakuAppPisteFixtures = {
+        "valintapisteet": [{
         "applicationAdditionalDataDTO": {
             "oid": "1.2.246.562.11.00002265212",
             "personOid": "1.2.246.562.24.40242368269",
@@ -99,9 +100,9 @@ function koostettuPistetietoGeneroitava(count) {
                 }
             }
         }
-    }];
+    }]};
     for (var i = 1; i < count; i++) {
-        hakuAppPisteFixtures.push({
+        hakuAppPisteFixtures.valintapisteet.push({
             "applicationAdditionalDataDTO": {
                 "oid": "1.2.246.562.11.00002273123" + i,
                 "personOid": "1.2.246.562.24.36316162596" + i,
