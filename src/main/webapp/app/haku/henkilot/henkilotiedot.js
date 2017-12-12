@@ -66,6 +66,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             model.hakenutHarkinnanvaraisesti = true;
                         }
                     }
+                    model.alkuperaisetHakutoiveet = R.clone(model.hakutoiveet);
                     hakutoiveetLoaded.resolve();
                 }
                 HarkinnanvaraisestiHyvaksytty.get({hakemusOid: hakemusOid, hakuOid: hakuOid}, function (result) {
@@ -202,7 +203,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
             model.hakemus = hakemus;
             model.hakutoiveetMap = hakutoiveetMap;
             model.hakutoiveet = hakutoiveet;
-            model.alkuperaisetHakutoiveet = R.clone(hakutoiveet);
             model.errors = errors;
             model.haku = haku;
             model.sijoittelu = sijoittelu;
@@ -237,7 +237,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                     var f = R.replace('-OSALLISTUMINEN','');
                     return f(R.head(a)) == f(R.head(b));
                 }, R.toPairs(ad.additionalData));
-                return R.map(R.compose(R.merge({"oid": ad.oid}), R.fromPairs), additionalPairs);
+                return R.map(R.compose(R.merge({"oid": ad.hakukohdeOid}), R.fromPairs), additionalPairs);
             };
             var omitOids = R.map(R.omit(['oid']))
             var oldEntries = R.flatten(R.map(toPistetietoEntryWithOid, model.alkuperaisetHakutoiveet));
