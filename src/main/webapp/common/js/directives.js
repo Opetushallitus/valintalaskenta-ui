@@ -1113,6 +1113,7 @@ app.directive('pisteidenSyottaminen', function () {
   return {
     restrict: 'E',
     scope: {
+      hakutoiveet: '=',
       hakija: '=',
       avain: '=',
       laskentaonly: '=',
@@ -1121,7 +1122,7 @@ app.directive('pisteidenSyottaminen', function () {
     templateUrl: '../common/html/pisteidenSyottaminen.html',
     controller: function ($scope, $modal, LocalisationService) {
         $scope.t = LocalisationService.tl;
-        $scope.changeOsallistuminen = function (hakija, tunniste, value, vaatiiOsallistumisen) {
+        $scope.changeOsallistuminen = function (hakutoiveet, hakija, tunniste, value, vaatiiOsallistumisen) {
             if (value) {
                 if (hakija.additionalData[tunniste] !== "OSALLISTUI") {
                     $scope.$parent.updateFilteredResult();
@@ -1139,7 +1140,7 @@ app.directive('pisteidenSyottaminen', function () {
             }
         };
 
-        $scope.changeArvo = function (hakija, tunniste, value, tyyppi) {
+        $scope.changeArvo = function (hakutoiveet, hakija, tunniste, value, tyyppi) {
           hakija.additionalData[tunniste] = "";
           if (value === "OSALLISTUI") {
             if (tyyppi === "boolean") {
@@ -1148,7 +1149,9 @@ app.directive('pisteidenSyottaminen', function () {
               hakija.additionalData[tunniste] = undefined;
             }
           }
+          if($scope.$parent.updateFilteredResult) {
             $scope.$parent.updateFilteredResult();
+          }
         };
     }
   };

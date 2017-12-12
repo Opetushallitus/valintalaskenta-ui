@@ -101,7 +101,8 @@
                                                          review-url-key="haku-app.virkailija.hakemus.esikatselu" />
                             </td>
                             <td class="leftorientedcolumn" ng-repeat="avain in model.avaimet | filter:{'tunniste': arvoFilter.tunniste} | orderBy:'kuvaus'">
-                                <pisteiden-syottaminen hakija="hakija"
+                                <pisteiden-syottaminen hakutoiveet=""
+                                                       hakija="hakija"
                                                        avain="avain"
                                                        laskentaonly="model.laskentaonly"
                                                        inputdisabled="inputdisabled"/>
