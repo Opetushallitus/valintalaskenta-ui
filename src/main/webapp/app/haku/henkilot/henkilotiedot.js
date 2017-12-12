@@ -179,8 +179,8 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         }, function (error) {
                             errors.push(error);
                         });
-                    })).then(function() {
-                        model.alkuperaisetHakutoiveet = R.clone(model.hakutoiveet);
+                    })).then(function() {}, function (error) {
+                        errors.push(error);
                     });
                 }, function (error) {
                     errors.push(error);
@@ -233,52 +233,20 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
         };
 
         this.tallennaPisteet = function () {
-            var toPistetietoEntryWithOid = function(ad) {
-                var additionalPairs = R.groupWith(function(a,b) {
-                    var f = R.replace('-OSALLISTUMINEN','');
-                    return f(R.head(a)) == f(R.head(b));
-                }, R.toPairs(ad.additionalData));
-                return R.map(R.compose(R.merge({"oid": ad.hakukohdeOid}), R.fromPairs), additionalPairs);
-            };
-            var omitOids = R.map(R.omit(['oid']))
-            var oldEntries = R.flatten(R.map(toPistetietoEntryWithOid, model.alkuperaisetHakutoiveet));
-            console.log('old entries');
-            console.log(oldEntries);
-            var newEntries = R.flatten(R.map(toPistetietoEntryWithOid, model.hakutoiveet));
-            console.log('new entries');
-            console.log(newEntries);
-            var diffByHakukohdeOid = R.difference(newEntries, oldEntries);
-            console.log('Diffs with hakukohde OID')
-            console.log(diffByHakukohdeOid);
-            var diffs = omitOids(diffByHakukohdeOid);
-            console.log('Diffs')
-            console.log(diffs);
-            // check if duplicates and throw error
-            var diffKeys = R.map(R.keys, diffs);
-            console.log('Diff keys');
-            console.log(diffKeys);
-            if(diffKeys.length == R.uniq(diffKeys).length) {
-                // no problem
-                var newAddData = R.mergeAll(omitOids(newEntries));
-                console.log('newAddData');
-                console.log(newAddData);
-                return KoostettuHakemusAdditionalDataForHakemus.put(
-                    {
-                        hakemusOid: model.hakemus.oid
-                    },
-                    {
-                        lastmodified: model.lastmodified,
-                        hakemus: {
-                            oid: model.hakemus.oid,
-                            personOid: model.hakemus.personOid,
-                            additionalData: newAddData
-                        }
+            var mergedAdditionalData = R.mergeAll(R.map(function(h) {return h.additionalData;}, model.hakutoiveet));
+            return KoostettuHakemusAdditionalDataForHakemus.put(
+                {
+                    hakemusOid: model.hakemus.oid
+                },
+                {
+                    lastmodified: model.lastmodified,
+                    hakemus: {
+                        oid: model.hakemus.oid,
+                        personOid: model.hakemus.personOid,
+                        additionalData: mergedAdditionalData
                     }
-                );
-            } else {
-                // throw
-                console.log('Diffs didnt match!');
-            }
+                }
+            );
         };
     }();
 

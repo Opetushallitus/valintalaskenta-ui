@@ -1124,10 +1124,9 @@ app.directive('pisteidenSyottaminen', function () {
         $scope.t = LocalisationService.tl;
         $scope.copyTunnisteValueAcrossHakutoiveet = function(tunniste, osallistumisenTunniste, arvo, osallistuminen) {
             return function(hakutoive) {
-                if(hakutoive.additionalData[tunniste]) {
+                var hasSomeValue = hakutoive.additionalData[tunniste] || hakutoive.additionalData[osallistumisenTunniste];
+                if(hasSomeValue) {
                     hakutoive.additionalData[tunniste] = arvo;
-                }
-                if(hakutoive.additionalData[osallistumisenTunniste]) {
                     hakutoive.additionalData[osallistumisenTunniste] = osallistuminen;
                 }
             };
