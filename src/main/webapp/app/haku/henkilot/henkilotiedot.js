@@ -66,7 +66,6 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                             model.hakenutHarkinnanvaraisesti = true;
                         }
                     }
-                    model.alkuperaisetHakutoiveet = R.clone(model.hakutoiveet);
                     hakutoiveetLoaded.resolve();
                 }
                 HarkinnanvaraisestiHyvaksytty.get({hakemusOid: hakemusOid, hakuOid: hakuOid}, function (result) {
@@ -152,11 +151,11 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         errors.push(error);
                     }
                 });
-
+                //$q.all(model.hakutoiveet.map(function(h) {
                 KoostettuHakemusAdditionalDataForHakemus.get({hakemusOid: model.hakemus.oid}).then(function (pistetiedot) {
                     var pistetiedotByHakukohdeOid = pistetiedot.hakukohteittain;
                     model.lastmodified = pistetiedot.lastmodified;
-                    hakutoiveet.forEach(function (hakutoive) {
+                    $q.all(hakutoiveet.map(function (hakutoive) {
                         HakukohdeAvaimet.get({hakukohdeOid: hakutoive.hakukohdeOid}, function (avaimet) {
                             hakutoive.avaimet = avaimet;
                             HakukohdeAvainTyyppiService.createAvainTyyppiValues(hakutoive.avaimet, []);
@@ -180,7 +179,9 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                         }, function (error) {
                             errors.push(error);
                         });
-                    })
+                    })).then(function() {
+                        model.alkuperaisetHakutoiveet = R.clone(model.hakutoiveet);
+                    });
                 }, function (error) {
                     errors.push(error);
                 });
