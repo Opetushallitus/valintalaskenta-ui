@@ -8,11 +8,11 @@
                        ng-model="hakija.additionalData[avain.tunniste]"
                        osallistuminen="hakija.additionalData[avain.osallistuminenTunniste]"
                        arvovalidaattori
-                       ng-change="changeOsallistuminen(hakutoiveet, hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)"
+                       ng-change="changeOsallistuminen(hakutoiveet, hakija, avain.tunniste, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)"
                        ng-disabled="inputdisabled"/>
                 <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
                         ng-if="avain.osallistuminenTunniste"
-                        ng-change="changeArvo(hakutoiveet, hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
+                        ng-change="changeArvo(hakutoiveet, hakija, avain.tunniste, avain.osallistuminenTunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                         ng-show="avain.vaatiiOsallistumisen == true || (avain.vaatiiOsallistumisen == false && laskentaonly == false)"
                         ng-disabled="inputdisabled">
                     <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
@@ -27,14 +27,14 @@
             <div ng-switch-when="combo" ng-if="hakija.osallistuu[avain.tunniste].osallistumistieto !== 'TOISESSA_HAKUTOIVEESSA' && hakija.osallistuu[avain.tunniste].osallistumistieto !== 'TOISELLA_HAKEMUKSELLA'">
                 <select ng-model="hakija.additionalData[avain.tunniste]"
                         osallistuminen="hakija.additionalData[avain.osallistuminenTunniste]"
-                        ng-change="changeOsallistuminen(hakutoiveet, hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste, avain.vaatiiOsallistumisen)"
+                        ng-change="changeOsallistuminen(hakutoiveet, hakija, avain.tunniste, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.tunniste, avain.vaatiiOsallistumisen)"
                         ng-options="a as a for a in avain.arvot"
                         ng-disabled="inputdisabled">
                     <option value=""></option>
                 </select>
                 <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
                         ng-if="avain.osallistuminenTunniste"
-                        ng-change="changeArvo(hakutoiveet, hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
+                        ng-change="changeArvo(hakutoiveet, hakija, avain.tunniste, avain.osallistuminenTunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                         ng-show="avain.vaatiiOsallistumisen == true || (avain.vaatiiOsallistumisen == false && laskentaonly == false)"
                         ng-disabled="inputdisabled">
                     <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>
@@ -69,7 +69,7 @@
                         <div class="inline-block" ng-if="(avain.tunniste.indexOf('kielikoe') == -1)">
                             <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                     ng-model="hakija.additionalData[avain.tunniste]"
-                                    ng-change="changeOsallistuminen(hakutoiveet, hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)"
+                                    ng-change="changeOsallistuminen(hakutoiveet, hakija, avain.tunniste, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)"
                                     ng-disabled="inputdisabled">
                                 <option value="">{{ t('hakukohteetpistesyotto.tyhja') || 'Tyhjä' }}</option>
                                 <option value="true">{{ t('hakukohteetpistesyotto.kylla') || 'Kyllä' }}</option>
@@ -79,7 +79,7 @@
                         <div class="inline-block" ng-if="(avain.tunniste.indexOf('kielikoe') > -1)">
                             <select ng-if="hakija.additionalData[avain.osallistuminenTunniste] != 'EI_OSALLISTUNUT'"
                                     ng-model="hakija.additionalData[avain.tunniste]"
-                                    ng-change="changeOsallistuminen(hakutoiveet, hakija, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)"
+                                    ng-change="changeOsallistuminen(hakutoiveet, hakija, avain.tunniste, avain.osallistuminenTunniste, hakija.additionalData[avain.tunniste], avain.vaatiiOsallistumisen)"
                                     ng-disabled="inputdisabled">
                                 <option value="">{{ t('hakukohteetpistesyotto.tyhja') || 'Tyhjä' }}</option>
                                 <option value="true">{{ t('hakukohteetpistesyotto.hyvaksytty') || 'Hyväksytty' }}</option>
@@ -88,7 +88,7 @@
                         </div>
                         <select ng-model="hakija.additionalData[avain.osallistuminenTunniste]"
                                 ng-if="avain.osallistuminenTunniste"
-                                ng-change="changeArvo(hakutoiveet, hakija, avain.tunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
+                                ng-change="changeArvo(hakutoiveet, hakija, avain.tunniste, avain.osallistuminenTunniste, hakija.additionalData[avain.osallistuminenTunniste], avain.tyyppi())"
                                 ng-show="avain.vaatiiOsallistumisen == true || (avain.vaatiiOsallistumisen == false && laskentaonly == false)"
                                 ng-disabled="inputdisabled">
                             <option value="MERKITSEMATTA">{{ t('hakukohteetpistesyotto.merkitsematta') || 'Merkitsemättä' }}</option>

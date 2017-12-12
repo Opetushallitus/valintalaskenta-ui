@@ -1120,38 +1120,67 @@ app.directive('pisteidenSyottaminen', function () {
       inputdisabled: '='
     },
     templateUrl: '../common/html/pisteidenSyottaminen.html',
-    controller: function ($scope, $modal, LocalisationService) {
+    controller: function ($scope, $modal, LocalisationService, R) {
         $scope.t = LocalisationService.tl;
-        $scope.changeOsallistuminen = function (hakutoiveet, hakija, tunniste, value, vaatiiOsallistumisen) {
-            if (value) {
-                if (hakija.additionalData[tunniste] !== "OSALLISTUI") {
-                    $scope.$parent.updateFilteredResult();
+        $scope.copyTunnisteValueAcrossHakutoiveet = function(tunniste, osallistumisenTunniste, arvo, osallistuminen) {
+            return function(hakutoive) {
+                if(hakutoive.additionalData[tunniste]) {
+                    hakutoive.additionalData[tunniste] = arvo;
                 }
-                hakija.additionalData[tunniste] = "OSALLISTUI";
+                if(hakutoive.additionalData[osallistumisenTunniste]) {
+                    hakutoive.additionalData[osallistumisenTunniste] = osallistuminen;
+                }
+            };
+        };
+        $scope.changeOsallistuminen = function (hakutoiveet, hakija, tunniste, osallistumisenTunniste, value, vaatiiOsallistumisen) {
+            if (value) {
+                if (hakija.additionalData[osallistumisenTunniste] !== "OSALLISTUI") {
+                    if($scope.$parent.updateFilteredResult) {
+                        $scope.$parent.updateFilteredResult();
+                    }
+                }
+                hakija.additionalData[osallistumisenTunniste] = "OSALLISTUI";
             } else {
-                if (hakija.additionalData[tunniste] !== "MERKITSEMATTA" && hakija.additionalData[tunniste] !== "EI_VAADITA") {
-                    $scope.$parent.updateFilteredResult();
+                if (hakija.additionalData[osallistumisenTunniste] !== "MERKITSEMATTA" && hakija.additionalData[osallistumisenTunniste] !== "EI_VAADITA") {
+                    if($scope.$parent.updateFilteredResult) {
+                        $scope.$parent.updateFilteredResult();
+                    }
                 }
                 if (vaatiiOsallistumisen) {
-                    hakija.additionalData[tunniste] = "MERKITSEMATTA";
+                    hakija.additionalData[osallistumisenTunniste] = "MERKITSEMATTA";
                 } else {
-                    hakija.additionalData[tunniste] = "EI_VAADITA";
+                    hakija.additionalData[osallistumisenTunniste] = "EI_VAADITA";
                 }
+            }
+            if(Array.isArray(hakutoiveet)) {
+                R.map($scope.copyTunnisteValueAcrossHakutoiveet(
+                    tunniste,
+                    osallistumisenTunniste,
+                    hakija.additionalData[tunniste],
+                    hakija.additionalData[osallistumisenTunniste]),
+                    R.filter(R.compose(R.not, R.equals(hakija)), hakutoiveet));
             }
         };
 
-        $scope.changeArvo = function (hakutoiveet, hakija, tunniste, value, tyyppi) {
-          hakija.additionalData[tunniste] = "";
-          if (value === "OSALLISTUI") {
-            if (tyyppi === "boolean") {
-              hakija.additionalData[tunniste] = "true";
-            } else {
-              hakija.additionalData[tunniste] = undefined;
+        $scope.changeArvo = function (hakutoiveet, hakija, tunniste, osallistumisenTunniste, value, tyyppi) {
+            hakija.additionalData[tunniste] = "";
+            if (value === "OSALLISTUI") {
+                if (tyyppi === "boolean") {
+                  hakija.additionalData[tunniste] = "true";
+                } else {
+                  hakija.additionalData[tunniste] = undefined;
+                }
             }
-          }
-          if($scope.$parent.updateFilteredResult) {
-            $scope.$parent.updateFilteredResult();
-          }
+            if($scope.$parent.updateFilteredResult) {
+                $scope.$parent.updateFilteredResult();
+            }
+            if(Array.isArray(hakutoiveet)) {
+                R.map($scope.copyTunnisteValueAcrossHakutoiveet(tunniste,
+                    osallistumisenTunniste,
+                    hakija.additionalData[tunniste],
+                    hakija.additionalData[osallistumisenTunniste]),
+                    R.filter(R.compose(R.not, R.equals(hakija)), hakutoiveet));
+            }
         };
     }
   };
