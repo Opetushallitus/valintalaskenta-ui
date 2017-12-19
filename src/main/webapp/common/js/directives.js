@@ -1047,12 +1047,14 @@ app.directive('showSijoittelunTila', function () {
             $scope.t = LocalisationService.tl;
             var l = function (newval, oldval) {
                 if (newval !== oldval) {
+
+                    var hyvaksytty = "HYVAKSYTTY" === $scope.hakemus.tila || "VARASIJALTA_HYVAKSYTTY" === $scope.hakemus.tila;
                     var peruuntunut = "PERUUNTUNUT" === $scope.hakemus.tila;
-                    var hyvaksyttyPeruuntuneena = ("HYVAKSYTTY" === $scope.hakemus.tila) && $scope.hakemus.hyvaksyPeruuntunut;
+
                     $scope.showHyvaksyPeruuntunut = $scope.onEdit &&
-                        ((peruuntunut && $scope.canHyvaksyPeruuntunut) ||
-                        hyvaksyttyPeruuntuneena ||
-                        $scope.showHyvaksyPeruuntunut);
+                        (($scope.canHyvaksyPeruuntunut && peruuntunut) ||
+                         ($scope.hakemus.hyvaksyPeruuntunut && (hyvaksytty || peruuntunut)));
+
                     $scope.id = $scope.hakemus.valintatapajonoOid + "-" + $scope.hakemus.hakemusOid.replace(/\./g, "");
 
                     $scope.isHarkinnanvaraisestiHyvaksytty = ($scope.hakemus.tila === "HYVAKSYTTY" || $scope.hakemus.tila === "VARASIJALTA_HYVAKSYTTY") && $scope.hakemus.hyvaksyttyHarkinnanvaraisesti == true;
