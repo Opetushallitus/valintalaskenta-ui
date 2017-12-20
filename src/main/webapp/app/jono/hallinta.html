@@ -46,7 +46,7 @@
                         <img ng-src="../../common/img/person_icon.png" class="jobItemUser" /> 
                         <a tooltip-placement="top-left"
                           uib-tooltip="{{ job.userFullname }}"
-                          href="{{getHenkiloUrl(job.userOID)}}/">
+                          href="{{getHenkiloUrl(job.userOID)}}">
                           {{ job.userNameInitials }}
                         </a>
                         <img ng-src="../../common/img/clock_icon.png" class="jobItemRunningTime" /> {{ job.luotu | timeFromNow }}
