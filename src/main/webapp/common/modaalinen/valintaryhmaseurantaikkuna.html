@@ -6,11 +6,14 @@
 	<h2 style="margin-top: -12px;">{{nimentarkennus}}</h2>
 	<br>
 	<div class="progress">
-	  <div class="progress-bar" ng-style="{width:getOnnistuneetProsentit()+'%'}">
-	    {{getOnnistuneetProsentit()}}%
-	  </div>
-	  <div class="progress-bar progress-bar-danger" ng-style="{width:getOhitetutProsentit()+'%'}">
-	    {{getOhitetutProsentit()}}%
+	  	<div ng-if="tila=='MENEILLAAN'"class="progress-bar" ng-style="{width:0+'%'}">
+	    {{0}}%
+	  	</div>
+		<div ng-if="tila=='VALMIS'"class="progress-bar" ng-style="{width:100+'%'}">
+			{{100}}%
+		</div>
+		<div ng-if="tila=='PERUUTETTU'" class="progress-bar progress-bar-danger" ng-style="{width:100+'%'}">
+	    {{100}}%
 	  </div>
 	</div>
 	<div ng-if="uuid">
