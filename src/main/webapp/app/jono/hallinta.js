@@ -54,6 +54,8 @@ angular
     // Jobs being processed are subscribed to SSE endpoint for a soft real-time updates
     $scope.sseTrackedJobs = {};
 
+    $scope.url = $window.url;
+
     $scope.isShown = function(elem, idx, arr) {
       return $scope.stateFilters[elem.tila] || _.every($scope.stateFilters, function(state) {return !state});
     };
