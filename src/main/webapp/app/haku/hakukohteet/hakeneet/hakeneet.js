@@ -1,5 +1,69 @@
-﻿app.factory('HakeneetModel', function (HakukohdeHenkilotFull, $q) {
+﻿app.factory('HakeneetModel', function (HakukohdeHenkilotFull, AtaruApplications, HakuModel, HenkiloPerustietosByHenkiloOidList, $q) {
     'use strict';
+
+    var getAtaruHakemusMaksuvelvollisuus = function(hakemus, hakukohdeOid) {
+        var paymentObligation = hakemus.paymentObligations ? hakemus.paymentObligations[hakukohdeOid] : null;
+        switch (paymentObligation) {
+            case "obligated":
+                return "REQUIRED";
+            case "not-obligated":
+                return "NOT_REQUIRED";
+            default:
+                return "NOT_CHECKED";
+        }
+    };
+
+    var processHakuappHakemus = function (hakija, hakukohdeOid) {
+        if (hakija.answers) {
+            for (var i = 1; i < 10; i++) {
+                if (!hakija.answers.hakutoiveet) {
+                    break;
+                }
+                var oid = hakija.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+
+                if (oid === undefined) {
+                    break;
+                }
+
+                if (oid === hakukohdeOid) {
+                    hakija.hakutoiveNumero = i;
+
+                    if (hakija.preferenceEligibilities) {
+                        for (var j = 0; j < hakija.preferenceEligibilities.length; j++) {
+                            if (hakija.preferenceEligibilities[j].aoId === hakukohdeOid) {
+                                hakija.hakukelpoisuus = hakija.preferenceEligibilities[j].status;
+                                if (hakija.preferenceEligibilities[j].maksuvelvollisuus) {
+                                    hakija.maksuvelvollisuus = hakija.preferenceEligibilities[j].maksuvelvollisuus;
+                                } else {
+                                    hakija.maksuvelvollisuus = 'NOT_CHECKED';
+                                }
+
+                            }
+
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    };
+
+    var processAtaruApplications = function(applications, persons, hakukohdeOid) {
+        return applications.map(function(application) {
+            var person = persons.filter(function(person) {
+                return person.oidHenkilo === application.henkiloOid;
+            })[0];
+
+            return {
+                maksuvelvollisuus: getAtaruHakemusMaksuvelvollisuus(application, hakukohdeOid),
+                Etunimet: person.etunimet,
+                Sukunimi: person.sukunimi,
+                personOid: person.oidHenkilo,
+                hakemusOid: application.oid
+            }
+        })
+    };
+
     var model;
     model = new function () {
 
@@ -14,49 +78,50 @@
             model.hakuOid = hakuOid;
             this.loaded = $q.defer();
 
-            HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: model.hakuOid}, function (result) {
-                model.hakeneet = result;
+            HakuModel.promise.then(function (hakuModel) {
+                if (hakuModel.hakuOid.ataruLomakeAvain) {
+                    console.log("get ataruhakemukset");
+                    model.reviewUrlKey = "ataru.application.review";
+                    AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},
+                        function (applications) {
+                            var hakijaOids = _.uniq(applications.map(function (application) {
+                                return application.henkiloOid;
+                            }));
 
-                model.hakeneet.forEach(function (hakija) {
-                    if(hakija.answers) {
-                        for (var i = 1; i < 10; i++) {
-                            if (!hakija.answers.hakutoiveet) {
-                                break;
-                            }
-                            var oid = hakija.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+                            HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
+                                function (persons) {
+                                    model.hakeneet = processAtaruApplications(applications, persons, hakukohdeOid);
+                                    model.loaded.resolve();
+                                },
+                                function (error) {
+                                    console.log(error);
+                                    model.errors.push(error);
+                                });
+                        },
+                        function (error) {
+                            console.log(error);
+                            model.errors.push(error);
+                        });
+                } else {
+                    console.log("get hakuapphakemukset");
+                    model.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
+                    HakukohdeHenkilotFull.get({
+                        aoOid: hakukohdeOid,
+                        rows: 100000,
+                        asId: model.hakuOid
+                    }, function (result) {
+                        model.hakeneet = result;
 
-                            if (oid === undefined) {
-                                break;
-                            }
+                        model.hakeneet.forEach(function (hakija) {
+                            processHakuappHakemus(hakija, hakukohdeOid)
+                        });
 
-                            if (oid === hakukohdeOid) {
-                                hakija.hakutoiveNumero = i;
-
-                                if (hakija.preferenceEligibilities) {
-                                    for (var j = 0; j < hakija.preferenceEligibilities.length; j++) {
-                                        if (hakija.preferenceEligibilities[j].aoId === hakukohdeOid) {
-                                            hakija.hakukelpoisuus = hakija.preferenceEligibilities[j].status;
-                                            if(hakija.preferenceEligibilities[j].maksuvelvollisuus) {
-                                                hakija.maksuvelvollisuus = hakija.preferenceEligibilities[j].maksuvelvollisuus;
-                                            } else {
-                                                hakija.maksuvelvollisuus = 'NOT_CHECKED';
-                                            }
-
-                                        }
-
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                        model.loaded.resolve();
-                    }
-                });
-
-            }, function (error) {
-                model.errors.push(error);
+                    }, function (error) {
+                        console.log(error);
+                        model.errors.push(error);
+                    });
+                }
             });
-
         };
 
 
@@ -76,12 +141,10 @@ angular.module('valintalaskenta').
         function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel, ngTableParams, $filter, FilterService, Korkeakoulu, HakuModel) {
     'use strict';
 
-
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.url = window.url;
 
-    //$scope.isKkHaku = Korkeakoulu.isKorkeakoulu(HakuModel.hakuOid.kohdejoukkoUri);
     $scope.hakuModel = HakuModel;
     $scope.korkeakouluService = Korkeakoulu;
 
