@@ -1,4 +1,4 @@
-﻿app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, HakuModel, HenkiloPerustietosByHenkiloOidList, $q) {
+﻿app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, HenkiloPerustietosByHenkiloOidList, $q) {
     'use strict';
 
     var getAtaruHakemusMaksuvelvollisuus = function(hakemus, hakukohdeOid) {
@@ -87,7 +87,7 @@
         this.hakeneet = [];
         this.errors = [];
 
-        this.refresh = function(hakukohdeOid, hakuOid) {
+        this.refresh = function(hakukohdeOid, hakuOid, loadFromAtaru) {
             model.hakeneet = [];
             model.errors = [];
             model.errors.length = 0;
@@ -95,45 +95,41 @@
             model.hakuOid = hakuOid;
             this.loaded = $q.defer();
 
-            HakuModel.promise.then(function(hakuModel) {
-                if (hakuModel.hakuOid.ataruLomakeAvain) {
-                    console.log("Get applications from Ataru");
-                    model.reviewUrlKey = "ataru.application.review";
-                    AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},
-                        function(applications) {
-                            var hakijaOids = _.uniq(applications.map(function(application) {
-                                return application.henkiloOid;
-                            }));
+            if (loadFromAtaru) {
+                console.log("Get applications from Ataru");
+                AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},
+                    function(applications) {
+                        var hakijaOids = _.uniq(applications.map(function(application) {
+                            return application.henkiloOid;
+                        }));
 
-                            HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
-                                function(persons) {
-                                    model.hakeneet = processAtaruApplications(applications, persons, hakukohdeOid);
-                                    model.loaded.resolve();
-                                }, onError);
-                        }, onError);
-                } else {
-                    console.log("Get applications from hakuapp");
-                    model.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
-                    HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: model.hakuOid},
-                        function(applications) {
-                            var hakijaOids = _.uniq(applications.map(function(application) {
-                                return application.personOid;
-                            }));
+                        HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
+                            function(persons) {
+                                model.hakeneet = processAtaruApplications(applications, persons, hakukohdeOid);
+                                model.loaded.resolve();
+                            }, onError);
+                    }, onError);
+            } else {
+                console.log("Get applications from hakuapp");
+                HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: model.hakuOid},
+                    function(applications) {
+                        var hakijaOids = _.uniq(applications.map(function(application) {
+                            return application.personOid;
+                        }));
 
-                            HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
-                                function(persons) {
-                                    model.hakeneet = processHakuappApplications(applications, hakukohdeOid, persons);
-                                    model.loaded.resolve();
-                                }, onError);
+                        HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
+                            function(persons) {
+                                model.hakeneet = processHakuappApplications(applications, hakukohdeOid, persons);
+                                model.loaded.resolve();
+                            }, onError);
 
-                        }, onError);
-                }
-            });
+                    }, onError);
+            }
         };
 
-        this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
+        this.refreshIfNeeded = function(hakukohdeOid, hakuOid, loadFromAtaru) {
             if (hakukohdeOid && hakukohdeOid !== model.hakukohdeOid) {
-                model.refresh(hakukohdeOid, hakuOid);
+                model.refresh(hakukohdeOid, hakuOid, loadFromAtaru);
             }
         };
     }();
@@ -156,7 +152,16 @@ angular.module('valintalaskenta').controller('HakeneetController', ['$scope', '$
         HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
         $scope.hakukohdeModel = HakukohdeModel;
 
-        HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
+        HakuModel.promise.then(function(hakuModel) {
+            if (hakuModel.hakuOid.ataruLomakeAvain) {
+                HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid, true);
+                $scope.reviewUrlKey = "ataru.application.review";
+            } else {
+                HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid, false);
+                $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
+            }
+        });
+
         $scope.model = HakeneetModel;
         $scope.promise = $scope.model.loaded.promise;
 
@@ -174,15 +179,15 @@ angular.module('valintalaskenta').controller('HakeneetController', ['$scope', '$
             page: 1,            // show first page
             count: 50,          // count per page
             filters: {
-                'answers.henkilotiedot.Sukunimi': ''
+                'Sukunimi': ''
             },
             sorting: {
-                'answers.henkilotiedot.Sukunimi': 'asc'     // initial sorting
+                'Sukunimi': 'asc'     // initial sorting
             }
         }, {
             total: $scope.model.hakeneet.length, // length of data
             getData: function($defer, params) {
-                $scope.promise.then(function(result) {
+                $scope.promise.then(function() {
                     var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
                     var orderedData = params.sorting() ?
