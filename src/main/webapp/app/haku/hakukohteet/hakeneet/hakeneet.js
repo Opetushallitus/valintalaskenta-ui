@@ -13,39 +13,54 @@
         }
     };
 
-    var processHakuappHakemus = function (hakija, hakukohdeOid) {
-        if (hakija.answers) {
-            for (var i = 1; i < 10; i++) {
-                if (!hakija.answers.hakutoiveet) {
-                    break;
-                }
-                var oid = hakija.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
+    var processHakuappApplications = function(applications, hakukohdeOid, persons) {
+        return applications.map(function(application) {
+            var hakija = {};
+            if (application.answers) {
+                var person = persons.filter(function(person) {
+                    return person.oidHenkilo === application.personOid;
+                })[0];
 
-                if (oid === undefined) {
-                    break;
-                }
+                for (var i = 1; i < 10; i++) {
+                    if (!application.answers.hakutoiveet) {
+                        break;
+                    }
+                    var oid = application.answers.hakutoiveet["preference" + i + "-Koulutus-id"];
 
-                if (oid === hakukohdeOid) {
-                    hakija.hakutoiveNumero = i;
+                    if (oid === undefined) {
+                        break;
+                    }
 
-                    if (hakija.preferenceEligibilities) {
-                        for (var j = 0; j < hakija.preferenceEligibilities.length; j++) {
-                            if (hakija.preferenceEligibilities[j].aoId === hakukohdeOid) {
-                                hakija.hakukelpoisuus = hakija.preferenceEligibilities[j].status;
-                                if (hakija.preferenceEligibilities[j].maksuvelvollisuus) {
-                                    hakija.maksuvelvollisuus = hakija.preferenceEligibilities[j].maksuvelvollisuus;
-                                } else {
-                                    hakija.maksuvelvollisuus = 'NOT_CHECKED';
+                    if (oid === hakukohdeOid) {
+                        hakija.hakutoiveNumero = i;
+
+                        if (application.preferenceEligibilities) {
+                            for (var j = 0; j < application.preferenceEligibilities.length; j++) {
+                                if (application.preferenceEligibilities[j].aoId === hakukohdeOid) {
+                                    hakija.hakukelpoisuus = application.preferenceEligibilities[j].status;
+                                    if (application.preferenceEligibilities[j].maksuvelvollisuus) {
+                                        hakija.maksuvelvollisuus = application.preferenceEligibilities[j].maksuvelvollisuus;
+                                    } else {
+                                        hakija.maksuvelvollisuus = 'NOT_CHECKED';
+                                    }
+
                                 }
 
                             }
-
                         }
+                        break;
                     }
-                    break;
                 }
+
+                hakija.state = application.state;
+                hakija.Etunimet = person.etunimet;
+                hakija.Sukunimi = person.sukunimi;
+                hakija.personOid = person.oidHenkilo;
+                hakija.hakemusOid = application.oid;
             }
-        }
+
+            return hakija;
+        });
     };
 
     var processAtaruApplications = function(applications, persons, hakukohdeOid) {
@@ -64,13 +79,18 @@
         })
     };
 
+    var onError = function(error) {
+        console.log(error);
+        model.errors.push(error);
+    };
+
     var model;
     model = new function () {
 
         this.hakeneet = [];
         this.errors = [];
 
-        this.refresh = function (hakukohdeOid, hakuOid) {
+        this.refresh = function(hakukohdeOid, hakuOid) {
             model.hakeneet = [];
             model.errors = [];
             model.errors.length = 0;
@@ -78,48 +98,38 @@
             model.hakuOid = hakuOid;
             this.loaded = $q.defer();
 
-            HakuModel.promise.then(function (hakuModel) {
+            HakuModel.promise.then(function(hakuModel) {
                 if (hakuModel.hakuOid.ataruLomakeAvain) {
-                    console.log("get ataruhakemukset");
+                    console.log("Get applications from Ataru");
                     model.reviewUrlKey = "ataru.application.review";
                     AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},
-                        function (applications) {
-                            var hakijaOids = _.uniq(applications.map(function (application) {
+                        function(applications) {
+                            var hakijaOids = _.uniq(applications.map(function(application) {
                                 return application.henkiloOid;
                             }));
 
                             HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
-                                function (persons) {
+                                function(persons) {
                                     model.hakeneet = processAtaruApplications(applications, persons, hakukohdeOid);
                                     model.loaded.resolve();
-                                },
-                                function (error) {
-                                    console.log(error);
-                                    model.errors.push(error);
-                                });
-                        },
-                        function (error) {
-                            console.log(error);
-                            model.errors.push(error);
-                        });
+                                }, onError);
+                        }, onError);
                 } else {
-                    console.log("get hakuapphakemukset");
+                    console.log("Get applications from hakuapp");
                     model.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
-                    HakukohdeHenkilotFull.get({
-                        aoOid: hakukohdeOid,
-                        rows: 100000,
-                        asId: model.hakuOid
-                    }, function (result) {
-                        model.hakeneet = result;
+                    HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: model.hakuOid},
+                        function(applications) {
+                            var hakijaOids = _.uniq(applications.map(function(application) {
+                                return application.personOid;
+                            }));
 
-                        model.hakeneet.forEach(function (hakija) {
-                            processHakuappHakemus(hakija, hakukohdeOid)
-                        });
+                            HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
+                                function(persons) {
+                                    model.hakeneet = processHakuappApplications(applications, hakukohdeOid, persons);
+                                    model.loaded.resolve();
+                                }, onError);
 
-                    }, function (error) {
-                        console.log(error);
-                        model.errors.push(error);
-                    });
+                        }, onError);
                 }
             });
         };

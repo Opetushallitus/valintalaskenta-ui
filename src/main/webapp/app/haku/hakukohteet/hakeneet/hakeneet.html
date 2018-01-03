@@ -21,25 +21,33 @@
                 <form name="form" ng-submit="submit()">
                     <table ng-table="tableParams" show-filter="true" class="virkailija-table-1">
                         <tr ng-repeat="hakija in $data">
-                            <td class="leftorientedcolumn" data-title="(t('hakukohteethakeneet.nimi') || 'Nimi')"
-                                sortable="'answers.henkilotiedot.Sukunimi'" filter="{ 'answers.henkilotiedot.Sukunimi' : 'text' }">
-                                <show-person-information sukunimi="{{hakija.answers.henkilotiedot.Sukunimi}}"
-                                                         etunimi="{{hakija.answers.henkilotiedot.Etunimet}}"
-                                                         hakemus-oid="{{hakija.oid}}"
-                                                         haku-oid="{{hakuOid}}"
+                            <td class="leftorientedcolumn"
+                                data-title="(t('hakukohteethakeneet.nimi') || 'Nimi')"
+                                sortable="'Sukunimi'"
+                                filter="{ 'Sukunimi' : 'text' }">
+                                <show-person-information sukunimi="{{hakija.Sukunimi}}"
+                                                         etunimi="{{hakija.Etunimet}}"
+                                                         hakemus-oid="{{hakija.hakemusOid}}"
                                                          henkilo-oid="{{hakija.personOid}}"
-                                                         review-url-key="haku-app.virkailija.hakemus.esikatselu" />
+                                                         haku-oid="{{hakuOid}}"
+                                                         review-url-key="{{model.reviewUrlKey}}" />
                             </td>
-                            <td data-title="(t('hakukohteethakeneet.tila') || 'Tila')" sortable="'tila[hakija.state]'">
+                            <td data-title="(t('hakukohteethakeneet.tila') || 'Tila')"
+                                sortable="'tila[state]'">
                                 {{tila[hakija.state]}}
                             </td>
-                            <td ng-show="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" data-title="(t('hakukohteethakeneet.hakukelpoisuustieto') || 'Hakukelpoisuustieto')" sortable="'hakukelpoisuus'">
+                            <td ng-show="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)"
+                                data-title="(t('hakukohteethakeneet.hakukelpoisuustieto') || 'Hakukelpoisuustieto')"
+                                sortable="'hakukelpoisuus'">
                                 {{ t(hakija.hakukelpoisuus) || hakija.hakukelpoisuus }}
                             </td>
-                            <td data-title="(t('hakukohteethakeneet.hakutoiveennumero') || 'Hakutoiveen numero')" sortable="'hakutoiveNumero'">
+                            <td data-title="(t('hakukohteethakeneet.hakutoiveennumero') || 'Hakutoiveen numero')"
+                                sortable="'hakutoiveNumero'">
                                 {{hakija.hakutoiveNumero}}
                             </td>
-                            <td ng-show="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" data-title="(t('hakukohteethakeneet.maksuvelvollisuus') || 'Maksuvelvollisuus')" sortable="'maksuvelvollisuus[hakija.maksuvelvollisuus]'">
+                            <td ng-show="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)"
+                                data-title="(t('hakukohteethakeneet.maksuvelvollisuus') || 'Maksuvelvollisuus')"
+                                sortable="'maksuvelvollisuus[maksuvelvollisuus]'">
                                 {{maksuvelvollisuus[hakija.maksuvelvollisuus]}}
                             </td>
                         </tr>
