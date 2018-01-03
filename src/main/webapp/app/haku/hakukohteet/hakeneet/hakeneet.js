@@ -1,4 +1,4 @@
-﻿app.factory('HakeneetModel', function (HakukohdeHenkilotFull, AtaruApplications, HakuModel, HenkiloPerustietosByHenkiloOidList, $q) {
+﻿app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, HakuModel, HenkiloPerustietosByHenkiloOidList, $q) {
     'use strict';
 
     var getAtaruHakemusMaksuvelvollisuus = function(hakemus, hakukohdeOid) {
@@ -43,9 +43,7 @@
                                     } else {
                                         hakija.maksuvelvollisuus = 'NOT_CHECKED';
                                     }
-
                                 }
-
                             }
                         }
                         break;
@@ -85,8 +83,7 @@
     };
 
     var model;
-    model = new function () {
-
+    model = new function() {
         this.hakeneet = [];
         this.errors = [];
 
@@ -134,8 +131,7 @@
             });
         };
 
-
-        this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {
+        this.refreshIfNeeded = function(hakukohdeOid, hakuOid) {
             if (hakukohdeOid && hakukohdeOid !== model.hakukohdeOid) {
                 model.refresh(hakukohdeOid, hakuOid);
             }
@@ -145,63 +141,61 @@
     return model;
 });
 
-angular.module('valintalaskenta').
-    controller('HakeneetController', ['$scope', '$location', '$routeParams', 'HakeneetModel', 'HakukohdeModel',
-        'ngTableParams','$filter','FilterService', 'Korkeakoulu', 'HakuModel',
-        function ($scope, $location, $routeParams, HakeneetModel, HakukohdeModel, ngTableParams, $filter, FilterService, Korkeakoulu, HakuModel) {
-    'use strict';
+angular.module('valintalaskenta').controller('HakeneetController', ['$scope', '$location', '$routeParams', 'HakeneetModel', 'HakukohdeModel',
+    'ngTableParams', '$filter', 'FilterService', 'Korkeakoulu', 'HakuModel',
+    function($scope, $location, $routeParams, HakeneetModel, HakukohdeModel, ngTableParams, $filter, FilterService, Korkeakoulu, HakuModel) {
+        'use strict';
 
-    $scope.hakukohdeOid = $routeParams.hakukohdeOid;
-    $scope.hakuOid = $routeParams.hakuOid;
-    $scope.url = window.url;
+        $scope.hakukohdeOid = $routeParams.hakukohdeOid;
+        $scope.hakuOid = $routeParams.hakuOid;
+        $scope.url = window.url;
 
-    $scope.hakuModel = HakuModel;
-    $scope.korkeakouluService = Korkeakoulu;
+        $scope.hakuModel = HakuModel;
+        $scope.korkeakouluService = Korkeakoulu;
 
-    HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
-    $scope.hakukohdeModel = HakukohdeModel;
+        HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
+        $scope.hakukohdeModel = HakukohdeModel;
 
-    HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
-    $scope.model = HakeneetModel;
-    $scope.promise = $scope.model.loaded.promise;
+        HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid);
+        $scope.model = HakeneetModel;
+        $scope.promise = $scope.model.loaded.promise;
 
-    $scope.tila = {
-        ACTIVE: $scope.t('tila.active') || 'Aktiivinen',
-        INCOMPLETE: $scope.t('tila.incomplete') || 'Puutteellinen'
-    };
-    $scope.maksuvelvollisuus = {
-        NOT_CHECKED: $scope.t('maksuvelvollisuus.not_checked') || 'Ei tarkistettu',
-        NOT_REQUIRED: $scope.t('maksuvelvollisuus.not_required') || 'Ei maksuvelvollinen',
-        REQUIRED: $scope.t('maksuvelvollisuus.required') || 'Maksuvelvollinen'
-    };
+        $scope.tila = {
+            ACTIVE: $scope.t('tila.active') || 'Aktiivinen',
+            INCOMPLETE: $scope.t('tila.incomplete') || 'Puutteellinen'
+        };
+        $scope.maksuvelvollisuus = {
+            NOT_CHECKED: $scope.t('maksuvelvollisuus.not_checked') || 'Ei tarkistettu',
+            NOT_REQUIRED: $scope.t('maksuvelvollisuus.not_required') || 'Ei maksuvelvollinen',
+            REQUIRED: $scope.t('maksuvelvollisuus.required') || 'Maksuvelvollinen'
+        };
 
-    $scope.tableParams = new ngTableParams({
-        page: 1,            // show first page
-        count: 50,          // count per page
-        filters: {
-            'answers.henkilotiedot.Sukunimi' : ''
-        },
-        sorting: {
-            'answers.henkilotiedot.Sukunimi': 'asc'     // initial sorting
-        }
-    }, {
-        total: $scope.model.hakeneet.length, // length of data
-        getData: function ($defer, params) {
-            $scope.promise.then(function (result) {
-                var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+        $scope.tableParams = new ngTableParams({
+            page: 1,            // show first page
+            count: 50,          // count per page
+            filters: {
+                'answers.henkilotiedot.Sukunimi': ''
+            },
+            sorting: {
+                'answers.henkilotiedot.Sukunimi': 'asc'     // initial sorting
+            }
+        }, {
+            total: $scope.model.hakeneet.length, // length of data
+            getData: function($defer, params) {
+                $scope.promise.then(function(result) {
+                    var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
-                var orderedData = params.sorting() ?
-                    $filter('orderBy')($scope.model.hakeneet, params.orderBy()) :
-                    $scope.model.hakeneet;
-                orderedData = params.filter() ?
-                    $filter('filter')(orderedData, filters) :
-                    orderedData;
+                    var orderedData = params.sorting() ?
+                        $filter('orderBy')($scope.model.hakeneet, params.orderBy()) :
+                        $scope.model.hakeneet;
+                    orderedData = params.filter() ?
+                        $filter('filter')(orderedData, filters) :
+                        orderedData;
 
-                params.total(orderedData.length); // set total for recalc pagination
-                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    params.total(orderedData.length); // set total for recalc pagination
+                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                });
+            }
+        });
+    }]);
 
-            });
-        }
-    });
-
-}]);
