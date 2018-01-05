@@ -1132,6 +1132,7 @@ app.directive('pisteidenSyottaminen', function () {
             };
         };
         $scope.changeOsallistuminen = function (hakutoiveet, hakija, tunniste, osallistumisenTunniste, value, vaatiiOsallistumisen) {
+            hakija.muuttunut = true;
             if (value) {
                 if (hakija.additionalData[osallistumisenTunniste] !== "OSALLISTUI") {
                     if($scope.$parent.updateFilteredResult) {
@@ -1162,6 +1163,7 @@ app.directive('pisteidenSyottaminen', function () {
         };
 
         $scope.changeArvo = function (hakutoiveet, hakija, tunniste, osallistumisenTunniste, value, tyyppi) {
+            hakija.muuttunut = true;
             hakija.additionalData[tunniste] = "";
             if (value === "OSALLISTUI") {
                 if (tyyppi === "boolean") {

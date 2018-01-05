@@ -1,5 +1,4 @@
 app.factory('PistesyottoModel', function (
-    R,
     $q,
     $window,
     HakukohdeHenkilotFull,
@@ -8,7 +7,7 @@ app.factory('PistesyottoModel', function (
     Valintakoetulokset,
     Ilmoitus,
     IlmoitusTila,
-    HakukohdeAvainTyyppiService, _) {
+    HakukohdeAvainTyyppiService, _, R) {
 
     "use strict";
 
@@ -78,7 +77,7 @@ app.factory('PistesyottoModel', function (
             if (!blockSubmit) {
                 blockSubmit = true;
                 // haku-app ei halua ylimääräistä tietoa
-                var hakeneet = angular.copy(model.hakeneet);
+                var hakeneet = R.filter(function(h) { return h.muuttunut;}, angular.copy(model.hakeneet));
                 hakeneet.forEach(function(hakija) {
                     // Filteröidään pois arvot, joita ei voi syöttää, koska haku-app mergaa
                     model.avaimet.forEach(function(avain) {
