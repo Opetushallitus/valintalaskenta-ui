@@ -752,7 +752,6 @@ app.directive('showPersonInformation', function () {
                     scope: $scope,
                     templateUrl: '../common/html/personInformationModal.html',
                     controller: function ($scope, $window, $modalInstance) {
-
                         $scope.sulje = function () {
                             $modalInstance.dismiss('cancel');
                         };

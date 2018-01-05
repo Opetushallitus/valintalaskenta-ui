@@ -1,18 +1,6 @@
 ﻿app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, HenkiloPerustietosByHenkiloOidList, $q) {
     'use strict';
 
-    var getAtaruHakemusMaksuvelvollisuus = function(hakemus, hakukohdeOid) {
-        var paymentObligation = hakemus.paymentObligations ? hakemus.paymentObligations[hakukohdeOid] : null;
-        switch (paymentObligation) {
-            case "obligated":
-                return "REQUIRED";
-            case "not-obligated":
-                return "NOT_REQUIRED";
-            default:
-                return "NOT_CHECKED";
-        }
-    };
-
     var processHakuappApplications = function(applications, hakukohdeOid, persons) {
         return applications.map(function(application) {
             var hakija = {};
@@ -61,14 +49,50 @@
         });
     };
 
+    var ataruMaksuvelvollisuus = function(hakutoive) {
+        var paymentObligation = hakutoive ? hakutoive.paymentObligation : null;
+        switch (paymentObligation) {
+            case "obligated":
+                return "REQUIRED";
+            case "not-obligated":
+                return "NOT_REQUIRED";
+            default:
+                return "NOT_CHECKED";
+        }
+    };
+
+    var ataruApplicationState = function(hakutoive) {
+        var state = hakutoive ? hakutoive.processingState : null;
+        if (state === "information-request") return 'ACTIVE';
+        else return 'INCOMPLETE';
+    };
+
+    var ataruHakukelpoisuus = function(hakutoive) {
+        var hakukelpoisuus = hakutoive ? hakutoive.eligibilityState : null;
+        switch (hakukelpoisuus) {
+            case "eligible":
+                return "Hakukelpoinen";
+            case "uneligible":
+                return "Ei Hakukelpoinen";
+            default:
+                return "Tarkastamatta";
+        }
+    };
+
     var processAtaruApplications = function(applications, persons, hakukohdeOid) {
         return applications.map(function(application) {
             var person = persons.filter(function(person) {
                 return person.oidHenkilo === application.henkiloOid;
             })[0];
 
+            var hakutoive = application.hakutoiveet.filter(function(h) {
+                return h.hakukohdeOid === hakukohdeOid;
+            })[0];
+
             return {
-                maksuvelvollisuus: getAtaruHakemusMaksuvelvollisuus(application, hakukohdeOid),
+                maksuvelvollisuus: ataruMaksuvelvollisuus(hakutoive),
+                state: ataruApplicationState(hakutoive),
+                hakukelpoisuus: ataruHakukelpoisuus(hakutoive.eligibilityState),
                 Etunimet: person.etunimet,
                 Sukunimi: person.sukunimi,
                 personOid: person.oidHenkilo,
@@ -87,13 +111,12 @@
         this.hakeneet = [];
         this.errors = [];
 
-        this.refresh = function(hakukohdeOid, hakuOid, loadFromAtaru) {
+        this.refresh = function(hakukohdeOid, hakuOid, loadFromAtaru, promise) {
             model.hakeneet = [];
             model.errors = [];
             model.errors.length = 0;
             model.hakukohdeOid = hakukohdeOid;
             model.hakuOid = hakuOid;
-            this.loaded = $q.defer();
 
             if (loadFromAtaru) {
                 console.log("Get applications from Ataru");
@@ -106,7 +129,7 @@
                         HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
                             function(persons) {
                                 model.hakeneet = processAtaruApplications(applications, persons, hakukohdeOid);
-                                model.loaded.resolve();
+                                promise.resolve();
                             }, onError);
                     }, onError);
             } else {
@@ -120,7 +143,7 @@
                         HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
                             function(persons) {
                                 model.hakeneet = processHakuappApplications(applications, hakukohdeOid, persons);
-                                model.loaded.resolve();
+                                promise.resolve();
                             }, onError);
 
                     }, onError);
@@ -128,9 +151,12 @@
         };
 
         this.refreshIfNeeded = function(hakukohdeOid, hakuOid, loadFromAtaru) {
+            var deferred = $q.defer();
             if (hakukohdeOid && hakukohdeOid !== model.hakukohdeOid) {
-                model.refresh(hakukohdeOid, hakuOid, loadFromAtaru);
-            }
+                model.refresh(hakukohdeOid, hakuOid, loadFromAtaru, deferred);
+            } else deferred.resolve();
+
+            return deferred.promise;
         };
     }();
 
@@ -145,26 +171,10 @@ angular.module('valintalaskenta').controller('HakeneetController', ['$scope', '$
         $scope.hakukohdeOid = $routeParams.hakukohdeOid;
         $scope.hakuOid = $routeParams.hakuOid;
         $scope.url = window.url;
-
         $scope.hakuModel = HakuModel;
         $scope.korkeakouluService = Korkeakoulu;
-
-        HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
         $scope.hakukohdeModel = HakukohdeModel;
-
-        HakuModel.promise.then(function(hakuModel) {
-            if (hakuModel.hakuOid.ataruLomakeAvain) {
-                HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid, true);
-                $scope.reviewUrlKey = "ataru.application.review";
-            } else {
-                HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid, false);
-                $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
-            }
-        });
-
         $scope.model = HakeneetModel;
-        $scope.promise = $scope.model.loaded.promise;
-
         $scope.tila = {
             ACTIVE: $scope.t('tila.active') || 'Aktiivinen',
             INCOMPLETE: $scope.t('tila.incomplete') || 'Puutteellinen'
@@ -174,7 +184,6 @@ angular.module('valintalaskenta').controller('HakeneetController', ['$scope', '$
             NOT_REQUIRED: $scope.t('maksuvelvollisuus.not_required') || 'Ei maksuvelvollinen',
             REQUIRED: $scope.t('maksuvelvollisuus.required') || 'Maksuvelvollinen'
         };
-
         $scope.tableParams = new ngTableParams({
             page: 1,            // show first page
             count: 50,          // count per page
@@ -187,18 +196,23 @@ angular.module('valintalaskenta').controller('HakeneetController', ['$scope', '$
         }, {
             total: $scope.model.hakeneet.length, // length of data
             getData: function($defer, params) {
-                $scope.promise.then(function() {
-                    var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+                HakuModel.promise.then(function(hakuModel) {
+                    var loadFromAtaru = hakuModel.hakuOid.ataruLomakeAvain !== undefined;
+                    HakeneetModel.refreshIfNeeded($scope.hakukohdeOid, $scope.hakuOid, loadFromAtaru)
+                        .then(function() {
+                            $scope.reviewUrlKey = loadFromAtaru ? "ataru.application.review" : "haku-app.virkailija.hakemus.esikatselu";
+                            var filters = FilterService.fixFilterWithNestedProperty(params.filter());
+                            var orderedData = params.sorting() ?
+                                $filter('orderBy')($scope.model.hakeneet, params.orderBy()) :
+                                $scope.model.hakeneet;
 
-                    var orderedData = params.sorting() ?
-                        $filter('orderBy')($scope.model.hakeneet, params.orderBy()) :
-                        $scope.model.hakeneet;
-                    orderedData = params.filter() ?
-                        $filter('filter')(orderedData, filters) :
-                        orderedData;
+                            orderedData = params.filter() ?
+                                $filter('filter')(orderedData, filters) :
+                                orderedData;
 
-                    params.total(orderedData.length); // set total for recalc pagination
-                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                            params.total(orderedData.length); // set total for recalc pagination
+                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                        });
                 });
             }
         });
