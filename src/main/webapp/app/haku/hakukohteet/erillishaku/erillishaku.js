@@ -445,15 +445,21 @@ angular.module('valintalaskenta')
       };
 
       var getAtaruHakemusMaksuvelvollisuus = function(hakemus, hakukohdeOid) {
-        var paymentObligation = hakemus.paymentObligations ? hakemus.paymentObligations[hakukohdeOid] : null;
-        switch (paymentObligation) {
-          case "obligated":
-            return "REQUIRED";
-          case "not-obligated":
-            return "NOT_REQUIRED";
-          default:
-            return null;
-        }
+        if (hakemus.hakutoiveet) {
+          var hakutoive = hakemus.hakutoiveet.filter(function(h) {
+            return h.hakukohdeOid === hakukohdeOid;
+          })[0];
+
+          var paymentObligation = hakutoive ? hakutoive.paymentObligation : null;
+          switch (paymentObligation) {
+            case "obligated":
+              return "REQUIRED";
+            case "not-obligated":
+              return "NOT_REQUIRED";
+            default:
+              return null;
+          }
+        } else return null;
       };
 
       var getMaksuvelvollisuudet = function(hakemukset, hakukohdeOid) {
