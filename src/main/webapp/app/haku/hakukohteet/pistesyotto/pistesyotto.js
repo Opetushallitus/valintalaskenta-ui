@@ -103,7 +103,7 @@ app.factory('PistesyottoModel', function (
                     } else {
                         ilmoitusteksti = "Pisteet tallennettu osittain. Seuraavilla hakemuksilla oli uudempia pistetietoja: " + success.data.join(', ');
                     }
-                    Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.", IlmoitusTila.INFO, function() {
+                    Ilmoitus.avaa("Tallennus onnistui", ilmoitusteksti, IlmoitusTila.INFO, function() {
                         $window.location.reload();
                     });
                     blockSubmit = false;
