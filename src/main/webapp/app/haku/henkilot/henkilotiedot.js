@@ -363,7 +363,7 @@ angular.module('valintalaskenta').
     };
 
     $scope.tallennaPisteet = function () {
-        $scope.model.tallennaPisteet().then(function () {
+        $scope.model.tallennaPisteet().then(function (response) {
             $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
             Ilmoitus.avaa("Tallennus onnistui", "Pisteet tallennettu onnistuneesti.", IlmoitusTila.INFO, function() {
                 $window.location.reload();
