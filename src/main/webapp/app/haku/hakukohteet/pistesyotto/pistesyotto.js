@@ -1,4 +1,5 @@
 app.factory('PistesyottoModel', function (
+    R,
     $q,
     $window,
     HakukohdeHenkilotFull,
@@ -97,6 +98,12 @@ app.factory('PistesyottoModel', function (
                 });
                 KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid},
                     {lastmodified: model.lastmodified, hakeneet: hakeneet}).then(function(success) {
+                    var ilmoitusteksti = "";
+                    if(R.isEmpty(success.data)) {
+                        ilmoitusteksti = "Pisteiden tallennus onnistui.";
+                    } else {
+                        ilmoitusteksti = "Pisteet tallennettu osittain. Seuraavilla hakemuksilla oli uudempia pistetietoja: " + success.data.join(', ');
+                    }
                     Ilmoitus.avaa("Tallennus onnistui", "Pisteiden tallennus onnistui.", IlmoitusTila.INFO, function() {
                         $window.location.reload();
                     });
@@ -124,9 +131,9 @@ app.factory('PistesyottoModel', function (
 
 
 angular.module('valintalaskenta').
-    controller('PistesyottoController', ['$scope', '$window', '$log', '$timeout', '$routeParams', '$upload', 'PistesyottoVienti',
+    controller('PistesyottoController', ['R','$scope', '$window', '$log', '$timeout', '$routeParams', '$upload', 'PistesyottoVienti',
         'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel', 'ParametriService',
-        function ($scope, $window, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
+        function (R, $scope, $window, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
                   IlmoitusTila, Latausikkuna, HakukohdeModel, ParametriService) {
     "use strict";
 

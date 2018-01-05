@@ -254,10 +254,10 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
 });
 
 angular.module('valintalaskenta').
-    controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
+    controller('HenkiloTiedotController', ['R', '$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
         'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila','HakuModel', '$filter', 'Korkeakoulu',
         '$window',
-        function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
+        function (R, $q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
                   Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel,$filter, Korkeakoulu,
                   $window) {
     "use strict";
@@ -365,7 +365,13 @@ angular.module('valintalaskenta').
     $scope.tallennaPisteet = function () {
         $scope.model.tallennaPisteet().then(function (response) {
             $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
-            Ilmoitus.avaa("Tallennus onnistui", "Pisteet tallennettu onnistuneesti.", IlmoitusTila.INFO, function() {
+            var ilmoitusteksti = "";
+            if(R.isEmpty(response.data)) {
+                ilmoitusteksti = "Pisteet tallennettu onnistuneesti.";
+            } else {
+                ilmoitusteksti = "Hakemuksella oli uudempia pistetietoja. Ole hyvä ja yritä tallentaa uudelleen.";
+            }
+            Ilmoitus.avaa("Tallennus onnistui", ilmoitusteksti, IlmoitusTila.INFO, function() {
                 $window.location.reload();
             });
         }, function () {
