@@ -92,7 +92,7 @@
             return {
                 maksuvelvollisuus: ataruMaksuvelvollisuus(hakutoive),
                 state: ataruApplicationState(hakutoive),
-                hakukelpoisuus: ataruHakukelpoisuus(hakutoive.eligibilityState),
+                hakukelpoisuus: ataruHakukelpoisuus(hakutoive),
                 Etunimet: person.etunimet,
                 Sukunimi: person.sukunimi,
                 personOid: person.oidHenkilo,
