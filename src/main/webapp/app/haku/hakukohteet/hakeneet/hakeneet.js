@@ -63,8 +63,8 @@
 
     var ataruApplicationState = function(hakutoive) {
         var state = hakutoive ? hakutoive.processingState : null;
-        if (state === "information-request") return 'ACTIVE';
-        else return 'INCOMPLETE';
+        if (state === "information-request") return 'INCOMPLETE';
+        else return 'ACTIVE';
     };
 
     var ataruHakukelpoisuus = function(hakutoive) {
