@@ -348,8 +348,8 @@ angular.module('valintalaskenta')
                   }
                   var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
                   if(hakijaOidArray && 0 < hakijaOidArray.length) {
-                      return HenkiloPerustietosByHenkiloOidList.post(
-                        createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset)).$promise.then(function(henkiloPerustiedot) {
+                      return HenkiloPerustietosByHenkiloOidList.post(createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset))
+                          .then(function(henkiloPerustiedot) {
                             tulokset.henkilot = _.map(henkiloPerustiedot, function(henkilo) {
                                 return {
                                     oid : henkilo.oidHenkilo,

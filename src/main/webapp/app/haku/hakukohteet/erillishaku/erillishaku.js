@@ -330,25 +330,27 @@ angular.module('valintalaskenta')
         }
       };
 
-      var enrichHakemuksetWithHakijat = function(valintatapajono) {
-        var henkiloOids = _.uniq(_.map(valintatapajono.hakemukset, function(h) { return h.hakijaOid }));
-        return HenkiloPerustietosByHenkiloOidList.post(henkiloOids).$promise.then(function(henkiloPerustiedot) {
-          var henkilotByOid = _.groupBy(henkiloPerustiedot, function(henkilo) {
-            return henkilo.oidHenkilo;
-          });
-
-          _.forEach(valintatapajono.hakemukset, function(hakemus) {
-            var henkilo = (henkilotByOid[hakemus.hakijaOid] || [])[0];
-            if (henkilo) {
-              hakemus.etunimi = henkilo.etunimet;
-              hakemus.sukunimi = henkilo.sukunimi;
-            } else {
-              console.log('Ei löytynyt henkiloä', hakemus.hakijaOid, 'oppijanumerorekisteristä');
-            }
-          });
-          return valintatapajono;
-        });
-      };
+            var enrichHakemuksetWithHakijat = function(valintatapajono) {
+                var henkiloOids = _.uniq(_.map(valintatapajono.hakemukset, function(h) {
+                    return h.hakijaOid
+                }));
+                return HenkiloPerustietosByHenkiloOidList.post(henkiloOids)
+                    .then(function(henkiloPerustiedot) {
+                        var henkilotByOid = _.groupBy(henkiloPerustiedot, function(henkilo) {
+                            return henkilo.oidHenkilo;
+                        });
+                        _.forEach(valintatapajono.hakemukset, function(hakemus) {
+                            var henkilo = (henkilotByOid[hakemus.hakijaOid] || [])[0];
+                            if (henkilo) {
+                                hakemus.etunimi = henkilo.etunimet;
+                                hakemus.sukunimi = henkilo.sukunimi;
+                            } else {
+                                console.log('Ei löytynyt henkiloä', hakemus.hakijaOid, 'oppijanumerorekisteristä');
+                            }
+                        });
+                        return valintatapajono;
+                    });
+            };
 
       var addHakemuksetWithoutValinnantulos = function(kaikkiHakemukset, valintatapajono) {
         var valintatapajononHakemusOidit = _.map(valintatapajono.hakemukset, function(h) {return h.hakemusOid});
