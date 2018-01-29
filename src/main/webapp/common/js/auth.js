@@ -167,7 +167,7 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
     };
 });
 
-app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, ParametriService, UserModel, _, HakukohdeModel) {
+app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, ParametriService, UserModel, _, HakukohdeModel, HakuModel) {
     return {
         link: function ($scope, element, attrs) {
             $animate.addClass(element, 'ng-hide');
@@ -192,27 +192,54 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                 }
 
             };
-            if (attrs.authKkUser) {
-                UserModel.organizationsDeferred.promise.then(function () {
-                    if (UserModel.isKKUser || UserModel.isOphUser) {
-                        $animate.removeClass(element, 'ng-hide');
-                    } else {
-                        $timeout(function () {
-                            switch (attrs.auth) {
 
-                                case "crudOph":
-                                    AuthService.crudOph(attrs.authService).then(success);
-                                    break;
+            function handleOphAuth() {
+              switch (attrs.auth) {
+                case "crudOph":
+                  AuthService.crudOph(attrs.authService).then(success);
+                  break;
 
-                                case "updateOph":
-                                    AuthService.updateOph(attrs.authService).then(success);
-                                    break;
+                case "updateOph":
+                  AuthService.updateOph(attrs.authService).then(success);
+                  break;
 
-                                case "readOph":
-                                    AuthService.readOph(attrs.authService).then(success);
-                                    break;
-                            }
-                        }, 0);
+                case "readOph":
+                  AuthService.readOph(attrs.authService).then(success);
+                  break;
+
+                default:
+                  console.warn('handleOphAuth switch case was not handled for attrs: ' + JSON.stringify(attrs));
+              }
+            }
+
+          function handleOrgAuth(orgOid) {
+              switch (attrs.auth) {
+                case "crud":
+                  AuthService.crudOrg(attrs.authService, orgOid).then(success);
+                  break;
+
+                case "update":
+                  AuthService.updateOrg(attrs.authService, orgOid).then(success);
+                  break;
+
+                case "read":
+                  AuthService.readOrg(attrs.authService, orgOid).then(success);
+                  break;
+
+                default:
+                  AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success);
+                  break;
+            }
+          }
+
+          if (attrs.authKkUser) {
+            UserModel.organizationsDeferred.promise.then(function () {
+              if (UserModel.isKKUser || UserModel.isOphUser) {
+                $animate.removeClass(element, 'ng-hide');
+              } else {
+                  $timeout(function () {
+                      handleOphAuth(attrs.auth)
+                  }, 0);
 
                         attrs.$observe('authOrg', function () {
                             if (attrs.authOrg) {
@@ -243,23 +270,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
                             if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
                                 _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                                    switch (attrs.auth) {
-                                        case "crud":
-                                            AuthService.crudOrg(attrs.authService, orgOid).then(success);
-                                            break;
-
-                                        case "update":
-                                            AuthService.updateOrg(attrs.authService, orgOid).then(success);
-                                            break;
-
-                                        case "read":
-                                            AuthService.readOrg(attrs.authService, orgOid).then(success);
-                                            break;
-
-                                        default:
-                                            AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success);
-                                            break;
-                                    }
+                                    handleOrgAuth(orgOid)
                                 });
                             }
                         });
@@ -269,85 +280,26 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
             } else if ($routeParams.hakukohdeOid) {
                 HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
                     $timeout(function () {
-                        switch (attrs.auth) {
-
-                            case "crudOph":
-                                AuthService.crudOph(attrs.authService).then(success);
-                                break;
-
-                            case "updateOph":
-                                AuthService.updateOph(attrs.authService).then(success);
-                                break;
-
-                            case "readOph":
-                                AuthService.readOph(attrs.authService).then(success);
-                                break;
-                        }
+                      handleOphAuth(attrs.auth)
                     }, 0);
 
                     if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
                         _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                            switch (attrs.auth) {
-                                case "crud":
-                                    AuthService.crudOrg(attrs.authService, orgOid).then(success);
-                                    break;
-
-                                case "update":
-                                    AuthService.updateOrg(attrs.authService, orgOid).then(success);
-                                    break;
-
-                                case "read":
-                                    AuthService.readOrg(attrs.authService, orgOid).then(success);
-                                    break;
-
-                                default:
-                                    AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success);
-                                    break;
-                            }
+                            handleOrgAuth(orgOid)
                         });
                     }
                 });
 
             } else {
                 $timeout(function () {
-                    switch (attrs.auth) {
-
-                        case "crudOph":
-                            AuthService.crudOph(attrs.authService).then(success);
-                            break;
-
-                        case "updateOph":
-                            AuthService.updateOph(attrs.authService).then(success);
-                            break;
-
-                        case "readOph":
-                            AuthService.readOph(attrs.authService).then(success);
-                            break;
-                    }
+                  handleOphAuth(attrs.auth)
                 }, 0);
 
                 attrs.$observe('authOrg', function () {
                     if (attrs.authOrg) {
                         _.forEach(attrs.authOrg, function (orgOid) {
-                            switch (attrs.auth) {
-                                case "crud":
-                                    AuthService.crudOrg(attrs.authService, orgOid).then(success);
-                                    break;
-
-                                case "update":
-                                    AuthService.updateOrg(attrs.authService, orgOid).then(success);
-                                    break;
-
-                                case "read":
-                                    AuthService.readOrg(attrs.authService, orgOid).then(success);
-                                    break;
-
-                                default:
-                                    AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success);
-                                    break;
-                            }
+                            handleOrgAuth(orgOid)
                         });
-
                     }
                 });
             }
