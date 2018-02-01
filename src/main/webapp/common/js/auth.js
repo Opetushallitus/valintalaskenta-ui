@@ -289,7 +289,11 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                         });
                     }
                 });
-
+            } else if (attrs.authTarjoajaOrgUser) {
+              HakuModel.refreshIfNeeded($routeParams.hakuOid).then(function () {
+                var tarjoajaOid = HakuModel.hakuOid.organisaatioOids[0];
+                handleOrgAuth(tarjoajaOid);
+              });
             } else {
                 $timeout(function () {
                   handleOphAuth(attrs.auth)
