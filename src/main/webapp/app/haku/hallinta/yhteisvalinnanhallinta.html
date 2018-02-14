@@ -105,8 +105,8 @@
 </collapsible>
 
 <!-- SIJOITTELUN TULOKSET -->
-<collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Kirjeet ja sijoittelun tulokset' }}">
-    <div
+<collapsible heading="{{ t('yhteisvalinnanhallinta.sijoitteluntulokset') || 'Kirjeet ja sijoittelun tulokset' }}"  auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN">
+    <div>
         <label>Hakukohteittain: </label>
         <button ng-click="sijoittelunTuloksetTaulukkolaskentaan()"
                 class="btn btn-default btn-sm"><i class="fa fa-table"></i>&nbsp;{{ t('yhteisvalinnanhallinta.vietaulukkolaskentaan') || 'Muodosta sijoittelun tulokset hakukohteittain' }}
@@ -287,7 +287,7 @@
 </collapsible>
 
     <!--KELAN TIEDONSIIRTO-->
-<collapsible ng-click="showKelaCollapsible = true" heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}">
+<collapsible ng-click="showKelaCollapsible = true" heading="{{ t('yhteisvalinnanhallinta.kelantiedonsiirto') || 'Kelan tiedonsiirto' }}" auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN">
     <div ng-if="showKelaCollapsible">
         <div class="form-horizontal">
             <div class="form-group">
@@ -458,7 +458,7 @@
 
 
 <!-- VIRHEET VALINTAKOKEISSA JA LASKENNOISSA -->
-<collapsible heading="Virheet valintakokeissa ja laskennoissa" ng-click="showErrors()">
+<collapsible heading="Virheet valintakokeissa ja laskennoissa" ng-click="showErrors()" auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN">
     <div ng-show="virheet.valintakoe.length > 0 || virheet.valintalaskenta.length > 0 || virheet.eiKoeVirheita || virheet.eiLaskentaVirheita">
         <div class="tabs">
             <a class="tab" ng-class="!valintalaskentavirheet ? 'current' : ''"
