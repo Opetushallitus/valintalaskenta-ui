@@ -2,7 +2,7 @@ app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus,
                                             ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe,
                                             SijoittelunVastaanottotilat, VtsLatestSijoittelunTilat,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
-                                            HakukohdeAvaimet, HakemusAdditionalData, HaunTiedot, HakemuksenValintatulokset,
+                                            HakukohdeAvaimet, HaunTiedot, HakemuksenValintatulokset,
                                             VtsLatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
                                             KoostettuHakemusAdditionalDataForHakemus, R) {
     "use strict";
