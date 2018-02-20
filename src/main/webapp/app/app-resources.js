@@ -1008,7 +1008,7 @@ app.factory('HenkiloPerustietosByHenkiloOidList',[ '$http', '$q', '_', function(
                     .flatten().value()
                 );
             }, function(reason){
-                console.error("HenkiloPerustietosByHenkiloOidList failed: " + reason);
+                console.error("HenkiloPerustietosByHenkiloOidList failed", reason);
                 deferred.reject();
             });
             return deferred.promise;
