@@ -623,16 +623,6 @@ app.factory('Hakemus', function($resource) {
     });
 });
 
-app.factory('HakemusAdditionalData', function($resource) {
-        return $resource(plainUrl("haku-app.applications.additionaldata.haku.hakukohde", ":hakuOid", ":hakukohdeOid"),
-        {
-            hakuOid: "@hakuOid",
-            hakukohdeOid: "@hakukohdeOid"
-        }, {
-            get: {method: "GET", isArray: true, cache: false},
-            put: {method: "PUT", isArray: true}
-        });
-});
 app.factory('HakemusEligibilities', function($resource) {
   return $resource(plainUrl("haku-app.applications.eligibilities", ":hakuOid", ":hakukohdeOid"),
     {

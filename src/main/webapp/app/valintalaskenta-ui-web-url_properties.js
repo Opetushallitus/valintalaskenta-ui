@@ -131,8 +131,6 @@ window.urls.addProperties({
     "haku-app.applications" : "/haku-app/applications",
     "haku-app.applications.oid" : "/haku-app/applications/$1",
     "haku-app.application.oid.key" : "/haku-app/applications/$1/$2",
-    "haku-app.applications.additionaldata" : "/haku-app/applications/additionalData",
-    "haku-app.applications.additionaldata.haku.hakukohde" : "/haku-app/applications/additionalData/$1/$2",
     "haku-app.applications.eligibilities" : "/haku-app/applications/eligibilities/$1/$2",
     "haku-app.applications.list" : "/haku-app/applications/list",
     "haku-app.applications.listfull" : "/haku-app/applications/listfull",
