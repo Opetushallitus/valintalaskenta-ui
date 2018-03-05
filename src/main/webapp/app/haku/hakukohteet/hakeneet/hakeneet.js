@@ -126,8 +126,8 @@
                             return application.henkiloOid;
                         }));
 
-                        HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
-                            function(persons) {
+                        HenkiloPerustietosByHenkiloOidList.post(hakijaOids)
+                            .then(function(persons) {
                                 model.hakeneet = processAtaruApplications(applications, persons, hakukohdeOid);
                                 promise.resolve();
                             }, onError);
@@ -140,8 +140,8 @@
                             return application.personOid;
                         }));
 
-                        HenkiloPerustietosByHenkiloOidList.post(hakijaOids,
-                            function(persons) {
+                        HenkiloPerustietosByHenkiloOidList.post(hakijaOids)
+                            .then(function(persons) {
                                 model.hakeneet = processHakuappApplications(applications, hakukohdeOid, persons);
                                 promise.resolve();
                             }, onError);
