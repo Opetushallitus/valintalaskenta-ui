@@ -19,7 +19,7 @@ app.factory('PistesyottoNaytaKaikkiModel', function ($q, HakukohdeAvaimet, Koost
 
             KoostettuHakemusAdditionalData.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid})
                 .then(function (koostetutPistetiedot) {
-                    model.hakeneet = koostetutPistetiedot.map(function (pistetieto) {
+                    model.hakeneet = koostetutPistetiedot.valintapisteet.map(function (pistetieto) {
                         return pistetieto.applicationAdditionalDataDTO;
                     });
                 }, function (error) {
