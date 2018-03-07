@@ -1,7 +1,7 @@
 ﻿var app = angular.module('valintalaskenta');
 app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
     ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus,
-    ngTableParams, FilterService, $filter) {
+    ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList) {
     "use strict";
 
     var model;
@@ -10,20 +10,6 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
 		this.hakukohdeOid = {};
 		this.valinnanvaiheet = [];
         this.errors = [];
-
-        this.hakutoivePrioriteetti = function(hakemusoid) {
-            var hakija = _.findWhere(model.hakeneet, {oid:hakemusoid});
-            if (!hakija) {
-                return -1;
-            }
-            var toive = (_.invert(hakija.answers.hakutoiveet))[model.hakukohdeOid];
-
-            if(toive) {
-                return parseInt(toive.substring(10,11));
-            } else {
-                return -1;
-            }
-        };
 		
 		this.refresh = function(hakukohdeOid, hakuOid) {
             var defer = $q.defer();
@@ -54,8 +40,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 if (model.ilmanlaskentaa.length > 0) {
                     model.getHakijat(defer, hakukohdeOid, hakuOid);
                 } else {
-                    model.renderTulokset();
-                    defer.resolve();
+                    model.getPersons(defer);
                 }
             }).catch(function(error) {
                 model.errors.push(error);
@@ -64,6 +49,59 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
 
             return defer.promise;
 		};
+
+        this.getPersons = function(defer) {
+            var personOids = model.getHakijaOids();
+            HenkiloPerustietosByHenkiloOidList.post(personOids).then(
+                function(persons) {
+                    model.persons = _.groupBy(persons, function(person) {
+                        return person.oidHenkilo;
+                    });
+
+                    model.valinnanvaiheet.forEach(function(vaihe) {
+                        vaihe.valintatapajonot.forEach(function(jono) {
+                            jono.jonosijat.forEach(function(jonosija) {
+                                var person = (model.persons[jonosija.hakijaOid] || [])[0];
+                                if (person) {
+                                    jonosija.etunimi = person.etunimet;
+                                    jonosija.sukunimi = person.sukunimi;
+                                }
+                            })
+                        })
+                    });
+
+                    model.renderTulokset();
+                    defer.resolve();
+                },
+                function(error) {
+                    model.errors.push(error);
+                    defer.reject("hakukohteen tietojen hakeminen epäonnistui");
+                })
+        };
+
+        this.hakutoivePrioriteetti = function(hakemusoid) {
+            var hakija = _.findWhere(model.hakeneet, {oid:hakemusoid});
+            if (!hakija) {
+                return -1;
+            }
+            var toive = (_.invert(hakija.answers.hakutoiveet))[model.hakukohdeOid];
+
+            if(toive) {
+                return parseInt(toive.substring(10,11));
+            } else {
+                return -1;
+            }
+        };
+
+        this.getHakijaOids = function() {
+            return _.chain(model.valinnanvaiheet)
+                .map(function(current) {return current.valintatapajonot})
+                .flatten()
+                .map(function(jono) {return jono.jonosijat})
+                .flatten()
+                .map(function(jonosija) {return jonosija.hakijaOid})
+                .value();
+        };
 
 		this.getHakijat = function(defer, hakukohdeOid, hakuOid) {
             HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}, function (result) {
@@ -260,7 +298,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 model.errors.push(error);
                 defer.reject("hakukohteen tietojen hakeminen epäonnistui");
             })
-        }
+        };
 
         this.renderTulokset = function() {
             model.valinnanvaiheet.forEach(function(vaihe, index) {
