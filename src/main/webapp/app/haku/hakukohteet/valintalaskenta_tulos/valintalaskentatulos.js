@@ -1,7 +1,7 @@
 ﻿var app = angular.module('valintalaskenta');
 app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
     ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus,
-    ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, HakuModel) {
+    ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplications) {
     "use strict";
 
     var model;
@@ -122,7 +122,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                             .then(function() {
                                 model.updateValinnanvaiheetPersonNames();
                                 model.updateHakijatNames();
-                                model.createTulosjonot(defer);
+                                model.createTulosjonot(defer, hakuOid, true);
                             }, model.onError);
                     });
                 } else {
@@ -135,7 +135,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                             .then(function() {
                                 model.updateValinnanvaiheetPersonNames();
                                 model.updateHakijatNames();
-                                model.createTulosjonot(defer);
+                                model.createTulosjonot(defer, hakuOid, false);
                             }, model.onError);
 
                     }, model.onError);
@@ -143,7 +143,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             });
         };
 
-        this.createTulosjonot = function(defer, hakuOid) {
+        this.createTulosjonot = function(defer, hakuOid, isAtaruHaku) {
             model.ilmanlaskentaa.forEach(function(vaihe) {
                 vaihe.valintatapajonot = [];
                 vaihe.hakuOid = hakuOid;
@@ -251,7 +251,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                             jonosija = {};
                             jonosija.hakemusOid = hakija.oid;
                             jonosija.hakijaOid = hakija.personOid;
-                            jonosija.prioriteetti = model.hakutoivePrioriteetti(hakija.oid);
+                            jonosija.prioriteetti = isAtaruHaku ? model.ataruHakutoivePrioriteetti(hakija) : model.hakutoivePrioriteetti(hakija);
                             jonosija.harkinnanvarainen = false;
                             jonosija.historiat = null;
                             jonosija.syotetytArvot = [];
@@ -331,8 +331,14 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             model.resolve(defer);
         };
 
-        this.hakutoivePrioriteetti = function(hakemusoid) {
-            var hakija = _.findWhere(model.hakeneet, {oid:hakemusoid});
+        this.ataruHakutoivePrioriteetti = function(hakija) {
+            hakija.hakutoiveet.forEach(function(toive, index) {
+                if (toive.hakukohdeOid === model.hakukohdeOid) return index + 1;
+            });
+            return -1;
+        };
+
+        this.hakutoivePrioriteetti = function(hakija) {
             if (!hakija) {
                 return -1;
             }
