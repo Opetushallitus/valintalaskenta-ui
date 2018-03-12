@@ -24,48 +24,50 @@ function parametritFixturesWithOverrides(overrides) {
 
 function koostettuPistetietoKaksiHenkiloaFixtures() {
   var httpBackend = testFrame().httpBackend;
-  httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/pistesyotto\/koostetutPistetiedot\/haku\/h\/hakukohde\/h0/).respond([
-    {
-      "applicationAdditionalDataDTO": {
-        "oid": "1.2.246.562.11.00000000181",
-        "personOid": "1.2.246.562.24.57650437995",
-        "firstNames": "Laskentaa",
-        "lastName": "Ilman",
-        "additionalData": {
-          "d3c46564-1700-4c73-eabd-808cf667dad8": "",
-          "d3c46564-1700-4c73-eabd-808cf667dad8-OSALLISTUMINEN": "MERKITSEMATTA",
-          "42f3fca6-14a0-1a3b-e042-627a30bef63d-OSALLISTUMINEN": "OSALLISTUI",
-          "42f3fca6-14a0-1a3b-e042-627a30bef63d": "30.00",
-          "ei_vaikuta": "",
-          "ei_vaikuta-OSALLISTUMINEN": "EI_VAADITA",
-          "efea9350-9bb6-5949-c2aa-b27f1c5784d9": "",
-          "efea9350-9bb6-5949-c2aa-b27f1c5784d9-OSALLISTUMINEN": "MERKITSEMATTA",
-          "vaikuttaa_laskentaan": "",
-          "vaikuttaa_laskentaan-OSALLISTUMINEN": "MERKITSEMATTA"
-        }
-      }
-    },
-    {
-      "applicationAdditionalDataDTO": {
-        "oid": "1.2.246.562.11.00000000182",
-        "personOid": "1.2.246.562.24.57650437994",
-        "firstNames": "Yrjö",
-        "lastName": "Yksikkötestihenkilö",
-        "additionalData": {
-          "d3c46564-1700-4c73-eabd-808cf667dad8": "",
-          "d3c46564-1700-4c73-eabd-808cf667dad8-OSALLISTUMINEN": "MERKITSEMATTA",
-          "42f3fca6-14a0-1a3b-e042-627a30bef63d-OSALLISTUMINEN": "OSALLISTUI",
-          "42f3fca6-14a0-1a3b-e042-627a30bef63d": "30.00",
-          "ei_vaikuta": "",
-          "ei_vaikuta-OSALLISTUMINEN": "EI_VAADITA",
-          "efea9350-9bb6-5949-c2aa-b27f1c5784d9": "",
-          "efea9350-9bb6-5949-c2aa-b27f1c5784d9-OSALLISTUMINEN": "MERKITSEMATTA",
-          "vaikuttaa_laskentaan": "",
-          "vaikuttaa_laskentaan-OSALLISTUMINEN": "MERKITSEMATTA"
-        }
-      }
-    }
-  ]);
+  httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/pistesyotto\/koostetutPistetiedot\/haku\/h\/hakukohde\/h0/).respond({
+        "valintapisteet": [
+            {
+              "applicationAdditionalDataDTO": {
+                "oid": "1.2.246.562.11.00000000181",
+                "personOid": "1.2.246.562.24.57650437995",
+                "firstNames": "Laskentaa",
+                "lastName": "Ilman",
+                "additionalData": {
+                  "d3c46564-1700-4c73-eabd-808cf667dad8": "",
+                  "d3c46564-1700-4c73-eabd-808cf667dad8-OSALLISTUMINEN": "MERKITSEMATTA",
+                  "42f3fca6-14a0-1a3b-e042-627a30bef63d-OSALLISTUMINEN": "OSALLISTUI",
+                  "42f3fca6-14a0-1a3b-e042-627a30bef63d": "30.00",
+                  "ei_vaikuta": "",
+                  "ei_vaikuta-OSALLISTUMINEN": "EI_VAADITA",
+                  "efea9350-9bb6-5949-c2aa-b27f1c5784d9": "",
+                  "efea9350-9bb6-5949-c2aa-b27f1c5784d9-OSALLISTUMINEN": "MERKITSEMATTA",
+                  "vaikuttaa_laskentaan": "",
+                  "vaikuttaa_laskentaan-OSALLISTUMINEN": "MERKITSEMATTA"
+                }
+              }
+            },
+            {
+              "applicationAdditionalDataDTO": {
+                "oid": "1.2.246.562.11.00000000182",
+                "personOid": "1.2.246.562.24.57650437994",
+                "firstNames": "Yrjö",
+                "lastName": "Yksikkötestihenkilö",
+                "additionalData": {
+                  "d3c46564-1700-4c73-eabd-808cf667dad8": "",
+                  "d3c46564-1700-4c73-eabd-808cf667dad8-OSALLISTUMINEN": "MERKITSEMATTA",
+                  "42f3fca6-14a0-1a3b-e042-627a30bef63d-OSALLISTUMINEN": "OSALLISTUI",
+                  "42f3fca6-14a0-1a3b-e042-627a30bef63d": "30.00",
+                  "ei_vaikuta": "",
+                  "ei_vaikuta-OSALLISTUMINEN": "EI_VAADITA",
+                  "efea9350-9bb6-5949-c2aa-b27f1c5784d9": "",
+                  "efea9350-9bb6-5949-c2aa-b27f1c5784d9-OSALLISTUMINEN": "MERKITSEMATTA",
+                  "vaikuttaa_laskentaan": "",
+                  "vaikuttaa_laskentaan-OSALLISTUMINEN": "MERKITSEMATTA"
+                }
+              }
+            }
+        ]
+      });
 }
 
 function koostettuPistetietoGeneroitava(count) {

@@ -154,8 +154,9 @@ function listfullFixtures(hakemukset) {
 }
 function hakuAppKaksiHenkiloaFixtures() {
     var httpBackend = testFrame().httpBackend
-    httpBackend.when('GET', /.*\/haku-app\/applications\/additionalData\/h\/h0/).respond([
-        {
+    httpBackend.when('GET', /.*\/haku-app\/applications\/additionalData\/h\/h0/).respond({
+        "valintapisteet": [
+            {
             "oid": "1.2.246.562.11.00000000181",
             "personOid": "1.2.246.562.24.57650437995",
             "firstNames": "Laskentaa",
@@ -173,7 +174,7 @@ function hakuAppKaksiHenkiloaFixtures() {
                 "vaikuttaa_laskentaan-OSALLISTUMINEN": "MERKITSEMATTA"
             }
         },
-        {
+            {
             "oid": "1.2.246.562.11.00000000182",
             "personOid": "1.2.246.562.24.57650437994",
             "firstNames": "Yrjö",
@@ -191,7 +192,8 @@ function hakuAppKaksiHenkiloaFixtures() {
                 "vaikuttaa_laskentaan-OSALLISTUMINEN": "MERKITSEMATTA"
             }
         }
-    ]);
+        ]
+    });
 }
 
 function hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures(hakemukset) {

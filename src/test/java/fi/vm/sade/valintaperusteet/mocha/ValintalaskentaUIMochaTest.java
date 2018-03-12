@@ -28,8 +28,6 @@ public class ValintalaskentaUIMochaTest {
 
         System.out.println("http://localhost:" + JettyTestRunner.PORT + "/valintalaskenta-ui/test/runner.html");
 
-
-
         ProcessBuilder pb = new ProcessBuilder(cmd);
         pb.inheritIO();
         Process ps = pb.start();
