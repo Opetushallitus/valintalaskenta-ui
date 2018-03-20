@@ -195,7 +195,8 @@ angular.module('valintalaskenta').
                     var callback = function() {
                         $window.location.reload();
                     };
-                    Ilmoitus.avaa(otsikko, ilmoitus, tila, callback, failedIds);
+                    var rows = failedIds.map(dto => dto.applicantName + " " + dto.applicationOID);
+                    Ilmoitus.avaa(otsikko, ilmoitus, tila, callback, rows);
                 }
 			}).error(function(data) {
 			    //error
