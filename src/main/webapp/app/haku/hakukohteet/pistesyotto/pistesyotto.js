@@ -181,10 +181,16 @@ angular.module('valintalaskenta').
 				//console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
 			}).success(function(failedIds, status, headers, config) {
 			    if(status === 204) { //no content
-                    $window.location.reload();
+                    var otsikko = "Pistetietojen tuonti onnistui";
+                    var ilmoitus = "Pistetietojen tuonti onnistui";
+                    var tila = IlmoitusTila.INFO;
+                    var callback = function() {
+                        $window.location.reload();
+                    };
+                    Ilmoitus.avaa(otsikko, ilmoitus, tila, callback);
                 } else {
-                    var otsikko = "Joidenkin hakemusten pistetietojen tuonti epäonnistui";
-                    var ilmoitus = "Joidenkin hakemusten pistetietojen tuonti epäonnistui";
+                    var otsikko = "Pisteet tallennettu osittain. Seuraavilla hakemuksilla oli uudempia pistetietoja";
+                    var ilmoitus = "Pisteet tallennettu osittain. Seuraavilla hakemuksilla oli uudempia pistetietoja";
                     var tila = IlmoitusTila.WARNING;
                     var callback = function() {
                         $window.location.reload();
