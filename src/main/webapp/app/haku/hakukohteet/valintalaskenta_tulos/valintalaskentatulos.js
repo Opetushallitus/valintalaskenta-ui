@@ -11,20 +11,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
 		this.valinnanvaiheet = [];
         this.errors = [];
 
-        this.onError = function(error) {
-            model.errors.push(error);
-            defer.reject("hakukohteen tietojen hakeminen epäonnistui");
-        };
-
-        this.resolve = function(defer) {
-            model.renderTulokset();
-            defer.resolve();
-        };
-
-		this.refresh = function(hakukohdeOid, hakuOid) {
-            var defer = $q.defer();
-
-		    model.hakukohdeOid = {};
+        this.refresh = function(hakukohdeOid, hakuOid) {
             model.valinnanvaiheet = [];
             model.ilmanlaskentaa = [];
             model.errors = [];
@@ -34,29 +21,35 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             model.hakeneet = [];
             model.ilmanLaskentaaOids = [];
 
-            ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}, function(result) {
-                model.tarjoajaOid = result.tarjoajaOid;
-            }, model.onError);
-
-			$q.all([
-			    ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}).$promise,
+            return $q.all([
+                ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}).$promise,
+                ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}).$promise,
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}).$promise
             ]).then(function(data) {
-                model.valinnanvaiheet = data[0];
-                model.ilmanlaskentaa = data[1];
+                model.tarjoajaOid = data[0].tarjoajaOid;
+                model.valinnanvaiheet = data[1];
+                model.ilmanlaskentaa = data[2];
                 if (model.ilmanlaskentaa.length > 0) {
-                    model.getHakijat(defer, hakukohdeOid, hakuOid);
+                    return model.getHakijat(hakukohdeOid, hakuOid)
+                        .then(function(isAtaruHaku) {
+                            return model.getPersons()
+                                .then(function() {
+                                    model.updateValinnanvaiheetPersonNames();
+                                    model.updateHakijatNames();
+                                    model.createTulosjonot(hakuOid, isAtaruHaku);
+                                });
+                        });
                 } else {
-                    model.getPersons()
+                    return model.getPersons()
                         .then(function() {
                             model.updateValinnanvaiheetPersonNames();
-                            model.resolve(defer);
-                        }, model.onError);
+                        });
                 }
-            }).catch(model.onError);
-
-            return defer.promise;
-		};
+            }).then(model.renderTulokset).catch(function(error) {
+                model.errors.push(error);
+                return $q.reject("hakukohteen tietojen hakeminen epäonnistui")
+            });
+        };
 
         this.getPersons = function() {
             var personOids = model.getHakijaOids();
@@ -64,9 +57,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 model.persons = _.groupBy(persons, function(person) {
                     return person.oidHenkilo;
                 });
-            }, model.onError)
+            })
         };
-
 
         this.getHakijaOids = function() {
             var hakijaOids = _.chain(model.valinnanvaiheet)
@@ -107,43 +99,34 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             })
         };
 
-        this.getHakijat = function(defer, hakukohdeOid, hakuOid) {
-            HakuModel.promise.then(function(hakuModel) {
+        this.getHakijat = function(hakukohdeOid, hakuOid) {
+            return HakuModel.promise.then(function(hakuModel) {
                 if (hakuModel.hakuOid.ataruLomakeAvain) {
                     console.log('Getting applications from ataru.');
-                    AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}, function(ataruHakemukset) {
-                        if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
-                        model.hakeneet = ataruHakemukset.map(function(hakemus) {
-                            hakemus.personOid = hakemus.henkiloOid;
-                            return hakemus;
-                        });
+                    return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                        .then(function(ataruHakemukset) {
+                            if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
+                            model.hakeneet = ataruHakemukset.map(function(hakemus) {
+                                hakemus.personOid = hakemus.henkiloOid;
+                                return hakemus;
+                            });
 
-                        model.getPersons()
-                            .then(function() {
-                                model.updateValinnanvaiheetPersonNames();
-                                model.updateHakijatNames();
-                                model.createTulosjonot(defer, hakuOid, true);
-                            }, model.onError);
-                    });
+                            return true;
+                        });
                 } else {
                     console.log('Getting applications from hakuApp.');
-                    HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}, function(result) {
-                        if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
-                        model.hakeneet = result;
+                    return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
+                        .then(function(result) {
+                            if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
+                            model.hakeneet = result;
 
-                        model.getPersons()
-                            .then(function() {
-                                model.updateValinnanvaiheetPersonNames();
-                                model.updateHakijatNames();
-                                model.createTulosjonot(defer, hakuOid, false);
-                            }, model.onError);
-
-                    }, model.onError);
+                            return false;
+                        });
                 }
             });
         };
 
-        this.createTulosjonot = function(defer, hakuOid, isAtaruHaku) {
+        this.createTulosjonot = function(hakuOid, isAtaruHaku) {
             model.ilmanlaskentaa.forEach(function(vaihe) {
                 vaihe.valintatapajonot = [];
                 vaihe.hakuOid = hakuOid;
@@ -328,7 +311,6 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                     model.valinnanvaiheet.splice(index, 1);
                 }
             });
-            model.resolve(defer);
         };
 
         this.ataruHakutoivePrioriteetti = function(hakija) {
