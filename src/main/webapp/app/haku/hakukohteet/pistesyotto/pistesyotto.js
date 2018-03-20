@@ -183,10 +183,9 @@ angular.module('valintalaskenta').
 			    if(status === 204) { //no content
                     $window.location.reload();
                 } else {
-                    failedIds = JSON.parse(failedIds);
                     var otsikko = "Joidenkin hakemusten pistetietojen tuonti epäonnistui";
                     var ilmoitus = "Joidenkin hakemusten pistetietojen tuonti epäonnistui";
-                    var tila = IlmoitusTila.WARNING
+                    var tila = IlmoitusTila.WARNING;
                     var callback = function() {
                         $window.location.reload();
                     };
