@@ -179,15 +179,22 @@ angular.module('valintalaskenta').
 				data: e.target.result
 			}).progress(function(evt) {
 				//console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-			}).success(function(id, status, headers, config) {
-				Latausikkuna.avaaKustomoitu(id, "Pistesyöttötietojen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
-	            function(dokumenttiId) {
-	            	// tee paivitys
+			}).success(function(failedIds, status, headers, config) {
+			    if(status === 204) { //no content
                     $window.location.reload();
-	            }
-	            );
+                } else {
+                    failedIds = JSON.parse(failedIds);
+                    var otsikko = "Joidenkin hakemusten pistetietojen tuonti epäonnistui";
+                    var ilmoitus = "Joidenkin hakemusten pistetietojen tuonti epäonnistui";
+                    var tila = IlmoitusTila.WARNING
+                    var callback = function() {
+                        $window.location.reload();
+                    };
+                    Ilmoitus.avaa(otsikko, ilmoitus, tila, callback, failedIds);
+                }
 			}).error(function(data) {
 			    //error
+                console.log(data);
 			});
 	    };
 	};
