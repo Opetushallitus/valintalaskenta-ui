@@ -97,15 +97,18 @@ app.factory('PistesyottoModel', function (
                 });
                 KoostettuHakemusAdditionalData.put({hakuOid: model.hakuOid, hakukohdeOid: model.hakukohdeOid},
                     {lastmodified: model.lastmodified, hakeneet: hakeneet}).then(function(success) {
-                    var ilmoitusteksti = "";
-                    if(R.isEmpty(success.data)) {
-                        ilmoitusteksti = "Pisteiden tallennus onnistui.";
-                    } else {
-                        ilmoitusteksti = "Pisteet tallennettu osittain. Seuraavilla hakemuksilla oli uudempia pistetietoja: " + success.data.join(', ');
-                    }
-                    Ilmoitus.avaa("Tallennus onnistui", ilmoitusteksti, IlmoitusTila.INFO, function() {
+
+                    var callback = function() {
                         $window.location.reload();
-                    });
+                    };
+                    if(R.isEmpty(success.data)) {
+                        var ilmoitusteksti = "Pisteiden tallennus onnistui.";
+                        Ilmoitus.avaa("Tallennus onnistui", ilmoitusteksti, IlmoitusTila.INFO, callback);
+                    } else {
+                        var ilmoitusteksti = "Pisteet tallennettu osittain. Seuraavilla hakemuksilla oli uudempia pistetietoja:";
+                        var rows = success.data.map(dto => dto.applicantName + " " + dto.applicationOID);
+                        Ilmoitus.avaa("Tallennus onnistui", ilmoitusteksti, IlmoitusTila.WARNING, callback, rows);
+                    }
                     blockSubmit = false;
                 }, function(error) {
                     Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR, function() {
