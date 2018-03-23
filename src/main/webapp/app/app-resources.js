@@ -476,6 +476,10 @@ app.factory('ErillishakuVienti', function($resource) {
 app.factory('ErillishakuTuonti', function($http) {
     return {
         tuo: function(data, config) {
+            // Clear applications cache before editing applications
+            var cache = $http.defaults.cache;
+            cache.remove(window.url("haku-app.applications.listfull"));
+
             return $http.post(window.url("valintalaskentakoostepalvelu.erillishaku.tuonti.json"), data, config || {});
         }
     };
