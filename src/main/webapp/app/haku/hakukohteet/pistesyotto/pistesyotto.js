@@ -106,7 +106,9 @@ app.factory('PistesyottoModel', function (
                         Ilmoitus.avaa("Tallennus onnistui", ilmoitusteksti, IlmoitusTila.INFO, callback);
                     } else {
                         var ilmoitusteksti = "Pisteet tallennettu osittain. Seuraavilla hakemuksilla oli uudempia pistetietoja:";
-                        var rows = success.data.map(dto => dto.applicantName + " " + dto.applicationOID);
+                        var rows = success.data.map(function(dto) {
+                            return dto.applicantName + " " + dto.applicationOID;
+                        });
                         Ilmoitus.avaa("Tallennus onnistui", ilmoitusteksti, IlmoitusTila.WARNING, callback, rows);
                     }
                     blockSubmit = false;
@@ -198,7 +200,9 @@ angular.module('valintalaskenta').
                     var callback = function() {
                         $window.location.reload();
                     };
-                    var rows = failedIds.map(dto => dto.applicantName + " " + dto.applicationOID);
+                    var rows = failedIds.map(function(dto) {
+                        return dto.applicantName + " " + dto.applicationOID
+                    });
                     Ilmoitus.avaa(otsikko, ilmoitus, tila, callback, rows);
                 }
 			}).error(function(data) {
