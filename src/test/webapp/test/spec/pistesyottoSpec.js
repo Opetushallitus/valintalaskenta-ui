@@ -56,8 +56,10 @@ describe('Pistesyöttö', function() {
         before(function(done) {
             initCommonFixtures();
             addTestHook(parametritFixtures)();
-            page.openPage(done);
-            wait.forAngular;
+            wait.forAngular();
+            page.openPage(done); //for some reason this doesn't seem to work with phantomjs, hence the call to done below
+            wait.forMilliseconds(100);
+            done();
         });
         it('Kenttien muokkaus ei sallittu', seqDone(
             disabled(pistesyottoselectors.osallistuminenSelectBox)

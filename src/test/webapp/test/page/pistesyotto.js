@@ -6,7 +6,7 @@ function pistesyottoPage() {
 
   var _pistesyottoPage = openPage(
       "/valintalaskenta-ui/app/index.html#/haku/HAKUOID/hakukohde/HAKUKOHDEOID/pistesyotto", function () {
-    return S(".virkailija-table-1").length === 1
+    return S(".virkailija-table-1").is(":visible")
   });
 
   var pageFunctions = {
@@ -16,7 +16,7 @@ function pistesyottoPage() {
     openPage: function (done) {
       return _pistesyottoPage()
         .then(wait.until(function () {
-          var pageReady = pageFunctions.allStudentsTable().length === 1;
+          var pageReady = pageFunctions.allStudentsTable().is(":visible");
           if (pageReady) {
             done()
           }
