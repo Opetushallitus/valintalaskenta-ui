@@ -404,7 +404,10 @@ angular.module('valintalaskenta')
 
       var getErillishaunValinnantuloksetFromVts = function() {
         return $q.all([
-          ValinnanTulos.get({hakukohdeOid: $scope.hakukohdeOid, hakuOid: $scope.hakuOid}),
+          ValinnanTulos.get(
+            { hakukohdeOid: $scope.hakukohdeOid, hakuOid: $scope.hakuOid },
+            { headers: { 'Cache-Control' : 'no-cache, no-store'} }
+            ),
           ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: $scope.hakukohdeOid}).$promise
         ]).then(function(result) {
           $scope.valintatapajonoLastModified = result[0].headers("Last-Modified");
