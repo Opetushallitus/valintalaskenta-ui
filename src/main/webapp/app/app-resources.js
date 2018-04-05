@@ -648,6 +648,7 @@ app.factory('HakukohdeHenkilot', function($resource) {
 });
 
 app.factory('HakukohdeHenkilotFull', function($resource) {
+    var headers = { 'Cache-Control' : 'no-cache, no-store'};
     return $resource(window.url("haku-app.applications.listfull"),
         {
             aoOid: "@aoOid",
@@ -655,7 +656,7 @@ app.factory('HakukohdeHenkilotFull', function($resource) {
             appState:["ACTIVE","INCOMPLETE"],
             rows: 100000
         }, {
-            get: {method: "GET", isArray: true, cache: true}
+            get: { method: "GET", isArray: true, cache: true, headers: headers }
         });
 });
 
