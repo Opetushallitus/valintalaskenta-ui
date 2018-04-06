@@ -30,7 +30,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 model.valinnanvaiheet = data[1];
                 model.ilmanlaskentaa = data[2];
                 if (model.ilmanlaskentaa.length > 0) {
-                    return model.getHakijat(hakukohdeOid, hakuOid)
+                    return model.loadHakijat(hakukohdeOid, hakuOid)
                         .then(function(isAtaruHaku) {
                             return model.getPersons()
                                 .then(function() {
@@ -70,7 +70,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 .value();
             if (model.hakeneet) {
                 var hakeneetOids = model.hakeneet.map(function(hakija) {return hakija.personOid;});
-                hakijaOids = hakijaOids.concat(hakeneetOids);
+                hakijaOids = hakijaOids.concat(hakeneetOids); // Concat personoids from jonot with laskenta and without.
             }
             return hakijaOids;
         };
@@ -99,7 +99,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             })
         };
 
-        this.getHakijat = function(hakukohdeOid, hakuOid) {
+        this.loadHakijat = function(hakukohdeOid, hakuOid) {
             return HakuModel.promise.then(function(hakuModel) {
                 if (hakuModel.hakuOid.ataruLomakeAvain) {
                     console.log('Getting applications from ataru.');
