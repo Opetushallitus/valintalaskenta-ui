@@ -1,14 +1,14 @@
-﻿var app = angular.module('valintalaskenta');
-app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-    ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus,
-    ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplications) {
+﻿﻿var app = angular.module('valintalaskenta');
+﻿app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
+                                                  ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus,
+                                                  ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplications) {
     "use strict";
 
     var model;
-	model = new function() {
+    model = new function() {
 
-		this.hakukohdeOid = {};
-		this.valinnanvaiheet = [];
+        this.hakukohdeOid = {};
+        this.valinnanvaiheet = [];
         this.errors = [];
 
         this.refresh = function(hakukohdeOid, hakuOid) {
@@ -326,8 +326,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             }
             var toive = (_.invert(hakija.answers.hakutoiveet))[model.hakukohdeOid];
 
-            if(toive) {
-                return parseInt(toive.substring(10,11));
+            if (toive) {
+                return parseInt(toive.substring(10, 11));
             } else {
                 return -1;
             }
@@ -341,21 +341,21 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                         page: 1,            // show first page
                         count: 50,          // count per page
                         filters: {
-                            'sukunimi' : ''
+                            'sukunimi': ''
                         },
                         sorting: {
-                            'jonosija' : 'asc',
-                            'kokonaispisteet' : 'desc',
+                            'jonosija': 'asc',
+                            'kokonaispisteet': 'desc',
                             'sukunimi': 'asc'
                         }
                     }, {
                         total: jono.jonosijat.length, // length of data
-                        getData: function ($defer, params) {
+                        getData: function($defer, params) {
                             var filters = FilterService.fixFilterWithNestedProperty(params.filter());
 
-                            if(jono.kaytetaanKokonaispisteita) {
-                                _.each(jono.jonosijat, function(jonosija){
-                                    if(_.isUndefined(jonosija.kokonaispisteet)){jonosija.kokonaispisteet=Number.MIN_VALUE}
+                            if (jono.kaytetaanKokonaispisteita) {
+                                _.each(jono.jonosijat, function(jonosija) {
+                                    if (_.isUndefined(jonosija.kokonaispisteet)) {jonosija.kokonaispisteet = Number.MIN_VALUE}
                                 });
                             }
 
@@ -366,15 +366,14 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                                 $filter('filter')(orderedData, filters) :
                                 orderedData;
 
-                            if(jono.kaytetaanKokonaispisteita) {
-                                _.each(jono.jonosijat, function(jonosija){
-                                    if(jonosija.kokonaispisteet===Number.MIN_VALUE){delete jonosija.kokonaispisteet}
+                            if (jono.kaytetaanKokonaispisteita) {
+                                _.each(jono.jonosijat, function(jonosija) {
+                                    if (jonosija.kokonaispisteet === Number.MIN_VALUE) {delete jonosija.kokonaispisteet}
                                 });
                             }
 
                             params.total(orderedData.length); // set total for recalc pagination
                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-
                         }
                     });
 
@@ -382,14 +381,14 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             });
         };
 
-        this.submit = function (vaiheoid, jonooid) {
-            var vv = _.findWhere(model.ilmanlaskentaa, {oid:vaiheoid});
-            if(vv) {
+        this.submit = function(vaiheoid, jonooid) {
+            var vv = _.findWhere(model.ilmanlaskentaa, {oid: vaiheoid});
+            if (vv) {
                 var vaihe = {};
                 angular.copy(vv, vaihe);
                 angular.copy(vv.valintatapajonot, vaihe.valintatapajonot);
                 vaihe.valinnanvaiheoid = vaihe.oid;
-                var yksijono = _.findWhere(vaihe.valintatapajonot, {valintatapajonooid:jonooid});
+                var yksijono = _.findWhere(vaihe.valintatapajonot, {valintatapajonooid: jonooid});
 
                 vaihe.valintatapajonot = [yksijono];
                 // Suodatetaan pois hakemukset joille ei ole merkitty jonosijaa ja asetetaan pisteiksi jonosijan negaatio
@@ -397,21 +396,21 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                     .filter(function(sija) {
                         return (!_.isUndefined(sija.tuloksenTila) && sija.tuloksenTila !== '');
                     }).map(function(sija) {
-                        var isValidNumber = function (value) {
+                        var isValidNumber = function(value) {
                             return !_.isNaN(value) && _.isNumber(value);
                         };
                         var kaytetaanKokonaispisteita = vaihe.valintatapajonot[0].kaytetaanKokonaispisteita;
 
 
-                        if(kaytetaanKokonaispisteita && isValidNumber(sija.kokonaispisteet)) {
+                        if (kaytetaanKokonaispisteita && isValidNumber(sija.kokonaispisteet)) {
                             sija.jarjestyskriteerit[0].arvo = sija.kokonaispisteet;
-                        } else if(!kaytetaanKokonaispisteita && isValidNumber(sija.jonosija)) {
+                        } else if (!kaytetaanKokonaispisteita && isValidNumber(sija.jonosija)) {
                             sija.jarjestyskriteerit[0].arvo = -(sija.jonosija);
                         } else {
                             delete sija.jarjestyskriteerit[0].arvo;
                         }
 
-                        if(_.isUndefined(sija.prioriteetti) || sija.prioriteetti === 0) {
+                        if (_.isUndefined(sija.prioriteetti) || sija.prioriteetti === 0) {
                             sija.prioriteetti = model.hakutoivePrioriteetti(sija.hakemusOid);
                         }
                         sija.jarjestyskriteerit[0].tila = sija.tuloksenTila;
@@ -420,8 +419,11 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
 
                 vaihe.valintatapajonot[0].jonosijat = suodatetutSijat;
 
-                ValinnanvaiheListByHakukohde.post({hakukohdeoid: model.hakukohdeOid, tarjoajaOid: model.tarjoajaOid}, vaihe, function(result) {
-                	model.refresh($routeParams.hakukohdeOid, $routeParams.hakuOid);
+                ValinnanvaiheListByHakukohde.post({
+                    hakukohdeoid: model.hakukohdeOid,
+                    tarjoajaOid: model.tarjoajaOid
+                }, vaihe, function(result) {
+                    model.refresh($routeParams.hakukohdeOid, $routeParams.hakuOid);
                     Ilmoitus.avaa("Tallennus onnistui", "Valintatulosten tallennus onnistui.");
                 }, function(error) {
                     var errorMessage = error.status === 400 ?
@@ -434,7 +436,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
         };
 
         this.muutaSijoittelunStatus = function(jono, status) {
-            ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status},function(result) {
+            ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status}, function(result) {
                 jono.valmisSijoiteltavaksi = status;
                 Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
             }, function(error) {
@@ -442,212 +444,210 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             });
         };
 
-	}();
+    }();
 
-	return model;
+    return model;
 });
 
 
-angular.module('valintalaskenta').
-    controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
-        'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti','ValintalaskentatulosModel',
-        'TulosXls', 'HakukohdeModel', 'HakuModel', '$http','$log','$modal', 'AuthService', 'UserModel', 'LocalisationService',
-    function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
-              ValintatapajonoVienti,ValintalaskentatulosModel, TulosXls, HakukohdeModel, HakuModel, $http, $log, $modal, AuthService, UserModel,
-              LocalisationService) {
-    "use strict";
+angular.module('valintalaskenta').controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
+    'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'ValintalaskentatulosModel',
+    'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', '$log', '$modal', 'AuthService', 'UserModel', 'LocalisationService',
+    function($scope, $location, $routeParams, $timeout, $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
+             ValintatapajonoVienti, ValintalaskentatulosModel, TulosXls, HakukohdeModel, HakuModel, $http, $log, $modal, AuthService, UserModel,
+             LocalisationService) {
+        "use strict";
 
-    $scope.hakukohdeOid = $routeParams.hakukohdeOid;
-    $scope.hakuOid =  $routeParams.hakuOid;
-    $scope.url = window.url;
-    $scope.model = ValintalaskentatulosModel;
-    $scope.hakukohdeModel = HakukohdeModel;
+        $scope.hakukohdeOid = $routeParams.hakukohdeOid;
+        $scope.hakuOid = $routeParams.hakuOid;
+        $scope.url = window.url;
+        $scope.model = ValintalaskentatulosModel;
+        $scope.hakukohdeModel = HakukohdeModel;
 
-    var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+        var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
-    var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
+        var promise = $scope.model.refresh($scope.hakukohdeOid, $scope.hakuOid);
 
-    promise.then(function() {
-        $scope.isKkHaku = HakuModel.korkeakoulu;
-        $scope.erityisopetus = HakuModel.hakuOid.erityisopetus;
-        AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function(){
-            $scope.updateOph = true;
-            $scope.jkmuokkaus = true;
+        promise.then(function() {
+            $scope.isKkHaku = HakuModel.korkeakoulu;
+            $scope.erityisopetus = HakuModel.hakuOid.erityisopetus;
+            AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function() {
+                $scope.updateOph = true;
+                $scope.jkmuokkaus = true;
+            });
         });
-    });
 
 
-    hakukohdeModelpromise.then(function () {
-        AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function () {
-            $scope.crudOrg = true;
+        hakukohdeModelpromise.then(function() {
+            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function() {
+                $scope.crudOrg = true;
+            });
         });
-    });
 
-    $scope.user = UserModel;
-    UserModel.refreshIfNeeded().then(function(){
-        $scope.jkmuokkaus = UserModel.isKKUser;
-    });
-
-
-    $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
-    	ValintatapajonoVienti.vie({
-    		valintatapajonoOid: valintatapajonoOid,
-    		hakukohdeOid: $scope.hakukohdeOid,
-    		hakuOid: $routeParams.hakuOid,
-                tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0]
-            },
-    		{}, function (id) {
-            Latausikkuna.avaa(id, "Valintatapajonon vienti taulukkolaskentaan", "");
-        }, function () {
-            Ilmoitus.avaa("Valintatapajonon vienti epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+        $scope.user = UserModel;
+        UserModel.refreshIfNeeded().then(function() {
+            $scope.jkmuokkaus = UserModel.isKKUser;
         });
-    };
 
-    $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files) {
-        var file = $files[0];
-        var fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(file);
-        var hakukohdeOid = $scope.hakukohdeOid;
-        var hakuOid = $routeParams.hakuOid;
-        var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
-        fileReader.onload = function(e) {
-            $scope.upload = $upload.http({
-                url: window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti", {
-                    tarjoajaOid : tarjoajaOid,
-                    hakuOid : hakuOid,
-                    hakukohdeOid : hakukohdeOid,
-                    valintatapajonoOid : valintatapajonoOid
-                }),
-                method: "POST",
-                headers: {'Content-Type': 'application/octet-stream'},
-                data: e.target.result
-            }).progress(function(evt) {
-                //console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-            }).success(function(id, status, headers, config) {
-                /*
-                Latausikkuna.avaaKustomoitu(id, "Valintatapajonon tuonti", "", "../common/modaalinen/tuontiikkuna.html",
-                    function(dokumenttiId) {
-                        // tee paivitys
-                        $scope.model.refresh(hakukohdeOid, hakuOid);
-                    }
-                );
-                */
-                var valintatulostentuonti = $modal.open({
-                    backdrop: 'static',
-                    templateUrl: '../common/modaalinen/dokumenttiseurantaikkuna.html',
-                    controller: DokumenttiSeurantaIkkunaCtrl,
-                    size: 'lg',
-                    resolve: {
-                        oids: function () {
-                            return {
-                                hakuOid: $routeParams.hakuOid,
-                                tyyppi: "HAKUKOHDE",
-                                hakukohteet: [$routeParams.hakukohdeOid],
-                                id: id,
-                                kaynnista: function() {
-                                    $log.info("Käynnistetään");
-                                },
-                                ok: function() {
-                                    $scope.model.refresh(hakukohdeOid, hakuOid);
-                                }
-                            };
+
+        $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
+            ValintatapajonoVienti.vie({
+                    valintatapajonoOid: valintatapajonoOid,
+                    hakukohdeOid: $scope.hakukohdeOid,
+                    hakuOid: $routeParams.hakuOid,
+                    tarjoajaOid: $scope.hakukohdeModel.hakukohde.tarjoajaOids[0]
+                },
+                {}, function(id) {
+                    Latausikkuna.avaa(id, "Valintatapajonon vienti taulukkolaskentaan", "");
+                }, function() {
+                    Ilmoitus.avaa("Valintatapajonon vienti epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+                });
+        };
+
+        $scope.valintatapajonoTuontiXlsx = function(valintatapajonoOid, $files) {
+            var file = $files[0];
+            var fileReader = new FileReader();
+            fileReader.readAsArrayBuffer(file);
+            var hakukohdeOid = $scope.hakukohdeOid;
+            var hakuOid = $routeParams.hakuOid;
+            var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0];
+            fileReader.onload = function(e) {
+                $scope.upload = $upload.http({
+                    url: window.url("valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti", {
+                        tarjoajaOid: tarjoajaOid,
+                        hakuOid: hakuOid,
+                        hakukohdeOid: hakukohdeOid,
+                        valintatapajonoOid: valintatapajonoOid
+                    }),
+                    method: "POST",
+                    headers: {'Content-Type': 'application/octet-stream'},
+                    data: e.target.result
+                }).progress(function(evt) {
+                    //console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                }).success(function(id, status, headers, config) {
+                    /*
+                    Latausikkuna.avaaKustomoitu(id, "Valintatapajonon tuonti", "", "../common/modaalinen/tuontiikkuna.html",
+                        function(dokumenttiId) {
+                            // tee paivitys
+                            $scope.model.refresh(hakukohdeOid, hakuOid);
                         }
+                    );
+                    */
+                    var valintatulostentuonti = $modal.open({
+                        backdrop: 'static',
+                        templateUrl: '../common/modaalinen/dokumenttiseurantaikkuna.html',
+                        controller: DokumenttiSeurantaIkkunaCtrl,
+                        size: 'lg',
+                        resolve: {
+                            oids: function() {
+                                return {
+                                    hakuOid: $routeParams.hakuOid,
+                                    tyyppi: "HAKUKOHDE",
+                                    hakukohteet: [$routeParams.hakukohdeOid],
+                                    id: id,
+                                    kaynnista: function() {
+                                        $log.info("Käynnistetään");
+                                    },
+                                    ok: function() {
+                                        $scope.model.refresh(hakukohdeOid, hakuOid);
+                                    }
+                                };
+                            }
+                        }
+                    });
+                }).error(function(data) {
+                    //error
+                    Ilmoitus.avaa("Tuonti epäonnistui", "Valintatulosten tuonti epäonnistui. " + data + ". Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                });
+            };
+
+        };
+
+        $scope.jonoLength = function(length) {
+            return LocalisationService.tl('valintalaskentatulos.jonosija') ? LocalisationService.tl('valintalaskentatulos.jonosija') + " (" + length + ")" : 'Jonosija' + " (" + length + ")";
+        };
+
+        $scope.valintalaskentaTulosXLS = function() {
+            TulosXls.query({hakukohdeOid: $routeParams.hakukohdeOid});
+        };
+
+        $scope.showHistory = function(valintatapajonoOid, hakemusOid) {
+            $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
+        };
+
+        $scope.showTilaPartial = function(valintatulos) {
+            if (valintatulos.showTilaPartial === null || valintatulos.showTilaPartial === false) {
+                valintatulos.showTilaPartial = true;
+            } else {
+                valintatulos.showTilaPartial = false;
+            }
+        };
+        $scope.showHenkiloPartial = function(valintatulos) {
+            if (valintatulos.showHenkiloPartial === null || valintatulos.showHenkiloPartial === false) {
+                valintatulos.showHenkiloPartial = true;
+            } else {
+                valintatulos.showHenkiloPartial = false;
+            }
+        };
+
+        $scope.jonoIsEmpty = function (jono) {
+            if (!jono.jonosijat) {
+                return true;
+            }
+            return jono.jonosijat.length < 1;
+        };
+
+        $scope.submit = function(vaiheoid, jonooid) {
+            ValintalaskentatulosModel.submit(vaiheoid, jonooid);
+        };
+
+        $scope.muutaSijoittelunStatus = function(jono, status) {
+            ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status);
+        };
+
+        $scope.changeTila = function(jonosija, value) {
+            if (_.isNumber(value)) {
+                $timeout(function() {
+                    jonosija.tuloksenTila = "HYVAKSYTTAVISSA";
+                });
+            } else {
+                $timeout(function() {
+                    jonosija.tuloksenTila = "";
+                    delete jonosija.jonosija;
+                    delete jonosija.kokonaispisteet;
+                });
+            }
+
+        };
+
+        $scope.changeSija = function(jonosija, value) {
+            if (value !== 'HYVAKSYTTAVISSA') {
+                $timeout(function() {
+                    delete jonosija.jonosija;
+                    delete jonosija.kokonaispisteet;
+                });
+            }
+
+        };
+
+        $scope.changeKaytetaanKokonaispisteita = function(jono) {
+            var ok = function() {
+                _.each(jono.jonosijat, function(jonosija) {
+                    jonosija.tuloksenTila = "";
+                    if (jono.kaytetaanKokonaispisteita) {
+                        delete jonosija.jonosija;
+                    } else {
+                        delete jonosija.kokonaispisteet;
                     }
                 });
-            }).error(function(data) {
-                //error
-                Ilmoitus.avaa("Tuonti epäonnistui", "Valintatulosten tuonti epäonnistui. "+ data + ". Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
-            });
+            };
+            var cancel = function() {
+                jono.kaytetaanKokonaispisteita = !jono.kaytetaanKokonaispisteita;
+            };
+            if (jono.kaytetaanKokonaispisteita) {
+                Ilmoitus.avaaCancel("Käytetään kokonaispisteitä", "Jos siirryt käyttämään kokonaispisteitä, jonosijat poistetaan.", IlmoitusTila.INFO, ok, cancel);
+            } else {
+                Ilmoitus.avaaCancel("Käytetään kokonaispisteitä", "Jos siirryt käyttämään jonosijoja, kokonaispisteet poistetaan.", IlmoitusTila.INFO, ok, cancel);
+            }
         };
-
-    };
-
-    $scope.jonoLength = function(length) {
-        return LocalisationService.tl('valintalaskentatulos.jonosija') ? LocalisationService.tl('valintalaskentatulos.jonosija') +  " ("+length+")" : 'Jonosija' +  " ("+length+")";
-    };
-
-    $scope.valintalaskentaTulosXLS = function() {
-    	TulosXls.query({hakukohdeOid:$routeParams.hakukohdeOid});
-    };
-
-    $scope.showHistory = function(valintatapajonoOid, hakemusOid) {
-        $location.path('/valintatapajono/' + valintatapajonoOid + '/hakemus/' + hakemusOid + '/valintalaskentahistoria');
-    };
-
-    $scope.showTilaPartial = function(valintatulos) {
-         if(valintatulos.showTilaPartial === null || valintatulos.showTilaPartial === false) {
-             valintatulos.showTilaPartial = true;
-         } else {
-             valintatulos.showTilaPartial = false;
-         }
-    };
-    $scope.showHenkiloPartial = function(valintatulos) {
-        if(valintatulos.showHenkiloPartial === null || valintatulos.showHenkiloPartial === false) {
-            valintatulos.showHenkiloPartial = true;
-        } else {
-            valintatulos.showHenkiloPartial = false;
-        }
-    };
-
-
-    $scope.jonoIsEmpty = function (jono) {
-        if (!jono.jonosijat) {
-            return true;
-        }
-        return jono.jonosijat.length < 1;
-    };
-
-    $scope.submit = function (vaiheoid, jonooid) {
-        ValintalaskentatulosModel.submit(vaiheoid, jonooid);
-    };
-
-    $scope.muutaSijoittelunStatus = function (jono, status) {
-        ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status);
-    };
-
-    $scope.changeTila = function (jonosija, value) {
-        if (_.isNumber(value)) {
-            $timeout(function(){
-                jonosija.tuloksenTila = "HYVAKSYTTAVISSA";
-            });
-        } else {
-            $timeout(function(){
-                jonosija.tuloksenTila = "";
-                delete jonosija.jonosija;
-                delete jonosija.kokonaispisteet;
-            });
-        }
-
-    };
-
-    $scope.changeSija = function (jonosija, value) {
-        if (value !== 'HYVAKSYTTAVISSA') {
-            $timeout(function(){
-                delete jonosija.jonosija;
-                delete jonosija.kokonaispisteet;
-            });
-        }
-
-    };
-
-    $scope.changeKaytetaanKokonaispisteita = function(jono) {
-        var ok = function() {
-            _.each(jono.jonosijat, function(jonosija){
-                jonosija.tuloksenTila = "";
-                if(jono.kaytetaanKokonaispisteita) {
-                    delete jonosija.jonosija;
-                } else {
-                    delete jonosija.kokonaispisteet;
-                }
-            });
-        };
-        var cancel = function() {
-            jono.kaytetaanKokonaispisteita = !jono.kaytetaanKokonaispisteita;
-        };
-        if(jono.kaytetaanKokonaispisteita) {
-            Ilmoitus.avaaCancel("Käytetään kokonaispisteitä", "Jos siirryt käyttämään kokonaispisteitä, jonosijat poistetaan.", IlmoitusTila.INFO, ok, cancel);
-        } else {
-            Ilmoitus.avaaCancel("Käytetään kokonaispisteitä", "Jos siirryt käyttämään jonosijoja, kokonaispisteet poistetaan.", IlmoitusTila.INFO, ok, cancel);
-        }
-    };
-}]);
+    }]);
