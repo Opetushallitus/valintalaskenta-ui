@@ -80,8 +80,8 @@
                                             valmisSijoitteluun = false;
                                         }
                                     } else {
-                                        if(_.isBoolean(jono.automaattinenLaskentaanSiirto)) {
-                                            valmisSijoitteluun = jono.automaattinenLaskentaanSiirto;
+                                        if(_.isBoolean(jono.automaattinenSijoitteluunSiirto)) {
+                                            valmisSijoitteluun = jono.automaattinenSijoitteluunSiirto;
                                         }  else {
                                             valmisSijoitteluun = false;
                                         }
