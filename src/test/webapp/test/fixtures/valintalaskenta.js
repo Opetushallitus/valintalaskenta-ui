@@ -2,14 +2,14 @@
 // valintalaskenta-laskenta-service/resources/harkinnanvarainenhyvaksynta/haku/1.2.246.562.29.90697286251/hakemus/1.2.246.562.11.00001897296
 
 function harkinnanvarainenhyvaksyntaFixtures() {
-    var httpBackend = testFrame().httpBackend
+    var httpBackend = testFrame().httpBackend;
     httpBackend.when('GET', /.*resources\/harkinnanvarainenhyvaksynta\/.*/).respond(
         []
     );
 }
 function valintalaskentaValintakokeetHakemukselleFixtures(hakija) {
     return function() {
-        var httpBackend = testFrame().httpBackend
+        var httpBackend = testFrame().httpBackend;
         httpBackend.when('GET', /.*\/valintalaskenta-laskenta-service\/resources\/valintakoe\/hakemus\/.*/).respond(
            {
                     hakuOid: hakija.hakuOid,
@@ -231,7 +231,7 @@ function valintalaskentaValintakokeetHakemukselleFixtures(hakija) {
 }
 function valintalaskentaHakemukselleFixtures(hakija) {
     return function() {
-        var httpBackend = testFrame().httpBackend
+        var httpBackend = testFrame().httpBackend;
         httpBackend.when('GET', /.*\/valintalaskenta-laskenta-service\/resources\/hakemus\/.*/).respond(
             {
                 hakuoid: hakija.hakuOid,
@@ -1591,8 +1591,8 @@ function valintalaskentaHakemukselleFixtures(hakija) {
 
 function valintalaskentaValintakokeetFixtures(hakijat) {
     return function() {
-        var httpBackend = testFrame().httpBackend
-        httpBackend.when('GET', /.*\/valintalaskenta-laskenta-service\/resources\/valintakoe\/hakutoive\/.*/).respond(
+        var httpBackend = testFrame().httpBackend;
+        httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/valintakoe\/hakutoive\/.*/).respond(
             _.map(hakijat, function(hakija) {
                     return {
                         hakuOid: hakija.hakuOid,

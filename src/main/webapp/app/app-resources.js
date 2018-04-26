@@ -842,7 +842,7 @@ app.factory('Valintatulos', function($resource) {
 
 // Valintakoetulokset
 app.factory('Valintakoetulokset', function($resource) {
-        return $resource(plainUrl("valintalaskenta-laskenta-service.valintakoe.hakutoive", ":hakukohdeoid"),
+        return $resource(plainUrl("valintalaskentakoostepalvelu.valintakoe.hakutoive", ":hakukohdeoid"),
         {
             hakukohdeoid: "@hakukohdeoid"
         }, {
