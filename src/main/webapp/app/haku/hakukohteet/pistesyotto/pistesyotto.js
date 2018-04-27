@@ -207,8 +207,11 @@ angular.module('valintalaskenta').
                 }
 			}).error(function(data) {
           console.error(data);
+          var rows = data.map(function(dto) {
+              return dto.applicantName + " " + dto.applicationOID + " : " + dto.errorMessage;
+          });
           Ilmoitus.avaa("Tallennus epäonnistui", "Pistetietojen tuonti epäonnistui. Tarkista syöte.",
-              IlmoitusTila.ERROR, null, data);
+              IlmoitusTila.ERROR, null, rows);
 			});
 	    };
 	};
