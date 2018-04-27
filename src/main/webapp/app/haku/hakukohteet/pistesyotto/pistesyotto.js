@@ -206,8 +206,9 @@ angular.module('valintalaskenta').
                     Ilmoitus.avaa(otsikko, ilmoitus, tila, callback, rows);
                 }
 			}).error(function(data) {
-			    //error
-                console.log(data);
+          console.error(data);
+          Ilmoitus.avaa("Tallennus epäonnistui", "Pistetietojen tuonti epäonnistui. Tarkista syöte.",
+              IlmoitusTila.ERROR, null, data);
 			});
 	    };
 	};
