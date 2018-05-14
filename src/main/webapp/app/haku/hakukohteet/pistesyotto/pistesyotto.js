@@ -206,13 +206,18 @@ angular.module('valintalaskenta').
                     Ilmoitus.avaa(otsikko, ilmoitus, tila, callback, rows);
                 }
 			}).error(function(data) {
-          console.error(data);
-          var rows = data.map(function(dto) {
-              return dto.applicantName + " " + dto.applicationOID + " : " + dto.errorMessage;
-          });
-          Ilmoitus.avaa("Tallennus epäonnistui", "Pistetietojen tuonti epäonnistui. Tarkista syöte.",
-              IlmoitusTila.ERROR, null, rows);
-			});
+                  if(data) {
+                      console.error(data);
+                      var rows = data.map(function(dto) {
+                          return dto.applicantName + " " + dto.applicationOID + " : " + dto.errorMessage;
+                      });
+                      Ilmoitus.avaa("Tallennus epäonnistui", "Pistetietojen tuonti epäonnistui. Tarkista syöte.",
+                          IlmoitusTila.ERROR, null, rows);
+                  } else {
+                      Ilmoitus.avaa("Tallennus epäonnistui", "Pistetietojen tuonti epäonnistui. Ota yhteys ylläpitoon.",
+                          IlmoitusTila.ERROR, null, null);
+                  }
+              });
 	    };
 	};
     $scope.pistesyottoVientiXlsx = function() {
