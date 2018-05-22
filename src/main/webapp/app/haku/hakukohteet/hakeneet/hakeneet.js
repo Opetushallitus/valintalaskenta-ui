@@ -86,14 +86,22 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
                 return person.oidHenkilo === application.henkiloOid;
             })[0];
 
-            var hakutoive = application.hakutoiveet.filter(function(h) {
-                return h.hakukohdeOid === hakukohdeOid;
-            })[0];
+            var hakutoive;
+            var hakutoiveNumero;
+            var i = 0;
+            application.hakutoiveet.forEach(function(h) {
+                i += 1;
+                if (h.hakukohdeOid === hakukohdeOid) {
+                  hakutoive = h;
+                  hakutoiveNumero = i;
+                }
+            });
 
             return {
                 maksuvelvollisuus: ataruMaksuvelvollisuus(hakutoive),
                 state: ataruApplicationState(hakutoive),
                 hakukelpoisuus: ataruHakukelpoisuus(hakutoive),
+                hakutoiveNumero: hakutoiveNumero,
                 Etunimet: person.etunimet,
                 Sukunimi: person.sukunimi,
                 personOid: person.oidHenkilo,
