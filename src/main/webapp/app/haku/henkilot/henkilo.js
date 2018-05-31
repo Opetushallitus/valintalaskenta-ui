@@ -110,11 +110,11 @@ app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, Hen
 });
 
 angular.module('valintalaskenta').
-    controller('HenkiloController',['$scope', '$location', '$routeParams', 'HenkiloModel',
-        function ($scope, $location, $routeParams, HenkiloModel) {
+    controller('HenkiloController',['$scope', '$location', '$routeParams', '$timeout', 'HenkiloModel',
+        function ($scope, $location, $routeParams, $timeout, HenkiloModel) {
     "use strict";
 
-    var debounceTimer = null;
+    var debounce = null;
     $scope.model = HenkiloModel;
     $scope.model.refreshIfNeeded($routeParams.hakuOid);
     $scope.hakemusOid = $routeParams.hakemusOid;
@@ -124,10 +124,10 @@ angular.module('valintalaskenta').
     }
 
     $scope.$watch('model.searchWord', function() {
-        if (debounceTimer) {
-            clearTimeout(debounceTimer);
+        if (debounce) {
+            $timeout.cancel(debounce);
         }
-        debounceTimer = setTimeout($scope.model.refresh.bind($scope.model), 500);
+        debounce = $timeout($scope.model.refresh.bind($scope.model), 500);
     });
 
     $scope.lazyLoading = $scope.model.getNextPage.bind($scope.model);
