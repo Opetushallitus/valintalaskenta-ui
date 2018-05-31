@@ -74,11 +74,18 @@ app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, Hen
 
     function refresh() {
         var self = this;
+        var q = $.trim(this.searchWord);
         this.hakuOid = this.hakuOid || $routeParams.hakuOid;
-        this.readyToQueryForNextPage = false;
-        getHakuAppHakemukset(this.hakuOid, 0, this.pageSize, $.trim(this.searchWord))
-            .then(setHakemukset(this))
-            .then(function() { self.readyToQueryForNextPage = true; });
+        this.hakemukset = [];
+        this.totalCount = 0;
+        if (q.length > 2) {
+            this.readyToQueryForNextPage = false;
+            getHakuAppHakemukset(this.hakuOid, 0, this.pageSize, q)
+                .then(setHakemukset(this))
+                .then(function () {
+                    self.readyToQueryForNextPage = true;
+                });
+        }
     }
 
     function refreshIfNeeded(hakuOid) {
