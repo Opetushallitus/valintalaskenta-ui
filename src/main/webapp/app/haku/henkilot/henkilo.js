@@ -1,5 +1,5 @@
 var app = angular.module('valintalaskenta');
-app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot) {
+app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HenkiloPerustietosByHenkiloOidList) {
     function getHakuAppHakemukset(hakuOid, start, n, q) {
         return Henkilot.query({
             appState: ["ACTIVE", "INCOMPLETE"],
@@ -8,11 +8,20 @@ app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot) {
             rows: n,
             q: q
         }).$promise.then(function(result) {
+            var personOids = result.results.map(function (h) { return h.personOid; });
+            return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function (henkilot) {
+                result.henkilotByOid = _.groupBy(henkilot, function (henkilo) {
+                    return henkilo.oidHenkilo;
+                });
+                return result;
+            });
+        }).then(function(result) {
             return {
                 hakemukset: result.results.map(function(h) {
+                    var henkilo = result.henkilotByOid[h.personOid][0];
                     return {
                         oid: h.oid,
-                        name: h.lastName + ", " + h.firstNames
+                        name: henkilo.sukunimi + ", " + henkilo.etunimet
                     };
                 }),
                 totalCount: result.totalCount
