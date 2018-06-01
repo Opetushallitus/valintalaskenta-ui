@@ -122,12 +122,12 @@ angular.module('valintalaskenta').
         $location.hash($routeParams.scrollTo);
     }
 
-    $scope.$watch('model.searchWord', function() {
+    $scope.searchWordChanged = function() {
         if (debounce) {
             $timeout.cancel(debounce);
         }
         debounce = $timeout($scope.model.refresh.bind($scope.model), 500);
-    });
+    };
 
     $scope.lazyLoading = $scope.model.getNextPage.bind($scope.model);
 
