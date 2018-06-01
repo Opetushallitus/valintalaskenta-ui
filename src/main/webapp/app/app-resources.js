@@ -672,6 +672,16 @@ app.factory('AtaruApplications', function($resource) {
     });
 });
 
+app.factory('AtaruApplicationsList', function($resource) {
+    return $resource(window.url("ataru.applications.list"),
+        {
+            hakuOid: "@hakuOid",
+            name: "@name"
+        }, {
+            get: {method: "GET", isArray: true, cache: true}
+        });
+});
+
 app.factory('Henkilot', function($resource) {
     return $resource(window.url("haku-app.applications"),
         {

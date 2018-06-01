@@ -1,5 +1,21 @@
 var app = angular.module('valintalaskenta');
-app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HenkiloPerustietosByHenkiloOidList) {
+app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplicationsList) {
+    function enrichWithName(hakemukset) {
+        var personOids = hakemukset.map(function (h) { return h.personOid; });
+        return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function (henkilot) {
+            var henkilotByOid = _.groupBy(henkilot, function (henkilo) {
+                return henkilo.oidHenkilo;
+            });
+            return hakemukset.map(function(h) {
+                var henkilo = henkilotByOid[h.personOid][0];
+                return {
+                  oid: h.oid,
+                  name: henkilo.sukunimi + ", " + henkilo.etunimet
+                };
+            });
+        });
+    }
+
     function getHakuAppHakemukset(hakuOid, start, n, q) {
         return Henkilot.query({
             appState: ["ACTIVE", "INCOMPLETE"],
@@ -7,67 +23,50 @@ app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, Hen
             start: start,
             rows: n,
             q: q
-        }).$promise.then(function(result) {
-            var personOids = result.results.map(function (h) { return h.personOid; });
-            return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function (henkilot) {
-                result.henkilotByOid = _.groupBy(henkilot, function (henkilo) {
-                    return henkilo.oidHenkilo;
-                });
-                return result;
-            });
-        }).then(function(result) {
+        }).$promise;
+    }
+
+    function getAtaruHakemukset(hakuOid, start, n, q) {
+        return AtaruApplicationsList.get({hakuOid: hakuOid, name: q}).$promise.then(function(hakemukset) {
             return {
-                hakemukset: result.results.map(function(h) {
-                    var henkilo = result.henkilotByOid[h.personOid][0];
-                    return {
-                        oid: h.oid,
-                        name: henkilo.sukunimi + ", " + henkilo.etunimet
-                    };
-                }),
-                totalCount: result.totalCount
+                results: hakemukset.slice(start, start + n),
+                totalCount: hakemukset.length
             };
         });
     }
 
-    function addToHakemukset(model) {
-        var searchWordShould = model.searchWord;
-        return function(result) {
-            if (model.searchWord === searchWordShould) {
-                if (model.totalCount === result.totalCount) {
-                    model.hakemukset = model.hakemukset.concat(result.hakemukset);
-                    return true;
-                } else {
-                    return model.refresh().then(function () {
-                        return false;
-                    });
-                }
+    function getHakemukset(hakuOid, start, n, q) {
+        return HakuModel.refreshIfNeeded(hakuOid).then(function(haku) {
+            if (haku.hakuOid.ataruLomakeAvain) {
+                return getAtaruHakemukset(hakuOid, start, n, q);
             } else {
-                return false;
+                return getHakuAppHakemukset(hakuOid, start, n, q);
             }
-        }
-    }
-
-    function setHakemukset(model) {
-        var searchWordShould = model.searchWord;
-        return function(result) {
-            if (model.searchWord === searchWordShould) {
-                model.hakemukset = result.hakemukset;
-                model.totalCount = result.totalCount;
-                return true;
-            } else {
-                return false;
-            }
-        }
+        }).then(function(result) {
+            return enrichWithName(result.results).then(function(hakemukset) {
+                return {
+                    hakemukset: hakemukset,
+                    totalCount: result.totalCount
+                };
+            })
+        });
     }
 
     function getNextPage() {
         var self = this;
+        var searchWordShould = this.searchWord;
         if (this.readyToQueryForNextPage) {
             this.readyToQueryForNextPage = false;
-            getHakuAppHakemukset(this.hakuOid, this.hakemukset.length, this.pageSize, $.trim(this.searchWord))
-                .then(addToHakemukset(this))
-                .then(function () {
-                    self.readyToQueryForNextPage = true;
+            getHakemukset(this.hakuOid, this.hakemukset.length, this.pageSize, $.trim(this.searchWord))
+                .then(function (result) {
+                    if (searchWordShould === self.searchWord) {
+                        if (result.totalCount === self.totalCount) {
+                            self.hakemukset = self.hakemukset.concat(result.hakemukset);
+                            self.readyToQueryForNextPage = true;
+                        } else {
+                            return self.refresh();
+                        }
+                    }
                 });
         }
     }
@@ -80,11 +79,11 @@ app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, Hen
         this.totalCount = 0;
         if (q.length > 2) {
             this.readyToQueryForNextPage = false;
-            getHakuAppHakemukset(this.hakuOid, 0, this.pageSize, q)
-                .then(setHakemukset(this))
-                .then(function () {
-                    self.readyToQueryForNextPage = true;
-                });
+            getHakemukset(this.hakuOid, 0, this.pageSize, q).then(function(result) {
+                self.hakemukset = result.hakemukset;
+                self.totalCount = result.totalCount;
+                self.readyToQueryForNextPage = true;
+            });
         }
     }
 
