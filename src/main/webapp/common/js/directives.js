@@ -541,6 +541,10 @@ app.directive("valintatulos", function ($rootScope) {
             "FI": "Opiskelijavalinta kesken",
             "SV": "Antagningen inte färdig"
         },
+        "HyvaksyttyKesken": {
+          "FI": "Hyväksytty (odottaa ylempien hakukohteiden tuloksia)",
+          "SV": "Godkänd (väntar på resultat från högre ansökningsmål)"
+        },
         "HarkinnanvaraisestiHyvaksytty": {
             "FI": "Hyväksytty",
             "SV": "Godkänd"
@@ -595,6 +599,18 @@ app.directive("valintatulos", function ($rootScope) {
             : value;
     }
 
+    function isHyvaksyttyKesken(valintatulos, valintatulokset) {
+        if (valintatulos.valintatila === "HYVAKSYTTY") {
+          var firstKeskenIndex = valintatulokset.findIndex(function(v) { return v.valintatila === "KESKEN" || v.valintatila === "VARALLA"});
+          if (firstKeskenIndex != -1) {
+            var valintatulosIndex = valintatulokset.findIndex(function(v) { return v.hakukohdeOid === valintatulos.hakukohdeOid});
+            // If hyvaksytty hakemus is not vastaanotettavissa it belongs to kk haku with sijoittelu
+            return firstKeskenIndex < valintatulosIndex && valintatulos.vastaanotettavuustila === "EI_VASTAANOTETTAVISSA";
+          }
+        }
+        return false;
+    }
+
     function underscoreToCamelCase(str) {
         return str.toLowerCase().replace(/^(.)|_(.)/g, function (match, char1, char2) {
             return (char1 ? char1 : "" + char2 ? char2 : "").toUpperCase()
@@ -624,8 +640,8 @@ app.directive("valintatulos", function ($rootScope) {
                 $scope.status = value ? "personinformationmodal.lopullinen" : "personinformationmodal.kesken";
             });
 
-            $scope.valintatulosText = function (valintatulos) {
-                var key = underscoreToCamelCase(valintatulos.valintatila);
+            $scope.valintatulosText = function (valintatulos, valintatulokset) {
+                var key = isHyvaksyttyKesken(valintatulos, valintatulokset) ? "HyvaksyttyKesken" : underscoreToCamelCase(valintatulos.valintatila);
                 var lang = ($rootScope.userLang || 'FI').toUpperCase();
                 if (["VASTAANOTTANUT_SITOVASTI", "EI_VASTAANOTETTU_MAARA_AIKANA", "EHDOLLISESTI_VASTAANOTTANUT"].indexOf(valintatulos.vastaanottotila) >= 0) {
                     key = underscoreToCamelCase(valintatulos.vastaanottotila)
