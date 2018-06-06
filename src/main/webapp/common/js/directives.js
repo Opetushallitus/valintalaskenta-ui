@@ -219,7 +219,6 @@ app.directive('sijoitteluVastaanottoTila', function () {
         scope: {
             hakuOid: '=',
             hakukohdeOid: '=',
-            hakukohdeModel: '=',
             valintatapajonoOid: '=',
             enabled: '=',
             lastmodified: '=',
