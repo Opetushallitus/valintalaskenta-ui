@@ -217,7 +217,6 @@ app.directive('sijoitteluVastaanottoTila', function () {
     return {
         restrict: 'E',
         scope: {
-            hakuOid: '=',
             hakukohdeOid: '=',
             valintatapajonoOid: '=',
             enabled: '=',
@@ -243,14 +242,6 @@ app.directive('sijoitteluVastaanottoTila', function () {
                             $scope.t = LocalisationService.tl;
                             $scope.update = function () {
                                 if ($scope.hakemus) {
-                                    var tilaParams = {
-                                        hakuOid: $scope.hakuOid,
-                                        hakukohdeOid: $scope.hakukohdeOid,
-                                        valintatapajonoOid: $scope.valintatapajonoOid,
-                                        hakemusOid: $scope.hakemus.hakemusOid,
-                                        selite: $scope.hakemus.selite
-                                    };
-
                                     $scope.selite = "";
                                     if ($scope.hakemus.muokattuVastaanottoTila === "") {
                                         $scope.hakemus.muokattuVastaanottoTila = "KESKEN";
@@ -261,45 +252,34 @@ app.directive('sijoitteluVastaanottoTila', function () {
                                     if ($scope.hakemus.hyvaksyttyVarasijalta === "") {
                                         $scope.hakemus.hyvaksyttyVarasijalta = false;
                                     }
-                                    var tilaObj = {
-                                        valintatapajonoOid: $scope.valintatapajonoOid,
-                                        hakemusOid: $scope.hakemus.hakemusOid,
+                                    var h = $scope.hakemus;
+                                    var valinnantilanMuutos = [{
                                         hakukohdeOid: $scope.hakukohdeOid,
-                                        hakuOid: $scope.hakuOid,
-                                        hakijaOid: $scope.hakemus.hakijaOid,
-                                        tila: $scope.hakemus.muokattuVastaanottoTila,
-                                        ilmoittautumisTila: $scope.hakemus.muokattuIlmoittautumisTila,
-                                        julkaistavissa: true,
-                                        hyvaksyttyVarasijalta: $scope.hakemus.hyvaksyttyVarasijalta
-                                    };
-                                  var h = $scope.hakemus;
-                                  var valinnantilanMuutos = [{
-                                    hakukohdeOid: $scope.hakukohdeOid,
-                                    valintatapajonoOid: $scope.valintatapajonoOid,
-                                    hakemusOid: h.hakemusOid,
-                                    henkiloOid: h.hakijaOid,
-                                    vastaanottotila: h.muokattuVastaanottoTila,
-                                    ilmoittautumistila: h.muokattuIlmoittautumisTila,
-                                    valinnantila: h.tila,
-                                    julkaistavissa: h.julkaistavissa,
-                                    ehdollisestiHyvaksyttavissa: h.ehdollisestiHyvaksyttavissa,
-                                    ehdollisenHyvaksymisenEhtoKoodi: h.ehdollisenHyvaksymisenEhtoKoodi,
-                                    ehdollisenHyvaksymisenEhtoFI: h.ehdollisenHyvaksymisenEhtoFI,
-                                    ehdollisenHyvaksymisenEhtoSV: h.ehdollisenHyvaksymisenEhtoSV,
-                                    ehdollisenHyvaksymisenEhtoEN: h.ehdollisenHyvaksymisenEhtoEN,
-                                    hyvaksyttyVarasijalta: h.hyvaksyttyVarasijalta,
-                                    hyvaksyPeruuntunut: h.hyvaksyPeruuntunut
-                                  }];
-                                  ValinnanTulos.patch(
-                                    $scope.valintatapajonoOid,
-                                    valinnantilanMuutos,
-                                    {headers: {'If-Unmodified-Since': $scope.lastmodified}}
-                                  ).then(function(result) {
-                                      $modalInstance.close(result)
-                                      Ilmoitus.avaa("Tallennus onnistui", "Sijoittelun vastaanottotila muutettu.");
-                                  }, function(error) {
-                                           $scope.error = error;
-                                  });
+                                        valintatapajonoOid: $scope.valintatapajonoOid,
+                                        hakemusOid: h.hakemusOid,
+                                        henkiloOid: h.hakijaOid,
+                                        vastaanottotila: h.muokattuVastaanottoTila,
+                                        ilmoittautumistila: h.muokattuIlmoittautumisTila,
+                                        valinnantila: h.tila,
+                                        julkaistavissa: h.julkaistavissa,
+                                        ehdollisestiHyvaksyttavissa: h.ehdollisestiHyvaksyttavissa,
+                                        ehdollisenHyvaksymisenEhtoKoodi: h.ehdollisenHyvaksymisenEhtoKoodi,
+                                        ehdollisenHyvaksymisenEhtoFI: h.ehdollisenHyvaksymisenEhtoFI,
+                                        ehdollisenHyvaksymisenEhtoSV: h.ehdollisenHyvaksymisenEhtoSV,
+                                        ehdollisenHyvaksymisenEhtoEN: h.ehdollisenHyvaksymisenEhtoEN,
+                                        hyvaksyttyVarasijalta: h.hyvaksyttyVarasijalta,
+                                        hyvaksyPeruuntunut: h.hyvaksyPeruuntunut
+                                    }];
+                                    ValinnanTulos.patch(
+                                        $scope.valintatapajonoOid,
+                                        valinnantilanMuutos,
+                                        {headers: {'If-Unmodified-Since': $scope.lastmodified}}
+                                    ).then(function (result) {
+                                        $modalInstance.close(result);
+                                        Ilmoitus.avaa("Tallennus onnistui", "Sijoittelun vastaanottotila muutettu.");
+                                    }, function (error) {
+                                        $scope.error = error;
+                                    });
                                 }
                             };
 
