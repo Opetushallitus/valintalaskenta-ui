@@ -222,7 +222,6 @@ app.directive('sijoitteluVastaanottoTila', function () {
             enabled: '=',
             lastmodified: '=',
             hakemus: '=',
-            hakutoiveet: '=',
             haku: '='
         },
         templateUrl: '../common/html/sijoitteluVastaanottoTila.html',
