@@ -202,6 +202,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         self.hakenutHarkinnanvaraisesti = false;
         self.naytaPistesyotto = false;
         self.lastmodified = null;
+        self.valintatapajonoLastModified = {}; // FIXME vaatii valintatuloksen hakemisen uudemmasta VTS:n API:sta
 
         var hakemusPromise = getHakuAppHakemus(hakemusOid);
         return $q.all({
@@ -297,6 +298,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         hakenutHarkinnanvaraisesti: false,
         naytaPistesyotto: false,
         lastmodified: null,
+        valintatapajonoLastModified: {},
 
         refresh: refresh,
         tallennaPisteet: tallennaPisteet
