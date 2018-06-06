@@ -996,6 +996,15 @@ app.factory('OrganizationHierarchy', function ($resource) {
     });
 });
 
+app.factory('HenkiloPerustiedot', function ($resource) {
+    return $resource(plainUrl("oppijanumerorekisteri-service.henkilo", ":henkiloOid"),
+        {
+            henkiloOid: "@henkiloOid"
+        }, {
+            get: {method: "GET", cache: false}
+        });
+});
+
 app.factory('HenkiloPerustietosByHenkiloOidList',[ '$http', '$q', '_', function($http, $q, _) {
     return {
         post: function(oids) {

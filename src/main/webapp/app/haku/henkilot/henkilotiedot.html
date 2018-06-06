@@ -15,8 +15,7 @@
 
             <div ng-include="'../common/html/errors.html'"></div>
 			
-            <h1 ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.Sukunimi}},
-                {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
+            <h1>{{model.henkilo.sukunimi}}, {{model.henkilo.etunimet}}</h1>
 			
 			<a ng-show="showMuodostaJalkiohjauskirje" ng-click="muodostaJalkiohjauskirje()"
        			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>
@@ -28,8 +27,8 @@
             </button>
             <dl class="margin-top-6">
 
-                <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">{{ t('henkilotiedot.henkilotunnus') || 'Henkilötunnus' }}</dt>
-                <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
+                <dt ng-show="model.henkilo.henkilotunnus">{{ t('henkilotiedot.henkilotunnus') || 'Henkilötunnus' }}</dt>
+                <dd ng-show="model.henkilo.henkilotunnus">{{model.henkilo.henkilotunnus}}</dd>
                 <dt>{{ t('henkilotiedot.hakemuksenoid') || 'hakemuksen oid' }}:</dt>
                 <dd>
                     <a href="{{url('haku-app.virkailija.hakemus.esikatselu', model.hakuOid, model.hakemus.oid)}}"
