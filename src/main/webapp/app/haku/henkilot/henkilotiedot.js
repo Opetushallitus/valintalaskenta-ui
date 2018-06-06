@@ -45,14 +45,17 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 hakutoiveet.push(hakutoive);
             }
             return {
-                originalHakemus: hakemus,
+                oid: hakemusOid,
+                personOid: hakemus.personOid,
+                lahiosoite: hakemus.answers.henkilotiedot.lahiosoite,
+                postinumero: hakemus.answers.henkilotiedot.Postinumero,
                 hakutoiveet: hakutoiveet
             };
         });
     }
 
     function getHenkilo(hakemus) {
-        return HenkiloPerustiedot.get({henkiloOid: hakemus.originalHakemus.personOid}).$promise
+        return HenkiloPerustiedot.get({henkiloOid: hakemus.personOid}).$promise
             .then(function (henkilo) {
                 return {
                     oid: henkilo.oidHenkilo,
@@ -218,7 +221,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             additionalData: KoostettuHakemusAdditionalDataForHakemus.get({hakemusOid: hakemusOid})
         }).then(function(o) {
             self.haku = o.haku;
-            self.hakemus = o.hakemus.originalHakemus;
+            self.hakemus = o.hakemus;
             self.henkilo = o.henkilo;
             self.sijoittelu = o.sijoittelu.sijoitteluByValintatapajonoOid;
             self.lastmodified = o.additionalData.lastmodified;
