@@ -1,6 +1,7 @@
 ﻿var app = angular.module('valintalaskenta');
-app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe,
-                                             HakukohdeHenkilotFull, HenkilotByOid) {
+﻿app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoetulokset, Valintakoe,
+											 HakukohdeValintakoe, HenkilotByOid, Hakemukset, HakuModel,
+											 AtaruApplications, HenkiloPerustietosByHenkiloOidList) {
     "use strict";
 	var model;
 	model = new function() {
@@ -49,7 +50,7 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
 
 			$q.all([
 				HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid}).$promise,
-				HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise,
+				Hakemukset.get(hakukohdeOid, hakuOid),
 				Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}).$promise
 			]).then(function(data) {
 				var valintakokeet = data[0];
@@ -66,12 +67,26 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
 				var haettujenHakemustenOidit = _.map(hakemukset, function(hakemus) {return hakemus.oid;});
 				var puuttuvienHakemustenOidit = _.difference(osallistujienHakemusOidit,haettujenHakemustenOidit);
 				var kaikkiTarvittavatHakemukset = $q.defer();
-				if(puuttuvienHakemustenOidit) {
-					HenkilotByOid.hae(puuttuvienHakemustenOidit, function(puuttuvatHakemukset){
-						kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset, hakemukset));
-					}, function() {
-						model.errors.push("Hakukohteen ulkopuolisten osallistujien haku epäonnistui");
-						kaikkiTarvittavatHakemukset.resolve(hakemukset);
+				if (puuttuvienHakemustenOidit) {
+					HakuModel.promise.then(function(hakuModel) {
+                        if (hakuModel.hakuOid.ataruLomakeAvain) {
+                            AtaruApplications.get({hakemusOids: puuttuvienHakemustenOidit}, function(puuttuvatHakemukset) {
+                                kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset.map(function(hakemus) {
+                                    hakemus.personOid = hakemus.henkiloOid;
+                                    return hakemus;
+                                }), hakemukset));
+                            }, function() {
+                                model.errors.push("Hakukohteen ulkopuolisten osallistujien haku Atarusta epäonnistui");
+                                kaikkiTarvittavatHakemukset.resolve(hakemukset);
+                            });
+						} else {
+                            HenkilotByOid.hae(puuttuvienHakemustenOidit, function(puuttuvatHakemukset) {
+                                kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset, hakemukset));
+                            }, function() {
+                                model.errors.push("Hakukohteen ulkopuolisten osallistujien haku epäonnistui");
+                                kaikkiTarvittavatHakemukset.resolve(hakemukset);
+                            });
+                        }
 					});
 				} else {
 					kaikkiTarvittavatHakemukset.resolve(hakemukset);
@@ -80,101 +95,114 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
 					var byHakemusOid = _.object(_.map(kaikkiHakemukset, function(val) {
                         return [val.oid, val]
                     }));
-					// Paivitetaan kokeet joihin kutsutaan kaikki
-					_.each(model.hakukohteenValintakokeet, function(entry) {
-						if(entry.kutsutaankoKaikki) {
-							_.each(kaikkiHakemukset, function (hakija) {
-								var e = {};
-								e.osallistuminen = "OSALLISTUU";
-								e.hakuOid = $routeParams.hakuOid;
-								e.hakemusOid = hakija.oid;
-								e.hakijaOid = hakija.personOid;
-								e.etunimi = hakija.answers.henkilotiedot.Etunimet;
-								e.sukunimi = hakija.answers.henkilotiedot.Sukunimi;
-								e.asiointikieli = hakija.answers.lisatiedot.asiointikieli;
-								e.valittu = true;
-								e.aktiivinen = entry.aktiivinen;
-								e.valintakoeOid = entry.oid;
-								e.lahetetaankoKoekutsut = true;
-								e.valintakoeTunniste = entry.nimi; // OVT-6961?
-								e.tunniste = entry.selvitettyTunniste; // OVT-6961?
-								model.valintakokeet[entry.selvitettyTunniste].hakijat.push(e);
-								if (model.valintakokeetHakijoittain[e.hakemusOid] === undefined) {
-									model.valintakokeetHakijoittain[e.hakemusOid] = {
-										hakemusOid: e.hakemusOid,
-										etunimi: e.etunimi,
-										sukunimi: e.sukunimi
-									};
-									model.valintakokeetHakijoittain[e.hakemusOid].kokeet = [];
-									model.valintakokeetHakijoittain[e.hakemusOid].kokeet[e.valintakoeTunniste] = e;
-								} else {
-									model.valintakokeetHakijoittain[e.hakemusOid].kokeet[e.valintakoeTunniste] = e;
-								}
-								if (model.koetyypit.indexOf(e.valintakoeTunniste) === -1) {
-									model.koetyypit.push(e.valintakoeTunniste);
-								}
-							});
-						}
-					});
-					// Paivitetaan kokeeseen osallistujat
-					_.each(model.koetulokset, function (koetulos) {
-						_.each(koetulos.hakutoiveet, function (hakutoive) {
-							if (hakutoive.hakukohdeOid === model.hakukohdeOid) {
-								_.each(hakutoive.valinnanVaiheet, function (valinnanvaihe) {
-									_.each(valinnanvaihe.valintakokeet, function (valintakoe) {
-										if (model.valintakokeet[valintakoe.valintakoeTunniste] === undefined) {
-											model.errors.push("tunnistamaton valintakoe " + valintakoe.valintakoeTunniste);
-											return;
-										}
-										if (model.valintakokeet[valintakoe.valintakoeTunniste].kutsutaankoKaikki) {
-											return;
-										}
-
-										var entry = {};
-										var hakija = byHakemusOid[koetulos.hakemusOid];
-                                        if (!hakija) {
-                                            return;
-                                        }
-										entry.etunimi = hakija.answers.henkilotiedot.Etunimet;
-										entry.sukunimi = hakija.answers.henkilotiedot.Sukunimi;
-										entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
-										entry.hakuOid = koetulos.hakueOid;
-										entry.hakemusOid = koetulos.hakemusOid;
-										entry.hakijaOid = koetulos.hakijaOid;
-										entry.createdAt = koetulos.createdAt;
-										entry.valittu = true;
-										entry.tunniste = valintakoe.valintakoeTunniste;
-										entry.aktiivinen = valintakoe.aktiivinen;
-										entry.valintakoeOid = valintakoe.valintakoeOid;
-										entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
-										entry.lisatiedot = (valintakoe.osallistuminenTulos && valintakoe.osallistuminenTulos.kuvaus && valintakoe.osallistuminenTulos.kuvaus.FI ? valintakoe.osallistuminenTulos.kuvaus.FI : '');
-										//$log.info(entry.hakemusOid);
-
-										if(hakija) {
-											entry.asiointikieli = hakija.answers.lisatiedot.asiointikieli;
-										}
-										entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
-
-										model.valintakokeet[entry.valintakoeTunniste].hakijat.push(entry);
-										if (model.valintakokeetHakijoittain[entry.hakemusOid] === undefined) {
-											model.valintakokeetHakijoittain[entry.hakemusOid] = {hakemusOid: entry.hakemusOid, etunimi: entry.etunimi, sukunimi: entry.sukunimi};
-											model.valintakokeetHakijoittain[entry.hakemusOid].kokeet = [];
-											model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
-										} else {
-											model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
-										}
-										model.valintakokeetHakijoittainArray.push(model.valintakokeetHakijoittain[entry.hakemusOid]);
-										//add identifier to list
-										if (model.koetyypit.indexOf(entry.valintakoeTunniste) === -1) {
-											model.koetyypit.push(entry.valintakoeTunniste);
-										}
-
-									});
+					var personOids = kaikkiHakemukset.map(function(h) { return h.personOid; });
+                    HenkiloPerustietosByHenkiloOidList.post(personOids).then(function(henkiloPerustiedot) {
+                        var henkilotByOid = _.groupBy(henkiloPerustiedot, function(henkilo) {
+                            return henkilo.oidHenkilo;
+                        });
+                        console.log(henkilotByOid);
+						// Paivitetaan kokeet joihin kutsutaan kaikki
+						_.each(model.hakukohteenValintakokeet, function(entry) {
+							if(entry.kutsutaankoKaikki) {
+								_.each(kaikkiHakemukset, function (hakija) {
+									var e = {};
+									var henkilo = henkilotByOid[hakija.personOid];
+									console.log(henkilo)
+									console.log(hakija.personOid);
+									e.osallistuminen = "OSALLISTUU";
+									e.hakuOid = $routeParams.hakuOid;
+									e.hakemusOid = hakija.oid;
+									e.hakijaOid = hakija.personOid;
+									e.etunimi = henkilo.kutsumanimi;
+									e.sukunimi = henkilo.sukunimi;
+									e.asiointikieli = henkilo.asiointiKieli;
+									e.valittu = true;
+									e.aktiivinen = entry.aktiivinen;
+									e.valintakoeOid = entry.oid;
+									e.lahetetaankoKoekutsut = true;
+									e.valintakoeTunniste = entry.nimi; // OVT-6961?
+									e.tunniste = entry.selvitettyTunniste; // OVT-6961?
+									model.valintakokeet[entry.selvitettyTunniste].hakijat.push(e);
+									if (model.valintakokeetHakijoittain[e.hakemusOid] === undefined) {
+										model.valintakokeetHakijoittain[e.hakemusOid] = {
+											hakemusOid: e.hakemusOid,
+											etunimi: e.etunimi,
+											sukunimi: e.sukunimi
+										};
+										model.valintakokeetHakijoittain[e.hakemusOid].kokeet = [];
+										model.valintakokeetHakijoittain[e.hakemusOid].kokeet[e.valintakoeTunniste] = e;
+									} else {
+										model.valintakokeetHakijoittain[e.hakemusOid].kokeet[e.valintakoeTunniste] = e;
+									}
+									if (model.koetyypit.indexOf(e.valintakoeTunniste) === -1) {
+										model.koetyypit.push(e.valintakoeTunniste);
+									}
 								});
 							}
 						});
-					});
-                    model.loading = false;
+						// Paivitetaan kokeeseen osallistujat
+						_.each(model.koetulokset, function (koetulos) {
+							_.each(koetulos.hakutoiveet, function (hakutoive) {
+								if (hakutoive.hakukohdeOid === model.hakukohdeOid) {
+									_.each(hakutoive.valinnanVaiheet, function (valinnanvaihe) {
+										_.each(valinnanvaihe.valintakokeet, function (valintakoe) {
+											if (model.valintakokeet[valintakoe.valintakoeTunniste] === undefined) {
+												model.errors.push("tunnistamaton valintakoe " + valintakoe.valintakoeTunniste);
+												return;
+											}
+											if (model.valintakokeet[valintakoe.valintakoeTunniste].kutsutaankoKaikki) {
+												return;
+											}
+
+											var entry = {};
+											var hakija = byHakemusOid[koetulos.hakemusOid];
+											if (!hakija) {
+												return;
+											}
+                                            var henkilo = henkilotByOid[hakija.personOid];
+                                            console.log(henkilo)
+                                            console.log(hakija.personOid);
+											entry.etunimi = henkilo.kutsumanimi;
+											entry.sukunimi = henkilo.sukunimi;
+											entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
+											entry.hakuOid = koetulos.hakueOid;
+											entry.hakemusOid = koetulos.hakemusOid;
+											entry.hakijaOid = koetulos.hakijaOid;
+											entry.createdAt = koetulos.createdAt;
+											entry.valittu = true;
+											entry.tunniste = valintakoe.valintakoeTunniste;
+											entry.aktiivinen = valintakoe.aktiivinen;
+											entry.valintakoeOid = valintakoe.valintakoeOid;
+											entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
+											entry.lisatiedot = (valintakoe.osallistuminenTulos && valintakoe.osallistuminenTulos.kuvaus && valintakoe.osallistuminenTulos.kuvaus.FI ? valintakoe.osallistuminenTulos.kuvaus.FI : '');
+											//$log.info(entry.hakemusOid);
+
+											if(hakija) {
+												entry.asiointikieli = henkilo.asiointikieli;
+											}
+											entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
+
+											model.valintakokeet[entry.valintakoeTunniste].hakijat.push(entry);
+											if (model.valintakokeetHakijoittain[entry.hakemusOid] === undefined) {
+												model.valintakokeetHakijoittain[entry.hakemusOid] = {hakemusOid: entry.hakemusOid, etunimi: entry.etunimi, sukunimi: entry.sukunimi};
+												model.valintakokeetHakijoittain[entry.hakemusOid].kokeet = [];
+												model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
+											} else {
+												model.valintakokeetHakijoittain[entry.hakemusOid].kokeet[entry.valintakoeTunniste] = entry;
+											}
+											model.valintakokeetHakijoittainArray.push(model.valintakokeetHakijoittain[entry.hakemusOid]);
+											//add identifier to list
+											if (model.koetyypit.indexOf(entry.valintakoeTunniste) === -1) {
+												model.koetyypit.push(entry.valintakoeTunniste);
+											}
+
+										});
+									});
+								}
+							});
+						});
+						model.loading = false;
+					})
 				});
 			}).catch(function (e) {
                 model.errors.push(e.data);
@@ -213,11 +241,6 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
 			});
 			valintakoe.valittu = this.isAllValittu(valintakoe);
 		};
-		this.valintakoeOids = function() {
-			return _.map(model.valintakokeet, function(valintakoe){
-				return valintakoe.valintakoeOid;
-			});
-		};
 		this.valintakoeTunnisteet = function() {
 			return _.map(model.valintakokeet, function(valintakoe){
 				return valintakoe.tunniste;
@@ -242,7 +265,8 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
 
 angular.module('valintalaskenta').
     controller('ValintakoetulosController', ['$scope', '$routeParams', 'Ilmoitus', 'Latausikkuna', 'ValintakoetulosModel',
-        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat','$log', 'HakukohdeNimiService','Kirjeet', 'ParametriService',
+        'HakukohdeModel', 'Koekutsukirjeet', 'Osoitetarrat', 'ValintakoeXls', 'IlmoitusTila','$window','$modal','Kirjepohjat',
+		'$log', 'HakukohdeNimiService','Kirjeet', 'ParametriService',
         function ($scope, $routeParams, Ilmoitus, Latausikkuna, ValintakoetulosModel, HakukohdeModel, Koekutsukirjeet,
                   Osoitetarrat, ValintakoeXls, IlmoitusTila,$window,$modal,Kirjepohjat,$log,HakukohdeNimiService, Kirjeet, ParametriService) {
 
