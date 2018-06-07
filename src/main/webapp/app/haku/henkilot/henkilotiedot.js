@@ -36,7 +36,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
 
                 var hakutoive = {
                     hakukohdeOid: hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"],
-                    hakutoiveNumero: i,
                     koulutuksenNimi: hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"],
                     oppilaitos: hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"],
                     oppilaitosId: hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste-id"],
@@ -225,7 +224,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             self.henkilo = o.henkilo;
             self.sijoittelu = o.sijoittelu.sijoitteluByValintatapajonoOid;
             self.lastmodified = o.additionalData.lastmodified;
-            self.hakutoiveet = o.hakemus.hakutoiveet.map(function (h) {
+            self.hakutoiveet = o.hakemus.hakutoiveet.map(function (h, index) {
                 var avaimet = o.avaimetByHakukohdeOid[h.hakukohdeOid];
                 HakukohdeAvainTyyppiService.createAvainTyyppiValues(avaimet, []);
                 var osallistuu = o.additionalData.hakukohteittain[h.hakukohdeOid].hakukohteidenOsallistumistiedot[h.hakukohdeOid].valintakokeidenOsallistumistiedot;
@@ -244,7 +243,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 });
                 return {
                     hakukohdeOid: h.hakukohdeOid,
-                    hakutoiveNumero: h.hakutoiveNumero,
+                    hakutoiveNumero: index + 1,
                     koulutuksenNimi: h.koulutuksenNimi,
                     oppilaitos: h.oppilaitos,
                     oppilaitosId: h.oppilaitosId,
