@@ -48,6 +48,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 personOid: hakemus.personOid,
                 lahiosoite: hakemus.answers.henkilotiedot.lahiosoite,
                 postinumero: hakemus.answers.henkilotiedot.Postinumero,
+                pohjakoulutustoinenasteKoodiarvo: hakemus.answers.koulutustausta.POHJAKOULUTUS,
                 hakutoiveet: hakutoiveet
             };
         });
@@ -322,6 +323,17 @@ angular.module('valintalaskenta').
     $scope.url = window.url;
     $scope.hakuModel = HakuModel;
     $scope.korkeakoulu = Korkeakoulu;
+    $scope.pohjakoulutustoinenaste = {};
+    Pohjakoulutukset.query(function (result) {
+        $scope.pohjakoulutustoinenaste = result.reduce(function (m, koodi) {
+            var nimi = koodi.metadata.reduce(function (m, meta) {
+                m[meta.kieli] = meta.nimi;
+                return m;
+            }, {});
+            m[koodi.koodiArvo] = nimi[$scope.userLang.toUpperCase()] || nimi["FI"];
+            return m;
+        }, {});
+    });
 
     $scope.hakuaVastaavaJalkiohjauskirjeMuotti = function() {
 	    return "jalkiohjauskirje";
@@ -379,8 +391,6 @@ angular.module('valintalaskenta').
             }
         });
     };
-
-    $scope.pohjakoulutukset = Pohjakoulutukset;
 
     AuthService.crudOph("APP_SIJOITTELU").then(function () {
         $scope.updateOph = true;
