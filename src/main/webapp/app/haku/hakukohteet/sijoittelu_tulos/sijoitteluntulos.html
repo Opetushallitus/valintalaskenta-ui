@@ -17,7 +17,7 @@
                 <h3>{{ t('info.eiSijoittelunTuloksia') || 'Sijoittelun tuloksia ei löytynyt.' }}</h3>
             </div>
 
-            <div ng-show="model.sijoitteluTulokset.sijoitteluajoId && dokumenttipalveluLoading">
+            <div ng-show="model.sijoitteluTulokset.sijoitteluajoId && !dokumenttipalveluLoading">
                 <span>{{ t('valintakoetulos.nayta') || 'Näytä' }}</span>
                 <select ng-model="nakymanTila" ng-change="updateNakymanTila()">
                     <option value="Jonottain" selected="selected">{{ t('sijoitteluntulos.jonottain') || 'Jonottain' }}</option>
