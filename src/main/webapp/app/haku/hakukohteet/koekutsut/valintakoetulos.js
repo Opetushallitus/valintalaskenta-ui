@@ -97,18 +97,15 @@
                     }));
 					var personOids = kaikkiHakemukset.map(function(h) { return h.personOid; });
                     HenkiloPerustietosByHenkiloOidList.post(personOids).then(function(henkiloPerustiedot) {
-                        var henkilotByOid = _.groupBy(henkiloPerustiedot, function(henkilo) {
-                            return henkilo.oidHenkilo;
-                        });
-                        console.log(henkilotByOid);
+                        var henkilotByOid = _.object(henkiloPerustiedot.map(function(henkilo) {
+                            return [henkilo.oidHenkilo, henkilo];
+                        }));
 						// Paivitetaan kokeet joihin kutsutaan kaikki
 						_.each(model.hakukohteenValintakokeet, function(entry) {
 							if(entry.kutsutaankoKaikki) {
 								_.each(kaikkiHakemukset, function (hakija) {
 									var e = {};
 									var henkilo = henkilotByOid[hakija.personOid];
-									console.log(henkilo)
-									console.log(hakija.personOid);
 									e.osallistuminen = "OSALLISTUU";
 									e.hakuOid = $routeParams.hakuOid;
 									e.hakemusOid = hakija.oid;
@@ -160,8 +157,6 @@
 												return;
 											}
                                             var henkilo = henkilotByOid[hakija.personOid];
-                                            console.log(henkilo)
-                                            console.log(hakija.personOid);
 											entry.etunimi = henkilo.kutsumanimi;
 											entry.sukunimi = henkilo.sukunimi;
 											entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
