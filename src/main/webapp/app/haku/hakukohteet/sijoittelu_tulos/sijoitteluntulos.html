@@ -17,15 +17,7 @@
                 <h3>{{ t('info.eiSijoittelunTuloksia') || 'Sijoittelun tuloksia ei löytynyt.' }}</h3>
             </div>
 
-            <div ng-show="model.sijoitteluTulokset.sijoitteluajoId">
-                <!--Väliaikaisesti pois suorituskyvyn parantamiseksi-->
-                <!--<div class="margin-vertical-2">-->
-                    <!--Viimeisimmät sijoittelun tulokset. Sijoitteluajo on alkanut <strong>{{model.latestSijoitteluajo.startMils-->
-                    <!--| date:'dd.MM.yyyy HH:mm'}}</strong>-->
-                    <!--ja loppunut <strong>{{model.latestSijoitteluajo.endMils | date:'dd.MM.yyyy HH:mm'}}</strong>.-->
-                    <!--Sijoitteluajon tunniste on <strong>{{model.latestSijoitteluajo.sijoitteluajoId}}</strong>.-->
-                    <!--Sijoittelu suoritetaan kerran vuorokaudessa.-->
-                <!--</div>-->
+            <div ng-show="model.sijoitteluTulokset.sijoitteluajoId && dokumenttipalveluLoading">
                 <span>{{ t('valintakoetulos.nayta') || 'Näytä' }}</span>
                 <select ng-model="nakymanTila" ng-change="updateNakymanTila()">
                     <option value="Jonottain" selected="selected">{{ t('sijoitteluntulos.jonottain') || 'Jonottain' }}</option>

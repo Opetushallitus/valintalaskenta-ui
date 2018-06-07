@@ -745,6 +745,7 @@ angular.module('valintalaskenta')
                   $q,
                   Valintaesitys) {
     "use strict";
+    $scope.dokumenttipalveluLoading = true;
     $scope.hakuOid = $routeParams.hakuOid;
     $scope.url = window.url;
     $scope.hakuModel = HakuModel;
@@ -815,22 +816,31 @@ angular.module('valintalaskenta')
     $scope.osoitetarratUrl = null;
     $scope.hyvaksymiskirjeetUrl = null;
     $scope.sijoitteluntuloksetUrl = null;
-    HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausOsoitetarrat) {
-		if(vastausOsoitetarrat[0]) {
-			$scope.osoitetarratUrl = vastausOsoitetarrat[0].documentId;
-		}
-		HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausHyvaksymiskirjeet) {
-            if(vastausHyvaksymiskirjeet[0]) {
-                $scope.hyvaksymiskirjeetUrl = vastausHyvaksymiskirjeet[0].documentId;
-            }
-        });
-        HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}, function(vastausSijoitteluntulokset) {
-            if(vastausSijoitteluntulokset[0]) {
-                $scope.sijoitteluntuloksetUrl = vastausSijoitteluntulokset[0].documentId;
-            }
-        });
-	});
 
+    var dokumenttipalveluPromises = [
+      HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausOsoitetarrat) {
+          if (vastausOsoitetarrat[0]) {
+              $scope.osoitetarratUrl = vastausOsoitetarrat[0].documentId;
+          }
+      }).$promise,
+      HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausHyvaksymiskirjeet) {
+          if (vastausHyvaksymiskirjeet[0]) {
+              $scope.hyvaksymiskirjeetUrl = vastausHyvaksymiskirjeet[0].documentId;
+          }
+      }).$promise,
+      HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}, function(vastausSijoitteluntulokset) {
+          if (vastausSijoitteluntulokset[0]) {
+              $scope.sijoitteluntuloksetUrl = vastausSijoitteluntulokset[0].documentId;
+          }
+      }).$promise
+    ];
+
+    $q.all(dokumenttipalveluPromises).then(
+      function (success) {
+        $scope.dokumenttipalveluLoading = false;
+    }, function (error) {
+        $scope.dokumenttipalveluLoading = false;
+    });
 
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
         {value: "EI_TEHTY", text_prop: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},
