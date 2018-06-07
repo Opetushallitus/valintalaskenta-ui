@@ -227,7 +227,8 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             self.hakutoiveet = o.hakemus.hakutoiveet.map(function (h, index) {
                 var avaimet = o.avaimetByHakukohdeOid[h.hakukohdeOid];
                 HakukohdeAvainTyyppiService.createAvainTyyppiValues(avaimet, []);
-                var osallistuu = o.additionalData.hakukohteittain[h.hakukohdeOid].hakukohteidenOsallistumistiedot[h.hakukohdeOid].valintakokeidenOsallistumistiedot;
+                var additionalData = R.path(['hakukohteittain', h.hakukohdeOid], o.additionalData);
+                var osallistuu = R.pathOr({}, ['hakukohteidenOsallistumistiedot', h.hakukohdeOid, 'valintakokeidenOsallistumistiedot'], additionalData);
                 var naytaPistesyotto = avaimet.reduce(function (naytaPistesyotto, a) {
                     return naytaPistesyotto || (osallistuu[a.tunniste] && osallistuu[a.tunniste].osallistumistieto !== "EI_KUTSUTTU");
                 }, false);
@@ -249,7 +250,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                     oppilaitosId: h.oppilaitosId,
                     hakemusOid: hakemusOid,
                     hakenutHarkinnanvaraisesti: h.hakenutHarkinnanvaraisesti,
-                    additionalData: o.additionalData.hakukohteittain[h.hakukohdeOid].applicationAdditionalDataDTO.additionalData,
+                    additionalData: R.path(['applicationAdditionalDataDTO', 'additionalData'], additionalData),
                     valintalaskenta: o.valintalaskentaByHakukohdeOid[h.hakukohdeOid],
                     harkinnanvaraisuusTila: o.harkinnanvaraisuusTilaByHakukohdeOid[h.hakukohdeOid],
                     muokattuHarkinnanvaraisuusTila: o.harkinnanvaraisuusTilaByHakukohdeOid[h.hakukohdeOid],
