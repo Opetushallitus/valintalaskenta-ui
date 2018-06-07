@@ -838,8 +838,10 @@ angular.module('valintalaskenta')
     $q.all(dokumenttipalveluPromises).then(
       function (success) {
         $scope.dokumenttipalveluLoading = false;
+        $scope.$apply();
     }, function (error) {
         $scope.dokumenttipalveluLoading = false;
+        $scope.$apply();
     });
 
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
