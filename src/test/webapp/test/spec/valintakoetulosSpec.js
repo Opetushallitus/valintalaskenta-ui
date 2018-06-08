@@ -13,6 +13,8 @@ describe('Valintakoetulos', function() {
     var VALINTAKOE3 = "VALINTAKOE3";
     var HAKEMUS1 = "HAKEMUS1";
     var HAKEMUS2 = "HAKEMUS2";
+    var PERSON1OID = "PERSON1OID";
+    var PERSON2OID = "PERSON2OID";
     beforeEach(function(done) {
         addTestHook(tarjontaFixtures)();
         addTestHook(httpFixtures().hakukohteenAvaimet)();
@@ -50,12 +52,27 @@ describe('Valintakoetulos', function() {
             {
                 hakemusOid: HAKEMUS1,
                 etunimi: "Erkki",
-                sukunimi: "Hakija1"
+                sukunimi: "Hakija1",
+                personOid: PERSON1OID
             },
             {
                 hakemusOid: HAKEMUS2,
                 etunimi: "Elli",
-                sukunimi: "Hakija2"
+                sukunimi: "Hakija2",
+                personOid: PERSON2OID
+            }]))();
+        addTestHook(onrPerustiedotFixtures([
+            {
+                oidHenkilo: PERSON1OID,
+                kutsumanimi: "Erkki",
+                sukunimi: "Hakija1",
+                asiointikieli: "Suomi"
+            },
+            {
+                oidHenkilo: PERSON2OID,
+                kutsumanimi: "Elli",
+                sukunimi: "Hakija2",
+                asiointikieli: "Suomi"
             }]))();
         page.openPage(done);
     });

@@ -188,7 +188,6 @@
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
                                 entry.lisatiedot = (valintakoe.osallistuminenTulos && valintakoe.osallistuminenTulos.kuvaus && valintakoe.osallistuminenTulos.kuvaus.FI ? valintakoe.osallistuminenTulos.kuvaus.FI : '');
-                                //$log.info(entry.hakemusOid);
 
                                 if (hakija) {
                                     entry.asiointikieli = henkilo.asiointikieli;
