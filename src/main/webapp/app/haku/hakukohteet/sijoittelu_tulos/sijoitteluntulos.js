@@ -842,10 +842,8 @@ angular.module('valintalaskenta')
       function (success) {
         console.log("dokumenttipalveluPromises completed: " + success);
         $scope.dokumenttipalveluLoading = false;
-        $scope.$apply();
     }, function (error) {
         console.log("dokumenttipalveluPromises error: " + error);
-        $scope.$apply();
     });
 
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
