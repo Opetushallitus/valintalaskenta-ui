@@ -712,6 +712,7 @@ angular.module('valintalaskenta')
         'valinnantuloksenHistoriaService',
         '$q',
         'Valintaesitys',
+        'DokumenttipalveluData',
         function ($scope,
                   $modal,
                   TallennaValinnat,
@@ -743,7 +744,8 @@ angular.module('valintalaskenta')
                   EhdollisenHyvaksymisenEhdot,
                   valinnantuloksenHistoriaService,
                   $q,
-                  Valintaesitys) {
+                  Valintaesitys,
+                  DokumenttipalveluData) {
     "use strict";
     $scope.dokumenttipalveluLoading = true;
     $scope.hakuOid = $routeParams.hakuOid;
@@ -811,42 +813,9 @@ angular.module('valintalaskenta')
         });
     });
 
-    //
-    // pikalatauslinkit on harmaannettuna jos ei ensimmaistakaan generointia
-    $scope.osoitetarratUrl = null;
-    $scope.hyvaksymiskirjeetUrl = null;
-    $scope.sijoitteluntuloksetUrl = null;
-
-    var dokumenttipalveluPromises = [
-      HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausOsoitetarrat) {
-          if (vastausOsoitetarrat[0]) {
-              $scope.osoitetarratUrl = vastausOsoitetarrat[0].documentId;
-              console.log("osoitetarratUrl value set");
-          }
-      }).$promise,
-      HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausHyvaksymiskirjeet) {
-          if (vastausHyvaksymiskirjeet[0]) {
-              $scope.hyvaksymiskirjeetUrl = vastausHyvaksymiskirjeet[0].documentId;
-              console.log("hyvaksymiskirjeetUrl value set");
-          }
-      }).$promise,
-      HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}, function(vastausSijoitteluntulokset) {
-          if (vastausSijoitteluntulokset[0]) {
-              $scope.sijoitteluntuloksetUrl = vastausSijoitteluntulokset[0].documentId;
-            console.log("sijoitteluntuloksetUrl value set");
-          }
-      }).$promise
-    ];
-
-    $q.all(dokumenttipalveluPromises).then(
-      function (success) {
-        console.log("dokumenttipalveluPromises completed: " + success);
-        $scope.dokumenttipalveluLoading = false;
-        $scope.$apply();
-    }, function (error) {
-        console.log("dokumenttipalveluPromises error: " + error);
-        $scope.$apply();
-    });
+    $scope.osoitetarratUrl = DokumenttipalveluData.osoitetarratUrl;
+    $scope.hyvaksymiskirjeetUrl = DokumenttipalveluData.hyvaksymiskirjeetUrl;
+    $scope.sijoitteluntuloksetUrl = DokumenttipalveluData.sijoitteluntuloksetUrl;
 
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [
         {value: "EI_TEHTY", text_prop: "sijoitteluntulos.enrollmentinfo.notdone", default_text:"Ei tehty"},

@@ -2,6 +2,41 @@
 
 angular.module('valintalaskenta')
     .config(function($routeProvider) {
+      var sijoitteluntulosResolve = {
+          DokumenttipalveluData: function() {
+
+            var dokumenttipalveluPromises = [
+              HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }).$promise,
+              HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }).$promise,
+              HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}).$promise
+            ];
+
+            $q.all(dokumenttipalveluPromises).then(
+              function (success) {
+                console.log("dokumenttipalveluPromises completed: " + success);
+
+                var results = {};
+
+                if (success[0][0]) {
+                  results.osoitetarratUrl = success[0][0].documentId;
+                  console.log("osoitetarratUrl value set");
+                }
+                if (success[1][0]) {
+                  results.hyvaksymiskirjeetUrl = success[1][0].documentId;
+                  console.log("hyvaksymiskirjeetUrl value set");
+                }
+                if (success[2][0]) {
+                  results.sijoitteluntuloksetUrl = success[2][0].documentId;
+                  console.log("sijoitteluntuloksetUrl value set");
+                }
+
+                return results;
+              }, function (error) {
+                console.log("dokumenttipalveluPromises error: " + error);
+              });
+          }
+      };
+
     $routeProvider.
         when('/haku/', {controller:'HakuController', templateUrl:TEMPLATE_URL_BASE + 'haku/haut.html'}).
         when('/haku/:hakuOid/hakukohde/', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakukohde.html'}).
@@ -13,7 +48,7 @@ angular.module('valintalaskenta')
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller:'HakeneetController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakeneet/hakeneet.html'}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto', {controller:'PistesyottoController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/pistesyotto.html'}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto/naytakaikki', {controller:'PistesyottoNaytaKaikkiController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/nayta_kaikki/nayta_kaikki.html'}).
-        when('/haku/:hakuOid/hakukohde/:hakukohdeOid/sijoitteluntulos', {controller:'SijoitteluntulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/sijoittelu_tulos/sijoitteluntulos.html'}).
+        when('/haku/:hakuOid/hakukohde/:hakukohdeOid/sijoitteluntulos', {controller:'SijoitteluntulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/sijoittelu_tulos/sijoitteluntulos.html', resolve:sijoitteluntulosResolve}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakijaryhmat', {controller:'HakijaryhmatController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakijaryhmat/hakijaryhmat.html'}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/erillishaku', {controller:'ErillishakuController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/erillishaku/erillishaku.html'}).
 
