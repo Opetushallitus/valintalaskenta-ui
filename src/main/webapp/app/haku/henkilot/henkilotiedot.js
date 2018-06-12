@@ -30,8 +30,8 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
 
     function hakukohteetByHakukohdeOid(hakemus) {
         var hakukohteetByHakukohdeOid = {};
-        return $q.all(hakemus.hakutoiveet.map(function (hakukohdeOid) {
-            return TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}).$promise
+        return $q.all(hakemus.hakutoiveet.map(function (hakutoive) {
+            return TarjontaHakukohde.get({hakukohdeoid: hakutoive.hakukohdeOid}).$promise
                 .then(function (result) {
                     hakukohteetByHakukohdeOid[result.result.oid] = {
                         nimi: result.result.hakukohteenNimet.kieli_fi,
