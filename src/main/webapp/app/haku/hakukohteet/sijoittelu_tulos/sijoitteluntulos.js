@@ -823,19 +823,19 @@ angular.module('valintalaskenta')
               $scope.osoitetarratUrl = vastausOsoitetarrat[0].documentId;
               console.log("osoitetarratUrl value set");
           }
-      }).$promise,
+      }),
       HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausHyvaksymiskirjeet) {
           if (vastausHyvaksymiskirjeet[0]) {
               $scope.hyvaksymiskirjeetUrl = vastausHyvaksymiskirjeet[0].documentId;
               console.log("hyvaksymiskirjeetUrl value set");
           }
-      }).$promise,
+      }),
       HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}, function(vastausSijoitteluntulokset) {
           if (vastausSijoitteluntulokset[0]) {
               $scope.sijoitteluntuloksetUrl = vastausSijoitteluntulokset[0].documentId;
             console.log("sijoitteluntuloksetUrl value set");
           }
-      }).$promise
+      })
     ];
 
     $q.all(dokumenttipalveluPromises).then(
