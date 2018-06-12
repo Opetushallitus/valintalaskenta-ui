@@ -5,7 +5,8 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HaunTiedot, HakemuksenValintatulokset,
                                             VtsLatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
-                                            KoostettuHakemusAdditionalDataForHakemus, R, HenkiloPerustiedot) {
+                                            KoostettuHakemusAdditionalDataForHakemus, R, HenkiloPerustiedot,
+                                            TarjontaHakukohde) {
     "use strict";
 
     function setVastaanottoTilaOptionsToShow(hakutoiveenValintatapajonot) {
@@ -27,6 +28,22 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         });
     }
 
+    function hakukohteetByHakukohdeOid(hakemus) {
+        var hakukohteetByHakukohdeOid = {};
+        return $q.all(hakemus.hakutoiveet.map(function (hakukohdeOid) {
+            return TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}).$promise
+                .then(function (result) {
+                    hakukohteetByHakukohdeOid[result.result.oid] = {
+                        nimi: result.result.hakukohteenNimet.kieli_fi,
+                        tarjoajaNimi: result.result.tarjoajaNimet.fi,
+                        tarjoajaOid: result.result.tarjoajaOids[0]
+                    };
+                });
+        })).then(function () {
+            return hakukohteetByHakukohdeOid;
+        });
+    }
+
     function getHakuAppHakemus(hakemusOid) {
         return Hakemus.get({oid: hakemusOid}).$promise.then(function (hakemus) {
             var hakutoiveet = [];
@@ -36,9 +53,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
 
                 var hakutoive = {
                     hakukohdeOid: hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"],
-                    koulutuksenNimi: hakemus.answers.hakutoiveet["preference" + i + "-Koulutus"],
-                    oppilaitos: hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste"],
-                    oppilaitosId: hakemus.answers.hakutoiveet["preference" + i + "-Opetuspiste-id"],
                     hakenutHarkinnanvaraisesti: (harkinnanvarainen || discretionary) === "true"
                 };
                 hakutoiveet.push(hakutoive);
@@ -212,6 +226,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             haku: HaunTiedot.get({hakuOid: hakuOid}).$promise,
             hakemus: hakemusPromise,
             henkilo: hakemusPromise.then(getHenkilo),
+            hakukohteetByHakukohdeOid: hakemusPromise.then(hakukohteetByHakukohdeOid),
             avaimetByHakukohdeOid: hakemusPromise.then(avaimetByHakukohdeOid),
             organizationChecksByHakukohdeOid: hakemusPromise.then(organizationChecksByHakukohdeOid),
             valintalaskentaByHakukohdeOid: valintalaskentaByHakukohdeOid(hakuOid, hakemusOid),
@@ -226,14 +241,16 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             self.sijoittelu = o.sijoittelu.sijoitteluByValintatapajonoOid;
             self.lastmodified = o.additionalData.lastmodified;
             self.hakutoiveet = o.hakemus.hakutoiveet.map(function (h, index) {
-                var avaimet = o.avaimetByHakukohdeOid[h.hakukohdeOid];
+                var hakukohdeOid = h.hakukohdeOid;
+                var hakukohde = o.hakukohteetByHakukohdeOid[hakukohdeOid];
+                var avaimet = o.avaimetByHakukohdeOid[hakukohdeOid];
                 HakukohdeAvainTyyppiService.createAvainTyyppiValues(avaimet, []);
-                var additionalData = R.path(['hakukohteittain', h.hakukohdeOid], o.additionalData);
-                var osallistuu = R.pathOr({}, ['hakukohteidenOsallistumistiedot', h.hakukohdeOid, 'valintakokeidenOsallistumistiedot'], additionalData);
+                var additionalData = R.path(['hakukohteittain', hakukohdeOid], o.additionalData);
+                var osallistuu = R.pathOr({}, ['hakukohteidenOsallistumistiedot', hakukohdeOid, 'valintakokeidenOsallistumistiedot'], additionalData);
                 var naytaPistesyotto = avaimet.reduce(function (naytaPistesyotto, a) {
                     return naytaPistesyotto || (osallistuu[a.tunniste] && osallistuu[a.tunniste].osallistumistieto !== "EI_KUTSUTTU");
                 }, false);
-                var sijoittelu = o.sijoittelu.sijoitteluByHakukohdeOid[h.hakukohdeOid] || [];
+                var sijoittelu = o.sijoittelu.sijoitteluByHakukohdeOid[hakukohdeOid] || [];
                 setVastaanottoTilaOptionsToShow(sijoittelu);
                 sijoittelu.forEach(function (valintatapajono) {
                     valintatapajono.hakemusOid = hakemusOid;
@@ -244,23 +261,23 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                     valintatapajono.logEntries = o.sijoittelu.logEntriesByValintatapajonoOid[valintatapajono.valintatapajonoOid];
                 });
                 return {
-                    hakukohdeOid: h.hakukohdeOid,
+                    hakukohdeOid: hakukohdeOid,
                     hakutoiveNumero: index + 1,
-                    koulutuksenNimi: h.koulutuksenNimi,
-                    oppilaitos: h.oppilaitos,
-                    oppilaitosId: h.oppilaitosId,
+                    koulutuksenNimi: hakukohde.nimi,
+                    oppilaitos: hakukohde.tarjoajaNimi,
+                    oppilaitosId: hakukohde.tarjoajaOid,
                     hakemusOid: hakemusOid,
                     hakenutHarkinnanvaraisesti: h.hakenutHarkinnanvaraisesti,
                     additionalData: R.path(['applicationAdditionalDataDTO', 'additionalData'], additionalData),
-                    valintalaskenta: o.valintalaskentaByHakukohdeOid[h.hakukohdeOid],
-                    harkinnanvaraisuusTila: o.harkinnanvaraisuusTilaByHakukohdeOid[h.hakukohdeOid],
-                    muokattuHarkinnanvaraisuusTila: o.harkinnanvaraisuusTilaByHakukohdeOid[h.hakukohdeOid],
+                    valintalaskenta: o.valintalaskentaByHakukohdeOid[hakukohdeOid],
+                    harkinnanvaraisuusTila: o.harkinnanvaraisuusTilaByHakukohdeOid[hakukohdeOid],
+                    muokattuHarkinnanvaraisuusTila: o.harkinnanvaraisuusTilaByHakukohdeOid[hakukohdeOid],
                     sijoittelu: sijoittelu,
                     osallistuu: osallistuu,
                     avaimet: avaimet,
                     naytaPistesyotto: naytaPistesyotto,
                     hasDoneOrganizationCheck: true,
-                    showAsLink: o.organizationChecksByHakukohdeOid[h.hakukohdeOid]
+                    showAsLink: o.organizationChecksByHakukohdeOid[hakukohdeOid]
                 };
             });
             self.hakenutHarkinnanvaraisesti = self.hakutoiveet.reduce(function (hakenutHarkinnanvaraisesti, hakutoive) {
