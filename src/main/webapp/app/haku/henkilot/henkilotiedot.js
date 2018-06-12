@@ -192,14 +192,15 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         });
     }
 
-    function organizationChecksByHakukohdeOid(hakemus) {
+    function organizationChecksByHakukohdeOid(hakukohteetByHakukohdeOid) {
         var organizationChecksByHakukohdeOid = {};
-        return $q.all(hakemus.hakutoiveet.map(function (hakutoive) {
-            return AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINENKK", hakutoive.oppilaitosId)
+        return $q.all(Object.entries(hakukohteetByHakukohdeOid).map(function (t) {
+            var hakukohdeOid = t[0];
+            return AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINENKK", t[1].tarjoajaOid)
                 .then(function () {
-                    organizationChecksByHakukohdeOid[hakutoive.hakukohdeOid] = true;
+                    organizationChecksByHakukohdeOid[hakukohdeOid] = true;
                 }, function () {
-                    organizationChecksByHakukohdeOid[hakutoive.hakukohdeOid] = false;
+                    organizationChecksByHakukohdeOid[hakukohdeOid] = false;
                 });
         })).then(function () {
             return organizationChecksByHakukohdeOid;
@@ -222,13 +223,14 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         self.valintatapajonoLastModified = {}; // FIXME vaatii valintatuloksen hakemisen uudemmasta VTS:n API:sta
 
         var hakemusPromise = getHakuAppHakemus(hakemusOid);
+        var hakukohteetPromise = hakemusPromise.then(hakukohteetByHakukohdeOid);
         return $q.all({
             haku: HaunTiedot.get({hakuOid: hakuOid}).$promise,
             hakemus: hakemusPromise,
             henkilo: hakemusPromise.then(getHenkilo),
-            hakukohteetByHakukohdeOid: hakemusPromise.then(hakukohteetByHakukohdeOid),
+            hakukohteetByHakukohdeOid: hakukohteetPromise,
             avaimetByHakukohdeOid: hakemusPromise.then(avaimetByHakukohdeOid),
-            organizationChecksByHakukohdeOid: hakemusPromise.then(organizationChecksByHakukohdeOid),
+            organizationChecksByHakukohdeOid: hakukohteetPromise.then(organizationChecksByHakukohdeOid),
             valintalaskentaByHakukohdeOid: valintalaskentaByHakukohdeOid(hakuOid, hakemusOid),
             harkinnanvaraisuusTilaByHakukohdeOid: harkinnanvaraisuusTilaByHakukohdeOid(hakuOid, hakemusOid),
             sijoittelu: getSijoittelu(hakuOid, hakemusOid),
