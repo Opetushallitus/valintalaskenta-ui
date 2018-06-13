@@ -1,4 +1,4 @@
-﻿
+﻿var app = angular.module('valintalaskenta');
 app.factory('VirheModel', function (HakuVirheet) {
     "use strict";
 

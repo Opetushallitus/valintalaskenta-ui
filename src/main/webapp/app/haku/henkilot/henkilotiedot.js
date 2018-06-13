@@ -1,3 +1,4 @@
+var app = angular.module('valintalaskenta');
 app.factory('HenkiloTiedotModel', function ($q, Hakemus, ValintalaskentaHakemus, HakukohdeNimi,
                                             ValinnanvaiheListFromValintaperusteet, HakukohdeValinnanvaihe,
                                             SijoittelunVastaanottotilat, VtsLatestSijoittelunTilat,

@@ -1,3 +1,4 @@
+var app = angular.module('valintalaskenta');
 app.factory('PistesyottoNaytaKaikkiModel', function ($q, HakukohdeAvaimet, KoostettuHakemusAdditionalData) {
     "use strict";
 

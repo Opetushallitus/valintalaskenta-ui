@@ -1,3 +1,4 @@
+var app = angular.module('valintalaskenta');
 app.directive('idle', ['Idle', '$timeout', '$interval', function(Idle, $timeout, $interval){
     return {
     restrict: 'A',

@@ -1,5 +1,6 @@
 var plainUrl = window.urls().noEncode().url;
 
+var app = angular.module('valintalaskenta');
 app.factory('KoostettuHakemusAdditionalData', function($http) {
     return {
         get: function(query) {

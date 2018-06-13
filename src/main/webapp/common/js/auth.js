@@ -1,7 +1,7 @@
 "use strict";
 
 
-angular.module('valintalaskenta')
+var app = angular.module('valintalaskenta')
     .constant('READ', 'READ')
     .constant('UPDATE', 'READ_UPDATE')
     .constant('CRUD', 'CRUD')

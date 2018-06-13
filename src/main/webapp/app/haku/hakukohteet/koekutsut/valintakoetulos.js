@@ -1,4 +1,5 @@
-﻿app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe,
+﻿var app = angular.module('valintalaskenta');
+app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoetulokset, Valintakoe, HakukohdeValintakoe,
                                              HakukohdeHenkilotFull, HenkilotByOid) {
     "use strict";
 	var model;

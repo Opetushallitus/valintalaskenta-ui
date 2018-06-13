@@ -712,6 +712,9 @@ angular.module('valintalaskenta')
         'valinnantuloksenHistoriaService',
         '$q',
         'Valintaesitys',
+        'osoitetarratUrl',
+        'hyvaksymiskirjeetUrl',
+        'sijoitteluntuloksetUrl',
         function ($scope,
                   $modal,
                   TallennaValinnat,
@@ -743,7 +746,14 @@ angular.module('valintalaskenta')
                   EhdollisenHyvaksymisenEhdot,
                   valinnantuloksenHistoriaService,
                   $q,
-                  Valintaesitys) {
+                  Valintaesitys,
+                  osoitetarratUrl,
+                  hyvaksymiskirjeetUrl,
+                  sijoitteluntuloksetUrl) {
+    console.log(osoitetarratUrl);
+    console.log(hyvaksymiskirjeetUrl);
+    console.log(sijoitteluntuloksetUrl);
+
     "use strict";
     $scope.dokumenttipalveluLoading = true;
     $scope.hakuOid = $routeParams.hakuOid;
@@ -760,6 +770,10 @@ angular.module('valintalaskenta')
     $scope.userModelPromise = UserModel.refreshIfNeeded();
     $scope.hakuModelPromise = $scope.hakuModel.promise;
     $scope.enableTulostus = function() {return false;};
+
+    $scope.osoitetarratUrl = osoitetarratUrl;
+    $scope.hyvaksymiskirjeetUrl = hyvaksymiskirjeetUrl;
+    $scope.sijoitteluntuloksetUrl = sijoitteluntuloksetUrl;
 
     $scope.$watch('model.sijoitteluTulokset.valintatapajonot', function () {
         ($scope.model.sijoitteluTulokset.valintatapajonot || []).forEach(function (valintatapajono) {
@@ -809,41 +823,6 @@ angular.module('valintalaskenta')
                 $scope.updateVarasijaltaHyvaksytty = true;
             });
         });
-    });
-
-    //
-    // pikalatauslinkit on harmaannettuna jos ei ensimmaistakaan generointia
-    $scope.osoitetarratUrl = null;
-    $scope.hyvaksymiskirjeetUrl = null;
-    $scope.sijoitteluntuloksetUrl = null;
-
-    var dokumenttipalveluPromises = [
-      HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausOsoitetarrat) {
-          if (vastausOsoitetarrat[0]) {
-              $scope.osoitetarratUrl = vastausOsoitetarrat[0].documentId;
-              console.log("osoitetarratUrl value set");
-          }
-      }),
-      HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }, function (vastausHyvaksymiskirjeet) {
-          if (vastausHyvaksymiskirjeet[0]) {
-              $scope.hyvaksymiskirjeetUrl = vastausHyvaksymiskirjeet[0].documentId;
-              console.log("hyvaksymiskirjeetUrl value set");
-          }
-      }),
-      HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid}, function(vastausSijoitteluntulokset) {
-          if (vastausSijoitteluntulokset[0]) {
-              $scope.sijoitteluntuloksetUrl = vastausSijoitteluntulokset[0].documentId;
-            console.log("sijoitteluntuloksetUrl value set");
-          }
-      })
-    ];
-
-    $q.all(dokumenttipalveluPromises).then(
-      function (success) {
-        console.log("dokumenttipalveluPromises completed: " + success);
-        $scope.dokumenttipalveluLoading = false;
-    }, function (error) {
-        console.log("dokumenttipalveluPromises error: " + error);
     });
 
     $scope.hakemuksenMuokattuIlmoittautumisTilat = [

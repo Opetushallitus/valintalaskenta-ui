@@ -1,3 +1,4 @@
+var app = angular.module('valintalaskenta');
 app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot) {
     "use strict";
 

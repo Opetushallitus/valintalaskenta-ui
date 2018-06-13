@@ -1,3 +1,4 @@
+var app = angular.module('valintalaskenta');
 app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                                                         HakukohdeValinnanvaihe,
                                                         HakukohteenValintatuloksetIlmanTilaHakijalleTietoa,
