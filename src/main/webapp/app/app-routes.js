@@ -17,17 +17,17 @@ angular.module('valintalaskenta')
             controller:'SijoitteluntulosController',
             templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/sijoittelu_tulos/sijoitteluntulos.html',
             resolve: {
-                osoitetarratUrl: ['$routeParams', 'HaeDokumenttipalvelusta',
-                    function ($routeParams, HaeDokumenttipalvelusta){
-                        return HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$routeParams.hakukohdeOid }).$promise;
+                osoitetarratUrl: ['$route', 'HaeDokumenttipalvelusta',
+                    function ($route, HaeDokumenttipalvelusta){
+                        return HaeDokumenttipalvelusta.get({tyyppi:'osoitetarrat',hakukohdeoid:$route.current.params.hakukohdeOid }).$promise;
                     }],
-                hyvaksymiskirjeetUrl: ['$routeParams', 'HaeDokumenttipalvelusta',
-                    function ($routeParams, HaeDokumenttipalvelusta){
-                        return HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$routeParams.hakukohdeOid }).$promise;
+                hyvaksymiskirjeetUrl: ['$route', 'HaeDokumenttipalvelusta',
+                    function ($route, HaeDokumenttipalvelusta){
+                        return HaeDokumenttipalvelusta.get({tyyppi:'hyvaksymiskirjeet',hakukohdeoid:$route.current.params.hakukohdeOid }).$promise;
                     }],
-                sijoitteluntuloksetUrl: ['$routeParams', 'HaeDokumenttipalvelusta',
-                    function ($routeParams, HaeDokumenttipalvelusta){
-                        return HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$routeParams.hakukohdeOid }).$promise;
+                sijoitteluntuloksetUrl: ['$route', 'HaeDokumenttipalvelusta',
+                    function ($route, HaeDokumenttipalvelusta){
+                        return HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$route.current.params.hakukohdeOid }).$promise;
                     }]
             }}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakijaryhmat', {controller:'HakijaryhmatController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakijaryhmat/hakijaryhmat.html'}).
