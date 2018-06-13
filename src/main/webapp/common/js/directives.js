@@ -397,6 +397,8 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
     return {
         restrict: 'E',
         scope: {
+            etunimet: '=',
+            sukunimi: '=',
             valintatapajonoOid: '=',
             hakemusOid: '=',
             enabled: '=',

@@ -60,7 +60,9 @@
                 {{tulos.tuloksenTila}}
             </td>
             <td ng-repeat-end>
-                <jarjestyskriteeri-muokkaus jonosija="tulos"
+                <jarjestyskriteeri-muokkaus etunimet="model.henkilo.etunimet"
+                                            sukunimi="model.henkilo.sukunimi"
+                                            jonosija="tulos"
                                             valintatapajono-oid="valintatapajono.valintatapajonooid"
                                             hakemus-oid="tulos.hakemusOid"
                                             enabled="updateOph"/>
