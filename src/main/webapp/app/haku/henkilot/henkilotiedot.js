@@ -6,7 +6,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                                             HakukohdeAvaimet, HaunTiedot, HakemuksenValintatulokset,
                                             VtsLatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
                                             KoostettuHakemusAdditionalDataForHakemus, R, HenkiloPerustiedot,
-                                            TarjontaHakukohde) {
+                                            TarjontaHakukohde, AtaruApplications) {
     "use strict";
 
     function setVastaanottoTilaOptionsToShow(hakutoiveenValintatapajonot) {
@@ -66,6 +66,26 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 hakutoiveet: hakutoiveet
             };
         });
+    }
+
+    function getAtaruHakemus(hakemusOid) {
+        return AtaruApplications.get({hakemusOids: [hakemusOid]}).$promise
+            .then(function (result) {
+                var hakemus = result[0];
+                return {
+                    oid: hakemus.oid,
+                    personOid: hakemus.henkiloOid,
+                    lahiosoite: hakemus.lahiosoite,
+                    postinumero: hakemus.postinumero,
+                    pohjakoulutustoinenasteKoodiarvo: null,
+                    hakutoiveet: hakemus.hakutoiveet.map(function (hakutoive) {
+                        return {
+                            hakukohdeOid: hakutoive.hakukohdeOid,
+                            hakenutHarkinnanvaraisesti: false
+                        };
+                    })
+                };
+            });
     }
 
     function getHenkilo(hakemus) {
@@ -212,7 +232,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         self.hakemus = {};
         self.henkilo = {};
         self.hakutoiveet = [];
-        self.hakuOid = null;
         self.hakuOid = hakuOid;
         self.haku = {};
         self.errors = [];
@@ -222,10 +241,25 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         self.lastmodified = null;
         self.valintatapajonoLastModified = {}; // FIXME vaatii valintatuloksen hakemisen uudemmasta VTS:n API:sta
 
-        var hakemusPromise = getHakuAppHakemus(hakemusOid);
+        var hakuPromise = HaunTiedot.get({hakuOid: hakuOid}).$promise.then(function (o) {
+            if (o.status === "OK") {
+                return o.result;
+            } else if (o.status === "NOT_FOUND") {
+                return $q.reject("Haku " + hakuOid + " not found")
+            } else {
+                return $q.reject("Error fetching haku " + hakuOid + ": " + JSON.stringify(o));
+            }
+        });
+        var hakemusPromise = hakuPromise.then(function (haku) {
+            if (haku.ataruLomakeAvain) {
+                return getAtaruHakemus(hakemusOid);
+            } else {
+                return getHakuAppHakemus(hakemusOid)
+            }
+        });
         var hakukohteetPromise = hakemusPromise.then(hakukohteetByHakukohdeOid);
         return $q.all({
-            haku: HaunTiedot.get({hakuOid: hakuOid}).$promise,
+            haku: hakuPromise,
             hakemus: hakemusPromise,
             henkilo: hakemusPromise.then(getHenkilo),
             hakukohteetByHakukohdeOid: hakukohteetPromise,
