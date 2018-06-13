@@ -750,10 +750,6 @@ angular.module('valintalaskenta')
                   osoitetarratUrl,
                   hyvaksymiskirjeetUrl,
                   sijoitteluntuloksetUrl) {
-    console.log(osoitetarratUrl);
-    console.log(hyvaksymiskirjeetUrl);
-    console.log(sijoitteluntuloksetUrl);
-
     "use strict";
     $scope.dokumenttipalveluLoading = true;
     $scope.hakuOid = $routeParams.hakuOid;
