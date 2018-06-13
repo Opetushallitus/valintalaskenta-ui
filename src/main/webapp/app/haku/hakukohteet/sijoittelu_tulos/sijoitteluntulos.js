@@ -771,9 +771,10 @@ angular.module('valintalaskenta')
     $scope.hakuModelPromise = $scope.hakuModel.promise;
     $scope.enableTulostus = function() {return false;};
 
-    $scope.osoitetarratUrl = osoitetarratUrl;
-    $scope.hyvaksymiskirjeetUrl = hyvaksymiskirjeetUrl;
-    $scope.sijoitteluntuloksetUrl = sijoitteluntuloksetUrl;
+
+    $scope.osoitetarratUrl = osoitetarratUrl[0] ? osoitetarratUrl[0].documentId : null;
+    $scope.hyvaksymiskirjeetUrl = hyvaksymiskirjeetUrl[0] ? hyvaksymiskirjeetUrl[0].documentId : null;
+    $scope.sijoitteluntuloksetUrl = sijoitteluntuloksetUrl[0] ? sijoitteluntuloksetUrl[0].documentId : null;
 
     $scope.$watch('model.sijoitteluTulokset.valintatapajonot', function () {
         ($scope.model.sijoitteluTulokset.valintatapajonot || []).forEach(function (valintatapajono) {

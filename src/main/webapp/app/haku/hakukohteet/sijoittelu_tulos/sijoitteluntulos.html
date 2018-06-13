@@ -17,7 +17,7 @@
                 <h3>{{ t('info.eiSijoittelunTuloksia') || 'Sijoittelun tuloksia ei löytynyt.' }}</h3>
             </div>
 
-            <div ng-show="model.sijoitteluTulokset.sijoitteluajoId && !dokumenttipalveluLoading">
+            <div ng-show="model.sijoitteluTulokset.sijoitteluajoId">
                 <span>{{ t('valintakoetulos.nayta') || 'Näytä' }}</span>
                 <select ng-model="nakymanTila" ng-change="updateNakymanTila()">
                     <option value="Jonottain" selected="selected">{{ t('sijoitteluntulos.jonottain') || 'Jonottain' }}</option>
@@ -28,7 +28,7 @@
 
                 <a ng-click="sijoittelunTulosXLS(); $event.stopPropagation()" class="btn btn-default btn-sm excel">{{ t('sijoitteluntulos.vietaulukkolaskentaan') || 'Vie taulukkolaskentaan' }}</a>
                 <a ng-class="{disabled: !enableTulostus()}" ng-click="luoHyvaksymiskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf testLuoHyvaksymiskirjeet">{{ t('sijoitteluntulos.muodostahyvaksymiskirjeet') || 'Muodosta hyväksymiskirjeet' }}</a>
-                <a ng-show="showJalkiohjaus()" ng-class="{disabled: !enableTulostus()}"  ng-click="luoJalkiohjauskirjeetPDF(); $event.stopPropagation()" class="btn btn-default btn-sm pdf testJalkiohjaus">
+                <a ng-click="luoJalkiohjauskirjeetPDF(); $event.stopPropagation()" ng-show="showJalkiohjaus()" ng-class="{disabled: !enableTulostus()}" class="btn btn-default btn-sm pdf testJalkiohjaus">
                     <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostaeihyvaksyttyjenkirjeet') || 'Muodosta kirjeet ei-hyväksytyille'}}</span>
                     <span ng-if="!korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.muodostajalkiohjauskirjeet') || 'Muodosta jälkiohjauskirjeet hakukohteessa hylätyille' }}</span>
                 </a>
