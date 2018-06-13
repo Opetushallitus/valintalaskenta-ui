@@ -30,12 +30,7 @@
                 <dt>{{ t('henkilotiedot.henkilotunnus') || 'Henkilötunnus' }}</dt>
                 <dd>{{model.henkilo.henkilotunnus}}</dd>
                 <dt>{{ t('henkilotiedot.hakemuksenoid') || 'Hakemuksen OID' }}:</dt>
-                <dd>
-                    <a href="{{url('haku-app.virkailija.hakemus.esikatselu', model.hakuOid, model.hakemus.oid)}}"
-                       target="_blank">
-                        {{model.hakemus.oid}}
-                    </a>
-                </dd>
+                <dd><a href="{{model.hakemus.link}}" target="_blank">{{model.hakemus.oid}}</a></dd>
                 <dt>{{ t('henkilotiedot.lahiosoite') || 'Lähiosoite' }}</dt>
                 <dd>{{model.hakemus.lahiosoite}}, {{model.hakemus.postinumero}}</dd>
             </dl>

@@ -44,7 +44,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         });
     }
 
-    function getHakuAppHakemus(hakemusOid) {
+    function getHakuAppHakemus(hakuOid, hakemusOid) {
         return Hakemus.get({oid: hakemusOid}).$promise.then(function (hakemus) {
             var hakutoiveet = [];
             for (var i = 1; hakemus.answers.hakutoiveet["preference" + i + "-Koulutus-id"]; i++) {
@@ -63,12 +63,13 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 lahiosoite: hakemus.answers.henkilotiedot.lahiosoite,
                 postinumero: hakemus.answers.henkilotiedot.Postinumero,
                 pohjakoulutustoinenasteKoodiarvo: hakemus.answers.koulutustausta.POHJAKOULUTUS,
-                hakutoiveet: hakutoiveet
+                hakutoiveet: hakutoiveet,
+                link: url("haku-app.virkailija.hakemus.esikatselu", hakuOid, hakemusOid)
             };
         });
     }
 
-    function getAtaruHakemus(hakemusOid) {
+    function getAtaruHakemus(hakuOid, hakemusOid) {
         return AtaruApplications.get({hakemusOids: [hakemusOid]}).$promise
             .then(function (result) {
                 var hakemus = result[0];
@@ -83,7 +84,8 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                             hakukohdeOid: hakutoive.hakukohdeOid,
                             hakenutHarkinnanvaraisesti: false
                         };
-                    })
+                    }),
+                    link: url("ataru.application.review", hakuOid, hakemusOid)
                 };
             });
     }
@@ -252,9 +254,9 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         });
         var hakemusPromise = hakuPromise.then(function (haku) {
             if (haku.ataruLomakeAvain) {
-                return getAtaruHakemus(hakemusOid);
+                return getAtaruHakemus(hakuOid, hakemusOid);
             } else {
-                return getHakuAppHakemus(hakemusOid)
+                return getHakuAppHakemus(hakuOid, hakemusOid)
             }
         });
         var hakukohteetPromise = hakemusPromise.then(hakukohteetByHakukohdeOid);
