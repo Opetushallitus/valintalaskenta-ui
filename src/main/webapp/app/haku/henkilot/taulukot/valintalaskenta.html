@@ -93,12 +93,14 @@
                 </div>
             </td>
             <td>
-                <sijoittelu-vastaanotto-tila hakemus="model.sijoittelu[valintatapajono.valintatapajonooid]"
-                                             valintatapajono-oid="valintatapajono.valintatapajonooid"
-                                             hakukohde-oid="hakutoive.hakukohdeOid"
-                                             haku="model.haku"
-                                             lastmodified="model.valintatapajonoLastModified[valintatapajono.valintatapajonooid]"
-                                             enabled="updateOph"/>
+                <div ng-if="model.sijoittelu[valintatapajono.valintatapajonooid]">
+                    <sijoittelu-vastaanotto-tila hakemus="model.sijoittelu[valintatapajono.valintatapajonooid]"
+                                                 valintatapajono-oid="valintatapajono.valintatapajonooid"
+                                                 hakukohde-oid="hakutoive.hakukohdeOid"
+                                                 haku="model.haku"
+                                                 lastmodified="model.valintatapajonoLastModified[valintatapajono.valintatapajonooid]"
+                                                 enabled="updateOph"/>
+                </div>
             </td>
         </tr>
         <!-- rivien väritys pitäisi hoitaa jotenkin, tai sitten muokata alkuperäinen data helpommin esitettävään muotoon -->
