@@ -15,12 +15,13 @@
             window.url("haku-app.buildversion"),
             window.url("valinta-tulos-service.login"),
             window.url("oppijanumerorekisteri-service.login"),
-            window.url("ataru.login")
+            window.url("ataru.login"),
+            window.url("dokumenttipalvelu-service.session.maxinactiveinterval")
         ];
-        return $q.all(services.map(loadBuildversion));
+        return $q.all(services.map(httpGet));
     }
 
-    function loadBuildversion(serviceUrl) {
+    function httpGet(serviceUrl) {
         return $http.get(serviceUrl);
     }
 
