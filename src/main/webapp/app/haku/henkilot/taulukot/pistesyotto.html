@@ -40,7 +40,7 @@
 
         <div>
             <button ng-disabled="!form.$valid || form.$error.arvovalidaattori.length > 0"
-                    class="btn btn-primary btn-sm margin-top-2" type="submit">{{ t('pistesyotto.tallenna') || 'Tallenna' }}
+                    class="btn btn-primary btn-sm margin-top-2 margin-bottom-2" type="submit">{{ t('pistesyotto.tallenna') || 'Tallenna' }}
             </button>
             <div class="alert alert-danger" ng-show="form.$error.arvovalidaattori.length > 0">{{ t('pistesyotto.tarkista') || 'Tarkista virheet!' }}
             </div>
