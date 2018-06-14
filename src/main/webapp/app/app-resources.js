@@ -28,7 +28,7 @@ app.factory('KoostettuHakemusAdditionalDataForHakemus', function($http) {
     return {
         get: function(query) {
             var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", query.hakemusOid);
-            return $http.get(url).then(function(r) { return r.data; });
+            return $http.get(url, {cache: false}).then(function(r) { return r.data; });
         },
         put: function(query, data) {
             var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", query.hakemusOid);

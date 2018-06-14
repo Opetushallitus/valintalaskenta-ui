@@ -469,19 +469,14 @@ angular.module('valintalaskenta').
     $scope.tallennaPisteet = function () {
         $scope.model.tallennaPisteet().then(function (response) {
             $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
-            var ilmoitusteksti = "";
-            if(R.isEmpty(response.data)) {
-                ilmoitusteksti = "Pisteet tallennettu onnistuneesti.";
+            if (R.isEmpty(response.data)) {
+                Ilmoitus.avaa("Tallennus onnistui", "Pisteet tallennettu onnistuneesti.", IlmoitusTila.INFO);
             } else {
-                ilmoitusteksti = "Hakemuksella oli uudempia pistetietoja. Ole hyvä ja yritä tallentaa uudelleen.";
+                Ilmoitus.avaa("Tallennus epäonnistui", "Hakemuksella oli uudempia pistetietoja. Ole hyvä ja yritä uudelleen.", IlmoitusTila.ERROR);
             }
-            Ilmoitus.avaa("Tallennus onnistui", ilmoitusteksti, IlmoitusTila.INFO, function() {
-                $window.location.reload();
-            });
         }, function () {
-            Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR, function() {
-                $window.location.reload();
-            });
+            $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
+            Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
         });
     };
 
