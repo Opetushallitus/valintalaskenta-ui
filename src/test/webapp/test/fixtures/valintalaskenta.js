@@ -1597,7 +1597,7 @@ function valintalaskentaValintakokeetFixtures(hakijat) {
                     return {
                         hakuOid: hakija.hakuOid,
                         hakemusOid: hakija.hakemusOid,
-                        hakijaOid: "1.2.246.562.24.75614211265",
+                        hakijaOid: hakija.personOid,
                         etunimi: "",
                         sukunimi: "",
                         createdAt: 1410441125829,

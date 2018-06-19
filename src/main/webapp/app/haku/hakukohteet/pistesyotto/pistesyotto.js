@@ -8,7 +8,10 @@ app.factory('PistesyottoModel', function (
     Valintakoetulokset,
     Ilmoitus,
     IlmoitusTila,
-    HakukohdeAvainTyyppiService, _, R) {
+    HakukohdeAvainTyyppiService,
+    _,
+    R,
+    HenkiloPerustietosByHenkiloOidList) {
 
     "use strict";
 
@@ -39,26 +42,42 @@ app.factory('PistesyottoModel', function (
                 model.avaimet = results[0];
                 HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
                 model.lastmodified = results[1].lastmodified;
-                model.hakeneet = results[1].valintapisteet.map(function(pistetieto) {
-                    var h = pistetieto.applicationAdditionalDataDTO;
-                    h.filterData = {};
-                    if (pistetieto.hakukohteidenOsallistumistiedot &&
-                        pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid] &&
-                        pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot) {
-                        h.osallistuu = pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot;
-                    } else {
-                        h.osallistuu = {};
-                    }
-                    model.avaimet.forEach(function(avain) {
-                        if (h.osallistuu[avain.tunniste] &&
-                            h.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
-                            h.filterData[avain.tunniste] = h.additionalData[avain.tunniste];
-                            h.filterData[avain.osallistuminenTunniste] = h.additionalData[avain.osallistuminenTunniste];
+                var personOids = _.chain(results[1].valintapisteet)
+                    .map(function(pistetieto) { return pistetieto.applicationAdditionalDataDTO.personOid })
+                    .flatten()
+                    .uniq()
+                    .value();
+                HenkiloPerustietosByHenkiloOidList.post(personOids).then(function(henkilot) {
+                    var henkilotByOid = _.object(henkilot.map(function(henkilo) {
+                        return [henkilo.oidHenkilo, henkilo];
+                    }));
+                    model.hakeneet = results[1].valintapisteet.map(function(pistetieto) {
+                        var h = pistetieto.applicationAdditionalDataDTO;
+                        var henkilo = henkilotByOid[h.personOid];
+
+                        h.firstNames = henkilo.etunimet;
+                        h.lastName = henkilo.sukunimi;
+                        h.personOid = henkilo.oidHenkilo;
+
+                        h.filterData = {};
+                        if (pistetieto.hakukohteidenOsallistumistiedot &&
+                            pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid] &&
+                            pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot) {
+                            h.osallistuu = pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid].valintakokeidenOsallistumistiedot;
+                        } else {
+                            h.osallistuu = {};
                         }
+                        model.avaimet.forEach(function(avain) {
+                            if (h.osallistuu[avain.tunniste] &&
+                                h.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
+                                h.filterData[avain.tunniste] = h.additionalData[avain.tunniste];
+                                h.filterData[avain.osallistuminenTunniste] = h.additionalData[avain.osallistuminenTunniste];
+                            }
+                        });
+                        return h;
                     });
-                    return h;
-                });
-                model.hakeneetIsLoaded = true;
+                    model.hakeneetIsLoaded = true;
+                })
             }, function(error) {
                 model.errors.push(error);
             });
@@ -71,7 +90,6 @@ app.factory('PistesyottoModel', function (
             }
 
         };
-
 
         var blockSubmit = false;
         this.submit = function() {

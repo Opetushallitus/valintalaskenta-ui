@@ -9,6 +9,8 @@ describe('Pistesyöttö', function() {
     var VALINTAKOE3 = "VALINTAKOE3";
     var HAKEMUS1 = "HAKEMUS1";
     var HAKEMUS2 = "HAKEMUS2";
+    var PERSON1OID = "PERSON1OID";
+    var PERSON2OID = "PERSON2OID";
 
     var initCommonFixtures = function() {
         addTestHook(tarjontaFixtures)();
@@ -18,7 +20,7 @@ describe('Pistesyöttö', function() {
         addTestHook(ohjausparametritFixtures())();
         addTestHook(dokumenttipalveluFixtures)();
         addTestHook(organisaatioFixtures)();
-        addTestHook(koostettuPistetietoGeneroitava(55))();
+        addTestHook(koostettuPistetietoGeneroitava(55, PERSON1OID, PERSON2OID))();
         //addTestHook(common)();
         addTestHook(valintakokeetFixtures([
             {
@@ -36,13 +38,30 @@ describe('Pistesyöttö', function() {
                 hakuOid: HAKU,
                 hakukohdeOid: HAKUKOHDE,
                 valintakoeOid: VALINTAKOE1,
-                hakemusOid: HAKEMUS1
+                hakemusOid: HAKEMUS1,
+                personOid: PERSON1OID
             },
             {
                 hakuOid: HAKU,
                 hakukohdeOid: HAKUKOHDE,
                 valintakoeOid: VALINTAKOE2,
-                hakemusOid: HAKEMUS2
+                hakemusOid: HAKEMUS2,
+                personOid: PERSON2OID
+            }]))();
+        addTestHook(onrPerustiedotFixtures([
+            {
+                oidHenkilo: PERSON1OID,
+                kutsumanimi: "Erkki",
+                etunimet: "Erkki Esaias",
+                sukunimi: "Hakija1",
+                asiointikieli: "Suomi"
+            },
+            {
+                oidHenkilo: PERSON2OID,
+                kutsumanimi: "Elli",
+                etunimet: "Elli Leeni",
+                sukunimi: "Hakija2",
+                asiointikieli: "Suomi"
             }]))();
     };
 
