@@ -193,18 +193,23 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
             };
 
+            var failure = function () {
+              console.warn('Auth check failure for ' + attrs.auth + ' for element ' + element[0].outerHTML);
+              $animate.addClass(element, 'ng-hide');
+            };
+
             function handleOphAuth() {
               switch (attrs.auth) {
                 case "crudOph":
-                  AuthService.crudOph(attrs.authService).then(success);
+                  AuthService.crudOph(attrs.authService).then(success, failure);
                   break;
 
                 case "updateOph":
-                  AuthService.updateOph(attrs.authService).then(success);
+                  AuthService.updateOph(attrs.authService).then(success, failure);
                   break;
 
                 case "readOph":
-                  AuthService.readOph(attrs.authService).then(success);
+                  AuthService.readOph(attrs.authService).then(success, failure);
                   break;
 
                 default:
@@ -215,19 +220,19 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
           function handleOrgAuth(orgOid) {
               switch (attrs.auth) {
                 case "crud":
-                  AuthService.crudOrg(attrs.authService, orgOid).then(success);
+                  AuthService.crudOrg(attrs.authService, orgOid).then(success, failure);
                   break;
 
                 case "update":
-                  AuthService.updateOrg(attrs.authService, orgOid).then(success);
+                  AuthService.updateOrg(attrs.authService, orgOid).then(success, failure);
                   break;
 
                 case "read":
-                  AuthService.readOrg(attrs.authService, orgOid).then(success);
+                  AuthService.readOrg(attrs.authService, orgOid).then(success, failure);
                   break;
 
                 default:
-                  AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success);
+                  AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success, failure);
                   break;
             }
           }
@@ -245,19 +250,19 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                             if (attrs.authOrg) {
                                 switch (attrs.auth) {
                                     case "crud":
-                                        AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success);
+                                        AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success, failure);
                                         break;
 
                                     case "update":
-                                        AuthService.updateOrg(attrs.authService, attrs.authHakukohdeOrg).then(success);
+                                        AuthService.updateOrg(attrs.authService, attrs.authHakukohdeOrg).then(success, failure);
                                         break;
 
                                     case "read":
-                                        AuthService.readOrg(attrs.authService, attrs.authOrg).then(success);
+                                        AuthService.readOrg(attrs.authService, attrs.authOrg).then(success, failure);
                                         break;
 
                                     default:
-                                        AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrg).then(success);
+                                        AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrg).then(success, failure);
                                         break;
                                 }
                             }
