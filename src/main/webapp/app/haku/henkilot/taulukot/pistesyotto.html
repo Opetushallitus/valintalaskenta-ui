@@ -5,10 +5,12 @@
         <div ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'">
             <div ng-if="hakutoive.naytaPistesyotto">
                 <h3>
-                    {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
-                    <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
-                        {{hakutoive.oppilaitos}}
-                    </a>
+                    {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}}
+                    <span auth="read" auth-hakukohde-org="hakutoive.hakukohdeOid" auth-service="APP_VALINTOJENTOTEUTTAMINEN">-
+                        <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
+                            {{hakutoive.oppilaitos}}
+                        </a>
+                    </span>
                 </h3>
                 <table class="virkailija-table-1">
                     <thead>
