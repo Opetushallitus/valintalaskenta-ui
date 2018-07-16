@@ -73,7 +73,7 @@
                             <div ng-repeat="valintatapajono in valinnanvaihe.valintatapajonot | orderBy:'prioriteetti' track by $index">
                                 <form name="form">
                                     <h3>{{ t('valintalaskentatulos.valintatapajono') || 'Valintatapajono' }}: {{valintatapajono.nimi}} ({{ t('valintalaskentatulos.valintatapajonoprioriteetti') || 'Prioriteetti' }}: {{valintatapajono.prioriteetti}})</h3>
-                                    <button ng-disabled="!form.$valid"
+                                    <button ng-disabled="!form.$valid || jonoIsEmpty(valintatapajono)"
                                             class="btn btn-primary btn-sm margin-bottom-2"
                                              ng-click="submit(valinnanvaihe.oid, valintatapajono.oid)">{{ t('valintalaskentatulos.tallenna') || 'Tallenna' }}
                                     </button>

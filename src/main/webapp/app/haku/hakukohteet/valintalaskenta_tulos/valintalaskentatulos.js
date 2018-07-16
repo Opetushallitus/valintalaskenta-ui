@@ -515,6 +515,12 @@ angular.module('valintalaskenta').
     };
 
 
+    $scope.jonoIsEmpty = function (jono) {
+        if (!jono.jonosijat) {
+            return true;
+        }
+        return jono.jonosijat.length < 1;
+    };
 
     $scope.submit = function (vaiheoid, jonooid) {
         ValintalaskentatulosModel.submit(vaiheoid, jonooid);
