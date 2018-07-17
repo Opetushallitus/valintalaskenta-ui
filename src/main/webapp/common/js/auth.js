@@ -60,13 +60,11 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
         }
         var found = false;
         roles.forEach(function (role) {
-            if (model.indexOf(service + "_" + role + "_" + org) > -1) {
+          var fullRole = service + "_" + role + "_" + org;
+          if (model.indexOf(fullRole) > -1) {
                 found = true;
             }
         });
-        if (!found) {
-          console.log('Could not find any of the roles ' + roles + ' for service ' + service + ' and org ' + org);
-        }
         return found;
     };
 
@@ -81,7 +79,8 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
             $http.get(window.url("organisaatio-service.organisaatio.parentoids", orgOid))
                 .success(function (result) {
                     var found = false;
-                    result.split("/").forEach(function (org) {
+                    var parentOids = result.split("/");
+                    parentOids.forEach(function (org) {
                         if (roleCheck(service, org, model, roles)) {
                             found = true;
                         }
@@ -89,7 +88,7 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
                     if (found) {
                         deferred.resolve();
                     } else {
-                        deferred.reject();
+                        deferred.reject('Not found: ' + service + ', ' + orgOid);
                     }
                 });
         });
@@ -183,7 +182,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
             $animate.addClass(element, 'ng-hide');
             UserModel.refreshIfNeeded();
 
-            var success = function () {
+            var success = function (result) {
                 if (attrs.authAdditionalCheck) {
 
                     ParametriService($routeParams.hakuOid).then(function (privileges) {
@@ -203,12 +202,12 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
             };
 
-            var failure = function () {
-              console.warn('Auth check failure for ' + attrs.auth + ' for element ' + element[0].outerHTML);
+            var failure = function (error) {
+              console.warn('Auth check failure for ' + attrs.auth + ' for element ' + element[0].innerHTML + '. Error: ' + error);
               $animate.addClass(element, 'ng-hide');
             };
 
-          function handleAuth(orgOid) {
+            function handleOphAuth() {
               switch (attrs.auth) {
                 case "crudOph":
                   AuthService.crudOph(attrs.authService).then(success, failure);
@@ -222,6 +221,13 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                   AuthService.readOph(attrs.authService).then(success, failure);
                   break;
 
+                default:
+                  console.warn('handleOphAuth switch case was not handled for attrs: ' + JSON.stringify(attrs));
+              }
+            }
+
+          function handleOrgAuth(orgOid) {
+              switch (attrs.auth) {
                 case "crud":
                   AuthService.crudOrg(attrs.authService, orgOid).then(success, failure);
                   break;
@@ -247,7 +253,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                 $animate.removeClass(element, 'ng-hide');
               } else {
                   $timeout(function () {
-                    handleAuth()
+                      handleOphAuth()
                   }, 0);
 
                         attrs.$observe('authOrg', function () {
@@ -279,7 +285,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
                             if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
                                 _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                                  handleAuth(orgOid)
+                                    handleOrgAuth(orgOid)
                                 });
                             }
                         });
@@ -289,28 +295,28 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
             } else if ($routeParams.hakukohdeOid) {
                 HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
                     $timeout(function () {
-                      handleAuth()
+                      handleOphAuth()
                     }, 0);
 
                     if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
                         _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                          handleAuth(orgOid)
+                            handleOrgAuth(orgOid)
                         });
                     }
                 });
             } else if (attrs.authTarjoajaOrgUser) {
               HakuModel.refreshIfNeeded($routeParams.hakuOid).then(function () {
                 var tarjoajaOid = HakuModel.hakuOid.organisaatioOids[0];
-                handleAuth(tarjoajaOid);
+                handleOrgAuth(tarjoajaOid);
               });
             } else {
                 $timeout(function () {
-                  handleAuth()
+                  handleOphAuth()
                 }, 0);
 
                 attrs.$observe('authOrg', function () {
                     if (attrs.authOrg) {
-                      handleAuth(attrs.authOrg);
+                      handleOrgAuth(attrs.authOrg);
                     }
                 });
             }
