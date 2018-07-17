@@ -65,6 +65,9 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
                 found = true;
             }
         });
+        if (!found) {
+          console.log('Could not find any of the roles ' + roles + ' for service ' + service + ' and org ' + org);
+        }
         return found;
     };
 
