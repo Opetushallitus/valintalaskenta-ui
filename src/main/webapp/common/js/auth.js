@@ -310,9 +310,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
                 attrs.$observe('authOrg', function () {
                     if (attrs.authOrg) {
-                        _.forEach(attrs.authOrg, function (orgOid) {
-                          handleAuth(orgOid)
-                        });
+                      handleAuth(attrs.authOrg);
                     }
                 });
             }
