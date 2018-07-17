@@ -55,6 +55,9 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
 
     // organisation check
     var roleCheck = function (service, org, model, roles) {
+        if (!service) {
+          console.error('roleCheck called with undefined auth-service')
+        }
         var found = false;
         roles.forEach(function (role) {
             if (model.indexOf(service + "_" + role + "_" + org) > -1) {

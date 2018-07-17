@@ -15,7 +15,7 @@
 
             <div class="col-md-12">
                 <div class="pull-right">
-                    <a auth="crudOph" auth-kk-user="true"
+                    <a auth="crudOph" auth-kk-user="true" auth-service="APP_VALINTOJENTOTEUTTAMINEN"
                        href="/valintaperusteet-ui/app/index.html#/hakukohde/{{hakukohdeOid}}"
                        target="_blank">{{ t('valintaperusteet') || 'Valintaperusteet' }} <i class="fa fa-external-link"></i></a>&nbsp;
                     <a href="/tarjonta-app/index.html#/hakukohde/{{hakukohdeOid}}"
@@ -24,7 +24,7 @@
                 <div><b>{{ t('hakukohteethakukohdeperustiedot.hakukohdeoid') || 'HakukohdeOid' }}:</b> {{model.hakukohde.oid}}</div>
 
                 <div><b>{{ t('hakukohteethakukohdeperustiedot.valintaryhma') || 'Valintaryhmä' }}:</b>
-                    <a auth="crudOph" auth-kk-user="true" href="/valintaperusteet-ui/app/index.html#/valintaryhma/{{model.valintaryhma.oid}}" target="_blank">{{model.valintaryhma.nimi}} <i class="fa fa-external-link"></i></a>&nbsp;
+                    <a auth="crudOph" auth-kk-user="true" auth-service="APP_VALINTOJENTOTEUTTAMINEN" href="/valintaperusteet-ui/app/index.html#/valintaryhma/{{model.valintaryhma.oid}}" target="_blank">{{model.valintaryhma.nimi}} <i class="fa fa-external-link"></i></a>&nbsp;
                 </div>
 
                 <h3>{{ t('hakukohteethakukohdeperustiedot.valintatapajonokohtaiset') || 'Valintatapajonokohtaiset tiedot' }}</h3>
