@@ -23,7 +23,7 @@
         <tbody ng-repeat="hakutoive in model.hakutoiveet | orderBy:'hakutoiveNumero'" ng-class-even="'tableEven'" >
         <tr ng-hide="hakutoive.valintalaskenta && hakutoive.valintalaskenta[0].valintatapajonot && hakutoive.hasDoneOrganizationCheck">
             <td ng-if="updateOph || hakutoive.showAsLink" colspan="8">{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -
-                <a auth="read" auth-hakukohde-org="{{hakutoive.hakukohdeOid}}" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-kk-user="true"
+                <a auth="update" auth-hakukohde-org="{{hakutoive.hakukohdeOid}}" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-kk-user="true"
                    target="_blank" href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                     {{hakutoive.oppilaitos}} <i class="fa fa-external-link"></i>
                 </a>
@@ -37,7 +37,7 @@
                 <div class="table-group" ng-click="hakutoive.valintalaskenta.$hideRows = !hakutoive.valintalaskenta.$hideRows">
                     <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': hakutoive.valintalaskenta.$hideRows, 'glyphicon-chevron-down': !hakutoive.valintalaskenta.$hideRows }"></span>
                     <strong>{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -</strong>
-                    <a auth="read" auth-hakukohde-org="{{hakutoive.hakukohdeOid}}" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-kk-user="true"
+                    <a auth="update" auth-hakukohde-org="{{hakutoive.hakukohdeOid}}" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-kk-user="true"
                        target="_blank" href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                         <strong>{{hakutoive.oppilaitos}} </strong><i class="fa fa-external-link"></i>
                     </a>

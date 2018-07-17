@@ -201,7 +201,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
               $animate.addClass(element, 'ng-hide');
             };
 
-            function handleOphAuth() {
+          function handleAuth(orgOid) {
               switch (attrs.auth) {
                 case "crudOph":
                   AuthService.crudOph(attrs.authService).then(success, failure);
@@ -215,13 +215,6 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                   AuthService.readOph(attrs.authService).then(success, failure);
                   break;
 
-                default:
-                  console.warn('handleOphAuth switch case was not handled for attrs: ' + JSON.stringify(attrs));
-              }
-            }
-
-          function handleOrgAuth(orgOid) {
-              switch (attrs.auth) {
                 case "crud":
                   AuthService.crudOrg(attrs.authService, orgOid).then(success, failure);
                   break;
@@ -235,6 +228,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                   break;
 
                 default:
+                  console.info('handleAuth switch case went to default case for parameter ' + attrs.auth);
                   AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success, failure);
                   break;
             }
@@ -246,7 +240,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                 $animate.removeClass(element, 'ng-hide');
               } else {
                   $timeout(function () {
-                      handleOphAuth(attrs.auth)
+                    handleAuth()
                   }, 0);
 
                         attrs.$observe('authOrg', function () {
@@ -278,7 +272,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
                             if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
                                 _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                                    handleOrgAuth(orgOid)
+                                  handleAuth(orgOid)
                                 });
                             }
                         });
@@ -288,29 +282,29 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
             } else if ($routeParams.hakukohdeOid) {
                 HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
                     $timeout(function () {
-                      handleOphAuth(attrs.auth)
+                      handleAuth()
                     }, 0);
 
                     if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
                         _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                            handleOrgAuth(orgOid)
+                          handleAuth(orgOid)
                         });
                     }
                 });
             } else if (attrs.authTarjoajaOrgUser) {
               HakuModel.refreshIfNeeded($routeParams.hakuOid).then(function () {
                 var tarjoajaOid = HakuModel.hakuOid.organisaatioOids[0];
-                handleOrgAuth(tarjoajaOid);
+                handleAuth(tarjoajaOid);
               });
             } else {
                 $timeout(function () {
-                  handleOphAuth(attrs.auth)
+                  handleAuth()
                 }, 0);
 
                 attrs.$observe('authOrg', function () {
                     if (attrs.authOrg) {
                         _.forEach(attrs.authOrg, function (orgOid) {
-                            handleOrgAuth(orgOid)
+                          handleAuth(orgOid)
                         });
                     }
                 });
