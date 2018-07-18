@@ -352,7 +352,10 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 	model.refresh($routeParams.hakukohdeOid, $routeParams.hakuOid);
                     Ilmoitus.avaa("Tallennus onnistui", "Valintatulosten tallennus onnistui.");
                 }, function(error) {
-                    Ilmoitus.avaa("Tallennus epäonnistui", "Valintatulosten tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                    var errorMessage = error.status === 400 ?
+                      ((error.data && error.data.error) ? error.data.error : "Tallennus epäonnistui, tarkista syöttämäsi arvot." ) :
+                      "Valintatulosten tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.";
+                    Ilmoitus.avaa("Tallennus epäonnistui", errorMessage, IlmoitusTila.ERROR);
                 });
 
             }
