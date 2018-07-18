@@ -203,7 +203,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
             };
 
             var failure = function (error) {
-              console.warn('Auth check failure for ' + attrs.auth + ' for element ' + element[0].innerHTML + '. Error: ' + error);
+              console.info('Auth check failure for ' + attrs.auth + '. Error: ' + error);
               $animate.addClass(element, 'ng-hide');
             };
 
@@ -222,7 +222,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                   break;
 
                 default:
-                  console.warn('handleOphAuth switch case was not handled for attrs: ' + JSON.stringify(attrs));
+                  break;
               }
             }
 
