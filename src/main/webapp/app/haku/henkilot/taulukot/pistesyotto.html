@@ -6,7 +6,7 @@
             <div ng-if="hakutoive.naytaPistesyotto">
                 <h3>
                     {{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}}
-                    <span auth="read" auth-org="{{hakutoive.hakukohdeOid}}" auth-service="APP_VALINTOJENTOTEUTTAMINEN">-
+                    <span auth="read" auth-org="{{hakutoive.oppilaitosId}}" auth-service="APP_VALINTOJENTOTEUTTAMINEN">-
                         <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                             {{hakutoive.oppilaitos}}
                         </a>
