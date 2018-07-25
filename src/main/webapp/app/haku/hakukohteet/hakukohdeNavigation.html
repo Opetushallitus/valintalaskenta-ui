@@ -1,44 +1,127 @@
 <!-- Tabivalikko normaalin haun hakukohteille -->
-<div ng-show="showNav == true" class="tabs hakukohdeNav" ng-controller="HakukohdeNavigationController">
-    <a  ng-class="navClass('perustiedot', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/perustiedot" class="tab">
+<div ng-show="showNav == true"
+       class="tabs hakukohdeNav" ng-controller="HakukohdeNavigationController">
+    <a
+       ng-class="navClass('perustiedot', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/perustiedot"
+       class="tab">
     	<span>{{ t('hakukohdenavigation.perustiedot') || 'Hakukohteen perustiedot' }}</span>
     </a>
 
-    <a auth-additional-check="hakeneet" auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="{{hakukohdeModel.hakukohde}}" auth-kk-user="true" ng-class="navClass('hakeneet', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet" class="tab">
+    <a auth="update"
+       auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+       auth-kk-user="true"
+       auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"
+       auth-additional-check="hakeneet"
+       ng-class="navClass('hakeneet', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakeneet"
+       class="tab">
     	<span>{{ t('hakukohdenavigation.hakeneet') || 'Hakeneet' }}</span>
     </a>
 
-    <a ng-if="hakuModel.hakuOid.erillishaku" auth-additional-check="valintalaskenta" auth="update" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"  ng-class="navClass('valinnanhallinta', 5)" auth-kk-user="true" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
-        <span>{{ t('hakukohdenavigation.valinnanhallinta') || 'Valinnan hallinta' }}</span>
-    </a>
-    <a ng-if="!hakuModel.hakuOid.erillishaku" auth-additional-check="valintalaskenta" auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" auth-kk-user="true" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
+    <a ng-if="hakuModel.hakuOid.erillishaku"
+       auth="update"
+       auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+       auth-kk-user="true"
+       auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"
+       auth-additional-check="valintalaskenta"
+       ng-class="navClass('valinnanhallinta', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta"
+       class="tab">
         <span>{{ t('hakukohdenavigation.valinnanhallinta') || 'Valinnan hallinta' }}</span>
     </a>
 
-    <a ng-if="hakukohdeModel.valintakoekutsutTabVisible" auth-additional-check="valintakoekutsut" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="{{hakukohdeModel.hakukohde}}" auth-kk-user="true" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
+    <a ng-if="!hakuModel.hakuOid.erillishaku"
+       auth="crudOph"
+       auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+       auth-kk-user="true"
+       auth-additional-check="valintalaskenta"
+       ng-class="navClass('valinnanhallinta', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta"
+       class="tab">
+        <span>{{ t('hakukohdenavigation.valinnanhallinta') || 'Valinnan hallinta' }}</span>
+    </a>
+
+    <a ng-if="hakukohdeModel.valintakoekutsutTabVisible"
+       auth="read"
+       auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+       auth-kk-user="true"
+       auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"
+       auth-additional-check="valintakoekutsut"
+       ng-class="navClass('valintakoetulos', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos"
+       class="tab">
         <span>{{ t('hakukohdenavigation.valintakoekutsut') || 'Valintakoekutsut' }}</span>
     </a>
 
-    <a auth-additional-check="pistesyotto" auth="LISATIETORU LISATIETOCRUD READ_UPDATE CRUD" auth-service="APP_HAKEMUS" auth-hakukohde-org="{{hakukohdeModel.hakukohde}}" auth-kk-user="true" ng-class="navClass('pistesyotto', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/pistesyotto" class="tab">
+    <a
+       auth="LISATIETORU LISATIETOCRUD READ_UPDATE CRUD"
+       auth-service="APP_HAKEMUS"
+       auth-kk-user="true"
+       auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"
+       auth-additional-check="pistesyotto"
+       ng-class="navClass('pistesyotto', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/pistesyotto"
+       class="tab">
         <span>{{ t('hakukohdenavigation.pistesyotto') || 'Pistesyöttö' }}</span>
     </a>
 
-    <a ng-if="!hakuModel.korkeakoulu" auth-additional-check="harkinnanvaraiset" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="{{hakukohdeModel.hakukohde}}" auth-kk-user="true" ng-class="navClass('harkinnanvaraiset', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset" class="tab">
+    <a ng-if="!hakuModel.korkeakoulu"
+       auth="read"
+       auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+       auth-kk-user="true"
+       auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"
+       auth-additional-check="harkinnanvaraiset"
+       ng-class="navClass('harkinnanvaraiset', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset"
+       class="tab">
         <span>{{ t('hakukohdenavigation.harkinnanvaraiset') || 'Harkinnanvaraiset' }}</span>
     </a>
 
-    <a ng-if="hakuModel.korkeakoulu && (hakuModel.hakuOid.erillishaku == false || (hakuModel.hakuOid.erillishaku == true && hakukohdeModel.kaytetaanValintalaskentaa == true))" auth-additional-check="hakijaryhmat" auth="crud" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="{{hakukohdeModel.hakukohde}}" auth-kk-user="true" ng-class="navClass('hakijaryhmat', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakijaryhmat" class="tab">
+    <a ng-if="hakuModel.korkeakoulu && (hakuModel.hakuOid.erillishaku == false || (hakuModel.hakuOid.erillishaku == true && hakukohdeModel.kaytetaanValintalaskentaa == true))"
+       auth="crud"
+       auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+       auth-kk-user="true"
+       auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"
+       auth-additional-check="hakijaryhmat"
+       ng-class="navClass('hakijaryhmat', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/hakijaryhmat"
+       class="tab">
         <span>{{ t('hakukohdenavigation.hakijaryhmat') || 'Hakijaryhmät' }}</span>
     </a>
 
-    <a ng-if="hakuModel.hakuOid.erillishaku == false || (hakuModel.hakuOid.erillishaku == true && hakukohdeModel.kaytetaanValintalaskentaa == true)" auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="{{hakukohdeModel.hakukohde}}" auth-kk-user="true" ng-class="navClass('valintalaskentatulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintalaskentatulos" class="tab">
+    <a ng-if="hakuModel.hakuOid.erillishaku == false || (hakuModel.hakuOid.erillishaku == true && hakukohdeModel.kaytetaanValintalaskentaa == true)"
+       auth="read"
+       auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+       auth-kk-user="true"
+       auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"
+       auth-additional-check="valinnanhallinta"
+       ng-class="navClass('valintalaskentatulos', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintalaskentatulos"
+       class="tab">
     	<span>{{ t('hakukohdenavigation.valintalaskennantulos') || 'Valintalaskennan tulos' }}</span>
     </a>
-    <a ng-if="hakuModel.hakuOid.erillishaku == false || (hakuModel.hakuOid.erillishaku == true && hakukohdeModel.kaytetaanValintalaskentaa == true)" auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_SIJOITTELU" auth-hakukohde-org="{{hakukohdeModel.hakukohde}}" auth-kk-user="true" ng-class="navClass('sijoitteluntulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/sijoitteluntulos" class="tab">
+    <a ng-if="hakuModel.hakuOid.erillishaku == false || (hakuModel.hakuOid.erillishaku == true && hakukohdeModel.kaytetaanValintalaskentaa == true)"
+       auth="read"
+       auth-service="APP_SIJOITTELU"
+       auth-kk-user="true"
+       auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"
+       auth-additional-check="valinnanhallinta"
+       ng-class="navClass('sijoitteluntulos', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/sijoitteluntulos"
+       class="tab">
     	<span id="test-sijoittelun-tulokset">{{ t('hakukohdenavigation.sijoitteluntulokset') || 'Sijoittelun tulokset' }}</span>
     </a>
 
-	<a ng-if="hakuModel.hakuOid.erillishaku == true && !hakukohdeModel.kaytetaanValintalaskentaa" auth-additional-check="valinnanhallinta" auth="read" auth-service="APP_SIJOITTELU" auth-hakukohde-org="{{hakukohdeModel.hakukohde}}" auth-kk-user="true" ng-class="navClass('erillishaku', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/erillishaku" class="tab">
+	<a ng-if="hakuModel.hakuOid.erillishaku == true && !hakukohdeModel.kaytetaanValintalaskentaa"
+       auth="read"
+       auth-service="APP_SIJOITTELU"
+       auth-kk-user="true"
+       auth-hakukohde-org="{{hakukohdeModel.hakukohde}}"
+       auth-additional-check="valinnanhallinta"
+       ng-class="navClass('erillishaku', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/erillishaku"
+       class="tab">
     	<span>{{ t('hakukohdenavigation.erillishaku') || 'Erillishaku' }}</span>
     </a>
 </div>
