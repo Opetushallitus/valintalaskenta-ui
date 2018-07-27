@@ -7,10 +7,7 @@ angular.module('valintalaskenta')
                     return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
                         .then(function (ataruHakemukset) {
                             if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
-                            return ataruHakemukset.map(function (hakemus) {
-                                hakemus.personOid = hakemus.henkiloOid;
-                                return hakemus;
-                            });
+                            return ataruHakemukset;
                         });
                 } else {
                     console.log('Getting applications from hakuApp.');

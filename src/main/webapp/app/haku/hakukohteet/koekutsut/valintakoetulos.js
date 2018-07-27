@@ -97,10 +97,7 @@
             HakuModel.promise.then(function(hakuModel) {
                 if (hakuModel.hakuOid.ataruLomakeAvain) {
                     AtaruApplications.get({hakemusOids: puuttuvienHakemustenOidit}, function(puuttuvatHakemukset) {
-                        kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset.map(function(hakemus) {
-                            hakemus.personOid = hakemus.henkiloOid;
-                            return hakemus;
-                        }), hakemukset));
+                        kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset, hakemukset));
                     }, function() {
                         model.errors.push("Hakukohteen ulkopuolisten osallistujien haku Atarusta epäonnistui");
                         kaikkiTarvittavatHakemukset.resolve(hakemukset);

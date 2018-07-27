@@ -83,7 +83,7 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
     var processAtaruApplications = function(applications, persons, hakukohdeOid) {
         return applications.map(function(application) {
             var person = persons.filter(function(person) {
-                return person.oidHenkilo === application.henkiloOid;
+                return person.oidHenkilo === application.personOid;
             })[0];
 
             var hakutoive;
@@ -132,7 +132,7 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
                 AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},
                     function(applications) {
                         var hakijaOids = _.uniq(applications.map(function(application) {
-                            return application.henkiloOid;
+                            return application.personOid;
                         }));
 
                         HenkiloPerustietosByHenkiloOidList.post(hakijaOids)

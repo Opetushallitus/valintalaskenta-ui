@@ -106,11 +106,7 @@
                     return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
                         .then(function(ataruHakemukset) {
                             if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
-                            model.hakeneet = ataruHakemukset.map(function(hakemus) {
-                                hakemus.personOid = hakemus.henkiloOid;
-                                return hakemus;
-                            });
-
+                            model.hakeneet = ataruHakemukset;
                             return true;
                         });
                 } else {
@@ -119,7 +115,6 @@
                         .then(function(result) {
                             if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
                             model.hakeneet = result;
-
                             return false;
                         });
                 }

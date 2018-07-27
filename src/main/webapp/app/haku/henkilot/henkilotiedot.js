@@ -75,7 +75,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 var hakemus = result[0];
                 return {
                     oid: hakemus.oid,
-                    personOid: hakemus.henkiloOid,
+                    personOid: hakemus.personOid,
                     lahiosoite: hakemus.lahiosoite,
                     postinumero: hakemus.postinumero,
                     pohjakoulutustoinenasteKoodiarvo: null,

@@ -666,20 +666,11 @@ app.factory('AtaruApplications', function($resource) {
     {
       hakuOid: "@hakuOid",
       hakukohdeOid: "@hakukohdeOid",
-      hakemusOids: "@hakemusOids"
+      hakemusOids: "@hakemusOids",
+      name: "@name"
     }, {
       get: {method: "GET", isArray: true, cache: true}
     });
-});
-
-app.factory('AtaruApplicationsList', function($resource) {
-    return $resource(window.url("ataru.applications.list"),
-        {
-            hakuOid: "@hakuOid",
-            name: "@name"
-        }, {
-            get: {method: "GET", isArray: true, cache: true}
-        });
 });
 
 app.factory('Henkilot', function($resource) {

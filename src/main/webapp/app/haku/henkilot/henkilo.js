@@ -1,5 +1,5 @@
 var app = angular.module('valintalaskenta');
-app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplicationsList) {
+app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplications) {
     function enrichWithName(hakemukset) {
         var personOids = hakemukset.map(function (h) { return h.personOid; });
         return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function (henkilot) {
@@ -27,7 +27,7 @@ app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, Hen
     }
 
     function getAtaruHakemukset(hakuOid, start, n, q) {
-        return AtaruApplicationsList.get({hakuOid: hakuOid, name: q}).$promise.then(function(hakemukset) {
+        return AtaruApplications.get({hakuOid: hakuOid, name: q}).$promise.then(function(hakemukset) {
             return {
                 results: hakemukset.slice(start, start + n),
                 totalCount: hakemukset.length
