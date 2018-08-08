@@ -823,9 +823,9 @@ app.factory('VtsVastaanottopostiLahetetty', function($resource) {
 });
 
 app.factory('VtsVastaanottopostiLahetaUudelleen', function($resource) {
-    return $resource(plainUrl("valinta-tulos-service.vastaanottoposti.laheta.uudelleen", ":hakukohdeOid"),
+    return $resource(plainUrl("valinta-tulos-service.vastaanottoposti.laheta.uudelleen", ":hakemusOid"),
         {
-            hakukohdeOid: "@hakukohdeOid"
+            hakemusOid: "@hakemusOid"
         }, {
             delete: {method: "DELETE", cache: false}
         });

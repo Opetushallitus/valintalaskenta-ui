@@ -409,7 +409,7 @@ angular.module('valintalaskenta')
                                         );
                                         hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
                                         hakemus.isMaksuvelvollinen = _.indexOf(eligibilities, hakemus.hakemusOid) !== -1;
-                                        hakemus.vastaanottopostiSent = lahetetytVastaanottoPostit.indexOf(hakemus.oid) > 0;
+                                        hakemus.vastaanottopostiSent = lahetetytVastaanottoPostit.indexOf(hakemus.hakemusOid) > 0;
                                         if (hakemus.isMaksuvelvollinen) {
                                             var lukuvuosimaksu = _.find(lukuvuosimaksut, {"personOid": hakemus.hakijaOid});
                                             if (lukuvuosimaksu) {
@@ -1174,7 +1174,7 @@ angular.module('valintalaskenta')
             };
 
             $scope.resendVastaanottoposti = function(hakemus) {
-                VtsVastaanottopostiLahetaUudelleen.delete({hakemusOid: hakemus.oid}).$promise
+                VtsVastaanottopostiLahetaUudelleen.delete({hakemusOid: hakemus.hakemusOid}).$promise
                     .catch(function(err) { console.log(err) });
                 hakemus.vastaanottopostiSent = false;
             }
