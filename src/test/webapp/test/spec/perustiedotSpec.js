@@ -24,9 +24,10 @@ describe('Perustiedot', function() {
             addTestHook(httpFixtures().hakukohde37731636579)()
             addTestHook(httpFixtures().hakukohde37731636579Tila)()
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
-             addTestHook(valintatulosFixture)()
+            addTestHook(valintatulosFixture)()
             addTestHook(commonFixtures())()
             addTestHook(perustiedotFixtures())()
+            addTestHook(vastaanottoPostiSentFixture())()
 
             page.openPage(done);
         });

@@ -271,6 +271,11 @@
                                              ng-show="hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid]">
                                             {{hakemus.hyvaksymiskirjeLahetetty | date:'dd.MM.yyyy'}}
                                         </div>
+                                        <button class="btn btn-default btn-sm"
+                                                ng-show="hakemus.vastaanottopostiSent"
+                                                ng-click="resendVastaanottoposti(hakemus)">
+                                            Lähetä vastaanottoposti uudelleen
+                                        </button>
                                     </div>
                                 </td>
                                 <td ng-show="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)" data-title="(t('sijoitteluntulos.maksuntila') || 'Maksun tila')">

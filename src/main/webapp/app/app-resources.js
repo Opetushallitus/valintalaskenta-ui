@@ -810,6 +810,27 @@ app.factory('VtsSijoittelunTulos', function($resource) {
 });
 
 
+app.factory('VtsVastaanottopostiLahetetty', function($resource) {
+    return $resource(plainUrl("valinta-tulos-service.vastaanottoposti.lahetetty",
+        {
+            hakukohdeOid: ":hakukohdeOid"
+        }),
+        {
+            hakukohdeOid: "@hakukohdeOid"
+        }, {
+            get: {method: "GET", cache: false, isArray: true}
+        });
+});
+
+app.factory('VtsVastaanottopostiLahetaUudelleen', function($resource) {
+    return $resource(plainUrl("valinta-tulos-service.vastaanottoposti.laheta.uudelleen", ":hakukohdeOid"),
+        {
+            hakukohdeOid: "@hakukohdeOid"
+        }, {
+            delete: {method: "DELETE", cache: false}
+        });
+});
+
 app.factory('VtsLatestSijoitteluajoHakukohde', function($resource) {
     return $resource(plainUrl("valinta-tulos-service.sijoittelu.sijoitteluajo.hakukohde",
         ":hakuOid", "latest", ":hakukohdeOid"),

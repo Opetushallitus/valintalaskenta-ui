@@ -75,6 +75,13 @@ function perustiedotFixtures() {
     }
 }
 
+function vastaanottoPostiSentFixture() {
+    return function() {
+        var httpBackend = testFrame().httpBackend
+        httpBackend.when('GET', /.*valinta-tulos-service\/auth\/vastaanottoposti.*/).respond(200, []);
+    }
+}
+
 var serviceUrls = {
     hakukohde: function (oid) {
         return new RegExp(".*/valintaperusteet-service/resources/hakukohde/" + oid + "/valintaryhma$")
