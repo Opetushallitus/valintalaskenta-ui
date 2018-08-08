@@ -266,6 +266,11 @@
                                          ng-show="tulos.hyvaksymiskirjeLahetetty">
                                         {{tulos.hyvaksymiskirjeLahetetty | date:'dd.MM.yyyy'}}
                                     </div>
+                                    <button class="btn btn-default btn-sm"
+                                            ng-show="hakemus.vastaanottopostiSent"
+                                            ng-click="resendVastaanottoposti(hakemus)">
+                                        {{ t('sijoitteluntulos.lahetaVastaanottopostiUudelleen') || 'Lähetä vastaanottoposti uudelleen' }}
+                                    </button>
                                 </div>
                             </td>
                             <td ng-show="getHakutyyppi() == 'KORKEAKOULU'" data-title="(t('sijoitteluntulos.maksuntila') || 'Maksun tila')">
