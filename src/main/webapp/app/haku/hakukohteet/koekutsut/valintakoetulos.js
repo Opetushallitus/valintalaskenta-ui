@@ -48,7 +48,7 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
 			model.hakukohteenValintakokeet = [];
 
 			$q.all([
-				HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid}).$promise,
+				HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid}).$promise, // PETAR
 				HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise,
 				Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}).$promise
 			]).then(function(data) {
@@ -177,7 +177,7 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
                     model.loading = false;
 				});
 			}).catch(function (e) {
-                model.errors.push(e.data);
+                model.errors.push(e.data);  // PETAR probably this is the place where we jump when error 500 comes
                 model.loading = false;
 			});
 		};

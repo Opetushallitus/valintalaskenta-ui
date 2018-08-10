@@ -14,8 +14,8 @@
     <a ng-if="!hakuModel.hakuOid.erillishaku" auth-additional-check="valintalaskenta" auth="crudOph" auth-service="APP_VALINTOJENTOTEUTTAMINEN" ng-class="navClass('valinnanhallinta', 5)" auth-kk-user="true" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valinnanhallinta" class="tab">
         <span>{{ t('hakukohdenavigation.valinnanhallinta') || 'Valinnan hallinta' }}</span>
     </a>
-
-    <a auth-additional-check="valintakoekutsut" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
+<!-- PETAR -->
+    <a ng-show="model.errors.length == 0" auth-additional-check="valintakoekutsut" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
         <span>{{ t('hakukohdenavigation.valintakoekutsut') || 'Valintakoekutsut' }}</span>
     </a>
 
