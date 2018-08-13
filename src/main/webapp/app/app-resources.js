@@ -861,7 +861,7 @@ app.factory('Valintakoe', function($resource) {
         }
     );
 });
-app.factory('HakukohdeValintakoe', function($resource) { // PETAR this is used to fetch hakukohde_viite
+app.factory('HakukohdeValintakoe', function($resource) {
         return $resource(plainUrl("valintaperusteet-service.hakukohde.valintakoe", ":hakukohdeOid"),
         {
             hakukohdeOid: "@hakukohdeOid"
