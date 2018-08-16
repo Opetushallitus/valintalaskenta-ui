@@ -292,6 +292,11 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                     }
 
                 });
+            } else if (attrs.authHakuTarjoajaUser) {
+              HakuModel.refreshIfNeeded($routeParams.hakuOid).then(function () {
+              var tarjoajaOid = HakuModel.hakuOid.organisaatioOids[0];
+              handleOrgAuth(tarjoajaOid);
+              });
             } else if ($routeParams.hakukohdeOid) {
                 HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
                     $timeout(function () {
@@ -304,11 +309,6 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                         });
                     }
                 });
-            } else if (attrs.authTarjoajaOrgUser) {
-              HakuModel.refreshIfNeeded($routeParams.hakuOid).then(function () {
-                var tarjoajaOid = HakuModel.hakuOid.organisaatioOids[0];
-                handleOrgAuth(tarjoajaOid);
-              });
             } else {
                 $timeout(function () {
                   handleOphAuth()
