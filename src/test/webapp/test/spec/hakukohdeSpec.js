@@ -3,12 +3,8 @@ describe('Hakukohde valinta näkymä', function() {
     var page = hakukohdePage(hakuOid);
 
     beforeEach(function (done) {
-        addTestHook(tarjontaFixtures)();
-
-        /*
-            other fixtures come here
-        */
-
+        addTestHook(parametritFixtures)();
+        addTestHook(commonFixtures())();
         page.openPage(done);
     });
 
@@ -22,7 +18,8 @@ describe('Hakukohde valinta näkymä', function() {
         it('ei näyttää "Valintakoekutsut" välilehden', seqDone(
             wait.forAngular,
             function () {
-                // expect(nayta_kaikkiPage().allStudentsTable().length).to.equal(1)
+   //             expect(page.hakukohdelista().length).toBe(1);
+                expect(page.title().html()).to.contain("Valintojen toteuttaminen");
             }
         ));
     });

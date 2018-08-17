@@ -12,7 +12,7 @@
 
 			    <li selectable tabindex="{{$index}}" ng-class="hakukohdeOid === hakukohde.oid && hakukohdeOid !== undefined ? 'selected' : ''" ng-repeat="hakukohde in model.hakukohteet">
 
-			        <a ng-click="showHakukohde(hakukohde)">
+			        <a ng-click="showHakukohde(hakukohde)" class="hakukohde-item">
 			            <span class="icon file"></span>
 			            <span class="node">{{hakukohdeNimiService.getTarjoajaNimi(hakukohde)}}</span>
 			            <br>

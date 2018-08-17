@@ -8,9 +8,11 @@ function hakukohdePage(hakuOid) {
         });
 
     var pageFunctions = {
-        hakukohdeTable: function () {
-            var tmp = S("#hakukohdelista").first();
-            return tmp;
+        hakukohdelista: function () {
+            return S("#hakukohdelista");
+        },
+        title: function () {
+            return S("h1").first();
         },
         openPage: function (done) {
             return openHakukohdePage()
@@ -25,9 +27,3 @@ function hakukohdePage(hakuOid) {
     };
     return pageFunctions;
 }
-
-hakukohdeSelectors = initSelectors({
-    title: function() {
-        return "h1";
-    }
-});
