@@ -18,8 +18,8 @@ describe('Hakukohde valinta näkymä', function() {
         it('ei näyttää "Valintakoekutsut" välilehden', seqDone(
             wait.forAngular,
             function () {
-   //             expect(page.hakukohdelista().length).toBe(1);
                 expect(page.title().html()).to.contain("Valintojen toteuttaminen");
+//                expect(page.hakukohdelista().length).toBe(1);
             }
         ));
     });

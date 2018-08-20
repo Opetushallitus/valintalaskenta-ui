@@ -3,7 +3,8 @@ function hakukohdePage(hakuOid) {
         return location.host.indexOf('localhost') > -1;
     }
     var openHakukohdePage = openPage(
-        "/valintalaskenta-ui/app/index.html#/haku/" + hakuOid + "/hakukohde", function () {
+        "/valintalaskenta-ui/app/index.html#/haku/" + hakuOid + "/hakukohde",
+        function () {
             return S("#hakukohdelista").length === 1;
         });
 
@@ -17,7 +18,7 @@ function hakukohdePage(hakuOid) {
         openPage: function (done) {
             return openHakukohdePage()
                 .then(wait.until(function () {
-                    var pageReady = pageFunctions.hakukohdeTable().length === 1;
+                    var pageReady = pageFunctions.hakukohdelista().length === 1;
                     if (pageReady) {
                         done();
                     }
