@@ -91,7 +91,7 @@ function tarjontaFixtures() {
         }, "accessRights": {}, "status": "OK"
     }
 
-    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/1\.2\.246\.562\.29\.11735171271/).respond(haku)
+    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/1\.2\.246\.562\.29\.11735171271$/).respond(haku)
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/HAKU1/).respond(haku)
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/(1\.2\.246\.562\.20\.37731636579|1\.2\.246\.562\.11\.00000000220|1\.2\.246\.562\.20\.66977493197)/).respond(hakukohde)
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/1\.2\.246\.562\.29\.90697286251/).respond({
@@ -532,5 +532,6 @@ function tarjontaFixtures() {
         }]
     }
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/HAKUOID\/hakukohdeTulos/).respond(hakukohdeTulos)
+    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/1\.2\.246\.562\.29\.11735171271\/hakukohdeTulos/).respond(hakukohdeTulos)
 
 }
