@@ -21,6 +21,7 @@ angular.module('valintalaskenta')
                 this.readyToQueryForNextPage = true;
                 this.deferred = undefined;
                 this.hakukohteetVisible = !$routeParams.hakukohdeOid;
+                this.valintakoekutsutTabVisible = false;
 
                 this.getCount = function () {
                     if (this.hakukohteet === undefined) {
@@ -115,9 +116,9 @@ angular.module('valintalaskenta')
 
 angular.module('valintalaskenta').
     controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'HakuModel',
-        'HakukohdeNimiService', 'Utility',
+        'HakukohdeNimiService', 'Utility', 'HakukohdeValintakoe',
                                 function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, HakuModel,
-                                          HakukohdeNimiService, Utility) {
+                                          HakukohdeNimiService, Utility, HakukohdeValintakoe) {
             "use strict";
             HakuModel.init($routeParams.hakuOid).then(function () {
                 $scope.hakuOid = $routeParams.hakuOid;
@@ -139,6 +140,15 @@ angular.module('valintalaskenta').
                 };
 
                 $scope.showHakukohde = function (hakukohde) {
+                    function valintakoekutsutTabVisible(hakukohdeOid) {
+                        var valintakoeFound = false;
+                        HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid},
+                            function() {
+                                valintakoeFound = true;
+                            });
+                        return valintakoeFound;
+                    }
+                    $scope.model.valintakoekutsutTabVisible = valintakoekutsutTabVisible(hakukohde.hakukohdeOid);
                     $rootScope.selectedHakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(hakukohde);
                     $scope.model.hakukohteetVisible = false;
                     HakukohteetModel.hakukohteetVisible = $scope.hakukohteetVisible;

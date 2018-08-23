@@ -15,7 +15,7 @@
         <span>{{ t('hakukohdenavigation.valinnanhallinta') || 'Valinnan hallinta' }}</span>
     </a>
 
-    <a ng-if="true === true" auth-additional-check="valintakoekutsut" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
+    <a ng-if="hakukohdeModel.valintakoekutsutTabVisible" auth-additional-check="valintakoekutsut" auth="read" auth-service="APP_VALINTOJENTOTEUTTAMINEN" auth-hakukohde-org="hakukohdeModel.hakukohde" auth-kk-user="true" ng-class="navClass('valintakoetulos', 5)" href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/valintakoetulos" class="tab">
         <span>{{ t('hakukohdenavigation.valintakoekutsut') || 'Valintakoekutsut' }}</span>
     </a>
 
