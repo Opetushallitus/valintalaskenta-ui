@@ -35,7 +35,7 @@ function valintakokeetFixtures(valintakokeet) {
             "lapsihakukohde": false
         };
 
-        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|HAKUKOHDEOID)\/valintaryhma/).respond(haku);
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|HAKUKOHDEOID|1\.2\.246\.562\.20\.25463238029)\/valintaryhma/).respond(haku);
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/avaimet\/HAKUKOHDEOID/).respond([{
             "tunniste":"kielikoe_fi",
             "osallistuminenTunniste":"kielikoe_fi-OSALLISTUMINEN",

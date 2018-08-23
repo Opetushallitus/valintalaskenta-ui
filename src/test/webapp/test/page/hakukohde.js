@@ -32,6 +32,8 @@ hakukohde = initSelectors({
     hakukohdeToolbarToggle: "#toolbartoggle-btn",
     hakukohdeItems: "#toolbarcontent li",
     hakukohdeItem: function (hakukohdeIndex) {
-        return "#toolbarcontent li[tabindex='" + hakukohdeIndex + "']";
-    }
+        return "#toolbarcontent li[tabindex='" + hakukohdeIndex + "'] a";
+    },
+    hakukohdeNav: ".hakukohdeNav",
+    valintakoekutsutTab: ".hakukohdeNav a span:contains('Valintakoekutsut')"
 });

@@ -58,6 +58,7 @@ function commonFixtures(roles) {
         httpBackend.when('GET', /.*maxinactiveinterval.*/).respond();
         httpBackend.when('GET', /.*\/valinta-tulos-service\/auth\/login/).respond();
         httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/valintaperusteet\/hakukohde\/.*\/kayttaaValintalaskentaa/).respond({kayttaaValintalaskentaa: true});
+        httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/valintakoe\/hakutoive\/.*\//).respond([]);
         httpBackend.whenGET(/\.html$/).passThrough();
     }
 }
@@ -69,6 +70,7 @@ function perustiedotFixtures() {
         //GET /haku-app/applications/listfull?aoOid=1.2.246.562.20.37731636579&appState=ACTIVE&appState=INCOMPLETE&asId=1.2.246.562.29.11735171271&rows=100000
         //GET /haku-app/applications/listfull?aoOid=1.2.246.562.20.37731636579&appState=ACTIVE&appState=INCOMPLETE&asId=1.2.246.562.29.11735171271&rows=100000
         httpBackend.when('POST', /.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/myohastyneet\/haku\/1\.2\.246\.562\.29\.11735171271\/hakukohde\/1\.2\.246\.562\.20\.37731636579.*/).respond(200, []);
+        httpBackend.when('POST', /.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/myohastyneet\/haku\/1\.2\.246\.562\.29\.11735171271\/hakukohde\/1\.2\.246\.562\.20\.25463238029.*/).respond(200, []);
     }
 }
 
