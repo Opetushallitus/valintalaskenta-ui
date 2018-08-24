@@ -214,6 +214,7 @@ function tarjontaFixtures() {
     })
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/HAKUKOHDEOID/).respond(haku)
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/HAKUKOHDE1/).respond(haku)
+    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO/).respond(haku)
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/1\.2\.246\.562\.20\.18097797874/).respond({
         "status": "OK",
         "result": {
@@ -528,9 +529,26 @@ function tarjontaFixtures() {
             "koulutusVuosi": 0,
             "opetuskielet": [
                 "kieli_fi"
-            ]
-        }]
-    }
+            ]},
+            {
+                "hakukohdeOid": "HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO",
+                "tarjoajaOid": "1.2.246.562.10.60222091211",
+                "tarjoajaNimi": {
+                    "fi": "Ahlmanin ammatti- ja aikuisopisto"
+                },
+                "hakukohdeNimi": {
+                    "fi": "Hotelli-, ravintola- ja catering-alan perustutkinto, yes syöttö, yo",
+                    "sv": "Grundexamen inom hotell-, restaurang- och cateringbranschen, yes syöttö, st",
+                    "en": "Hotelli-, ravintola- ja catering-alan perustutkinto, yes syöttö, yo"
+                },
+                "hakukohdeTila": "JULKAISTU",
+                "hakuVuosi": 0,
+                "koulutusVuosi": 0,
+                "opetuskielet": [
+                    "kieli_fi"
+                ]}
+        ]
+    };
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/HAKUOID\/hakukohdeTulos/).respond(hakukohdeTulos)
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/1\.2\.246\.562\.29\.11735171271\/hakukohdeTulos/).respond(hakukohdeTulos)
 

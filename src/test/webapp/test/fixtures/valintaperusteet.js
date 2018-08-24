@@ -21,6 +21,9 @@ function valintakokeetFixtures(valintakokeet) {
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|1\.2\.246\.562\.20\.37731636579|)\/valintakoe/).respond(
             kokeet
         );
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO|)\/valintakoe/).respond(
+            kokeet
+        );
 
         var haku = {
             "nimi": null,
@@ -35,7 +38,7 @@ function valintakokeetFixtures(valintakokeet) {
             "lapsihakukohde": false
         };
 
-        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|HAKUKOHDEOID|1\.2\.246\.562\.20\.25463238029)\/valintaryhma/).respond(haku);
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|HAKUKOHDEOID|1\.2\.246\.562\.20\.25463238029|HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO)\/valintaryhma/).respond(haku);
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/avaimet\/HAKUKOHDEOID/).respond([{
             "tunniste":"kielikoe_fi",
             "osallistuminenTunniste":"kielikoe_fi-OSALLISTUMINEN",
@@ -46,6 +49,6 @@ function valintakokeetFixtures(valintakokeet) {
             "min": 0,
             "max": 100
         }]);
-
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/avaimet\/HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO/).respond([]);
     }
 }

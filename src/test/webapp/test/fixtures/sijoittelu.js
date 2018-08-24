@@ -1190,6 +1190,7 @@ function sijoitteluAjoFixtures(valintaesitysHyvaksytty) {
     //valinta-tulos-service/auth/sijoitteluntulos/1.2.246.562.29.95390561488/sijoitteluajo/latest/hakukohde/1.2.246.562.20.44161747595
     httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoitteluntulos\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.66977493197/).respond(json2);
     httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoitteluntulos\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.25463238029/).respond(json2);
+    httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoitteluntulos\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO/).respond(json2);
     //httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoitteluntulos\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.11\.00000000220/).respond(json2);
     httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoitteluntulos\/1\.2\.246\.562\.29\.95390561488\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.44161747595/).respond(json2);
     httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoitteluntulos\/1\.2\.246\.562\.29\.90697286251\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.18097797874/).respond(json2);

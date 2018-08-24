@@ -157,7 +157,7 @@ function valintalaskentakoostepalveluFixtures() {
         "hyvaksyPeruuntunut": true
     }];
     httpBackend.whenPOST(/.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/myohastyneet\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874/).respond(200,data);
-    httpBackend.whenPOST(/.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/myohastyneet\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874/).respond(200,data);
+    httpBackend.whenPOST(/.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/myohastyneet\/haku\/1\.2\.246\.562\.29\.11735171271\/hakukohde\/HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO/).respond(200,data);
     httpBackend.whenPOST(/.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/tilahakijalle\/haku\/.*\/hakukohde\/.*\/valintatapajono\/.*/).respond(200,'[]');
 
 }

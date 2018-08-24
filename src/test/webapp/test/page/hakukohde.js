@@ -35,5 +35,6 @@ hakukohde = initSelectors({
         return "#toolbarcontent li[tabindex='" + hakukohdeIndex + "'] a";
     },
     hakukohdeNav: ".hakukohdeNav",
-    valintakoekutsutTab: ".hakukohdeNav a span:contains('Valintakoekutsut')"
+    valintakoekutsutTab: ".hakukohdeNav a span:contains('Valintakoekutsut')",
+    pistesyottoTab: ".hakukohdeNav a span:contains('Pistesyöttö')"
 });
