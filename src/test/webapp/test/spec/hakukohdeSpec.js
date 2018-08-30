@@ -1,10 +1,6 @@
 describe('Hakukohde valinta näkymä', function() {
     var hakuOid = "1.2.246.562.29.11735171271";
-    var hakukohdeOid1 = "1.2.246.562.20.25463238029";
-    var hakukohdeOid2 = "HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO";
     var VALINTAKOE1 = "VALINTAKOE1";
-    var VALINTAKOE2 = "VALINTAKOE2";
-    var VALINTAKOE3 = "VALINTAKOE3";
     var page = hakukohdePage(hakuOid);
 
     beforeEach(function (done) {
@@ -44,18 +40,7 @@ describe('Hakukohde valinta näkymä', function() {
     describe('Kun paina hakukohten jolla ei ole hakukohde_viite rivia', function () {
         it('ei näyttää "Valintakoekutsut" välilehden', seqDone(
             wait.forAngular,
-//            click(hakukohde.hakukohdeToolbarToggle), // for some reason, it's already expanded
             click(hakukohde.hakukohdeItem(0)),
-            visible(hakukohde.hakukohdeNav),
-            function () {
-                expect(hakukohde.valintakoekutsutTab().length).to.equal(0);
-                expect(hakukohde.pistesyottoTab().length).to.equal(1);
-            }
-        ));
-
-        it('näyttää "Pistesyöttö" välilehtiä jos...', seqDone(
-            wait.forAngular,
-            click(hakukohde.hakukohdeItem(1)),
             visible(hakukohde.hakukohdeNav),
             function () {
                 expect(hakukohde.valintakoekutsutTab().length).to.equal(0);
