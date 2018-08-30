@@ -140,7 +140,7 @@ angular.module('valintalaskenta').
                 };
 
                 $scope.showHakukohde = function (hakukohde) {
-                    function valintakoekutsutTabVisible(hakukohdeOid) {
+                    function isValintakoekutsutTabVisible(hakukohdeOid) {
                         var valintakoeFound = false;
                         HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid},
                             function() {
@@ -148,7 +148,7 @@ angular.module('valintalaskenta').
                             });
                         return valintakoeFound;
                     }
-                    $scope.model.valintakoekutsutTabVisible = valintakoekutsutTabVisible(hakukohde.hakukohdeOid);
+                    $scope.model.valintakoekutsutTabVisible = isValintakoekutsutTabVisible(hakukohde.hakukohdeOid);
                     $rootScope.selectedHakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(hakukohde);
                     $scope.model.hakukohteetVisible = false;
                     HakukohteetModel.hakukohteetVisible = $scope.hakukohteetVisible;
