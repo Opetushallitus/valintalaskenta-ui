@@ -23,7 +23,7 @@ window.urls.addProperties({
     "dokumenttipalvelu-service.dokumentit.lataa" : "/dokumenttipalvelu-service/resources/dokumentit/lataa/$1",
     "dokumenttipalvelu-service.session.maxinactiveinterval" : "/dokumenttipalvelu-service/resources/session/maxinactiveinterval",
 
-    "seuranta-service.dokumenttiseuranta" : "/seuranta-service/resources/dokumenttiseuranta/$1",
+    "seuranta-service.dokumenttiseuranta" : "/seuranta-service/resources/dokumentinseuranta/$1",
     "seuranta-service.session.maxactiveinterval" : "/seuranta-service/resources/session/maxinactiveinterval",
     "seuranta-service.seuranta.hae.tyyppi" : "/seuranta-service/resources/seuranta/hae/$1/tyyppi/$2",
     "seuranta-service.seuranta.lataa" : "/seuranta-service/resources/seuranta/lataa/$1",
