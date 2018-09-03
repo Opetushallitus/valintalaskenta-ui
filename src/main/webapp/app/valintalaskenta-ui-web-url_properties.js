@@ -135,7 +135,7 @@ window.urls.addProperties({
     "haku-app.applications.list" : "/haku-app/applications/list",
     "haku-app.applications.listfull" : "/haku-app/applications/listfull",
     "ataru.application.review": "/lomake-editori/applications/haku/$1?application-key=$2",
-    "ataru.applications" : "/lomake-editori/api/external/applications",
+    "ataru.applications" : "/lomake-editori/api/external/valinta-ui",
     "ataru.login": "/lomake-editori/auth/cas",
     "haku-app.virkailija.hakemus.esikatselu" : "/haku-app/virkailija/hakemus/$1/esikatselu/$2",
 

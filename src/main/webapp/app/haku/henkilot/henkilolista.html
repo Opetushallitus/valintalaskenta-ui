@@ -5,15 +5,19 @@
 	<div id="toolbarcontent" class="width-90" ng-show="henkiloittainVisible">
 		<div class="toolbar-decoration">
 			<div class="field-search-containerbox">
-			    <input type="text" class="search" placeholder="{{ t('henkilolista.suodatanimi') || 'Suodata nimen perusteella' }}" ng-model="model.searchWord"/>
-                <p class="margin-vertical-2">{{ t('henkilolista.haettu') || 'Henkilöitä haettu' }} {{model.getCount()}} / {{model.getTotalCount()}}</p>
+			    <input type="text"
+					   class="search"
+					   placeholder="{{ t('henkilolista.suodatanimi') || 'Suodata nimen perusteella' }}"
+					   ng-change="searchWordChanged()"
+					   ng-model="model.searchWord"/>
+                <p class="margin-vertical-2">{{ t('henkilolista.haettu') || 'Henkilöitä haettu' }} {{model.hakemukset.length}} / {{model.totalCount}}</p>
 			</div>
 			<ul class="selectlist" lazy-loading>
 			    <li ng-class="hakemusOid === hakemus.oid ? 'selected' : ''" ng-repeat="hakemus in model.hakemukset">
 			        <a ng-click="showHakemus(hakemus)" id="id_{{hakemus.oid}}">
 			            <span class="icon file"></span>
 			            <span class="node">
-			                {{model.getName(hakemus)}}
+			                {{hakemus.name}}
 			            </span>
 			        </a>
 			    </li>

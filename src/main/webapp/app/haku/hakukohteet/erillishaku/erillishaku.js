@@ -7,10 +7,7 @@ angular.module('valintalaskenta')
                     return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
                         .then(function (ataruHakemukset) {
                             if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
-                            return ataruHakemukset.map(function (hakemus) {
-                                hakemus.personOid = hakemus.henkiloOid;
-                                return hakemus;
-                            });
+                            return ataruHakemukset;
                         });
                 } else {
                     console.log('Getting applications from hakuApp.');
@@ -52,7 +49,8 @@ angular.module('valintalaskenta')
       $scope.pageSize = 50;
       $scope.deleting = null;
       $scope.ehdollisestiHyvaksyttavissaOlevatOpts = [];
-      $scope.excelEnabled = false;
+      $scope.vieExcelEnabled = false;
+      $scope.tuoExcelEnabled = false;
       $scope.hyvaksymiskirjeetEnabled = false;
       $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
 
@@ -99,11 +97,13 @@ angular.module('valintalaskenta')
       HakuModel.promise.then(function(model) {
         $scope.korkeakoulu = model.korkeakoulu;
         if (model.hakuOid.ataruLomakeAvain) {
-          $scope.excelEnabled = false;
+          $scope.vieExcelEnabled = true;
+          $scope.tuoExcelEnabled = false;
           $scope.hyvaksymiskirjeetEnabled = false;
           $scope.reviewUrlKey = "ataru.application.review";
         } else {
-          $scope.excelEnabled = true;
+          $scope.vieExcelEnabled = true;
+          $scope.tuoExcelEnabled = true;
           $scope.hyvaksymiskirjeetEnabled = true;
           $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
         }

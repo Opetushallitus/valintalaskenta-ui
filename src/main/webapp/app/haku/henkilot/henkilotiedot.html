@@ -15,8 +15,7 @@
 
             <div ng-include="'../common/html/errors.html'"></div>
 			
-            <h1 ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.Sukunimi}},
-                {{model.hakemus.answers.henkilotiedot.Etunimet}}</h1>
+            <h1>{{model.henkilo.sukunimi}}, {{model.henkilo.etunimet}}</h1>
 			
 			<a ng-show="showMuodostaJalkiohjauskirje" ng-click="muodostaJalkiohjauskirje()"
        			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>
@@ -28,20 +27,12 @@
             </button>
             <dl class="margin-top-6">
 
-                <dt ng-show="model.hakemus.answers.henkilotiedot.Henkilotunnus">{{ t('henkilotiedot.henkilotunnus') || 'Henkilötunnus' }}</dt>
-                <dd>{{model.hakemus.answers.henkilotiedot.Henkilotunnus}}</dd>
-                <dt>{{ t('henkilotiedot.hakemuksenoid') || 'hakemuksen oid' }}:</dt>
-                <dd>
-                    <a href="{{url('haku-app.virkailija.hakemus.esikatselu', model.hakuOid, model.hakemus.oid)}}"
-                       target="_blank">
-                        {{model.hakemus.oid}}
-                    </a>
-                </dd>
-                <dt ng-show="model.hakemus.answers.henkilotiedot">{{ t('henkilotiedot.lahiosoite') || 'Lähiosoite' }}</dt>
-                <dd ng-show="model.hakemus.answers.henkilotiedot">{{model.hakemus.answers.henkilotiedot.lahiosoite}},
-                    {{model.hakemus.answers.henkilotiedot.Postinumero}}
-                    {{model.hakemus.answers.henkilotiedot.postitoimipaikka}}
-                </dd>
+                <dt>{{ t('henkilotiedot.henkilotunnus') || 'Henkilötunnus' }}</dt>
+                <dd>{{model.henkilo.henkilotunnus}}</dd>
+                <dt>{{ t('henkilotiedot.hakemuksenoid') || 'Hakemuksen OID' }}:</dt>
+                <dd><a href="{{model.hakemus.link}}" target="_blank">{{model.hakemus.oid}}</a></dd>
+                <dt>{{ t('henkilotiedot.lahiosoite') || 'Lähiosoite' }}</dt>
+                <dd>{{model.hakemus.lahiosoite}}, {{model.hakemus.postinumero}}</dd>
             </dl>
             <div class="clear"></div>
             <div ng-include="'haku/henkilot/taulukot/valintalaskenta.html'" ></div>

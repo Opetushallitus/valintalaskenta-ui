@@ -83,17 +83,25 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
     var processAtaruApplications = function(applications, persons, hakukohdeOid) {
         return applications.map(function(application) {
             var person = persons.filter(function(person) {
-                return person.oidHenkilo === application.henkiloOid;
+                return person.oidHenkilo === application.personOid;
             })[0];
 
-            var hakutoive = application.hakutoiveet.filter(function(h) {
-                return h.hakukohdeOid === hakukohdeOid;
-            })[0];
+            var hakutoive;
+            var hakutoiveNumero;
+            var i = 0;
+            application.hakutoiveet.forEach(function(h) {
+                i += 1;
+                if (h.hakukohdeOid === hakukohdeOid) {
+                  hakutoive = h;
+                  hakutoiveNumero = i;
+                }
+            });
 
             return {
                 maksuvelvollisuus: ataruMaksuvelvollisuus(hakutoive),
                 state: ataruApplicationState(hakutoive),
                 hakukelpoisuus: ataruHakukelpoisuus(hakutoive),
+                hakutoiveNumero: hakutoiveNumero,
                 Etunimet: person.etunimet,
                 Sukunimi: person.sukunimi,
                 personOid: person.oidHenkilo,
@@ -124,7 +132,7 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
                 AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},
                     function(applications) {
                         var hakijaOids = _.uniq(applications.map(function(application) {
-                            return application.henkiloOid;
+                            return application.personOid;
                         }));
 
                         HenkiloPerustietosByHenkiloOidList.post(hakijaOids)

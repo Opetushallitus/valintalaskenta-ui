@@ -28,7 +28,7 @@ app.factory('KoostettuHakemusAdditionalDataForHakemus', function($http) {
     return {
         get: function(query) {
             var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", query.hakemusOid);
-            return $http.get(url).then(function(r) { return r.data; });
+            return $http.get(url, {cache: false}).then(function(r) { return r.data; });
         },
         put: function(query, data) {
             var url = plainUrl("valintalaskentakoostepalvelu.pistesyotto.hakemus", query.hakemusOid);
@@ -666,7 +666,8 @@ app.factory('AtaruApplications', function($resource) {
     {
       hakuOid: "@hakuOid",
       hakukohdeOid: "@hakukohdeOid",
-      hakemusOids: "@hakemusOids"
+      hakemusOids: "@hakemusOids",
+      name: "@name"
     }, {
       get: {method: "GET", isArray: true, cache: true}
     });
@@ -984,6 +985,15 @@ app.factory('OrganizationHierarchy', function ($resource) {
         {oid: "@oid"},
         {get: {method: "GET", cache: true}
     });
+});
+
+app.factory('HenkiloPerustiedot', function ($resource) {
+    return $resource(plainUrl("oppijanumerorekisteri-service.henkilo", ":henkiloOid"),
+        {
+            henkiloOid: "@henkiloOid"
+        }, {
+            get: {method: "GET", cache: false}
+        });
 });
 
 app.factory('HenkiloPerustietosByHenkiloOidList',[ '$http', '$q', '_', function($http, $q, _) {

@@ -88,7 +88,7 @@ function hakemusByOidsFixtures(hakemukset) {
             _.map(hakemukset, function(hakemus) {
             return {
                 "oid": hakemus.hakemusOid,
-                "personOid": "1.2.246.562.24.57650437995",
+                "personOid": hakemus.personOid,
                 "firstNames": "Laskentaa",
                 "lastName": "Ilman",
                 "answers" : {

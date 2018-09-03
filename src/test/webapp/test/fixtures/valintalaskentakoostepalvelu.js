@@ -70,12 +70,12 @@ function koostettuPistetietoKaksiHenkiloaFixtures() {
       });
 }
 
-function koostettuPistetietoGeneroitava(count) {
+function koostettuPistetietoGeneroitava(count, hakija1oid, hakija2oid) {
     var hakuAppPisteFixtures = {
         "valintapisteet": [{
         "applicationAdditionalDataDTO": {
             "oid": "1.2.246.562.11.00002265212",
-            "personOid": "1.2.246.562.24.40242368269",
+            "personOid": hakija1oid,
             "firstNames": "Gösta Testi",
             "lastName": "Friman-Testi",
             "additionalData": {
@@ -107,7 +107,7 @@ function koostettuPistetietoGeneroitava(count) {
         hakuAppPisteFixtures.valintapisteet.push({
             "applicationAdditionalDataDTO": {
                 "oid": "1.2.246.562.11.00002273123" + i,
-                "personOid": "1.2.246.562.24.36316162596" + i,
+                "personOid": hakija2oid,
                 "firstNames": "Keimo Testi " + i,
                 "lastName": "Ahonen-Testi",
                 "additionalData": {
