@@ -430,7 +430,7 @@ angular.module('valintalaskenta')
         }
     };
 
-    var processErillishaku = function(valintatapajono, oidToMaksuvelvollisuus, lukuvuosimaksut) {
+    var processErillishaku = function(valintatapajono, oidToMaksuvelvollisuus, lukuvuosimaksut, lahetetytVastaanottoPostit) {
         addKeinotekoinenOidIfMissing(valintatapajono);
         createTableParamsForValintatapaJono(valintatapajono);
         fetchAndPopulateVastaanottoAikaraja($routeParams.hakuOid, $routeParams.hakukohdeOid, valintatapajono.hakemukset);
@@ -559,7 +559,7 @@ angular.module('valintalaskenta')
         var maksuvelvollisuudet = getMaksuvelvollisuudet(kaikkiHakemukset, $routeParams.hakukohdeOid);
         var lukuvuosimaksut = resolved[2].data;
         var valintatapajono = resolved[3];
-        var lahetetytVastaanottoPostit = o[2];
+        var lahetetytVastaanottoPostit = resolved[4];
         addHakemuksetWithoutValinnantulos(kaikkiHakemukset, valintatapajono);
         enrichHakemuksetWithHakijat(valintatapajono).then(function(valintatapajono) {
             processErillishaku(valintatapajono, maksuvelvollisuudet, lukuvuosimaksut, lahetetytVastaanottoPostit);
