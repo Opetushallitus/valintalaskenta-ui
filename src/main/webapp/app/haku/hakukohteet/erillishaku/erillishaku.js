@@ -34,8 +34,7 @@ angular.module('valintalaskenta')
                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                  ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                  VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
-                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, VtsVastaanottopostiLahetetty,
-                 Valintaesitys, valinnantuloksenHistoriaService)
+                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty)
 {
     "use strict";
 
