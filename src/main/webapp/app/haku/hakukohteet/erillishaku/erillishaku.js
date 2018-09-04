@@ -551,7 +551,7 @@ angular.module('valintalaskenta')
         Hakemukset.get($routeParams.hakuOid, $routeParams.hakukohdeOid),
         Lukuvuosimaksut.get({hakukohdeOid: $routeParams.hakukohdeOid}),
         getErillishaunValinnantulokset(),
-        VtsVastaanottopostiLahetetty.get({hakukohdeOid: hakukohdeOid}).$promise
+        VtsVastaanottopostiLahetetty.get({hakukohdeOid: $routeParams.hakukohdeOid}).$promise
     ]).then(function(resolved) {
         AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function() {
             $scope.updateOrg = true;
