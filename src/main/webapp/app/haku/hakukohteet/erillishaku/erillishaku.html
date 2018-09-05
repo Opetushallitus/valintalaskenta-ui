@@ -267,8 +267,8 @@
                                         {{tulos.hyvaksymiskirjeLahetetty | date:'dd.MM.yyyy'}}
                                     </div>
                                     <button class="btn btn-default btn-sm"
-                                            ng-show="hakemus.vastaanottopostiSent"
-                                            ng-click="resendVastaanottoposti(hakemus)">
+                                            ng-show="tulos.vastaanottopostiSent"
+                                            ng-click="resendVastaanottoposti(tulos)">
                                         {{ t('sijoitteluntulos.lahetaVastaanottopostiUudelleen') || 'Lähetä vastaanottoposti uudelleen' }}
                                     </button>
                                 </div>
