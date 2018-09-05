@@ -8,7 +8,8 @@ angular.module('valintalaskenta')
                         .then(function(ataruHakemukset) {
                             if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
                             return ataruHakemukset.map(function(hakemus) {
-                                hakemus.personOid = hakemus.henkiloOid;
+                                //hakemus.personOid = hakemus.henkiloOid;
+                                hakemus.henkiloOid = hakemus.personOid;
                                 return hakemus;
                             });
                         });
