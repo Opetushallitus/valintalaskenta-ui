@@ -1175,9 +1175,16 @@ angular.module('valintalaskenta')
 
             $scope.resendVastaanottoposti = function(hakemus) {
                 VtsVastaanottopostiLahetaUudelleen.delete({hakemusOid: hakemus.hakemusOid}).$promise
-                    .catch(function(err) { console.log(err) });
-                hakemus.vastaanottopostiSent = false;
+                    .then(function() {
+                        hakemus.vastaanottopostiSent = false
+                        Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys onnistui!", IlmoitusTila.INFO)
+                    })
+                    .catch(function(err) {
+                        console.log(err)
+                        Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys epäonnistui!", IlmoitusTila.ERROR)
+                    });
             }
+
         }]);
 
 app.filter('removeUnderscores', function() {
