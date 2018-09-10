@@ -405,7 +405,12 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
             jonosija: '='
         },
         templateUrl: '../common/html/muutaJarjestyskriteeri.html',
-        controller: function ($scope, $route, JarjestyskriteeriMuokattuJonosija, $modal, LocalisationService) {
+        controller: function ($scope, $route, JarjestyskriteeriMuokattuJonosija, $modal, AuthService, LocalisationService) {
+
+            AuthService.crudOph("APP_VALINTOJENTOTEUTTAMINEN").then(function() {
+                $scope.updateOph = true;
+            });
+
 
             if ($scope.jonosija.tuloksenTila == 'HYVAKSYTTY_HARKINNANVARAISESTI') {
                 $scope.harkinnanvarainen = true;
