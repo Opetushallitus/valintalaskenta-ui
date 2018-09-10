@@ -481,7 +481,7 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
 
         $scope.user = UserModel;
         UserModel.refreshIfNeeded().then(function() {
-            $scope.jkmuokkaus = UserModel.isKKUser;
+            $scope.jkmuokkaus = UserModel.isOphUser;
         });
 
 
