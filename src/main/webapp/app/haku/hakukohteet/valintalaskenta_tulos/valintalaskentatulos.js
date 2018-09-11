@@ -481,7 +481,10 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
 
         $scope.user = UserModel;
         UserModel.refreshIfNeeded().then(function() {
-            $scope.jkmuokkaus = UserModel.isOphUser;
+            // BUG-1849: check organization access:
+            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function() {
+                $scope.jkmuokkaus = true;
+            });
         });
 
 
