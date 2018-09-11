@@ -476,16 +476,14 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
         hakukohdeModelpromise.then(function() {
             AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function() {
                 $scope.crudOrg = true;
-            });
-        });
-
-        $scope.user = UserModel;
-        UserModel.refreshIfNeeded().then(function() {
-            // BUG-1849: check organization access:
-            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function() {
                 $scope.jkmuokkaus = true;
             });
         });
+
+        //$scope.user = UserModel;
+        //UserModel.refreshIfNeeded().then(function() {
+        //    $scope.jkmuokkaus = UserModel.isKKUser;
+        //});
 
 
         $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
