@@ -480,12 +480,6 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
             });
         });
 
-        //$scope.user = UserModel;
-        //UserModel.refreshIfNeeded().then(function() {
-        //    $scope.jkmuokkaus = UserModel.isKKUser;
-        //});
-
-
         $scope.valintatapajonoVientiXlsx = function(valintatapajonoOid) {
             ValintatapajonoVienti.vie({
                     valintatapajonoOid: valintatapajonoOid,
