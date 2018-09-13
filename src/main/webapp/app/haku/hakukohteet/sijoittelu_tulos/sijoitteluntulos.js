@@ -409,7 +409,7 @@ angular.module('valintalaskenta')
                                         );
                                         hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
                                         hakemus.isMaksuvelvollinen = _.indexOf(eligibilities, hakemus.hakemusOid) !== -1;
-                                        hakemus.vastaanottopostiSent = lahetetytVastaanottoPostit.indexOf(hakemus.hakemusOid) > 0;
+                                        hakemus.vastaanottopostiSent = lahetetytVastaanottoPostit.indexOf(hakemus.hakemusOid) > -1;
                                         if (hakemus.isMaksuvelvollinen) {
                                             var lukuvuosimaksu = _.find(lukuvuosimaksut, {"personOid": hakemus.hakijaOid});
                                             if (lukuvuosimaksu) {

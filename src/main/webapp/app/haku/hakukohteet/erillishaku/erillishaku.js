@@ -448,7 +448,7 @@ angular.module('valintalaskenta')
                 hakemus.maksuvelvollisuus = 'NOT_CHECKED';
                 hakemus.loytyiHakemuksista = false;
             }
-            hakemus.vastaanottopostiSent = lahetetytVastaanottoPostit.indexOf(hakemus.hakemusOid) > 0;
+            hakemus.vastaanottopostiSent = lahetetytVastaanottoPostit.indexOf(hakemus.hakemusOid) > -1;
             if ('REQUIRED' === hakemus.maksuvelvollisuus) {
                 hakemus.isMaksuvelvollinen = true;
                 var lukuvuosimaksu = _.find(lukuvuosimaksut, {"personOid": hakemus.hakijaOid});
