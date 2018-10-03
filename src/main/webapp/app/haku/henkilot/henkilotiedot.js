@@ -96,11 +96,11 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             haku.ataruLomakeAvain ? "ATARU" : "HAKU_APP"
         ).then(function (henkilo) {
             return {
-                oid: henkilo.oidHenkilo,
-                sukunimi: henkilo.sukunimi,
-                etunimet: henkilo.etunimet,
-                asiointikieli: (henkilo.asiointiKieli || {}).kieliTyyppi,
-                henkilotunnus: henkilo.hetu
+                oid: henkilo.data.oidHenkilo,
+                sukunimi: henkilo.data.sukunimi,
+                etunimet: henkilo.data.etunimet,
+                asiointikieli: (henkilo.data.asiointiKieli || {}).kieliTyyppi,
+                henkilotunnus: henkilo.data.hetu
             }
         });
     }
