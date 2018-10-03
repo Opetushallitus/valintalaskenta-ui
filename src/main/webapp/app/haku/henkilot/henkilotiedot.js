@@ -90,17 +90,19 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             });
     }
 
-    function getHenkilo(hakemus) {
-        return HenkiloPerustiedot.get({henkiloOid: hakemus.personOid}).$promise
-            .then(function (henkilo) {
-                return {
-                    oid: henkilo.oidHenkilo,
-                    sukunimi: henkilo.sukunimi,
-                    etunimet: henkilo.etunimet,
-                    asiointikieli: (henkilo.asiointiKieli || {}).kieliTyyppi,
-                    henkilotunnus: henkilo.hetu
-                }
-            });
+    function getHenkilo(haku, hakemus) {
+        return HenkiloPerustiedot.get(
+            hakemus.personOid,
+            haku.ataruLomakeAvain ? "ATARU" : "HAKU_APP"
+        ).then(function (henkilo) {
+            return {
+                oid: henkilo.data.oidHenkilo,
+                sukunimi: henkilo.data.sukunimi,
+                etunimet: henkilo.data.etunimet,
+                asiointikieli: (henkilo.data.asiointiKieli || {}).kieliTyyppi,
+                henkilotunnus: henkilo.data.hetu
+            }
+        });
     }
 
     function valintalaskentaByHakukohdeOid(hakuOid, hakemusOid) {
@@ -263,7 +265,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         return $q.all({
             haku: hakuPromise,
             hakemus: hakemusPromise,
-            henkilo: hakemusPromise.then(getHenkilo),
+            henkilo: $q.all({ haku: hakuPromise, hakemus: hakemusPromise}).then(function(o) { return getHenkilo(o.haku, o.hakemus); }),
             hakukohteetByHakukohdeOid: hakukohteetPromise,
             avaimetByHakukohdeOid: hakemusPromise.then(avaimetByHakukohdeOid),
             organizationChecksByHakukohdeOid: hakukohteetPromise.then(organizationChecksByHakukohdeOid),
