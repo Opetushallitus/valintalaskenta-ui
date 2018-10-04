@@ -32,7 +32,7 @@
 
             $q.all([
                 HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid}).$promise,
-                Hakemukset.get(hakukohdeOid, hakuOid),
+                Hakemukset.get(hakuOid, hakukohdeOid),
                 Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}).$promise
             ]).then(function(data) {
                 var valintakokeet = data[0];
@@ -49,7 +49,7 @@
                 var haettujenHakemustenOidit = _.map(hakemukset, function(hakemus) {return hakemus.oid;});
                 var puuttuvienHakemustenOidit = _.difference(osallistujienHakemusOidit, haettujenHakemustenOidit);
                 var kaikkiTarvittavatHakemukset = $q.defer();
-                if (puuttuvienHakemustenOidit) {
+                if (puuttuvienHakemustenOidit && puuttuvienHakemustenOidit.length > 0) {
                     fetchPuuttuvatHakemukset(puuttuvienHakemustenOidit, kaikkiTarvittavatHakemukset, hakemukset);
                 } else {
                     kaikkiTarvittavatHakemukset.resolve(hakemukset);
