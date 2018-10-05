@@ -1,6 +1,6 @@
-﻿﻿var app = angular.module('valintalaskenta');
-﻿app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
-                                                  ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus,
+﻿var app = angular.module('valintalaskenta');
+app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
+                                                  ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus, ValintatapajonoSijoitteluUpdate,
                                                   ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplications) {
     "use strict";
 
@@ -431,12 +431,23 @@
         };
 
         this.muutaSijoittelunStatus = function(jono, status) {
-            ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status}, function(result) {
+            //TODO: Nu shit
+            ValintatapajonoSijoitteluUpdate.post({valintatapajonoOid: jono.oid, status: status}, function(result) {
+                //jono.valmisSijoiteltavaksi = status;
+                ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status}, function(result) {
+                    jono.valmisSijoiteltavaksi = status;
+                    Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+                }, function(error) {
+                    Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                });
+            });
+            //TODO: Nu shit
+            /*ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status}, function(result) {
                 jono.valmisSijoiteltavaksi = status;
                 Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
             }, function(error) {
                 Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
-            });
+            });*/
         };
 
     }();

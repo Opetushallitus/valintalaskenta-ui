@@ -963,6 +963,20 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
         });
 });
 
+//TODO: Nu shit
+pp.factory('ValintatapajonoSijoitteluUpdate', function($resource) {
+    return $resource(
+        plainUrl("valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi",
+            ":valintatapajonoOid", {status : ":status"}),
+        {
+            valintatapajonoOid: "@valintatapajonoOid",
+            status: "@status"
+        }, {
+            post: {method: "post"}
+        });
+});
+//TODO: Nu shit
+
 app.factory('ValintatapajonoSijoitteluStatus', function($resource) {
         return $resource(
         plainUrl("valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi",
@@ -974,6 +988,7 @@ app.factory('ValintatapajonoSijoitteluStatus', function($resource) {
             put: {method: "put"}
         });
 });
+
 
 //Valintaryhma
 app.factory('ValintaryhmatJaHakukohteet', function($resource) {
