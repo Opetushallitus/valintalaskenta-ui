@@ -971,7 +971,7 @@ app.factory('ValintatapajonoSijoitteluUpdate', function($resource) {
             valintatapajonoOid: "@valintatapajonoOid",
             status: "@status"
         }, {
-            post: {method: "post"}
+            post: {method: "POST"}
         });
 });
 
