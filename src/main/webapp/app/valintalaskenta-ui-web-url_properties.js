@@ -17,7 +17,7 @@ window.urls.addProperties({
     "valintaperusteet-service.puu" : "/valintaperusteet-service/resources/puu",
     "valintaperusteet-service.valintakoe" : "/valintaperusteet-service/resources/valintakoe/$1",
     "valintaperusteet-service.valintatapajono" : "/valintaperusteet-service/resources/valintatapajono/$1",
-    "valintaperusteet-service.valintatapajono.update" : "/valintaperusteet-service/resources/valintalaskentakoostepalvelu/valintaperusteet/$1/automaattinenSiirto",
+    "valintaperusteet-service.valintatapajono.update" : "/valintaperusteet-service/resources/valintaperusteet/$1/automaattinenSiirto",
 
     "dokumenttipalvelu-service.dokumentit" : "/dokumenttipalvelu-service/resources/dokumentit/$1/$2",
     "dokumenttipalvelu-service.dokumentit.hae" : "/dokumenttipalvelu-service/resources/dokumentit/hae",
