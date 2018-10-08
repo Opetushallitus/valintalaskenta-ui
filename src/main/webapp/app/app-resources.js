@@ -965,7 +965,7 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
 
 app.factory('ValintatapajonoSijoitteluUpdate', function($resource) {
     return $resource(
-        plainUrl("valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi",
+        plainUrl("valintaperusteet-service.valintatapajono.update",
             ":valintatapajonoOid", {status : ":status"}),
         {
             valintatapajonoOid: "@valintatapajonoOid",
