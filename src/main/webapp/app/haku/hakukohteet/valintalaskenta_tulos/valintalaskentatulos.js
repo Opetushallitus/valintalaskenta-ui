@@ -431,7 +431,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
         };
 
         this.muutaSijoittelunStatus = function(jono, status) {
-            //TODO: Nu shit
+
             ValintatapajonoSijoitteluUpdate.post({valintatapajonoOid: jono.oid, status: status}, function(result) {
                 //jono.valmisSijoiteltavaksi = status;
                 ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status}, function(result) {
@@ -441,7 +441,6 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                     Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
                 });
             });
-            //TODO: Nu shit
             /*ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status}, function(result) {
                 jono.valmisSijoiteltavaksi = status;
                 Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");

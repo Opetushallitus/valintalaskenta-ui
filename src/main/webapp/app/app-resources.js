@@ -963,8 +963,7 @@ app.factory('JarjestyskriteeriMuokattuJonosija', function($resource) {
         });
 });
 
-//TODO: Nu shit
-pp.factory('ValintatapajonoSijoitteluUpdate', function($resource) {
+app.factory('ValintatapajonoSijoitteluUpdate', function($resource) {
     return $resource(
         plainUrl("valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi",
             ":valintatapajonoOid", {status : ":status"}),
@@ -975,7 +974,6 @@ pp.factory('ValintatapajonoSijoitteluUpdate', function($resource) {
             post: {method: "post"}
         });
 });
-//TODO: Nu shit
 
 app.factory('ValintatapajonoSijoitteluStatus', function($resource) {
         return $resource(
