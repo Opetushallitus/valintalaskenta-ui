@@ -435,9 +435,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 function (updatedJono) {
                     ValintatapajonoSijoitteluStatus.put({
                         valintatapajonoOid: jono.oid,
-                        status: status,
-                        valintatapajono: updatedJono
-                    }, function () {
+                        status: status
+                    }, updatedJono, function () {
                         jono.valmisSijoiteltavaksi = status;
                         Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                     }, function () {
