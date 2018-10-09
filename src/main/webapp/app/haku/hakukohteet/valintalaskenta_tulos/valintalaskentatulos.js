@@ -430,21 +430,26 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             }
         };
 
-        this.muutaSijoittelunStatus = function(jono, status) {
-            var updatedJono = ValintatapajonoSijoitteluUpdate.post({valintatapajonoOid: jono.oid, status: status}, function(error) {
+        this.muutaSijoittelunStatus = function (jono, status) {
+            ValintatapajonoSijoitteluUpdate.post({valintatapajonoOid: jono.oid, status: status},
+                function (updatedJono) {
+                    ValintatapajonoSijoitteluStatus.put({
+                        valintatapajonoOid: jono.oid,
+                        status: status,
+                        valintatapajono: updatedJono
+                    }, function () {
+                        jono.valmisSijoiteltavaksi = status;
+                        Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+                    }, function () {
+                        Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                    });
+
+                },
+                function () {
                     Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
                 });
-           //});
-            ValintatapajonoSijoitteluStatus.put({valintatapajonoOid: jono.oid, status: status, valintatapajono: updatedJono}, function(result) {
-                jono.valmisSijoiteltavaksi = status;
-                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-            }, function(error) {
-                Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
-            });
         };
-
     }();
-
     return model;
 });
 
