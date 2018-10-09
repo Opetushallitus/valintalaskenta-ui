@@ -43,7 +43,7 @@ describe('Hakukohde valinta näkymä', function() {
             click(hakukohde.hakukohdeItem(0)),
             visible(hakukohde.hakukohdeNav),
             function () {
-                expect(hakukohde.valintakoekutsutTab().length).to.equal(0);
+                expect(hakukohde.valintakoekutsutTab().length).to.equal(1);
                 expect(hakukohde.pistesyottoTab().length).to.equal(1);
             }
         ));
