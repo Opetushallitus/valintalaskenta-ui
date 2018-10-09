@@ -437,12 +437,11 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                         valintatapajonoOid: jono.oid,
                         status: status
                     }, updatedJono, function () {
-                        jono.valmisSijoiteltavaksi = status;
+                        status == "true" ? jono.valmisSijoiteltavaksi = true : jono.valmisSijoiteltavaksi = false
                         Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                     }, function () {
                         Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
                     });
-
                 },
                 function () {
                     Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
