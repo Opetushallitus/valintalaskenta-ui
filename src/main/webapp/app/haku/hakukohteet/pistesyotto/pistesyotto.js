@@ -155,9 +155,9 @@ app.factory('PistesyottoModel', function (
 
 angular.module('valintalaskenta').
     controller('PistesyottoController', ['R','$scope', '$window', '$log', '$timeout', '$routeParams', '$upload', 'PistesyottoVienti',
-        'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakukohdeModel', 'ParametriService',
+        'PistesyottoModel', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'HakuModel', 'HakukohdeModel', 'ParametriService',
         function (R, $scope, $window, $log, $timeout, $routeParams, $upload, PistesyottoVienti, PistesyottoModel, Ilmoitus,
-                  IlmoitusTila, Latausikkuna, HakukohdeModel, ParametriService) {
+                  IlmoitusTila, Latausikkuna, HakuModel, HakukohdeModel, ParametriService) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -172,7 +172,11 @@ angular.module('valintalaskenta').
     $scope.pageSize = 50;
     $scope.currentPage = 1;
     $scope.muutettu = false;
+    $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
 
+    HakuModel.refreshIfNeeded($scope.hakuOid).then(function(hakuModel) {
+        $scope.reviewUrlKey = hakuModel.hakuOid.ataruLomakeAvain ? "ataru.application.review" : "haku-app.virkailija.hakemus.esikatselu";
+    });
     HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid);
     PistesyottoModel.refreshIfNeeded($scope.hakukohdeOid, $routeParams.hakuOid);
 
