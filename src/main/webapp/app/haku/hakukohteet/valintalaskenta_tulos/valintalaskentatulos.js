@@ -458,6 +458,11 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
         $scope.url = window.url;
         $scope.model = ValintalaskentatulosModel;
         $scope.hakukohdeModel = HakukohdeModel;
+        $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
+
+        HakuModel.refreshIfNeeded($scope.hakuOid).then(function(hakuModel) {
+            $scope.reviewUrlKey = hakuModel.hakuOid.ataruLomakeAvain ? "ataru.application.review" : "haku-app.virkailija.hakemus.esikatselu";
+        });
 
         var hakukohdeModelpromise = HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
 
