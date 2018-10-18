@@ -116,9 +116,9 @@ angular.module('valintalaskenta')
 
 angular.module('valintalaskenta').
     controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'HakuModel',
-        'HakukohdeNimiService', 'Utility', 'HakukohdeValintakoe',
+        'HakukohdeNimiService', 'Utility', 'HakukohdeValintakoe', 'HakukohdeModel',
                                 function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, HakuModel,
-                                          HakukohdeNimiService, Utility, HakukohdeValintakoe) {
+                                          HakukohdeNimiService, Utility, HakukohdeValintakoe, HakukohdeModel) {
             "use strict";
             HakuModel.init($routeParams.hakuOid).then(function () {
                 $scope.hakuOid = $routeParams.hakuOid;
@@ -140,15 +140,19 @@ angular.module('valintalaskenta').
                 };
 
                 $scope.showHakukohde = function (hakukohde) {
-                    function isValintakoekutsutTabVisible(hakukohdeOid) {
-                        var valintakoeFound = false;
-                        HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid},
-                            function() {
-                                valintakoeFound = true;
-                            });
-                        return valintakoeFound;
+                    function ifHakukohdeViiteDoesNotExistThenHideTheValintaKoekutsutTab() {
+                        HakukohdeValintakoe.get({hakukohdeOid: hakukohde.hakukohdeOid})
+                            .$promise
+                            .then(
+                                function(value) {
+                                    HakukohdeModel.valintakoekutsutTabVisible = true;
+                                },
+                                function(error) {
+                                    HakukohdeModel.valintakoekutsutTabVisible = false;
+                                }
+                            );
                     }
-                    $scope.model.valintakoekutsutTabVisible = isValintakoekutsutTabVisible(hakukohde.hakukohdeOid);
+                    ifHakukohdeViiteDoesNotExistThenHideTheValintaKoekutsutTab();
                     $rootScope.selectedHakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(hakukohde);
                     $scope.model.hakukohteetVisible = false;
                     HakukohteetModel.hakukohteetVisible = $scope.hakukohteetVisible;

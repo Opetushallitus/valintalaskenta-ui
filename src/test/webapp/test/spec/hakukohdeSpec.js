@@ -5,6 +5,7 @@ describe('Hakukohde valinta näkymä', function() {
 
     beforeEach(function (done) {
         addTestHook(parametritFixtures)();
+        addTestHook(vastaanottoPostiSentFixture())();
         addTestHook(tarjontaFixtures)();
         addTestHook(organisaatioFixtures)();
         addTestHook(koodistoFixtures)();
@@ -37,13 +38,25 @@ describe('Hakukohde valinta näkymä', function() {
         }
     ));
 
-    describe('Kun paina hakukohten jolla ei ole hakukohde_viite rivia', function () {
-        it('ei näyttää "Valintakoekutsut" välilehden', seqDone(
-            wait.forAngular,
+    describe('Kun paina hakukohten jolla on hakukohde_viite rivia', function () {
+        it('näyttää "Valintakoekutsut" välilehden', seqDone(
+            wait.forAngular(),
             click(hakukohde.hakukohdeItem(0)),
             visible(hakukohde.hakukohdeNav),
             function () {
                 expect(hakukohde.valintakoekutsutTab().length).to.equal(1);
+                expect(hakukohde.pistesyottoTab().length).to.equal(1);
+            }
+        ));
+    });
+
+    describe('Kun paina hakukohten jolla ei ole hakukohde_viite rivia', function () {
+        it('ei näytä "Valintakoekutsut" välilehden', seqDone(
+            wait.forAngular,
+            click(hakukohde.hakukohdeItem(1)),
+            visible(hakukohde.hakukohdeNav),
+            function () {
+                expect(hakukohde.valintakoekutsutTab().length).to.equal(0);
                 expect(hakukohde.pistesyottoTab().length).to.equal(1);
             }
         ));
