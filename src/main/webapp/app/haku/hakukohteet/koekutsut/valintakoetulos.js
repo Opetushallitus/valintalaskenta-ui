@@ -29,15 +29,20 @@
             model.hakukohdeOid = hakukohdeOid;
             model.hakuOid = hakuOid;
             model.hakukohteenValintakokeet = [];
+            model.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
 
             $q.all([
                 HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid}).$promise,
                 Hakemukset.get(hakuOid, hakukohdeOid),
-                Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}).$promise
+                Valintakoetulokset.get({hakukohdeoid: hakukohdeOid}).$promise,
+                HakuModel.refreshIfNeeded(hakuOid)
             ]).then(function(data) {
                 var valintakokeet = data[0];
                 var hakemukset = data[1];
                 var valintakoetulokset = data[2];
+                var haku = data[3];
+
+                model.reviewUrlKey = haku.hakuOid.ataruLomakeAvain ? "ataru.application.review" : "haku-app.virkailija.hakemus.esikatselu";
 
                 processValintakokeet(valintakokeet);
 
@@ -50,7 +55,7 @@
                 var puuttuvienHakemustenOidit = _.difference(osallistujienHakemusOidit, haettujenHakemustenOidit);
                 var kaikkiTarvittavatHakemukset = $q.defer();
                 if (puuttuvienHakemustenOidit && puuttuvienHakemustenOidit.length > 0) {
-                    fetchPuuttuvatHakemukset(puuttuvienHakemustenOidit, kaikkiTarvittavatHakemukset, hakemukset);
+                    fetchPuuttuvatHakemukset(haku, puuttuvienHakemustenOidit, kaikkiTarvittavatHakemukset, hakemukset);
                 } else {
                     kaikkiTarvittavatHakemukset.resolve(hakemukset);
                 }
@@ -93,24 +98,22 @@
                 .value();
         }
 
-        function fetchPuuttuvatHakemukset(puuttuvienHakemustenOidit, kaikkiTarvittavatHakemukset, hakemukset) {
-            HakuModel.promise.then(function(hakuModel) {
-                if (hakuModel.hakuOid.ataruLomakeAvain) {
-                    AtaruApplications.get({hakemusOids: puuttuvienHakemustenOidit}, function(puuttuvatHakemukset) {
-                        kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset, hakemukset));
-                    }, function() {
-                        model.errors.push("Hakukohteen ulkopuolisten osallistujien haku Atarusta epäonnistui");
-                        kaikkiTarvittavatHakemukset.resolve(hakemukset);
-                    });
-                } else {
-                    HenkilotByOid.hae(puuttuvienHakemustenOidit, function(puuttuvatHakemukset) {
-                        kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset, hakemukset));
-                    }, function() {
-                        model.errors.push("Hakukohteen ulkopuolisten osallistujien haku epäonnistui");
-                        kaikkiTarvittavatHakemukset.resolve(hakemukset);
-                    });
-                }
-            });
+        function fetchPuuttuvatHakemukset(hakuModel, puuttuvienHakemustenOidit, kaikkiTarvittavatHakemukset, hakemukset) {
+            if (hakuModel.hakuOid.ataruLomakeAvain) {
+                AtaruApplications.get({hakemusOids: puuttuvienHakemustenOidit}, function (puuttuvatHakemukset) {
+                    kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset, hakemukset));
+                }, function () {
+                    model.errors.push("Hakukohteen ulkopuolisten osallistujien haku Atarusta epäonnistui");
+                    kaikkiTarvittavatHakemukset.resolve(hakemukset);
+                });
+            } else {
+                HenkilotByOid.hae(puuttuvienHakemustenOidit, function (puuttuvatHakemukset) {
+                    kaikkiTarvittavatHakemukset.resolve(_.union(puuttuvatHakemukset, hakemukset));
+                }, function () {
+                    model.errors.push("Hakukohteen ulkopuolisten osallistujien haku epäonnistui");
+                    kaikkiTarvittavatHakemukset.resolve(hakemukset);
+                });
+            }
         }
 
         function paivitaKutsutaanKaikki(kaikkiHakemukset, henkilotByOid) {
