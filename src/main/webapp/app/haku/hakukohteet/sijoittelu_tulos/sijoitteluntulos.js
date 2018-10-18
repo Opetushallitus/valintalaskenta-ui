@@ -798,6 +798,11 @@ angular.module('valintalaskenta')
             $scope.osoitetarratUrl = osoitetarratUrl[0] ? osoitetarratUrl[0].documentId : null;
             $scope.hyvaksymiskirjeetUrl = hyvaksymiskirjeetUrl[0] ? hyvaksymiskirjeetUrl[0].documentId : null;
             $scope.sijoitteluntuloksetUrl = sijoitteluntuloksetUrl[0] ? sijoitteluntuloksetUrl[0].documentId : null;
+            $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
+
+            HakuModel.refreshIfNeeded($scope.hakuOid).then(function(hakuModel) {
+                $scope.reviewUrlKey = hakuModel.hakuOid.ataruLomakeAvain ? "ataru.application.review" : "haku-app.virkailija.hakemus.esikatselu";
+            });
 
             $scope.$watch('model.sijoitteluTulokset.valintatapajonot', function() {
                 ($scope.model.sijoitteluTulokset.valintatapajonot || []).forEach(function(valintatapajono) {
