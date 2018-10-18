@@ -100,10 +100,10 @@ angular.module('valintalaskenta')
 }])
 
     .controller('HarkinnanvaraisetController', ['$scope', '$location', '$log', '$routeParams', 'Ilmoitus', 'IlmoitusTila',
-        'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakukohdeModel',
+        'Latausikkuna', 'Koekutsukirjeet', 'OsoitetarratHakemuksille', 'HarkinnanvaraisetModel', 'HakuModel', 'HakukohdeModel',
         'Pohjakoulutukset','ngTableParams','$filter','FilterService', 'ParametriService',
         function ($scope, $location, $log, $routeParams, Ilmoitus, IlmoitusTila, Latausikkuna, Koekutsukirjeet,
-            OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakukohdeModel, Pohjakoulutukset, ngTableParams, $filter,
+            OsoitetarratHakemuksille, HarkinnanvaraisetModel, HakuModel, HakukohdeModel, Pohjakoulutukset, ngTableParams, $filter,
             FilterService, ParametriService) {
     "use strict";
 
@@ -115,6 +115,11 @@ angular.module('valintalaskenta')
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.arvoFilter = "SYOTETTAVA_ARVO";
     $scope.muutettu = false;
+    $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
+
+    HakuModel.refreshIfNeeded($scope.hakuOid).then(function(hakuModel) {
+        $scope.reviewUrlKey = hakuModel.hakuOid.ataruLomakeAvain ? "ataru.application.review" : "haku-app.virkailija.hakemus.esikatselu";
+    });
 
     Pohjakoulutukset.query(function (result) {
         $scope.pohjakoulutukset = {};
