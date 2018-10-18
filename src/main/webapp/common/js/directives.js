@@ -705,7 +705,8 @@ app.directive('showPersonInfoWithVtsData', ["ValintaTulosProxy", function (Valin
             etunimi: '@',
             hakemusOid: '@',
             hakuOid: '@',
-            henkiloOid: '@'
+            henkiloOid: '@',
+            reviewUrlKey: '@'
         },
         templateUrl: '../common/html/personInformationPartial.html',
         controller: function ($modal, $scope, LocalisationService) {

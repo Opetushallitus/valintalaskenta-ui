@@ -60,10 +60,11 @@
                                     <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': hakija.$hideRows, 'glyphicon-chevron-down': !hakija.$hideRows }"></span>
                                     <strong>
                                         <show-person-info-with-vts-data sukunimi="{{hakija.sukunimi}}"
-                                                                   etunimi="{{hakija.etunimi}}"
-                                                                   hakemus-oid="{{hakija.hakemusOid}}"
-                                                                   haku-oid="{{hakuOid}}"
-                                                                   henkilo-oid="{{hakija.hakijaOid}}"/>
+                                                                        etunimi="{{hakija.etunimi}}"
+                                                                        hakemus-oid="{{hakija.hakemusOid}}"
+                                                                        haku-oid="{{hakuOid}}"
+                                                                        henkilo-oid="{{hakija.hakijaOid}}"
+                                                                        review-url-key="haku-app.virkailija.hakemus.esikatselu" />
                                     </strong>
                                 </a>
                             </td>
@@ -144,10 +145,11 @@
                                 <td class="leftorientedcolumn" data-title="(t('sijoitteluntulos.hakija') || 'Hakija')"
                                     sortable="'sukunimi'" filter="{ 'sukunimi' : 'text' }">
                                     <show-person-info-with-vts-data sukunimi="{{hakemus.sukunimi}}"
-                                                             etunimi="{{hakemus.etunimi}}"
-                                                             hakemus-oid="{{hakemus.hakemusOid}}"
-                                                             haku-oid="{{hakuOid}}"
-                                                             henkilo-oid="{{hakemus.hakijaOid}}"/>
+                                                                    etunimi="{{hakemus.etunimi}}"
+                                                                    hakemus-oid="{{hakemus.hakemusOid}}"
+                                                                    haku-oid="{{hakuOid}}"
+                                                                    henkilo-oid="{{hakemus.hakijaOid}}"
+                                                                    review-url-key="haku-app.virkailija.hakemus.esikatselu" />
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.hakutoive') || 'Hakutoive')" sortable="'prioriteetti'">
                                     {{hakemus.prioriteetti}}
