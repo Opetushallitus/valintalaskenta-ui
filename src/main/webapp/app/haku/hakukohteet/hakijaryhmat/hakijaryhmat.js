@@ -107,11 +107,16 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
 
 angular.module('valintalaskenta').
     controller('HakijaryhmatController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
-        'IlmoitusTila','ValintalaskentaHakijaryhmaModel','HakukohdeModel', '$http', 'AuthService', 'LocalisationService',
+        'IlmoitusTila','ValintalaskentaHakijaryhmaModel', 'HakuModel', 'HakukohdeModel', '$http', 'AuthService', 'LocalisationService',
         function ($scope, $location, $routeParams, $timeout,  $upload, Ilmoitus, IlmoitusTila
-                  ,ValintalaskentaHakijaryhmaModel, HakukohdeModel, $http, AuthService, LocalisationService) {
+                  ,ValintalaskentaHakijaryhmaModel, HakuModel, HakukohdeModel, $http, AuthService, LocalisationService) {
             "use strict";
             $scope.hakuOid =  $routeParams.hakuOid;
+            $scope.reviewUrlKey = "haku-app.virkailija.hakemus.esikatselu";
+
+            HakuModel.refreshIfNeeded($scope.hakuOid).then(function(hakuModel) {
+                $scope.reviewUrlKey = hakuModel.hakuOid.ataruLomakeAvain ? "ataru.application.review" : "haku-app.virkailija.hakemus.esikatselu";
+            });
             ValintalaskentaHakijaryhmaModel($routeParams.hakuOid, $routeParams.hakukohdeOid).then(function(model) {
                 $scope.model = model;
             });
