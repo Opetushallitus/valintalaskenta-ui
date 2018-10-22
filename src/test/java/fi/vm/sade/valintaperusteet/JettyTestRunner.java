@@ -41,7 +41,7 @@ public class JettyTestRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        Server mainServer = new Server(8085);
+        Server mainServer = new Server(8080);
         try {
             initServer(mainServer);
             mainServer.start();
