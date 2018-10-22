@@ -1,7 +1,7 @@
 
 angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$http', 'TarjontaHakukohde', 'HakukohdeNimiService',
-    'ValintaperusteetHakukohdeValintaryhma','KayttaaValintalaskentaa', '_', 'HakuModel',
-    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimiService,ValintaperusteetHakukohdeValintaryhma, KayttaaValintalaskentaa, _, HakuModel) {
+    'ValintaperusteetHakukohdeValintaryhma','KayttaaValintalaskentaa', '_', 'HakuModel', 'HakukohdeValintakoe',
+    function ($q, $log, $http, TarjontaHakukohde, HakukohdeNimiService,ValintaperusteetHakukohdeValintaryhma, KayttaaValintalaskentaa, _, HakuModel, HakukohdeValintakoe) {
     "use strict";
 
     var model;
@@ -11,6 +11,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
         this.hakukohdeNimi = undefined;
         this.tarjoajaNimi = undefined;
         this.hakukohde = {};
+        this.hasViite = false;
         this.deferred = undefined;
         this.valintaryhma = {};
         this.kaytetaanValintalaskentaa = false;
@@ -33,6 +34,16 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
                 $log.error('Hakukohteen tietojen hakeminen epäonnistui', error);
                 model.deferred.reject("hakukohteen tietojen hakeminen epäonnistui");
             });
+
+            HakukohdeValintakoe.get({hakukohdeOid: hakukohdeOid},
+                function(value) {
+                    model.hasViite = true;
+                },
+                function(error) {
+                    model.hasViite = false;
+                }
+            );
+
             return model.deferred;
         };
 

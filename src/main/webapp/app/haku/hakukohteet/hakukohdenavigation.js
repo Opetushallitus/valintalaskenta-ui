@@ -1,8 +1,8 @@
 
 angular.module('valintalaskenta')
 
-    .controller('HakukohdeNavigationController', ['$scope', '$location', '$routeParams', 'HakuModel', 'HakukohdeModel', 'HakukohdeValintakoe',
-        function($scope, $location, $routeParams, HakuModel, HakukohdeModel, HakukohdeValintakoe) {
+    .controller('HakukohdeNavigationController', ['$scope', '$location', '$routeParams', 'HakuModel', 'HakukohdeModel',
+        function($scope, $location, $routeParams, HakuModel, HakukohdeModel) {
             $scope.hakuOid = $routeParams.hakuOid;
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
             $scope.hakuModel = HakuModel;
@@ -10,19 +10,6 @@ angular.module('valintalaskenta')
             $scope.showNav = false;
 
             HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function() {
-                function ifHakukohdeViiteDoesNotExistThenHideTheValintaKoekutsutTab() {
-                    HakukohdeValintakoe.get({hakukohdeOid: $scope.hakukohdeOid})
-                        .$promise
-                        .then(
-                            function(value) {
-                                HakukohdeModel.valintakoekutsutTabVisible = true;
-                            },
-                            function(error) {
-                                HakukohdeModel.valintakoekutsutTabVisible = false;
-                            }
-                        );
-                }
-                ifHakukohdeViiteDoesNotExistThenHideTheValintaKoekutsutTab();
                 $scope.showNav = true;
             });
 

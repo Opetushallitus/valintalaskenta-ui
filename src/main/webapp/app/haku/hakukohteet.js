@@ -21,7 +21,6 @@ angular.module('valintalaskenta')
                 this.readyToQueryForNextPage = true;
                 this.deferred = undefined;
                 this.hakukohteetVisible = !$routeParams.hakukohdeOid;
-                this.valintakoekutsutTabVisible = false;
 
                 this.getCount = function () {
                     if (this.hakukohteet === undefined) {
@@ -116,9 +115,9 @@ angular.module('valintalaskenta')
 
 angular.module('valintalaskenta').
     controller('HakukohteetController', ['$rootScope', '$scope', '$location', '$routeParams', 'HakukohteetModel', '_', 'HakuModel',
-        'HakukohdeNimiService', 'Utility', 'HakukohdeValintakoe', 'HakukohdeModel',
+        'HakukohdeNimiService', 'Utility',
                                 function ($rootScope, $scope, $location, $routeParams, HakukohteetModel, _, HakuModel,
-                                          HakukohdeNimiService, Utility, HakukohdeValintakoe, HakukohdeModel) {
+                                          HakukohdeNimiService, Utility) {
             "use strict";
             HakuModel.init($routeParams.hakuOid).then(function () {
                 $scope.hakuOid = $routeParams.hakuOid;
