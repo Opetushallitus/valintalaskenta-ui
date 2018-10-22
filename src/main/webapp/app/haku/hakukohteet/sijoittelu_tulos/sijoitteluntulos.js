@@ -2,11 +2,11 @@ angular.module('valintalaskenta')
     .factory('SijoitteluntulosModel', ['$q', 'Ilmoitus', 'ValintaesityksenHyvaksyminen',
         '$timeout', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
-        'HakemusEligibilities', 'VtsSijoittelunTulos', 'VtsVastaanottopostiLahetetty',
+        'HakemusEligibilities', 'VtsSijoittelunTulos', 'VtsVastaanottopostiLahetetty', 'AtaruApplications',
         function($q, Ilmoitus, ValintaesityksenHyvaksyminen,
                  $timeout, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
                  IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut,
-                 HakemusEligibilities, VtsSijoittelunTulos, VtsVastaanottopostiLahetetty) {
+                 HakemusEligibilities, VtsSijoittelunTulos, VtsVastaanottopostiLahetetty, AtaruApplications) {
             "use strict";
 
             var createHakemuserittely = function(valintatapajono) {
@@ -323,6 +323,22 @@ angular.module('valintalaskenta')
                     });
                 };
 
+                var fetchMaksuvelvolliset = function(haku, hakukohdeOid) {
+                    if (haku.ataruLomakeAvain) {
+                        return AtaruApplications.get({hakuOid: haku.oid, hakukohdeOid: hakukohdeOid}).$promise
+                            .then(function(applications) {
+                                var maksuvelvolliset = _.filter(applications, function (application) {
+                                    return _.find(application.hakutoiveet, function (hakutoive) {
+                                        return hakutoive.hakukohdeOid === hakukohdeOid && hakutoive.paymentObligation === "obligated";
+                                    }) !== undefined;
+                                });
+                                return _.map(maksuvelvolliset, function (application) { return application.oid; });
+                            });
+                    } else {
+                        return HakemusEligibilities.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise;
+                    }
+                };
+
                 this.refresh = function(hakuOid, hakukohdeOid) {
                     model.errors = [];
                     model.errors.length = 0;
@@ -340,9 +356,8 @@ angular.module('valintalaskenta')
                     model.eraantyneitaHakemuksia = false;
                     model.valintatapajonoLastModified = {};
 
-                    HaunTiedot.get({hakuOid: hakuOid}, function(resultWrapper) {
-                        model.haku = resultWrapper.result;
-                    });
+                    var hakuPromise = HaunTiedot.get({hakuOid: hakuOid}).$promise
+                        .then(function(resultWrapper) { return resultWrapper.result; });
                     return $q.all([
                         sijoittelunTuloksetPromise(hakuOid, hakukohdeOid, model.valintatapajonoLastModified).then(function(tulokset) {
                             if (!tulokset.sijoittelunTulokset) {
@@ -366,13 +381,15 @@ angular.module('valintalaskenta')
                                 return tulokset;
                             }
                         }),
-                        HakemusEligibilities.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
-                        VtsVastaanottopostiLahetetty.get({hakukohdeOid: hakukohdeOid}).$promise
+                        hakuPromise.then(function(haku) { return fetchMaksuvelvolliset(haku, hakukohdeOid); }),
+                        VtsVastaanottopostiLahetetty.get({hakukohdeOid: hakukohdeOid}).$promise,
+                        hakuPromise
                     ]).then(function(o) {
                         var tulokset = o[0];
-                        var eligibilities = o[1];
+                        var maksuvelvolliset = o[1];
                         var lahetetytVastaanottoPostit = o[2];
                         var lukuvuosimaksut = o[0].lukuvuosimaksut;
+                        model.haku = o[3];
                         if (tulokset.valintaesitys) {
                             model.kaikkiJonotHyvaksytty = _.every(tulokset.valintaesitys, 'hyvaksytty')
                         } else {
@@ -408,7 +425,7 @@ angular.module('valintalaskenta')
                                             hakemus.tila == 'PERUUTETTU'
                                         );
                                         hakemus.tilaPrioriteetti = model.jarjesta(hakemus);
-                                        hakemus.isMaksuvelvollinen = _.indexOf(eligibilities, hakemus.hakemusOid) !== -1;
+                                        hakemus.isMaksuvelvollinen = _.indexOf(maksuvelvolliset, hakemus.hakemusOid) !== -1;
                                         hakemus.vastaanottopostiSent = lahetetytVastaanottoPostit.indexOf(hakemus.hakemusOid) > -1;
                                         if (hakemus.isMaksuvelvollinen) {
                                             var lukuvuosimaksu = _.find(lukuvuosimaksut, {"personOid": hakemus.hakijaOid});
