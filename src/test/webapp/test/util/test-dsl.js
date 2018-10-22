@@ -243,3 +243,6 @@ function select(fn, value) {
         input(fn, value));
 }
 
+function templateUrl() {
+    return testFrame().route.current.templateUrl;
+}

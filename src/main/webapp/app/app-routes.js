@@ -9,7 +9,11 @@ angular.module('valintalaskenta')
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valinnanhallinta', {controller:'ValinnanhallintaController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hallinta/valinnanhallinta.html'}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset', {controller:'HarkinnanvaraisetController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/harkinnanvaraiset/harkinnanvaraiset.html'}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintalaskentatulos', {controller:'ValintalaskentatulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/valintalaskenta_tulos/valintalaskentatulos.html'}).
-        when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintakoetulos', {controller:'ValintakoetulosController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/koekutsut/valintakoetulos.html'}).
+        when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintakoetulos', {
+            controller: 'ValintakoetulosController',
+            controllerAs: "valintakoetulos",
+            templateUrl: TEMPLATE_URL_BASE + 'haku/hakukohteet/koekutsut/valintakoetulos.html'
+        }).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakeneet', {controller:'HakeneetController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakeneet/hakeneet.html'}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto', {controller:'PistesyottoController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/pistesyotto.html'}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto/naytakaikki', {controller:'PistesyottoNaytaKaikkiController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/nayta_kaikki/nayta_kaikki.html'}).
@@ -29,7 +33,7 @@ angular.module('valintalaskenta')
                     function ($route, HaeDokumenttipalvelusta){
                         return HaeDokumenttipalvelusta.get({tyyppi:'sijoitteluntulokset',hakukohdeoid:$route.current.params.hakukohdeOid }).$promise;
                     }]
-            }}).
+        }}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/hakijaryhmat', {controller:'HakijaryhmatController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/hakijaryhmat/hakijaryhmat.html'}).
         when('/haku/:hakuOid/hakukohde/:hakukohdeOid/erillishaku', {controller:'ErillishakuController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/erillishaku/erillishaku.html'}).
 
@@ -45,4 +49,22 @@ angular.module('valintalaskenta')
 
         otherwise({redirectTo:'/haku/'});
 
-});
+    })
+    .run(function($rootScope, $location, HakukohdeValintakoe) {
+        $rootScope.$on("$routeChangeStart", function(event, next, current) {
+            if (next.$$route.controllerAs == "valintakoetulos") {
+                // the only case of conditional redirect so far
+                HakukohdeValintakoe.get({hakukohdeOid: next.params.hakukohdeOid})
+                    .$promise
+                    .then(
+                        function(value) {
+                            // no need to redirect, "valintakoekutsut" tab is enabled, use the template from route;
+                        },
+                        function(error) {
+                            // "valintakoekutsut" tab should not be visible, jump to "persutiedot" tab
+                            $location.path("/haku/" + next.params.hakuOid + "/hakukohde/" + next.params.hakukohdeOid + "/perustiedot");
+                        }
+                    );
+            }
+        })
+    });

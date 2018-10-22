@@ -140,19 +140,6 @@ angular.module('valintalaskenta').
                 };
 
                 $scope.showHakukohde = function (hakukohde) {
-                    function ifHakukohdeViiteDoesNotExistThenHideTheValintaKoekutsutTab() {
-                        HakukohdeValintakoe.get({hakukohdeOid: hakukohde.hakukohdeOid})
-                            .$promise
-                            .then(
-                                function(value) {
-                                    HakukohdeModel.valintakoekutsutTabVisible = true;
-                                },
-                                function(error) {
-                                    HakukohdeModel.valintakoekutsutTabVisible = false;
-                                }
-                            );
-                    }
-                    ifHakukohdeViiteDoesNotExistThenHideTheValintaKoekutsutTab();
                     $rootScope.selectedHakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(hakukohde);
                     $scope.model.hakukohteetVisible = false;
                     HakukohteetModel.hakukohteetVisible = $scope.hakukohteetVisible;

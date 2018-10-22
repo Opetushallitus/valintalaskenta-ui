@@ -1,9 +1,19 @@
 function hakukohdePage(hakuOid) {
+    return hakukohdePageGenerator("/valintalaskenta-ui/app/index.html#/haku/" + hakuOid + "/hakukohde");
+}
+
+function hakukohdeValintakoekutsutTabPage(hakuOid, hakukohdeOid) {
+    return hakukohdePageGenerator(
+        "/valintalaskenta-ui/app/index.html#/haku/" + hakuOid +
+        "/hakukohde/" + hakukohdeOid + "/valintakoetulos");
+}
+
+function hakukohdePageGenerator(path) {
     function isLocalhost() {
         return location.host.indexOf('localhost') > -1;
     }
     var openHakukohdePage = openPage(
-        "/valintalaskenta-ui/app/index.html#/haku/" + hakuOid + "/hakukohde",
+        path,
         function () {
             return hakukohde.hakukohdeToolbar().length === 1;
         });
@@ -21,6 +31,12 @@ function hakukohdePage(hakuOid) {
         },
         hakukohdeCount: function() {
             return hakukohde.hakukohdeItems().length;
+        },
+        isOnValintakoekutsutTab: function() {
+            return templateUrl() == "haku/hakukohteet/koekutsut/valintakoetulos.html";
+        },
+        isOnHakukohteenPerustiedotTab: function() {
+            return templateUrl() == "haku/hakukohteet/perustiedot/hakukohdeperustiedot.html";
         }
     };
     return pageFunctions;
