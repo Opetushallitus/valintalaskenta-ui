@@ -86,7 +86,7 @@ describe('Hakukohde valinta näkymä', function() {
             ));
         });
 
-        describe('Jos hakukohteella ei ole hakukohde_viite riviä', function() {
+        describe('Jos hakukohteella ei ole hakukohde_viite-riviä', function() {
             var hakukohdeNoViiteOid = "HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO";
             var page = hakukohdeValintakoekutsutTabPage(hakuOid, hakukohdeNoViiteOid);
 
