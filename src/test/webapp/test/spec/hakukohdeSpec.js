@@ -42,7 +42,7 @@ describe('Hakukohde valinta näkymä', function() {
             }
         ));
 
-        describe('Kun paina hakukohten jolla on hakukohde_viite rivia', function () {
+        describe('Kun valitaan hakukohde, jolla on hakukohde_viite-rivi', function () {
             it('näyttää "Valintakoekutsut" välilehden', seqDone(
                 wait.forAngular(),
                 click(hakukohde.hakukohdeItem(0)),
