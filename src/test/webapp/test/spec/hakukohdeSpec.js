@@ -54,7 +54,7 @@ describe('Hakukohde valinta näkymä', function() {
             ));
         });
 
-        describe('Kun paina hakukohten jolla ei ole hakukohde_viite rivia', function () {
+        describe('Kun valitaan hakukohde, jolla ei ole hakukohde_viite-riviä', function () {
             it('ei näytä "Valintakoekutsut" välilehden', seqDone(
                 wait.forAngular,
                 click(hakukohde.hakukohdeItem(1)),
