@@ -56,7 +56,7 @@ angular.module('valintalaskenta')
                 // the only case of conditional redirect so far
                 HakukohdeModel.refreshIfNeeded(next.params.hakukohdeOid).then(function() {
                     if (!HakukohdeModel.hasViite) {
-                        // "valintakoekutsut" tab should not be visible, jump to "persutiedot" tab
+                        // "valintakoekutsut" tab should not be visible, jump to "perustiedot" tab
                         $location.path("/haku/" + next.params.hakuOid + "/hakukohde/" + next.params.hakukohdeOid + "/perustiedot");
                     }
                 });
