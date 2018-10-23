@@ -67,7 +67,7 @@ describe('Hakukohde valinta näkymä', function() {
         });
     });
 
-    describe('Suora linkki Valintakoekutsut välilehteen', function () {
+    describe('Suora linkki Valintakoekutsut-välilehteen', function () {
 
         describe('Jos hakukohteella on hakukohde_viite rivi', function() {
             var hakukohdeOid = "1.2.246.562.20.25463238029";
