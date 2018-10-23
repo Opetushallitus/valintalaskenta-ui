@@ -22,7 +22,7 @@ function valintakokeetFixtures(valintakokeet) {
             kokeet
         );
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO\/valintakoe/).respond(
-            500, "hakukohde_viite not found", {}
+            404, "hakukohde_viite not found", {}
         );
 
         var haku = {
