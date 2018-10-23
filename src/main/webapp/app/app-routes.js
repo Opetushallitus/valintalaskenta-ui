@@ -50,21 +50,16 @@ angular.module('valintalaskenta')
         otherwise({redirectTo:'/haku/'});
 
     })
-    .run(function($rootScope, $location, HakukohdeValintakoe) {
+    .run(function($rootScope, $location, HakukohdeModel) {
         $rootScope.$on("$routeChangeStart", function(event, next, current) {
             if (next.$$route.controllerAs == "valintakoetulos") {
                 // the only case of conditional redirect so far
-                HakukohdeValintakoe.get({hakukohdeOid: next.params.hakukohdeOid})
-                    .$promise
-                    .then(
-                        function(value) {
-                            // no need to redirect, "valintakoekutsut" tab is enabled, use the template from route;
-                        },
-                        function(error) {
-                            // "valintakoekutsut" tab should not be visible, jump to "persutiedot" tab
-                            $location.path("/haku/" + next.params.hakuOid + "/hakukohde/" + next.params.hakukohdeOid + "/perustiedot");
-                        }
-                    );
+                HakukohdeModel.refreshIfNeeded(next.params.hakukohdeOid).then(function() {
+                    if (!HakukohdeModel.hasViite) {
+                        // "valintakoekutsut" tab should not be visible, jump to "persutiedot" tab
+                        $location.path("/haku/" + next.params.hakuOid + "/hakukohde/" + next.params.hakukohdeOid + "/perustiedot");
+                    }
+                });
             }
         })
     });
