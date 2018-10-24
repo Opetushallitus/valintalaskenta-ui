@@ -335,7 +335,7 @@ angular.module('valintalaskenta')
                                 return _.map(maksuvelvolliset, function (application) { return application.oid; });
                             });
                     } else {
-                        return HakemusEligibilities.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise;
+                        return HakemusEligibilities.get({hakuOid: haku.oid, hakukohdeOid: hakukohdeOid}).$promise;
                     }
                 };
 
