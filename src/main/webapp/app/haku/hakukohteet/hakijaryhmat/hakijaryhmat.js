@@ -3,6 +3,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                                                         HakukohdeValinnanvaihe,
                                                         HakukohteenValintatuloksetIlmanTilaHakijalleTietoa,
                                                         VtsLatestSijoitteluajoHakukohde,
+                                                        HenkiloPerustietosByHenkiloOidList,
                                                         ngTableParams,
                                                         $q,
                                                         $filter) {
@@ -49,10 +50,22 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
             }
             return '';
         }
+        var fetchPersons = function (hakijaryhmat) {
+            var personOids = _.chain(hakijaryhmat)
+                .map(function (hakijaryhma) {
+                    return hakijaryhma.jonosijat.map(function (hakija) { return hakija.hakijaOid; });
+                })
+                .flatten()
+                .uniq()
+                .value();
+            return HenkiloPerustietosByHenkiloOidList.post(personOids);
+        };
+        var hakijaryhmatPromise = HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}).$promise;
         return $q.all({
-            hakijaryhmat: HakukohdeHakijaryhma.get({hakukohdeoid: hakukohdeOid}).$promise,
+            hakijaryhmat: hakijaryhmatPromise,
             sijoittelunTulos: VtsLatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
-            valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+            valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
+            henkilot: hakijaryhmatPromise.then(fetchPersons)
         }).then(function (o) {
             var valintatapajonot = _.indexBy(o.sijoittelunTulos.valintatapajonot, 'oid');
             var hakemuksetSijoittelussa = _.chain(o.sijoittelunTulos.valintatapajonot)
@@ -63,9 +76,12 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                     var hakemusSijoittelussa = findHakemusSijoittelussa(hakemuksetSijoittelussa, valintatapajonot, hakija);
                     var vastaanottotila = findVastaanottotila(valintatulokset, hakemusSijoittelussa, hakija);
                     var hyvaksyttyHakijaryhmasta = isHyvaksyttyHakijaryhmasta(hakijaryhma.hakijaryhmaOid, hakemusSijoittelussa);
+                    var henkilo = o.henkilot.filter(function (person) {
+                        return person.oidHenkilo === hakija.hakijaOid;
+                    })[0];
                     return {
-                        etunimi: hakija.etunimi,
-                        sukunimi: hakija.sukunimi,
+                        etunimi: henkilo.etunimet,
+                        sukunimi: henkilo.sukunimi,
                         hakemusOid: hakija.hakemusOid,
                         hakijaOid: hakija.hakijaOid,
                         ryhmaanKuuluminen: hakija.jarjestyskriteerit[0].tila,
