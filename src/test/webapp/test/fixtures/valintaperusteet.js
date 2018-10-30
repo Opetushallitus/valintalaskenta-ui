@@ -18,7 +18,7 @@ function valintakokeetFixtures(valintakokeet) {
                 funktiokutsu: null
             }
         });
-        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|1\.2\.246\.562\.20\.37731636579|1.2.246.562.20.25463238029)\/valintakoe/).respond(
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/(HAKUKOHDE1|1\.2\.246\.562\.20\.37731636579|1\.2\.246\.562\.20\.25463238029)\/valintakoe/).respond(
             kokeet
         );
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/hakukohde\/HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO\/valintakoe/).respond(
