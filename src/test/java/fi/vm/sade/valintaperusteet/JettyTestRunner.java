@@ -17,7 +17,7 @@ import java.net.ServerSocket;
 public class JettyTestRunner {
     private static final Logger LOG = LoggerFactory.getLogger(JettyTestRunner.class);
     public static final int PORT = portChecker();
-    static final String ROOT = ProjectRootFinder.findProjectRoot() + "/ui/valintalaskenta-ui";
+    static final String ROOT = ProjectRootFinder.findProjectRoot().toString();
     static Server server = new Server(PORT);
     static WebAppContext webAppContext = new WebAppContext();
 

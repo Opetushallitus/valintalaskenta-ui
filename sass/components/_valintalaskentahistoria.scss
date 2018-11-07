@@ -1,0 +1,94 @@
+.valintalaskentaHistoria {
+
+  list-style-type: none;
+  padding-left: 10px;
+
+
+
+  .avaimet {
+
+    width: 60%;
+    overflow: scroll;
+    max-height: 300px;
+    border: 1px solid #eee;
+    padding-left: 10px;
+
+    li:nth-child(even) {
+      background-color: #f8f8f8;
+    }
+  }
+
+  ul {
+    list-style-type: none;
+  }
+
+  > li {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .alikaavat {
+    position: relative;
+    padding-left: 25px;
+  }
+
+  .folder-closed {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: 0 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px;
+  }
+
+  .folder-open {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -18px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px;
+  }
+
+  .keys-open {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -108px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px;
+  }
+
+  .keys-closed {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -126px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px;
+  }
+
+  .funktio {
+    height: 18px;
+    width: 18px;
+    background-image: url(../img/18x18-ui-icons.png);
+    background-position: -90px 0;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    left: 10px;
+  }
+
+  .decorate {
+    background: #f8f8f8;
+    border: 1px solid #ccc;
+  }
+}
