@@ -1,0 +1,43 @@
+sudo: required
+
+language: java
+
+jdk:
+- oraclejdk8
+
+services:
+- docker
+
+cache:
+  directories:
+  - $HOME/.m2
+
+env:
+  global:
+  # AWS_ACCESS_KEY_ID
+  - secure: "Y7cCSX0YrLEBVH2HdatEtYwxNQOWPa2A5LAyR1l6ejDTKJNnhFM8gO3CMFiIhjksJCt57YLblzQAwlLLAXv/kzQlxUkVFvPGSMH66sBtlN42f7Wh3IjV8IzoBSE2jwPW4kgLllgTnCUQhejPMEiWrBGqUFhhUhOphrl2L9WwHYDQswDugm5/z0qbxObJQGr0j0Vy/0KHqTVeQhccYz5ZzGkxhfsHBH+5jTY0ZnTaInGXo19i/zov6zV4lpIPj38PYM99pnPQ8fz7Ehehhm1JSGzwz1HhdQn3INCIDFFf+BHrdPEZrpHxLTbRrmeKH9sNuM2oO+wIIhVhsgK5HJI3qb6q4+7bm1vKpK9oUuH7CfaensyMPBQ2wsjHCW0Cbqf/nPibw0+a/F3lfRZE9WVQBcmrZYpB9y0Hq6rrOz59flvaktpbdhDVeXy433XBCCFOMjI5EZr58LfHE4RXgMy66kIn4SieocaHSpaa97P4+ubuJ6iGyrP9rMYGpxIZ7rFRc/vN0+hOX1nNqZefHhbHbpwbnxvO5QYRwOv2hj0HspMHF53gv34J6vHOWZF5HgYeM2EjCLCAYqjO2hBf8/xOvPXg2uYPoY999OU8lpQss1XH/5bk9nUz3HGn5IHanqzLnOIcCO8lARyNY7akUpExmoT048/cHyFncb6R5eBpgyY="
+  # AWS_SECRET_ACCESS_KEY
+  - secure: "r7XEzi6rXQxvRb0ngqMWwfJjLiQxeOcPHCmh7XQqV9zSRgi9h60tNn/hF+W8qFZZNheEuNhg9HFutoBqkIaWdyRusSazhY1TbvJhzbo7ZIDizjqugaaAhciuQxNLuvxQJVyG7O1+cq2KzdETK8++4xoZNUmFOdt4wqrGRaGE2g9VN+rr64RFUUhWKc3D23y4eHtUjz/lVTnnO7FigZ8kAaJwccHxNRC/cRpT+prLkQ4J6QbCujV/BNIoD3i6ND5TeusQqW0lBbJofpKTydpXrpqsK4tZQ1OGsc0/u6Ynz9DwJmmNw4JWWHwqbc6cGctK4J7y3xZOxBdfWHz/IA75aDP1gNO1YNCcfgoaYkX/JOunUv12kpfoeX5f5OwA2yvlgNtcaCcWvCeDBaWpLRWurCi6AKM4o0dFrnasKLQqQAq4EnrhBpxWY8A0mcBjjpmbgRJzte0jq7wP3uMbPaEoaaSMIVozTqSf6i2sT1930HaibGamvhK+et4Z8LJRnwNiuoQXXQzXxhUwj92w9wln6V99QHSW7pXci4vcbuheZy948A64Rz1G30lsPo3wPJti7IFQGtWXBB7jdBrNmiRg6+OPQp2XosVx60TrlDMTxMiaJVibluOzX3mVAyDPb3ivGtdZaU4U5iGzwZTWxWSqGi3Mn/NQx7TayvC7ci6W8J8="
+
+install:
+- git clone https://github.com/Opetushallitus/ci-tools.git
+- source ci-tools/common/setup-tools.sh
+- sudo sh -c "printf '\n%s penaali.hard.ware.fi\n' $(dig +short artifactory.opintopolku.fi|head -n1) >> /etc/hosts"
+- export ARTIFACT_NAME="valintalaskenta-ui"
+
+script:
+- ./webbuild.sh
+- mvn clean package -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER}
+
+- mv target/valintalaskenta-ui.war $DOCKER_BUILD_DIR/artifact/valintalaskenta-ui.war
+- cp -vr src/main/resources/oph-configuration $DOCKER_BUILD_DIR/config/
+
+- export BASE_IMAGE="baseimage-war:master"
+- ./ci-tools/common/pull-image.sh
+- ./ci-tools/build/build-war.sh $ARTIFACT_NAME
+
+deploy:
+- provider: script
+  script: ./ci-tools/build/upload-image.sh $ARTIFACT_NAME
+  on:
+    all_branches: true
