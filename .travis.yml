@@ -36,8 +36,8 @@ script:
 - ./ci-tools/common/pull-image.sh
 - ./ci-tools/build/build-war.sh $ARTIFACT_NAME
 
-#deploy:
-#- provider: script
-#  script: ./ci-tools/build/upload-image.sh $ARTIFACT_NAME
-#  on:
-#    all_branches: true
+deploy:
+- provider: script
+  script: ./ci-tools/build/upload-image.sh $ARTIFACT_NAME
+  on:
+    all_branches: true
