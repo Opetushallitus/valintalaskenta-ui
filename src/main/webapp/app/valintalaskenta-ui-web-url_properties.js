@@ -159,8 +159,8 @@ window.urls.addProperties({
     "koodisto-service.hakukohdenimi" : "/koodisto-service/rest/hakukohdenimi/$1",
     "koodisto-service.json.hakukohteet.koodi" : "/koodisto-service/rest/json/hakukohteet/koodi/$1",
 
-    "cas.myroles" : "/cas/myroles",
-    "cas.me" : "/cas/me",
+    "cas.myroles" : "/kayttooikeus-service/cas/myroles",
+    "cas.me" : "/kayttooikeus-service/cas/me",
 
     "ohjausparametrit-service.parametri" : "/ohjausparametrit-service/api/v1/rest/parametri/$1",
 
