@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, clientSubSystemCode');
   return next();
 });
-app.get('/cas/myroles', (req,res) => res.send([
+app.get('/kayttooikeus-service/cas/myroles', (req,res) => res.send([
     "USER_testuser", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_CRUD",
     "APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001",
     "APP_SIJOITTELU", "APP_SIJOITTELU_CRUD", "APP_SIJOITTELU_CRUD_1.2.246.562.10.00000000001"
