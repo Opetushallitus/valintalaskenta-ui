@@ -236,7 +236,8 @@ angular.module('valintalaskenta')
                         tyyppi: "VALINTARYHMA",
                         erillishaku: erillishaku,
                         nimentarkennus: valintaryhma.nimi,
-                        hakukohteet: hakukohdeOids
+                        hakukohteet: hakukohdeOids,
+                        valintaryhmaOid: valintaryhma.oid
                     };
                 }
             }
