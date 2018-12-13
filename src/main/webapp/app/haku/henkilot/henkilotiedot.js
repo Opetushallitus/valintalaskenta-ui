@@ -140,18 +140,17 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
 
     function tilaHistoriatByValintatapajonoOid(hakemusOid) {
         var tilaHistoriatByValintatapajonoOid = {};
-        return VtsValinnantuloksetHakemukselle.get({
+        return VtsValinnantuloksetHakemukselle.query({
             hakemusOid: hakemusOid
         }).$promise.then(function (tulokset) {
             tulokset.forEach(function (tulos) {
-                tulos.forEach(function (tila) {
-                    tilaHistoriatByValintatapajonoOid[tila.valintatapajonoOid] = tila;
-                });
+                tilaHistoriatByValintatapajonoOid[tulos.tilaHistoria.valintatapajonoOid] = tulos.tilaHistoria;
             });
         }).then(function () {
-        return tilaHistoriatByValintatapajonoOid;
+            return tilaHistoriatByValintatapajonoOid;
         });
     }
+
 
     function logEntriesByValintatapajonoOid(hakuOid, hakemusOid, hakutoiveet) {
         var logEntriesByValintatapajonoOid = {};
