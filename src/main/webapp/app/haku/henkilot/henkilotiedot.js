@@ -137,7 +137,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 return vastaanottotilatByValintatapajonoOid;
             });
     }
-
+/*
     function tilaHistoriatByValintatapajonoOid(hakemusOid) {
         var tilaHistoriatByValintatapajonoOid = {};
         return VtsValinnantuloksetHakemukselle.get({
@@ -149,6 +149,20 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         }).then(function () {
         return tilaHistoriatByValintatapajonoOid;
         });
+    }
+*/
+
+
+    function tilaHistoriatByValintatapajonoOid(hakemusOid) {
+        var tilaHistoriatByValintatapajonoOid = {};
+        var results = VtsValinnantuloksetHakemukselle.get({hakemusOid: hakemusOid})
+
+            results.forEach(function (tulos) {
+                tilaHistoriatByValintatapajonoOid[tulos.valintatapajonoOid] = tulos.tilaHistoria;
+            });
+
+            return tilaHistoriatByValintatapajonoOid;
+
     }
 
     function logEntriesByValintatapajonoOid(hakuOid, hakemusOid, hakutoiveet) {
