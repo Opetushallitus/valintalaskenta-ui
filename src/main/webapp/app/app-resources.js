@@ -842,6 +842,16 @@ app.factory('VtsLatestSijoitteluajoHakukohde', function($resource) {
         });
 });
 
+app.factory('VtsValinnantuloksetHakemukselle', function($resource) {
+    return $resource(plainUrl("valinta-tulos-service.valinnantulos.hakemus",
+        ":hakemusOid"),
+        {
+            hakemusOid: "@hakemusOid"
+        }, {
+            get: {method: "GET", cache: false}
+        });
+});
+
 app.factory('ErillisHakuSijoitteluajoHakukohde', function($resource) {
         return $resource(plainUrl("sijoittelu-service.erillissijoittelu.sijoitteluajo.hakukohde",
         ":hakuOid", ":sijoitteluajoId", ":hakukohdeOid"),
