@@ -37,10 +37,15 @@
                 <div class="table-group" ng-click="hakutoive.valintalaskenta.$hideRows = !hakutoive.valintalaskenta.$hideRows">
                     <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': hakutoive.valintalaskenta.$hideRows, 'glyphicon-chevron-down': !hakutoive.valintalaskenta.$hideRows }"></span>
                     <strong>{{hakutoive.hakutoiveNumero}}. {{hakutoive.koulutuksenNimi}} -</strong>
-                    <a auth="update" auth-org="{{hakutoive.oppilaitosId}}" auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+                    <a ng-if="hakutoive.showAsLink" auth="update" auth-org="{{hakutoive.oppilaitosId}}" auth-service="APP_VALINTOJENTOTEUTTAMINEN"
                        target="_blank" href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                         <strong>{{hakutoive.oppilaitos}} </strong><i class="fa fa-external-link"></i>
                     </a>
+                    <a ng-if="!hakutoive.showAsLink" auth="update" auth-org="{{hakutoive.oppilaitosId}}" auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+                       target="_blank">
+                        <strong>{{hakutoive.oppilaitos}} </strong>
+                    </a>
+
                 </div>
             </td>
         </tr>
