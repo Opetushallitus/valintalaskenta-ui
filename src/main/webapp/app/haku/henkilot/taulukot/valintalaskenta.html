@@ -41,10 +41,9 @@
                        target="_blank" href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                         <strong>{{hakutoive.oppilaitos}} </strong><i class="fa fa-external-link"></i>
                     </a>
-                    <a ng-if="!hakutoive.showAsLink"
-                       target="_blank">
-                        <strong>{{hakutoive.oppilaitos}} </strong>
-                    </a>
+                    <span ng-if="!hakutoive.showaslink">
+                        <strong class="ng-binding">Tampereen teknillinen yliopisto, Tieto- ja sähkötekniikan tiedekunta </strong>
+                    </span>
 
                 </div>
             </td>
