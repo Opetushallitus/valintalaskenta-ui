@@ -4,7 +4,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                                             SijoittelunVastaanottotilat, VtsLatestSijoittelunTilat,
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HaunTiedot, HakemuksenValintatulokset,
-                                            VtsLatestSijoitteluajoHakukohde, HakukohdeAvainTyyppiService,
+                                            VtsValinnantuloksetHakemukselle, HakukohdeAvainTyyppiService,
                                             KoostettuHakemusAdditionalDataForHakemus, R, HenkiloPerustiedot,
                                             TarjontaHakukohde, AtaruApplications) {
     "use strict";
@@ -138,25 +138,19 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             });
     }
 
-    function tilaHistoriatByValintatapajonoOid(hakuOid, hakemusOid, hakutoiveet) {
+    function tilaHistoriatByValintatapajonoOid(hakemusOid) {
         var tilaHistoriatByValintatapajonoOid = {};
-        return $q.all(hakutoiveet.map(function (hakutoive) {
-            return VtsLatestSijoitteluajoHakukohde.get({
-                hakukohdeOid: hakutoive.hakukohdeOid,
-                hakuOid: hakuOid
-            }).$promise.then(function (sijoitteluajo) {
-                sijoitteluajo.valintatapajonot.forEach(function (valintatapajono) {
-                    valintatapajono.hakemukset.forEach(function (hakemus) {
-                        if (hakemus.hakemusOid === hakemusOid) {
-                            tilaHistoriatByValintatapajonoOid[valintatapajono.oid] = hakemus.tilaHistoria;
-                        }
-                    });
-                });
+        return VtsValinnantuloksetHakemukselle.query({
+            hakemusOid: hakemusOid
+        }).$promise.then(function (tulokset) {
+            tulokset.forEach(function (tulos) {
+                tilaHistoriatByValintatapajonoOid[tulos.tilaHistoria.valintatapajonoOid] = tulos.tilaHistoria;
             });
-        })).then(function () {
+        }).then(function () {
             return tilaHistoriatByValintatapajonoOid;
         });
     }
+
 
     function logEntriesByValintatapajonoOid(hakuOid, hakemusOid, hakutoiveet) {
         var logEntriesByValintatapajonoOid = {};
@@ -191,7 +185,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                     });
                 });
                 return $q.all({
-                    tilaHistoriatByValintatapajonoOid: tilaHistoriatByValintatapajonoOid(hakuOid, hakemusOid, hakutoiveet),
+                    tilaHistoriatByValintatapajonoOid: tilaHistoriatByValintatapajonoOid(hakemusOid),
                     logEntriesByValintatapajonoOid: logEntriesByValintatapajonoOid(hakuOid, hakemusOid, hakutoiveet)
                 }).then(function (o) {
                     return {
