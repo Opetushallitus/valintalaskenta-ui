@@ -128,7 +128,8 @@ function SeurantaIkkunaCtrl($scope, $modalInstance, oids, $window, $log,
 						erillishaku: oids.erillishaku,
 						whitelist: whitelist,
 						valinnanvaihe: oids.valinnanvaihe,
-						valintakoelaskenta: oids.valintakoelaskenta
+						valintakoelaskenta: oids.valintakoelaskenta,
+						valintaryhma: oids.valintaryhmaOid
 					},
 					oids.hakukohteet ? oids.hakukohteet : [],
 					laskennanVastaus,
