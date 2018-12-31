@@ -18,15 +18,6 @@
         <import resource="file:///${user.home:''}/oph-configuration/security-context-backend.xml"/>
     </beans>
 
-    <beans profile="vagrant">
-        <context:property-placeholder
-                location="classpath:valintalaskenta-ui-vagrant.properties"
-                ignore-resource-not-found="true"
-                properties-ref="defaultProps"/>
-
-        <import resource="classpath:security-context-backend-vagrant.xml"/>
-    </beans>
-
     <beans>
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
             <property name="properties">
