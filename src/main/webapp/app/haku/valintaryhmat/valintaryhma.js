@@ -250,6 +250,7 @@ angular.module('valintalaskenta')
         _.forEach($scope.hakukohteet, function (hakukohde) {
             hakukohdeOids.push(hakukohde.oid);
         });
+        var erillishaku = HakuModel.hakuOid.erillishaku;
         var valintalaskentaInstance = $modal.open({
             backdrop: 'static',
             templateUrl: '../common/modaalinen/valintakoelaskenta.html',
@@ -259,8 +260,10 @@ angular.module('valintalaskenta')
                 oids: function () {
                     return {
                         hakuOid: $routeParams.hakuOid,
-                        valinnanvaihe: null,
+                        tyyppi: "VALINTARYHMA",
+                        erillishaku: erillishaku,
                         nimentarkennus: valintaryhma.nimi,
+                        valintaryhmaOid: valintaryhma.oid,
                         valintakoelaskenta: true,
                         hakukohteet: hakukohdeOids
                     };
