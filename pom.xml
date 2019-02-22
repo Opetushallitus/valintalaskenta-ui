@@ -263,30 +263,6 @@ buildTtime=${maven.build.timestamp}
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <!--
-                <executions>
-                    <execution>
-                        <id>test-nodejs</id>
-                        <phase>integration-test</phase>
-                        <configuration>
-                            <tasks name="Run mocha tests">
-                                <exec dir="${basedir}" executable="npm"
-                                      failonerror="true">
-                                    <arg value="test" />
-                                </exec>
-                            </tasks>
-                        </configuration>
-
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                -->
-            </plugin>
         </plugins>
     </build>
 
