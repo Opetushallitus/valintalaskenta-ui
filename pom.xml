@@ -9,8 +9,8 @@
 
     <properties>
         <spring.asm.version>3.1.4.RELEASE</spring.asm.version>
-        <spring.version>4.3.22.RELEASE</spring.version>
-        <spring.security.version>4.1.5.RELEASE</spring.security.version>
+        <spring.version>5.1.5.RELEASE</spring.version>
+        <spring.security.version>4.2.11.RELEASE</spring.security.version>
         <slf4j.version>1.7.25</slf4j.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -60,11 +60,6 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc-portlet</artifactId>
                 <version>${spring.version}</version>
             </dependency>
             <dependency>
@@ -127,7 +122,7 @@
         <dependency>
             <groupId>fi.vm.sade.java-utils</groupId>
             <artifactId>opintopolku-cas-servlet-filter</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.jasig.cas.client</groupId>
@@ -163,10 +158,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc-portlet</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
@@ -199,9 +190,9 @@
             <version>0.1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>4.1.0.Final</version>
+            <version>6.0.15.Final</version>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
@@ -249,6 +240,11 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
         </dependency>
 
     </dependencies>
