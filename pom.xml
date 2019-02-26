@@ -13,9 +13,6 @@
         <spring.security.version>4.2.11.RELEASE</spring.security.version>
         <slf4j.version>1.7.25</slf4j.version>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
         <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
     </properties>
 
@@ -305,10 +302,9 @@ buildTtime=${maven.build.timestamp}
                 <inherited>true</inherited>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>11</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -342,7 +338,7 @@ buildTtime=${maven.build.timestamp}
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.4.1</version>
+                <version>3.0.0-M2</version>
                 <executions>
                     <execution>
                         <id>enforce-versions</id>
@@ -352,7 +348,7 @@ buildTtime=${maven.build.timestamp}
                         <configuration>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>1.8</version>
+                                    <version>11</version>
                                 </requireJavaVersion>
                                 <dependencyConvergence/>
                             </rules>
