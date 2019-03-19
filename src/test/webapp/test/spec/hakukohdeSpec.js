@@ -95,8 +95,8 @@ describe('Hakukohde valinta näkymä', function() {
             });
 
             it('redirect "Hakukohteen perustiedot" välilehteen', seqDone(
-                wait.forAngular(),
-                function () {
+                wait.forAngular,
+                function() {
                     expect(page.isOnHakukohteenPerustiedotTab()).to.equal(true);
                     expect(hakukohde.valintakoekutsutTab().length).to.equal(0);
                 }
