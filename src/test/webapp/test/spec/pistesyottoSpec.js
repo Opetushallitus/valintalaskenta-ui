@@ -76,9 +76,9 @@ describe('Pistesyöttö', function() {
             initCommonFixtures();
             addTestHook(parametritFixtures)();
             page.openPage(done);
-            wait.forAngular;
         });
         it('Kenttien muokkaus ei sallittu', seqDone(
+            wait.forAngular,
             disabled(pistesyottoselectors.osallistuminenSelectBox)
         ))
         it('Tallenna nappi on disabloitu', seqDone(
@@ -91,10 +91,10 @@ describe('Pistesyöttö', function() {
             initCommonFixtures();
             addTestHook(parametritFixturesWithOverrides({koetulostentallennus: true}))();
             page.openPage(done);
-            wait.forAngular;
         });
         describe('Ensimmäisellä sivulla', function() {
             it('Kenttien muokkaus on sallittu', seqDone(
+                wait.forAngular,
                 enabled(pistesyottoselectors.osallistuminenSelectBox)
             ))
             it('Tallenna nappi on enabloitu', seqDone(

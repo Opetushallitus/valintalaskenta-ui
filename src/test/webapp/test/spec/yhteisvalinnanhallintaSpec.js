@@ -12,7 +12,6 @@ describe('Yhteisvalinnan hallinta', function() {
         addTestHook(commonFixtures())()
         addTestHook(kirjeFixtures)()
         page.openPage(done)
-        wait.forAngular
     })
 
     afterEach(function () {
@@ -23,6 +22,7 @@ describe('Yhteisvalinnan hallinta', function() {
 
     describe('Haun tiedot osio', function () {
         before(seqDone(
+            wait.forAngular,
             click(yhteisvalinnanHallintaSelectors.haunTiedotOsionAvaus),
             wait.forAngular
         ))
@@ -33,6 +33,7 @@ describe('Yhteisvalinnan hallinta', function() {
 
     describe('Kirjeet ja sijoittelun tulokset osio', function () {
         before(seqDone(
+            wait.forAngular,
             click(yhteisvalinnanHallintaSelectors.kirjeetOsionAvaus),
             wait.forAngular,
             click(yhteisvalinnanHallintaSelectors.paivitaKirjeidenTilanne),
