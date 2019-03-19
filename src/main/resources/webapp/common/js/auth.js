@@ -229,6 +229,21 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
               }
             }
 
+          function handleHakukohdeAuthorisationByOrganisation() {
+            if (HakukohdeModel.hakukohde) {
+              if (HakukohdeModel.hakukohde.tarjoajaOids) {
+                _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
+                  handleOrgAuth(orgOid)
+                });
+              }
+              if (HakukohdeModel.hakukohde.organisaatioRyhmaOids) {
+                _.forEach(HakukohdeModel.hakukohde.organisaatioRyhmaOids, function (ryhmaOid) {
+                  handleOrgAuth(ryhmaOid)
+                });
+              }
+            }
+          }
+
           function handleOrgAuth(orgOid) {
               switch (attrs.auth) {
                 case "crud":
@@ -285,12 +300,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
                     if ($routeParams.hakukohdeOid) {
                         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
-
-                            if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
-                                _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                                    handleOrgAuth(orgOid)
-                                });
-                            }
+                          handleHakukohdeAuthorisationByOrganisation();
                         });
                     }
 
@@ -305,12 +315,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                     $timeout(function () {
                       handleOphAuth()
                     }, 0);
-
-                    if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
-                        _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                            handleOrgAuth(orgOid)
-                        });
-                    }
+                  handleHakukohdeAuthorisationByOrganisation();
                 });
             } else {
                 $timeout(function () {
