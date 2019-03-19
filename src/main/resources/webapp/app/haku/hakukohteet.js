@@ -49,17 +49,23 @@ angular.module('valintalaskenta')
                             model.readyToQueryForNextPage = false;
                             AuthService.getOrganizations("APP_VALINTOJENTOTEUTTAMINEN", ['READ', 'READ_UPDATE', 'CRUD']).then(function (roleModel) {
 
+                                var organisationOids = _.filter(roleModel, function (o) {
+                                    return o.startsWith("1.2.246.562.10.");
+                                });
+
+                                var hakukohdeRyhmaOids = _.filter(roleModel, function (o) {
+                                    return o.startsWith("1.2.246.562.28.");
+                                });
+
                                 var searchParams = {
                                     hakuOid: hakuOid,
                                     startIndex: startIndex,
                                     count: model.pageSize,
                                     searchTerms: model.lastSearch,
-                                    hakukohdeTilas: hakukohdeTilas
+                                    hakukohdeTilas: hakukohdeTilas,
+                                    organisationOids: organisationOids.toString(),
+                                    organisationGroupOids: hakukohdeRyhmaOids.toString()
                                 };
-
-                                if (model.omatHakukohteet) {
-                                    searchParams.organisationOids = roleModel.toString();
-                                }
 
                                 TarjontaHaku.get(searchParams, function (result) {
 
