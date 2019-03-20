@@ -848,11 +848,11 @@ angular.module('valintalaskenta')
 
             $scope.hakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function() {
                 $scope.$watch('hakukohdeModel.hakukohde.tarjoajaOids', function() {
-                    AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function() {
+                    AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids).then(function() {
                         $scope.updateOrg = true;
                     });
 
-                    AuthService.musiikkiOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function() {
+                    AuthService.musiikkiOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids).then(function() {
                         $scope.updateVarasijaltaHyvaksytty = true;
                     });
                 });

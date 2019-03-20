@@ -30,7 +30,7 @@
         <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'"/>
 
         <div auth="LISATIETORU LISATIETOCRUD READ_UPDATE CRUD" auth-service="APP_HAKEMUS"
-             auth-org="{{hakukohdeModel.hakukohde.tarjoajaOids[0]}}" class="tabsheets hakukohteet-pistesyotto">
+             auth-orgs="{{hakukohdeModel.hakukohde.tarjoajaOids.concat(hakukohdeModel.hakukohde.organisaatioRyhmaOids)}}" class="tabsheets hakukohteet-pistesyotto">
 
             <div ng-include="'../common/html/errors.html'"></div>
             <div ng-show="model.hakeneet.length > 0" class="pull-right">

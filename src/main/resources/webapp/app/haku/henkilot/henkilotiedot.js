@@ -214,7 +214,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         var organizationChecksByHakukohdeOid = {};
         return $q.all(Object.entries(hakukohteetByHakukohdeOid).map(function (t) {
             var hakukohdeOid = t[0];
-            return AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINENKK", t[1].tarjoajaOid)
+            return AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINENKK", [t[1].tarjoajaOid])
                 .then(function () {
                     organizationChecksByHakukohdeOid[hakukohdeOid] = true;
                 }, function () {
