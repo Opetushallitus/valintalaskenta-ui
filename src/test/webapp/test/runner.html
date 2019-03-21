@@ -14,7 +14,9 @@
 <script src="lib/jquery.min.js"></script>
 <script>
     mocha.ui('bdd');
-    mocha.reporter('spec');
+    var mochaReporter = new URLSearchParams(window.location.search).get('mochaReporter') || 'spec';
+    console.log('Using mocha reporter', mochaReporter);
+    mocha.reporter(mochaReporter);
     mocha.timeout(120000);
 </script>
 <script src="fixtures/valintaperusteet.js"></script>
