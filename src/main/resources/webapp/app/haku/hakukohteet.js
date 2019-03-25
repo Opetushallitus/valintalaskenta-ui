@@ -15,7 +15,6 @@ angular.module('valintalaskenta')
                 this.searchWord = "";
                 this.lastSearch = null;
                 this.lastHakuOid = null;
-                this.omatHakukohteet = true;
                 this.julkaistutHakukohteet = "JULKAISTU";
                 this.valmiitJaJulkaistutHakukohteet = "JULKAISTU,VALMIS";
                 this.readyToQueryForNextPage = true;
@@ -30,9 +29,6 @@ angular.module('valintalaskenta')
                 };
                 this.getTotalCount = function () {
                     return model.totalCount;
-                };
-                this.getHakukohteet = function () {
-                    return model.hakukohteet;
                 };
                 this.getNextPage = function (restart) {
                     var hakuOid = $routeParams.hakuOid;
