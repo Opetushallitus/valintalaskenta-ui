@@ -487,7 +487,7 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
 
 
         hakukohdeModelpromise.then(function() {
-            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.hakukohde.tarjoajaOids).then(function() {
+            AuthService.crudOrg("APP_VALINTOJENTOTEUTTAMINEN", HakukohdeModel.organisationOidsForAuthorisation).then(function() {
                 $scope.crudOrg = true;
                 $scope.jkmuokkaus = true;
             });

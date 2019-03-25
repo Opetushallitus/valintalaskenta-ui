@@ -237,14 +237,7 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
           function handleHakukohdeAuthorisationByOrganisation() {
             if (HakukohdeModel.hakukohde) {
-              var orgOidsToCheck = [];
-              if (HakukohdeModel.hakukohde.tarjoajaOids) {
-                orgOidsToCheck = orgOidsToCheck.concat(HakukohdeModel.hakukohde.tarjoajaOids);
-              }
-              if (HakukohdeModel.hakukohde.organisaatioRyhmaOids) {
-                orgOidsToCheck = orgOidsToCheck.concat(HakukohdeModel.hakukohde.organisaatioRyhmaOids);
-              }
-              handleOrgAuth(orgOidsToCheck);
+              handleOrgAuth(HakukohdeModel.organisationOidsForAuthorisation);
             }
           }
 
