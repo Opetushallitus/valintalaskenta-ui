@@ -36,7 +36,9 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                     hakukohteetByHakukohdeOid[result.result.oid] = {
                         nimi: result.result.hakukohteenNimet.kieli_fi,
                         tarjoajaNimi: result.result.tarjoajaNimet.fi,
-                        tarjoajaOid: result.result.tarjoajaOids[0]
+                        tarjoajaOid: result.result.tarjoajaOids[0],
+                        organisationOidsForAuthorization: (result.result.tarjoajaOids || [])
+                          .concat(result.result.organisaatioRyhmaOids || [])
                     };
                 });
         })).then(function () {
@@ -214,7 +216,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         var organizationChecksByHakukohdeOid = {};
         return $q.all(Object.entries(hakukohteetByHakukohdeOid).map(function (t) {
             var hakukohdeOid = t[0];
-            return AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINENKK", [t[1].tarjoajaOid])
+            return AuthService.readOrg("APP_VALINTOJENTOTEUTTAMINENKK", [t[1].organisationOidsForAuthorization])
                 .then(function () {
                     organizationChecksByHakukohdeOid[hakukohdeOid] = true;
                 }, function () {
