@@ -75,6 +75,8 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
                 return "Hakukelpoinen";
             case "uneligible":
                 return "Ei Hakukelpoinen";
+            case "conditionally-eligible":
+                return "Ehdollisesti hakukelpoinen";
             default:
                 return "Tarkastamatta";
         }
