@@ -9,7 +9,8 @@
                     <span ng-if="hakutoive.showAsLink"
                           auth="read"
                           auth-orgs="{{hakutoive.organisationOidsForAuthorization}}"
-                          auth-service="APP_VALINTOJENTOTEUTTAMINEN">-
+                          auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+                          auth-kk-user="true">-
                         <a href="#/haku/{{model.hakuOid}}/hakukohde/{{hakutoive.hakukohdeOid}}/perustiedot">
                             {{hakutoive.oppilaitos}}
                         </a>
