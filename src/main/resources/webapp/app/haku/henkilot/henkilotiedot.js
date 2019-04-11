@@ -302,6 +302,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                     koulutuksenNimi: hakukohde.nimi,
                     oppilaitos: hakukohde.tarjoajaNimi,
                     oppilaitosId: hakukohde.tarjoajaOid,
+                    organisationOidsForAuthorization: hakukohde.organisationOidsForAuthorization,
                     hakemusOid: hakemusOid,
                     hakenutHarkinnanvaraisesti: h.hakenutHarkinnanvaraisesti,
                     additionalData: R.path(['applicationAdditionalDataDTO', 'additionalData'], additionalData),
