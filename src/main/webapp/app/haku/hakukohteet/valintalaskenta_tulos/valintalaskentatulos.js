@@ -309,10 +309,11 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
         };
 
         this.ataruHakutoivePrioriteetti = function(hakija) {
-            hakija.hakutoiveet.forEach(function(toive, index) {
-                if (toive.hakukohdeOid === model.hakukohdeOid) return index + 1;
-            });
-            return -1;
+            var index = hakija.hakutoiveet.findIndex(h => h.hakukohdeOid === model.hakukohdeOid);
+            if(index < 0) {
+                throw "Hakemuksen " + hakija.oid + " hakutoiveista ei löytynyt hakukohdetta: " + model.hakukohdeOid;
+            }
+            return index + 1;
         };
 
         this.hakutoivePrioriteetti = function(hakija) {
