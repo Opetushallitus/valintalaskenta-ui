@@ -5,24 +5,126 @@
     <version>5.2-SNAPSHOT</version>
     <artifactId>valintalaskenta-ui</artifactId>
     <name>Valintalaskenta :: UI</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <spring.asm.version>3.1.4.RELEASE</spring.asm.version>
-        <spring.security.version>4.1.2.RELEASE</spring.security.version>
-        <spring.version>4.3.2.RELEASE</spring.version>
-
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <spring.version>5.1.5.RELEASE</spring.version>
+        <spring.security.version>4.2.11.RELEASE</spring.security.version>
+        <slf4j.version>1.7.25</slf4j.version>
 
         <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-expression</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <!-- spring security -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-cas</artifactId>
+                <version>${spring.security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.ehcache</groupId>
+                <artifactId>ehcache-core</artifactId>
+                <version>2.5.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>fi.vm.sade.java-utils</groupId>
-            <artifactId>opintopolku-cas-servlet-filter</artifactId>
+            <artifactId>opintopolku-jetty</artifactId>
             <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>fi.vm.sade.java-utils</groupId>
+            <artifactId>opintopolku-cas-servlet-filter</artifactId>
+            <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.jasig.cas.client</groupId>
@@ -43,89 +145,59 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.5</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.5</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc-portlet</artifactId>
-            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- spring security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-cas</artifactId>
-            <version>${spring.security.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>fi.vm.sade.java-utils</groupId>
             <artifactId>opintopolku-user-details-service</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>4.1.0.Final</version>
+            <version>6.0.15.Final</version>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
-            <version>2.5.0</version>
         </dependency>
 
         <!-- testing -->
@@ -133,12 +205,6 @@
             <groupId>fi.vm.sade</groupId>
             <artifactId>embedded-tomcat</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>9.2.11.v20150529</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -169,6 +235,11 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
         </dependency>
 
     </dependencies>
@@ -206,8 +277,8 @@
                         </goals>
                         <configuration>
                             <target>
-                                <echo message="writing target/${project.build.finalName}/buildversion.txt"/>
-                                <echo file="target/${project.build.finalName}/buildversion.txt">
+                                <echo message="writing ${project.build.outputDirectory}/webapp/buildversion.txt"/>
+                                <echo file="${project.build.outputDirectory}/webapp/buildversion.txt">
                                     <![CDATA[artifactId=${project.artifactId}
 version=${project.version}
 buildNumber=${build}
@@ -217,7 +288,7 @@ buildTtime=${maven.build.timestamp}
 ]]>
                                 </echo>
                                 <loadfile property="buildversiontxt"
-                                          srcFile="target/${project.build.finalName}/buildversion.txt"/>
+                                          srcFile="${project.build.outputDirectory}/webapp/buildversion.txt"/>
                                 <echo message="${buildversiontxt}"/>
                                 <echo file="target/mavenversion.txt">${project.version}</echo>
                             </target>
@@ -229,10 +300,9 @@ buildTtime=${maven.build.timestamp}
                 <inherited>true</inherited>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>11</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -259,6 +329,68 @@ buildTtime=${maven.build.timestamp}
                         </goals>
                         <configuration>
                             <skip>false</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M2</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>11</version>
+                                </requireJavaVersion>
+                                <dependencyConvergence/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>allinone</shadedClassifierName>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>fi.vm.sade.valintalaskenta.config.ValintaUiJetty</Main-Class>
+                                    </manifestEntries>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.handlers</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.schemas</resource>
+                                </transformer>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>

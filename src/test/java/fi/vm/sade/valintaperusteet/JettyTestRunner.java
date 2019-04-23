@@ -1,7 +1,6 @@
 package fi.vm.sade.valintaperusteet;
 
 import fi.vm.sade.integrationtest.util.ProjectRootFinder;
-import fi.vm.sade.integrationtest.util.SpringProfile;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -22,7 +21,7 @@ public class JettyTestRunner {
     static WebAppContext webAppContext = new WebAppContext();
 
     private static void initServer(Server server) throws IOException {
-        String[] resources = {ROOT + "/src/main/webapp", ROOT + "/src/test/webapp"};
+        String[] resources = {ROOT + "/src/main/resources/webapp", ROOT + "/src/test/webapp"};
         webAppContext.setBaseResource(
                 new ResourceCollection(resources)
         );

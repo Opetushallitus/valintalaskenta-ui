@@ -43,7 +43,7 @@ var paths = {
 		'bower_components/angular-cache/dist/angular-cache.min.map',
 		'bower_components/oph_urls/index.js'
 	],
-	css: 'src/main/webapp/common/css/',
+	css: 'src/main/resources/webapp/common/css/',
 	sass: ['sass/valintaperusteet.scss', 'sass/valintalaskenta.scss'],
 	cleanBuildFiles: [
 		'node/',
@@ -51,14 +51,14 @@ var paths = {
 		'bower_components'
 	],
 	unitTests: [
-        'src/main/webapp/common/jslib/jquery.js',
-        'src/main/webapp/common/jslib/angular.js',
-        'src/main/webapp/common/jslib/*.js',
-        'src/main/webapp/common/jslib/ui.bootstrap-tpls.min.js',
-        'src/main/webapp/app/app.js',
-        'src/main/webapp/app/**/*.js',
-        'src/main/webapp/common/js/**/*.js',
-        'src/main/webapp/common/jslib/static/tinymce-4.0.12/*.js',
+        'src/main/resources/webapp/common/jslib/jquery.js',
+        'src/main/resources/webapp/common/jslib/angular.js',
+        'src/main/resources/webapp/common/jslib/*.js',
+        'src/main/resources/webapp/common/jslib/ui.bootstrap-tpls.min.js',
+        'src/main/resources/webapp/app/app.js',
+        'src/main/resources/webapp/app/**/*.js',
+        'src/main/resources/webapp/common/js/**/*.js',
+        'src/main/resources/webapp/common/jslib/static/tinymce-4.0.12/*.js',
         'src/test/ui/angular-mocks.js',
         'src/test/ui/unit/**/*.js'
 	],
@@ -66,14 +66,14 @@ var paths = {
 		'bower_components/angular-mocks/angular-mocks.js',
 		'bower_components/angular-scenario/angular-scenario.js'
 	],
-	jslib: 'src/main/webapp/common/jslib',
+	jslib: 'src/main/resources/webapp/common/jslib',
 	sources: [
-		'src/main/webapp/app/**',
-		'src/main/webapp/common/css/other.css',
-		'src/main/webapp/common/css/virkailija.css',
-		'src/main/webapp/common/html/**',
-		'src/main/webapp/common/js/**',
-		'src/main/webapp/common/modaalinen/**'
+		'src/main/resources/webapp/app/**',
+		'src/main/resources/webapp/common/css/other.css',
+		'src/main/resources/webapp/common/css/virkailija.css',
+		'src/main/resources/webapp/common/html/**',
+		'src/main/resources/webapp/common/js/**',
+		'src/main/resources/webapp/common/modaalinen/**'
 	]
 }
 
