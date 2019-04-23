@@ -71,29 +71,35 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
         return found;
     };
 
-    var accessCheck = function (service, orgOid, roles) {
-        if (!orgOid) {
-          console.warn('accessCheck called with undefined orgOid');
+    var accessCheck = function (service, orgOids, roles) {
+        console.debug('AuthService : Checking access to', service, roles, 'for organisations', orgOids);
+        if (!orgOids || orgOids.length < 1) {
+          var message = 'accessCheck called with no orgOids';
+          console.warn(message);
+          return $q.reject(message);
         }
 
         var deferred = $q.defer();
 
-        MyRolesModel.then(function (model) {
-            $http.get(window.url("organisaatio-service.organisaatio.parentoids", orgOid))
-                .success(function (result) {
-                    var found = false;
-                    var parentOids = result.split("/");
-                    parentOids.forEach(function (org) {
-                        if (roleCheck(service, org, model, roles)) {
-                            found = true;
-                        }
-                    });
-                    if (found) {
-                        deferred.resolve();
-                    } else {
-                        deferred.reject('Not found: ' + service + ', ' + orgOid);
-                    }
-                });
+        MyRolesModel.then(function(model) {
+          $q.all(orgOids.map(function(oid) {
+            return $http.get(window.url("organisaatio-service.organisaatio.parentoids", oid))
+          })).then(function(results) {
+            var found = false;
+            results.forEach(function(singleResult) {
+              var parentOids = singleResult.data.split("/");
+              parentOids.forEach(function (org) {
+                  if (roleCheck(service, org, model, roles)) {
+                      found = true;
+                  }
+              });
+            });
+            if (found) {
+                deferred.resolve();
+            } else {
+                deferred.reject('Not found: ' + service + ', ' + orgOids);
+            }
+          });
         });
 
         return deferred.promise;
@@ -114,24 +120,24 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
     };
 
     return {
-        check: function (roles, service, orgOid) {
-            return accessCheck(service, orgOid, roles);
+        check: function (roles, service, orgOids) {
+            return accessCheck(service, orgOids, roles);
         },
 
-        readOrg: function (service, orgOid) {
-            return accessCheck(service, orgOid, [READ, UPDATE, CRUD]);
+        readOrg: function (service, orgOids) {
+            return accessCheck(service, orgOids, [READ, UPDATE, CRUD]);
         },
 
-        updateOrg: function (service, orgOid) {
-            return accessCheck(service, orgOid, [UPDATE, CRUD]);
+        updateOrg: function (service, orgOids) {
+            return accessCheck(service, orgOids, [UPDATE, CRUD]);
         },
 
-        musiikkiOrg: function (service, orgOid) {
-            return accessCheck(service, orgOid, [MUSIIKKI]);
+        musiikkiOrg: function (service, orgOids) {
+            return accessCheck(service, orgOids, [MUSIIKKI]);
         },
 
-        crudOrg: function (service, orgOid) {
-            return accessCheck(service, orgOid, [CRUD]);
+        crudOrg: function (service, orgOids) {
+            return accessCheck(service, orgOids, [CRUD]);
         },
 
         readOph: function (service) {
@@ -229,23 +235,29 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
               }
             }
 
-          function handleOrgAuth(orgOid) {
+          function handleHakukohdeAuthorisationByOrganisation() {
+            if (HakukohdeModel.hakukohde) {
+              handleOrgAuth(HakukohdeModel.organisationOidsForAuthorisation);
+            }
+          }
+
+          function handleOrgAuth(orgOids) {
               switch (attrs.auth) {
                 case "crud":
-                  AuthService.crudOrg(attrs.authService, orgOid).then(success, failure);
+                  AuthService.crudOrg(attrs.authService, orgOids).then(success, failure);
                   break;
 
                 case "update":
-                  AuthService.updateOrg(attrs.authService, orgOid).then(success, failure);
+                  AuthService.updateOrg(attrs.authService, orgOids).then(success, failure);
                   break;
 
                 case "read":
-                  AuthService.readOrg(attrs.authService, orgOid).then(success, failure);
+                  AuthService.readOrg(attrs.authService, orgOids).then(success, failure);
                   break;
 
                 default:
                   console.info('handleAuth switch case went to default case for parameter ' + attrs.auth);
-                  AuthService.check(attrs.auth.split(" "), attrs.authService, orgOid).then(success, failure);
+                  AuthService.check(attrs.auth.split(" "), attrs.authService, orgOids).then(success, failure);
                   break;
             }
           }
@@ -259,23 +271,23 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                       handleOphAuth()
                   }, 0);
 
-                        attrs.$observe('authOrg', function () {
-                            if (attrs.authOrg) {
+                        attrs.$observe('authOrgs', function () {
+                            if (attrs.authOrgs) {
                                 switch (attrs.auth) {
                                     case "crud":
-                                        AuthService.crudOrg(attrs.authService, attrs.authOrg).then(success, failure);
+                                        AuthService.crudOrg(attrs.authService, attrs.authOrgs).then(success, failure);
                                         break;
 
                                     case "update":
-                                        AuthService.updateOrg(attrs.authService, attrs.authHakukohdeOrg).then(success, failure);
+                                        AuthService.updateOrg(attrs.authService, [attrs.authHakukohdeOrg]).then(success, failure);
                                         break;
 
                                     case "read":
-                                        AuthService.readOrg(attrs.authService, attrs.authOrg).then(success, failure);
+                                        AuthService.readOrg(attrs.authService, attrs.authOrgs).then(success, failure);
                                         break;
 
                                     default:
-                                        AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrg).then(success, failure);
+                                        AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrgs).then(success, failure);
                                         break;
                                 }
                             }
@@ -285,41 +297,30 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
                     if ($routeParams.hakukohdeOid) {
                         HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
-
-                            if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
-                                _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                                    handleOrgAuth(orgOid)
-                                });
-                            }
+                          handleHakukohdeAuthorisationByOrganisation();
                         });
                     }
 
                 });
             } else if (attrs.authHakuTarjoajaUser) {
               HakuModel.refreshIfNeeded($routeParams.hakuOid).then(function () {
-              var tarjoajaOid = HakuModel.hakuOid.organisaatioOids[0];
-              handleOrgAuth(tarjoajaOid);
+              handleOrgAuth(HakuModel.hakuOid.organisaatioOids);
               });
             } else if ($routeParams.hakukohdeOid) {
                 HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid).then(function () {
                     $timeout(function () {
                       handleOphAuth()
                     }, 0);
-
-                    if(HakukohdeModel.hakukohde && HakukohdeModel.hakukohde.tarjoajaOids) {
-                        _.forEach(HakukohdeModel.hakukohde.tarjoajaOids, function (orgOid) {
-                            handleOrgAuth(orgOid)
-                        });
-                    }
+                  handleHakukohdeAuthorisationByOrganisation();
                 });
             } else {
                 $timeout(function () {
                   handleOphAuth()
                 }, 0);
 
-                attrs.$observe('authOrg', function () {
-                    if (attrs.authOrg) {
-                      handleOrgAuth(attrs.authOrg);
+                attrs.$observe('authOrgs', function () {
+                    if (attrs.authOrgs) {
+                      handleOrgAuth(attrs.authOrgs);
                     }
                 });
             }

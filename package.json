@@ -14,8 +14,7 @@
     "gulp-debug": "^2.1.2",
     "gulp-karma": "0.0.5",
     "karma": "^0.13.0",
-    "phantomjs-prebuilt": "2.1.15",
-    "mocha-phantomjs-core": "2.1.2",
+    "mocha-headless-chrome": "^2.0.2",
     "test": "*"
   }
 }

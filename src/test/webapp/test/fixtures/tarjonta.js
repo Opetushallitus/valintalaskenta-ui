@@ -212,9 +212,9 @@ function tarjontaFixtures() {
             "update": false
         }
     })
-    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/HAKUKOHDEOID/).respond(haku)
-    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/HAKUKOHDE1/).respond(haku)
-    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO/).respond(haku)
+    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/HAKUKOHDEOID/).respond(hakukohde)
+    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/HAKUKOHDE1/).respond(hakukohde)
+    httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/HAKUKOHDE_OID_NO_VIITE_YES_SYOTTO/).respond(hakukohde)
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/hakukohde\/1\.2\.246\.562\.20\.18097797874/).respond({
         "status": "OK",
         "result": {

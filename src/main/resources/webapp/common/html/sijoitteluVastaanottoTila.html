@@ -1,2 +1,2 @@
-<a ng-disabled="!enabled" auth="crud" auth-additional-check="valinnanhallinta" auth-service="APP_SIJOITTELU" auth-kk-user="true" auth-org="{{hakukohdeModel.hakukohde.tarjoajaOids[0]}"
+<a ng-disabled="!enabled" auth="crud" auth-additional-check="valinnanhallinta" auth-service="APP_SIJOITTELU" auth-kk-user="true" auth-orgs="{{hakukohdeModel.organisationOidsForAuthorisation}}"
          ng-click="show()" class="btn btn-default btn-sm">{{ t('personinformationpartial.tila') || 'Tila' }}</a>

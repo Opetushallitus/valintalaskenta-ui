@@ -553,7 +553,7 @@ angular.module('valintalaskenta')
         getErillishaunValinnantulokset(),
         VtsVastaanottopostiLahetetty.get({hakukohdeOid: $routeParams.hakukohdeOid}).$promise
     ]).then(function(resolved) {
-        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.hakukohde.tarjoajaOids[0]).then(function() {
+        AuthService.updateOrg("APP_SIJOITTELU", HakukohdeModel.organisationOidsForAuthorisation).then(function() {
             $scope.updateOrg = true;
         });
         var kaikkiHakemukset = resolved[1];

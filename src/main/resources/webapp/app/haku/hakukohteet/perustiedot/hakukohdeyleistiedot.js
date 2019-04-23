@@ -21,6 +21,7 @@ angular.module('valintalaskenta').factory('HakukohdeModel', ['$q', '$log', '$htt
             model.hakukohdeOid = hakukohdeOid;
             TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (resultWrapper) {
                 model.hakukohde = resultWrapper.result;
+                model.organisationOidsForAuthorisation = (model.hakukohde.tarjoajaOids || []).concat(model.hakukohde.organisaatioRyhmaOids || []);
                 model.setHakukohdeNames();
                 model.setHakukohdeValintaRyhma(hakukohdeOid);
                 model.fetchKaytetaanValintalaskentaa(hakukohdeOid).then(function(kaytetaanValintalaskentaa) {

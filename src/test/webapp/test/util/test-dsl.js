@@ -244,5 +244,10 @@ function select(fn, value) {
 }
 
 function templateUrl() {
-    return testFrame().route.current.templateUrl;
+    if (testFrame().route && testFrame().route.current) {
+        return testFrame().route.current.templateUrl;
+    }
+    var message = "testFrame().route.current undefined, cannot read templateUrl";
+    console.warn(message);
+    return message;
 }
