@@ -30,12 +30,12 @@ angular.module('valintalaskenta')
         'ErillishakuTuonti', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat', 'Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Hakemukset', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
-        'Valintaesitys', 'valinnantuloksenHistoriaService', 'VtsVastaanottopostiLahetetty', 'VtsVastaanottopostiLahetaUudelleen',
+        'Valintaesitys', 'valinnantuloksenHistoriaService', 'VtsVastaanottopostiLahetetty', 'VtsVastaanottopostiLahetaUudelleenHakemukselle', 'VtsVastaanottopostiLahetaUudelleenJonolle',
         function($scope, $modal, $log, $location, $routeParams, $timeout, $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                  ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                  VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
-                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty, VtsVastaanottopostiLahetaUudelleen)
+                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty, VtsVastaanottopostiLahetaUudelleenHakemukselle, VtsVastaanottopostiLahetaUudelleenJonolle)
 {
     "use strict";
 
@@ -870,10 +870,21 @@ angular.module('valintalaskenta')
         });
     };
 
-    $scope.resendVastaanottoposti = function(hakemus) {
-        VtsVastaanottopostiLahetaUudelleen.delete({hakemusOid: hakemus.hakemusOid}).$promise
+    $scope.resendVastaanottopostiForHakemus = function(hakemus) {
+        VtsVastaanottopostiLahetaUudelleenHakemukselle.post({hakemusOid: hakemus.hakemusOid}).$promise
             .then(function() {
                 hakemus.vastaanottopostiSent = false
+                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys onnistui!", IlmoitusTila.INFO)
+            })
+            .catch(function(err) {
+                console.log(err)
+                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys epäonnistui!", IlmoitusTila.ERROR)
+            });
+    }
+
+    $scope.resendVastaanottopostiForJono = function(hakukohdeOid, jonoOid) {
+        VtsVastaanottopostiLahetaUudelleenJonolle.post({hakukohdeOid: hakukohdeOid, jonoOid: jonoOid}).$promise
+            .then(function() {
                 Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys onnistui!", IlmoitusTila.INFO)
             })
             .catch(function(err) {

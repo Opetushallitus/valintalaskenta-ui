@@ -822,12 +822,22 @@ app.factory('VtsVastaanottopostiLahetetty', function($resource) {
         });
 });
 
-app.factory('VtsVastaanottopostiLahetaUudelleen', function($resource) {
-    return $resource(plainUrl("valinta-tulos-service.vastaanottoposti.laheta.uudelleen", ":hakemusOid"),
+app.factory('VtsVastaanottopostiLahetaUudelleenHakemukselle', function($resource) {
+    return $resource(plainUrl("valinta-tulos-service.vastaanottoposti.laheta.uudelleen.hakemukselle", ":hakemusOid"),
         {
             hakemusOid: "@hakemusOid"
         }, {
-            delete: {method: "DELETE", cache: false}
+            post: {method: "POST", isArray: true, cache: false}
+        });
+});
+
+app.factory('VtsVastaanottopostiLahetaUudelleenJonolle', function($resource) {
+    return $resource(plainUrl("valinta-tulos-service.vastaanottoposti.laheta.uudelleen.jonolle", ":hakukohdeOid", ":jonoOid"),
+        {
+            hakukohdeOid: "@hakukohdeOid",
+            jonoOid: "@jonoOid"
+        }, {
+            post: {method: "POST", isArray: true, cache: false}
         });
 });
 
