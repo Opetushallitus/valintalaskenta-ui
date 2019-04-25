@@ -1203,9 +1203,10 @@ angular.module('valintalaskenta')
 
           $scope.resendVastaanottopostiForHakemus = function(hakemus) {
             VtsVastaanottopostiLahetaUudelleenHakemukselle.post({hakemusOid: hakemus.hakemusOid}).$promise
-              .then(function() {
+              .then(function(data) {
                 hakemus.vastaanottopostiSent = false
-                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys onnistui!", IlmoitusTila.INFO)
+                var msg = (!!data) ? "Ei lähetettäviä sähköposteja." : "Sähköpostin lähetys onnistui!";
+                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", msg, IlmoitusTila.INFO)
               })
               .catch(function(err) {
                 console.log(err)
@@ -1215,8 +1216,9 @@ angular.module('valintalaskenta')
 
           $scope.resendVastaanottopostiForJono = function(hakukohdeOid, jonoOid) {
             VtsVastaanottopostiLahetaUudelleenJonolle.post({hakukohdeOid: hakukohdeOid, jonoOid: jonoOid}).$promise
-              .then(function() {
-                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys onnistui!", IlmoitusTila.INFO)
+              .then(function(data) {
+                var msg = (!!data) ? "Ei lähetettäviä sähköposteja." : "Sähköpostin lähetys onnistui!";
+                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", msg, IlmoitusTila.INFO)
               })
               .catch(function(err) {
                 console.log(err)
