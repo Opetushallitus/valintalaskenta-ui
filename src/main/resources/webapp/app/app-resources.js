@@ -841,6 +841,15 @@ app.factory('VtsVastaanottopostiLahetaUudelleenJonolle', function($resource) {
         });
 });
 
+app.factory('VtsVastaanottopostiLahetaUudelleenHakukohteelle', function($resource) {
+    return $resource(plainUrl("valinta-tulos-service.vastaanottoposti.laheta.uudelleen.hakukohteelle", ":hakukohdeOid"),
+        {
+            hakukohdeOid: "@hakukohdeOid",
+        }, {
+            post: {method: "POST", isArray: true, cache: false}
+        });
+});
+
 app.factory('VtsLatestSijoitteluajoHakukohde', function($resource) {
     return $resource(plainUrl("valinta-tulos-service.sijoittelu.sijoitteluajo.hakukohde",
         ":hakuOid", "latest", ":hakukohdeOid"),

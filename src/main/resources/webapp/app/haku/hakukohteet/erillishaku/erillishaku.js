@@ -35,7 +35,7 @@ angular.module('valintalaskenta')
                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                  ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                  VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
-                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty, VtsVastaanottopostiLahetaUudelleenHakemukselle, VtsVastaanottopostiLahetaUudelleenJonolle)
+                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty, VtsVastaanottopostiLahetaUudelleenHakemukselle, VtsVastaanottopostiLahetaUudelleenJonolle, VtsVastaanottopostiLahetaUudelleenHakukohteelle)
 {
     "use strict";
 
@@ -872,7 +872,7 @@ angular.module('valintalaskenta')
 
     $scope.resendVastaanottopostiForHakemus = function(hakemus) {
         VtsVastaanottopostiLahetaUudelleenHakemukselle.post({hakemusOid: hakemus.hakemusOid}).$promise
-            .then(function() {
+            .then(function(data) {
                 hakemus.vastaanottopostiSent = false
                 var msg = (!!data) ? "Ei lähetettäviä sähköposteja." : "Sähköpostin lähetys onnistui!";
               Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", msg, IlmoitusTila.INFO)
@@ -885,7 +885,7 @@ angular.module('valintalaskenta')
 
     $scope.resendVastaanottopostiForJono = function(hakukohdeOid, jonoOid) {
         VtsVastaanottopostiLahetaUudelleenJonolle.post({hakukohdeOid: hakukohdeOid, jonoOid: jonoOid}).$promise
-            .then(function() {
+            .then(function(data) {
               var msg = (!!data) ? "Ei lähetettäviä sähköposteja." : "Sähköpostin lähetys onnistui!";
               Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", msg, IlmoitusTila.INFO)
             })

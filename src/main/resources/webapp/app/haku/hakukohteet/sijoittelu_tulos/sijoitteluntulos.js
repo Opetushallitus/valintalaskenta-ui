@@ -744,6 +744,7 @@ angular.module('valintalaskenta')
         'sijoitteluntuloksetUrl',
         'VtsVastaanottopostiLahetaUudelleenHakemukselle',
         'VtsVastaanottopostiLahetaUudelleenJonolle',
+        'VtsVastaanottopostiLahetaUudelleenHakukohteelle',
         function($scope,
                  $modal,
                  TallennaValinnat,
@@ -782,7 +783,8 @@ angular.module('valintalaskenta')
                  hyvaksymiskirjeetUrl,
                  sijoitteluntuloksetUrl,
                  VtsVastaanottopostiLahetaUudelleenHakemukselle,
-                 VtsVastaanottopostiLahetaUudelleenJonolle) {
+                 VtsVastaanottopostiLahetaUudelleenJonolle,
+                 VtsVastaanottopostiLahetaUudelleenHakukohteelle) {
             "use strict";
             $scope.dokumenttipalveluLoading = true;
             $scope.hakuOid = $routeParams.hakuOid;
@@ -1216,6 +1218,18 @@ angular.module('valintalaskenta')
 
           $scope.resendVastaanottopostiForJono = function(hakukohdeOid, jonoOid) {
             VtsVastaanottopostiLahetaUudelleenJonolle.post({hakukohdeOid: hakukohdeOid, jonoOid: jonoOid}).$promise
+              .then(function(data) {
+                var msg = (!!data) ? "Ei lähetettäviä sähköposteja." : "Sähköpostin lähetys onnistui!";
+                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", msg, IlmoitusTila.INFO)
+              })
+              .catch(function(err) {
+                console.log(err)
+                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys epäonnistui!", IlmoitusTila.ERROR)
+              });
+          }
+
+          $scope.resendVastaanottopostiForHakukohde = function(hakukohdeOid) {
+            VtsVastaanottopostiLahetaUudelleenHakukohteelle.post({hakukohdeOid: hakukohdeOid}).$promise
               .then(function(data) {
                 var msg = (!!data) ? "Ei lähetettäviä sähköposteja." : "Sähköpostin lähetys onnistui!";
                 Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", msg, IlmoitusTila.INFO)
