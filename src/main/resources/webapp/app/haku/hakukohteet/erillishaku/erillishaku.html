@@ -266,10 +266,10 @@
                                          ng-show="tulos.hyvaksymiskirjeLahetetty">
                                         {{tulos.hyvaksymiskirjeLahetetty | date:'dd.MM.yyyy'}}
                                     </div>
-                                    <button class="btn btn-default btn-sm"
-                                            ng-show="tulos.vastaanottopostiSent"
-                                            ng-click="resendVastaanottopostiForHakemus(tulos)">
-                                        {{ t('sijoitteluntulos.lahetaVastaanottopostiUudelleen') || 'Lähetä vastaanottoposti uudelleen' }}
+                                    <button class="btn btn-default btn-sm" ng-click="resendVastaanottopostiForHakemus(tulos)">
+                                        {{ (tulos.vastaanottopostiSent)
+                                            ? (t('sijoitteluntulos.lahetaVastaanottopostiUudelleen') || 'Lähetä vastaanottoposti uudelleen')
+                                            : (t('sijoitteluntulos.lahetaVastaanottoposti') || 'Lähetä vastaanottoposti') }}
                                     </button>
                                 </div>
                             </td>
