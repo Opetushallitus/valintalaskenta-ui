@@ -1207,7 +1207,7 @@ angular.module('valintalaskenta')
             VtsVastaanottopostiLahetaUudelleenHakemukselle.post({hakemusOid: hakemus.hakemusOid}).$promise
               .then(function(data) {
                 hakemus.vastaanottopostiSent = false
-                var msg = (!!data) ? "Ei lähetettäviä sähköposteja." : "Sähköpostin lähetys onnistui!";
+                var msg = (!data || !data.length) ? "Ei lähetettäviä sähköposteja." : ("Sähköpostin lähetys onnistui!\n" + data.join(", "));
                 Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", msg, IlmoitusTila.INFO)
               })
               .catch(function(err) {
@@ -1219,7 +1219,7 @@ angular.module('valintalaskenta')
           $scope.resendVastaanottopostiForJono = function(hakukohdeOid, jonoOid) {
             VtsVastaanottopostiLahetaUudelleenJonolle.post({hakukohdeOid: hakukohdeOid, jonoOid: jonoOid}).$promise
               .then(function(data) {
-                var msg = (!!data) ? "Ei lähetettäviä sähköposteja." : "Sähköpostin lähetys onnistui!";
+                var msg = (!data || !data.length) ? "Ei lähetettäviä sähköposteja." : ("Sähköpostin lähetys onnistui!\n" + data.join(", "));
                 Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", msg, IlmoitusTila.INFO)
               })
               .catch(function(err) {
@@ -1231,7 +1231,7 @@ angular.module('valintalaskenta')
           $scope.resendVastaanottopostiForHakukohde = function(hakukohdeOid) {
             VtsVastaanottopostiLahetaUudelleenHakukohteelle.post({hakukohdeOid: hakukohdeOid}).$promise
               .then(function(data) {
-                var msg = (!!data) ? "Ei lähetettäviä sähköposteja." : "Sähköpostin lähetys onnistui!";
+                var msg = (!data || !data.length) ? "Ei lähetettäviä sähköposteja." : ("Sähköpostin lähetys onnistui!\n" + data.join(", "));
                 Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", msg, IlmoitusTila.INFO)
               })
               .catch(function(err) {
