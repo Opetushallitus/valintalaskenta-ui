@@ -50,6 +50,8 @@ angular
     $scope.stateFilters[JOB_STATES.QUEUEING] = false;
     $scope.stateFilters[JOB_STATES.COMPLETED] = false;
     $scope.stateFilters[JOB_STATES.REMOVING] = false;
+    $scope.usernamesByOid = {}; //Kerätään tänne session aikana kysellyt käyttäjien nimitiedot, voidaan olettaa etteivät ne
+        //seurantakälin käyttäjän näkökulmasta muutu. Kysely vain kerran/oid/sessio.
 
     // Jobs being processed are subscribed to SSE endpoint for a soft real-time updates
     $scope.sseTrackedJobs = {};
@@ -167,21 +169,37 @@ angular
     updateJobList();
 
     var queryUserByOid = function(job, userOID) {
+      console.log("queryUserByOid : " + userOID);
       if (_.isEmpty(userOID)) {
         return;
       }
-
-      seurantaservice.queryUsernameByOid(userOID).then(function(res) {
+      if ($scope.usernamesByOid[userOID]) {
+        //console.log("Found in local user memory: ", $scope.usernamesByOid[userOID]);
+        var nameInfo = $scope.usernamesByOid[userOID];
+        job.userNameInitials = nameInfo.initials;
+        job.userFullname = nameInfo.fullName;
+      } else {
         job.userNameInitials = '';
-        if (res.etunimet && res.sukunimi) {
-          job.userNameInitials = _.head(res.etunimet) + _.head(res.sukunimi);
-          job.userFullname = res.etunimet + ' ' + res.sukunimi;
-        } else {
-          job.userNameInitials = '???';
-        }
-      }, function(err) {
-        job.userNameInitials = '???';
-      });
+        job.userFullname = userOID;
+        seurantaservice.queryUsernameByOid(userOID).then(function (res) {
+          if (typeof res === "undefined" || res.unauthorized) {
+            job.userNameInitials = '__';
+            job.userFullname = userOID;
+            $scope.usernamesByOid[userOID] = {"initials": '__', "fullName": userOID}
+          } else if (res.etunimet && res.sukunimi) {
+            var nameInfo = {"initials": _.head(res.etunimet) + _.head(res.sukunimi), "fullName": res.etunimet + ' ' + res.sukunimi};
+            job.userNameInitials = _.head(res.etunimet) + _.head(res.sukunimi);
+            job.userFullname = res.etunimet + ' ' + res.sukunimi;
+            console.log("Setting name information for oid " + userOID + " to ", nameInfo);
+            $scope.usernamesByOid[userOID] = nameInfo;
+          } else {
+            console.log("Name information not available for user, using empty default initials." + userOID);
+          }
+        }, function (err) {
+          console.log("Unhandled error querying username, using empty default initials. ", err);
+        });
+      }
+
     };
 
     // Setup controller to refresh jobs once in every ten seconds and stop
