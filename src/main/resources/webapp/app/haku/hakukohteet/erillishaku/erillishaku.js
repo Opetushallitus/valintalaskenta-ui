@@ -878,7 +878,7 @@ angular.module('valintalaskenta')
           })
           .catch(function(err) {
             console.log(err)
-            Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys epäonnistui!", IlmoitusTila.ERROR)
+            Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys epäonnistui! " + err.statusText, IlmoitusTila.ERROR)
           });
       }
 
@@ -891,7 +891,7 @@ angular.module('valintalaskenta')
             })
             .catch(function(err) {
                 console.log(err)
-                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys epäonnistui!", IlmoitusTila.ERROR)
+                Ilmoitus.avaa("Paikka vastaanotettavissa -sähköpostin uudelleenlähetys", "Sähköpostin lähetys epäonnistui! " + err.statusText, IlmoitusTila.ERROR)
             });
     }
 
