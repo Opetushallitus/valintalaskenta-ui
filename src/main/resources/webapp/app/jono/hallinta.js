@@ -169,12 +169,10 @@ angular
     updateJobList();
 
     var queryUserByOid = function(job, userOID) {
-      console.log("queryUserByOid : " + userOID);
       if (_.isEmpty(userOID)) {
         return;
       }
       if ($scope.usernamesByOid[userOID]) {
-        //console.log("Found in local user memory: ", $scope.usernamesByOid[userOID]);
         var nameInfo = $scope.usernamesByOid[userOID];
         job.userNameInitials = nameInfo.initials;
         job.userFullname = nameInfo.fullName;
@@ -183,13 +181,13 @@ angular
         job.userFullname = userOID;
         seurantaservice.queryUsernameByOid(userOID).then(function (res) {
           if (typeof res === "undefined") {
-            console.log("Something probably went wrong, but maybe won't go wrong next time? Won't remember results this time.");
-            job.userNameInitials = '__';
+            console.log("Something probably went wrong, but maybe won't go wrong next time? Won't remember results now.");
+            job.userNameInitials = '';
             job.userFullname = userOID;
           } else if (res.unauthorized) {
-            job.userNameInitials = '__';
+            job.userNameInitials = '';
             job.userFullname = userOID;
-            $scope.usernamesByOid[userOID] = {"initials": '__', "fullName": userOID}
+            $scope.usernamesByOid[userOID] = {"initials": '', "fullName": userOID}
           } else if (res.etunimet && res.sukunimi) {
             var nameInfo = {"initials": _.head(res.etunimet) + _.head(res.sukunimi), "fullName": res.etunimet + ' ' + res.sukunimi};
             job.userNameInitials = _.head(res.etunimet) + _.head(res.sukunimi);
