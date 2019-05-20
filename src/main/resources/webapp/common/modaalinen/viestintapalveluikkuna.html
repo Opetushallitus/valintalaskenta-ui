@@ -5,6 +5,11 @@
 	<h3 style="margin-top: -12px;">{{oids.hakukohdeNimi}}</h3>
 	<br>
 	<form class="form-horizontal" role="form">
+		<div class="form-group" ng-show="oids.hyvaksymisUi">
+			{{t('viestintapalveluikkuna.kohdejoukko') || 'Kohdejoukko: '}}
+			<input type="radio" ng-model="vainEmailinKieltaneet" ng-value="false">{{t('viestintapalveluikkuna.kaikkihyvaksytyt') || 'Kaikki hyväksytyt'}}
+			<input type="radio" ng-model="vainEmailinKieltaneet" ng-value="true">{{t('viestintapalveluikkuna.vainemailinkieltaneet') || 'Vain ne hyväksytyt, jotka eivät ole antaneet lupaa päätöksen toimittamiseen sähköisesti'}}
+		</div>
  		<div class="form-group">
 		    {{ t('viestintapalveluikkuna.valmispohjan') || 'Valmispohjan valinta' }}:
 			<select ng-model="pohja" ng-options="translate(p.name) for p in pohjat" ng-change="pohjaVaihtui(pohja)"></select>
@@ -24,7 +29,7 @@
 </div>
 <div class="modal-footer">
 	<div class="row">
-		<a class="btn btn-default" ng-click="oids.toiminto(letterbody, palautus.pvm, palautus.aika)"  role="button">{{oids.toimintoNimi}}</a>
+		<a class="btn btn-default" ng-click="oids.toiminto(letterbody, palautus.pvm, palautus.aika, vainEmailinKieltaneet)"  role="button">{{oids.toimintoNimi}}</a>
 	    <a class="btn btn-default" ng-click="ok()"  role="button">{{ t('viestintapalveluikkuna.peruuta') || 'Peruuta' }}</a>
 	</div>
 </div>
