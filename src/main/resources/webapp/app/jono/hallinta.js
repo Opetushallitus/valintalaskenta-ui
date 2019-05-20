@@ -182,7 +182,11 @@ angular
         job.userNameInitials = '';
         job.userFullname = userOID;
         seurantaservice.queryUsernameByOid(userOID).then(function (res) {
-          if (typeof res === "undefined" || res.unauthorized) {
+          if (typeof res === "undefined") {
+            console.log("Something probably went wrong, but maybe won't go wrong next time? Won't remember results this time.");
+            job.userNameInitials = '__';
+            job.userFullname = userOID;
+          } else if (res.unauthorized) {
             job.userNameInitials = '__';
             job.userFullname = userOID;
             $scope.usernamesByOid[userOID] = {"initials": '__', "fullName": userOID}
