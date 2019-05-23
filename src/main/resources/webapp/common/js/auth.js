@@ -273,9 +273,10 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
                         attrs.$observe('authOrgs', function () {
                             if (attrs.authOrgs) {
+                                var authOrgs = JSON.parse(attrs.authOrgs);
                                 switch (attrs.auth) {
                                     case "crud":
-                                        AuthService.crudOrg(attrs.authService, attrs.authOrgs).then(success, failure);
+                                        AuthService.crudOrg(attrs.authService, authOrgs).then(success, failure);
                                         break;
 
                                     case "update":
@@ -283,11 +284,11 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
                                         break;
 
                                     case "read":
-                                        AuthService.readOrg(attrs.authService, attrs.authOrgs).then(success, failure);
+                                        AuthService.readOrg(attrs.authService, authOrgs).then(success, failure);
                                         break;
 
                                     default:
-                                        AuthService.check(attrs.auth.split(" "), attrs.authService, attrs.authOrgs).then(success, failure);
+                                        AuthService.check(attrs.auth.split(" "), attrs.authService, authOrgs).then(success, failure);
                                         break;
                                 }
                             }
@@ -320,7 +321,8 @@ app.directive('auth', function ($animate, $timeout, $routeParams, AuthService, P
 
                 attrs.$observe('authOrgs', function () {
                     if (attrs.authOrgs) {
-                      handleOrgAuth(attrs.authOrgs);
+                      var authOrgs = JSON.parse(attrs.authOrgs);
+                      handleOrgAuth(authOrgs);
                     }
                 });
             }
