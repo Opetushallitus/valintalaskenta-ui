@@ -180,25 +180,22 @@ angular
         job.userNameInitials = '';
         job.userFullname = userOID;
         seurantaservice.queryUsernameByOid(userOID).then(function (res) {
-          if (typeof res === "undefined") {
-            console.log("Something probably went wrong, but maybe won't go wrong next time? Won't remember results now.");
+          if (res.errorCode === 401) {
             job.userNameInitials = '';
             job.userFullname = userOID;
-          } else if (res.unauthorized) {
-            job.userNameInitials = '';
-            job.userFullname = userOID;
+            console.log("Remembering unauthorized name information for oid " + userOID + "as empty, no further ONR requests for this.");
             $scope.usernamesByOid[userOID] = {"initials": '', "fullName": userOID}
           } else if (res.etunimet && res.sukunimi) {
             var nameInfo = {"initials": _.head(res.etunimet) + _.head(res.sukunimi), "fullName": res.etunimet + ' ' + res.sukunimi};
-            job.userNameInitials = _.head(res.etunimet) + _.head(res.sukunimi);
-            job.userFullname = res.etunimet + ' ' + res.sukunimi;
-            console.log("Setting name information for oid " + userOID + " to ", nameInfo);
+            job.userNameInitials = nameInfo.initials;
+            job.userFullname = nameInfo.fullName;
+            console.log("Remembering name information for oid " + userOID + " as ", nameInfo);
             $scope.usernamesByOid[userOID] = nameInfo;
           } else {
-            console.log("Name information not available for user, using empty default initials." + userOID);
+            console.log("Name information not available for user, using empty default initials. " + userOID);
           }
         }, function (err) {
-          console.log("Unhandled error querying username, using empty default initials. ", err);
+          console.error("Unhandled error querying username, using empty default initials. ", err);
         });
       }
 

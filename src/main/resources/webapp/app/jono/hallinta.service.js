@@ -43,11 +43,8 @@ function seurantaservice($http, CacheFactory) {
         return response.data;
       })
       .catch(function(error) {
-        if (error.status === 401) {
-          console.log('401-response from henkilö-service');
-          return {"unauthorized": true}
-        }
-        console.log('failed to get username from henkilo-service: ' + userOID);
+        console.error('failed to get username from henkilo-service: ' + userOID + ", ", error);
+        return {"errorCode": error.status};
       });
   }
 
