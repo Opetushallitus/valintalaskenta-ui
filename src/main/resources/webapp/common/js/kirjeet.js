@@ -68,9 +68,12 @@ angular.module('valintalaskenta')
                         resolve: {
                         oids: function () {
                             return {
+                            hyvaksymisUi: true,
                             otsikko: "Hyväksymiskirjeet",
                             toimintoNimi: "Muodosta hyväksymiskirjeet",
-                            toiminto: function(sisalto, palautusPvm, palautusAika) {
+                            toiminto: function(sisalto, palautusPvm, palautusAika, vainEmailinKieltaneet) {
+                                console.log("Calling hyväksymiskirjeet backend, kirje.hakemusOids: ", kirje.hakemusOids);
+                                console.log("vainEmailinKieltaneet = " + vainEmailinKieltaneet);
                                 Hyvaksymiskirjeet.post(
                                 {
                                     sijoitteluajoId: kirje.sijoitteluajoId,
@@ -80,7 +83,8 @@ angular.module('valintalaskenta')
                                     palautusPvm: palautusPvm,
                                     palautusAika: palautusAika,
                                     tag: kirje.tag,
-                                    hakukohdeOid: kirje.hakukohdeOid
+                                    hakukohdeOid: kirje.hakukohdeOid,
+                                    vainTulosEmailinKieltaneet: vainEmailinKieltaneet
                                 },
                                 {
                                     hakemusOids: kirje.hakemusOids,
@@ -100,8 +104,8 @@ angular.module('valintalaskenta')
                             },
                             hakukohdeNimiUri: kirje.hakukohdeNimiUri,
                             hakukohdeNimi: kirje.hakukohdeNimi
-                        };
-                    }
+                            };
+                        }
                     }
                     });
             }

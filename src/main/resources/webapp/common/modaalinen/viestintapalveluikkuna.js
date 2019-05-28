@@ -5,6 +5,7 @@ function ViestintapalveluIkkunaCtrl($scope, $modalInstance, oids, $log,
 	$scope.pohjat = oids.pohjat();
     $scope.pohja = $scope.pohjat[0];
     $scope.palautus = {aika: "", pvm: ""};
+    $scope.vainEmailinKieltaneet = false;
 	$scope.oids = oids;
 	$scope.pohjaVaihtui = function(p) {
 		//console.log(p);
