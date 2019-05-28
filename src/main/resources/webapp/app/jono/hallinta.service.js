@@ -43,7 +43,8 @@ function seurantaservice($http, CacheFactory) {
         return response.data;
       })
       .catch(function(error) {
-        console.log('failed to get username from henkilo-service: ' + userOID);
+        console.error('failed to get username from henkilo-service: ' + userOID + ", ", error);
+        return {"errorCode": error.status};
       });
   }
 
