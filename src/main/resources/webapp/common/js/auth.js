@@ -83,11 +83,16 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel, _,
 
         MyRolesModel.then(function(model) {
           $q.all(orgOids.map(function(oid) {
-            return $http.get(window.url("organisaatio-service.organisaatio.parentoids", oid))
+            if (!oid) {
+              console.warn('accessCheck called with undefined orgOid. The whole org oid list is: ', orgOids);
+              return $q.when([]);
+            } else {
+              return $http.get(window.url("organisaatio-service.organisaatio.parentoids", oid))
+            }
           })).then(function(results) {
             var found = false;
             results.forEach(function(singleResult) {
-              var parentOids = singleResult.data.split("/");
+              var parentOids = typeof(singleResult.data) === "string" ? singleResult.data.split("/") : [];
               parentOids.forEach(function (org) {
                   if (roleCheck(service, org, model, roles)) {
                       found = true;
