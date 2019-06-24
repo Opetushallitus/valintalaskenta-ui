@@ -38,6 +38,7 @@
                 <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{sijoitteluntuloksetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !sijoitteluntuloksetUrl}">{{ t('sijoitteluntulos.lataatulokset') || 'Lataa tulokset' }}</a>
                 <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{hyvaksymiskirjeetUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !hyvaksymiskirjeetUrl}">{{ t('sijoitteluntulos.lataahyvaksymiskirjeet') || 'Lataa hyväksymiskirjeet' }}</a>
                 <a href="/dokumenttipalvelu-service/resources/dokumentit/lataa/{{osoitetarratUrl}}" class="btn btn-default btn-sm pdf" ng-class="{disabled: !osoitetarratUrl}">{{ t('sijoitteluntulos.lataaosoitetarrat') || 'Lataa osoitetarrat' }}</a>
+                <a ng-click="resendVastaanottopostiForHakukohde(model.hakukohdeOid)" class="btn btn-primary btn-sm">{{t('sijoitteluntulos.lahetaVastaanottopostiUudelleenHakukohteelle') || 'Lähetä vastaanottoposti koko hakukohteelle'}}</a>
 
             </div>
 
@@ -117,6 +118,7 @@
                     <img ng-if='!model.myohastymistietoLadattu' class="spinner" alt="loading" src="../common/img/ajax-loader-big.gif" />
                     <br/>
                     <a ng-click="submit(jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{ t('sijoitteluntulos.tallenna') || 'Tallenna' }}</a>
+                    <a ng-click="resendVastaanottopostiForJono(model.hakukohdeOid, jono.oid)" class="btn btn-primary btn-sm margin-bottom-2">{{t('sijoitteluntulos.lahetaVastaanottopostiUudelleenJonolle') || 'Lähetä vastaanottoposti koko jonolle'}}</a>
                     <div>
                         <label>
                             {{ t('sijoitteluntulos.muuttuneettiedot') || 'Näytä vain muuttuneet tiedot' }}:
@@ -273,10 +275,10 @@
                                              ng-show="hyvaksymiskirjeLahetettyCheckbox[hakemus.hakijaOid]">
                                             {{hakemus.hyvaksymiskirjeLahetetty | date:'dd.MM.yyyy'}}
                                         </div>
-                                        <button class="btn btn-default btn-sm"
-                                                ng-show="hakemus.vastaanottopostiSent"
-                                                ng-click="resendVastaanottoposti(hakemus)">
-                                            {{ t('sijoitteluntulos.lahetaVastaanottopostiUudelleen') || 'Lähetä vastaanottoposti uudelleen' }}
+                                        <button class="btn btn-default btn-sm" ng-click="resendVastaanottopostiForHakemus(hakemus)">
+                                            {{ (hakemus.vastaanottopostiSent)
+                                                ? (t('sijoitteluntulos.lahetaVastaanottopostiUudelleen') || 'Lähetä vastaanottoposti uudelleen')
+                                                : (t('sijoitteluntulos.lahetaVastaanottoposti') || 'Lähetä vastaanottoposti') }}
                                         </button>
                                     </div>
                                 </td>
