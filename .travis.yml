@@ -25,6 +25,10 @@ install:
 - source ci-tools/common/setup-tools.sh
 - sudo sh -c "printf '\n%s penaali.hard.ware.fi\n' $(dig +short artifactory.opintopolku.fi|head -n1) >> /etc/hosts"
 - export ARTIFACT_NAME="valintalaskenta-ui"
+- nvm use node 6
+- npm install bower
+- node_modules/bower/bin/bower update
+- gulp scripts
 
 script:
 - mvn clean package -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER}
