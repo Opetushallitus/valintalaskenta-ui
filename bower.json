@@ -10,7 +10,7 @@
     "jquery-ui": "1.11.2",
     "lodash": "2.4.1",
     "angular-cache": "4.0.2",
-    "oph_urls": "https://raw.githubusercontent.com/Opetushallitus/oph-urls-js/master/oph_urls.js"
+    "oph_urls": "https://raw.githubusercontent.com/Opetushallitus/oph-urls-js/OK-241__caller-id/oph_urls.js"
   },
   "devDependencies": {
     "angular-mocks": "1.4.10",
