@@ -28,6 +28,7 @@ install:
 - nvm use node 6
 - npm install bower
 - node_modules/bower/bin/bower update
+- npm install -g gulp
 - gulp scripts
 
 script:
