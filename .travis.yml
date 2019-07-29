@@ -26,9 +26,11 @@ install:
 - sudo sh -c "printf '\n%s penaali.hard.ware.fi\n' $(dig +short artifactory.opintopolku.fi|head -n1) >> /etc/hosts"
 - export ARTIFACT_NAME="valintalaskenta-ui"
 - nvm use node 6
+- node -v
 - npm install bower
 - node_modules/bower/bin/bower update
 - npm install -g gulp
+- npm rebuild node-sass --force
 - gulp scripts
 
 script:
