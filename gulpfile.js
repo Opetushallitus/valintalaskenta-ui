@@ -36,7 +36,7 @@ var paths = {
 		'bower_components/jquery-i18n-properties/jquery.i18n.properties.min.js',
 		'bower_components/jquery-i18n-properties/jquery.i18n.properties.min.map',
 
-		'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
+		'bower_components/jquery-ui/jquery-ui.min.js',
 
 		'bower_components/lodash/dist/lodash.underscore.min.js',
 
