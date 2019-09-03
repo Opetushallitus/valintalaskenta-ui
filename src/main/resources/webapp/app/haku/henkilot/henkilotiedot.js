@@ -367,151 +367,151 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
 });
 
 angular.module('valintalaskenta').
-controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
-    'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila','HakuModel', '$filter', 'Korkeakoulu',
-    '$window', 'R',
-    function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
-              Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel,$filter, Korkeakoulu,
-              $window, R) {
-        "use strict";
+    controller('HenkiloTiedotController', ['$q', '$scope', '$modal', '$routeParams', 'ParametriService', 'Latausikkuna', 'Jalkiohjauskirjepohjat',
+        'Jalkiohjauskirjeet', 'HenkiloTiedotModel', 'AuthService', 'Pohjakoulutukset', 'Ilmoitus', 'IlmoitusTila','HakuModel', '$filter', 'Korkeakoulu',
+        '$window', 'R',
+        function ($q, $scope, $modal, $routeParams, ParametriService, Latausikkuna, Jalkiohjauskirjepohjat,
+                  Jalkiohjauskirjeet, HenkiloTiedotModel, AuthService, Pohjakoulutukset, Ilmoitus, IlmoitusTila,HakuModel,$filter, Korkeakoulu,
+                  $window, R) {
+    "use strict";
 
-        $scope.model = HenkiloTiedotModel;
-        $scope.hakutoiveetLoadedPromise = $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
-        $scope.url = window.url;
-        $scope.hakuModel = HakuModel;
-        $scope.korkeakoulu = Korkeakoulu;
-        $scope.pohjakoulutustoinenaste = {};
-        Pohjakoulutukset.query(function (result) {
-            $scope.pohjakoulutustoinenaste = result.reduce(function (m, koodi) {
-                var nimi = koodi.metadata.reduce(function (m, meta) {
-                    m[meta.kieli] = meta.nimi;
-                    return m;
-                }, {});
-                m[koodi.koodiArvo] = nimi[$scope.userLang.toUpperCase()] || nimi["FI"];
+    $scope.model = HenkiloTiedotModel;
+    $scope.hakutoiveetLoadedPromise = $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
+    $scope.url = window.url;
+    $scope.hakuModel = HakuModel;
+    $scope.korkeakoulu = Korkeakoulu;
+    $scope.pohjakoulutustoinenaste = {};
+    Pohjakoulutukset.query(function (result) {
+        $scope.pohjakoulutustoinenaste = result.reduce(function (m, koodi) {
+            var nimi = koodi.metadata.reduce(function (m, meta) {
+                m[meta.kieli] = meta.nimi;
                 return m;
             }, {});
+            m[koodi.koodiArvo] = nimi[$scope.userLang.toUpperCase()] || nimi["FI"];
+            return m;
+        }, {});
+    });
+
+    $scope.hakuaVastaavaJalkiohjauskirjeMuotti = function() {
+	    return "jalkiohjauskirje";
+    };
+    $scope.muodostaJalkiohjauskirje = function () {
+        var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakuModel.hakuOid.kohdejoukkoUri);
+        var applicationPeriod = $routeParams.hakuOid;
+        var hakemusOid = $scope.model.hakemus.oid;
+        var asiointikieli = $scope.model.henkilo.asiointikieli;
+        var langcode = "FI";
+        if(asiointikieli !== undefined && asiointikieli.toUpperCase() === "RUOTSI") {
+			langcode = "SV";
+        }
+        var templateName = $scope.hakuaVastaavaJalkiohjauskirjeMuotti();
+        var otsikko = "";
+        var toimintoNimi = "";
+        var latausikkunaTeksti = "";
+        if(isKorkeakoulu) {
+            otsikko = "Ei-hyväksyttyjen kirjeet";
+            toimintoNimi = "Muodosta ei-hyväksyttyjen kirjeet";
+            latausikkunaTeksti = "Ei-hyväksyttyjen kirjeet";
+        } else {
+            otsikko = "Jälkiohjauskirjeet";
+            toimintoNimi = "Muodosta jälkiohjauskirjeet";
+            latausikkunaTeksti = "Jälkiohjauskirjeet";
+        }
+
+        var viestintapalveluInstance = $modal.open({
+            backdrop: 'static',
+            templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+            controller: ViestintapalveluIkkunaCtrl,
+            size: 'lg',
+            resolve: {
+                oids: function () {
+                    return {
+                    	otsikko: otsikko,
+                    	toimintoNimi: toimintoNimi,
+                    	toiminto: function(sisalto) {
+                    		Jalkiohjauskirjeet.post({
+					        	hakuOid: $routeParams.hakuOid,
+					        	applicationPeriod: applicationPeriod, templateName: templateName}, {hakemusOids: [hakemusOid],
+					        	letterBodyText: sisalto, languageCode: langcode} , function (id) {
+					            Latausikkuna.avaa(id, latausikkunaTeksti, "");
+					        }, function () {
+
+					        });
+                    	},
+                        showDateFields: true,
+                        hakuOid: $routeParams.hakuOid,
+                        pohjat: function() {
+                        	return Jalkiohjauskirjepohjat.get({templateName: templateName, languageCode: langcode, applicationPeriod: applicationPeriod});
+                        }
+                    };
+                }
+            }
         });
+    };
 
-        $scope.hakuaVastaavaJalkiohjauskirjeMuotti = function() {
-            return "jalkiohjauskirje";
-        };
-        $scope.muodostaJalkiohjauskirje = function () {
-            var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakuModel.hakuOid.kohdejoukkoUri);
-            var applicationPeriod = $routeParams.hakuOid;
-            var hakemusOid = $scope.model.hakemus.oid;
-            var asiointikieli = $scope.model.henkilo.asiointikieli;
-            var langcode = "FI";
-            if(asiointikieli !== undefined && asiointikieli.toUpperCase() === "RUOTSI") {
-                langcode = "SV";
+    AuthService.crudOph("APP_SIJOITTELU").then(function () {
+        $scope.updateOph = true;
+    });
+
+    $scope.isValinnanvaiheVisible = function (index, valinnanvaiheet) {
+        var orderBy = $filter('orderBy');
+        valinnanvaiheet = orderBy(valinnanvaiheet, 'jarjestysnumero', true);
+        for (var i = 0; i < valinnanvaiheet.length; i++) {
+            if (valinnanvaiheet[i].valintatapajonot.length > 0) {
+                if (index === i) {
+                    return true;
+                } else {
+                    return false;
+                }
+
             }
-            var templateName = $scope.hakuaVastaavaJalkiohjauskirjeMuotti();
-            var otsikko = "";
-            var toimintoNimi = "";
-            var latausikkunaTeksti = "";
-            if(isKorkeakoulu) {
-                otsikko = "Ei-hyväksyttyjen kirjeet";
-                toimintoNimi = "Muodosta ei-hyväksyttyjen kirjeet";
-                latausikkunaTeksti = "Ei-hyväksyttyjen kirjeet";
+        }
+    };
+
+    $scope.tallennaPisteet = function () {
+        $scope.model.tallennaPisteet().then(function (response) {
+            $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
+            if (R.isEmpty(response.data)) {
+                Ilmoitus.avaa("Tallennus onnistui", "Pisteet tallennettu onnistuneesti.", IlmoitusTila.INFO);
             } else {
-                otsikko = "Jälkiohjauskirjeet";
-                toimintoNimi = "Muodosta jälkiohjauskirjeet";
-                latausikkunaTeksti = "Jälkiohjauskirjeet";
+                Ilmoitus.avaa("Tallennus epäonnistui", "Hakemuksella oli uudempia pistetietoja. Ole hyvä ja yritä uudelleen.", IlmoitusTila.ERROR);
             }
+        }, function () {
+            $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
+            Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+        });
+    };
 
-            var viestintapalveluInstance = $modal.open({
+    $scope.valintalaskentaKerrallaHakukohteille = function() {
+        var hakukohteet = $scope.model.hakutoiveet.map(function (hakutoive) {
+           return hakutoive.hakukohdeOid;
+        });
+        var erillishaku = HakuModel.hakuOid.erillishaku;
+        if(hakukohteet.length > 0) {
+            $modal.open({
                 backdrop: 'static',
-                templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
-                controller: ViestintapalveluIkkunaCtrl,
+                templateUrl: '../common/modaalinen/hakutoiveetseurantaikkuna.html',
+                controller: SeurantaIkkunaCtrl,
                 size: 'lg',
                 resolve: {
                     oids: function () {
                         return {
-                            otsikko: otsikko,
-                            toimintoNimi: toimintoNimi,
-                            toiminto: function(sisalto) {
-                                Jalkiohjauskirjeet.post({
-                                    hakuOid: $routeParams.hakuOid,
-                                    applicationPeriod: applicationPeriod, templateName: templateName}, {hakemusOids: [hakemusOid],
-                                    letterBodyText: sisalto, languageCode: langcode} , function (id) {
-                                    Latausikkuna.avaa(id, latausikkunaTeksti, "");
-                                }, function () {
-
-                                });
-                            },
-                            showDateFields: true,
                             hakuOid: $routeParams.hakuOid,
-                            pohjat: function() {
-                                return Jalkiohjauskirjepohjat.get({templateName: templateName, languageCode: langcode, applicationPeriod: applicationPeriod});
-                            }
+                            nimentarkennus: "",
+                            erillishaku: erillishaku,
+                            tyyppi: "HAKUKOHDE",
+                            hakukohteet: hakukohteet
                         };
                     }
                 }
             });
-        };
+        } else {
+        	Ilmoitus.avaa("Ei hakutoiveta", "Hakijalle ei ole hakutoiveita.", IlmoitusTila.ERROR);
+        }
+    };
 
-        AuthService.crudOph("APP_SIJOITTELU").then(function () {
-            $scope.updateOph = true;
-        });
-
-        $scope.isValinnanvaiheVisible = function (index, valinnanvaiheet) {
-            var orderBy = $filter('orderBy');
-            valinnanvaiheet = orderBy(valinnanvaiheet, 'jarjestysnumero', true);
-            for (var i = 0; i < valinnanvaiheet.length; i++) {
-                if (valinnanvaiheet[i].valintatapajonot.length > 0) {
-                    if (index === i) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-
-                }
-            }
-        };
-
-        $scope.tallennaPisteet = function () {
-            $scope.model.tallennaPisteet().then(function (response) {
-                $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
-                if (R.isEmpty(response.data)) {
-                    Ilmoitus.avaa("Tallennus onnistui", "Pisteet tallennettu onnistuneesti.", IlmoitusTila.INFO);
-                } else {
-                    Ilmoitus.avaa("Tallennus epäonnistui", "Hakemuksella oli uudempia pistetietoja. Ole hyvä ja yritä uudelleen.", IlmoitusTila.ERROR);
-                }
-            }, function () {
-                $scope.model.refresh($routeParams.hakuOid, $routeParams.hakemusOid);
-                Ilmoitus.avaa("Tallennus epäonnistui", "Pisteiden tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
-            });
-        };
-
-        $scope.valintalaskentaKerrallaHakukohteille = function() {
-            var hakukohteet = $scope.model.hakutoiveet.map(function (hakutoive) {
-                return hakutoive.hakukohdeOid;
-            });
-            var erillishaku = HakuModel.hakuOid.erillishaku;
-            if(hakukohteet.length > 0) {
-                $modal.open({
-                    backdrop: 'static',
-                    templateUrl: '../common/modaalinen/hakutoiveetseurantaikkuna.html',
-                    controller: SeurantaIkkunaCtrl,
-                    size: 'lg',
-                    resolve: {
-                        oids: function () {
-                            return {
-                                hakuOid: $routeParams.hakuOid,
-                                nimentarkennus: "",
-                                erillishaku: erillishaku,
-                                tyyppi: "HAKUKOHDE",
-                                hakukohteet: hakukohteet
-                            };
-                        }
-                    }
-                });
-            } else {
-                Ilmoitus.avaa("Ei hakutoiveta", "Hakijalle ei ole hakutoiveita.", IlmoitusTila.ERROR);
-            }
-        };
-
-        $scope.showMuodostaJalkiohjauskirje = false;
-        ParametriService($routeParams.hakuOid).then(function(privileges) {
-            $scope.showMuodostaJalkiohjauskirje = privileges.valintalaskenta;
-        });
-    }]);
+    $scope.showMuodostaJalkiohjauskirje = false;
+    ParametriService($routeParams.hakuOid).then(function(privileges) {
+        $scope.showMuodostaJalkiohjauskirje = privileges.valintalaskenta;
+    });
+}]);
