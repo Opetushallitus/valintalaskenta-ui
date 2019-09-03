@@ -5,8 +5,8 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HaunTiedot, HakemuksenValintatulokset,
                                             VtsValinnantuloksetHakemukselle, HakukohdeAvainTyyppiService,
-                                            KoostettuHakemusAdditionalDataForHakemus, R, HenkiloPerustiedot,
-                                            TarjontaHakukohde, AtaruApplications) {
+                                            KoostettuHakemusAdditionalDataForHakemus, R, TarjontaHakukohde,
+                                            AtaruApplications) {
     "use strict";
 
     function setVastaanottoTilaOptionsToShow(hakutoiveenValintatapajonot) {
