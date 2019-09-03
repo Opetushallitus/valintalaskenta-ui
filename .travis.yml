@@ -29,7 +29,7 @@ install:
 - node -v
 - npm install bower
 - node_modules/bower/bin/bower update
-- npm install gulp
+- npm install
 - npm install gulp --global
 - npm install gulp-cli --global
 - npm rebuild node-sass --force

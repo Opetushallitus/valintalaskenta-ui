@@ -16,10 +16,5 @@
     "karma": "^0.13.0",
     "mocha-headless-chrome": "^2.0.2",
     "test": "*"
-  },
-  "devDependencies": {
-    "gulp": "3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-uglify": "^2.1.2"
   }
 }
