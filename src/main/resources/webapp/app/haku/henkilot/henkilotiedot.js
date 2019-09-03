@@ -100,16 +100,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             });
     }
 
-    function getHenkilo(hakemus) {
-        return {
-            oid: hakemus.personOid,
-            sukunimi: hakemus.sukunimi,
-            etunimet: hakemus.etunimet,
-            asiointikieli: hakemus.asiointikieli,
-            henkilotunnus: hakemus.henkilotunnus
-        };
-    }
-
     function valintalaskentaByHakukohdeOid(hakuOid, hakemusOid) {
         return ValintalaskentaHakemus.get({hakuoid: hakuOid, hakemusoid: hakemusOid}).$promise
             .then(function (valintalaskenta) {
@@ -233,7 +223,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
     function refresh(hakuOid, hakemusOid) {
         var self = this;
         self.hakemus = {};
-        self.henkilo = {};
         self.hakutoiveet = [];
         self.hakuOid = hakuOid;
         self.haku = {};
@@ -264,7 +253,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         return $q.all({
             haku: hakuPromise,
             hakemus: hakemusPromise,
-            henkilo: $q.all({ haku: hakuPromise, hakemus: hakemusPromise}).then(function(o) { return getHenkilo(o.hakemus); }),
             hakukohteetByHakukohdeOid: hakukohteetPromise,
             avaimetByHakukohdeOid: hakemusPromise.then(avaimetByHakukohdeOid),
             organizationChecksByHakukohdeOid: hakukohteetPromise.then(organizationChecksByHakukohdeOid),
@@ -276,7 +264,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         }).then(function(o) {
             self.haku = o.haku;
             self.hakemus = o.hakemus;
-            self.henkilo = o.henkilo;
             self.sijoittelu = o.sijoittelu.sijoitteluByValintatapajonoOid;
             self.lastmodified = o.additionalData.lastmodified;
             self.hakutoiveet = o.hakemus.hakutoiveet.map(function (h, index) {
@@ -293,7 +280,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 setVastaanottoTilaOptionsToShow(sijoittelu);
                 sijoittelu.forEach(function (valintatapajono) {
                     valintatapajono.hakemusOid = hakemusOid;
-                    valintatapajono.hakijaOid = self.henkilo.oid;
+                    valintatapajono.hakijaOid = self.hakemus.personOid;
                     valintatapajono.vastaanottoTila = o.vastaanottotilatByValintatapajonoOid[valintatapajono.valintatapajonoOid];
                     valintatapajono.muokattuVastaanottoTila = valintatapajono.vastaanottoTila;
                     valintatapajono.tilaHistoria = o.sijoittelu.tilaHistoriatByValintatapajonoOid[valintatapajono.valintatapajonoOid];
@@ -341,7 +328,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 lastmodified: this.lastmodified,
                 hakemus: {
                     oid: this.hakemus.oid,
-                    personOid: this.henkilo.oid,
+                    personOid: this.hakemus.personOid,
                     additionalData: mergedAdditionalData
                 }
             }
@@ -350,7 +337,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
 
     return {
         hakemus: {},
-        henkilo: {},
         hakutoiveet: [],
         hakuOid: null,
         haku: {},
@@ -399,7 +385,7 @@ angular.module('valintalaskenta').
         var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakuModel.hakuOid.kohdejoukkoUri);
         var applicationPeriod = $routeParams.hakuOid;
         var hakemusOid = $scope.model.hakemus.oid;
-        var asiointikieli = $scope.model.henkilo.asiointikieli;
+        var asiointikieli = $scope.model.hakemus.asiointikieli;
         var langcode = "FI";
         if(asiointikieli !== undefined && asiointikieli.toUpperCase() === "RUOTSI") {
 			langcode = "SV";
