@@ -102,7 +102,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
 
     function getHenkilo(hakemus) {
         return {
-            oid: hakemus.oid,
+            oid: hakemus.personOid,
             sukunimi: hakemus.sukunimi,
             etunimet: hakemus.etunimet,
             asiointikieli: hakemus.asiointikieli,
