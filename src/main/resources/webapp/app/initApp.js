@@ -3,6 +3,7 @@
 
     var injector = angular.injector(['ng']);
     var $http = injector.get('$http');
+    $http.defaults.headers.common['Caller-Id'] = "1.2.246.562.10.00000000001.valintalaskenta-ui.frontend.init";
     var $q = injector.get('$q');
 
     function initCas() {

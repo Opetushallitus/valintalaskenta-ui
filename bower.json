@@ -3,14 +3,18 @@
   "dependencies": {
     "angular": "1.4.10",
     "angular-animate": "1.4.10",
+    "angular-cookies": "1.4.10",
+    "angular-idle": "1.0.4",
     "angular-route": "1.4.10",
     "angular-resource": "1.4.10",
+    "angular-translate": "2.1.0",
     "angular-bootstrap": "0.11.0",
     "jquery": "2.1.0",
+    "jquery-i18n-properties": "1.2.7",
     "jquery-ui": "1.11.2",
     "lodash": "2.4.1",
     "angular-cache": "4.0.2",
-    "oph_urls": "https://raw.githubusercontent.com/Opetushallitus/oph-urls-js/master/oph_urls.js"
+    "oph_urls": "https://raw.githubusercontent.com/Opetushallitus/oph-urls-js/OK-241__caller-id/oph_urls.js"
   },
   "devDependencies": {
     "angular-mocks": "1.4.10",

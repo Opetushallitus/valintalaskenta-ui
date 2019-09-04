@@ -17,3 +17,16 @@ bower_components
 .DS_Store
 .~lock*
 .java-version
+
+webapp/common/jslib/angular.*
+webapp/common/jslib/angular-animate.*
+webapp/common/jslib/angular-cache.*
+webapp/common/jslib/angular-cookies.*
+webapp/common/jslib/angular-idle.*
+webapp/common/jslib/angular-resource.*
+webapp/common/jslib/angular-route.*
+webapp/common/jslib/angular-translate.*
+webapp/common/jslib/index.*
+webapp/common/jslib/jquery.*
+webapp/common/jslib/jquery.min.m*
+webapp/common/jslib/lodash.underscore.min.*

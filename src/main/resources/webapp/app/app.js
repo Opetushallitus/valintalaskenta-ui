@@ -18,7 +18,7 @@ var app = angular.module('valintalaskenta', ['ngResource', 'loading', 'ngRoute',
 });
 
 app.run(function($http, $cookies) {
-	$http.defaults.headers.common['Caller-Id'] = "valintaperusteet.valintalaskenta-ui.frontend";
+	$http.defaults.headers.common['Caller-Id'] = "1.2.246.562.10.00000000001.valintalaskenta-ui.frontend.app";
 	if($cookies['CSRF']) {
 		$http.defaults.headers.common['CSRF'] = $cookies['CSRF'];
 	}

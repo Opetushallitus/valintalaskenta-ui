@@ -32,7 +32,11 @@ var paths = {
 		'bower_components/jquery/dist/jquery.min.js',
 		'bower_components/jquery/dist/jquery.min.map',
 
-		'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
+		'bower_components/jquery-i18n-properties/jquery.i18n.properties.js',
+		'bower_components/jquery-i18n-properties/jquery.i18n.properties.min.js',
+		'bower_components/jquery-i18n-properties/jquery.i18n.properties.min.map',
+
+		'bower_components/jquery-ui/jquery-ui.min.js',
 
 		'bower_components/lodash/dist/lodash.underscore.min.js',
 
@@ -41,6 +45,15 @@ var paths = {
 		'bower_components/angular-cache/dist/angular-cache.js',
 		'bower_components/angular-cache/dist/angular-cache.min.js',
 		'bower_components/angular-cache/dist/angular-cache.min.map',
+
+		'bower_components/angular-cookies/angular-cookies.js',
+		'bower_components/angular-cookies/angular-cookies.min.js',
+		'bower_components/angular-cookies/angular-cookies.min.map',
+
+		'bower_components/angular-idle/angular-idle.js',
+
+		'bower_components/angular-translate/angular-translate.js',
+
 		'bower_components/oph_urls/index.js'
 	],
 	css: 'src/main/resources/webapp/common/css/',

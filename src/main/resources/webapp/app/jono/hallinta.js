@@ -18,7 +18,7 @@ angular
       $httpProvider.interceptors.push(function ($cookies) {
           return {
               request: function (config) {
-                  config.headers['clientSubSystemCode'] = "valintaperusteet.valintalaskenta-ui.valintalaskenta.jononhallinta";
+                  config.headers['Caller-Id'] = "1.2.246.562.10.00000000001.valintalaskenta-ui.frontend.jononhallinta";
 
                   var csrfToken = $cookies.get('CSRF');
                   if (csrfToken) {
