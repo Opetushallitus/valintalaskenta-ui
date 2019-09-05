@@ -32,25 +32,25 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 if (model.ilmanlaskentaa.length > 0) {
                     return model.loadHakijat(hakukohdeOid, hakuOid)
                         .then(function(isAtaruHaku) {
-                            return model.getPersons()
-                                .then(function() {
+                            // return model.getPersons()
+                            //     .then(function() {
                                     model.updateValinnanvaiheetPersonNames();
                                     model.updateHakijatNames();
                                     model.createTulosjonot(hakuOid, isAtaruHaku);
-                                });
+                                // });
                         });
                 } else {
-                    return model.getPersons()
-                        .then(function() {
+                    // return model.getPersons()
+                    //     .then(function() {
                             model.updateValinnanvaiheetPersonNames();
-                        });
+                        // });
                 }
             }).then(model.renderTulokset).catch(function(error) {
                 model.errors.push(error);
                 return $q.reject("hakukohteen tietojen hakeminen epäonnistui")
             });
         };
-
+/*
         this.getPersons = function() {
             var personOids = model.getHakijaOids();
             return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function(persons) {
@@ -74,7 +74,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             }
             return hakijaOids;
         };
-
+*/
         this.updateValinnanvaiheetPersonNames = function() {
             model.valinnanvaiheet.forEach(function(vaihe) {
                 vaihe.valintatapajonot.forEach(function(jono) {
@@ -235,8 +235,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                             jonosija.syotetytArvot = [];
                             jonosija.funktioTulokset = [];
                             jonosija.muokattu = false;
-                            jonosija.sukunimi = hakija.sukunimi;
-                            jonosija.etunimi = hakija.etunimi;
+                            jonosija.sukunimi = hakija.sukunimi == null ? hakija.answers.henkilotiedot.Sukunimi : hakija.sukunimi;
+                            jonosija.etunimi = hakija.etunimet == null ? hakija.answers.henkilotiedot.Etunimet : hakija.etunimet;
                             jonosija.jarjestyskriteerit = [
                                 {
                                     arvo: null,
