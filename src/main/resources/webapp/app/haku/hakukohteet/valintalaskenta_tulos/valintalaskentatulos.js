@@ -31,27 +31,58 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 model.ilmanlaskentaa = data[2];
                 if (model.ilmanlaskentaa.length > 0) {
                     return model.loadHakijat(hakukohdeOid, hakuOid)
-                        .then(function (isAtaruHaku) {
-                            model.updateValinnanvaiheetPersonNames();
-                            model.createTulosjonot(hakuOid, isAtaruHaku);
+                        .then(function(isAtaruHaku) {
+                            return model.getPersons()
+                                .then(function() {
+                                    model.updateValinnanvaiheetPersonNames();
+                                    model.updateHakijatNames();
+                                    model.createTulosjonot(hakuOid, isAtaruHaku);
+                                });
                         });
                 } else {
-                    model.updateValinnanvaiheetPersonNames();
+                    return model.getPersons()
+                        .then(function() {
+                            model.updateValinnanvaiheetPersonNames();
+                        });
                 }
-            }).then(model.renderTulokset).catch(function (error) {
+            }).then(model.renderTulokset).catch(function(error) {
                 model.errors.push(error);
                 return $q.reject("hakukohteen tietojen hakeminen epäonnistui")
             });
+        };
+
+        this.getPersons = function() {
+            var personOids = model.getHakijaOids();
+            return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function(persons) {
+                model.persons = _.groupBy(persons, function(person) {
+                    return person.oidHenkilo;
+                });
+            })
+        };
+
+        this.getHakijaOids = function() {
+            var hakijaOids = _.chain(model.valinnanvaiheet)
+                .map(function(current) {return current.valintatapajonot})
+                .flatten()
+                .map(function(jono) {return jono.jonosijat})
+                .flatten()
+                .map(function(jonosija) {return jonosija.hakijaOid})
+                .value();
+            if (model.hakeneet) {
+                var hakeneetOids = model.hakeneet.map(function(hakija) {return hakija.personOid;});
+                hakijaOids = hakijaOids.concat(hakeneetOids); // Concat personoids from jonot with laskenta and without.
+            }
+            return hakijaOids;
         };
 
         this.updateValinnanvaiheetPersonNames = function() {
             model.valinnanvaiheet.forEach(function(vaihe) {
                 vaihe.valintatapajonot.forEach(function(jono) {
                     jono.jonosijat.forEach(function(jonosija) {
-                        var hakemus = (model.hakeneet[jonosija.hakijaOid] || [])[0];
-                        if (hakemus) {
-                            jonosija.etunimi = hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet;
-                            jonosija.sukunimi = hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi;
+                        var person = (model.persons[jonosija.hakijaOid] || [])[0];
+                        if (person) {
+                            jonosija.etunimi = person.etunimet;
+                            jonosija.sukunimi = person.sukunimi;
                         }
                     })
                 })
