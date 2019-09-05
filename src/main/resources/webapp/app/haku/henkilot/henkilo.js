@@ -2,18 +2,18 @@ var app = angular.module('valintalaskenta');
 app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplications) {
     function enrichWithName(hakemukset) {
         var personOids = hakemukset.map(function (h) { return h.personOid; });
-        return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function (henkilot) {
-            var henkilotByOid = _.groupBy(henkilot, function (henkilo) {
-                return henkilo.oidHenkilo;
-            });
+        //return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function (henkilot) {
+            //var henkilotByOid = _.groupBy(henkilot, function (henkilo) {
+           //     return henkilo.oidHenkilo;
+           // });
             return hakemukset.map(function(h) {
-                var henkilo = henkilotByOid[h.personOid][0];
+                //var henkilo = henkilotByOid[h.personOid][0];
                 return {
                   oid: h.oid,
-                  name: henkilo.sukunimi + ", " + henkilo.etunimet
+                  name: hakemus.sukunimi + ", " + hakemus.etunimet
                 };
             });
-        });
+        //});
     }
 
     function getHakuAppHakemukset(hakuOid, start, n, q) {

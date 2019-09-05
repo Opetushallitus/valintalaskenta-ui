@@ -25,7 +25,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}).$promise,
                 ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}).$promise,
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}).$promise
-            ]).then(function (data) {
+            ]).then(function(data) {
                 model.tarjoajaOid = data[0].tarjoajaOid;
                 model.valinnanvaiheet = data[1];
                 model.ilmanlaskentaa = data[2];
@@ -87,6 +87,16 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                     })
                 })
             });
+        };
+
+        this.updateHakijatNames = function() {
+            model.hakeneet.forEach(function(hakija) {
+                var person = (model.persons[hakija.personOid] || [])[0];
+                if (person) {
+                    hakija.etunimi = person.etunimet;
+                    hakija.sukunimi = person.sukunimi;
+                }
+            })
         };
 
         this.loadHakijat = function(hakukohdeOid, hakuOid) {
@@ -225,8 +235,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                             jonosija.syotetytArvot = [];
                             jonosija.funktioTulokset = [];
                             jonosija.muokattu = false;
-                            jonosija.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
-                            jonosija.etunimi = hakija.etunimet ? hakija.etunimet : hakija.answers.henkilotiedot.Etunimet;
+                            jonosija.sukunimi = hakija.sukunimi;
+                            jonosija.etunimi = hakija.etunimi;
                             jonosija.jarjestyskriteerit = [
                                 {
                                     arvo: null,
