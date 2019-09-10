@@ -1,5 +1,5 @@
 var app = angular.module('valintalaskenta');
-app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplications) {
+app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HakuModel, AtaruApplications) {
     function enrichWithName(hakemukset) {
         return new Promise(function(resolve, reject){
             resolve(hakemukset.map(function (hakemus) {
