@@ -65,7 +65,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                     var vastaanottotila = findVastaanottotila(valintatulokset, hakemusSijoittelussa, hakija);
                     var hyvaksyttyHakijaryhmasta = isHyvaksyttyHakijaryhmasta(hakijaryhma.hakijaryhmaOid, hakemusSijoittelussa);
                     return {
-                        etunimi: hakija.etunimet,
+                        etunimi: hakija.etunimi,
                         sukunimi: hakija.sukunimi,
                         hakemusOid: hakija.hakemusOid,
                         hakijaOid: hakija.hakijaOid,
