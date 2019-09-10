@@ -119,9 +119,9 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
                         e.hakuOid = $routeParams.hakuOid;
                         e.hakemusOid = hakija.oid;
                         e.hakijaOid = hakija.personOid;
-                        e.etunimi = hakija.kutsumanimi ? hakija.kutsumanimi : hakija.answers.henkilotiedot.Kutsumanimi;
+                        e.etunimi = hakija.etunimet ? hakija.etunimet : hakija.answers.henkilotiedot.Kutsumanimi;
                         e.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
-                        e.asiointikieli = hakija.asiointiKieli ? hakija.asiointiKieli : hakija.answers.lisatiedot.asiointikieli;
+                        e.asiointikieli = hakija.asiointiKieli ? hakija.asiointiKieli.kieliTyyppi : hakija.answers.lisatiedot.asiointikieli;
                         e.valittu = true;
                         e.aktiivinen = entry.aktiivinen;
                         e.valintakoeOid = entry.oid;
@@ -179,9 +179,8 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
                                 entry.valintakoeOid = valintakoe.valintakoeOid;
                                 entry.lahetetaankoKoekutsut = valintakoe.lahetetaankoKoekutsut;
                                 entry.lisatiedot = (valintakoe.osallistuminenTulos && valintakoe.osallistuminenTulos.kuvaus && valintakoe.osallistuminenTulos.kuvaus.FI ? valintakoe.osallistuminenTulos.kuvaus.FI : '');
-
                                 if (hakija) {
-                                    entry.asiointikieli = hakija.asiointikieli ? hakija.asiointikieli : hakija.answers.lisatiedot.asiointikieli;
+                                    entry.asiointikieli = hakija.asiointiKieli ? hakija.asiointiKieli.kieliTyyppi : hakija.answers.lisatiedot.asiointikieli;
                                 }
                                 entry.valintakoeTunniste = valintakoe.valintakoeTunniste;
 

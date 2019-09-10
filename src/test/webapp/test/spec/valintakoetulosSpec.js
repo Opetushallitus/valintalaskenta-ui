@@ -52,18 +52,18 @@ describe('Valintakoetulos', function() {
             {
                 hakemusOid: HAKEMUS1,
                 kutsumanimi: "Erkki",
-                etunimi: "Erkki",
+                etunimet: "Erkki",
                 sukunimi: "Hakija1",
                 personOid: PERSON1OID,
-                asiointikieli: "Suomi"
+                asiointikieli: { kieliKoodi: "fi", kieliTyyppi: "suomi" }
             },
             {
                 hakemusOid: HAKEMUS2,
                 kutsumanimi: "Elli",
-                etunimi: "Elli",
+                etunimet: "Elli",
                 sukunimi: "Hakija2",
                 personOid: PERSON2OID,
-                asiointikieli: "Suomi"
+                asiointikieli: { kieliKoodi: "fi", kieliTyyppi: "suomi" }
             }]))();
         page.openPage(done);
     });
