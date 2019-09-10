@@ -166,7 +166,7 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
                                 if (!hakija) {
                                     return;
                                 }
-                                entry.etunimi = hakija.kutsumanimi ? hakija.kutsumanimi : hakija.answers.henkilotiedot.Kutsumanimi;
+                                entry.etunimi = hakija.etunimet ? hakija.etunimet : hakija.answers.henkilotiedot.Kutsumanimi;
                                 entry.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
                                 entry.osallistuminen = valintakoe.osallistuminenTulos.osallistuminen;
                                 entry.hakuOid = koetulos.hakueOid;
