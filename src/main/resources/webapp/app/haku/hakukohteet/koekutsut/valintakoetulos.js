@@ -121,7 +121,7 @@ app.factory('ValintakoetulosModel', function($q, $log, $routeParams, Valintakoet
                         e.hakijaOid = hakija.personOid;
                         e.etunimi = hakija.kutsumanimi ? hakija.kutsumanimi : hakija.answers.henkilotiedot.Kutsumanimi;
                         e.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
-                        e.asiointikieli = henkilo.asiointiKieli;
+                        e.asiointikieli = hakija.asiointiKieli ? hakija.asiointiKieli : hakija.answers.lisatiedot.asiointikieli;
                         e.valittu = true;
                         e.aktiivinen = entry.aktiivinen;
                         e.valintakoeOid = entry.oid;
