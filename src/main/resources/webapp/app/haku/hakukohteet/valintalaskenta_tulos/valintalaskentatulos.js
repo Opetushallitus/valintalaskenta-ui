@@ -54,8 +54,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                     jono.jonosijat.forEach(function(jonosija) {
                         var hakemus = model.hakeneet.find(hakemus => hakemus.personOid === jonosija.hakijaOid);
                         if (hakemus) {
-                            jonosija.etunimi = hakemus.etunimet;
-                            jonosija.sukunimi = hakemus.sukunimi;
+                            jonosija.etunimi = hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet;
+                            jonosija.sukunimi = hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi;
                         }
                     })
                 })
@@ -64,11 +64,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
 
         this.updateHakijatNames = function() {
             model.hakeneet.forEach(function(hakija) {
-                var hakemus = model.hakeneet.find(hakemus => hakemus.personOid === hakija.personOid);
-                if (hakemus) {
-                    hakija.etunimi = hakemus.etunimet;
-                    hakija.sukunimi = hakemus.sukunimi;
-                }
+                    hakija.etunimi = hakija.etunimet ? hakija.etunimet : hakija.anwers.henkilotiedot.Etunimet;
+                    hakija.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
             })
         };
 
@@ -208,8 +205,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                             jonosija.syotetytArvot = [];
                             jonosija.funktioTulokset = [];
                             jonosija.muokattu = false;
-                            jonosija.sukunimi = hakija.sukunimi;
-                            jonosija.etunimi = hakija.etunimi;
+                            jonosija.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
+                            jonosija.etunimi = hakija.etunimi ? hakija.etunimi : hakija.answers.henkilotiedot.Etunimet;
                             jonosija.jarjestyskriteerit = [
                                 {
                                     arvo: null,
