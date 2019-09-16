@@ -1,7 +1,7 @@
 ﻿var app = angular.module('valintalaskenta');
 app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheListByHakukohde, JarjestyskriteeriMuokattuJonosija,
                                                   ValinnanVaiheetIlmanLaskentaa, HakukohdeHenkilotFull, Ilmoitus, IlmoitusTila, $q, ValintaperusteetHakukohde, ValintatapajonoSijoitteluStatus, ValintatapajonoSijoitteluUpdate,
-                                                  ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplications) {
+                                                  ngTableParams, FilterService, $filter, HakuModel, AtaruApplications) {
     "use strict";
 
     var model;
@@ -25,64 +25,37 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 ValintaperusteetHakukohde.get({hakukohdeoid: hakukohdeOid}).$promise,
                 ValinnanvaiheListByHakukohde.get({hakukohdeoid: hakukohdeOid}).$promise,
                 ValinnanVaiheetIlmanLaskentaa.get({hakukohdeoid: hakukohdeOid}).$promise
-            ]).then(function(data) {
+            ]).then(function (data) {
                 model.tarjoajaOid = data[0].tarjoajaOid;
                 model.valinnanvaiheet = data[1];
                 model.ilmanlaskentaa = data[2];
                 if (model.ilmanlaskentaa.length > 0) {
                     return model.loadHakijat(hakukohdeOid, hakuOid)
-                        .then(function(isAtaruHaku) {
-                            return model.getPersons()
-                                .then(function() {
-                                    model.updateValinnanvaiheetPersonNames();
-                                    model.updateHakijatNames();
-                                    model.createTulosjonot(hakuOid, isAtaruHaku);
-                                });
+                        .then(function (isAtaruHaku) {
+                            model.updateValinnanvaiheetPersonNames();
+                            model.updateHakijatNames();
+                            model.createTulosjonot(hakuOid, isAtaruHaku);
                         });
                 } else {
-                    return model.getPersons()
-                        .then(function() {
+                    return model.loadHakijat(hakukohdeOid, hakuOid)
+                        .then(function () {
                             model.updateValinnanvaiheetPersonNames();
                         });
                 }
-            }).then(model.renderTulokset).catch(function(error) {
+            }).then(model.renderTulokset).catch(function (error) {
                 model.errors.push(error);
                 return $q.reject("hakukohteen tietojen hakeminen epäonnistui")
             });
-        };
-
-        this.getPersons = function() {
-            var personOids = model.getHakijaOids();
-            return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function(persons) {
-                model.persons = _.groupBy(persons, function(person) {
-                    return person.oidHenkilo;
-                });
-            })
-        };
-
-        this.getHakijaOids = function() {
-            var hakijaOids = _.chain(model.valinnanvaiheet)
-                .map(function(current) {return current.valintatapajonot})
-                .flatten()
-                .map(function(jono) {return jono.jonosijat})
-                .flatten()
-                .map(function(jonosija) {return jonosija.hakijaOid})
-                .value();
-            if (model.hakeneet) {
-                var hakeneetOids = model.hakeneet.map(function(hakija) {return hakija.personOid;});
-                hakijaOids = hakijaOids.concat(hakeneetOids); // Concat personoids from jonot with laskenta and without.
-            }
-            return hakijaOids;
         };
 
         this.updateValinnanvaiheetPersonNames = function() {
             model.valinnanvaiheet.forEach(function(vaihe) {
                 vaihe.valintatapajonot.forEach(function(jono) {
                     jono.jonosijat.forEach(function(jonosija) {
-                        var person = (model.persons[jonosija.hakijaOid] || [])[0];
-                        if (person) {
-                            jonosija.etunimi = person.etunimet;
-                            jonosija.sukunimi = person.sukunimi;
+                        var hakemus = model.hakeneet.find(hakemus => hakemus.personOid === jonosija.hakijaOid);
+                        if (hakemus) {
+                            jonosija.etunimi = hakemus.etunimet;
+                            jonosija.sukunimi = hakemus.sukunimi;
                         }
                     })
                 })
@@ -91,10 +64,10 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
 
         this.updateHakijatNames = function() {
             model.hakeneet.forEach(function(hakija) {
-                var person = (model.persons[hakija.personOid] || [])[0];
-                if (person) {
-                    hakija.etunimi = person.etunimet;
-                    hakija.sukunimi = person.sukunimi;
+                var hakemus = model.hakeneet.find(hakemus => hakemus.personOid === hakija.personOid);
+                if (hakemus) {
+                    hakija.etunimi = hakemus.etunimet;
+                    hakija.sukunimi = hakemus.sukunimi;
                 }
             })
         };
