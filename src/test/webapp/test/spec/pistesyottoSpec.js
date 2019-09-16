@@ -21,6 +21,7 @@ describe('Pistesyöttö', function() {
         addTestHook(dokumenttipalveluFixtures)();
         addTestHook(organisaatioFixtures)();
         addTestHook(koostettuPistetietoGeneroitava(55, PERSON1OID, PERSON2OID))();
+        addTestHook(hakemusByHakuOidFixtures([]))();
         //addTestHook(common)();
         addTestHook(valintakokeetFixtures([
             {
@@ -48,7 +49,7 @@ describe('Pistesyöttö', function() {
                 hakemusOid: HAKEMUS2,
                 personOid: PERSON2OID
             }]))();
-        addTestHook(onrPerustiedotFixtures([
+        /*addTestHook(onrPerustiedotFixtures([
             {
                 oidHenkilo: PERSON1OID,
                 kutsumanimi: "Erkki",
@@ -62,7 +63,7 @@ describe('Pistesyöttö', function() {
                 etunimet: "Elli Leeni",
                 sukunimi: "Hakija2",
                 asiointikieli: "Suomi"
-            }]))();
+            }]))();*/
     };
 
     afterEach(function() {
