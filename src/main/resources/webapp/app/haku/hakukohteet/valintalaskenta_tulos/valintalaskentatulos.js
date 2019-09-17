@@ -52,7 +52,9 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             model.valinnanvaiheet.forEach(function(vaihe) {
                 vaihe.valintatapajonot.forEach(function(jono) {
                     jono.jonosijat.forEach(function(jonosija) {
-                        var hakemus = model.hakeneet.find(hakemus => hakemus.personOid === jonosija.hakijaOid);
+                        var hakemus = hakemukset.filter(function (hakemus) {
+                            return hakemus.personOid === jonosija.hakijaOid;
+                        })[0];
                         if (hakemus) {
                             jonosija.etunimi = hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet;
                             jonosija.sukunimi = hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi;

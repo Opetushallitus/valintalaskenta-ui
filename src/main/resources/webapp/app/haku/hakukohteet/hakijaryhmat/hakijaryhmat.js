@@ -3,9 +3,12 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                                                         HakukohdeValinnanvaihe,
                                                         HakukohteenValintatuloksetIlmanTilaHakijalleTietoa,
                                                         VtsLatestSijoitteluajoHakukohde,
+                                                        HakukohdeHenkilotFull,
+                                                        AtaruApplications,
                                                         ngTableParams,
                                                         $q,
-                                                        $filter) {
+                                                        $filter,
+                                                        HakuModel) {
     "use strict";
     return function (hakuOid, hakukohdeOid) {
         var sijoittelunTilaOrdinal = function (tila) {
@@ -53,30 +56,57 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
         return $q.all({
             hakijaryhmat: hakijaryhmatPromise,
             sijoittelunTulos: VtsLatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
-            valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
+            valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
         }).then(function (o) {
-            var valintatapajonot = _.indexBy(o.sijoittelunTulos.valintatapajonot, 'oid');
-            var hakemuksetSijoittelussa = _.chain(o.sijoittelunTulos.valintatapajonot)
-                .map('hakemukset').flatten().groupBy('hakijaOid').value();
-            var valintatulokset = _.groupBy(o.valintatulokset, 'hakijaOid');
-            return o.hakijaryhmat.map(function (hakijaryhma) {
-                var hakijat = hakijaryhma.jonosijat.map(function (hakija) {
-                    var hakemusSijoittelussa = findHakemusSijoittelussa(hakemuksetSijoittelussa, valintatapajonot, hakija);
-                    var vastaanottotila = findVastaanottotila(valintatulokset, hakemusSijoittelussa, hakija);
-                    var hyvaksyttyHakijaryhmasta = isHyvaksyttyHakijaryhmasta(hakijaryhma.hakijaryhmaOid, hakemusSijoittelussa);
-                    return {
-                        etunimi: hakija.etunimi,
-                        sukunimi: hakija.sukunimi,
-                        hakemusOid: hakija.hakemusOid,
-                        hakijaOid: hakija.hakijaOid,
-                        ryhmaanKuuluminen: hakija.jarjestyskriteerit[0].tila,
-                        jononNimi: hakemusSijoittelussa ? valintatapajonot[hakemusSijoittelussa.valintatapajonoOid].nimi : undefined,
-                        hakemusSijoittelussa: hakemusSijoittelussa,
-                        sijoittelunTila: hakemusSijoittelussa ? hakemusSijoittelussa.tila : undefined,
-                        vastaanottotila: vastaanottotila,
-                        hyvaksyttyHakijaryhmasta: hyvaksyttyHakijaryhmasta,
-                        pisteet: hakemusSijoittelussa ? hakemusSijoittelussa.pisteet : undefined
-                    };
+            HakuModel.promise.then(function (hakuModel) {
+                if (hakuModel.hakuOid.ataruLomakeAvain) {
+                    console.log('Getting applications from ataru.');
+                    return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                        .then(function (ataruHakemukset) {
+                            if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
+                            return ataruHakemukset;
+                        });
+                } else {
+                    console.log('Getting applications from hakuApp.');
+                    return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
+                        .then(function (result) {
+                            if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
+                            return result;
+                        });
+                };
+            }).then(function(hakemukset){
+                var valintatapajonot = _.indexBy(o.sijoittelunTulos.valintatapajonot, 'oid');
+                var hakemuksetSijoittelussa = _.chain(o.sijoittelunTulos.valintatapajonot)
+                    .map('hakemukset').flatten().groupBy('hakijaOid').value();
+                var valintatulokset = _.groupBy(o.valintatulokset, 'hakijaOid');
+                return o.hakijaryhmat.map(function (hakijaryhma) {
+                    var hakijat = hakijaryhma.jonosijat.map(function (hakija) {
+                        var hakemusSijoittelussa = findHakemusSijoittelussa(hakemuksetSijoittelussa, valintatapajonot, hakija);
+                        var vastaanottotila = findVastaanottotila(valintatulokset, hakemusSijoittelussa, hakija);
+                        var hyvaksyttyHakijaryhmasta = isHyvaksyttyHakijaryhmasta(hakijaryhma.hakijaryhmaOid, hakemusSijoittelussa);
+                        var hakemus = hakemukset.filter(function (hakemus) {
+                            return hakemus.personOid === hakija.hakijaOid;
+                        })[0];
+                        if (hakemus) {
+                            return {
+                                etunimi: hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet,
+                                sukunimi: hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi,
+                                hakemusOid: hakija.hakemusOid,
+                                hakijaOid: hakija.hakijaOid,
+                                ryhmaanKuuluminen: hakija.jarjestyskriteerit[0].tila,
+                                jononNimi: hakemusSijoittelussa ? valintatapajonot[hakemusSijoittelussa.valintatapajonoOid].nimi : undefined,
+                                hakemusSijoittelussa: hakemusSijoittelussa,
+                                sijoittelunTila: hakemusSijoittelussa ? hakemusSijoittelussa.tila : undefined,
+                                vastaanottotila: vastaanottotila,
+                                hyvaksyttyHakijaryhmasta: hyvaksyttyHakijaryhmasta,
+                                pisteet: hakemusSijoittelussa ? hakemusSijoittelussa.pisteet : undefined
+                            };
+                        } else {
+                            console.log("Hakemus not found for hakijaoid: : " + hakija.hakijaOid + ", hakemusOid: " + hakija.hakemusOid);
+                            return;
+                        }
+                    });
+
                 });
                 return {
                     nimi: hakijaryhma.nimi + (_.has(valintatapajonot, hakijaryhma.valintatapajonoOid) ? ', ' + valintatapajonot[hakijaryhma.valintatapajonoOid].nimi : ''),

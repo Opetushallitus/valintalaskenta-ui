@@ -43,7 +43,6 @@ app.factory('PistesyottoModel', function (
                 model.avaimet = results[0];
                 HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
                 model.lastmodified = results[1].lastmodified;
-
                 HakuModel.promise.then(function (hakuModel) {
                     if (hakuModel.hakuOid.ataruLomakeAvain) {
                         console.log('Getting applications from ataru.');
@@ -63,7 +62,9 @@ app.factory('PistesyottoModel', function (
                 }).then(function (hakemukset) {
                     model.hakeneet = results[1].valintapisteet.map(function (pistetieto) {
                         var h = pistetieto.applicationAdditionalDataDTO;
-                        var hakemus = hakemukset.find(hakemus => hakemus.personOid === h.personOid);
+                        var hakemus = hakemukset.filter(function (hakemus) {
+                            return hakemus.personOid === h.personOid;
+                        })[0];
                         h.firstNames = hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet;
                         h.lastName = hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi;
                         h.personOid = hakemus.personOid;
