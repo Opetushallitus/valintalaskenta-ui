@@ -58,7 +58,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
             sijoittelunTulos: VtsLatestSijoitteluajoHakukohde.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise,
             valintatulokset: HakukohteenValintatuloksetIlmanTilaHakijalleTietoa.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
         }).then(function (o) {
-            HakuModel.promise.then(function (hakuModel) {
+            return HakuModel.promise.then(function (hakuModel) {
                 if (hakuModel.hakuOid.ataruLomakeAvain) {
                     console.log('Getting applications from ataru.');
                     return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
@@ -74,7 +74,7 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                             return result;
                         });
                 };
-            }).then(function(hakemukset){
+            }).then(function(hakemukset) {
                 var valintatapajonot = _.indexBy(o.sijoittelunTulos.valintatapajonot, 'oid');
                 var hakemuksetSijoittelussa = _.chain(o.sijoittelunTulos.valintatapajonot)
                     .map('hakemukset').flatten().groupBy('hakijaOid').value();
@@ -102,35 +102,33 @@ app.factory('ValintalaskentaHakijaryhmaModel', function(HakukohdeHakijaryhma,
                                 pisteet: hakemusSijoittelussa ? hakemusSijoittelussa.pisteet : undefined
                             };
                         } else {
-                            console.log("Hakemus not found for hakijaoid: : " + hakija.hakijaOid + ", hakemusOid: " + hakija.hakemusOid);
-                            return;
+                            console.log("No hakemus found for hakijaOid: " + hakija.hakijaOid + ", hakemusOid: " + hakija.hakemusOid);
                         }
                     });
-
+                    return {
+                        nimi: hakijaryhma.nimi + (_.has(valintatapajonot, hakijaryhma.valintatapajonoOid) ? ', ' + valintatapajonot[hakijaryhma.valintatapajonoOid].nimi : ''),
+                        kiintio: getKiintio(o.sijoittelunTulos, hakijaryhma.hakijaryhmaOid),
+                        tableParams: new ngTableParams({
+                            page: 1,
+                            count: 50,
+                            sorting: {
+                                sukunimi: 'asc'
+                            }
+                        }, {
+                            total: hakijat.length,
+                            getData: function ($defer, params) {
+                                var orderedData = params.sorting() ?
+                                    $filter('orderBy')(hakijat, params.orderBy()) :
+                                    hakijat;
+                                orderedData = params.filter() ?
+                                    $filter('filter')(orderedData, params.filter()) :
+                                    orderedData;
+                                params.total(orderedData.length);
+                                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                            }
+                        })
+                    };
                 });
-                return {
-                    nimi: hakijaryhma.nimi + (_.has(valintatapajonot, hakijaryhma.valintatapajonoOid) ? ', ' + valintatapajonot[hakijaryhma.valintatapajonoOid].nimi : ''),
-                    kiintio: getKiintio(o.sijoittelunTulos, hakijaryhma.hakijaryhmaOid),
-                    tableParams: new ngTableParams({
-                        page: 1,
-                        count: 50,
-                        sorting: {
-                            sukunimi: 'asc'
-                        }
-                    }, {
-                        total: hakijat.length,
-                        getData: function ($defer, params) {
-                            var orderedData = params.sorting() ?
-                                $filter('orderBy')(hakijat, params.orderBy()) :
-                                hakijat;
-                            orderedData = params.filter() ?
-                                $filter('filter')(orderedData, params.filter()) :
-                                orderedData;
-                            params.total(orderedData.length);
-                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                        }
-                    })
-                };
             });
         });
     };
