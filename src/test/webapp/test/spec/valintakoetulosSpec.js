@@ -52,7 +52,7 @@ describe('Valintakoetulos', function() {
             {
                 hakemusOid: HAKEMUS1,
                 kutsumanimi: "Erkki",
-                etunimet: "Erkki",
+                etunimi: "Erkki",
                 sukunimi: "Hakija1",
                 personOid: PERSON1OID,
                 asiointikieli: { kieliKoodi: "fi", kieliTyyppi: "suomi" }
@@ -60,7 +60,7 @@ describe('Valintakoetulos', function() {
             {
                 hakemusOid: HAKEMUS2,
                 kutsumanimi: "Elli",
-                etunimet: "Elli",
+                etunimi: "Elli",
                 sukunimi: "Hakija2",
                 personOid: PERSON2OID,
                 asiointikieli: { kieliKoodi: "fi", kieliTyyppi: "suomi" }

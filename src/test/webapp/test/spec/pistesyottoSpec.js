@@ -15,13 +15,27 @@ describe('Pistesyöttö', function() {
     var initCommonFixtures = function() {
         addTestHook(tarjontaFixtures)();
         addTestHook(koodistoFixtures)();
-        addTestHook(listfullFixtures([]))();
+        addTestHook(listfullFixtures([{
+            hakemusOid: HAKEMUS1,
+            kutsumanimi: "Erkki",
+            etunimi: "Erkki",
+            sukunimi: "Hakija1",
+            personOid: PERSON1OID,
+            asiointikieli: { kieliKoodi: "fi", kieliTyyppi: "suomi" }
+        },
+            {
+                hakemusOid: HAKEMUS2,
+                kutsumanimi: "Elli",
+                etunimi: "Elli",
+                sukunimi: "Hakija2",
+                personOid: PERSON2OID,
+                asiointikieli: { kieliKoodi: "fi", kieliTyyppi: "suomi" }
+            }]))();
         addTestHook(commonFixtures())();
         addTestHook(ohjausparametritFixtures())();
         addTestHook(dokumenttipalveluFixtures)();
         addTestHook(organisaatioFixtures)();
         addTestHook(koostettuPistetietoGeneroitava(55, PERSON1OID, PERSON2OID))();
-        addTestHook(hakemusByHakuOidFixtures([]))();
         //addTestHook(common)();
         addTestHook(valintakokeetFixtures([
             {
