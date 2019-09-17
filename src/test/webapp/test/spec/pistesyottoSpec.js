@@ -63,21 +63,6 @@ describe('Pistesyöttö', function() {
                 hakemusOid: HAKEMUS2,
                 personOid: PERSON2OID
             }]))();
-        /*addTestHook(onrPerustiedotFixtures([
-            {
-                oidHenkilo: PERSON1OID,
-                kutsumanimi: "Erkki",
-                etunimet: "Erkki Esaias",
-                sukunimi: "Hakija1",
-                asiointikieli: "Suomi"
-            },
-            {
-                oidHenkilo: PERSON2OID,
-                kutsumanimi: "Elli",
-                etunimet: "Elli Leeni",
-                sukunimi: "Hakija2",
-                asiointikieli: "Suomi"
-            }]))();*/
     };
 
     afterEach(function() {
