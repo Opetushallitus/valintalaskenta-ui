@@ -2,11 +2,11 @@ angular.module('valintalaskenta')
     .factory('SijoitteluntulosModel', ['$q', 'Ilmoitus', 'ValintaesityksenHyvaksyminen',
         '$timeout', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
         'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
-        'HakemusEligibilities', 'VtsSijoittelunTulos', 'VtsVastaanottopostiLahetetty', 'AtaruApplications',
+        'HakemusEligibilities', 'VtsSijoittelunTulos', 'VtsVastaanottopostiLahetetty', 'AtaruApplications', 'HakukohdeHenkilotFull', 'HakuModel',
         function($q, Ilmoitus, ValintaesityksenHyvaksyminen,
                  $timeout, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
                  IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut,
-                 HakemusEligibilities, VtsSijoittelunTulos, VtsVastaanottopostiLahetetty, AtaruApplications) {
+                 HakemusEligibilities, VtsSijoittelunTulos, VtsVastaanottopostiLahetetty, AtaruApplications, HakukohdeHenkilotFull, HakuModel) {
             "use strict";
 
             var createHakemuserittely = function(valintatapajono) {
@@ -339,6 +339,26 @@ angular.module('valintalaskenta')
                     }
                 };
 
+                var fetchHakukohteenHakemukset = function(hakuOid, hakukohdeOid) {
+                return HakuModel.promise.then(function (hakuModel) {
+                    if (hakuModel.hakuOid.ataruLomakeAvain) {
+                        console.log('Getting applications from ataru.');
+                        return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                            .then(function (ataruHakemukset) {
+                                if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
+                                return ataruHakemukset;
+                            });
+                    } else {
+                        console.log('Getting applications from hakuApp.');
+                        return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
+                            .then(function (result) {
+                                if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
+                                return result;
+                            });
+                    };
+                })
+                };
+
                 this.refresh = function(hakuOid, hakukohdeOid) {
                     model.errors = [];
                     model.errors.length = 0;
@@ -355,6 +375,7 @@ angular.module('valintalaskenta')
                     model.myohastymistietoLadattu = SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET === "false";
                     model.eraantyneitaHakemuksia = false;
                     model.valintatapajonoLastModified = {};
+                    model.hakukohteenHakemukset = fetchHakukohteenHakemukset(hakuOid, hakukohdeOid);
 
                     var hakuPromise = HaunTiedot.get({hakuOid: hakuOid}).$promise
                         .then(function(resultWrapper) { return resultWrapper.result; });
@@ -365,13 +386,13 @@ angular.module('valintalaskenta')
                             }
                             var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
                             if (hakijaOidArray && 0 < hakijaOidArray.length) {
-                                return HenkiloPerustietosByHenkiloOidList.post(createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset))
-                                    .then(function(henkiloPerustiedot) {
-                                            tulokset.henkilot = _.map(henkiloPerustiedot, function(henkilo) {
+                                return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid)
+                                    .then(function(hakemukset) {
+                                            tulokset.henkilot = _.map(hakemukset, function(hakemus) {
                                                 return {
-                                                    oid: henkilo.oidHenkilo,
-                                                    etunimi: henkilo.etunimet,
-                                                    sukunimi: henkilo.sukunimi
+                                                    oid: hakemus.personOid,
+                                                    etunimi: hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet,
+                                                    sukunimi: hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi
                                                 }
                                             });
                                             return tulokset;
@@ -400,6 +421,7 @@ angular.module('valintalaskenta')
                                 model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
                                 model.sijoitteluTulokset = tulokset.sijoittelunTulokset;
                                 model.henkilot = tulokset.henkilot;
+
                                 model.sijoitteluTulokset.valintatapajonot.forEach(function(valintatapajono, index) {
                                     valintatapajono.index = index;
                                     valintatapajono.valittu = true;
