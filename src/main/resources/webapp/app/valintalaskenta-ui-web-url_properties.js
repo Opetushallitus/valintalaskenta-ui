@@ -174,7 +174,6 @@ window.urls.addProperties({
     "oppijanumerorekisteri-service.henkilo" : "/oppijanumerorekisteri-service/henkilo/$1",
 
     "oppijanumerorekisteri-service.login" :"/oppijanumerorekisteri-service/cas/prequel",
-    "oppijanumerorekisteri-service.henkilo.henkiloPerustietosByHenkiloOidList" : "/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList",
 
     "virkailija-raamit.apply" : "/virkailija-raamit/apply-raamit.js"
 });

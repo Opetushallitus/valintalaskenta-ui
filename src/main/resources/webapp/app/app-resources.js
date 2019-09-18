@@ -1050,32 +1050,6 @@ app.factory('OrganizationHierarchy', function ($resource) {
     });
 });
 
-app.factory('HenkiloPerustietosByHenkiloOidList',[ '$http', '$q', '_', function($http, $q, _) {
-    return {
-        post: function(oids) {
-            var start = 0, BATCH_SIZE = 1000, deferred = $q.defer();
-            var promises = [];
-            while (start < oids.length) {
-                promises.push($http.post(window.url("oppijanumerorekisteri-service.henkilo.henkiloPerustietosByHenkiloOidList"), oids.slice(start, start + BATCH_SIZE)));
-                start = start + BATCH_SIZE;
-            }
-            $q.all(promises).then(function(results) {
-                deferred.resolve(
-                    _.chain(results)
-                    .map(function(d) {
-                        return d.data;
-                    })
-                    .flatten().value()
-                );
-            }, function(reason){
-                console.error("HenkiloPerustietosByHenkiloOidList failed", reason);
-                deferred.reject();
-            });
-            return deferred.promise;
-        }
-    };
-}]);
-
 angular.module('valintalaskenta')
 
     .factory('HakujenHakutyypit', ['$resource', function ($resource) {
