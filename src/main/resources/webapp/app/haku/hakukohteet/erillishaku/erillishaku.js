@@ -31,13 +31,12 @@ angular.module('valintalaskenta')
         'Kirjepohjat', 'Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Hakemukset', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
         'Valintaesitys', 'valinnantuloksenHistoriaService', 'VtsVastaanottopostiLahetetty', 'VtsVastaanottopostiLahetaUudelleenHakemukselle', 'VtsVastaanottopostiLahetaUudelleenHakukohteelle',
-        'AtaruApplications',
         function($scope, $modal, $log, $location, $routeParams, $timeout, $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                  ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                  VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset,
                  ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty,
-                 VtsVastaanottopostiLahetaUudelleenHakemukselle, VtsVastaanottopostiLahetaUudelleenHakukohteelle, AtaruApplications)
+                 VtsVastaanottopostiLahetaUudelleenHakemukselle, VtsVastaanottopostiLahetaUudelleenHakukohteelle)
 {
     "use strict";
 
@@ -396,41 +395,19 @@ angular.module('valintalaskenta')
         }
     };
 
-    var fetchHakukohteenHakemukset = function(hakuOid, hakukohdeOid) {
-        return HakuModel.promise.then(function (hakuModel) {
-            if (hakuModel.hakuOid.ataruLomakeAvain) {
-                console.log('Getting applications from ataru.');
-                return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
-                    .then(function (ataruHakemukset) {
-                        if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
-                        return ataruHakemukset;
-                    });
+    var enrichHakemuksetWithHakijat = function(valintatapajono, kaikkiHakemukset) {
+        valintatapajono.hakemukset.map(function(hakemus) {
+            var henkilo = kaikkiHakemukset.find(function(henkilonHakemus) { return henkilonHakemus.personOid == hakemus.hakijaOid });
+            if (henkilo) {
+                {
+                hakemus.etunimi = henkilo.etunimet ? henkilo.etunimet : henkilo.answers.henkilotiedot.Etunimet;
+                hakemus.sukunimi = henkilo.sukunimi ? henkilo.sukunimi : henkilo.answers.henkilotiedot.Sukunimi;
+                }
             } else {
-                console.log('Getting applications from hakuApp.');
-                return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
-                    .then(function (result) {
-                        if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
-                        return result;
-                    });
-            };
+                console.log('Ei löytynyt henkilon ', hakemus.hakijaOid, ' hakemusta.');
+            }
         })
-    };
-
-
-    var enrichHakemuksetWithHakijat = function(valintatapajono, hakuOid, hakukohdeOid) {
-          return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid)
-              .then(function(hakemukset) {
-                _.forEach(valintatapajono.hakemukset, function(hakemus) {
-                    var henkilo = hakemukset.find(function(henkilonHakemus) { return henkilonHakemus.personOid == hakemus.hakijaOid });
-                    if (henkilo) {
-                        hakemus.etunimi = henkilo.etunimet ? henkilo.etunimet : henkilo.answers.henkilotiedot.Etunimet;
-                        hakemus.sukunimi = henkilo.sukunimi ? henkilo.sukunimi : henkilo.answers.henkilotiedot.Sukunimi;
-                    } else {
-                        console.log('Ei löytynyt henkilon ', hakemus.hakijaOid, ' hakemusta.');
-                    }
-                });
-                return valintatapajono;
-              });
+        return valintatapajono;
     };
 
     var addHakemuksetWithoutValinnantulos = function(kaikkiHakemukset, valintatapajono) {
@@ -579,9 +556,8 @@ angular.module('valintalaskenta')
         var valintatapajono = resolved[3];
         var lahetetytVastaanottoPostit = resolved[4];
         addHakemuksetWithoutValinnantulos(kaikkiHakemukset, valintatapajono);
-        enrichHakemuksetWithHakijat(valintatapajono, $routeParams.hakuOid, $routeParams.hakukohdeOid).then(function(valintatapajono) {
-            processErillishaku(valintatapajono, maksuvelvollisuudet, lukuvuosimaksut, lahetetytVastaanottoPostit);
-        });
+        var enrichedValintatapajono = enrichHakemuksetWithHakijat(valintatapajono, kaikkiHakemukset);
+        processErillishaku(enrichedValintatapajono, maksuvelvollisuudet, lukuvuosimaksut, lahetetytVastaanottoPostit);
     });
 
     $scope.updateHyvaksymiskirjeLahetetty = function(hakemus) {
