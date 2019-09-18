@@ -346,14 +346,14 @@ angular.module('valintalaskenta')
                         return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
                             .then(function (ataruHakemukset) {
                                 if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
-                                return ataruHakemukset;
+                                return model.hakukohteenHakemukset = ataruHakemukset;
                             });
                     } else {
                         console.log('Getting applications from hakuApp.');
                         return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
                             .then(function (result) {
                                 if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
-                                return result;
+                                return model.hakukohteenHakemukset = result;
                             });
                     };
                 })
@@ -375,7 +375,7 @@ angular.module('valintalaskenta')
                     model.myohastymistietoLadattu = SHOW_TILA_HAKIJALLE_IN_SIJOITTELUN_TULOKSET === "false";
                     model.eraantyneitaHakemuksia = false;
                     model.valintatapajonoLastModified = {};
-                    model.hakukohteenHakemukset = fetchHakukohteenHakemukset(hakuOid, hakukohdeOid);
+                    model.hakukohteenHakemukset = {};
 
                     var hakuPromise = HaunTiedot.get({hakuOid: hakuOid}).$promise
                         .then(function(resultWrapper) { return resultWrapper.result; });
@@ -386,18 +386,23 @@ angular.module('valintalaskenta')
                             }
                             var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
                             if (hakijaOidArray && 0 < hakijaOidArray.length) {
-                                return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid)
-                                    .then(function(hakemukset) {
-                                            tulokset.henkilot = _.map(hakemukset, function(hakemus) {
-                                                return {
-                                                    oid: hakemus.personOid,
-                                                    etunimi: hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet,
-                                                    sukunimi: hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi
-                                                }
-                                            });
-                                            return tulokset;
+                                return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid).then(function () {
+                                    tulokset.henkilot = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset).map(function(henkiloOid) {
+                                        var henkilonHakemus = model.hakukohteenHakemukset.filter(function (hakemus) {
+                                            return hakemus.personOid === henkiloOid;
+                                        })[0];
+                                        if (henkilonHakemus) {
+                                            return {
+                                                oid: henkilonHakemus.personOid,
+                                                etunimi: henkilonHakemus.etunimet ? henkilonHakemus.etunimet : henkilonHakemus.answers.henkilotiedot.Etunimet,
+                                                sukunimi: henkilonHakemus.sukunimi ? henkilonHakemus.sukunimi : henkilonHakemus.answers.henkilotiedot.Sukunimi,
+                                            }
+                                        } else {
+                                            console.log("Hakemus not found for henkiloOid: " + henkiloOid);
                                         }
-                                    );
+                                    });
+                                    return tulokset;
+                                })
                             } else {
                                 return tulokset;
                             }
@@ -421,7 +426,6 @@ angular.module('valintalaskenta')
                                 model.latestSijoitteluajo.sijoitteluajoId = tulokset.sijoittelunTulokset.sijoitteluajoId;
                                 model.sijoitteluTulokset = tulokset.sijoittelunTulokset;
                                 model.henkilot = tulokset.henkilot;
-
                                 model.sijoitteluTulokset.valintatapajonot.forEach(function(valintatapajono, index) {
                                     valintatapajono.index = index;
                                     valintatapajono.valittu = true;
@@ -429,10 +433,10 @@ angular.module('valintalaskenta')
                                     model.hakemusErittelyt.push(hakemuserittely);
                                     calculateSijat(valintatapajono);
                                     valintatapajono.hakemukset.forEach(function(hakemus) {
-                                        var hakija = _.find(model.henkilot, function(henkilo) { return henkilo.oid == hakemus.hakijaOid });
+                                        var hakija = model.hakukohteenHakemukset.find(function(henkilonHakemus) { return henkilonHakemus.personOid == hakemus.hakijaOid });
                                         if (hakija) {
-                                            hakemus.etunimi = hakija.etunimi;
-                                            hakemus.sukunimi = hakija.sukunimi;
+                                            hakemus.etunimi = hakija.etunimet ? hakija.etunimet : hakija.answers.henkilotiedot.Etunimet;
+                                            hakemus.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
                                         } else {
                                             console.log("Hakijan " + hakemus.hakijaOid + " nimeä ei löytynyt oppijanumerorekisteristä.")
                                         }
