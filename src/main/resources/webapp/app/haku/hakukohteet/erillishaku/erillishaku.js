@@ -29,13 +29,14 @@ angular.module('valintalaskenta')
         'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuTuonti', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat', 'Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Hakemukset', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
-        'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
+        'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
         'Valintaesitys', 'valinnantuloksenHistoriaService', 'VtsVastaanottopostiLahetetty', 'VtsVastaanottopostiLahetaUudelleenHakemukselle', 'VtsVastaanottopostiLahetaUudelleenHakukohteelle',
         function($scope, $modal, $log, $location, $routeParams, $timeout, $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                  ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-                 VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
-                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty, VtsVastaanottopostiLahetaUudelleenHakemukselle, VtsVastaanottopostiLahetaUudelleenHakukohteelle)
+                 VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset,
+                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty,
+                 VtsVastaanottopostiLahetaUudelleenHakemukselle, VtsVastaanottopostiLahetaUudelleenHakukohteelle)
 {
     "use strict";
 
