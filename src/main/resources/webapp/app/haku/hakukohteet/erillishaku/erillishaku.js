@@ -394,26 +394,41 @@ angular.module('valintalaskenta')
         }
     };
 
+    var fetchHakukohteenHakemukset = function(hakuOid, hakukohdeOid) {
+        return HakuModel.promise.then(function (hakuModel) {
+            if (hakuModel.hakuOid.ataruLomakeAvain) {
+                console.log('Getting applications from ataru.');
+                return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                    .then(function (ataruHakemukset) {
+                        if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
+                        return model.hakukohteenHakemukset = ataruHakemukset;
+                    });
+            } else {
+                console.log('Getting applications from hakuApp.');
+                return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
+                    .then(function (result) {
+                        if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
+                        return model.hakukohteenHakemukset = result;
+                    });
+            };
+        })
+    };
+
+
     var enrichHakemuksetWithHakijat = function(valintatapajono) {
-        var henkiloOids = _.uniq(_.map(valintatapajono.hakemukset, function(h) {
-            return h.hakijaOid
-        }));
-        return HenkiloPerustietosByHenkiloOidList.post(henkiloOids)
-            .then(function(henkiloPerustiedot) {
-                var henkilotByOid = _.groupBy(henkiloPerustiedot, function(henkilo) {
-                    return henkilo.oidHenkilo;
-                });
+          return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid)
+              .then(function(hakemukset) {
                 _.forEach(valintatapajono.hakemukset, function(hakemus) {
-                    var henkilo = (henkilotByOid[hakemus.hakijaOid] || [])[0];
+                    var henkilo = hakemukset.find(function(henkilonHakemus) { return henkilonHakemus.personOid == hakemus.hakijaOid });
                     if (henkilo) {
-                        hakemus.etunimi = henkilo.etunimet;
-                        hakemus.sukunimi = henkilo.sukunimi;
+                        hakemus.etunimi = henkilo.etunimet ? henkilo.etunimet : henkilo.answers.henkilotiedot.Etunimet;
+                        hakemus.sukunimi = henkilo.sukunimi ? henkilo.sukunimi : henkilo.answers.henkilotiedot.Sukunimi;
                     } else {
-                        console.log('Ei löytynyt henkiloä', hakemus.hakijaOid, 'oppijanumerorekisteristä');
+                        console.log('Ei löytynyt henkilon ', hakemus.hakijaOid, ' hakemusta.');
                     }
                 });
                 return valintatapajono;
-            });
+              });
     };
 
     var addHakemuksetWithoutValinnantulos = function(kaikkiHakemukset, valintatapajono) {
