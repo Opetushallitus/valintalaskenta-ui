@@ -416,7 +416,7 @@ angular.module('valintalaskenta')
     };
 
 
-    var enrichHakemuksetWithHakijat = function(valintatapajono) {
+    var enrichHakemuksetWithHakijat = function(valintatapajono, hakuOid, hakukohdeOid) {
           return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid)
               .then(function(hakemukset) {
                 _.forEach(valintatapajono.hakemukset, function(hakemus) {
@@ -578,7 +578,7 @@ angular.module('valintalaskenta')
         var valintatapajono = resolved[3];
         var lahetetytVastaanottoPostit = resolved[4];
         addHakemuksetWithoutValinnantulos(kaikkiHakemukset, valintatapajono);
-        enrichHakemuksetWithHakijat(valintatapajono).then(function(valintatapajono) {
+        enrichHakemuksetWithHakijat(valintatapajono, $routeParams.hakuOid, $routeParams.hakukohdeOid).then(function(valintatapajono) {
             processErillishaku(valintatapajono, maksuvelvollisuudet, lukuvuosimaksut, lahetetytVastaanottoPostit);
         });
     });
