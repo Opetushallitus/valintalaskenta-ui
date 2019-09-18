@@ -1,11 +1,11 @@
 angular.module('valintalaskenta')
     .factory('SijoitteluntulosModel', ['$q', 'Ilmoitus', 'ValintaesityksenHyvaksyminen',
         '$timeout', 'HakukohteenValintatuloksetIlmanTilaHakijalleTietoa', 'ValinnanTulos', 'Valinnantulokset', 'VastaanottoUtil', 'HakemustenVastaanottotilaHakijalle',
-        'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
+        'IlmoitusTila', 'HaunTiedot', '_', 'ngTableParams', 'FilterService', '$filter', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
         'HakemusEligibilities', 'VtsSijoittelunTulos', 'VtsVastaanottopostiLahetetty', 'AtaruApplications', 'HakukohdeHenkilotFull', 'HakuModel',
         function($q, Ilmoitus, ValintaesityksenHyvaksyminen,
                  $timeout, HakukohteenValintatuloksetIlmanTilaHakijalleTietoa, ValinnanTulos, Valinnantulokset, VastaanottoUtil, HakemustenVastaanottotilaHakijalle,
-                 IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, HenkiloPerustietosByHenkiloOidList, ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut,
+                 IlmoitusTila, HaunTiedot, _, ngTableParams, FilterService, $filter, ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut,
                  HakemusEligibilities, VtsSijoittelunTulos, VtsVastaanottopostiLahetetty, AtaruApplications, HakukohdeHenkilotFull, HakuModel) {
             "use strict";
 

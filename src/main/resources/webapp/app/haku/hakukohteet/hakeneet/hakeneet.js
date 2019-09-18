@@ -1,5 +1,5 @@
 ﻿var app = angular.module('valintalaskenta');
-app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, HenkiloPerustietosByHenkiloOidList, $q) {
+app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, $q) {
     'use strict';
 
     var processHakuappApplications = function(applications, hakukohdeOid) {
