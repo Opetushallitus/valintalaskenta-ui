@@ -403,14 +403,14 @@ angular.module('valintalaskenta')
                 return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
                     .then(function (ataruHakemukset) {
                         if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
-                        return model.hakukohteenHakemukset = ataruHakemukset;
+                        return ataruHakemukset;
                     });
             } else {
                 console.log('Getting applications from hakuApp.');
                 return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
                     .then(function (result) {
                         if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
-                        return model.hakukohteenHakemukset = result;
+                        return result;
                     });
             };
         })
