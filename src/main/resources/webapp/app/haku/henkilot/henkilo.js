@@ -1,18 +1,16 @@
 var app = angular.module('valintalaskenta');
-app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HenkiloPerustietosByHenkiloOidList, HakuModel, AtaruApplications) {
+app.factory('HenkiloModel', function ($resource, $q, $routeParams, Henkilot, HakuModel, AtaruApplications) {
     function enrichWithName(hakemukset) {
-        var personOids = hakemukset.map(function (h) { return h.personOid; });
-        return HenkiloPerustietosByHenkiloOidList.post(personOids).then(function (henkilot) {
-            var henkilotByOid = _.groupBy(henkilot, function (henkilo) {
-                return henkilo.oidHenkilo;
-            });
-            return hakemukset.map(function(h) {
-                var henkilo = henkilotByOid[h.personOid][0];
+        return new Promise(function(resolve, reject){
+            resolve(hakemukset.map(function (hakemus) {
+                let sukunimi = hakemus.sukunimi ? hakemus.sukunimi : hakemus.lastName;
+                let etunimet = hakemus.etunimet ? hakemus.etunimet : hakemus.firstNames;
                 return {
-                  oid: h.oid,
-                  name: henkilo.sukunimi + ", " + henkilo.etunimet
+                    oid: hakemus.oid,
+                    name: sukunimi + ", " + etunimet
                 };
-            });
+            })).onError(reject(console.log("enrichWithName failed!")));
+            return resolve();
         });
     }
 

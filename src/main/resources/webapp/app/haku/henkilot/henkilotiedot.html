@@ -15,7 +15,7 @@
 
             <div ng-include="'../common/html/errors.html'"></div>
 			
-            <h1>{{model.henkilo.sukunimi}}, {{model.henkilo.etunimet}}</h1>
+            <h1>{{model.hakemus.sukunimi}}, {{model.hakemus.etunimet}}</h1>
 			
 			<a ng-show="showMuodostaJalkiohjauskirje" ng-click="muodostaJalkiohjauskirje()"
        			class="btn btn-primary btn-sm"><i class="fa fa-file"></i>
@@ -28,7 +28,7 @@
             <dl class="margin-top-6">
 
                 <dt>{{ t('henkilotiedot.henkilotunnus') || 'Henkilötunnus' }}</dt>
-                <dd>{{model.henkilo.henkilotunnus}}</dd>
+                <dd>{{model.hakemus.henkilotunnus}}</dd>
                 <dt>{{ t('henkilotiedot.hakemuksenoid') || 'Hakemuksen OID' }}:</dt>
                 <dd><a href="{{model.hakemus.link}}" target="_blank">{{model.hakemus.oid}}</a></dd>
                 <dt>{{ t('henkilotiedot.lahiosoite') || 'Lähiosoite' }}</dt>

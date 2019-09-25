@@ -29,13 +29,14 @@ angular.module('valintalaskenta')
         'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuTuonti', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat', 'Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Hakemukset', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
-        'HenkiloPerustietosByHenkiloOidList', 'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
+        'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
         'Valintaesitys', 'valinnantuloksenHistoriaService', 'VtsVastaanottopostiLahetetty', 'VtsVastaanottopostiLahetaUudelleenHakemukselle', 'VtsVastaanottopostiLahetaUudelleenHakukohteelle',
         function($scope, $modal, $log, $location, $routeParams, $timeout, $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                  ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
-                 VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset, HenkiloPerustietosByHenkiloOidList,
-                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty, VtsVastaanottopostiLahetaUudelleenHakemukselle, VtsVastaanottopostiLahetaUudelleenHakukohteelle)
+                 VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset,
+                 ErillishakuHyvaksymiskirjeet, Lukuvuosimaksut, Valintaesitys, valinnantuloksenHistoriaService, VtsVastaanottopostiLahetetty,
+                 VtsVastaanottopostiLahetaUudelleenHakemukselle, VtsVastaanottopostiLahetaUudelleenHakukohteelle)
 {
     "use strict";
 
@@ -394,26 +395,19 @@ angular.module('valintalaskenta')
         }
     };
 
-    var enrichHakemuksetWithHakijat = function(valintatapajono) {
-        var henkiloOids = _.uniq(_.map(valintatapajono.hakemukset, function(h) {
-            return h.hakijaOid
-        }));
-        return HenkiloPerustietosByHenkiloOidList.post(henkiloOids)
-            .then(function(henkiloPerustiedot) {
-                var henkilotByOid = _.groupBy(henkiloPerustiedot, function(henkilo) {
-                    return henkilo.oidHenkilo;
-                });
-                _.forEach(valintatapajono.hakemukset, function(hakemus) {
-                    var henkilo = (henkilotByOid[hakemus.hakijaOid] || [])[0];
-                    if (henkilo) {
-                        hakemus.etunimi = henkilo.etunimet;
-                        hakemus.sukunimi = henkilo.sukunimi;
-                    } else {
-                        console.log('Ei löytynyt henkiloä', hakemus.hakijaOid, 'oppijanumerorekisteristä');
-                    }
-                });
-                return valintatapajono;
-            });
+    var enrichHakemuksetWithHakijat = function(valintatapajono, kaikkiHakemukset) {
+        valintatapajono.hakemukset.map(function(hakemus) {
+            var henkilo = kaikkiHakemukset.find(function(henkilonHakemus) { return henkilonHakemus.personOid == hakemus.hakijaOid });
+            if (henkilo) {
+                {
+                hakemus.etunimi = henkilo.etunimet ? henkilo.etunimet : henkilo.answers.henkilotiedot.Etunimet;
+                hakemus.sukunimi = henkilo.sukunimi ? henkilo.sukunimi : henkilo.answers.henkilotiedot.Sukunimi;
+                }
+            } else {
+                console.log('Ei löytynyt henkilon ', hakemus.hakijaOid, ' hakemusta.');
+            }
+        })
+        return valintatapajono;
     };
 
     var addHakemuksetWithoutValinnantulos = function(kaikkiHakemukset, valintatapajono) {
@@ -562,9 +556,8 @@ angular.module('valintalaskenta')
         var valintatapajono = resolved[3];
         var lahetetytVastaanottoPostit = resolved[4];
         addHakemuksetWithoutValinnantulos(kaikkiHakemukset, valintatapajono);
-        enrichHakemuksetWithHakijat(valintatapajono).then(function(valintatapajono) {
-            processErillishaku(valintatapajono, maksuvelvollisuudet, lukuvuosimaksut, lahetetytVastaanottoPostit);
-        });
+        var enrichedValintatapajono = enrichHakemuksetWithHakijat(valintatapajono, kaikkiHakemukset);
+        processErillishaku(enrichedValintatapajono, maksuvelvollisuudet, lukuvuosimaksut, lahetetytVastaanottoPostit);
     });
 
     $scope.updateHyvaksymiskirjeLahetetty = function(hakemus) {

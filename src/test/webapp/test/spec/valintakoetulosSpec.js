@@ -51,28 +51,19 @@ describe('Valintakoetulos', function() {
         addTestHook(hakemusByOidsFixtures([
             {
                 hakemusOid: HAKEMUS1,
+                kutsumanimi: "Erkki",
                 etunimi: "Erkki",
                 sukunimi: "Hakija1",
-                personOid: PERSON1OID
+                personOid: PERSON1OID,
+                asiointikieli: { kieliKoodi: "fi", kieliTyyppi: "suomi" }
             },
             {
                 hakemusOid: HAKEMUS2,
+                kutsumanimi: "Elli",
                 etunimi: "Elli",
                 sukunimi: "Hakija2",
-                personOid: PERSON2OID
-            }]))();
-        addTestHook(onrPerustiedotFixtures([
-            {
-                oidHenkilo: PERSON1OID,
-                kutsumanimi: "Erkki",
-                sukunimi: "Hakija1",
-                asiointikieli: "Suomi"
-            },
-            {
-                oidHenkilo: PERSON2OID,
-                kutsumanimi: "Elli",
-                sukunimi: "Hakija2",
-                asiointikieli: "Suomi"
+                personOid: PERSON2OID,
+                asiointikieli: { kieliKoodi: "fi", kieliTyyppi: "suomi" }
             }]))();
         page.openPage(done);
     });

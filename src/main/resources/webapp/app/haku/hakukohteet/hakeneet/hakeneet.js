@@ -1,15 +1,11 @@
 ﻿var app = angular.module('valintalaskenta');
-app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, HenkiloPerustietosByHenkiloOidList, $q) {
+app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, $q) {
     'use strict';
 
-    var processHakuappApplications = function(applications, hakukohdeOid, persons) {
+    var processHakuappApplications = function(applications, hakukohdeOid) {
         return applications.map(function(application) {
             var hakija = {};
             if (application.answers) {
-                var person = persons.filter(function(person) {
-                    return person.oidHenkilo === application.personOid;
-                })[0];
-
                 for (var i = 1; i < 10; i++) {
                     if (!application.answers.hakutoiveet) {
                         break;
@@ -40,9 +36,9 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
                 }
 
                 hakija.state = application.state;
-                hakija.Etunimet = person.etunimet;
-                hakija.Sukunimi = person.sukunimi;
-                hakija.personOid = person.oidHenkilo;
+                hakija.Etunimet = application.answers.henkilotiedot.Etunimet;
+                hakija.Sukunimi = application.answers.henkilotiedot.Sukunimi;
+                hakija.personOid = application.personOid;
                 hakija.hakemusOid = application.oid;
             }
 
@@ -82,12 +78,8 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
         }
     };
 
-    var processAtaruApplications = function(applications, persons, hakukohdeOid) {
+    var processAtaruApplications = function(applications, hakukohdeOid) {
         return applications.map(function(application) {
-            var person = persons.filter(function(person) {
-                return person.oidHenkilo === application.personOid;
-            })[0];
-
             var hakutoive;
             var hakutoiveNumero;
             var i = 0;
@@ -104,9 +96,9 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
                 state: ataruApplicationState(hakutoive),
                 hakukelpoisuus: ataruHakukelpoisuus(hakutoive),
                 hakutoiveNumero: hakutoiveNumero,
-                Etunimet: person.etunimet,
-                Sukunimi: person.sukunimi,
-                personOid: person.oidHenkilo,
+                Etunimet: application.etunimet,
+                Sukunimi: application.sukunimi,
+                personOid: application.personOid,
                 hakemusOid: application.oid
             }
         })
@@ -132,31 +124,16 @@ app.factory('HakeneetModel', function(HakukohdeHenkilotFull, AtaruApplications, 
             if (loadFromAtaru) {
                 console.log("Get applications from Ataru");
                 AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid},
-                    function(applications) {
-                        var hakijaOids = _.uniq(applications.map(function(application) {
-                            return application.personOid;
-                        }));
-
-                        HenkiloPerustietosByHenkiloOidList.post(hakijaOids)
-                            .then(function(persons) {
-                                model.hakeneet = processAtaruApplications(applications, persons, hakukohdeOid);
-                                promise.resolve();
-                            }, onError);
+                    function (applications) {
+                        model.hakeneet = processAtaruApplications(applications, hakukohdeOid);
+                        promise.resolve();
                     }, onError);
             } else {
                 console.log("Get applications from hakuapp");
                 HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: model.hakuOid},
-                    function(applications) {
-                        var hakijaOids = _.uniq(applications.map(function(application) {
-                            return application.personOid;
-                        }));
-
-                        HenkiloPerustietosByHenkiloOidList.post(hakijaOids)
-                            .then(function(persons) {
-                                model.hakeneet = processHakuappApplications(applications, hakukohdeOid, persons);
-                                promise.resolve();
-                            }, onError);
-
+                    function (applications) {
+                        model.hakeneet = processHakuappApplications(applications, hakukohdeOid);
+                        promise.resolve();
                     }, onError);
             }
         };

@@ -5,8 +5,8 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                                             ValintakoetuloksetHakemuksittain, HarkinnanvaraisestiHyvaksytty,
                                             HakukohdeAvaimet, HaunTiedot, HakemuksenValintatulokset,
                                             VtsValinnantuloksetHakemukselle, HakukohdeAvainTyyppiService,
-                                            KoostettuHakemusAdditionalDataForHakemus, R, HenkiloPerustiedot,
-                                            TarjontaHakukohde, AtaruApplications) {
+                                            KoostettuHakemusAdditionalDataForHakemus, R, TarjontaHakukohde,
+                                            AtaruApplications) {
     "use strict";
 
     function setVastaanottoTilaOptionsToShow(hakutoiveenValintatapajonot) {
@@ -38,7 +38,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                         tarjoajaNimi: result.result.tarjoajaNimet.fi,
                         tarjoajaOid: result.result.tarjoajaOids[0],
                         organisationOidsForAuthorization: (result.result.tarjoajaOids || [])
-                          .concat(result.result.organisaatioRyhmaOids || [])
+                            .concat(result.result.organisaatioRyhmaOids || [])
                     };
                 });
         })).then(function () {
@@ -62,6 +62,10 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
             return {
                 oid: hakemusOid,
                 personOid: hakemus.personOid,
+                sukunimi: hakemus.answers.henkilotiedot.Sukunimi,
+                etunimet: hakemus.answers.henkilotiedot.Etunimet,
+                asiointikieli: hakemus.answers.lisatiedot.asiointikieli,
+                henkilotunnus: hakemus.answers.henkilotiedot.Henkilotunnus,
                 lahiosoite: hakemus.answers.henkilotiedot.lahiosoite,
                 postinumero: hakemus.answers.henkilotiedot.Postinumero,
                 pohjakoulutustoinenasteKoodiarvo: hakemus.answers.koulutustausta.POHJAKOULUTUS,
@@ -78,6 +82,10 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 return {
                     oid: hakemus.oid,
                     personOid: hakemus.personOid,
+                    sukunimi: hakemus.sukunimi,
+                    etunimet: hakemus.etunimet,
+                    asiointikieli: hakemus.asiointiKieli.kieliTyyppi,
+                    henkilotunnus: hakemus.henkilotunnus,
                     lahiosoite: hakemus.lahiosoite,
                     postinumero: hakemus.postinumero,
                     pohjakoulutustoinenasteKoodiarvo: null,
@@ -90,21 +98,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                     link: url("ataru.application.review", hakuOid, hakemusOid)
                 };
             });
-    }
-
-    function getHenkilo(haku, hakemus) {
-        return HenkiloPerustiedot.get(
-            hakemus.personOid,
-            haku.ataruLomakeAvain ? "ATARU" : "HAKU_APP"
-        ).then(function (henkilo) {
-            return {
-                oid: henkilo.data.oidHenkilo,
-                sukunimi: henkilo.data.sukunimi,
-                etunimet: henkilo.data.etunimet,
-                asiointikieli: (henkilo.data.asiointiKieli || {}).kieliTyyppi,
-                henkilotunnus: henkilo.data.hetu
-            }
-        });
     }
 
     function valintalaskentaByHakukohdeOid(hakuOid, hakemusOid) {
@@ -230,7 +223,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
     function refresh(hakuOid, hakemusOid) {
         var self = this;
         self.hakemus = {};
-        self.henkilo = {};
         self.hakutoiveet = [];
         self.hakuOid = hakuOid;
         self.haku = {};
@@ -261,7 +253,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         return $q.all({
             haku: hakuPromise,
             hakemus: hakemusPromise,
-            henkilo: $q.all({ haku: hakuPromise, hakemus: hakemusPromise}).then(function(o) { return getHenkilo(o.haku, o.hakemus); }),
             hakukohteetByHakukohdeOid: hakukohteetPromise,
             avaimetByHakukohdeOid: hakemusPromise.then(avaimetByHakukohdeOid),
             organizationChecksByHakukohdeOid: hakukohteetPromise.then(organizationChecksByHakukohdeOid),
@@ -273,7 +264,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
         }).then(function(o) {
             self.haku = o.haku;
             self.hakemus = o.hakemus;
-            self.henkilo = o.henkilo;
             self.sijoittelu = o.sijoittelu.sijoitteluByValintatapajonoOid;
             self.lastmodified = o.additionalData.lastmodified;
             self.hakutoiveet = o.hakemus.hakutoiveet.map(function (h, index) {
@@ -290,7 +280,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 setVastaanottoTilaOptionsToShow(sijoittelu);
                 sijoittelu.forEach(function (valintatapajono) {
                     valintatapajono.hakemusOid = hakemusOid;
-                    valintatapajono.hakijaOid = self.henkilo.oid;
+                    valintatapajono.hakijaOid = self.hakemus.personOid;
                     valintatapajono.vastaanottoTila = o.vastaanottotilatByValintatapajonoOid[valintatapajono.valintatapajonoOid];
                     valintatapajono.muokattuVastaanottoTila = valintatapajono.vastaanottoTila;
                     valintatapajono.tilaHistoria = o.sijoittelu.tilaHistoriatByValintatapajonoOid[valintatapajono.valintatapajonoOid];
@@ -338,7 +328,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 lastmodified: this.lastmodified,
                 hakemus: {
                     oid: this.hakemus.oid,
-                    personOid: this.henkilo.oid,
+                    personOid: this.hakemus.personOid,
                     additionalData: mergedAdditionalData
                 }
             }
@@ -347,7 +337,6 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
 
     return {
         hakemus: {},
-        henkilo: {},
         hakutoiveet: [],
         hakuOid: null,
         haku: {},
@@ -396,7 +385,7 @@ angular.module('valintalaskenta').
         var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu($scope.hakuModel.hakuOid.kohdejoukkoUri);
         var applicationPeriod = $routeParams.hakuOid;
         var hakemusOid = $scope.model.hakemus.oid;
-        var asiointikieli = $scope.model.henkilo.asiointikieli;
+        var asiointikieli = $scope.model.hakemus.asiointikieli;
         var langcode = "FI";
         if(asiointikieli !== undefined && asiointikieli.toUpperCase() === "RUOTSI") {
 			langcode = "SV";
@@ -432,7 +421,7 @@ angular.module('valintalaskenta').
 					        	letterBodyText: sisalto, languageCode: langcode} , function (id) {
 					            Latausikkuna.avaa(id, latausikkunaTeksti, "");
 					        }, function () {
-					            
+
 					        });
                     	},
                         showDateFields: true,

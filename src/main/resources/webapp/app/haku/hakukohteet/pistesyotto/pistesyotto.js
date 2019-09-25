@@ -3,6 +3,7 @@ app.factory('PistesyottoModel', function (
     $q,
     $window,
     HakukohdeHenkilotFull,
+    AtaruApplications,
     HakukohdeAvaimet,
     KoostettuHakemusAdditionalData,
     Valintakoetulokset,
@@ -11,7 +12,7 @@ app.factory('PistesyottoModel', function (
     HakukohdeAvainTyyppiService,
     _,
     R,
-    HenkiloPerustietosByHenkiloOidList) {
+    HakuModel) {
 
     "use strict";
 
@@ -42,23 +43,31 @@ app.factory('PistesyottoModel', function (
                 model.avaimet = results[0];
                 HakukohdeAvainTyyppiService.createAvainTyyppiValues(model.avaimet, model.tunnisteet);
                 model.lastmodified = results[1].lastmodified;
-                var personOids = _.chain(results[1].valintapisteet)
-                    .map(function(pistetieto) { return pistetieto.applicationAdditionalDataDTO.personOid })
-                    .flatten()
-                    .uniq()
-                    .value();
-                HenkiloPerustietosByHenkiloOidList.post(personOids).then(function(henkilot) {
-                    var henkilotByOid = _.object(henkilot.map(function(henkilo) {
-                        return [henkilo.oidHenkilo, henkilo];
-                    }));
-                    model.hakeneet = results[1].valintapisteet.map(function(pistetieto) {
+                HakuModel.promise.then(function (hakuModel) {
+                    if (hakuModel.hakuOid.ataruLomakeAvain) {
+                        console.log('Getting applications from ataru.');
+                        return AtaruApplications.get({hakuOid: hakuOid, hakukohdeOid: hakukohdeOid}).$promise
+                            .then(function (ataruHakemukset) {
+                                if (!ataruHakemukset.length) console.log("Couldn't find any applications in Ataru.");
+                                return ataruHakemukset;
+                            });
+                    } else {
+                        console.log('Getting applications from hakuApp.');
+                        return HakukohdeHenkilotFull.get({aoOid: hakukohdeOid, rows: 100000, asId: hakuOid}).$promise
+                            .then(function (result) {
+                                if (!result.length) console.log("Couldn't find any applications in Hakuapp.");
+                                return result;
+                            });
+                    };
+                }).then(function (hakemukset) {
+                    model.hakeneet = results[1].valintapisteet.map(function (pistetieto) {
                         var h = pistetieto.applicationAdditionalDataDTO;
-                        var henkilo = henkilotByOid[h.personOid];
-
-                        h.firstNames = henkilo.etunimet;
-                        h.lastName = henkilo.sukunimi;
-                        h.personOid = henkilo.oidHenkilo;
-
+                        var hakemus = hakemukset.filter(function (hakemus) {
+                            return hakemus.personOid === h.personOid;
+                        })[0];
+                        h.firstNames = hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet;
+                        h.lastName = hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi;
+                        h.personOid = hakemus.personOid;
                         h.filterData = {};
                         if (pistetieto.hakukohteidenOsallistumistiedot &&
                             pistetieto.hakukohteidenOsallistumistiedot[hakukohdeOid] &&
@@ -67,7 +76,7 @@ app.factory('PistesyottoModel', function (
                         } else {
                             h.osallistuu = {};
                         }
-                        model.avaimet.forEach(function(avain) {
+                        model.avaimet.forEach(function (avain) {
                             if (h.osallistuu[avain.tunniste] &&
                                 h.osallistuu[avain.tunniste].osallistumistieto !== "EI_KUTSUTTU") {
                                 h.filterData[avain.tunniste] = h.additionalData[avain.tunniste];
@@ -77,7 +86,7 @@ app.factory('PistesyottoModel', function (
                         return h;
                     });
                     model.hakeneetIsLoaded = true;
-                })
+                });
             }, function(error) {
                 model.errors.push(error);
             });
