@@ -426,7 +426,9 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
                             for (var i = 0; i < kriteerit.length; i++) {
                                 var numero = Number(i + 1);
                                 var name =  numero + ". " + kriteerit[i].nimi;
-                                var obj = {name: name, value: i};
+                                var kriteerinPrioriteetti = kriteerit[i].prioriteetti;
+                                var kaytettavaPrioriteetti = (typeof kriteerinPrioriteetti === 'number') ? kriteerinPrioriteetti : i;
+                                var obj = {name: name, value: kaytettavaPrioriteetti};
                                 if (i == 0) {
                                     $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti = obj;
                                 }
