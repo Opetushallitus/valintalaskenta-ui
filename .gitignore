@@ -30,3 +30,6 @@ webapp/common/jslib/index.*
 webapp/common/jslib/jquery.*
 webapp/common/jslib/jquery.min.m*
 webapp/common/jslib/lodash.underscore.min.*
+
+src/main/resources/log4j.properties
+src/test/webapp/web/
