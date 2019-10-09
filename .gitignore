@@ -18,18 +18,19 @@ bower_components
 .~lock*
 .java-version
 
-webapp/common/jslib/angular.*
-webapp/common/jslib/angular-animate.*
-webapp/common/jslib/angular-cache.*
-webapp/common/jslib/angular-cookies.*
-webapp/common/jslib/angular-idle.*
-webapp/common/jslib/angular-resource.*
-webapp/common/jslib/angular-route.*
-webapp/common/jslib/angular-translate.*
-webapp/common/jslib/index.*
-webapp/common/jslib/jquery.*
-webapp/common/jslib/jquery.min.m*
-webapp/common/jslib/lodash.underscore.min.*
+src/main/resources/webapp/common/jslib/angular.*
+src/main/resources/webapp/common/jslib/angular-animate.*
+src/main/resources/webapp/common/jslib/angular-cache.*
+src/main/resources/webapp/common/jslib/angular-cookies.*
+src/main/resources/webapp/common/jslib/angular-idle.*
+src/main/resources/webapp/common/jslib/angular-resource.*
+src/main/resources/webapp/common/jslib/angular-route.*
+src/main/resources/webapp/common/jslib/angular-translate.*
+src/main/resources/webapp/common/jslib/index.*
+src/main/resources/webapp/common/jslib/jquery.*
+src/main/resources/webapp/common/jslib/jquery.min.m*
+src/main/resources/webapp/common/jslib/jquery-ui.*
+src/main/resources/webapp/common/jslib/lodash.underscore.min.*
 
 src/main/resources/log4j.properties
 src/test/webapp/web/
