@@ -270,13 +270,17 @@ angular.module('valintalaskenta')
                 };
 
                 var createSijoittelunHakijaOidArray = function(sijoitteluTulokset) {
-                    return _.reject(_.uniq(_.flatten(_.map(
-                        sijoitteluTulokset.valintatapajonot, function(jono) {
-                            return _.map(jono.hakemukset, function(hakemus) {
-                                return hakemus.hakijaOid;
-                            });
-                        }
-                    ))), function(hakijaOid) {return _.isEmpty(hakijaOid)});
+                  let hakijaOids = _.flatten(
+                    _.map(sijoitteluTulokset.valintatapajonot, function(jono) {
+                      return _.map(jono.hakemukset, function(hakemus) {
+                        return hakemus.hakijaOid;
+                      });
+                    })
+                  );
+                  let uniqueHakijaOids = _.uniq(hakijaOids);
+                  return _.reject(uniqueHakijaOids, function(hakijaOid) {
+                      return _.isEmpty(hakijaOid)
+                  });
                 };
 
                 var enrichWithValintatulokset = function(results) {
