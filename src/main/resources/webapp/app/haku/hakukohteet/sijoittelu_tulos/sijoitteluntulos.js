@@ -387,7 +387,7 @@ angular.module('valintalaskenta')
                             var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
                             if (hakijaOidArray && 0 < hakijaOidArray.length) {
                                 return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid).then(function () {
-                                    tulokset.henkilot = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset).map(function(henkiloOid) {
+                                    tulokset.henkilot = hakijaOidArray.map(function(henkiloOid) {
                                         var henkilonHakemus = model.hakukohteenHakemukset.filter(function (hakemus) {
                                             return hakemus.personOid === henkiloOid;
                                         })[0];
