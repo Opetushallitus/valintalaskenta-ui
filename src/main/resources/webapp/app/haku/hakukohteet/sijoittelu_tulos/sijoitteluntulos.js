@@ -269,18 +269,19 @@ angular.module('valintalaskenta')
                     valintatapajono.valittu = this.isAllValittu(valintatapajono);
                 };
 
-                var createSijoittelunHakijaOidArray = function(sijoitteluTulokset) {
-                  let hakijaOids = _.flatten(
+                var createSijoittelunHakemusArray = function(sijoitteluTulokset) {
+                  let hakemukset = _.flatten(
                     _.map(sijoitteluTulokset.valintatapajonot, function(jono) {
-                      return _.map(jono.hakemukset, function(hakemus) {
-                        return hakemus.hakijaOid;
-                      });
+                      return jono.hakemukset;
                     })
                   );
-                  let uniqueHakijaOids = _.uniq(hakijaOids);
-                  return _.reject(uniqueHakijaOids, function(hakijaOid) {
-                      return _.isEmpty(hakijaOid)
+                  let hakemuksetWithUniqueHakijaOids = _.uniq(hakemukset, function(x) {
+                      return x.hakijaOid;
                   });
+                  let hakemuksetNonEmptyHakijaOids = _.reject(hakemuksetWithUniqueHakijaOids, function(hakemus) {
+                    return _.isEmpty(hakemus.hakijaOid)
+                  });
+                  return hakemuksetNonEmptyHakijaOids;
                 };
 
                 var enrichWithValintatulokset = function(results) {
@@ -388,12 +389,12 @@ angular.module('valintalaskenta')
                             if (!tulokset.sijoittelunTulokset) {
                                 return tulokset;
                             }
-                            var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
-                            if (hakijaOidArray && 0 < hakijaOidArray.length) {
+                            var sijoittelunHakemukset = createSijoittelunHakemusArray(tulokset.sijoittelunTulokset);
+                            if (sijoittelunHakemukset && 0 < sijoittelunHakemukset.length) {
                                 return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid).then(function () {
-                                    tulokset.henkilot = hakijaOidArray.map(function(henkiloOid) {
+                                    tulokset.henkilot = sijoittelunHakemukset.map(function(sijoittelunHakemus) {
                                         var henkilonHakemus = model.hakukohteenHakemukset.filter(function (hakemus) {
-                                            return hakemus.personOid === henkiloOid;
+                                            return hakemus.personOid === sijoittelunHakemus.hakijaOid;
                                         })[0];
                                         if (henkilonHakemus) {
                                             return {
@@ -402,7 +403,7 @@ angular.module('valintalaskenta')
                                                 sukunimi: henkilonHakemus.sukunimi ? henkilonHakemus.sukunimi : henkilonHakemus.answers.henkilotiedot.Sukunimi,
                                             }
                                         } else {
-                                            console.log("Hakemus not found for henkiloOid: " + henkiloOid);
+                                            console.log("Hakemus not found for hakijaOid: " + sijoittelunHakemus.hakijaOid);
                                         }
                                     });
                                     return tulokset;
