@@ -394,7 +394,7 @@ angular.module('valintalaskenta')
                                 return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid).then(function () {
                                     tulokset.henkilot = sijoittelunHakemukset.map(function(sijoittelunHakemus) {
                                         var henkilonHakemus = model.hakukohteenHakemukset.filter(function (hakemus) {
-                                            return hakemus.personOid === sijoittelunHakemus.hakijaOid;
+                                            return hakemus.oid === sijoittelunHakemus.hakemusOid;
                                         })[0];
                                         if (henkilonHakemus) {
                                             return {
@@ -438,7 +438,9 @@ angular.module('valintalaskenta')
                                     model.hakemusErittelyt.push(hakemuserittely);
                                     calculateSijat(valintatapajono);
                                     valintatapajono.hakemukset.forEach(function(hakemus) {
-                                        var hakija = model.hakukohteenHakemukset.find(function(henkilonHakemus) { return henkilonHakemus.personOid == hakemus.hakijaOid });
+                                        var hakija = model.hakukohteenHakemukset.find(function(henkilonHakemus) {
+                                            return henkilonHakemus.oid == hakemus.hakemusOid
+                                        });
                                         if (hakija) {
                                             hakemus.etunimi = hakija.etunimet ? hakija.etunimet : hakija.answers.henkilotiedot.Etunimet;
                                             hakemus.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
