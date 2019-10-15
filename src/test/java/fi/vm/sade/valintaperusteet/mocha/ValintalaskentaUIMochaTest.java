@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import fi.vm.sade.valintaperusteet.JettyTestRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+@Ignore
 public class ValintalaskentaUIMochaTest {
     public static final Duration MOCHA_TESTS_TIMEOUT = Duration.ofMinutes(2);
 
