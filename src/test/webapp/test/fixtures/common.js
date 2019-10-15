@@ -369,7 +369,7 @@ var restData = {
                "new": false
            },
            "valintatapajonoOid": "14255456271064587270246623295085",
-           "hakemusOid": "1.2.246.562.11.00000000220",
+           "hakemusOid": "1.2.246.562.11.00000000666",
            "hakukohdeOid": "1.2.246.562.11.00000000220",
            "julkaistavissa": false,
            "hyvaksyttyVarasijalta": false,
