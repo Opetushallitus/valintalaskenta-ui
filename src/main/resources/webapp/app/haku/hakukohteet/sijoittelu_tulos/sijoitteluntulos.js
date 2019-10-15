@@ -403,7 +403,7 @@ angular.module('valintalaskenta')
                                                 sukunimi: henkilonHakemus.sukunimi ? henkilonHakemus.sukunimi : henkilonHakemus.answers.henkilotiedot.Sukunimi,
                                             }
                                         } else {
-                                            console.log("Hakemus not found for hakijaOid: " + sijoittelunHakemus.hakijaOid);
+                                            console.log("Hakemus not found for hakemusOid: " + sijoittelunHakemus.hakemusOid + ", hakijaOid: " + sijoittelunHakemus.hakijaOid);
                                         }
                                     });
                                     return tulokset;
@@ -445,7 +445,7 @@ angular.module('valintalaskenta')
                                             hakemus.etunimi = hakija.etunimet ? hakija.etunimet : hakija.answers.henkilotiedot.Etunimet;
                                             hakemus.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
                                         } else {
-                                            console.log("Hakijan " + hakemus.hakijaOid + " nimeä ei löytynyt oppijanumerorekisteristä.")
+                                            console.log("Hakemuksen "+hakemus.hakemusOid+" hakijan " + hakemus.hakijaOid + " nimeä ei löytynyt oppijanumerorekisteristä.")
                                         }
                                         hakemus.valittu = (
                                             hakemus.tila === "HYVAKSYTTY" ||

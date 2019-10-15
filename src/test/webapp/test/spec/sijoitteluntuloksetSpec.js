@@ -176,7 +176,7 @@ describe('Sijoittelun tulokset välilehti', function () {
             addTestHook(hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures())()
             addTestHook(vastaanottoPostiSentFixture())()
             addTestHook(listfullFixtures([{
-                hakemusOid: "1.2.246.562.11.00000000220",
+                hakemusOid: "1.2.246.562.11.00007967463",
                 kutsumanimi: "Iiris VII",
                 etunimi: "Iiris VII",
                 sukunimi: "Vitsijärvi",
