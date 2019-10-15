@@ -147,6 +147,7 @@
                                         <div class="selection-state-textarea-container"
                                              ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
                                         <textarea ng-model="tulos.ehdollisenHyvaksymisenEhtoTekstiFI"
+                                                  ng-change="addMuokattuHakemus(tulos)"
                                                   class="selection-state-textarea"
                                                   cols="5"
                                                   required>
@@ -156,6 +157,7 @@
                                         <div class="selection-state-textarea-container"
                                              ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
                                         <textarea ng-model="tulos.ehdollisenHyvaksymisenEhtoTekstiSV"
+                                                  ng-change="addMuokattuHakemus(tulos)"
                                                   class="selection-state-textarea"
                                                   cols="5"
                                                   required>
@@ -165,6 +167,7 @@
                                         <div class="selection-state-textarea-container"
                                              ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
                                         <textarea ng-model="tulos.ehdollisenHyvaksymisenEhtoTekstiEN"
+                                                  ng-change="addMuokattuHakemus(tulos)"
                                                   class="selection-state-textarea"
                                                   cols="5"
                                                   required>
