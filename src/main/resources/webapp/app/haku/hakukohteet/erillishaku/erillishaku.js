@@ -303,6 +303,10 @@ angular.module('valintalaskenta')
             && (hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT" || hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI");
     };
 
+    $scope.isEhdollisenHyvaksymisenEhtoTekstiVisible = function(model) {
+        return model.hakemuksentila === 'HYLATTY';
+    };
+
     $scope.showEhdollinenHyvaksynta = function() {
         return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     };

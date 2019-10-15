@@ -1478,6 +1478,64 @@ label, .label {
   padding-top:15px;
 }
 
+.virkailija-table-1 .selection-state-outer-container {
+  position: relative;
+}
+
+.virkailija-table-1 .selection-state-container {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.virkailija-table-1 .selection-state-container-detached {
+  background-color: #F6F6F6;
+  left: -8px;
+  margin-bottom: 20px;
+  padding: 8px;
+  position: absolute;
+  top: -8px;
+  width: 400px;
+  z-index: 20;
+}
+
+.virkailija-table-1 .selection-state-textarea-heading {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.virkailija-table-1 .selection-state-textarea-container {
+  position: relative;
+}
+
+.virkailija-table-1 .selection-state-textarea-container:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.virkailija-table-1 .selection-state-textarea {
+  height: 80px;
+  width: 100%;
+}
+
+.virkailija-table-1 .selection-state-textarea-placeholder {
+  color: #BFC1C1;
+  left: 12px;
+  pointer-events: none;
+  position: absolute;
+  top: 4px;
+  transition: 0.2s ease all;
+}
+
+.virkailija-table-1 .selection-state-textarea:focus ~ .selection-state-textarea-placeholder,
+.virkailija-table-1 .selection-state-textarea:not(:focus):valid ~ .selection-state-textarea-placeholder {
+  background-color: white;
+  border: 1px solid #BFC1C1;
+  border-radius: 2px;
+  left: 7px;
+  line-height: 1.5;
+  padding: 0 5px;
+  top: -11px;
+}
+
 /*** Dropmenu table
 ************************************************/
 /* laskentakaavojen dropdown funktiolistalle */
@@ -2552,7 +2610,7 @@ div.tilaParial {
   border: solid 1px #bdbdbd;
   padding: 10px;
   overflow-x: scroll;
-  overflow-y: hidden;
+  overflow-y: visible;
   display: inline-block;
 }
 
