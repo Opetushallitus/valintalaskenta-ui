@@ -81,97 +81,97 @@
                                 sortable="'hakemuksentila'"
                                 filter="{'hakemuksentila': 'text'}">
                                 <div class="selection-state-outer-container">
-                                <div class="selection-state-container"
-                                     ng-class="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos) ? 'selection-state-container-detached' : undefined">
-                                    <div ng-switch="updateOrg &&
+                                    <div class="selection-state-container"
+                                         ng-class="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos) ? 'selection-state-container-detached' : undefined">
+                                        <div ng-switch="updateOrg &&
                                                                     (tulos.valintatuloksentila == 'KESKEN' ||
                                                                     tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN' ||
                                                                     !tulos.isValid)">
-                                        <select ng-switch-when="true"
-                                                ng-model="tulos.hakemuksentila"
-                                                ng-options="opt.value as opt.text disable when opt.disable for opt in hakemuksentilat"
-                                                ng-class="{'error': !tulos.isValid}"
-                                                ng-change="addMuokattuHakemus(tulos)">
-                                        </select>
-                                        <span ng-switch-default
-                                              class="search"
-                                              ng-readonly="true"
-                                              ng-class="{'error': !tulos.isValid}"
-                                              ng-value="tulos.hakemuksentila">{{parseHakemuksenTila(tulos)}}</span>
-                                    </div>
-                                    <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
-                                        <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
-                                        <input ng-disabled="!(updateOrg)" type="checkbox"
-                                               ng-model="tulos.ehdollisestiHyvaksyttavissa"
-                                               ng-change="addMuokattuHakemus(tulos)"/><br/>
+                                            <select ng-switch-when="true"
+                                                    ng-model="tulos.hakemuksentila"
+                                                    ng-options="opt.value as opt.text disable when opt.disable for opt in hakemuksentilat"
+                                                    ng-class="{'error': !tulos.isValid}"
+                                                    ng-change="addMuokattuHakemus(tulos)">
+                                            </select>
+                                            <span ng-switch-default
+                                                  class="search"
+                                                  ng-readonly="true"
+                                                  ng-class="{'error': !tulos.isValid}"
+                                                  ng-value="tulos.hakemuksentila">{{parseHakemuksenTila(tulos)}}</span>
+                                        </div>
+                                        <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
+                                            <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
+                                            <input ng-disabled="!(updateOrg)" type="checkbox"
+                                                   ng-model="tulos.ehdollisestiHyvaksyttavissa"
+                                                   ng-change="addMuokattuHakemus(tulos)"/><br/>
 
-                                        <div ng-if="getHakutyyppi() == 'KORKEAKOULU'">
-                                            <div ng-if="tulos.ehdollisestiHyvaksyttavissa">
-                                                <select id="ehdollisenHyvaksymisenEhtoKoodi"
-                                                        ng-change="showEhdot(tulos, tulos.ehdollisenHyvaksymisenEhtoKoodi);addMuokattuHakemus(tulos)"
-                                                        ng-model="tulos.ehdollisenHyvaksymisenEhtoKoodi"
-                                                        ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'nimi'"
-                                                        style="width: 200px;"
-                                                        ng-required="tulos.ehdollisestiHyvaksyttavissa"
-                                                        ng-class="{'required-empty': !tulos.ehdollisenHyvaksymisenEhtoKoodi}">
-                                                    <option ng-if="!tulos.ehdollisenHyvaksymisenEhtoKoodi"></option>
-                                                </select>
-                                                <div ng-if="tulos.ehdollisenHyvaksymisenEhtoKoodi == 'muu'">
-                                                    <input class="form-control"
-                                                           ng-class="{'required-empty': tulos.ehdollisenHyvaksymisenEhtoFI.length < 1}"
-                                                           type="text"
-                                                           id="ehdollisenHyvaksymisenEhtoFI"
-                                                           ng-model="tulos.ehdollisenHyvaksymisenEhtoFI"
-                                                           ng-change="addMuokattuHakemus(tulos)"
-                                                           placeholder="FI"/>
-                                                    <input class="form-control"
-                                                           ng-class="{'required-empty': tulos.ehdollisenHyvaksymisenEhtoSV.length < 1}"
-                                                           type="text"
-                                                           id="ehdollisenHyvaksymisenEhtoSV"
-                                                           ng-model="tulos.ehdollisenHyvaksymisenEhtoSV"
-                                                           ng-change="addMuokattuHakemus(tulos)"
-                                                           placeholder="SV"/>
-                                                    <input class="form-control"
-                                                           ng-class="{'required-empty': tulos.ehdollisenHyvaksymisenEhtoEN.length < 1}"
-                                                           type="text"
-                                                           id="ehdollisenHyvaksymisenEhtoEN"
-                                                           ng-model="tulos.ehdollisenHyvaksymisenEhtoEN"
-                                                           ng-change="addMuokattuHakemus(tulos)"
-                                                           placeholder="EN"/>
+                                            <div ng-if="getHakutyyppi() == 'KORKEAKOULU'">
+                                                <div ng-if="tulos.ehdollisestiHyvaksyttavissa">
+                                                    <select id="ehdollisenHyvaksymisenEhtoKoodi"
+                                                            ng-change="showEhdot(tulos, tulos.ehdollisenHyvaksymisenEhtoKoodi);addMuokattuHakemus(tulos)"
+                                                            ng-model="tulos.ehdollisenHyvaksymisenEhtoKoodi"
+                                                            ng-options="ehto.koodiUri as ehto.nimi for ehto in ehdollisestiHyvaksyttavissaOlevatOpts | orderBy:'nimi'"
+                                                            style="width: 200px;"
+                                                            ng-required="tulos.ehdollisestiHyvaksyttavissa"
+                                                            ng-class="{'required-empty': !tulos.ehdollisenHyvaksymisenEhtoKoodi}">
+                                                        <option ng-if="!tulos.ehdollisenHyvaksymisenEhtoKoodi"></option>
+                                                    </select>
+                                                    <div ng-if="tulos.ehdollisenHyvaksymisenEhtoKoodi == 'muu'">
+                                                        <input class="form-control"
+                                                               ng-class="{'required-empty': tulos.ehdollisenHyvaksymisenEhtoFI.length < 1}"
+                                                               type="text"
+                                                               id="ehdollisenHyvaksymisenEhtoFI"
+                                                               ng-model="tulos.ehdollisenHyvaksymisenEhtoFI"
+                                                               ng-change="addMuokattuHakemus(tulos)"
+                                                               placeholder="FI"/>
+                                                        <input class="form-control"
+                                                               ng-class="{'required-empty': tulos.ehdollisenHyvaksymisenEhtoSV.length < 1}"
+                                                               type="text"
+                                                               id="ehdollisenHyvaksymisenEhtoSV"
+                                                               ng-model="tulos.ehdollisenHyvaksymisenEhtoSV"
+                                                               ng-change="addMuokattuHakemus(tulos)"
+                                                               placeholder="SV"/>
+                                                        <input class="form-control"
+                                                               ng-class="{'required-empty': tulos.ehdollisenHyvaksymisenEhtoEN.length < 1}"
+                                                               type="text"
+                                                               id="ehdollisenHyvaksymisenEhtoEN"
+                                                               ng-model="tulos.ehdollisenHyvaksymisenEhtoEN"
+                                                               ng-change="addMuokattuHakemus(tulos)"
+                                                               placeholder="EN"/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <span ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)"
-                                          class="selection-state-textarea-heading">Hakijalle näkyvä syy</span>
-                                    <div class="selection-state-textarea-container"
-                                         ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
+                                        <span ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)"
+                                              class="selection-state-textarea-heading">Hakijalle näkyvä syy</span>
+                                        <div class="selection-state-textarea-container"
+                                             ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
                                         <textarea ng-model="tulos.ehdollisenHyvaksymisenEhtoTekstiFI"
                                                   class="selection-state-textarea"
                                                   cols="5"
                                                   required>
                                         </textarea>
-                                        <span class="selection-state-textarea-placeholder">FI</span>
-                                    </div>
-                                    <div class="selection-state-textarea-container"
-                                         ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
+                                            <span class="selection-state-textarea-placeholder">FI</span>
+                                        </div>
+                                        <div class="selection-state-textarea-container"
+                                             ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
                                         <textarea ng-model="tulos.ehdollisenHyvaksymisenEhtoTekstiSV"
                                                   class="selection-state-textarea"
                                                   cols="5"
                                                   required>
                                         </textarea>
-                                        <span class="selection-state-textarea-placeholder">SV</span>
-                                    </div>
-                                    <div class="selection-state-textarea-container"
-                                         ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
+                                            <span class="selection-state-textarea-placeholder">SV</span>
+                                        </div>
+                                        <div class="selection-state-textarea-container"
+                                             ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
                                         <textarea ng-model="tulos.ehdollisenHyvaksymisenEhtoTekstiEN"
                                                   class="selection-state-textarea"
                                                   cols="5"
                                                   required>
                                         </textarea>
-                                        <span class="selection-state-textarea-placeholder">EN</span>
+                                            <span class="selection-state-textarea-placeholder">EN</span>
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                             </td>
 
