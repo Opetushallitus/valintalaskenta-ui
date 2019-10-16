@@ -66,7 +66,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
 
         this.updateHakijatNames = function() {
             model.hakeneet.forEach(function(hakija) {
-                    hakija.etunimi = hakija.etunimet ? hakija.etunimet : hakija.anwers.henkilotiedot.Etunimet;
+                    hakija.etunimi = hakija.etunimet ? hakija.etunimet : hakija.answers.henkilotiedot.Etunimet;
                     hakija.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
             })
         };
