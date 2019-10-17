@@ -82,7 +82,7 @@
                                 filter="{'hakemuksentila': 'text'}">
                                 <div class="selection-state-outer-container">
                                     <div class="selection-state-container"
-                                         ng-class="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos) ? 'selection-state-container-detached' : undefined">
+                                         ng-class="isValinnantilanKuvauksenTekstiVisible(tulos) ? 'selection-state-container-detached' : undefined">
                                         <div ng-switch="updateOrg &&
                                                                     (tulos.valintatuloksentila == 'KESKEN' ||
                                                                     tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN' ||
@@ -142,11 +142,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <span ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)"
+                                        <span ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)"
                                               class="selection-state-textarea-heading">Hakijalle näkyvä syy</span>
                                         <div class="selection-state-textarea-container"
-                                             ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
-                                        <textarea ng-model="tulos.ehdollisenHyvaksymisenEhtoTekstiFI"
+                                             ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)">
+                                        <textarea ng-model="tulos.valinnantilanKuvauksenTekstiFI"
                                                   ng-change="addMuokattuHakemus(tulos)"
                                                   class="selection-state-textarea"
                                                   cols="5"
@@ -155,8 +155,8 @@
                                             <span class="selection-state-textarea-placeholder">FI</span>
                                         </div>
                                         <div class="selection-state-textarea-container"
-                                             ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
-                                        <textarea ng-model="tulos.ehdollisenHyvaksymisenEhtoTekstiSV"
+                                             ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)">
+                                        <textarea ng-model="tulos.valinnantilanKuvauksenTekstiSV"
                                                   ng-change="addMuokattuHakemus(tulos)"
                                                   class="selection-state-textarea"
                                                   cols="5"
@@ -165,8 +165,8 @@
                                             <span class="selection-state-textarea-placeholder">SV</span>
                                         </div>
                                         <div class="selection-state-textarea-container"
-                                             ng-if="isEhdollisenHyvaksymisenEhtoTekstiVisible(tulos)">
-                                        <textarea ng-model="tulos.ehdollisenHyvaksymisenEhtoTekstiEN"
+                                             ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)">
+                                        <textarea ng-model="tulos.valinnantilanKuvauksenTekstiEN"
                                                   ng-change="addMuokattuHakemus(tulos)"
                                                   class="selection-state-textarea"
                                                   cols="5"

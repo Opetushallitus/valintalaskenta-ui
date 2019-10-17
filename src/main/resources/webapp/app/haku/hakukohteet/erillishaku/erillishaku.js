@@ -303,7 +303,7 @@ angular.module('valintalaskenta')
             && (hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT" || hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI");
     };
 
-    $scope.isEhdollisenHyvaksymisenEhtoTekstiVisible = function(model) {
+    $scope.isValinnantilanKuvauksenTekstiVisible = function(model) {
         return model.hakemuksentila === 'HYLATTY';
     };
 
@@ -583,9 +583,9 @@ angular.module('valintalaskenta')
             ehdollisenHyvaksymisenEhtoFI: hakemus.ehdollisenHyvaksymisenEhtoFI,
             ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
             ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
-            ehdollisenHyvaksymisenEhtoTekstiFI: hakemus.ehdollisenHyvaksymisenEhtoTekstiFI,
-            ehdollisenHyvaksymisenEhtoTekstiSV: hakemus.ehdollisenHyvaksymisenEhtoTekstiSV,
-            ehdollisenHyvaksymisenEhtoTekstiEN: hakemus.ehdollisenHyvaksymisenEhtoTekstiEN,
+            valinnantilanKuvauksenTekstiFI: hakemus.valinnantilanKuvauksenTekstiFI,
+            valinnantilanKuvauksenTekstiSV: hakemus.valinnantilanKuvauksenTekstiSV,
+            valinnantilanKuvauksenTekstiEN: hakemus.valinnantilanKuvauksenTekstiEN,
             maksuvelvollisuus: hakemus.maksuvelvollisuus ? hakemus.maksuvelvollisuus : 'NOT_CHECKED',
             hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
             vastaanottoTila: hakemus.valintatuloksentila,
