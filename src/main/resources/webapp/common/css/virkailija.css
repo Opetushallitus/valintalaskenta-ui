@@ -1536,6 +1536,28 @@ label, .label {
   top: -11px;
 }
 
+.virkailija-table-1 .selection-state-horizontal-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.virkailija-table-1 .selection-state-textarea-close-button {
+  align-items: center;
+  background-image: url(../img/round_close_white_48dp.png);
+  background-color: #C3DFE9;
+  background-size: contain;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+.virkailija-table-1 .selection-state-textarea-close-button:hover {
+  background-color: #79C8E8;
+}
+
 /*** Dropmenu table
 ************************************************/
 /* laskentakaavojen dropdown funktiolistalle */

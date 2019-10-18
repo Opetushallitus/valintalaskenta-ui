@@ -304,7 +304,10 @@ angular.module('valintalaskenta')
     };
 
     $scope.isValinnantilanKuvauksenTekstiVisible = function(model) {
-        return model.hakemuksentila === 'HYLATTY';
+        return model.hakemuksentila === 'HYLATTY'
+            // Jos tämä arvo on undefined tai true, näytetään tekstikentät,
+            // false -arvo piilotata kentät riippumatta hakemuksen tilan arvosta
+            && model.allowValinnantilanKuvauksenTekstiVisibility !== false;
     };
 
     $scope.showEhdollinenHyvaksynta = function() {
@@ -660,6 +663,11 @@ angular.module('valintalaskenta')
             }
             $scope.validateHakemuksenTilat(hakemus);
         }
+        hakemus.allowValinnantilanKuvauksenTekstiVisibility = true;
+    };
+
+    $scope.closeEhdollisenHyvaksymisenEhtoTeksti = function(model) {
+        model.allowValinnantilanKuvauksenTekstiVisibility = false;
     };
 
     $scope.getHakutyyppi = function() {
