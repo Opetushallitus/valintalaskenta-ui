@@ -88,12 +88,12 @@
                                                                     tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN' ||
                                                                     !tulos.isValid)">
                                             <div class="selection-state-horizontal-row">
-                                            <select ng-switch-when="true"
-                                                    ng-model="tulos.hakemuksentila"
-                                                    ng-options="opt.value as opt.text disable when opt.disable for opt in hakemuksentilat"
-                                                    ng-class="{'error': !tulos.isValid}"
-                                                    ng-change="addMuokattuHakemus(tulos)">
-                                            </select>
+                                                <select ng-switch-when="true"
+                                                        ng-model="tulos.hakemuksentila"
+                                                        ng-options="opt.value as opt.text disable when opt.disable for opt in hakemuksentilat"
+                                                        ng-class="{'error': !tulos.isValid}"
+                                                        ng-change="addMuokattuHakemus(tulos)">
+                                                </select>
                                                 <a class="selection-state-textarea-close-button"
                                                    ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)"
                                                    ng-click="closeEhdollisenHyvaksymisenEhtoTeksti(tulos)">
