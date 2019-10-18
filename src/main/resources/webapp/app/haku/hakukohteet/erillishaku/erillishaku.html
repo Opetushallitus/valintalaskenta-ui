@@ -143,7 +143,7 @@
                                             </div>
                                         </div>
                                         <span ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)"
-                                              class="selection-state-textarea-heading">Hakijalle näkyvä syy</span>
+                                              class="selection-state-textarea-heading">{{ t('erillishaku.hakijalleNakyvaSyy') || 'Hakijalle näkyvä syy' }}</span>
                                         <div class="selection-state-textarea-container"
                                              ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)">
                                         <textarea ng-model="tulos.valinnantilanKuvauksenTekstiFI"
