@@ -665,7 +665,7 @@ angular.module('valintalaskenta')
         }
     };
 
-    $scope.closeEhdollisenHyvaksymisenEhtoTeksti = function(model) {
+    $scope.closeValinnantilanKuvauksenTeksti = function(model) {
         model.allowValinnantilanKuvauksenTekstiVisibility = false;
     };
 
