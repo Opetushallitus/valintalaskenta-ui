@@ -1489,6 +1489,7 @@ label, .label {
 
 .virkailija-table-1 .selection-state-container-detached {
   background-color: #F6F6F6;
+  border-radius: 3px;
   left: -8px;
   margin-bottom: 20px;
   padding: 8px;
