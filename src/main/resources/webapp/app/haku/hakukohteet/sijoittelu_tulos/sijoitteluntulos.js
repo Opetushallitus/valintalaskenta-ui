@@ -275,8 +275,8 @@ angular.module('valintalaskenta')
                       return jono.hakemukset;
                     })
                   );
-                  let hakemuksetWithUniqueHakijaOids = _.uniq(hakemukset, function(x) {
-                      return x.hakijaOid;
+                  let hakemuksetWithUniqueHakijaOids = _.uniq(hakemukset, function(hakemus) {
+                      return hakemus.hakijaOid;
                   });
                   let hakemuksetNonEmptyHakijaOids = _.reject(hakemuksetWithUniqueHakijaOids, function(hakemus) {
                     return _.isEmpty(hakemus.hakijaOid)
