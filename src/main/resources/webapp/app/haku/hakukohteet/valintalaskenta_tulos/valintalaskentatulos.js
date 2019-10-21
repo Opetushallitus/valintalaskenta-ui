@@ -53,11 +53,13 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 vaihe.valintatapajonot.forEach(function(jono) {
                     jono.jonosijat.forEach(function(jonosija) {
                         var hakemus = model.hakeneet.filter(function (hakemus) {
-                            return hakemus.personOid === jonosija.hakijaOid;
+                            return hakemus.oid === jonosija.hakemusOid;
                         })[0];
                         if (hakemus) {
                             jonosija.etunimi = hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet;
                             jonosija.sukunimi = hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi;
+                        } else {
+                          console.log("No hakemus found for hakijaOid: " + jonosija.hakijaOid + ", hakemusOid: " + jonosija.hakemusOid);
                         }
                     })
                 })

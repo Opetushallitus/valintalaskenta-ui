@@ -269,14 +269,19 @@ angular.module('valintalaskenta')
                     valintatapajono.valittu = this.isAllValittu(valintatapajono);
                 };
 
-                var createSijoittelunHakijaOidArray = function(sijoitteluTulokset) {
-                    return _.reject(_.uniq(_.flatten(_.map(
-                        sijoitteluTulokset.valintatapajonot, function(jono) {
-                            return _.map(jono.hakemukset, function(hakemus) {
-                                return hakemus.hakijaOid;
-                            });
-                        }
-                    ))), function(hakijaOid) {return _.isEmpty(hakijaOid)});
+                var createSijoittelunHakemusArray = function(sijoitteluTulokset) {
+                  let hakemukset = _.flatten(
+                    _.map(sijoitteluTulokset.valintatapajonot, function(jono) {
+                      return jono.hakemukset;
+                    })
+                  );
+                  let hakemuksetWithUniqueHakijaOids = _.uniq(hakemukset, function(hakemus) {
+                      return hakemus.hakijaOid;
+                  });
+                  let hakemuksetNonEmptyHakijaOids = _.reject(hakemuksetWithUniqueHakijaOids, function(hakemus) {
+                    return _.isEmpty(hakemus.hakijaOid)
+                  });
+                  return hakemuksetNonEmptyHakijaOids;
                 };
 
                 var enrichWithValintatulokset = function(results) {
@@ -384,12 +389,12 @@ angular.module('valintalaskenta')
                             if (!tulokset.sijoittelunTulokset) {
                                 return tulokset;
                             }
-                            var hakijaOidArray = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset);
-                            if (hakijaOidArray && 0 < hakijaOidArray.length) {
+                            var sijoittelunHakemukset = createSijoittelunHakemusArray(tulokset.sijoittelunTulokset);
+                            if (sijoittelunHakemukset && 0 < sijoittelunHakemukset.length) {
                                 return fetchHakukohteenHakemukset(hakuOid, hakukohdeOid).then(function () {
-                                    tulokset.henkilot = createSijoittelunHakijaOidArray(tulokset.sijoittelunTulokset).map(function(henkiloOid) {
+                                    tulokset.henkilot = sijoittelunHakemukset.map(function(sijoittelunHakemus) {
                                         var henkilonHakemus = model.hakukohteenHakemukset.filter(function (hakemus) {
-                                            return hakemus.personOid === henkiloOid;
+                                            return hakemus.oid === sijoittelunHakemus.hakemusOid;
                                         })[0];
                                         if (henkilonHakemus) {
                                             return {
@@ -398,7 +403,7 @@ angular.module('valintalaskenta')
                                                 sukunimi: henkilonHakemus.sukunimi ? henkilonHakemus.sukunimi : henkilonHakemus.answers.henkilotiedot.Sukunimi,
                                             }
                                         } else {
-                                            console.log("Hakemus not found for henkiloOid: " + henkiloOid);
+                                            console.log("Hakemus not found for hakemusOid: " + sijoittelunHakemus.hakemusOid + ", hakijaOid: " + sijoittelunHakemus.hakijaOid);
                                         }
                                     });
                                     return tulokset;
@@ -433,12 +438,14 @@ angular.module('valintalaskenta')
                                     model.hakemusErittelyt.push(hakemuserittely);
                                     calculateSijat(valintatapajono);
                                     valintatapajono.hakemukset.forEach(function(hakemus) {
-                                        var hakija = model.hakukohteenHakemukset.find(function(henkilonHakemus) { return henkilonHakemus.personOid == hakemus.hakijaOid });
+                                        var hakija = model.hakukohteenHakemukset.find(function(henkilonHakemus) {
+                                            return henkilonHakemus.oid == hakemus.hakemusOid
+                                        });
                                         if (hakija) {
                                             hakemus.etunimi = hakija.etunimet ? hakija.etunimet : hakija.answers.henkilotiedot.Etunimet;
                                             hakemus.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
                                         } else {
-                                            console.log("Hakijan " + hakemus.hakijaOid + " nimeä ei löytynyt oppijanumerorekisteristä.")
+                                            console.log("Hakemuksen "+hakemus.hakemusOid+" hakijan " + hakemus.hakijaOid + " nimeä ei löytynyt oppijanumerorekisteristä.")
                                         }
                                         hakemus.valittu = (
                                             hakemus.tila === "HYVAKSYTTY" ||
