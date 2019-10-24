@@ -307,6 +307,23 @@ angular.module('valintalaskenta')
         return model.allowValinnantilanKuvauksenTekstiVisibility;
     };
 
+    $scope.isValinnantilanKuvauksenEsikatseluVisible = function(model) {
+        return model.hakemuksentila &&
+          model.hakemuksentila === "HYLATTY" && (
+            !_.isEmpty(model.valinnantilanKuvauksenTekstiFI) ||
+            !_.isEmpty(model.valinnantilanKuvauksenTekstiSV) ||
+            !_.isEmpty(model.valinnantilanKuvauksenTekstiEN)
+          )
+    };
+
+    $scope.valinnantilanKuvauksenEsikatseluteksti = function(model) {
+        var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
+        var valinnantilanKuvausValitullaKielella = model["valinnantilanKuvauksenTeksti" + langcode];
+        return _.isEmpty(valinnantilanKuvausValitullaKielella) ?
+          model.valinnantilanKuvauksenTekstiFI :
+          valinnantilanKuvausValitullaKielella;
+    };
+
     $scope.showEhdollinenHyvaksynta = function() {
         return !HakuUtility.isToinenAsteKohdeJoukko(HakuModel.hakuOid.kohdejoukkoUri);
     };
@@ -667,6 +684,10 @@ angular.module('valintalaskenta')
 
     $scope.closeValinnantilanKuvauksenTeksti = function(model) {
         model.allowValinnantilanKuvauksenTekstiVisibility = false;
+    };
+
+    $scope.openValinnantilanKuvauksenTeksti = function(model) {
+        model.allowValinnantilanKuvauksenTekstiVisibility = true;
     };
 
     $scope.getHakutyyppi = function() {

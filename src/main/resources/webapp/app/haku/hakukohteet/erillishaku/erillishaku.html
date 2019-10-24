@@ -138,6 +138,10 @@
                                             <span class="selection-state-textarea-placeholder">EN</span>
                                         </div>
                                     </div>
+                                    <div class="selection-state-preview" ng-show="isValinnantilanKuvauksenEsikatseluVisible(tulos)">
+                                        <a ng-click="openValinnantilanKuvauksenTeksti(tulos)">{{t('erillishaku.valinnantilankuvaus.syy') || "Syy"}}:</a>
+                                        <span class="selection-state-preview__text">{{valinnantilanKuvauksenEsikatseluteksti(tulos)}}</span>
+                                    </div>
                                     <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
                                         <input ng-disabled="!(updateOrg)" type="checkbox"

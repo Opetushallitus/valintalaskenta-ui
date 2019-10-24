@@ -1560,6 +1560,18 @@ label, .label {
   background-color: #79C8E8;
 }
 
+.virkailija-table-1 .selection-state-preview {
+  max-width: 160px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.virkailija-table-1 .selection-state-preview__text {
+  font-style: italic;
+  font-size: 12px;
+}
+
 /*** Dropmenu table
 ************************************************/
 /* laskentakaavojen dropdown funktiolistalle */
