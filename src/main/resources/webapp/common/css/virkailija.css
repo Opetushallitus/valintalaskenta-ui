@@ -1501,6 +1501,7 @@ label, .label {
 
 .virkailija-table-1 .selection-state-textarea-heading {
   font-weight: 600;
+  margin-top: 2px;
   margin-bottom: 10px;
 }
 
