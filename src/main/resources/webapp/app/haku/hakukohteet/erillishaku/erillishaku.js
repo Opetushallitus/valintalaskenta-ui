@@ -24,14 +24,14 @@ angular.module('valintalaskenta')
             })
         }
     }])
-    .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
+    .controller('ErillishakuController', ['$rootScope', '$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
         'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
         'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuTuonti', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat', 'Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Hakemukset', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
         'Valintaesitys', 'valinnantuloksenHistoriaService', 'VtsVastaanottopostiLahetetty', 'VtsVastaanottopostiLahetaUudelleenHakemukselle', 'VtsVastaanottopostiLahetaUudelleenHakukohteelle',
-        function($scope, $modal, $log, $location, $routeParams, $timeout, $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
+        function($rootScope, $scope, $modal, $log, $location, $routeParams, $timeout, $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                  ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                  VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset,
@@ -317,10 +317,10 @@ angular.module('valintalaskenta')
     };
 
     $scope.valinnantilanKuvauksenEsikatseluteksti = function(model) {
-        var langcode = HakukohdeNimiService.getOpetusKieliCode($scope.hakukohdeModel.hakukohde);
+        var langcode = ($rootScope.userLang || 'fi').toUpperCase();
         var valinnantilanKuvausValitullaKielella = model["valinnantilanKuvauksenTeksti" + langcode];
         return _.isEmpty(valinnantilanKuvausValitullaKielella) ?
-          model.valinnantilanKuvauksenTekstiFI :
+          (model.valinnantilanKuvauksenTekstiFI || model.valinnantilanKuvauksenTekstiSV || model.valinnantilanKuvauksenTekstiEN) :
           valinnantilanKuvausValitullaKielella;
     };
 
