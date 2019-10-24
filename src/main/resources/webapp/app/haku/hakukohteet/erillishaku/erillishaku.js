@@ -684,7 +684,13 @@ angular.module('valintalaskenta')
             }
             $scope.validateHakemuksenTilat(hakemus);
         }
-        hakemus.allowValinnantilanKuvauksenTekstiVisibility = hakemus.hakemuksentila === 'HYLATTY';
+    };
+
+    $scope.paivitaHakemuksenValintatila = function(hakemus) {
+        if (hakemus) {
+            hakemus.allowValinnantilanKuvauksenTekstiVisibility = hakemus.hakemuksentila === 'HYLATTY';
+        }
+        $scope.addMuokattuHakemus(hakemus);
     };
 
     $scope.closeValinnantilanKuvauksenTeksti = function(model) {
