@@ -636,6 +636,13 @@ angular.module('valintalaskenta')
         if (($scope.muokatutHakemukset || []).length === 0) {
             return $q.resolve();
         }
+        $scope.muokatutHakemukset.forEach(function(muokattuHakemus) {
+            if (muokattuHakemus.hakemuksentila !== "HYLATTY") {
+                muokattuHakemus.valinnantilanKuvauksenTekstiFI = null;
+                muokattuHakemus.valinnantilanKuvauksenTekstiSV = null;
+                muokattuHakemus.valinnantilanKuvauksenTekstiEN = null;
+            }
+        });
         return submitLukuvuosimaksut($scope.muokatutHakemukset).then(function() {
             var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
             return ErillishakuTuonti.tuo(
