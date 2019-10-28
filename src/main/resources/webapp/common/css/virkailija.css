@@ -1569,8 +1569,9 @@ label, .label {
 }
 
 .virkailija-table-1 .selection-state-preview__text {
-  font-style: italic;
+  cursor: help;
   font-size: 12px;
+  font-style: italic;
 }
 
 /*** Dropmenu table

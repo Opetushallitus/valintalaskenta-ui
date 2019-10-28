@@ -138,7 +138,9 @@
                                             <span class="selection-state-textarea-placeholder">EN</span>
                                         </div>
                                     </div>
-                                    <div class="selection-state-preview" ng-show="isValinnantilanKuvauksenEsikatseluVisible(tulos)">
+                                    <div class="selection-state-preview"
+                                         ng-show="isValinnantilanKuvauksenEsikatseluVisible(tulos)"
+                                         title="{{valinnantilanKuvauksenEsikatseluteksti(tulos)}}">
                                         <a ng-click="openValinnantilanKuvauksenTeksti(tulos)">{{t('erillishaku.valinnantilankuvaus.syy') || "Syy"}}:</a>
                                         <span class="selection-state-preview__text">{{valinnantilanKuvauksenEsikatseluteksti(tulos)}}</span>
                                     </div>
