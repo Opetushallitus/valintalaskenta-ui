@@ -1390,7 +1390,7 @@ label, .label {
 .form-horizontal .form-group .control-content {
   padding-top: 8px; }
 
-/*** Virkailija-table-1 
+/*** Virkailija-table-1
 ************************************************/
 .virkailija-table-1 {
   border-spacing: 1px;
@@ -1476,6 +1476,102 @@ label, .label {
   border-top: 1px solid #555;
   margin-top:15px;
   padding-top:15px;
+}
+
+.virkailija-table-1 .selection-state-outer-container {
+  position: relative;
+}
+
+.virkailija-table-1 .selection-state-container {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.virkailija-table-1 .selection-state-container-detached {
+  background-color: #F6F6F6;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  left: -8px;
+  margin-bottom: 20px;
+  padding: 8px;
+  position: absolute;
+  top: -8px;
+  width: 400px;
+  z-index: 20;
+}
+
+.virkailija-table-1 .selection-state-textarea-heading {
+  font-weight: 600;
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+.virkailija-table-1 .selection-state-textarea-container {
+  position: relative;
+}
+
+.virkailija-table-1 .selection-state-textarea-container:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.virkailija-table-1 .selection-state-textarea {
+  height: 80px;
+  width: 100%;
+}
+
+.virkailija-table-1 .selection-state-textarea-placeholder {
+  color: #BFC1C1;
+  left: 12px;
+  pointer-events: none;
+  position: absolute;
+  top: 4px;
+  transition: 0.2s ease all;
+}
+
+.virkailija-table-1 .selection-state-textarea:focus ~ .selection-state-textarea-placeholder,
+.virkailija-table-1 .selection-state-textarea:not(:focus):valid ~ .selection-state-textarea-placeholder {
+  background-color: white;
+  border: 1px solid #BFC1C1;
+  border-radius: 2px;
+  left: 7px;
+  line-height: 1.5;
+  padding: 0 5px;
+  top: -11px;
+}
+
+.virkailija-table-1 .selection-state-horizontal-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.virkailija-table-1 .selection-state-textarea-close-button {
+  align-items: center;
+  background-image: url(../img/round_close_white_48dp.png);
+  background-color: #C3DFE9;
+  background-size: contain;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+}
+
+.virkailija-table-1 .selection-state-textarea-close-button:hover {
+  background-color: #79C8E8;
+}
+
+.virkailija-table-1 .selection-state-preview {
+  max-width: 160px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.virkailija-table-1 .selection-state-preview__text {
+  cursor: help;
+  font-size: 12px;
+  font-style: italic;
 }
 
 /*** Dropmenu table
@@ -2545,14 +2641,14 @@ div.tilaParial {
   list-style: none;
 }
 
-/*** Tabsheet styles for 
+/*** Tabsheet styles for
 ************************************************/
 .tabsheets {
   background-color: #ffffff;
   border: solid 1px #bdbdbd;
   padding: 10px;
   overflow-x: scroll;
-  overflow-y: hidden;
+  overflow-y: visible;
   display: inline-block;
 }
 

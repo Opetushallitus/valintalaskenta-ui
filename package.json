@@ -3,18 +3,19 @@
     "scripts": "gulp scripts"
   },
   "dependencies": {
+    "bower": "^1.8.8",
     "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.0",
-    "gulp-uglify": "^2.0.0",
-    "run-sequence": "^1.2.2",
     "gulp-clean": "^0.3.2",
-    "gulp-watch": "^4.3.9",
-    "gulp-livereload": "^3.8.1",
-    "gulp-sass": "^2.3.2",
+    "gulp-concat": "^2.6.0",
     "gulp-debug": "^2.1.2",
     "gulp-karma": "0.0.5",
+    "gulp-livereload": "^3.8.1",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^2.0.0",
+    "gulp-watch": "^4.3.9",
     "karma": "^0.13.0",
-    "mocha-headless-chrome": "^2.0.2",
+    "mocha-headless-chrome": "^2.0.3",
+    "run-sequence": "^1.2.2",
     "test": "*"
   }
 }

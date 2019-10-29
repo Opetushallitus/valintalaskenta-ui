@@ -24,14 +24,14 @@ angular.module('valintalaskenta')
             })
         }
     }])
-    .controller('ErillishakuController', ['$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
+    .controller('ErillishakuController', ['$rootScope', '$scope', '$modal', '$log', '$location', '$routeParams', '$timeout', '$upload', '$q', '$filter',
         'FilterService', 'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'TulosXls', 'HakukohdeModel',
         'HakuModel', 'HakuUtility', '$http', 'AuthService', '_', 'LocalisationService', 'ErillishakuVienti',
         'ErillishakuTuonti', '$window', 'HakukohdeNimiService', 'Hyvaksymiskirjeet',
         'Kirjepohjat', 'Kirjeet', 'VastaanottoUtil', 'NgTableParams', 'TallennaValinnat', 'Hakemukset', 'EhdollisenHyvaksymisenEhdot', 'ValinnanTulos', 'Valinnantulokset',
         'ErillishakuHyvaksymiskirjeet', 'Lukuvuosimaksut',
         'Valintaesitys', 'valinnantuloksenHistoriaService', 'VtsVastaanottopostiLahetetty', 'VtsVastaanottopostiLahetaUudelleenHakemukselle', 'VtsVastaanottopostiLahetaUudelleenHakukohteelle',
-        function($scope, $modal, $log, $location, $routeParams, $timeout, $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
+        function($rootScope, $scope, $modal, $log, $location, $routeParams, $timeout, $upload, $q, $filter, FilterService, Ilmoitus, IlmoitusTila, Latausikkuna,
                  ValintatapajonoVienti, TulosXls, HakukohdeModel, HakuModel, HakuUtility, $http, AuthService, _, LocalisationService,
                  ErillishakuVienti, ErillishakuTuonti, $window, HakukohdeNimiService, Hyvaksymiskirjeet, Kirjepohjat, Kirjeet,
                  VastaanottoUtil, NgTableParams, TallennaValinnat, Hakemukset, EhdollisenHyvaksymisenEhdot, ValinnanTulos, Valinnantulokset,
@@ -301,6 +301,27 @@ angular.module('valintalaskenta')
     $scope.hakemusIsVarasijaltaHyvaksytty = function(hakemus) {
         return (hakemus.hakemuksentila == "VARALLA" || hakemus.hakemuksentila == "VARASIJALTA_HYVAKSYTTY")
             && (hakemus.valintatuloksentila == "EHDOLLISESTI_VASTAANOTTANUT" || hakemus.valintatuloksentila == "VASTAANOTTANUT_SITOVASTI");
+    };
+
+    $scope.isValinnantilanKuvauksenTekstiVisible = function(model) {
+        return model.allowValinnantilanKuvauksenTekstiVisibility;
+    };
+
+    $scope.isValinnantilanKuvauksenEsikatseluVisible = function(model) {
+        return model.hakemuksentila &&
+          model.hakemuksentila === "HYLATTY" && (
+            !_.isEmpty(model.valinnantilanKuvauksenTekstiFI) ||
+            !_.isEmpty(model.valinnantilanKuvauksenTekstiSV) ||
+            !_.isEmpty(model.valinnantilanKuvauksenTekstiEN)
+          )
+    };
+
+    $scope.valinnantilanKuvauksenEsikatseluteksti = function(model) {
+        var langcode = ($rootScope.userLang || 'fi').toUpperCase();
+        var valinnantilanKuvausValitullaKielella = model["valinnantilanKuvauksenTeksti" + langcode];
+        return _.isEmpty(valinnantilanKuvausValitullaKielella) ?
+          (model.valinnantilanKuvauksenTekstiFI || model.valinnantilanKuvauksenTekstiSV || model.valinnantilanKuvauksenTekstiEN) :
+          valinnantilanKuvausValitullaKielella;
     };
 
     $scope.showEhdollinenHyvaksynta = function() {
@@ -579,6 +600,9 @@ angular.module('valintalaskenta')
             ehdollisenHyvaksymisenEhtoFI: hakemus.ehdollisenHyvaksymisenEhtoFI,
             ehdollisenHyvaksymisenEhtoSV: hakemus.ehdollisenHyvaksymisenEhtoSV,
             ehdollisenHyvaksymisenEhtoEN: hakemus.ehdollisenHyvaksymisenEhtoEN,
+            valinnantilanKuvauksenTekstiFI: hakemus.valinnantilanKuvauksenTekstiFI,
+            valinnantilanKuvauksenTekstiSV: hakemus.valinnantilanKuvauksenTekstiSV,
+            valinnantilanKuvauksenTekstiEN: hakemus.valinnantilanKuvauksenTekstiEN,
             maksuvelvollisuus: hakemus.maksuvelvollisuus ? hakemus.maksuvelvollisuus : 'NOT_CHECKED',
             hyvaksymiskirjeLahetetty: hakemus.hyvaksymiskirjeLahetetty,
             vastaanottoTila: hakemus.valintatuloksentila,
@@ -612,6 +636,13 @@ angular.module('valintalaskenta')
         if (($scope.muokatutHakemukset || []).length === 0) {
             return $q.resolve();
         }
+        $scope.muokatutHakemukset.forEach(function(muokattuHakemus) {
+            if (muokattuHakemus.hakemuksentila !== "HYLATTY") {
+                muokattuHakemus.valinnantilanKuvauksenTekstiFI = null;
+                muokattuHakemus.valinnantilanKuvauksenTekstiSV = null;
+                muokattuHakemus.valinnantilanKuvauksenTekstiEN = null;
+            }
+        });
         return submitLukuvuosimaksut($scope.muokatutHakemukset).then(function() {
             var erillishakuRivit = _.map($scope.muokatutHakemukset, hakemusToErillishakuRivi);
             return ErillishakuTuonti.tuo(
@@ -653,6 +684,21 @@ angular.module('valintalaskenta')
             }
             $scope.validateHakemuksenTilat(hakemus);
         }
+    };
+
+    $scope.paivitaHakemuksenValintatila = function(hakemus) {
+        if (hakemus) {
+            hakemus.allowValinnantilanKuvauksenTekstiVisibility = hakemus.hakemuksentila === 'HYLATTY';
+        }
+        $scope.addMuokattuHakemus(hakemus);
+    };
+
+    $scope.closeValinnantilanKuvauksenTeksti = function(model) {
+        model.allowValinnantilanKuvauksenTekstiVisibility = false;
+    };
+
+    $scope.openValinnantilanKuvauksenTeksti = function(model) {
+        model.allowValinnantilanKuvauksenTekstiVisibility = true;
     };
 
     $scope.getHakutyyppi = function() {

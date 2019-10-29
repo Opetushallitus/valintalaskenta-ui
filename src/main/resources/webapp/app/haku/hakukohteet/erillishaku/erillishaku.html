@@ -80,22 +80,69 @@
                             <td data-title="t('sijoitteluntulos.hakemuksentila') || 'Valinnan tila'"
                                 sortable="'hakemuksentila'"
                                 filter="{'hakemuksentila': 'text'}">
-                                <div>
-                                    <div ng-switch="updateOrg &&
+                                <div class="selection-state-outer-container">
+                                    <div class="selection-state-container"
+                                         ng-class="isValinnantilanKuvauksenTekstiVisible(tulos) ? 'selection-state-container-detached' : undefined">
+                                        <div ng-switch="updateOrg &&
                                                                     (tulos.valintatuloksentila == 'KESKEN' ||
                                                                     tulos.valintatuloksentila == 'OTTANUT_VASTAAN_TOISEN_PAIKAN' ||
                                                                     !tulos.isValid)">
-                                        <select ng-switch-when="true"
-                                                ng-model="tulos.hakemuksentila"
-                                                ng-options="opt.value as opt.text disable when opt.disable for opt in hakemuksentilat"
-                                                ng-class="{'error': !tulos.isValid}"
-                                                ng-change="addMuokattuHakemus(tulos)">
-                                        </select>
-                                        <span ng-switch-default
-                                              class="search"
-                                              ng-readonly="true"
-                                              ng-class="{'error': !tulos.isValid}"
-                                              ng-value="tulos.hakemuksentila">{{parseHakemuksenTila(tulos)}}</span>
+                                            <div class="selection-state-horizontal-row">
+                                                <select ng-switch-when="true"
+                                                        ng-model="tulos.hakemuksentila"
+                                                        ng-options="opt.value as opt.text disable when opt.disable for opt in hakemuksentilat"
+                                                        ng-class="{'error': !tulos.isValid}"
+                                                        ng-change="paivitaHakemuksenValintatila(tulos)">
+                                                </select>
+                                                <a class="selection-state-textarea-close-button"
+                                                   ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)"
+                                                   ng-click="closeValinnantilanKuvauksenTeksti(tulos)">
+                                                </a>
+                                            </div>
+                                            <span ng-switch-default
+                                                  class="search"
+                                                  ng-readonly="true"
+                                                  ng-class="{'error': !tulos.isValid}"
+                                                  ng-value="tulos.hakemuksentila">{{parseHakemuksenTila(tulos)}}</span>
+                                        </div>
+                                        <span ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)"
+                                              class="selection-state-textarea-heading">{{ t('erillishaku.hakijalleNakyvaSyy') || 'Hakijalle näkyvä syy' }}</span>
+                                        <div class="selection-state-textarea-container"
+                                             ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)">
+                                        <textarea ng-model="tulos.valinnantilanKuvauksenTekstiFI"
+                                                  ng-change="addMuokattuHakemus(tulos)"
+                                                  class="selection-state-textarea"
+                                                  cols="5"
+                                                  required>
+                                        </textarea>
+                                            <span class="selection-state-textarea-placeholder">FI</span>
+                                        </div>
+                                        <div class="selection-state-textarea-container"
+                                             ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)">
+                                        <textarea ng-model="tulos.valinnantilanKuvauksenTekstiSV"
+                                                  ng-change="addMuokattuHakemus(tulos)"
+                                                  class="selection-state-textarea"
+                                                  cols="5"
+                                                  required>
+                                        </textarea>
+                                            <span class="selection-state-textarea-placeholder">SV</span>
+                                        </div>
+                                        <div class="selection-state-textarea-container"
+                                             ng-if="isValinnantilanKuvauksenTekstiVisible(tulos)">
+                                        <textarea ng-model="tulos.valinnantilanKuvauksenTekstiEN"
+                                                  ng-change="addMuokattuHakemus(tulos)"
+                                                  class="selection-state-textarea"
+                                                  cols="5"
+                                                  required>
+                                        </textarea>
+                                            <span class="selection-state-textarea-placeholder">EN</span>
+                                        </div>
+                                    </div>
+                                    <div class="selection-state-preview"
+                                         ng-show="isValinnantilanKuvauksenEsikatseluVisible(tulos)"
+                                         title="{{valinnantilanKuvauksenEsikatseluteksti(tulos)}}">
+                                        <a ng-click="openValinnantilanKuvauksenTeksti(tulos)">{{t('erillishaku.valinnantilankuvaus.syy') || "Syy"}}:</a>
+                                        <span class="selection-state-preview__text">{{valinnantilanKuvauksenEsikatseluteksti(tulos)}}</span>
                                     </div>
                                     <div ng-show="showEhdollinenHyvaksynta()" class="white-space-nowrap">
                                         <span>{{ t('sijoitteluntulos.ehdollisestihyvaksyttavissa') || 'Ehdollinen valinta' }}:</span>
