@@ -675,7 +675,7 @@ angular.module('valintalaskenta')
                         ValinnanTulos.patch(
                             valintatapajonoOid,
                             valinnantilanMuutokset,
-                            {headers: {'If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]}}
+                            {headers: {'X-If-Unmodified-Since': model.valintatapajonoLastModified[valintatapajonoOid]}}
                         ),
                         ErillishakuHyvaksymiskirjeet.post({}, muuttuneetHyvaksymiskirjeet).$promise
                     ]);

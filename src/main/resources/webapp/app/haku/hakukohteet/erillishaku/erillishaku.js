@@ -490,7 +490,7 @@ angular.module('valintalaskenta')
             ),
             ErillishakuHyvaksymiskirjeet.get({hakukohdeOid: $scope.hakukohdeOid}).$promise
         ]).then(function(result) {
-            $scope.valintatapajonoLastModified = result[0].headers("Last-Modified");
+            $scope.valintatapajonoLastModified = result[0].headers("X-Last-Modified");
             var hakemukset = result[0].data;
             var kirjeLahetetty = result[1].reduce(function(acc, kirje) {
                 acc[kirje.henkiloOid] = new Date(kirje.lahetetty);

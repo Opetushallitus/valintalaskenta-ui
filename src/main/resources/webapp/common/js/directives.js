@@ -272,7 +272,7 @@ app.directive('sijoitteluVastaanottoTila', function () {
                                     ValinnanTulos.patch(
                                         $scope.valintatapajonoOid,
                                         valinnantilanMuutos,
-                                        {headers: {'If-Unmodified-Since': $scope.lastmodified}}
+                                        {headers: {'X-If-Unmodified-Since': $scope.lastmodified}}
                                     ).then(function (result) {
                                         $modalInstance.close(result);
                                         Ilmoitus.avaa("Tallennus onnistui", "Sijoittelun vastaanottotila muutettu.");
