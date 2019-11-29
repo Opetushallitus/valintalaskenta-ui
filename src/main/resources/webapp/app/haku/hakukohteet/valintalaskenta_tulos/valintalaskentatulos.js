@@ -408,8 +408,10 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
         this.muutaSijoittelunStatus = function (jono, status) {
             ValintatapajonoSijoitteluUpdate.post({valintatapajonoOid: jono.oid, status: status},
                 function (updatedJono) {
-                    // updatedJono always returns prioriteetti with default int value 0, so let's set it again
-                    updatedJono.prioriteetti = jono.prioriteetti;
+                    if (updatedJono.prioriteetti === -1) {
+                      // A query for a single jono doesn't return a true prioriteetti value, but -1 as a placeholder, so let's re-set the vlaue
+                      updatedJono.prioriteetti = jono.prioriteetti;
+                    }
 
                     ValintatapajonoSijoitteluStatus.put({
                         valintatapajonoOid: jono.oid,
