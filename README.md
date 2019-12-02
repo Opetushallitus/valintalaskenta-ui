@@ -23,3 +23,15 @@ How to upgrade javascripts
 
     bower update
     gulp scripts
+
+Lokaali ajaminen 
+=================
+
+[ValintaUiJettyForLocalDev](src/main/java/fi/vm/sade/valintalaskenta/dev/ValintaUiJettyForLocalDev.java)
+
+Jos haluat käyttää testiympäristön taustapalveluita, mutta osaa omalta koneeltasi, se onnistuu
+tähän malliin:
+```
+-Dfront.baseUrl=https://virkailija.untuvaopintopolku.fi
+-Dfront.valintaperusteet-service.baseUrl=http://localhost:8081
+```
