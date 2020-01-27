@@ -20,7 +20,23 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
                 model.anyVVHasValisijoittelu = false;
 
                 ValinnanvaiheListFromValintaperusteet.get({hakukohdeoid: hakukohdeOid}, function (result) {
-                    model.tulosValinnanvaiheet = result;
+                    model.tulosValinnanvaiheet = result.map(
+                        valinnanvaihe => Object.assign(
+                            {},
+                            valinnanvaihe,
+                            {
+                                jonot: valinnanvaihe.jonot.map(
+                                    valintatapajono => Object.assign(
+                                        {},
+                                        valintatapajono,
+                                        valintatapajono.eiLasketaPaivamaaranJalkeen
+                                            ? {eiLasketaPaivamaaranJalkeen: new Date(valintatapajono.eiLasketaPaivamaaranJalkeen)}
+                                            : undefined
+                                    )
+                                )
+                            }
+                        )
+                    );
 
                     var anyHasValisijoittelu = !_.every(result, {'hasValisijoittelu': false});
 
@@ -48,7 +64,7 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
 
 angular.module('valintalaskenta').
     controller('ValinnanhallintaController',['$scope', '$routeParams', '$modal', 'Latausikkuna', 'Ilmoitus',
-        'ValinnanhallintaModel', 'HakukohdeModel', 
+        'ValinnanhallintaModel', 'HakukohdeModel',
         'ParametriService', 'IlmoitusTila', 'HakuModel',
     function ($scope, $routeParams, $modal, Latausikkuna, Ilmoitus, ValinnanhallintaModel, HakukohdeModel,
               ParametriService, IlmoitusTila, HakuModel) {
@@ -128,5 +144,13 @@ angular.module('valintalaskenta').
                 }
             }
         });
+    };
+
+    $scope.toLocalDate = function(date) {
+        return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+    };
+
+    $scope.valintatapajonoEiLaskettavissa = function(valintatapajono) {
+        return valintatapajono.eiLasketaPaivamaaranJalkeen && valintatapajono.eiLasketaPaivamaaranJalkeen < new Date();
     };
 }]);

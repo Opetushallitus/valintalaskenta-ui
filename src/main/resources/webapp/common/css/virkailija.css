@@ -1062,7 +1062,7 @@ a {
 
 table {
   border-collapse: normal; }
-  table td {
+  table:not(.virkailija-table-valinnanvaiheet) > tbody > td {
     line-height: 1.5em;
     vertical-align: middle;
     border-right: 10px solid transparent; }
@@ -1453,7 +1453,7 @@ label, .label {
   border: 1px solid #ececec;
 }
 
-.virkailija-table-1 > tbody > tr:nth-child(even) > td {
+.virkailija-table-1:not(.virkailija-table-valinnanhallinta) > tbody > tr:nth-child(even) > td {
   background-color: #dadada;
 }
 
@@ -1607,6 +1607,36 @@ label, .label {
   cursor: help;
   font-size: 12px;
   font-style: italic;
+}
+
+.virkailija-table-valinnanhallinta {
+  width: 963px;
+}
+
+.virkailija-table-valinnanvaiheet {
+  display: grid;
+  grid-row-gap: 10px;
+  grid-template-columns: 15px 223px auto;
+}
+
+.virkailija-table-valinnanvaiheet__valinnanvaihe-nimi {
+  font-weight: 600;
+  grid-column-start: 1;
+  grid-column-end: span 3;
+}
+
+.virkailija-table-valinnanvaiheet__valintatapajono-nimi {
+  grid-column-start: 2;
+}
+
+.virkailija-table-valinnanvaiheet__valintatapajono-pvm {
+  border-left: 1px solid #ccc;
+  grid-column-start: 3;
+  padding-left: 8px;
+}
+
+.virkailija-table-valinnanvaiheet__text--disabled {
+  color: #ccc;
 }
 
 /*** Dropmenu table

@@ -13,7 +13,7 @@
         <div class="tabsheets">
             <div ng-include="'../common/html/errors.html'"></div>
 
-            <table ng-show="model.tulosValinnanvaiheet" class="virkailija-table-1">
+            <table ng-show="model.tulosValinnanvaiheet" class="virkailija-table-1 virkailija-table-valinnanhallinta">
                 <thead>
                     <tr>
                         <th>{{ t('valinnanhallinta.valinnanvaiheennimi') || 'Valinnanvaiheen nimi' }}</th>
@@ -23,7 +23,21 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="valinnanvaihe in model.tulosValinnanvaiheet">
-                        <td>{{valinnanvaihe.nimi}}</td>
+                        <td>
+                            <div class="virkailija-table-valinnanvaiheet">
+                                <span class="virkailija-table-valinnanvaiheet__valinnanvaihe-nimi">{{valinnanvaihe.nimi}}</span>
+                                <span ng-repeat-start="valintatapajono in valinnanvaihe.jonot"
+                                      class="virkailija-table-valinnanvaiheet__valintatapajono-nimi"
+                                ng-class="{'virkailija-table-valinnanvaiheet__text--disabled': valintatapajonoEiLaskettavissa(valintatapajono)}">
+                                    {{valintatapajono.nimi}}
+                                </span>
+                                <span ng-repeat-end
+                                      class="virkailija-table-valinnanvaiheet__valintatapajono-pvm"
+                                      ng-class="{'virkailija-table-valinnanvaiheet__text--disabled': valintatapajonoEiLaskettavissa(valintatapajono)}">
+                                    {{valintatapajonoEiLaskettavissa(valintatapajono) ? 'Ei lasketa ' + toLocalDate(valintatapajono.eiLasketaPaivamaaranJalkeen) + ' jälkeen' : 'Mukana laskennassa'}}
+                                </span>
+                            </div>
+                        </td>
                         <td>
                             <span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'VALINTAKOE'">{{ t('valinnanhallinta.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}</span>
                             <span ng-show="valinnanvaihe.valinnanVaiheTyyppi == 'TAVALLINEN'">{{ t('valinnanhallinta.valinnanvaihe') || 'Valinnanvaihe' }}</span>
