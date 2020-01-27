@@ -1397,40 +1397,40 @@ label, .label {
   border-collapse: separate;
 }
 
-.virkailija-table-1 tr td {
+.virkailija-table-1 > tbody > tr > td {
   padding: 10px;
   vertical-align: top;
   text-align: left;
 }
 
-.virkailija-table-1 tr td.rightorientedcolumn {
+.virkailija-table-1 > tbody > tr > td.rightorientedcolumn {
   text-align: right;
 }
 
-.virkailija-table-1 tr th {
+.virkailija-table-1 > thead > tr > th {
   line-height: 2.3em;
   padding: 10px;
   vertical-align: top;
   text-align: left;
 }
 
-.virkailija-table-1 tr th a {
+.virkailija-table-1 > thead > tr > th a {
   color: #000;
 }
 
-.virkailija-table-1 thead {
+.virkailija-table-1 > thead {
   background-color: #eee;
   background-image: url(../img/table-header-bg.png);
   background-repeat: repeat;
   background-position: left top;
 }
 
-.virkailija-table-1 thead th {
+.virkailija-table-1 > thead > tr > th {
   border-bottom: 1px solid #c2c2c2;
   border-top: 1px solid #ececec;
 }
 
-.virkailija-table-1 thead tr:first-of-type th:first-of-type {
+.virkailija-table-1 > thead > tr:first-of-type > th:first-of-type {
   -moz-border-top-left-radius: 5px;
   -webkit-border-top-left-radius: 5px;
   -o-border-top-left-radius: 5px;
@@ -1439,7 +1439,7 @@ label, .label {
   border-left: 1px solid #ececec;
 }
 
-.virkailija-table-1 thead tr:first-of-type th:last-of-type {
+.virkailija-table-1 > thead > tr:first-of-type > th:last-of-type {
   -moz-border-top-right-radius: 5px;
   -webkit-border-top-right-radius: 5px;
   -o-border-top-right-radius: 5px;
@@ -1448,16 +1448,16 @@ label, .label {
   border-right: 1px solid #ececec;
 }
 
-.virkailija-table-1 tbody td {
+.virkailija-table-1 > tbody > tr > td {
   border-spacing: 0;
   border: 1px solid #ececec;
 }
 
-.virkailija-table-1 tbody tr:nth-child(even) td {
+.virkailija-table-1 > tbody > tr:nth-child(even) > td {
   background-color: #dadada;
 }
 
-.virkailija-table-1 tbody tr:last-of-type td:first-of-type {
+.virkailija-table-1 > tbody > tr:last-of-type > td:first-of-type {
   -moz-border-bottom-left-radius: 5px;
   -webkit-border-bottom-left-radius: 5px;
   -o-border-bottom-left-radius: 5px;
@@ -1465,7 +1465,7 @@ label, .label {
   border-bottom-left-radius: 5px;
 }
 
-.virkailija-table-1 tbody tr:last-of-type td:last-of-type {
+.virkailija-table-1 > tbody > tr:last-of-type > td:last-of-type {
   -moz-border-bottom-right-radius: 5px;
   -webkit-border-bottom-right-radius: 5px;
   -o-border-bottom-right-radius: 5px;
@@ -1473,7 +1473,7 @@ label, .label {
   border-bottom-right-radius: 5px;
 }
 
-.virkailija-table-1 tr td.rule {
+.virkailija-table-1 > tbody > tr > td.rule {
   padding-left: 3em;
   background-image: url(../img/ketju-saanto.png);
   background-repeat: no-repeat;
@@ -1481,7 +1481,7 @@ label, .label {
   background-size: 1.5em;
 }
 
-.virkailija-table-1 tr td.follow-up-question {
+.virkailija-table-1 > tbody > tr > td.follow-up-question {
   padding-left: 3em;
   background-image: url(../img/nuoli-jatkokysymys.png);
   background-repeat: no-repeat;
@@ -1489,7 +1489,7 @@ label, .label {
   background-size: 1em;
 }
 
-.virkailija-table-1 tr td.condition {
+.virkailija-table-1 > tbody > tr > td.condition {
   padding-left: 3em;
   background-image: url(../img/pykala-ehto.png);
   background-repeat: no-repeat;
@@ -1503,7 +1503,7 @@ label, .label {
   line-height: normal;
 }
 
-.virkailija-table-1 td.leftorientedcolumn {
+.virkailija-table-1 > tbody > tr > td.leftorientedcolumn {
   text-align: left;
 }
 
