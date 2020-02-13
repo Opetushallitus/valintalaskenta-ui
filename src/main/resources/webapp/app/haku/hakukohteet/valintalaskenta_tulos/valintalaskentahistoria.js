@@ -142,6 +142,7 @@ angular.module('valintalaskenta')
                     backdrop: 'static',
                     templateUrl: '../common/modaalinen/historiakeysmodal.html',
                     controller: 'HistoriaKeysModalCtrl',
+                    size: 'lg',
                     resolve: {
                         kaava: function () {
                             return kaava;
