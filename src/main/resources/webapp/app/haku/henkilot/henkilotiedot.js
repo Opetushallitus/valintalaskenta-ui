@@ -190,7 +190,15 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                         logEntriesByValintatapajonoOid: o.logEntriesByValintatapajonoOid
                     };
                 });
-            });
+            }).catch(function(e) {
+                if (e.status === 404) {
+                    console.warn('Virhe HTTP 404 Not Found haettaessa sijoittelun tuloksia. Ehkä tuloksia ei vielä ole?', e);
+                } else {
+                    console.error('Virhe haettaessa sijoittelun tuloksia.', e);
+                    throw e;
+                }
+              return {};
+          });
     }
 
     function avaimetByHakukohdeOid(hakemus) {
@@ -276,7 +284,7 @@ app.factory('HenkiloTiedotModel', function ($q, AuthService, Hakemus, Valintalas
                 var naytaPistesyotto = avaimet.reduce(function (naytaPistesyotto, a) {
                     return naytaPistesyotto || (osallistuu[a.tunniste] && osallistuu[a.tunniste].osallistumistieto !== "EI_KUTSUTTU");
                 }, false);
-                var sijoittelu = o.sijoittelu.sijoitteluByHakukohdeOid[hakukohdeOid] || [];
+                var sijoittelu = R.pathOr([], ['sijoittelu', 'sijoitteluByHakukohdeOid', hakukohdeOid], o);
                 setVastaanottoTilaOptionsToShow(sijoittelu);
                 sijoittelu.forEach(function (valintatapajono) {
                     valintatapajono.hakemusOid = hakemusOid;
