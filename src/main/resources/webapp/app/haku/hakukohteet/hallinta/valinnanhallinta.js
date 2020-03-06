@@ -33,6 +33,8 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
                                             ? {eiLasketaPaivamaaranJalkeen: new Date(valintatapajono.eiLasketaPaivamaaranJalkeen)}
                                             : undefined
                                     )
+                                ).filter(
+                                    valintatapajono => valintatapajono.aktiivinen
                                 )
                             }
                         )
