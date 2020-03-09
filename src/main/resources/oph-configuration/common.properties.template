@@ -16,6 +16,7 @@ server.name={{ansible_hostname}}
 cas.callback.valintalaskenta-ui=http://{{ cluster_valinta_ui_host | default("${server.name}") }}:{{ cluster_valinta_ui_port | default("8309") }}/valintalaskenta-ui
 cas.sendRenew=false
 cas.service.valintalaskenta-ui=https://${host.virkailija}/valintalaskenta-ui
+front.baseUrl=https://{{host_virkailija}}
 web.url.cas=https\://${host.cas}/cas
 
 valintalaskenta-ui.session-keepalive-interval.seconds=150
