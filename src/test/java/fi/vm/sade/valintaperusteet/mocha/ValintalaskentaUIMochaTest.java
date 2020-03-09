@@ -14,6 +14,7 @@ public class ValintalaskentaUIMochaTest {
 
     @Test
     public void mochaTest() throws Exception {
+        System.setProperty("front.baseUrl", "http://localhost:" + JettyTestRunner.PORT);
         JettyTestRunner.start();
 
         String[] cmd = {
