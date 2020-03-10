@@ -675,7 +675,7 @@ angular.module('valintalaskenta')
             console.log(response);
             LocalisationService.getTranslation("aihekokonaisuudet-palautettu").then(function(text) {
                 Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", text, IlmoitusTila.ERROR);
-            };
+            })
         });
     };
 
