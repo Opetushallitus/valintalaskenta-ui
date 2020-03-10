@@ -673,7 +673,9 @@ angular.module('valintalaskenta')
             $window.location.reload();
         }, function(response) {
             console.log(response);
-            Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", LocalisationService.tl("aihekokonaisuudet-palautettu"), IlmoitusTila.ERROR);
+            LocalisationService.getTranslation("aihekokonaisuudet-palautettu").then(function(text) {
+                Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", text, IlmoitusTila.ERROR);
+            };
         });
     };
 
