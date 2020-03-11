@@ -7,7 +7,7 @@
     "gulp": "3.9.1",
     "gulp-clean": "0.4.0",
     "gulp-concat": "2.6.1",
-    "gulp-debug": "4.0.0",
+    "gulp-debug": "3.2.0",
     "gulp-karma": "0.0.5",
     "gulp-livereload": "4.0.2",
     "gulp-sass": "4.0.2",
