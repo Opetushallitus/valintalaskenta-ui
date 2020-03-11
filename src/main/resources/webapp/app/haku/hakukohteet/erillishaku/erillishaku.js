@@ -673,7 +673,12 @@ angular.module('valintalaskenta')
             $window.location.reload();
         }, function(response) {
             console.log(response);
-            Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", LocalisationService.getTranslation("discretionary.modal.oid"), IlmoitusTila.ERROR);
+            console.log('LocalisationService.getTranslation(): ' + LocalisationService.getTranslation("discretionary.modal.oid"));
+            LocalisationService.getTranslation("discretionary.modal.oid").then(function (text) {
+                console.log('text: ' + text);
+                Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.",
+                    text, IlmoitusTila.ERROR);
+            })
         });
     };
 
