@@ -3,7 +3,7 @@
     "build": "bower update && gulp scripts",
     "scripts": "gulp scripts"
   },
-  "dependencies": {
+  "devDependencies": {
     "bower": "1.8.8",
     "gulp": "3.9.1",
     "gulp-clean": "0.4.0",
