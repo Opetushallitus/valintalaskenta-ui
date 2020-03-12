@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "bower update && gulp scripts",
     "scripts": "gulp scripts"
   },
   "dependencies": {
