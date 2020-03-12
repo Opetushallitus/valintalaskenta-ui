@@ -6,8 +6,9 @@
     <dl>
         <dt>{{ t('personinformationmodal.oid') || 'Hakemuksen tekninen tunniste (OID)' }}</dt>
         <dd>
-            <a href="{{url(reviewUrlKey, hakuOid, hakemusOid)}}" target="_blank"
+            <a ng-if="reviewUrlKey" href="{{url(reviewUrlKey, hakuOid, hakemusOid)}}" target="_blank"
                fast-bind-once="hakemusOid"></a>
+            <p ng-if="!reviewUrlKey">Ladataan...</p>
         </dd>
         <dt ng-if="henkiloOid">{{ t('personinformationmodal.numero') || 'Oppijan numero' }}</dt>
         <dd ng-if="henkiloOid" fast-bind-once="henkiloOid"></dd>
