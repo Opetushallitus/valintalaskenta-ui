@@ -1,21 +1,23 @@
 {
   "scripts": {
+    "build": "bower update && gulp scripts",
     "scripts": "gulp scripts"
   },
-  "dependencies": {
-    "bower": "^1.8.8",
-    "gulp": "^3.9.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-concat": "^2.6.0",
-    "gulp-debug": "^2.1.2",
+  "devDependencies": {
+    "bower": "1.8.8",
+    "gulp": "3.9.1",
+    "gulp-clean": "0.4.0",
+    "gulp-cli": "2.2.0",
+    "gulp-concat": "2.6.1",
+    "gulp-debug": "3.2.0",
     "gulp-karma": "0.0.5",
-    "gulp-livereload": "^3.8.1",
-    "gulp-sass": "^2.3.2",
-    "gulp-uglify": "^2.0.0",
-    "gulp-watch": "^4.3.9",
-    "karma": "^0.13.0",
-    "mocha-headless-chrome": "^2.0.3",
-    "run-sequence": "^1.2.2",
-    "test": "*"
+    "gulp-livereload": "4.0.2",
+    "gulp-sass": "4.0.2",
+    "gulp-uglify": "3.0.2",
+    "gulp-watch": "5.0.1",
+    "karma": "0.13.22",
+    "mocha-headless-chrome": "2.0.3",
+    "run-sequence": "2.2.1",
+    "test": "0.6.0"
   }
 }
