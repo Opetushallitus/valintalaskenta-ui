@@ -247,10 +247,10 @@ angular.module('valintalaskenta')
                     DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
                     cancelTimerWhenClosing();
                 });
-
         },
         avaa: function(id, otsikko, lisatiedot, naytaLatausikkuna) {
-            this.avaaKustomoitu(id,otsikko,lisatiedot,'../common/modaalinen/latausikkuna.html',{},naytaLatausikkuna);
+            this.avaaKustomoitu(id, otsikko, IlmoitusTila.INFO, lisatiedot,
+                    '../common/modaalinen/latausikkuna.html', {}, naytaLatausikkuna);
         }
     };
 }]);
