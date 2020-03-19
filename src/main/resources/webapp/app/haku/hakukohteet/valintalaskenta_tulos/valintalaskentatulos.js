@@ -32,14 +32,14 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                 if (model.ilmanlaskentaa.length > 0) {
                     return model.loadHakijat(hakukohdeOid, hakuOid)
                         .then(function (isAtaruHaku) {
-                            model.updateValinnanvaiheetPersonNames();
-                            model.updateHakijatNames();
+                            model.updateValinnanvaiheetPersonNames(isAtaruHaku);
+                            model.updateHakijatNames(isAtaruHaku);
                             model.createTulosjonot(hakuOid, isAtaruHaku);
                         });
                 } else {
                     return model.loadHakijat(hakukohdeOid, hakuOid)
-                        .then(function () {
-                            model.updateValinnanvaiheetPersonNames();
+                        .then(function (isAtaruHaku) {
+                            model.updateValinnanvaiheetPersonNames(isAtaruHaku);
                         });
                 }
             }).then(model.renderTulokset).catch(function (error) {
@@ -48,7 +48,7 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             });
         };
 
-        this.updateValinnanvaiheetPersonNames = function() {
+        this.updateValinnanvaiheetPersonNames = function(isAtaruHaku) {
             model.valinnanvaiheet.forEach(function(vaihe) {
                 vaihe.valintatapajonot.forEach(function(jono) {
                     jono.jonosijat.forEach(function(jonosija) {
@@ -56,8 +56,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                             return hakemus.oid === jonosija.hakemusOid;
                         })[0];
                         if (hakemus) {
-                            jonosija.etunimi = hakemus.etunimet ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet;
-                            jonosija.sukunimi = hakemus.sukunimi ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi;
+                            jonosija.etunimi = isAtaruHaku ? hakemus.etunimet : hakemus.answers.henkilotiedot.Etunimet;
+                            jonosija.sukunimi = isAtaruHaku ? hakemus.sukunimi : hakemus.answers.henkilotiedot.Sukunimi;
                         } else {
                           console.log("No hakemus found for hakijaOid: " + jonosija.hakijaOid + ", hakemusOid: " + jonosija.hakemusOid);
                         }
@@ -66,10 +66,10 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
             });
         };
 
-        this.updateHakijatNames = function() {
+        this.updateHakijatNames = function(isAtaruHaku) {
             model.hakeneet.forEach(function(hakija) {
-                    hakija.etunimi = hakija.etunimet ? hakija.etunimet : hakija.answers.henkilotiedot.Etunimet;
-                    hakija.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
+                    hakija.etunimi = isAtaruHaku ? hakija.etunimet : hakija.answers.henkilotiedot.Etunimet;
+                    hakija.sukunimi = isAtaruHaku ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
             })
         };
 
@@ -209,8 +209,8 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
                             jonosija.syotetytArvot = [];
                             jonosija.funktioTulokset = [];
                             jonosija.muokattu = false;
-                            jonosija.sukunimi = hakija.sukunimi ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
-                            jonosija.etunimi = hakija.etunimi ? hakija.etunimi : hakija.answers.henkilotiedot.Etunimet;
+                            jonosija.sukunimi = isAtaruHaku ? hakija.sukunimi : hakija.answers.henkilotiedot.Sukunimi;
+                            jonosija.etunimi = isAtaruHaku ? hakija.etunimi : hakija.answers.henkilotiedot.Etunimet;
                             jonosija.jarjestyskriteerit = [
                                 {
                                     arvo: null,
