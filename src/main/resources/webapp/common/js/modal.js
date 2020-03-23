@@ -156,11 +156,11 @@ angular.module('valintalaskenta')
         }
     };
 }])
-.factory('Latausikkuna', ['$log', '$modal', 'DokumenttiProsessinTila',
-        function($log, $modal, DokumenttiProsessinTila) {
+.factory('Latausikkuna', ['$log', '$modal', 'DokumenttiProsessinTila', 'IlmoitusTila',
+        function($log, $modal, DokumenttiProsessinTila, IlmoitusTila) {
     return {
 
-        avaaKustomoitu: function(id, otsikko, lisatiedot, ikkunaHtml, laajennettuMalli, naytaLatauspainike) {
+        avaaKustomoitu: function(id, otsikko, tila, lisatiedot, ikkunaHtml, laajennettuMalli, naytaLatauspainike) {
             var timer = null;
             var cancelTimerWhenClosing = function() {
                 DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
@@ -177,6 +177,10 @@ angular.module('valintalaskenta')
                     };
                     $scope.lisatiedot = lisatiedot;
                     $scope.otsikko = otsikko;
+                    if(!tila) {
+                        tila = IlmoitusTila.INFO;
+                    }
+                    $scope.tila = tila;
                     $scope.prosessi = {};
                     $scope.kutsuLaajennettuaMallia = function() {
                         $log.error($scope.prosessi.dokumenttiId);
@@ -243,10 +247,10 @@ angular.module('valintalaskenta')
                     DokumenttiProsessinTila.ilmoita({id: id, poikkeus:"peruuta prosessi"});
                     cancelTimerWhenClosing();
                 });
-
         },
         avaa: function(id, otsikko, lisatiedot, naytaLatausikkuna) {
-            this.avaaKustomoitu(id,otsikko,lisatiedot,'../common/modaalinen/latausikkuna.html',{},naytaLatausikkuna);
+            this.avaaKustomoitu(id, otsikko, IlmoitusTila.INFO, lisatiedot,
+                    '../common/modaalinen/latausikkuna.html', {}, naytaLatausikkuna);
         }
     };
 }]);

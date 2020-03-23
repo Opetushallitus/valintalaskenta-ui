@@ -29,7 +29,7 @@ angular.module('valintalaskenta')
                                                 letterBodyText: sisalto
                                             },
                                             function(id) {
-                                                Latausikkuna.avaaKustomoitu(id, kirje.otsikko, kirje.valintakoeTunniste, "haku/hakukohteet/koekutsut/modaalinen/valintakoe.html",
+                                                Latausikkuna.avaaKustomoitu(id, kirje.otsikko, IlmoitusTila.INFO, kirje.valintakoeTunniste, "haku/hakukohteet/koekutsut/modaalinen/valintakoe.html",
                                                     function (dokumenttiId) {
                                                         $window.open(window.url("viestintapalvelu.letter.previewletterbatchemail", dokumenttiId));
                                                     },

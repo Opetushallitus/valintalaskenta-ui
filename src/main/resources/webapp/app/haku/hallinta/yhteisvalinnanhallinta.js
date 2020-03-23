@@ -237,7 +237,7 @@ angular.module('valintalaskenta').
                 hakuOids: hakuOids
             },
             function (id) {
-                Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", "", "haku/hallinta/modaalinen/kelaikkuna.html",
+                Latausikkuna.avaaKustomoitu(id, "Kela-dokumentin luonti", IlmoitusTila.INFO, "", "haku/hallinta/modaalinen/kelaikkuna.html",
                     function (dokumenttiId) {
 
                         AktivoiKelaFtp.post({}, dokumenttiId, function (success) {

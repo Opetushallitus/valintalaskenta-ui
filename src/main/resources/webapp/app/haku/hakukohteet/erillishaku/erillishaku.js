@@ -655,7 +655,8 @@ angular.module('valintalaskenta')
         }).then(function(response) {
             var id = {id: response.data.id};
             var p = $q.defer();
-            Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", "", "../common/modaalinen/erillishakutallennus.html",
+            Latausikkuna.avaaKustomoitu(id, "Tallennetaan muutokset.", IlmoitusTila.INFO, "",
+                    "../common/modaalinen/erillishakutallennus.html",
                 function(dokumenttiId) {
                     if (dokumenttiId) {
                         p.resolve();
@@ -673,7 +674,10 @@ angular.module('valintalaskenta')
             $window.location.reload();
         }, function(response) {
             console.log(response);
-            Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.", IlmoitusTila.ERROR);
+            LocalisationService.getTranslation("erillishaku.odottamatonvirhe").then(function (messageTranslated) {
+                Ilmoitus.avaa("Erillishaun hakukohteen vienti taulukkolaskentaan epäonnistui! Ota yhteys ylläpitoon.",
+                    messageTranslated, IlmoitusTila.ERROR);
+            })
         });
     };
 
@@ -763,7 +767,8 @@ angular.module('valintalaskenta')
                 data: e.target.result
             }).progress(function(evt) {
             }).success(function(id, status, headers, config) {
-                Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", "", "../common/modaalinen/tuontiikkuna.html",
+                Latausikkuna.avaaKustomoitu(id, "Erillishaun hakukohteen tuonti", IlmoitusTila.INFO, "",
+                        "../common/modaalinen/tuontiikkuna.html",
                     function(dokumenttiId) {
                         // tee paivitys
                         $window.location.reload();
