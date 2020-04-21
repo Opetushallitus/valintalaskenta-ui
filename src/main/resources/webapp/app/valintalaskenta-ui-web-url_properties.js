@@ -173,7 +173,7 @@ window.urls.addProperties({
     "henkilo-ui.henkilo.permissioncheckservice" : "henkilo-ui/oppija/$1?permissionCheckService=$2",
     "oppijanumerorekisteri-service.henkilo" : "oppijanumerorekisteri-service/henkilo/$1",
 
-    "oppijanumerorekisteri-service.login" :"/oppijanumerorekisteri-service/cas/prequel",
+    "oppijanumerorekisteri-service.login" :"oppijanumerorekisteri-service/cas/prequel",
 
     "virkailija-raamit.apply" : "virkailija-raamit/apply-raamit.js"
 });
