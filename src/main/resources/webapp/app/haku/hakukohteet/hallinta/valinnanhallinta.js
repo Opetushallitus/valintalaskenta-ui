@@ -35,6 +35,8 @@ app.factory('ValinnanhallintaModel', function (ValinnanvaiheListFromValintaperus
                                     )
                                 ).filter(
                                     valintatapajono => valintatapajono.aktiivinen
+                                ).sort(
+                                    (j, jj) => j.prioriteetti - jj.prioriteetti
                                 )
                             }
                         )
