@@ -556,12 +556,6 @@ app.factory('SijoittelunTulosTaulukkolaskenta', function($resource) {
     });
 });
 
-app.factory('SijoittelunTulosHyvaksymiskirjeet', function($resource) {
-    return $resource(window.url("valintalaskentakoostepalvelu.sijoiteluntuloshaulle.hyvaksymiskirjeet"), {}, {
-        aktivoi:  {method:'POST', isArray:false}
-    });
-});
-
 app.factory('Jalkiohjauskirjeet', function($resource) {
     return $resource(window.url("valintalaskentakoostepalvelu.viestintapalvelu.jalkiohjauskirjeet.aktivoi"), {}, {
         post:  {method:'POST', isArray:false}

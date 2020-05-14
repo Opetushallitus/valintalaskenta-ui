@@ -59,7 +59,6 @@ window.urls.addProperties({
     "valintalaskentakoostepalvelu.proxy.viestintapalvelu.count.haku" : "valintalaskentakoostepalvelu/resources/proxy/viestintapalvelu/count/haku/$1",
     "valintalaskentakoostepalvelu.proxy.viestintapalvelu.publish.haku" : "valintalaskentakoostepalvelu/resources/proxy/viestintapalvelu/publish/haku/$1",
     "valintalaskentakoostepalvelu.session.maxinactiveinterval" : "valintalaskentakoostepalvelu/resources/session/maxinactiveinterval",
-    "valintalaskentakoostepalvelu.sijoiteluntuloshaulle.hyvaksymiskirjeet" : "valintalaskentakoostepalvelu/resources/sijoitteluntuloshaulle/hyvaksymiskirjeet",
     "valintalaskentakoostepalvelu.sijoitteluntuloshaulle.osoitetarrat" : "valintalaskentakoostepalvelu/resources/sijoitteluntuloshaulle/osoitetarrat",
     "valintalaskentakoostepalvelu.sijoitteluntuloshaulle.taulukkolaskennat" : "valintalaskentakoostepalvelu/resources/sijoitteluntuloshaulle/taulukkolaskennat",
     "valintalaskentakoostepalvelu.valintakoe.hakutoive" : "valintalaskentakoostepalvelu/resources/valintakoe/hakutoive/$1",
