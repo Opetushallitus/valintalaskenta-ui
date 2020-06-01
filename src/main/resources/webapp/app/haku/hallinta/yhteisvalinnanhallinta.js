@@ -36,7 +36,7 @@ app.factory('VirheModel', function (HakuVirheet) {
 
 angular.module('valintalaskenta').
     controller('YhteisvalinnanHallintaController',['$scope', '$modal', '$interval', '_', 
-        'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat', 'SijoittelunTulosHyvaksymiskirjeet', 
+        'SijoittelunTulosTaulukkolaskenta','SijoittelunTulosOsoitetarrat', 'Hyvaksymiskirjeet',
         'Jalkiohjauskirjepohjat', 'AktivoiKelaFtp', 'ViestintapalveluProxy', 'ViestintapalveluJulkaiseProxy',
         '$log', '$timeout', '$q','$location', 'ViestintapalveluEPosti',
         'Ilmoitus', 'KelaDokumentti', 'Latausikkuna', '$routeParams',
@@ -44,7 +44,7 @@ angular.module('valintalaskenta').
         'HakuModel', 'VirheModel', 'JatkuvaSijoittelu', 'IlmoitusTila', 'SeurantaPalveluHaunLaskennat', 'Korkeakoulu',
         'CustomHakuUtil','Hyvaksymiskirjepohjat',
         function ($scope, $modal, $interval, _, 
-        		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, SijoittelunTulosHyvaksymiskirjeet, 
+        		SijoittelunTulosTaulukkolaskenta,SijoittelunTulosOsoitetarrat, Hyvaksymiskirjeet,
         		Jalkiohjauskirjepohjat, AktivoiKelaFtp, ViestintapalveluProxy, ViestintapalveluJulkaiseProxy,
         		$log, $timeout, $q, $location, ViestintapalveluEPosti,
         		Ilmoitus, KelaDokumentti, Latausikkuna, $routeParams,
@@ -258,15 +258,6 @@ angular.module('valintalaskenta').
         $scope.sijoitteluModel = result;
     });
 
-    $scope.sijoittelunTuloksetHyvaksymiskirjeiksi = function() {
-        var hakuoid = $routeParams.hakuOid;
-        SijoittelunTulosHyvaksymiskirjeet.aktivoi({hakuOid: hakuoid}, {}, function (id) {
-            Latausikkuna.avaa(id, "Sijoitteluntulokset hyväksymiskirjeiksi", "", {});
-        }, function () {
-            Ilmoitus.avaa("Sijoittelun tulokset hyväksymiskirjeiksi epäonnistui", "Sijoittelun tulokset hyväksymiskirjeiksi epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-        });
-    };
-
     $scope.muodostaKirjeet = function(hyvaksymiskirje, langcode) {
         console.log("is hyvaksymiskirje? " + (hyvaksymiskirje == true));
         console.log("using language " + langcode);
@@ -291,15 +282,22 @@ angular.module('valintalaskenta').
                         otsikko: "Hyväksymiskirjeet",
                         toimintoNimi: "Muodosta hyväksymiskirjeet",
                         toiminto: function(sisalto) {
-                            SijoittelunTulosHyvaksymiskirjeet.aktivoi({
-                                hakuOid: hakuOid,
-                                asiointikieli: langcode,
-                                letterBodyText: sisalto
-                            }, {}, function (id) {
-                                Latausikkuna.avaa(id, "Hyväksymiskirjeet", "", false);
-                            }, function () {
-
-                            });
+                            Hyvaksymiskirjeet.post(
+                                {
+                                    hakuOid: hakuOid,
+                                    asiointikieli: langcode,
+                                    vainTulosEmailinKieltaneet: false,
+                                    templateName: "hyvaksymiskirje"
+                                },
+                                {
+                                    tag: hakuOid,
+                                    letterBodyText: sisalto
+                                },
+                                function (id) {
+                                    Latausikkuna.avaa(id, "Hyväksymiskirjeet", "", false);
+                                },
+                                function () { }
+                            );
                         },
                         showDateFields: true,
                         hakuOid: $routeParams.hakuOid,
@@ -377,12 +375,27 @@ angular.module('valintalaskenta').
 	};
 
     $scope.sijoittelunTuloksetHyvaksymiskirjeetHakukohteille = function() {
-        var hakuoid = $routeParams.hakuOid;
-        SijoittelunTulosHyvaksymiskirjeet.aktivoi({hakuOid: hakuoid}, {}, function (id) {
-            Latausikkuna.avaa(id, "Sijoitteluntulokset hyväksymiskirjeiksi hakukohteittain", "", {});
-        }, function () {
-            Ilmoitus.avaa("Sijoittelun tulokset hyväksymiskirjeiksi hakukohteittain epäonnistui", "Sijoittelun tulokset hyväksymiskirjeiksi hakukohteittain epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.", IlmoitusTila.ERROR);
-        });
+        var hakuOid = $routeParams.hakuOid;
+        Hyvaksymiskirjeet.post(
+            {
+                hakuOid: hakuOid,
+                vainTulosEmailinKieltaneet: false,
+                templateName: "hyvaksymiskirje"
+            },
+            {
+                tag: hakuOid
+            },
+            function (id) {
+                Latausikkuna.avaa(id, "Sijoitteluntulokset hyväksymiskirjeiksi hakukohteittain", "", {});
+            },
+            function () {
+                Ilmoitus.avaa(
+                    "Sijoittelun tulokset hyväksymiskirjeiksi hakukohteittain epäonnistui",
+                    "Sijoittelun tulokset hyväksymiskirjeiksi hakukohteittain epäonnistui! Taustapalvelu saattaa olla alhaalla. Yritä uudelleen tai ota yhteyttä ylläpitoon.",
+                    IlmoitusTila.ERROR
+                );
+            }
+        );
     };
 	
     $scope.kaynnistaSijoittelu = function () {
