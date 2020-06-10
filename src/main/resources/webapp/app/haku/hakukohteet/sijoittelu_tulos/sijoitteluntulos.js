@@ -834,7 +834,8 @@ angular.module('valintalaskenta')
             $scope.userModelPromise = UserModel.refreshIfNeeded();
             $scope.hakuModelPromise = $scope.hakuModel.promise;
             $scope.enableTulostus = function() {return false;};
-
+            $scope.isVastaanottoSahkopostinLahetysSallittu = !HakuUtility.isToinenAsteKohdeJoukko(
+                    HakuModel.hakuOid.kohdejoukkoUri) || UserModel.isOphUser;
 
             $scope.osoitetarratUrl = osoitetarratUrl[0] ? osoitetarratUrl[0].documentId : null;
             $scope.hyvaksymiskirjeetUrl = hyvaksymiskirjeetUrl[0] ? hyvaksymiskirjeetUrl[0].documentId : null;
