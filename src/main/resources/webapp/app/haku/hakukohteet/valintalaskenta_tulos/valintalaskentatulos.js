@@ -434,10 +434,10 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
 
 angular.module('valintalaskenta').controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
     'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'ValintalaskentatulosModel',
-    'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', '$log', '$modal', 'AuthService', 'UserModel', 'LocalisationService',
+    'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', '$log', '$modal', 'AuthService', 'UserModel', 'LocalisationService', 'json',
     function($scope, $location, $routeParams, $timeout, $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
              ValintatapajonoVienti, ValintalaskentatulosModel, TulosXls, HakukohdeModel, HakuModel, $http, $log, $modal, AuthService, UserModel,
-             LocalisationService) {
+             LocalisationService, json) {
         "use strict";
 
         $scope.hakukohdeOid = $routeParams.hakukohdeOid;
