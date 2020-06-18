@@ -539,7 +539,7 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
                     });
                 }).error(function(data) {
                     //error
-                    Ilmoitus.avaa("Tuonti epäonnistui", "Valintatulosten tuonti epäonnistui. " + data + ". Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                    Ilmoitus.avaa("Tuonti epäonnistui", "Valintatulosten tuonti epäonnistui. " + (data | json) + ". Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
                 });
             };
 
