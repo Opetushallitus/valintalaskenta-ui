@@ -432,10 +432,10 @@ app.factory('ValintalaskentatulosModel', function($routeParams, ValinnanvaiheLis
 });
 
 
-angular.module('valintalaskenta').controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', 'Ilmoitus',
-    'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'ValintalaskentatulosModel',
+angular.module('valintalaskenta').controller('ValintalaskentatulosController', ['$scope', '$location', '$routeParams', '$timeout', '$upload', '$filter',
+    'Ilmoitus', 'IlmoitusTila', 'Latausikkuna', 'ValintatapajonoVienti', 'ValintalaskentatulosModel',
     'TulosXls', 'HakukohdeModel', 'HakuModel', '$http', '$log', '$modal', 'AuthService', 'UserModel', 'LocalisationService',
-    function($scope, $location, $routeParams, $timeout, $upload, Ilmoitus, IlmoitusTila, Latausikkuna,
+    function($scope, $location, $routeParams, $timeout, $upload, $filter, Ilmoitus, IlmoitusTila, Latausikkuna,
              ValintatapajonoVienti, ValintalaskentatulosModel, TulosXls, HakukohdeModel, HakuModel, $http, $log, $modal, AuthService, UserModel,
              LocalisationService) {
         "use strict";
@@ -539,7 +539,7 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
                     });
                 }).error(function(data) {
                     //error
-                    Ilmoitus.avaa("Tuonti epäonnistui", "Valintatulosten tuonti epäonnistui. " + data + ". Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
+                    Ilmoitus.avaa("Tuonti epäonnistui", "Valintatulosten tuonti epäonnistui. " + $filter('json')(data) + ". Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
                 });
             };
 
