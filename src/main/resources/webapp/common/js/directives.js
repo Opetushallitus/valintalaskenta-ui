@@ -1455,3 +1455,17 @@ app.directive('linkToHenkiloInHenkilopalvelu', function () {
       '<a ng-if="henkiloOid" href="{{url}}" target="_blank">{{txt}}</a>',
   }
 })
+
+app.directive('tilaFilterA', function () {
+  return {
+    restrict: 'E',
+    scope: {},
+    template: '<div id="lollero">lolleroinen</div>',
+    link: function ($scope) {
+      ReactDOM.render(
+        <div>lolleroinen</div>,
+        document.getElementById('lollero')
+      )
+    },
+  }
+})
