@@ -6,10 +6,10 @@ import static fi.vm.sade.valintalaskenta.config.ValintaUiJetty.JETTY;
 import java.time.Duration;
 
 public class ValintaUiJettyForLocalDev {
-    private final static int port = Integer.parseInt(System.getProperty("valintalaskenta-ui.port", "8083"));
+  private static final int port =
+      Integer.parseInt(System.getProperty("valintalaskenta-ui.port", "8083"));
 
-    public static void main(String... args) {
-        JETTY.start(CONTEXT_PATH, port, 1, 10, Duration.ofMinutes(1));
-    }
-
+  public static void main(String... args) {
+    JETTY.start(CONTEXT_PATH, port, 1, 10, Duration.ofMinutes(1));
+  }
 }

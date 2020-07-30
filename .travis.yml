@@ -24,13 +24,15 @@ install:
 - source ci-tools/common/setup-tools.sh
 - sudo sh -c "printf '\n%s penaali.hard.ware.fi\n' $(dig +short artifactory.opintopolku.fi|head -n1) >> /etc/hosts"
 - export ARTIFACT_NAME="valintalaskenta-ui"
-- nvm install 9
+- nvm install 10
 - node -v
 - npm -v
 - npm install
 - npm run build
 
 script:
+- ./bin/run-eslint-in-travis.sh
+- ./bin/run-spotless-in-travis.sh
 - mvn clean package -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER}
 
 - mv target/valintalaskenta-ui-*allinone.jar $DOCKER_BUILD_DIR/artifact/${ARTIFACT_NAME}.jar

@@ -3,8 +3,24 @@
     "build": "bower update && gulp scripts",
     "scripts": "gulp scripts"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./src/**/*.{js,jsx,ts,tsx}": [
+      "./bin/run-eslint-pre-commit.sh"
+    ],
+    "./src/**/*.java": [
+      "./bin/run-spotless-pre-commit.sh"
+    ]
+  },
   "devDependencies": {
     "bower": "1.8.8",
+    "eslint": "7.5.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-prettier": "3.1.4",
     "gulp": "3.9.1",
     "gulp-clean": "0.4.0",
     "gulp-cli": "2.2.0",
@@ -15,8 +31,11 @@
     "gulp-sass": "4.0.2",
     "gulp-uglify": "3.0.2",
     "gulp-watch": "5.0.1",
+    "husky": "4.2.5",
     "karma": "0.13.22",
+    "lint-staged": "10.2.11",
     "mocha-headless-chrome": "2.0.3",
+    "prettier": "2.0.5",
     "run-sequence": "2.2.1",
     "test": "0.6.0"
   }

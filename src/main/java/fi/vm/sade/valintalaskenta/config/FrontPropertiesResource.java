@@ -10,17 +10,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class FrontPropertiesResource {
 
-    private final UrlConfiguration urlConfiguration;
+  private final UrlConfiguration urlConfiguration;
 
-    @Autowired
-    public FrontPropertiesResource(UrlConfiguration urlConfiguration) {
-        Assert.notNull(urlConfiguration, "Instance of UrlConfiguration must not be null");
-        this.urlConfiguration = urlConfiguration;
-    }
+  @Autowired
+  public FrontPropertiesResource(UrlConfiguration urlConfiguration) {
+    Assert.notNull(urlConfiguration, "Instance of UrlConfiguration must not be null");
+    this.urlConfiguration = urlConfiguration;
+  }
 
-    @RequestMapping(value="/frontProperties.js", method=RequestMethod.GET, produces="application/javascript;charset=UTF-8")
-    @ResponseBody
-    public String frontProperties() {
-        return "window.urls.addOverrides(" + urlConfiguration.frontPropertiesToJson() + ");";
-    }
+  @RequestMapping(
+      value = "/frontProperties.js",
+      method = RequestMethod.GET,
+      produces = "application/javascript;charset=UTF-8")
+  @ResponseBody
+  public String frontProperties() {
+    return "window.urls.addOverrides(" + urlConfiguration.frontPropertiesToJson() + ");";
+  }
 }

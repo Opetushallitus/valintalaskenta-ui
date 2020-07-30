@@ -1,39 +1,46 @@
 function perustiedotPage(hakuOid, hakukohdeOid) {
-    function isLocalhost() {
-        return location.host.indexOf('localhost') > -1
+  function isLocalhost() {
+    return location.host.indexOf('localhost') > -1
+  }
+
+  var openPerustiedotPage = openPage(
+    '/valintalaskenta-ui/app/index.html#/haku/' +
+      hakuOid +
+      '/hakukohde/' +
+      hakukohdeOid +
+      '/perustiedot',
+    function () {
+      return S('.virkailija-table-1').length === 1
     }
+  )
 
-    var openPerustiedotPage = openPage(
-        "/valintalaskenta-ui/app/index.html#/haku/" + hakuOid + "/hakukohde/" + hakukohdeOid + "/perustiedot", function () {
-            return S(".virkailija-table-1").length === 1
+  var pageFunctions = {
+    perustiedotTable: function () {
+      return S('.virkailija-table-1').first()
+    },
+    openPage: function (done) {
+      return openPerustiedotPage().then(
+        wait.until(function () {
+          var pageReady = pageFunctions.perustiedotTable().length === 1
+          if (pageReady) {
+            done()
+          }
+          return pageReady
         })
-
-    var pageFunctions = {
-        perustiedotTable: function () {
-            return S(".virkailija-table-1").first()
-        },
-        openPage: function (done) {
-            return openPerustiedotPage()
-                .then(wait.until(function () {
-                    var pageReady = pageFunctions.perustiedotTable().length === 1;
-                    if (pageReady) {
-                        done()
-                    }
-                    return pageReady
-                }))
-        }
-    };
-    return pageFunctions;
+      )
+    },
+  }
+  return pageFunctions
 }
 
 perustiedotSelectors = initSelectors({
-    valintatapajonoAtIndex: function (trIndex) {
-        return ".virkailija-table-1 tr:eq(" + trIndex + ") td:eq(0)"
-    },
-    hyvaksytytAtIndex: function (trIndex) {
-        return ".virkailija-table-1 tr:eq(" + trIndex + ") td:eq(3)"
-    },
-    vastaanottaneetAtIndex: function (trIndex) {
-        return ".virkailija-table-1 tr:eq(" + trIndex + ") td:eq(6)"
-    }
+  valintatapajonoAtIndex: function (trIndex) {
+    return '.virkailija-table-1 tr:eq(' + trIndex + ') td:eq(0)'
+  },
+  hyvaksytytAtIndex: function (trIndex) {
+    return '.virkailija-table-1 tr:eq(' + trIndex + ') td:eq(3)'
+  },
+  vastaanottaneetAtIndex: function (trIndex) {
+    return '.virkailija-table-1 tr:eq(' + trIndex + ') td:eq(6)'
+  },
 })
