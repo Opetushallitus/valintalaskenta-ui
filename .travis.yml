@@ -24,7 +24,7 @@ install:
 - source ci-tools/common/setup-tools.sh
 - sudo sh -c "printf '\n%s penaali.hard.ware.fi\n' $(dig +short artifactory.opintopolku.fi|head -n1) >> /etc/hosts"
 - export ARTIFACT_NAME="valintalaskenta-ui"
-- nvm install 9
+- nvm install 10
 - node -v
 - npm -v
 - npm install
