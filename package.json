@@ -11,6 +11,9 @@
   "lint-staged": {
     "./src/**/*.{js,jsx,ts,tsx}": [
       "./bin/run-eslint-pre-commit.sh"
+    ],
+    "./src/**/*.java": [
+      "./bin/run-spotless-pre-commit.sh"
     ]
   },
   "devDependencies": {
