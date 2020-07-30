@@ -1,0 +1,14 @@
+/.idea
+/bower_components
+/node
+/node_modules
+/server
+/src/main/java
+/src/main/resources/webapp/common/css
+/src/main/resources/webapp/common/jslib
+/src/test/java
+/src/test/ui
+/src/test/webapp/virkailija-raamit
+/src/test/webapp/test/fixtures
+/src/test/webapp/test/lib
+/target
