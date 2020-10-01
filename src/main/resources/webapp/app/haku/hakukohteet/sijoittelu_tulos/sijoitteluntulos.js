@@ -534,11 +534,7 @@ angular
           model.valintatapajonoLastModified = {}
           model.hakukohteenHakemukset = {}
 
-          var hakuPromise = HaunTiedot.get({ hakuOid: hakuOid }).$promise.then(
-            function (resultWrapper) {
-              return resultWrapper.result
-            }
-          )
+          var hakuPromise = HaunTiedot.get({ hakuOid: hakuOid }).$promise
           return $q
             .all([
               sijoittelunTuloksetPromise(

@@ -335,16 +335,13 @@ app.factory('HenkiloTiedotModel', function (
     self.valintatapajonoLastModified = {} // FIXME vaatii valintatuloksen hakemisen uudemmasta VTS:n API:sta
 
     var hakuPromise = HaunTiedot.get({ hakuOid: hakuOid }).$promise.then(
-      function (o) {
-        if (o.status === 'OK') {
-          return o.result
-        } else if (o.status === 'NOT_FOUND') {
-          return $q.reject('Haku ' + hakuOid + ' not found')
-        } else {
-          return $q.reject(
-            'Error fetching haku ' + hakuOid + ': ' + JSON.stringify(o)
-          )
-        }
+      function (haku) {
+        return haku
+      },
+      function (error) {
+        return $q.reject(
+          'Error fetching haku ' + hakuOid + ': ' + JSON.stringify(o)
+        )
       }
     )
     var hakemusPromise = hakuPromise.then(function (haku) {

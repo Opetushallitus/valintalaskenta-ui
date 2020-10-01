@@ -5,6 +5,10 @@ window.urls.addProperties({
     'tarjonta-service/rest/v1/haku/$1/hakukohdeTulos',
   'tarjonta-service.hakukohde': 'tarjonta-service/rest/v1/hakukohde/$1',
 
+  'kouta-internal.auth.login': 'kouta-internal/auth/login',
+  'kouta-internal.haku.search': 'kouta-internal/haku/search',
+  'kouta-internal.haku': 'kouta-internal/haku/$1',
+
   'valintaperusteet-service.buildversion':
     'valintaperusteet-service/buildversion.txt?auth',
   'valintaperusteet-service.hakukohde':

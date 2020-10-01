@@ -83,8 +83,8 @@ angular
 
                 TarjontaHaut.get(
                   { virkailijaTyyppi: virkailijaTyyppi },
-                  function (resultWrapper) {
-                    model.haut = resultWrapper.result
+                  function (haut) {
+                    model.haut = haut
                     model.haut.forEach(function (haku) {
                       if (haku.oid === oid) {
                         model.hakuOid = haku

@@ -258,8 +258,8 @@ angular
 
       var refreshHaunTiedot = function () {
         return HaunTiedot.get({ hakuOid: $scope.hakuOid }).$promise.then(
-          function (resultWrapper) {
-            $scope.haku = HakuHelper.setErillishaku(resultWrapper.result)
+          function (haku) {
+            $scope.haku = HakuHelper.setErillishaku(haku)
             return $scope.haku
           }
         )
