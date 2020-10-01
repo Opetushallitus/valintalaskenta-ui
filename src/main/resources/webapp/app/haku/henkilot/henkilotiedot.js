@@ -4,7 +4,6 @@ app.factory('HenkiloTiedotModel', function (
   AuthService,
   Hakemus,
   ValintalaskentaHakemus,
-  HakukohdeNimi,
   ValinnanvaiheListFromValintaperusteet,
   HakukohdeValinnanvaihe,
   SijoittelunVastaanottotilat,

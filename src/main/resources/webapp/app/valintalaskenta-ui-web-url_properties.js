@@ -1,14 +1,9 @@
 window.urls.addProperties({
-  'tarjonta-service.haku': 'tarjonta-service/rest/v1/haku',
   'tarjonta-service.haku.find': 'tarjonta-service/rest/v1/haku/find',
   'tarjonta-service.haku.hakuoid': 'tarjonta-service/rest/v1/haku/$1',
-  'tarjonta-service.haku.hakukohde':
-    'tarjonta-service/rest/v1/haku/$1/hakukohde',
   'tarjonta-service.haku.hakukohdetulos':
     'tarjonta-service/rest/v1/haku/$1/hakukohdeTulos',
   'tarjonta-service.hakukohde': 'tarjonta-service/rest/v1/hakukohde/$1',
-  'tarjonta-service.hakukohde.nimi':
-    'tarjonta-service/rest/v1/hakukohde/$1/nimi',
 
   'valintaperusteet-service.buildversion':
     'valintaperusteet-service/buildversion.txt?auth',
