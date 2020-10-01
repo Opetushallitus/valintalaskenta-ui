@@ -1,5 +1,60 @@
 var plainUrl = window.urls().noEncode().url
 
+var tarjontaHakuToHaku = function (haku) {
+  return {
+    oid: haku.oid,
+    tila: haku.tila,
+    nimi: haku.nimi,
+    ataruLomakeAvain: haku.ataruLomakeAvain,
+    haunTunniste: haku.haunTunniste,
+    kohdejoukkoUri: haku.kohdejoukkoUri,
+    kohdejoukonTarkenne: haku.kohdejoukonTarkenne,
+    hakukausiVuosi: haku.hakukausiVuosi,
+    hakukausiUri: haku.hakukausiUri,
+    hakuaikas: haku.hakuaikas,
+    hakutapaUri: haku.hakutapaUri,
+    hakutyyppiUri: haku.hakutyyppiUri,
+    organisaatioOids: haku.organisaatioOids,
+    sijoittelu: haku.sijoittelu,
+  }
+}
+var koutaHakuToHaku = function (haku) {
+  var nimi = {}
+  if (haku.nimi.fi !== undefined && haku.nimi.fi.trim() !== '') {
+    nimi.kieli_fi = haku.nimi.fi
+  }
+  if (haku.nimi.sv !== undefined && haku.nimi.sv.trim() !== '') {
+    nimi.kieli_sv = haku.nimi.sv
+  }
+  if (haku.nimi.en !== undefined && haku.nimi.en.trim() !== '') {
+    nimi.kieli_en = haku.nimi.en
+  }
+  return {
+    oid: haku.oid,
+    tila: 'JULKAISTU',
+    nimi: nimi,
+    ataruLomakeAvain: haku.hakulomakeAtaruId,
+    haunTunniste: null,
+    kohdejoukkoUri: haku.kohdejoukkoKoodiUri,
+    kohdejoukonTarkenne: haku.kohdejoukonTarkenneKoodiUri,
+    hakukausiVuosi: null,
+    hakukausiUri: null,
+    hakuaikas: haku.hakuajat.map(function (hakuaika) {
+      return {
+        nimi: '',
+        alkuPvm: hakuaika.alkaa ? new Date(hakuaika.alkaa).getTime() : null,
+        loppuPvm: hakuaika.paattyy
+          ? new Date(hakuaika.paattyy).getTime()
+          : null,
+      }
+    }),
+    hakutapaUri: haku.hakutapaKoodiUri,
+    hakutyyppiUri: null,
+    organisaatioOids: [haku.organisaatioOid],
+    sijoittelu: false,
+  }
+}
+
 var app = angular.module('valintalaskenta')
 app.factory('KoostettuHakemusAdditionalData', function ($http) {
   return {
@@ -69,11 +124,32 @@ app.factory('KoostettuHakemusAdditionalDataForHakemus', function ($http) {
 //TARJONTA RESOURCES
 
 app.factory('HaunTiedot', function ($resource) {
-  return $resource(
+  var tarjontaResource = $resource(
     plainUrl('tarjonta-service.haku.hakuoid', ':hakuOid'),
     { hakuOid: '@hakuOid' },
     { get: { method: 'GET', cache: true } }
   )
+  var koutaResource = $resource(
+    plainUrl('kouta-internal.haku', ':hakuOid'),
+    { hakuOid: '@hakuOid' },
+    { get: { method: 'GET', cache: true } }
+  )
+  return {
+    get: function (params, onSuccess, onError) {
+      var tarjontaP = tarjontaResource.get(params).$promise
+      var koutaP = koutaResource.get(params).$promise
+      return {
+        $promise: tarjontaP
+          .then(function (tarjontaHaku) {
+            if (tarjontaHaku.result) {
+              return tarjontaHakuToHaku(tarjontaHaku.result)
+            }
+            return koutaP.then(koutaHakuToHaku)
+          })
+          .then(onSuccess, onError),
+      }
+    },
+  }
 })
 
 app.factory('TarjontaHaku', function ($resource) {
@@ -93,7 +169,7 @@ app.factory('TarjontaHakukohde', function ($resource) {
 })
 
 app.factory('TarjontaHaut', function ($resource) {
-  return $resource(
+  var tarjontaResource = $resource(
     window.url('tarjonta-service.haku.find', {
       addHakukohdes: 'false',
       cache: 'true',
@@ -101,6 +177,30 @@ app.factory('TarjontaHaut', function ($resource) {
     { virkailijaTyyppi: '@virkailijaTyyppi' },
     { get: { method: 'GET', cache: true } }
   )
+  var koutaResource = $resource(
+    window.url('kouta-internal.haku.search'),
+    {},
+    { get: { method: 'GET', isArray: true, cache: false } }
+  )
+  return {
+    get: function (params, onSuccess, onError) {
+      var tarjontaP = tarjontaResource
+        .get(params)
+        .$promise.then(function (tarjontaHaut) {
+          return tarjontaHaut.result.map(tarjontaHakuToHaku)
+        })
+      var koutaP = koutaResource.get().$promise.then(function (koutaHaut) {
+        return koutaHaut.map(koutaHakuToHaku)
+      })
+      tarjontaP
+        .then(function (tarjontaHaut) {
+          return koutaP.then(function (koutaHaut) {
+            return tarjontaHaut.concat(koutaHaut)
+          })
+        })
+        .then(onSuccess, onError)
+    },
+  }
 })
 
 // Hakuparametrit
