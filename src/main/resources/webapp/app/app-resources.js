@@ -67,13 +67,6 @@ app.factory('KoostettuHakemusAdditionalDataForHakemus', function ($http) {
 })
 
 //TARJONTA RESOURCES
-app.factory('Haku', function ($resource) {
-  return $resource(
-    window.url('tarjonta-service.haku'),
-    {},
-    { get: { method: 'GET', isArray: true, cache: true } }
-  )
-})
 
 app.factory('HaunTiedot', function ($resource) {
   return $resource(
@@ -83,13 +76,6 @@ app.factory('HaunTiedot', function ($resource) {
   )
 })
 
-app.factory('HakuHakukohdeChildren', function ($resource) {
-  return $resource(
-    plainUrl('tarjonta-service.haku.hakukohde', ':hakuOid', { count: '99999' }),
-    { hakuOid: '@hakuOid' },
-    { get: { method: 'GET', isArray: true, cache: true } }
-  )
-})
 app.factory('TarjontaHaku', function ($resource) {
   return $resource(
     plainUrl('tarjonta-service.haku.hakukohdetulos', ':hakuOid'),
@@ -101,13 +87,6 @@ app.factory('TarjontaHaku', function ($resource) {
 app.factory('TarjontaHakukohde', function ($resource) {
   return $resource(
     plainUrl('tarjonta-service.hakukohde', ':hakukohdeoid'),
-    { hakukohdeoid: '@hakukohdeoid' },
-    { get: { method: 'GET', cache: true } }
-  )
-})
-app.factory('HakukohdeNimi', function ($resource) {
-  return $resource(
-    plainUrl('tarjonta-service.hakukohde.nimi', ':hakukohdeoid'),
     { hakukohdeoid: '@hakukohdeoid' },
     { get: { method: 'GET', cache: true } }
   )

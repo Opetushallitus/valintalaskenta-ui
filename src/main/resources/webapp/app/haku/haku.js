@@ -4,22 +4,12 @@ angular
   .factory('HakuModel', [
     '$q',
     '$log',
-    'Haku',
     'UserModel',
     'TarjontaHaut',
     'Korkeakoulu',
     '_',
     '$rootScope',
-    function (
-      $q,
-      $log,
-      Haku,
-      UserModel,
-      TarjontaHaut,
-      Korkeakoulu,
-      _,
-      $rootScope
-    ) {
+    function ($q, $log, UserModel, TarjontaHaut, Korkeakoulu, _, $rootScope) {
       'use strict'
 
       var model

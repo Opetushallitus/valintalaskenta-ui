@@ -6,7 +6,6 @@ angular
     '$routeParams',
     '$log',
     '$http',
-    'Haku',
     'AuthService',
     'TarjontaHaku',
     'HakuModel',
@@ -15,7 +14,6 @@ angular
       $routeParams,
       $log,
       $http,
-      Haku,
       AuthService,
       TarjontaHaku,
       HakuModel
