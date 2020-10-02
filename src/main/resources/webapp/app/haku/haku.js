@@ -58,7 +58,7 @@ angular
         }
 
         this.init = function (oid) {
-          if (model.haut.length === 0 || oid !== model.hakuOid) {
+          if (model.haut.length === 0 || oid !== model.hakuOid.oid) {
             UserModel.refreshIfNeeded().then(
               function () {
                 var virkailijaTyyppi
