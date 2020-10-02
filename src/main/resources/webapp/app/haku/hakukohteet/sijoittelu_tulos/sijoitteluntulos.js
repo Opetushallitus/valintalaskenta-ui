@@ -1455,12 +1455,7 @@ angular
       $scope.luoJalkiohjauskirjeetPDF = function () {
         var hakuOid = $routeParams.hakuOid
         var hakukohde = $scope.hakukohdeModel.hakukohde
-        var tag = null
-        if (hakukohde.hakukohdeNimiUri) {
-          tag = hakukohde.hakukohdeNimiUri.split('#')[0]
-        } else {
-          tag = $routeParams.hakukohdeOid
-        }
+        var tag = $routeParams.hakukohdeOid
 
         var langcode = HakukohdeNimiService.getOpetusKieliCode(
           $scope.hakukohdeModel.hakukohde
@@ -1512,7 +1507,6 @@ angular
                     hakuOid: hakuOid,
                   })
                 },
-                hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
                 hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi,
               }
             },
@@ -1521,19 +1515,13 @@ angular
       }
       $scope.luoHyvaksymiskirjeetPDF = function (hakemusOids, sijoitteluajoId) {
         var hakukohde = $scope.hakukohdeModel.hakukohde
-        var tag = null
-        if (hakukohde.hakukohdeNimiUri) {
-          tag = hakukohde.hakukohdeNimiUri.split('#')[0]
-        } else {
-          tag = $routeParams.hakukohdeOid
-        }
+        var tag = $routeParams.hakukohdeOid
         Kirjeet.hyvaksymiskirjeet({
           hakuOid: $routeParams.hakuOid,
           hakukohdeOid: $routeParams.hakukohdeOid,
           sijoitteluajoId: sijoitteluajoId,
           hakemusOids: hakemusOids,
           tarjoajaOid: hakukohde.tarjoajaOids[0],
-          hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
           hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi,
           tag: tag,
           langcode: HakukohdeNimiService.getOpetusKieliCode(hakukohde),

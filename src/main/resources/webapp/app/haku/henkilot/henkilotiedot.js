@@ -51,14 +51,14 @@ app.factory('HenkiloTiedotModel', function (
         hakemus.hakutoiveet.map(function (hakutoive) {
           return TarjontaHakukohde.get({
             hakukohdeoid: hakutoive.hakukohdeOid,
-          }).$promise.then(function (result) {
-            hakukohteetByHakukohdeOid[result.result.oid] = {
-              nimi: result.result.hakukohteenNimet.kieli_fi,
-              tarjoajaNimi: result.result.tarjoajaNimet.fi,
-              tarjoajaOid: result.result.tarjoajaOids[0],
-              organisationOidsForAuthorization: (
-                result.result.tarjoajaOids || []
-              ).concat(result.result.organisaatioRyhmaOids || []),
+          }).$promise.then(function (hakukohde) {
+            hakukohteetByHakukohdeOid[hakukohde.oid] = {
+              nimi: hakukohde.nimi.kieli_fi,
+              tarjoajaNimi: hakukohde.tarjoajaNimi.kieli_fi,
+              tarjoajaOid: hakukohde.tarjoajaOids[0],
+              organisationOidsForAuthorization: hakukohde.tarjoajaOids.concat(
+                hakukohde.organisaatioRyhmaOids
+              ),
             }
           })
         })

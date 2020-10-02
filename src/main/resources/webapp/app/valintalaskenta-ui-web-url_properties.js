@@ -5,9 +5,16 @@ window.urls.addProperties({
     'tarjonta-service/rest/v1/haku/$1/hakukohdeTulos',
   'tarjonta-service.hakukohde': 'tarjonta-service/rest/v1/hakukohde/$1',
 
+  'tarjonta-app.hakukohde': 'tarjonta-app/index.html#/hakukohde/$1',
+
   'kouta-internal.auth.login': 'kouta-internal/auth/login',
   'kouta-internal.haku.search': 'kouta-internal/haku/search',
   'kouta-internal.haku': 'kouta-internal/haku/$1',
+  'kouta-internal.hakukohde.search': 'kouta-internal/hakukohde/search',
+  'kouta-internal.hakukohde': 'kouta-internal/hakukohde/$1',
+  'kouta-internal.toteutus': 'kouta-internal/toteutus/$1',
+
+  'kouta.hakukohde': 'kouta/hakukohde/$1',
 
   'valintaperusteet-service.buildversion':
     'valintaperusteet-service/buildversion.txt?auth',
