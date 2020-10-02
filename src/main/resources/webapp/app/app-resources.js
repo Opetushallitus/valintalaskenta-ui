@@ -1,10 +1,45 @@
 var plainUrl = window.urls().noEncode().url
 
+var kieliNimiToNimi = function (tarjontaNimi) {
+  var nimi = {}
+  if (
+    tarjontaNimi.kieli_fi !== undefined &&
+    tarjontaNimi.kieli_fi.trim() !== ''
+  ) {
+    nimi.kieli_fi = tarjontaNimi.kieli_fi
+  }
+  if (
+    tarjontaNimi.kieli_sv !== undefined &&
+    tarjontaNimi.kieli_sv.trim() !== ''
+  ) {
+    nimi.kieli_sv = tarjontaNimi.kieli_sv
+  }
+  if (
+    tarjontaNimi.kieli_en !== undefined &&
+    tarjontaNimi.kieli_en.trim() !== ''
+  ) {
+    nimi.kieli_en = tarjontaNimi.kieli_en
+  }
+  return nimi
+}
+var arvoNimiToNimi = function (koutaNimi) {
+  var nimi = {}
+  if (koutaNimi.fi !== undefined && koutaNimi.fi.trim() !== '') {
+    nimi.kieli_fi = koutaNimi.fi
+  }
+  if (koutaNimi.sv !== undefined && koutaNimi.sv.trim() !== '') {
+    nimi.kieli_sv = koutaNimi.sv
+  }
+  if (koutaNimi.en !== undefined && koutaNimi.en.trim() !== '') {
+    nimi.kieli_en = koutaNimi.en
+  }
+  return nimi
+}
 var tarjontaHakuToHaku = function (haku) {
   return {
     oid: haku.oid,
     tila: haku.tila,
-    nimi: haku.nimi,
+    nimi: kieliNimiToNimi(haku.nimi),
     ataruLomakeAvain: haku.ataruLomakeAvain,
     haunTunniste: haku.haunTunniste,
     kohdejoukkoUri: haku.kohdejoukkoUri,
@@ -19,20 +54,10 @@ var tarjontaHakuToHaku = function (haku) {
   }
 }
 var koutaHakuToHaku = function (haku) {
-  var nimi = {}
-  if (haku.nimi.fi !== undefined && haku.nimi.fi.trim() !== '') {
-    nimi.kieli_fi = haku.nimi.fi
-  }
-  if (haku.nimi.sv !== undefined && haku.nimi.sv.trim() !== '') {
-    nimi.kieli_sv = haku.nimi.sv
-  }
-  if (haku.nimi.en !== undefined && haku.nimi.en.trim() !== '') {
-    nimi.kieli_en = haku.nimi.en
-  }
   return {
     oid: haku.oid,
     tila: 'JULKAISTU',
-    nimi: nimi,
+    nimi: arvoNimiToNimi(haku.nimi),
     ataruLomakeAvain: haku.hakulomakeAtaruId,
     haunTunniste: null,
     kohdejoukkoUri: haku.kohdejoukkoKoodiUri,
@@ -52,6 +77,71 @@ var koutaHakuToHaku = function (haku) {
     hakutyyppiUri: null,
     organisaatioOids: [haku.organisaatioOid],
     sijoittelu: false,
+  }
+}
+var tarjontaHakukohdeTulosToHakukohde = function (hakukohde) {
+  return {
+    oid: hakukohde.hakukohdeOid,
+    nimi: arvoNimiToNimi(hakukohde.hakukohdeNimi),
+    tarjoajaNimi: arvoNimiToNimi(hakukohde.tarjoajaNimi),
+  }
+}
+var koutaHakukohdeAndTarjoajatToHakukohde = function (hakukohde, tarjoajat) {
+  return {
+    oid: hakukohde.oid,
+    nimi: arvoNimiToNimi(hakukohde.nimi),
+    tarjoajaNimi: arvoNimiToNimi(tarjoajat[0].nimi),
+  }
+}
+var tarjontaHakukohdeToHakukohde = function (hakukohde) {
+  return {
+    oid: hakukohde.oid,
+    nimi: kieliNimiToNimi(hakukohde.hakukohteenNimet),
+    tarjoajaOids: hakukohde.tarjoajaOids,
+    tarjoajaNimi: arvoNimiToNimi(hakukohde.tarjoajaNimet),
+    organisaatioRyhmaOids: hakukohde.organisaatioRyhmaOids || [],
+    opetuskielet: hakukohde.opetusKielet,
+    virkailijaUrl: plainUrl('tarjonta-app.hakukohde', hakukohde.oid),
+  }
+}
+var koutaHakukohdeAndToteutusToHakukohde = function (
+  hakukohde,
+  toteutus,
+  tarjoajat
+) {
+  var opetuskielet = []
+  toteutus.metadata.opetus.opetuskieliKoodiUrit.forEach(function (
+    oppilaitoksenopetuskieliUri
+  ) {
+    switch (oppilaitoksenopetuskieliUri.split('#')[0]) {
+      case 'oppilaitoksenopetuskieli_1':
+        opetuskielet.push('kieli_fi')
+        break
+      case 'oppilaitoksenopetuskieli_2':
+        opetuskielet.push('kieli_sv')
+        break
+      case 'oppilaitoksenopetuskieli_3':
+        opetuskielet.push('kieli_fi', 'kieli_sv')
+        break
+      case 'oppilaitoksenopetuskieli_4':
+        opetuskielet.push('kieli_en')
+        break
+      case 'oppilaitoksenopetuskieli_5':
+        opetuskielet.push('kieli_se')
+        break
+      case 'oppilaitoksenopetuskieli_9':
+        opetuskielet.push('kieli_xx')
+        break
+    }
+  })
+  return {
+    oid: hakukohde.oid,
+    nimi: arvoNimiToNimi(hakukohde.nimi),
+    tarjoajaOids: hakukohde.tarjoajat,
+    tarjoajaNimi: arvoNimiToNimi(tarjoajat[0].nimi),
+    organisaatioRyhmaOids: [],
+    opetuskielet: opetuskielet,
+    virkailijaUrl: plainUrl('kouta.hakukohde', hakukohde.oid),
   }
 }
 
@@ -152,20 +242,140 @@ app.factory('HaunTiedot', function ($resource) {
   }
 })
 
-app.factory('TarjontaHaku', function ($resource) {
-  return $resource(
+app.factory('TarjontaHaku', function ($resource, $q) {
+  var tarjontaResource = $resource(
     plainUrl('tarjonta-service.haku.hakukohdetulos', ':hakuOid'),
     {},
-    { query: { method: 'GET', isArray: false, cache: true } }
+    { get: { method: 'GET', cache: true } }
   )
+  var koutaResource = $resource(
+    plainUrl('kouta-internal.hakukohde.search'),
+    {},
+    { get: { method: 'GET', isArray: true, cache: false } }
+  )
+  var organisaatioResource = $resource(
+    plainUrl('organisaatio-service.organisaatio', ':oid'),
+    {},
+    { get: { method: 'GET', cache: false } }
+  )
+  return {
+    get: function (params, onSuccess, onError) {
+      var tarjontaP = tarjontaResource
+        .get(params)
+        .$promise.then(function (result) {
+          return {
+            tulokset: (result.tulokset || []).map(
+              tarjontaHakukohdeTulosToHakukohde
+            ),
+            kokonaismaara: result.kokonaismaara,
+          }
+        })
+      koutaResource
+        .get({ haku: params.hakuOid })
+        .$promise.then(
+          function (hakukohteet) {
+            return $q
+              .all(
+                hakukohteet
+                  .slice(params.startIndex, params.startIndex + params.count)
+                  .map(function (hakukohde) {
+                    return $q
+                      .all(
+                        hakukohde.tarjoajat.map(function (oid) {
+                          return organisaatioResource.get({ oid: oid }).$promise
+                        })
+                      )
+                      .then(function (tarjoajat) {
+                        return koutaHakukohdeAndTarjoajatToHakukohde(
+                          hakukohde,
+                          tarjoajat
+                        )
+                      })
+                  })
+              )
+              .then(function (sivu) {
+                return {
+                  tulokset: sivu,
+                  kokonaismaara: hakukohteet.length,
+                }
+              })
+          },
+          function (error) {
+            if (error.status === 404) {
+              return tarjontaP
+            }
+            return error
+          }
+        )
+        .then(onSuccess, onError)
+    },
+  }
 })
 
-app.factory('TarjontaHakukohde', function ($resource) {
-  return $resource(
+app.factory('TarjontaHakukohde', function ($resource, $q) {
+  var tarjontaResource = $resource(
     plainUrl('tarjonta-service.hakukohde', ':hakukohdeoid'),
     { hakukohdeoid: '@hakukohdeoid' },
     { get: { method: 'GET', cache: true } }
   )
+  var koutaHakukohdeResource = $resource(
+    plainUrl('kouta-internal.hakukohde', ':hakukohdeoid'),
+    {},
+    { get: { method: 'GET', cache: false } }
+  )
+  var koutaToteutusResource = $resource(
+    plainUrl('kouta-internal.toteutus', ':toteutusOid'),
+    {},
+    { get: { method: 'GET', cache: false } }
+  )
+  var organisaatioResource = $resource(
+    plainUrl('organisaatio-service.organisaatio', ':oid'),
+    {},
+    { get: { method: 'GET', cache: false } }
+  )
+  return {
+    get: function (params, onSuccess, onError) {
+      var tarjontaP = tarjontaResource
+        .get(params)
+        .$promise.then(function (result) {
+          if (result.result) {
+            return tarjontaHakukohdeToHakukohde(result.result)
+          }
+          return null
+        })
+      var koutaP = koutaHakukohdeResource
+        .get(params)
+        .$promise.then(function (hakukohde) {
+          return koutaToteutusResource
+            .get({ toteutusOid: hakukohde.toteutusOid })
+            .$promise.then(function (toteutus) {
+              return $q
+                .all(
+                  hakukohde.tarjoajat.map(function (oid) {
+                    return organisaatioResource.get({ oid: oid }).$promise
+                  })
+                )
+                .then(function (tarjoajat) {
+                  return koutaHakukohdeAndToteutusToHakukohde(
+                    hakukohde,
+                    toteutus,
+                    tarjoajat
+                  )
+                })
+            })
+        })
+      return {
+        $promise: tarjontaP
+          .then(function (tarjontaHakukohde) {
+            if (tarjontaHakukohde) {
+              return tarjontaHakukohde
+            }
+            return koutaP
+          })
+          .then(onSuccess, onError),
+      }
+    },
+  }
 })
 
 app.factory('TarjontaHaut', function ($resource) {

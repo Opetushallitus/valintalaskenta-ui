@@ -187,7 +187,7 @@ angular.module('valintalaskenta').controller('HakukohteetController', [
           '/haku/' +
             $routeParams.hakuOid +
             '/hakukohde/' +
-            hakukohde.hakukohdeOid +
+            hakukohde.oid +
             '/perustiedot'
         )
       }
