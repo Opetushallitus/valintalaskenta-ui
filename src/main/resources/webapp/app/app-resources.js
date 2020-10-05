@@ -270,8 +270,12 @@ app.factory('TarjontaHaku', function ($resource, $q) {
             kokonaismaara: result.kokonaismaara,
           }
         })
+      var koutaParams = { haku: params.hakuOid }
+      if (params.searchTerms && params.searchTerms.trim() !== '') {
+        koutaParams.q = params.searchTerms
+      }
       koutaResource
-        .get({ haku: params.hakuOid })
+        .get(koutaParams)
         .$promise.then(
           function (hakukohteet) {
             return $q
