@@ -274,6 +274,9 @@ app.factory('TarjontaHaku', function ($resource, $q) {
       if (params.searchTerms && params.searchTerms.trim() !== '') {
         koutaParams.q = params.searchTerms
       }
+      if (params.organisationOids && params.organisationOids !== '') {
+        koutaParams.tarjoaja = params.organisationOids
+      }
       koutaResource
         .get(koutaParams)
         .$promise.then(
