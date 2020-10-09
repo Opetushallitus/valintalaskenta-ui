@@ -4,12 +4,22 @@ angular
   .factory('HakuModel', [
     '$q',
     '$log',
+    'AuthService',
     'UserModel',
     'TarjontaHaut',
     'Korkeakoulu',
     '_',
     '$rootScope',
-    function ($q, $log, UserModel, TarjontaHaut, Korkeakoulu, _, $rootScope) {
+    function (
+      $q,
+      $log,
+      AuthService,
+      UserModel,
+      TarjontaHaut,
+      Korkeakoulu,
+      _,
+      $rootScope
+    ) {
       'use strict'
 
       var model
@@ -59,8 +69,14 @@ angular
 
         this.init = function (oid) {
           if (model.haut.length === 0 || oid !== model.hakuOid.oid) {
-            UserModel.refreshIfNeeded().then(
-              function () {
+            $q.all({
+              organizations: AuthService.getOrganizations(
+                'APP_VALINTOJENTOTEUTTAMINEN',
+                ['READ', 'READ_UPDATE', 'CRUD']
+              ),
+              userModel: UserModel.refreshIfNeeded(),
+            }).then(
+              function (o) {
                 var virkailijaTyyppi
                 if (
                   UserModel.isOphUser ||
@@ -81,8 +97,15 @@ angular
                   virkailijaTyyppi = 'all'
                 }
 
+                var organizationOids = _.filter(o.organizations, function (o) {
+                  return o.startsWith('1.2.246.562.10.')
+                })
+
                 TarjontaHaut.get(
-                  { virkailijaTyyppi: virkailijaTyyppi },
+                  {
+                    virkailijaTyyppi: virkailijaTyyppi,
+                    organizationOids: organizationOids,
+                  },
                   function (haut) {
                     model.haut = haut
                     model.haut.forEach(function (haku) {

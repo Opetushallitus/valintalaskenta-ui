@@ -402,13 +402,15 @@ app.factory('TarjontaHaut', function ($resource) {
   return {
     get: function (params, onSuccess, onError) {
       var tarjontaP = tarjontaResource
-        .get(params)
+        .get({ virkailijaTyyppi: params.virkailijaTyyppi })
         .$promise.then(function (tarjontaHaut) {
           return tarjontaHaut.result.map(tarjontaHakuToHaku)
         })
-      var koutaP = koutaResource.get().$promise.then(function (koutaHaut) {
-        return koutaHaut.map(koutaHakuToHaku)
-      })
+      var koutaP = koutaResource
+        .get({ tarjoaja: params.organizationOids.toString() })
+        .$promise.then(function (koutaHaut) {
+          return koutaHaut.map(koutaHakuToHaku)
+        })
       tarjontaP
         .then(function (tarjontaHaut) {
           return koutaP.then(function (koutaHaut) {
