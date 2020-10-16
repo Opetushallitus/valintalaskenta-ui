@@ -53,7 +53,7 @@ var tarjontaHakuToHaku = function (haku) {
     sijoittelu: haku.sijoittelu,
   }
 }
-var koutaHakuToHaku = function (haku) {
+var koutaHakuToHaku = function (haku, ohjausparametrit) {
   return {
     oid: haku.oid,
     tila: 'JULKAISTU',
@@ -76,7 +76,7 @@ var koutaHakuToHaku = function (haku) {
     hakutapaUri: haku.hakutapaKoodiUri,
     hakutyyppiUri: null,
     organisaatioOids: [haku.organisaatioOid],
-    sijoittelu: false,
+    sijoittelu: ohjausparametrit.sijoittelu || false,
   }
 }
 var tarjontaHakukohdeTulosToHakukohde = function (hakukohde) {
@@ -213,7 +213,7 @@ app.factory('KoostettuHakemusAdditionalDataForHakemus', function ($http) {
 
 //TARJONTA RESOURCES
 
-app.factory('HaunTiedot', function ($resource) {
+app.factory('HaunTiedot', function ($resource, $q) {
   var tarjontaResource = $resource(
     plainUrl('tarjonta-service.haku.hakuoid', ':hakuOid'),
     { hakuOid: '@hakuOid' },
@@ -224,17 +224,35 @@ app.factory('HaunTiedot', function ($resource) {
     { hakuOid: '@hakuOid' },
     { get: { method: 'GET', cache: true } }
   )
+  var ohjausparametritResource = $resource(
+    plainUrl('ohjausparametrit-service.parametri', ':hakuOid'),
+    { hakuOid: '@hakuOid' },
+    { get: { method: 'GET', cache: true } }
+  )
   return {
     get: function (params, onSuccess, onError) {
       var tarjontaP = tarjontaResource.get(params).$promise
       var koutaP = koutaResource.get(params).$promise
+      var ohjausparametritP = ohjausparametritResource.get(params).$promise
       return {
         $promise: tarjontaP
           .then(function (tarjontaHaku) {
             if (tarjontaHaku.result) {
               return tarjontaHakuToHaku(tarjontaHaku.result)
             }
-            return koutaP.then(koutaHakuToHaku)
+            return koutaP.then(function (koutaHaku) {
+              return ohjausparametritP.then(
+                function (ohjausparametrit) {
+                  return koutaHakuToHaku(koutaHaku, ohjausparametrit)
+                },
+                function (response) {
+                  if (response.status === 404) {
+                    return $q.when(koutaHakuToHaku(koutaHaku, {}))
+                  }
+                  return response
+                }
+              )
+            })
           })
           .then(onSuccess, onError),
       }
@@ -399,6 +417,11 @@ app.factory('TarjontaHaut', function ($resource) {
     {},
     { get: { method: 'GET', isArray: true, cache: false } }
   )
+  var ohjausparametritResource = $resource(
+    plainUrl('ohjausparametrit-service.parametri', ':hakuOid'),
+    { hakuOid: '@hakuOid' },
+    { get: { method: 'GET', cache: true } }
+  )
   return {
     get: function (params, onSuccess, onError) {
       var tarjontaP = tarjontaResource
@@ -409,7 +432,23 @@ app.factory('TarjontaHaut', function ($resource) {
       var koutaP = koutaResource
         .get({ tarjoaja: params.organizationOids.toString() })
         .$promise.then(function (koutaHaut) {
-          return koutaHaut.map(koutaHakuToHaku)
+          return $q.all(
+            koutaHaut.map(function (koutaHaku) {
+              return ohjausparametritResource
+                .get({ hakuOid: koutaHaku.oid })
+                .$promise.then(
+                  function (ohjausparametrit) {
+                    return koutaHakuToHaku(koutaHaku, ohjausparametrit)
+                  },
+                  function (response) {
+                    if (response.status === 404) {
+                      return $q.when(koutaHakuToHaku(koutaHaku, {}))
+                    }
+                    return response
+                  }
+                )
+            })
+          )
         })
       tarjontaP
         .then(function (tarjontaHaut) {
