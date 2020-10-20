@@ -29,6 +29,19 @@
     <div class="form-horizontal col-md-6">
 
         <div class="form-group">
+            <label class="col-md-3 control-label" for="onlyKoutaHaut">
+                {{t('hakulista.vainKoutaHaut') || 'Vain uuden tarjonnan haut'}}
+            </label>
+            <div class="col-md-9">
+                <input type="checkbox"
+                       class="checkbox"
+                       id="onlyKoutaHaut"
+                       ng-model="hakumodel.onlyKoutaHaut"
+                       ng-change="hakumodel.refresh(hakumodel.hakuOid.oid)">
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-md-3 control-label" for="hakuvuosi">{{t('hakulista.hakuvuosi') || 'Hakuvuosi'}}</label>
 
             <div class="col-md-9">

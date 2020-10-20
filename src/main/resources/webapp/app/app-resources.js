@@ -403,7 +403,7 @@ app.factory('TarjontaHakukohde', function ($resource, $q) {
   }
 })
 
-app.factory('TarjontaHaut', function ($resource) {
+app.factory('TarjontaHaut', function ($resource, $q) {
   var tarjontaResource = $resource(
     window.url('tarjonta-service.haku.find', {
       addHakukohdes: 'false',
@@ -424,11 +424,13 @@ app.factory('TarjontaHaut', function ($resource) {
   )
   return {
     get: function (params, onSuccess, onError) {
-      var tarjontaP = tarjontaResource
-        .get({ virkailijaTyyppi: params.virkailijaTyyppi })
-        .$promise.then(function (tarjontaHaut) {
-          return tarjontaHaut.result.map(tarjontaHakuToHaku)
-        })
+      var tarjontaP = params.onlyKoutaHaut
+        ? $q.when([])
+        : tarjontaResource
+            .get({ virkailijaTyyppi: params.virkailijaTyyppi })
+            .$promise.then(function (tarjontaHaut) {
+              return tarjontaHaut.result.map(tarjontaHakuToHaku)
+            })
       var koutaP = koutaResource
         .get({ tarjoaja: params.organizationOids.toString() })
         .$promise.then(function (koutaHaut) {
