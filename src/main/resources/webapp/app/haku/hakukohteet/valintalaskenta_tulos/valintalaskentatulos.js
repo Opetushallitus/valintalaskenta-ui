@@ -45,6 +45,11 @@ app.factory('ValintalaskentatulosModel', function (
             .$promise,
         ])
         .then(function (data) {
+          data[2].forEach(function (vv) {
+            vv.jonot = vv.jonot.filter(function (jono) {
+              return jono.aktiivinen
+            })
+          })
           model.tarjoajaOid = data[0].tarjoajaOid
           model.valinnanvaiheet = data[1]
           model.ilmanlaskentaa = data[2]
