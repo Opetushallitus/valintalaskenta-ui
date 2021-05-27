@@ -534,6 +534,7 @@ app.factory('ValintalaskentatulosModel', function (
     }
 
     this.muutaSijoittelunStatus = function (jono, status) {
+      console.log('Muuta sijoittelun status ' + jono.oid + ', ' + status)
       ValintatapajonoSijoitteluUpdate.post(
         { valintatapajonoOid: jono.oid, status: status },
         function (updatedJono) {
@@ -810,8 +811,36 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
       ValintalaskentatulosModel.submit(vaiheoid, jonooid)
     }
 
-    $scope.muutaSijoittelunStatus = function (jono, status) {
+    $scope.muutaSijoittelunStatusOld = function (jono, status) {
       ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status)
+    }
+
+    $scope.muutaSijoittelunStatus = function (jono, tila) {
+      $modal.open({
+        backdrop: 'static',
+        templateUrl: '../common/modaalinen/sijoitteluunsiirto.html',
+        size: 'lg',
+        controller: function ($scope, $window, $modalInstance) {
+          $scope.otsikko = 'Varmista siirto sijoitteluun'
+          $scope.jonoKuvaus = jono.oid + ' (' + jono.nimi + ')'
+          $scope.uusiTila = tila
+          $scope.jono = jono
+          $scope.cancel = function () {
+            $modalInstance.dismiss('cancel')
+          }
+          $scope.muutaStatus = function (jono, tila) {
+            console.log(
+              'Muutetaan sijoittelun status valintatapajonolle ' +
+                jono.oid +
+                ': ' +
+                tila
+            )
+            ValintalaskentatulosModel.muutaSijoittelunStatus(jono, tila)
+            $modalInstance.dismiss('ok')
+          }
+        },
+        resolve: {},
+      })
     }
 
     $scope.changeTila = function (jonosija, value) {

@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h3>{{otsikko}}</h3>
+</div>
+<div class="modal-body">
+    <div ng-show=uusiTila>
+        <p>Haluatko varmasti siirtää jonon {{jonoKuvaus}} sijoitteluun?</p>
+    </div>
+    <div ng-show=!uusiTila>
+        <p>Haluatko varmasti poistaa jonon {{jonoKuvaus}} sijoittelusta?</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="row">
+        <a class="btn btn-default btn-sm" ng-click="muutaStatus(jono, uusiTila);" role="button" ng-show=uusiTila>{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</a>
+        <a class="btn btn-default btn-sm" ng-click="muutaStatus(jono, uusiTila);" role="button" ng-show=!uusiTila>{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</a>
+        <a class="btn btn-default btn-sm" ng-click="cancel();" role="button">{{ t('ilmoitus.cancel') || 'Peruuta' }}</a>
+    </div>
+</div>
