@@ -821,12 +821,16 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
         templateUrl: '../common/modaalinen/sijoitteluunsiirto.html',
         size: 'lg',
         controller: function ($scope, $window, $modalInstance) {
-          $scope.otsikko = 'Varmista siirto sijoitteluun'
           $scope.jonoKuvaus = jono.oid + ' (' + jono.nimi + ')'
           $scope.uusiTila = tila
           $scope.jono = jono
           $scope.cancel = function () {
             $modalInstance.dismiss('cancel')
+          }
+          $scope.isLisays = function () {
+            var res = $scope.uusiTila === 'true'
+            console.log('isLisays: ' + res)
+            return res
           }
           $scope.muutaStatus = function (jono, tila) {
             console.log(
