@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h3 ng-if="isLisays()">{{ t('valintalaskentatulos.siirrasijoitteluun') || 'Varmista siirto sijoitteluun'}}</h3>
+    <h3 ng-if="isLisays() == false">{{ t('valintalaskentatulos.poistasijoittelusta') || 'Varmista poisto sijoittelusta'}}</h3>
+</div>
+<div class="modal-body">
+    <div ng-if="isLisays()">
+        <p>Haluatko varmasti siirtää sijoitteluun jonon {{jonoKuvaus}}</p>
+    </div>
+    <div ng-if="isLisays() == false">
+        <p>Haluatko varmasti poistaa sijoittelusta jonon {{jonoKuvaus}}</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="row">
+        <a class="btn btn-default btn-sm" ng-click="muutaStatus(jono, uusiTila);" role="button" ng-if="isLisays()">{{ t('valintalaskentatulos.hyvaksy') || 'Siirrä jono sijoitteluun' }}</a>
+        <a class="btn btn-default btn-sm" ng-click="muutaStatus(jono, uusiTila);" role="button" ng-if="isLisays() == false">{{ t('valintalaskentatulos.hylkaa') || 'Poista jono sijoittelusta' }}</a>
+        <a class="btn btn-default btn-sm" ng-click="cancel();" role="button">{{ t('ilmoitus.cancel') || 'Peruuta' }}</a>
+    </div>
+</div>

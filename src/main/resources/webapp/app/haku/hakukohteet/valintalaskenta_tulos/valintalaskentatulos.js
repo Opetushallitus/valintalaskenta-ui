@@ -810,8 +810,28 @@ angular.module('valintalaskenta').controller('ValintalaskentatulosController', [
       ValintalaskentatulosModel.submit(vaiheoid, jonooid)
     }
 
-    $scope.muutaSijoittelunStatus = function (jono, status) {
-      ValintalaskentatulosModel.muutaSijoittelunStatus(jono, status)
+    $scope.muutaSijoittelunStatus = function (jono, tila) {
+      $modal.open({
+        backdrop: 'static',
+        templateUrl: '../common/modaalinen/sijoitteluunsiirto.html',
+        size: 'lg',
+        controller: function ($scope, $window, $modalInstance) {
+          $scope.jonoKuvaus = jono.oid + ' (' + jono.nimi + ')'
+          $scope.uusiTila = tila
+          $scope.jono = jono
+          $scope.cancel = function () {
+            $modalInstance.dismiss('cancel')
+          }
+          $scope.isLisays = function () {
+            return $scope.uusiTila === 'true'
+          }
+          $scope.muutaStatus = function (jono, tila) {
+            ValintalaskentatulosModel.muutaSijoittelunStatus(jono, tila)
+            $modalInstance.dismiss('ok')
+          }
+        },
+        resolve: {},
+      })
     }
 
     $scope.changeTila = function (jonosija, value) {
