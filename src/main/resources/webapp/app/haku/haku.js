@@ -4,7 +4,7 @@ angular
   .factory('HakuModel', [
     '$q',
     '$log',
-    'Haku',
+    'AuthService',
     'UserModel',
     'TarjontaHaut',
     'Korkeakoulu',
@@ -13,7 +13,7 @@ angular
     function (
       $q,
       $log,
-      Haku,
+      AuthService,
       UserModel,
       TarjontaHaut,
       Korkeakoulu,
@@ -27,6 +27,7 @@ angular
         this.deferred = $q.defer()
         this.promise = this.deferred.promise
         this.hakuOid = ''
+        this.onlyKoutaHaut = false
         this.haut = []
         this.nivelvaihe = false
         this.korkeakoulu = false
@@ -67,96 +68,108 @@ angular
           }
         }
 
-        this.init = function (oid) {
-          if (model.haut.length === 0 || oid !== model.hakuOid) {
-            UserModel.refreshIfNeeded().then(
-              function () {
-                var virkailijaTyyppi
-                if (
-                  UserModel.isOphUser ||
-                  (UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser)
-                ) {
-                  virkailijaTyyppi = 'all'
-                } else if (
-                  UserModel.isKKUser &&
-                  !UserModel.hasOtherThanKKUserOrgs
-                ) {
-                  virkailijaTyyppi = 'kkUser'
-                } else if (
-                  !UserModel.isKKUser &&
-                  UserModel.hasOtherThanKKUserOrgs
-                ) {
-                  virkailijaTyyppi = 'toinenAsteUser'
-                } else {
-                  virkailijaTyyppi = 'all'
-                }
-
-                TarjontaHaut.get(
-                  { virkailijaTyyppi: virkailijaTyyppi },
-                  function (resultWrapper) {
-                    model.haut = resultWrapper.result
-                    model.haut.forEach(function (haku) {
-                      if (haku.oid === oid) {
-                        model.hakuOid = haku
-                        model.korkeakoulu = Korkeakoulu.isKorkeakoulu(
-                          haku.kohdejoukkoUri
-                        )
-                      }
-
-                      haku.uiNimi = model.getHakuNimi(haku)
-
-                      var kohdejoukkoUri = haku.kohdejoukkoUri
-                      var nivelKohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/
-                      var nivelvaihe = nivelKohdejoukkoUriRegExp.exec(
-                        kohdejoukkoUri
-                      )
-                      nivelvaihe
-                        ? (haku.nivelvaihe = true)
-                        : (haku.nivelvaihe = false)
-
-                      var erityisKohdejoukkoUriRegExp = /(haunkohdejoukko_20).*/
-                      var erityis = erityisKohdejoukkoUriRegExp.exec(
-                        kohdejoukkoUri
-                      )
-                      erityis
-                        ? (haku.erityisopetus = true)
-                        : (haku.erityisopetus = false)
-
-                      var hakutyyppi = haku.hakutyyppiUri
-                      var hakutapa = haku.hakutapaUri
-
-                      var erillishakutapaRegExp = /(hakutapa_02).*/
-                      var jatkuvahakuRegExp = /(hakutapa_03).*/
-                      var lisahakutyyppiRegExp = /(hakutyyppi_03).*/
-
-                      var matchErillishaku = erillishakutapaRegExp.exec(
-                        hakutapa
-                      )
-                      var matchJatkuvahaku = jatkuvahakuRegExp.exec(hakutapa)
-                      var matchLisahaku = lisahakutyyppiRegExp.exec(hakutyyppi)
-
-                      ;(matchErillishaku ||
-                        matchJatkuvahaku ||
-                        matchLisahaku) &&
-                      !haku.sijoittelu
-                        ? (haku.erillishaku = true)
-                        : (haku.erillishaku = false)
-                    })
-                    model.deferred.resolve(model)
-                  },
-                  function (error) {
-                    model.deferred.reject('Hakulistan hakeminen epäonnistui')
-                    $log.error(error)
-                  }
-                )
-              },
-              function (error) {
-                model.deferred.reject(
-                  'Käyttäjän tietojen lataaminen epäonnistui'
-                )
-                $log.error(error)
+        this.refresh = function (oid) {
+          $q.all({
+            organizations: AuthService.getOrganizations(
+              'APP_VALINTOJENTOTEUTTAMINEN',
+              ['READ', 'READ_UPDATE', 'CRUD']
+            ),
+            userModel: UserModel.refreshIfNeeded(),
+          }).then(
+            function (o) {
+              var virkailijaTyyppi
+              if (
+                UserModel.isOphUser ||
+                (UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser)
+              ) {
+                virkailijaTyyppi = 'all'
+              } else if (
+                UserModel.isKKUser &&
+                !UserModel.hasOtherThanKKUserOrgs
+              ) {
+                virkailijaTyyppi = 'kkUser'
+              } else if (
+                !UserModel.isKKUser &&
+                UserModel.hasOtherThanKKUserOrgs
+              ) {
+                virkailijaTyyppi = 'toinenAsteUser'
+              } else {
+                virkailijaTyyppi = 'all'
               }
-            )
+
+              var organizationOids = _.filter(o.organizations, function (o) {
+                return o.startsWith('1.2.246.562.10.')
+              })
+
+              TarjontaHaut.get(
+                {
+                  virkailijaTyyppi: virkailijaTyyppi,
+                  organizationOids: organizationOids,
+                  onlyKoutaHaut: model.onlyKoutaHaut,
+                },
+                function (haut) {
+                  model.haut = haut
+                  model.haut.forEach(function (haku) {
+                    if (haku.oid === oid) {
+                      model.hakuOid = haku
+                      model.korkeakoulu = Korkeakoulu.isKorkeakoulu(
+                        haku.kohdejoukkoUri
+                      )
+                    }
+
+                    haku.uiNimi = model.getHakuNimi(haku)
+
+                    var kohdejoukkoUri = haku.kohdejoukkoUri
+                    var nivelKohdejoukkoUriRegExp = /(haunkohdejoukko_17).*/
+                    var nivelvaihe = nivelKohdejoukkoUriRegExp.exec(
+                      kohdejoukkoUri
+                    )
+                    nivelvaihe
+                      ? (haku.nivelvaihe = true)
+                      : (haku.nivelvaihe = false)
+
+                    var erityisKohdejoukkoUriRegExp = /(haunkohdejoukko_20).*/
+                    var erityis = erityisKohdejoukkoUriRegExp.exec(
+                      kohdejoukkoUri
+                    )
+                    erityis
+                      ? (haku.erityisopetus = true)
+                      : (haku.erityisopetus = false)
+
+                    var hakutyyppi = haku.hakutyyppiUri
+                    var hakutapa = haku.hakutapaUri
+
+                    var erillishakutapaRegExp = /(hakutapa_02).*/
+                    var jatkuvahakuRegExp = /(hakutapa_03).*/
+                    var lisahakutyyppiRegExp = /(hakutyyppi_03).*/
+
+                    var matchErillishaku = erillishakutapaRegExp.exec(hakutapa)
+                    var matchJatkuvahaku = jatkuvahakuRegExp.exec(hakutapa)
+                    var matchLisahaku = lisahakutyyppiRegExp.exec(hakutyyppi)
+
+                    ;(matchErillishaku || matchJatkuvahaku || matchLisahaku) &&
+                    !haku.sijoittelu
+                      ? (haku.erillishaku = true)
+                      : (haku.erillishaku = false)
+                  })
+                  model.deferred.resolve(model)
+                },
+                function (error) {
+                  model.deferred.reject('Hakulistan hakeminen epäonnistui')
+                  $log.error(error)
+                }
+              )
+            },
+            function (error) {
+              model.deferred.reject('Käyttäjän tietojen lataaminen epäonnistui')
+              $log.error(error)
+            }
+          )
+        }
+
+        this.init = function (oid) {
+          if (model.haut.length === 0 || oid !== model.hakuOid.oid) {
+            this.refresh(oid)
           }
           return model.deferred.promise
         }

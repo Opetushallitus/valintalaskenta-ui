@@ -1144,7 +1144,6 @@ angular
         fileReader.readAsArrayBuffer(file)
         var hakukohdeOid = $scope.hakukohdeOid
         var hakuOid = $routeParams.hakuOid
-        var tarjoajaOid = $scope.hakukohdeModel.hakukohde.tarjoajaOids[0]
         var hakutyyppi = $scope.getHakutyyppi()
 
         var params = {
@@ -1193,18 +1192,12 @@ angular
 
       $scope.luoHyvaksymiskirjeetPDF = function (hakemusOids) {
         var hakukohde = $scope.hakukohdeModel.hakukohde
-        var tag = null
-        if (hakukohde.hakukohdeNimiUri) {
-          tag = hakukohde.hakukohdeNimiUri.split('#')[0]
-        } else {
-          tag = $routeParams.hakukohdeOid
-        }
+        var tag = $routeParams.hakukohdeOid
         Kirjeet.hyvaksymiskirjeet({
           hakuOid: $routeParams.hakuOid,
           hakukohdeOid: $routeParams.hakukohdeOid,
           hakemusOids: hakemusOids,
           tarjoajaOid: hakukohde.tarjoajaOids[0],
-          hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
           hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi,
           tag: tag,
           langcode: HakukohdeNimiService.getOpetusKieliCode(hakukohde),

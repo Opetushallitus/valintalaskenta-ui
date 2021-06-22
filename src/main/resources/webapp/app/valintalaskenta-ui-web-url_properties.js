@@ -1,14 +1,20 @@
 window.urls.addProperties({
-  'tarjonta-service.haku': 'tarjonta-service/rest/v1/haku',
   'tarjonta-service.haku.find': 'tarjonta-service/rest/v1/haku/find',
   'tarjonta-service.haku.hakuoid': 'tarjonta-service/rest/v1/haku/$1',
-  'tarjonta-service.haku.hakukohde':
-    'tarjonta-service/rest/v1/haku/$1/hakukohde',
   'tarjonta-service.haku.hakukohdetulos':
     'tarjonta-service/rest/v1/haku/$1/hakukohdeTulos',
   'tarjonta-service.hakukohde': 'tarjonta-service/rest/v1/hakukohde/$1',
-  'tarjonta-service.hakukohde.nimi':
-    'tarjonta-service/rest/v1/hakukohde/$1/nimi',
+
+  'tarjonta-app.hakukohde': 'tarjonta-app/index.html#/hakukohde/$1',
+
+  'kouta-internal.auth.login': 'kouta-internal/auth/login',
+  'kouta-internal.haku.search': 'kouta-internal/haku/search',
+  'kouta-internal.haku': 'kouta-internal/haku/$1',
+  'kouta-internal.hakukohde.search': 'kouta-internal/hakukohde/search',
+  'kouta-internal.hakukohde': 'kouta-internal/hakukohde/$1',
+  'kouta-internal.toteutus': 'kouta-internal/toteutus/$1',
+
+  'kouta.hakukohde': 'kouta/hakukohde/$1',
 
   'valintaperusteet-service.buildversion':
     'valintaperusteet-service/buildversion.txt?auth',

@@ -552,4 +552,8 @@ function tarjontaFixtures() {
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/HAKUOID\/hakukohdeTulos/).respond(hakukohdeTulos)
     httpBackend.when('GET', /.*\/tarjonta-service\/rest\/v1\/haku\/1\.2\.246\.562\.29\.11735171271\/hakukohdeTulos/).respond(hakukohdeTulos)
 
+    httpBackend.when('GET', /.*\/kouta-internal\/haku\/search/).respond([])
+    httpBackend.when('GET', /.*\/kouta-internal\/hakukohde\/search/).respond(404, {})
+    httpBackend.when('GET', /.*\/kouta-internal\/haku\/.*/).respond(500, {})
+    httpBackend.when('GET', /.*\/kouta-internal\/hakukohde\/.*/).respond(500, {})
 }

@@ -415,12 +415,7 @@ angular.module('valintalaskenta').controller('ValintakoetulosController', [
     $scope.createKoekutsukirjeetPDF = function (valintakoe) {
       var hakukohde = $scope.hakukohdeModel.hakukohde
       var hakukohdeOid = $routeParams.hakukohdeOid
-      var tag = null
-      if (hakukohde.hakukohdeNimiUri) {
-        tag = hakukohde.hakukohdeNimiUri.split('#')[0]
-      } else {
-        tag = hakukohdeOid
-      }
+      var tag = hakukohdeOid
       var templateName = 'koekutsukirje'
       var otsikko = null
       var hakemusOids = null
@@ -438,7 +433,6 @@ angular.module('valintalaskenta').controller('ValintakoetulosController', [
         hakuOid: $routeParams.hakuOid,
         hakukohdeOid: $routeParams.hakukohdeOid,
         tarjoajaOid: hakukohde.tarjoajaOids[0],
-        hakukohdeNimiUri: hakukohde.hakukohdeNimiUri,
         hakukohdeNimi: $scope.hakukohdeModel.hakukohdeNimi,
         tag: tag,
         langcode: HakukohdeNimiService.getOpetusKieliCode(hakukohde),
