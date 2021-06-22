@@ -82,6 +82,7 @@ angular
     'VtsVastaanottopostiLahetetty',
     'VtsVastaanottopostiLahetaUudelleenHakemukselle',
     'VtsVastaanottopostiLahetaUudelleenHakukohteelle',
+    'UserModel',
     function (
       $rootScope,
       $scope,
@@ -126,7 +127,8 @@ angular
       valinnantuloksenHistoriaService,
       VtsVastaanottopostiLahetetty,
       VtsVastaanottopostiLahetaUudelleenHakemukselle,
-      VtsVastaanottopostiLahetaUudelleenHakukohteelle
+      VtsVastaanottopostiLahetaUudelleenHakukohteelle,
+      UserModel
     ) {
       'use strict'
 
@@ -190,6 +192,14 @@ angular
       }
 
       HakuModel.promise.then(function (model) {
+        $scope.isVastaanottoSahkopostinLahetysSallittu = function () {
+          return (
+            !HakuUtility.isToinenAsteKohdeJoukko(
+              HakuModel.hakuOid.kohdejoukkoUri
+            ) || UserModel.isOphUser
+          )
+        }
+
         $scope.korkeakoulu = model.korkeakoulu
         if (model.hakuOid.ataruLomakeAvain) {
           $scope.vieExcelEnabled = true

@@ -47,7 +47,7 @@
                         {{ t('sijoitteluntulos.hyvaksyvalintaesitys') || 'Hyväksy ja tallenna valintaesitys' }}
                     </button>
 
-                    <a ng-click="resendVastaanottopostiForHakukohde()" class="btn btn-primary btn-sm margin-bottom-2">{{t('sijoitteluntulos.lahetaVastaanottopostiUudelleenHakukohteelle') || 'Lähetä vastaanottoposti koko hakukohteelle'}}</a>
+                    <a ng-if="isVastaanottoSahkopostinLahetysSallittu()" ng-click="resendVastaanottopostiForHakukohde()" class="btn btn-primary btn-sm margin-bottom-2">{{t('sijoitteluntulos.lahetaVastaanottopostiUudelleenHakukohteelle') || 'Lähetä vastaanottoposti koko hakukohteelle'}}</a>
 
                     <br />
 
