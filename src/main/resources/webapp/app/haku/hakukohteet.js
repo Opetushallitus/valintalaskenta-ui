@@ -164,6 +164,7 @@ angular.module('valintalaskenta').controller('HakukohteetController', [
       $scope.hakukohdeOid = $routeParams.hakukohdeOid
 
       $scope.hakuModel = HakuModel
+      $scope.hakuModel.refresh($scope.hakuOid)
       $scope.hakukohdeNimiService = HakukohdeNimiService
 
       $scope.model = HakukohteetModel
