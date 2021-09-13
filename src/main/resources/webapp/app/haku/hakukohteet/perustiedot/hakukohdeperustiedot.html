@@ -16,9 +16,9 @@
             <div class="col-md-12">
                 <div class="pull-right">
                     <a auth="crud" auth-service="APP_VALINTOJENTOTEUTTAMINEN"
-                       href="/valintaperusteet-ui/app/index.html#/hakukohde/{{hakukohdeOid}}"
+                       href="/valintaperusteet-ui/app/index.html#/hakukohde/{{model.hakukohde.oid}}"
                        target="_blank">{{ t('valintaperusteet') || 'Valintaperusteet' }} <i class="fa fa-external-link"></i></a>&nbsp;
-                    <a href="/tarjonta-app/index.html#/hakukohde/{{hakukohdeOid}}"
+                    <a href="{{model.hakukohde.virkailijaUrl}}"
                        target="_blank">{{ t('tarjonta') || 'Tarjonta' }} <i class="fa fa-external-link"></i></a>
                 </div>
                 <div><b>{{ t('hakukohteethakukohdeperustiedot.hakukohdeoid') || 'HakukohdeOid' }}:</b> {{model.hakukohde.oid}}</div>

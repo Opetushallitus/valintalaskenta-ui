@@ -42,11 +42,11 @@ angular
           model.hakukohdeOid = hakukohdeOid
           TarjontaHakukohde.get(
             { hakukohdeoid: hakukohdeOid },
-            function (resultWrapper) {
-              model.hakukohde = resultWrapper.result
-              model.organisationOidsForAuthorisation = (
-                model.hakukohde.tarjoajaOids || []
-              ).concat(model.hakukohde.organisaatioRyhmaOids || [])
+            function (hakukohde) {
+              model.hakukohde = hakukohde
+              model.organisationOidsForAuthorisation = model.hakukohde.tarjoajaOids.concat(
+                model.hakukohde.organisaatioRyhmaOids
+              )
               model.setHakukohdeNames()
               model.setHakukohdeValintaRyhma(hakukohdeOid)
               model.fetchKaytetaanValintalaskentaa(hakukohdeOid).then(
@@ -109,18 +109,13 @@ angular
           }
         }
 
-        this.setHakukohdeNames = function (hakukohdeNimi, tarjoajaNimi) {
-          if (hakukohdeNimi || tarjoajaNimi) {
-            model.hakukohdeNimi = hakukohdeNimi
-            model.tarjoajaNimi = tarjoajaNimi
-          } else {
-            model.hakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(
-              model.hakukohde
-            )
-            model.tarjoajaNimi = HakukohdeNimiService.getTarjoajaNimi(
-              model.hakukohde
-            )
-          }
+        this.setHakukohdeNames = function () {
+          model.hakukohdeNimi = HakukohdeNimiService.getHakukohdeNimi(
+            model.hakukohde
+          )
+          model.tarjoajaNimi = HakukohdeNimiService.getTarjoajaNimi(
+            model.hakukohde
+          )
         }
 
         this.setHakukohdeValintaRyhma = function (hakukohdeOid) {
@@ -258,8 +253,8 @@ angular
 
       var refreshHaunTiedot = function () {
         return HaunTiedot.get({ hakuOid: $scope.hakuOid }).$promise.then(
-          function (resultWrapper) {
-            $scope.haku = HakuHelper.setErillishaku(resultWrapper.result)
+          function (haku) {
+            $scope.haku = HakuHelper.setErillishaku(haku)
             return $scope.haku
           }
         )

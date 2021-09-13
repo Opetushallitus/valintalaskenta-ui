@@ -74,54 +74,38 @@ angular
     function (_, $rootScope) {
       'use strict'
 
-      function normalizeLangMap(rawLangMap) {
-        var langMap = {}
-        _.each(rawLangMap, function (label, langKey) {
-          langMap[langKey.replace('kieli_', '')] = label
-        })
-        return langMap
-      }
-
-      function getTranslation(rawLangMap) {
-        var lang = $rootScope.userLang || ''
-        var translations = normalizeLangMap(rawLangMap)
+      function getTranslation(translations) {
+        var lang = $rootScope.userLang || 'FI'
         return (
-          translations[lang.toLowerCase()] ||
-          translations.fi ||
-          translations.sv ||
-          translations.en
+          translations['kieli_' + lang.toLowerCase()] ||
+          translations.kieli_sv ||
+          translations.kieli_en
         )
       }
 
       var service = {
         getOpetusKieli: function (hakukohde) {
           if (hakukohde) {
-            var opetuskielet = hakukohde.opetusKielet
-
-            if (opetuskielet) {
-              if (opetuskielet.indexOf('kieli_fi') != -1) return 'kieli_fi'
-              else if (opetuskielet.indexOf('kieli_sv') != -1) return 'kieli_sv'
-              else if (opetuskielet.indexOf('kieli_en') != -1) return 'kieli_en'
-            }
+            if (hakukohde.opetuskielet.indexOf('kieli_fi') !== -1)
+              return 'kieli_fi'
+            if (hakukohde.opetuskielet.indexOf('kieli_sv') !== -1)
+              return 'kieli_sv'
+            if (hakukohde.opetuskielet.indexOf('kieli_en') !== -1)
+              return 'kieli_en'
           }
           return 'kieli_fi'
         },
 
         getOpetusKieliCode: function (hakukohde) {
-          var language = this.getOpetusKieli(hakukohde)
-          return _.last(language.split('_')).toUpperCase()
+          return this.getOpetusKieli(hakukohde).split('_')[1].toUpperCase()
         },
 
         getTarjoajaNimi: function (hakukohde) {
-          return getTranslation(
-            hakukohde.tarjoajaNimi || hakukohde.tarjoajaNimet
-          )
+          return getTranslation(hakukohde.tarjoajaNimi)
         },
 
         getHakukohdeNimi: function (hakukohde) {
-          return getTranslation(
-            hakukohde.hakukohdeNimi || hakukohde.hakukohteenNimet
-          )
+          return getTranslation(hakukohde.nimi)
         },
       }
       return service

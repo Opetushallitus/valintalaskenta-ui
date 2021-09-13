@@ -6,7 +6,6 @@ angular
     '$routeParams',
     '$log',
     '$http',
-    'Haku',
     'AuthService',
     'TarjontaHaku',
     'HakuModel',
@@ -15,7 +14,6 @@ angular
       $routeParams,
       $log,
       $http,
-      Haku,
       AuthService,
       TarjontaHaku,
       HakuModel
@@ -166,6 +164,7 @@ angular.module('valintalaskenta').controller('HakukohteetController', [
       $scope.hakukohdeOid = $routeParams.hakukohdeOid
 
       $scope.hakuModel = HakuModel
+      $scope.hakuModel.refresh($scope.hakuOid)
       $scope.hakukohdeNimiService = HakukohdeNimiService
 
       $scope.model = HakukohteetModel
@@ -189,7 +188,7 @@ angular.module('valintalaskenta').controller('HakukohteetController', [
           '/haku/' +
             $routeParams.hakuOid +
             '/hakukohde/' +
-            hakukohde.hakukohdeOid +
+            hakukohde.oid +
             '/perustiedot'
         )
       }
