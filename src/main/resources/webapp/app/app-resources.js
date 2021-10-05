@@ -137,7 +137,7 @@ var koutaHakukohdeAndToteutusToHakukohde = function (
   return {
     oid: hakukohde.oid,
     nimi: arvoNimiToNimi(hakukohde.nimi),
-    tarjoajaOids: hakukohde.tarjoajat,
+    tarjoajaOids: [hakukohde.tarjoaja],
     tarjoajaNimi: arvoNimiToNimi(tarjoajat[0].nimi),
     organisaatioRyhmaOids: [],
     opetuskielet: opetuskielet,
@@ -306,7 +306,7 @@ app.factory('TarjontaHaku', function ($resource, $q) {
                   .map(function (hakukohde) {
                     return $q
                       .all(
-                        hakukohde.tarjoajat.map(function (oid) {
+                        [hakukohde.tarjoaja].map(function (oid) {
                           return organisaatioResource.get({ oid: oid }).$promise
                         })
                       )
@@ -376,7 +376,7 @@ app.factory('TarjontaHakukohde', function ($resource, $q) {
             .$promise.then(function (toteutus) {
               return $q
                 .all(
-                  hakukohde.tarjoajat.map(function (oid) {
+                  [hakukohde.tarjoaja].map(function (oid) {
                     return organisaatioResource.get({ oid: oid }).$promise
                   })
                 )
