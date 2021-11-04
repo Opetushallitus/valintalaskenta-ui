@@ -142,12 +142,20 @@ angular
                     var erillishakutapaRegExp = /(hakutapa_02).*/
                     var jatkuvahakuRegExp = /(hakutapa_03).*/
                     var lisahakutyyppiRegExp = /(hakutyyppi_03).*/
+                    var joustavahakuRegExp = /(hakutapa_04).*/
+                    var siirtohakuRegExp = /(hakutapa_05).*/
 
                     var matchErillishaku = erillishakutapaRegExp.exec(hakutapa)
                     var matchJatkuvahaku = jatkuvahakuRegExp.exec(hakutapa)
                     var matchLisahaku = lisahakutyyppiRegExp.exec(hakutyyppi)
+                    var matchSiirtohaku = siirtohakuRegExp.exec(hakutapa)
+                    var matchJoustavahaku = joustavahakuRegExp.exec(hakutapa)
 
-                    ;(matchErillishaku || matchJatkuvahaku || matchLisahaku) &&
+                    ;(matchErillishaku ||
+                      matchJatkuvahaku ||
+                      matchLisahaku ||
+                      matchSiirtohaku ||
+                      matchJoustavahaku) &&
                     !haku.sijoittelu
                       ? (haku.erillishaku = true)
                       : (haku.erillishaku = false)
