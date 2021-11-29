@@ -131,7 +131,7 @@
                         <tbody>
                             <tr class="ng-table-group">
                                 <th colspan="11">
-                                    {{jono.nimi}}: {{jono.prioriteetti}} /
+                                    {{jono.nimi}}: {{jono.prioriteetti}} {{jono.oid}}/
                                     <!---Valintatapajono OID: {{jono.oid}}-->
                                     <span ng-if="korkeakouluService.isKorkeakoulu(hakuModel.hakuOid.kohdejoukkoUri)">{{ t('sijoitteluntulos.aloituspaikat') || 'Valintaperusteissa määritetyt aloituspaikat' }}: {{jono.alkuperaisetAloituspaikat}} /</span>
                                     {{ t('sijoitteluntulos.sijoittelunAloituspaikat') || 'Sijoittelun käyttämät aloituspaikat' }}: {{jono.aloituspaikat}} /
@@ -157,7 +157,7 @@
                                     {{hakemus.prioriteetti}}
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.pisteet') || 'Pisteet')" sortable="'pisteet'">
-                                    <span ng-if="hakemus.pisteet >= 0">{{hakemus.pisteet}}</span>
+                                    <span ng-if="showPisteet(hakemus.pisteet, jono.oid)">{{hakemus.pisteet}}</span>
                                 </td>
                                 <td data-title="(t('sijoitteluntulos.sijoitteluntila') || 'Sijoittelun tila')" sortable="'tilaPrioriteetti'">
                                     <show-sijoittelun-tila hakemus="hakemus" user-lang="userLang" on-edit="addMuokattuHakemus(hakemus)"></show-sijoittelun-tila>

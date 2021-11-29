@@ -24,6 +24,7 @@ angular
     'AtaruApplications',
     'HakukohdeHenkilotFull',
     'HakuModel',
+    'ValinnanVaiheetIlmanLaskentaa',
     function (
       $q,
       Ilmoitus,
@@ -47,7 +48,8 @@ angular
       VtsVastaanottopostiLahetetty,
       AtaruApplications,
       HakukohdeHenkilotFull,
-      HakuModel
+      HakuModel,
+      ValinnanVaiheetIlmanLaskentaa
     ) {
       'use strict'
 
@@ -100,6 +102,7 @@ angular
         if (hakemus.sija) {
           jono.sija = hakemus.sija
         }
+        console.log('jono: ', jono)
         return jono
       }
 
@@ -306,6 +309,7 @@ angular
         this.sijoitteluTulokset = {}
         this.errors = []
         this.valintatapajonoLastModified = {}
+        this.jonotIlmanLaskentaaOids = []
 
         this.hakemusErittelyt = [] //dataa perustietonäkymälle
         this.sijoitteluntulosHakijoittain = {}
@@ -533,7 +537,24 @@ angular
           model.eraantyneitaHakemuksia = false
           model.valintatapajonoLastModified = {}
           model.hakukohteenHakemukset = {}
+          model.jonotIlmanLaskentaaOids = []
 
+          var setIlmanLaskentaaJonoOids = function (vaiheet) {
+            console.log('ilmanLaskentaa: ', vaiheet)
+            const jonoOids = []
+            vaiheet.map((vaihe) =>
+              vaihe.jonot.forEach((jono) => jonoOids.push(jono.oid))
+            )
+            console.log('Saatiin laskentaa käyttämättömät jonot: ', jonoOids)
+            model.jonotIlmanLaskentaaOids = jonoOids
+          }
+
+          var ilmanLaskentaaPromise = ValinnanVaiheetIlmanLaskentaa.get({
+            hakukohdeoid: hakukohdeOid,
+          }).$promise.then(function (result) {
+            console.log('got result, settings oids', result)
+            setIlmanLaskentaaJonoOids(result)
+          })
           var hakuPromise = HaunTiedot.get({ hakuOid: hakuOid }).$promise
           return $q
             .all([
@@ -593,6 +614,7 @@ angular
               hakuPromise,
             ])
             .then(function (o) {
+              console.log('all result: ', o)
               var tulokset = o[0]
               var maksuvelvolliset = o[1]
               var lahetetytVastaanottoPostit = o[2]
@@ -1702,6 +1724,23 @@ angular
             )
           })
       })
+
+      $scope.showPisteet = function (pisteet, jonoOid) {
+        const jonoKayttaaLaskentaa =
+          $scope.model.jonotIlmanLaskentaaOids.indexOf(jonoOid) < 0
+        const result = jonoKayttaaLaskentaa || pisteet >= 0
+        console.log(
+          'showPisteet? ' +
+            pisteet +
+            ', jono ' +
+            jonoOid +
+            ', laskenta: ' +
+            jonoKayttaaLaskentaa +
+            ', result ' +
+            result
+        )
+        return result
+      }
 
       $scope.showEhdollinenHyvaksynta = function () {
         return !HakuUtility.isToinenAsteKohdeJoukko(
