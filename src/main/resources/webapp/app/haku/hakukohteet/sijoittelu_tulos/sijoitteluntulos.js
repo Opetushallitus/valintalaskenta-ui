@@ -102,7 +102,6 @@ angular
         if (hakemus.sija) {
           jono.sija = hakemus.sija
         }
-        console.log('jono: ', jono)
         return jono
       }
 
@@ -540,7 +539,6 @@ angular
           model.jonotIlmanLaskentaaOids = []
 
           var setIlmanLaskentaaJonoOids = function (vaiheet) {
-            console.log('ilmanLaskentaa: ', vaiheet)
             const jonoOids = []
             vaiheet.map((vaihe) =>
               vaihe.jonot.forEach((jono) => jonoOids.push(jono.oid))
@@ -552,7 +550,6 @@ angular
           var ilmanLaskentaaPromise = ValinnanVaiheetIlmanLaskentaa.get({
             hakukohdeoid: hakukohdeOid,
           }).$promise.then(function (result) {
-            console.log('got result, settings oids', result)
             setIlmanLaskentaaJonoOids(result)
           })
           var hakuPromise = HaunTiedot.get({ hakuOid: hakuOid }).$promise
@@ -614,7 +611,6 @@ angular
               hakuPromise,
             ])
             .then(function (o) {
-              console.log('all result: ', o)
               var tulokset = o[0]
               var maksuvelvolliset = o[1]
               var lahetetytVastaanottoPostit = o[2]
@@ -1728,18 +1724,7 @@ angular
       $scope.showPisteet = function (pisteet, jonoOid) {
         const jonoKayttaaLaskentaa =
           $scope.model.jonotIlmanLaskentaaOids.indexOf(jonoOid) < 0
-        const result = jonoKayttaaLaskentaa || pisteet >= 0
-        console.log(
-          'showPisteet? ' +
-            pisteet +
-            ', jono ' +
-            jonoOid +
-            ', laskenta: ' +
-            jonoKayttaaLaskentaa +
-            ', result ' +
-            result
-        )
-        return result
+        return jonoKayttaaLaskentaa || pisteet >= 0
       }
 
       $scope.showEhdollinenHyvaksynta = function () {
