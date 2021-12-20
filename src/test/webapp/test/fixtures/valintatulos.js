@@ -110,6 +110,7 @@ function valintatulosFixture() {
     httpBackend.when('GET', /.*valinta-tulos-service\/auth\/hyvaksymiskirje\?hakukohdeOid=.*/).respond([]);
     httpBackend.when('GET', /.*valinta-tulos-service\/auth\/lukuvuosimaksu\/.*/).respond([]);
 
+    httpBackend.when('GET', /.*valintaperusteet-service\/resources\/hakukohde\/.*.\/ilmanlaskentaa/).respond([]);
     //httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoitteluntulos\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.37731636579/).respond(json2);
     //httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoitteluntulos\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.11\.00000000220/).respond(json2);
     //httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoitteluntulos\/1\.2\.246\.562\.29\.95390561488\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.44161747595/).respond(json2);

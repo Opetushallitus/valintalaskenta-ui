@@ -59,7 +59,7 @@
             </td>
             <!-- jonosijoja pitäisi olla hakemuksella vain yksi per jono -->
             <td ng-repeat-start="tulos in valintatapajono.jonosijat">
-                <span ng-if="tulos.jarjestyskriteerit[0].arvo >= 0">{{tulos.jarjestyskriteerit[0].arvo}}</span>
+                <span ng-if="tulos.jarjestyskriteerit[0].arvo && (tulos.jarjestyskriteerit[0].arvo != model.sijoittelu[valintatapajono.valintatapajonooid].jonosija * -1)">{{tulos.jarjestyskriteerit[0].arvo}}</span>
             </td>
             <td>
                 {{tulos.tuloksenTila}}

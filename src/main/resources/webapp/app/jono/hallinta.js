@@ -30,7 +30,6 @@ angular
             var csrfToken = $cookies.get('CSRF')
             if (csrfToken) {
               config.headers['CSRF'] = csrfToken
-              console.debug("CSRF header '%s' set", csrfToken)
             }
 
             return config
