@@ -1305,6 +1305,16 @@ app.factory('HakukohdeHenkilotFull', function ($resource) {
   )
 })
 
+app.factory('HarkinnanvaraisetHakemukset', function ($resource) {
+  return $resource(
+    window.url('valintalaskentakoostepalvelu.harkinnanvaraisuus'),
+    {},
+    {
+      post: { method: 'POST', isArray: true },
+    }
+  )
+})
+
 app.factory('AtaruApplications', function ($resource) {
   return $resource(
     window.url('ataru.applications'),
