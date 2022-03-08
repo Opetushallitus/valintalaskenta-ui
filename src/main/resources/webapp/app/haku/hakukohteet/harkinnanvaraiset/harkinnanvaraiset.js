@@ -145,6 +145,143 @@ angular
     },
   ])
 
+  .factory('HarkinnanvaraisetAtaruModel', [
+    '$log',
+    '_',
+    'AtaruApplications',
+    'Ilmoitus',
+    'Hakemus',
+    'HarkinnanvaraisetHakemukset',
+    'HarkinnanvarainenHyvaksynta',
+    'HarkinnanvaraisestiHyvaksytyt',
+    'IlmoitusTila',
+    '$q',
+    function (
+      $log,
+      _,
+      AtaruApplications,
+      Ilmoitus,
+      Hakemus,
+      HarkinnanvaraisetHakemukset,
+      HarkinnanvarainenHyvaksynta,
+      HarkinnanvaraisestiHyvaksytyt,
+      IlmoitusTila,
+      $q
+    ) {
+      'use strict'
+      var model
+      model = new (function () {
+        this.valittu = true
+        this.hakeneet = []
+        this.avaimet = []
+        this.errors = []
+
+        this.refresh = function (hakukohdeOid, hakuOid) {
+          model.valittu = true
+          model.hakeneet = []
+          model.errors = []
+          model.errors.length = 0
+          model.hakuOid = hakuOid
+          model.hakukohdeOid = hakukohdeOid
+          this.loaded = $q.defer()
+
+          AtaruApplications.get({
+            hakuOid: hakuOid,
+            hakukohdeOid: hakukohdeOid,
+          }).$promise.then(
+            function (ataruHakemukset) {
+              if (!ataruHakemukset.length)
+                console.log("Couldn't find any applications in Ataru.")
+              var result = ataruHakemukset.map(function (hakemus) {
+                //hakemus.personOid = hakemus.henkiloOid;
+                hakemus.henkiloOid = hakemus.personOid
+                return hakemus
+              })
+              model.hakeneet = []
+
+              if (result) {
+                var applicationOids = result.map(function (hakemus) {
+                  return hakemus.oid
+                })
+                HarkinnanvaraisetHakemukset.post(
+                  {},
+                  applicationOids
+                ).$promise.then(
+                  function (data) {
+                    model.hakeneet = data
+                      .map(function (harkinnanvaraisuus) {
+                        var matchingapp = result.find(function (application) {
+                          application.oid = harkinnanvaraisuus.hakemusOid
+                        })
+                        var syy = harkinnanvaraisuus.hakutoiveet.find(function (
+                          hakutoive
+                        ) {
+                          return hakutoive.hakukohdeOid === model.hakukohdeOid
+                        }).harkinnanvaraisuudenSyy
+                        matchingApp.hakenutHarkinnanvaraisesti =
+                          syy !== 'EI_HARKINNANVARAINEN'
+                        matchingApp.harkinnanvaraisuudenSyy = syy
+                      })
+                      .filter(function (application) {
+                        return matchingApp.hakenutHarkinnanvaraisesti
+                      })
+                  },
+                  function (error) {
+                    model.errors.push(error)
+                  }
+                )
+              }
+            },
+            function (error) {
+              model.errors.push(error)
+            }
+          )
+        }
+
+        this.submit = function () {
+          var muokatutHakemukset = _.filter(model.hakeneet, function (hakemus) {
+            return (
+              hakemus.muokattuHarkinnanvaraisuusTila !==
+              hakemus.harkinnanvaraisuusTila
+            )
+          })
+          var postParams = _.map(muokatutHakemukset, function (hakemus) {
+            return {
+              hakuOid: model.hakuOid,
+              hakukohdeOid: model.hakukohdeOid,
+              hakemusOid: hakemus.oid,
+              harkinnanvaraisuusTila: hakemus.muokattuHarkinnanvaraisuusTila,
+            }
+          })
+          HarkinnanvarainenHyvaksynta.post(
+            {},
+            postParams,
+            function (result) {
+              Ilmoitus.avaa(
+                'Harkinnanvaraisesti hyväksyttyjen tallennus',
+                'Muutokset on tallennettu.'
+              )
+            },
+            function () {
+              Ilmoitus.avaa(
+                'Harkinnanvaraisesti hyväksyttyjen tallennus',
+                'Tallennus epäonnistui! Yritä uudelleen tai ota yhteyttä ylläpitoon.',
+                IlmoitusTila.ERROR
+              )
+            }
+          )
+        }
+        this.refreshIfNeeded = function (hakukohdeOid, hakuOid) {
+          if (hakukohdeOid && hakukohdeOid !== model.hakukohdeOid) {
+            model.refresh(hakukohdeOid, hakuOid)
+          }
+        }
+      })()
+
+      return model
+    },
+  ])
+
   .controller('HarkinnanvaraisetController', [
     '$scope',
     '$location',
@@ -156,6 +293,7 @@ angular
     'Koekutsukirjeet',
     'OsoitetarratHakemuksille',
     'HarkinnanvaraisetModel',
+    'HarkinnanvaraisetAtaruModel',
     'HakuModel',
     'HakukohdeModel',
     'Pohjakoulutukset',
@@ -174,6 +312,7 @@ angular
       Koekutsukirjeet,
       OsoitetarratHakemuksille,
       HarkinnanvaraisetModel,
+      HarkinnanvaraisetAtaruModel,
       HakuModel,
       HakukohdeModel,
       Pohjakoulutukset,
@@ -185,7 +324,6 @@ angular
       'use strict'
 
       $scope.hakukohdeOid = $routeParams.hakukohdeOid
-      $scope.model = HarkinnanvaraisetModel
       $scope.hakuOid = $routeParams.hakuOid
 
       $scope.url = window.url
@@ -198,6 +336,9 @@ angular
         $scope.reviewUrlKey = hakuModel.hakuOid.ataruLomakeAvain
           ? 'ataru.application.review'
           : 'haku-app.virkailija.hakemus.esikatselu'
+        $scope.model = hakuModel.hakuOid.ataruLomakeAvain
+          ? HarkinnanvaraisetAtaruModel
+          : HarkinnanvaraisetModel
       })
 
       Pohjakoulutukset.query(function (result) {
