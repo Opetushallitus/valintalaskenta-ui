@@ -210,8 +210,8 @@ angular
                   function (data) {
                     model.hakeneet = data
                       .map(function (harkinnanvaraisuus) {
-                        var matchingapp = result.find(function (application) {
-                          application.oid = harkinnanvaraisuus.hakemusOid
+                        var matchingApp = result.find(function (application) {
+                          return application.oid == harkinnanvaraisuus.hakemusOid
                         })
                         var syy = harkinnanvaraisuus.hakutoiveet.find(function (
                           hakutoive
@@ -221,10 +221,13 @@ angular
                         matchingApp.hakenutHarkinnanvaraisesti =
                           syy !== 'EI_HARKINNANVARAINEN'
                         matchingApp.harkinnanvaraisuudenSyy = syy
+                        return matchingApp
                       })
                       .filter(function (application) {
-                        return matchingApp.hakenutHarkinnanvaraisesti
+                        return !!application.hakenutHarkinnanvaraisesti
                       })
+                    console.log('Harkinnanvaraisesti hakeneet')
+                    console.log(model.hakeneet)
                   },
                   function (error) {
                     model.errors.push(error)
@@ -326,6 +329,7 @@ angular
       $scope.hakukohdeOid = $routeParams.hakukohdeOid
       $scope.hakuOid = $routeParams.hakuOid
 
+      $scope.model = HarkinnanvaraisetAtaruModel
       $scope.url = window.url
       $scope.hakukohdeModel = HakukohdeModel
       $scope.arvoFilter = 'SYOTETTAVA_ARVO'
@@ -363,6 +367,11 @@ angular
       })
 
       HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid)
+
+      HarkinnanvaraisetAtaruModel.refreshIfNeeded(
+          $scope.hakukohdeOid,
+          $routeParams.hakuOid
+      )
 
       HarkinnanvaraisetModel.refreshIfNeeded(
         $scope.hakukohdeOid,
