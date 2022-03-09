@@ -45,8 +45,8 @@
                             <td data-title="(t('hakukohteetharkinnanvaraiset.pohjakoulutus') || 'Pohjakoulutus')" sortable="'hakija.answers.koulutustausta.POHJAKOULUTUS'">
                                 {{pohjakoulutukset[hakija.answers.koulutustausta.POHJAKOULUTUS]}}
                             </td>
-                            <td data-title="(t('hakukohteetharkinnanvaraiset.syy') || 'Harkinnanvaraisuuden syy')" sortale="'hakija.harkinnanvaraisuudenSyy'">
-                                {{hakija.harkinnanvaraisuudenSyy}}
+                            <td data-title="(t('hakukohteetharkinnanvaraiset.syy') || 'Harkinnanvaraisuuden syy')" sortable="'hakija.harkinnanvaraisuudenSyy'">
+                                {{(t('hakukohteetharkinnanvaraiset.syy.' + hakija.harkinnanvaraisuudenSyy) || hakija.harkinnanvaraisuudenSyy)}}
                             </td>
                             <td data-title="(t('hakukohteetharkinnanvaraiset.harkinnanvarainentila') || 'Harkinnanvarainen tila')">
                                 <select ng-model="hakija.muokattuHarkinnanvaraisuusTila" ng-disabled="inputdisabled">

@@ -41,10 +41,11 @@ angular
           model.hakukohdeOid = hakukohdeOid
           this.loaded = $q.defer()
 
-          AtaruApplications.get({
-            hakuOid: hakuOid,
-            hakukohdeOid: hakukohdeOid,
-          }).$promise.then(
+          AtaruApplications.get(
+            {
+              hakuOid: hakuOid,
+              hakukohdeOid: hakukohdeOid,
+            },
             function (ataruHakemukset) {
               if (!ataruHakemukset.length)
                 console.log("Couldn't find any applications in Ataru.")
@@ -61,7 +62,9 @@ angular
                   function (data) {
                     model.hakeneet = data
                       .map(function (harkinnanvaraisuus) {
-                        var matchingApp = result.find(function (application) {
+                        var matchingApp = ataruHakemukset.find(function (
+                          application
+                        ) {
                           return (
                             application.oid === harkinnanvaraisuus.hakemusOid
                           )
@@ -79,8 +82,7 @@ angular
                       .filter(function (application) {
                         return !!application.hakenutHarkinnanvaraisesti
                       })
-                    console.log('Harkinnanvaraisesti hakeneet')
-                    console.log(model.hakeneet)
+                    model.loaded.resolve()
                   },
                   function (error) {
                     model.errors.push(error)
@@ -288,10 +290,10 @@ angular
           page: 1, // show first page
           count: 50, // count per page
           filters: {
-            lastName: '',
+            sukunimi: '',
           },
           sorting: {
-            lastName: 'asc', // initial sorting
+            sukunimi: 'asc', // initial sorting
           },
         },
         {
@@ -305,6 +307,7 @@ angular
               var orderedData = params.sorting()
                 ? $filter('orderBy')($scope.model.hakeneet, params.orderBy())
                 : $scope.model.hakeneet
+
               orderedData = params.filter()
                 ? $filter('filter')(orderedData, filters)
                 : orderedData

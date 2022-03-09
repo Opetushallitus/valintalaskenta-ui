@@ -194,6 +194,8 @@ angular
       $scope.muutettu = false
       $scope.reviewUrlKey = 'haku-app.virkailija.hakemus.esikatselu'
 
+      HakuModel.refreshIfNeeded($scope.hakuOid)
+
       Pohjakoulutukset.query(function (result) {
         $scope.pohjakoulutukset = {}
 
