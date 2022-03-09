@@ -1,0 +1,69 @@
+<h1>{{ t('hakukohteetharkinnanvaraiset.header') || 'Valintojen toteuttaminen' }}</h1>
+<div ng-include="'../common/js/topnavigation/topNavigation.html'" />
+
+<div class="tabsheets">
+
+    <div ng-include="'haku/hakukohdelista.html'"></div>
+
+    <div class="toggle-content-container overflow-x-scroll">
+
+        <div ng-include="'../common/html/hakukohdeNimi.html'"></div>
+        <div ng-include="'haku/hakukohteet/hakukohdeNavigation.html'" />
+
+        <div class="tabsheets">
+
+            <div ng-include="'../common/html/errors.html'"></div>
+
+            <form method="post">
+                <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
+            </form>
+
+            <div ng-show="model.hakeneet.length > 0" class="margin-vertical-2">
+                <h2>{{ t('hakukohteetharkinnanvaraiset.harkinnanvaraisethakijat') || 'Harkinnanvaraiset hakijat' }}</h2>
+                <p>{{ t('hakukohteetharkinnanvaraiset.hakijoidenmaara') || 'Hakijoiden määrä'}}: {{ model.hakeneet | filter: {hakenutHarkinnanvaraisesti:true} | ListLength}}</p>
+
+                <a ng-click="muodostaKoekutsut();" class="btn btn-default btn-sm pdf">{{ t('hakukohteetharkinnanvaraiset.muodostakoekutsut') || 'Muodosta koekutsut' }}</a>
+                <a ng-click="muodostaOsoitetarrat();" class="btn btn-default btn-sm pdf">{{ t('hakukohteetharkinnanvaraiset.muodostaosoitetarrat') || 'Muodosta osoitetarrat' }}</a>
+                <br>
+                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" ng-disabled="inputdisabled">{{ t('hakukohteetharkinnanvaraiset.tallenna') || 'Tallenna' }}</a>
+
+                <form name="form" ng-submit="submit()">
+                    <table ng-table="tableParams" show-filter="true" class="virkailija-table-1">
+                        <tr ng-repeat="hakija in ($data | filter: {hakenutHarkinnanvaraisesti:true})">
+                            <td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
+                                <input type="checkbox" ng-model="checkboxes.items[hakija.oid]" />
+                            </td>
+                            <td class="leftorientedcolumn" data-title="(t('hakukohteetharkinnanvaraiset.nimi') || 'Nimi')"
+                                sortable="'sukunimi'" filter="{ 'sukunimi' : 'text' }">
+                                <show-person-information sukunimi="{{hakija.sukunimi}}"
+                                                         etunimi="{{hakija.etunimet}}"
+                                                         hakemus-oid="{{hakija.oid}}"
+                                                         haku-oid="{{hakuOid}}"
+                                                         henkilo-oid=""
+                                                         review-url-key="{{reviewUrlKey}}" />
+                            </td>
+                            <td data-title="(t('hakukohteetharkinnanvaraiset.pohjakoulutus') || 'Pohjakoulutus')" sortable="'hakija.answers.koulutustausta.POHJAKOULUTUS'">
+                                {{pohjakoulutukset[hakija.answers.koulutustausta.POHJAKOULUTUS]}}
+                            </td>
+                            <td data-title="(t('hakukohteetharkinnanvaraiset.syy') || 'Harkinnanvaraisuuden syy')" sortale="'hakija.harkinnanvaraisuudenSyy'">
+                                {{hakija.harkinnanvaraisuudenSyy}}
+                            </td>
+                            <td data-title="(t('hakukohteetharkinnanvaraiset.harkinnanvarainentila') || 'Harkinnanvarainen tila')">
+                                <select ng-model="hakija.muokattuHarkinnanvaraisuusTila" ng-disabled="inputdisabled">
+                                    <option value="HYVAKSYTTY">{{ t('hakukohteetharkinnanvaraiset.hyvaksytty') || 'Hyväksytty' }}</option>
+                                    <option value="EI_HYVAKSYTTY">{{ t('hakukohteetharkinnanvaraiset.eihyvaksytty') || 'Ei Hyväksytty' }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <script type="text/ng-template" id="ng-table/headers/checkbox.html">
+                        <input type="checkbox" ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />
+                    </script>
+                </form>
+                <a ng-click="submit()" class="btn btn-primary btn-sm margin-top-2" ng-disabled="inputdisabled">{{ t('hakukohteetharkinnanvaraiset.tallenna') || 'Tallenna' }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+</div>
