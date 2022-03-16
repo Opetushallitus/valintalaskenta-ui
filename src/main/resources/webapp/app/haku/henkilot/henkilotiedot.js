@@ -44,6 +44,14 @@ app.factory('HenkiloTiedotModel', function (
     })
   }
 
+  function getNimi(nimi) {
+    return nimi.kieli_fi !== undefined
+      ? nimi.kieli_fi
+      : nimi.kieli_sv !== undefined
+      ? nimi.kieli.sv
+      : nimi.kieli_en
+  }
+
   function hakukohteetByHakukohdeOid(hakemus) {
     var hakukohteetByHakukohdeOid = {}
     return $q
@@ -53,8 +61,8 @@ app.factory('HenkiloTiedotModel', function (
             hakukohdeoid: hakutoive.hakukohdeOid,
           }).$promise.then(function (hakukohde) {
             hakukohteetByHakukohdeOid[hakukohde.oid] = {
-              nimi: hakukohde.nimi.kieli_fi,
-              tarjoajaNimi: hakukohde.tarjoajaNimi.kieli_fi,
+              nimi: getNimi(hakukohde.nimi),
+              tarjoajaNimi: getNimi(hakukohde.tarjoajaNimi),
               tarjoajaOid: hakukohde.tarjoajaOids[0],
               organisationOidsForAuthorization: hakukohde.tarjoajaOids.concat(
                 hakukohde.organisaatioRyhmaOids
