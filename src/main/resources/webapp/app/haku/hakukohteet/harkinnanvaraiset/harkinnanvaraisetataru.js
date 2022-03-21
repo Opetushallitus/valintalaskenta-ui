@@ -1,12 +1,13 @@
 angular
   .module('valintalaskenta')
 
-  .factory('HarkinnanvaraisetModel', [
+  .factory('HarkinnanvaraisetAtaruModel', [
     '$log',
     '_',
-    'HakukohdeHenkilotFull',
+    'AtaruApplications',
     'Ilmoitus',
     'Hakemus',
+    'HarkinnanvaraisetHakemukset',
     'HarkinnanvarainenHyvaksynta',
     'HarkinnanvaraisestiHyvaksytyt',
     'IlmoitusTila',
@@ -14,9 +15,10 @@ angular
     function (
       $log,
       _,
-      HakukohdeHenkilotFull,
+      AtaruApplications,
       Ilmoitus,
       Hakemus,
+      HarkinnanvaraisetHakemukset,
       HarkinnanvarainenHyvaksynta,
       HarkinnanvaraisestiHyvaksytyt,
       IlmoitusTila,
@@ -39,45 +41,59 @@ angular
           model.hakukohdeOid = hakukohdeOid
           this.loaded = $q.defer()
 
-          HakukohdeHenkilotFull.get(
-            { aoOid: hakukohdeOid, rows: 100000, asId: hakuOid },
-            function (result) {
+          AtaruApplications.get(
+            {
+              hakuOid: hakuOid,
+              hakukohdeOid: hakukohdeOid,
+            },
+            function (ataruHakemukset) {
+              if (!ataruHakemukset.length)
+                console.log("Couldn't find any applications in Ataru.")
               model.hakeneet = []
-              if (result) {
-                result.forEach(function (hakija) {
-                  hakija.valittu = true
 
-                  for (var i = 0; i < 10; i++) {
-                    var oid =
-                      hakija.answers.hakutoiveet[
-                        'preference' + i + '-Koulutus-id'
-                      ]
-                    if (oid === model.hakukohdeOid) {
-                      var harkinnanvarainen =
-                        hakija.answers.hakutoiveet[
-                          'preference' + i + '-discretionary'
-                        ]
-                      var discretionary =
-                        hakija.answers.hakutoiveet[
-                          'preference' + i + '-Harkinnanvarainen'
-                        ] // this should be removed at some point
-                      hakija.hakenutHarkinnanvaraisesti =
-                        harkinnanvarainen || discretionary
-                    }
-                  }
-
-                  if (hakija.hakenutHarkinnanvaraisesti == 'true') {
-                    hakija.firstNames = hakija.answers.henkilotiedot.Etunimet
-                    hakija.lastName = hakija.answers.henkilotiedot.Sukunimi
-                    model.hakeneet.push(hakija)
-                  }
+              if (ataruHakemukset) {
+                var applicationOids = ataruHakemukset.map(function (hakemus) {
+                  return hakemus.oid
                 })
+                HarkinnanvaraisetHakemukset.post(
+                  {},
+                  applicationOids
+                ).$promise.then(
+                  function (data) {
+                    model.hakeneet = data
+                      .map(function (harkinnanvaraisuus) {
+                        var matchingApp = ataruHakemukset.find(function (
+                          application
+                        ) {
+                          return (
+                            application.oid === harkinnanvaraisuus.hakemusOid
+                          )
+                        })
+                        var syy = harkinnanvaraisuus.hakutoiveet.find(function (
+                          hakutoive
+                        ) {
+                          return hakutoive.hakukohdeOid === model.hakukohdeOid
+                        }).harkinnanvaraisuudenSyy
+                        matchingApp.hakenutHarkinnanvaraisesti =
+                          syy !== 'EI_HARKINNANVARAINEN'
+                        matchingApp.harkinnanvaraisuudenSyy = syy
+                        return matchingApp
+                      })
+                      .filter(function (application) {
+                        return !!application.hakenutHarkinnanvaraisesti
+                      })
+                    model.loaded.resolve()
+                  },
+                  function (error) {
+                    model.errors.push(error)
+                  }
+                )
                 HarkinnanvaraisestiHyvaksytyt.get(
                   { hakukohdeOid: hakukohdeOid, hakuOid: hakuOid },
                   function (result) {
                     _.forEach(result, function (harkinnanvarainen) {
                       var hakija = _.find(model.hakeneet, function (h) {
-                        return h.oid == harkinnanvarainen.hakemusOid
+                        return h.oid === harkinnanvarainen.hakemusOid
                       })
                       if (hakija) {
                         hakija.muokattuHarkinnanvaraisuusTila =
@@ -145,7 +161,7 @@ angular
     },
   ])
 
-  .controller('HarkinnanvaraisetController', [
+  .controller('HarkinnanvaraisetAtaruController', [
     '$scope',
     '$location',
     '$log',
@@ -155,7 +171,7 @@ angular
     'Latausikkuna',
     'Koekutsukirjeet',
     'OsoitetarratHakemuksille',
-    'HarkinnanvaraisetModel',
+    'HarkinnanvaraisetAtaruModel',
     'HakuModel',
     'HakukohdeModel',
     'Pohjakoulutukset',
@@ -173,7 +189,7 @@ angular
       Latausikkuna,
       Koekutsukirjeet,
       OsoitetarratHakemuksille,
-      HarkinnanvaraisetModel,
+      HarkinnanvaraisetAtaruModel,
       HakuModel,
       HakukohdeModel,
       Pohjakoulutukset,
@@ -187,12 +203,12 @@ angular
       $scope.hakukohdeOid = $routeParams.hakukohdeOid
       $scope.hakuOid = $routeParams.hakuOid
 
-      $scope.model = HarkinnanvaraisetModel
+      $scope.model = HarkinnanvaraisetAtaruModel
       $scope.url = window.url
       $scope.hakukohdeModel = HakukohdeModel
       $scope.arvoFilter = 'SYOTETTAVA_ARVO'
       $scope.muutettu = false
-      $scope.reviewUrlKey = 'haku-app.virkailija.hakemus.esikatselu'
+      $scope.reviewUrlKey = 'ataru.application.review'
 
       HakuModel.refreshIfNeeded($scope.hakuOid)
 
@@ -219,7 +235,7 @@ angular
 
       HakukohdeModel.refreshIfNeeded($scope.hakukohdeOid)
 
-      HarkinnanvaraisetModel.refreshIfNeeded(
+      HarkinnanvaraisetAtaruModel.refreshIfNeeded(
         $scope.hakukohdeOid,
         $routeParams.hakuOid
       )
@@ -295,10 +311,10 @@ angular
           page: 1, // show first page
           count: 50, // count per page
           filters: {
-            lastName: '',
+            sukunimi: '',
           },
           sorting: {
-            lastName: 'asc', // initial sorting
+            sukunimi: 'asc', // initial sorting
           },
         },
         {
@@ -312,6 +328,7 @@ angular
               var orderedData = params.sorting()
                 ? $filter('orderBy')($scope.model.hakeneet, params.orderBy())
                 : $scope.model.hakeneet
+
               orderedData = params.filter()
                 ? $filter('filter')(orderedData, filters)
                 : orderedData

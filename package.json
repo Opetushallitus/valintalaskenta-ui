@@ -1,6 +1,7 @@
 {
   "scripts": {
     "build": "bower update && gulp scripts",
+    "lint": "eslint src/main/resources/webapp/app",
     "scripts": "gulp scripts"
   },
   "husky": {

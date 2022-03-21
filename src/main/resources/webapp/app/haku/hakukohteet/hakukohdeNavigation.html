@@ -67,7 +67,7 @@
         <span>{{ t('hakukohdenavigation.pistesyotto') || 'Pistesyöttö' }}</span>
     </a>
 
-    <a ng-if="!hakuModel.korkeakoulu"
+    <a ng-if="!hakuModel.korkeakoulu && !hakuModel.hakuOid.ataruLomakeAvain"
        auth="read"
        auth-service="APP_VALINTOJENTOTEUTTAMINEN"
        auth-kk-user="true"
@@ -75,6 +75,18 @@
        auth-additional-check="harkinnanvaraiset"
        ng-class="navClass('harkinnanvaraiset', 5)"
        href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset"
+       class="tab">
+        <span>{{ t('hakukohdenavigation.harkinnanvaraiset') || 'Harkinnanvaraiset' }}</span>
+    </a>
+
+    <a ng-if="!hakuModel.korkeakoulu && hakuModel.hakuOid.ataruLomakeAvain"
+       auth="read"
+       auth-service="APP_VALINTOJENTOTEUTTAMINEN"
+       auth-kk-user="true"
+       auth-orgs="{{hakukohdeModel.organisationOidsForAuthorisation}}"
+       auth-additional-check="harkinnanvaraiset"
+       ng-class="navClass('harkinnanvaraiset', 5)"
+       href="#/haku/{{hakuOid}}/hakukohde/{{hakukohdeOid}}/harkinnanvaraiset/ataru"
        class="tab">
         <span>{{ t('hakukohdenavigation.harkinnanvaraiset') || 'Harkinnanvaraiset' }}</span>
     </a>

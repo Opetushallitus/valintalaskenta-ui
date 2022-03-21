@@ -27,6 +27,12 @@ angular
           TEMPLATE_URL_BASE +
           'haku/hakukohteet/harkinnanvaraiset/harkinnanvaraiset.html',
       })
+      .when('/haku/:hakuOid/hakukohde/:hakukohdeOid/harkinnanvaraiset/ataru', {
+        controller: 'HarkinnanvaraisetAtaruController',
+        templateUrl:
+          TEMPLATE_URL_BASE +
+          'haku/hakukohteet/harkinnanvaraiset/harkinnanvaraisetataru.html',
+      })
       .when('/haku/:hakuOid/hakukohde/:hakukohdeOid/valintalaskentatulos', {
         controller: 'ValintalaskentatulosController',
         templateUrl:
