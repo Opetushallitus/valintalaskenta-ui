@@ -79,7 +79,7 @@
         <span>{{ t('hakukohdenavigation.harkinnanvaraiset') || 'Harkinnanvaraiset' }}</span>
     </a>
 
-    <a ng-if="!hakuModel.korkeakoulu && hakuModel.hakuOid.ataruLomakeAvain"
+    <a ng-if="!hakuModel.korkeakoulu && hakuModel.hakuOid.ataruLomakeAvain && hakukohdeModel.hakukohde.onkoHarkinnanvarainenKoulutus == true"
        auth="read"
        auth-service="APP_VALINTOJENTOTEUTTAMINEN"
        auth-kk-user="true"
