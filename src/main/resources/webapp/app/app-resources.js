@@ -142,6 +142,7 @@ var koutaHakukohdeAndToteutusToHakukohde = function (
     organisaatioRyhmaOids: [],
     opetuskielet: opetuskielet,
     virkailijaUrl: plainUrl('kouta.hakukohde', hakukohde.oid),
+    onkoHarkinnanvarainenKoulutus: hakukohde.onkoHarkinnanvarainenKoulutus,
   }
 }
 
