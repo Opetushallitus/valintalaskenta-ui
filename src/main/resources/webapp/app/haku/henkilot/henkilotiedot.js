@@ -48,7 +48,7 @@ app.factory('HenkiloTiedotModel', function (
     return nimi.kieli_fi !== undefined
       ? nimi.kieli_fi
       : nimi.kieli_sv !== undefined
-      ? nimi.kieli.sv
+      ? nimi.kieli_sv
       : nimi.kieli_en
   }
 
