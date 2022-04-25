@@ -336,15 +336,15 @@ angular
               oids.push(item.oid)
             }
           }
-        });
-        if(oids.length === 0) {
+        })
+        if (oids.length === 0) {
           angular.forEach($scope.model.hakeneet, function (item) {
             if (angular.isDefined(item.oid)) {
-              oids.push(item.oid);
+              oids.push(item.oid)
             }
-          });
+          })
         }
-        return oids;
+        return oids
       }
 
       $scope.checkboxes = { checked: false, items: {} }
