@@ -73,6 +73,7 @@ angular
     'Korkeakoulu',
     'CustomHakuUtil',
     'Hyvaksymiskirjepohjat',
+    'HakuUtility',
     function (
       $scope,
       $modal,
@@ -107,7 +108,8 @@ angular
       SeurantaPalveluHaunLaskennat,
       Korkeakoulu,
       CustomHakuUtil,
-      Hyvaksymiskirjepohjat
+      Hyvaksymiskirjepohjat,
+      HakuUtility
     ) {
       'use strict'
 
@@ -130,6 +132,9 @@ angular
         $scope.iskorkeakoulu = $scope.korkeakoulu.isKorkeakoulu(
           h.hakuOid.kohdejoukkoUri
         )
+        $scope.istoisenasteenyhteishaku =
+          HakuUtility.isToinenAsteKohdeJoukko(h.hakuOid.kohdejoukkoUri) &&
+          HakuUtility.isYhteishaku(h.hakuOid)
       })
 
       $scope.nullIsUndefined = function (value) {
@@ -358,19 +363,29 @@ angular
         }
       )
 
-      $scope.muodostaKirjeet = function (hyvaksymiskirje, langcode) {
-        console.log('is hyvaksymiskirje? ' + (hyvaksymiskirje == true))
+      $scope.muodostaKirjeet = function (kirjeentyyppi, langcode) {
+        const hyvaksymiskirje = kirjeentyyppi === 'hyvaksymiskirje'
+        const hyvaksymiskirjeHuoltajille =
+          kirjeentyyppi === 'hyvaksymiskirje_huoltajille'
+        console.log('is hyvaksymiskirje? ' + hyvaksymiskirje)
+        console.log(
+          'is hyvaksymiskirjeHuoltajille? ' + hyvaksymiskirjeHuoltajille
+        )
         console.log('using language ' + langcode)
         if (hyvaksymiskirje) {
-          $scope.muodostaHyvaksymiskirjeet(langcode)
+          $scope.muodostaHyvaksymiskirjeet(false, langcode)
+        } else if (hyvaksymiskirjeHuoltajille) {
+          $scope.muodostaHyvaksymiskirjeet(true, langcode)
         } else {
           $scope.muodostaJalkiohjauskirjeet(langcode)
         }
       }
 
-      $scope.muodostaHyvaksymiskirjeet = function (langcode) {
+      $scope.muodostaHyvaksymiskirjeet = function (huoltajille, langcode) {
         var hakuOid = $routeParams.hakuOid
-        var templateName = 'hyvaksymiskirje'
+        var templateName = huoltajille
+          ? 'hyvaksymiskirje_huoltajille'
+          : 'hyvaksymiskirje'
         var viestintapalveluInstance = $modal.open({
           backdrop: 'static',
           templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -387,7 +402,7 @@ angular
                       hakuOid: hakuOid,
                       asiointikieli: langcode,
                       vainTulosEmailinKieltaneet: false,
-                      templateName: 'hyvaksymiskirje',
+                      templateName: templateName,
                     },
                     {
                       tag: hakuOid,
@@ -669,6 +684,8 @@ angular
             return 'jälkiohjauskirjeet'
           case 'hyvaksymiskirje':
             return 'hyväksymiskirjeet'
+          case 'hyvaksymiskirje_huoltajille':
+            return 'hyväksymiskirjeet huoltajille'
           default:
             return ''
         }
