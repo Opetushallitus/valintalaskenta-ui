@@ -297,6 +297,9 @@ app.factory('TarjontaHaku', function ($resource, $q) {
       if (params.organisationOids && params.organisationOids !== '') {
         koutaParams.tarjoaja = params.organisationOids
       }
+      if (params.organisationGroupOids && params.organisationGroupOids !== '') {
+        koutaParams.hakukohderyhmat = params.organisationGroupOids
+      }
       koutaResource
         .get(koutaParams)
         .$promise.then(
