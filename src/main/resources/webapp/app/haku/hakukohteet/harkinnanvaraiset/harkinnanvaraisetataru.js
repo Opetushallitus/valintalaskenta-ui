@@ -354,6 +354,13 @@ angular
             }
           }
         })
+        if (oids.length === 0) {
+          angular.forEach($scope.model.hakeneet, function (item) {
+            if (angular.isDefined(item.oid)) {
+              oids.push(item.oid)
+            }
+          })
+        }
         return oids
       }
 
