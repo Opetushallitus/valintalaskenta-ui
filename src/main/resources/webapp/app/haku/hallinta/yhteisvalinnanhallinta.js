@@ -383,6 +383,12 @@ angular
 
       $scope.muodostaHyvaksymiskirjeet = function (huoltajille, langcode) {
         var hakuOid = $routeParams.hakuOid
+        var modaalinOtsikko = huoltajille
+          ? 'Hyväksymiskirjeet huoltajille'
+          : 'Hyväksymiskirjeet'
+        var modaalinToimintoNimi = huoltajille
+          ? 'Muodosta hyväksymiskirjeet'
+          : 'Muodosta hyväksymiskirjeet huoltajille'
         var templateName = huoltajille
           ? 'hyvaksymiskirje_huoltajille'
           : 'hyvaksymiskirje'
@@ -394,8 +400,8 @@ angular
           resolve: {
             oids: function () {
               return {
-                otsikko: 'Hyväksymiskirjeet',
-                toimintoNimi: 'Muodosta hyväksymiskirjeet',
+                otsikko: modaalinOtsikko,
+                toimintoNimi: modaalinToimintoNimi,
                 toiminto: function (sisalto) {
                   Hyvaksymiskirjeet.post(
                     {
@@ -409,7 +415,7 @@ angular
                       letterBodyText: sisalto,
                     },
                     function (id) {
-                      Latausikkuna.avaa(id, 'Hyväksymiskirjeet', '', false)
+                      Latausikkuna.avaa(id, modaalinOtsikko, '', false)
                     },
                     function () {}
                   )
