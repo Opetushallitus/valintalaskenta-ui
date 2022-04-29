@@ -1252,6 +1252,25 @@ app.factory('Hyvaksymiskirjepohjat', function ($resource) {
   )
 })
 
+app.factory('HyvaksymiskirjepohjatHuoltajille', function ($resource) {
+  return $resource(
+    plainUrl('viestintapalvelu.template.gethistory', {
+      templateName: 'hyvaksymiskirje_huoltajille',
+      languageCode: ':languageCode',
+      tag: ':tag',
+      applicationPeriod: ':applicationPeriod',
+    }),
+    {
+      languageCode: '@languageCode',
+      tag: '@tag',
+      applicationPeriod: '@applicationPeriod',
+    },
+    {
+      get: { method: 'GET', isArray: true, cache: false },
+    }
+  )
+})
+
 app.factory('Hakemus', function ($resource) {
   return $resource(
     plainUrl('haku-app.applications.oid', ':oid'),

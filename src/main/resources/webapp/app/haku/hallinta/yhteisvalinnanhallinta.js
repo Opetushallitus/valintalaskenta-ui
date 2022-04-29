@@ -73,6 +73,7 @@ angular
     'Korkeakoulu',
     'CustomHakuUtil',
     'Hyvaksymiskirjepohjat',
+    'HyvaksymiskirjepohjatHuoltajille',
     'HakuUtility',
     function (
       $scope,
@@ -109,6 +110,7 @@ angular
       Korkeakoulu,
       CustomHakuUtil,
       Hyvaksymiskirjepohjat,
+      HyvaksymiskirjepohjatHuoltajille,
       HakuUtility
     ) {
       'use strict'
@@ -373,25 +375,17 @@ angular
         )
         console.log('using language ' + langcode)
         if (hyvaksymiskirje) {
-          $scope.muodostaHyvaksymiskirjeet(false, langcode)
+          $scope.muodostaHyvaksymiskirjeet(langcode)
         } else if (hyvaksymiskirjeHuoltajille) {
-          $scope.muodostaHyvaksymiskirjeet(true, langcode)
+          $scope.muodostaHyvaksymiskirjeetHuoltajille(langcode)
         } else {
           $scope.muodostaJalkiohjauskirjeet(langcode)
         }
       }
 
-      $scope.muodostaHyvaksymiskirjeet = function (huoltajille, langcode) {
+      $scope.muodostaHyvaksymiskirjeet = function (langcode) {
         var hakuOid = $routeParams.hakuOid
-        var modaalinOtsikko = huoltajille
-          ? 'Hyväksymiskirjeet huoltajille'
-          : 'Hyväksymiskirjeet'
-        var modaalinToimintoNimi = huoltajille
-          ? 'Muodosta hyväksymiskirjeet'
-          : 'Muodosta hyväksymiskirjeet huoltajille'
-        var templateName = huoltajille
-          ? 'hyvaksymiskirje_huoltajille'
-          : 'hyvaksymiskirje'
+        var modaalinOtsikko = 'Hyväksymiskirjeet'
         var viestintapalveluInstance = $modal.open({
           backdrop: 'static',
           templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -401,14 +395,14 @@ angular
             oids: function () {
               return {
                 otsikko: modaalinOtsikko,
-                toimintoNimi: modaalinToimintoNimi,
+                toimintoNimi: 'Muodosta hyväksymiskirjeet',
                 toiminto: function (sisalto) {
                   Hyvaksymiskirjeet.post(
                     {
                       hakuOid: hakuOid,
                       asiointikieli: langcode,
                       vainTulosEmailinKieltaneet: false,
-                      templateName: templateName,
+                      templateName: 'hyvaksymiskirje',
                     },
                     {
                       tag: hakuOid,
@@ -424,7 +418,52 @@ angular
                 hakuOid: $routeParams.hakuOid,
                 pohjat: function () {
                   return Hyvaksymiskirjepohjat.get({
-                    templateName: templateName,
+                    languageCode: langcode,
+                    tag: hakuOid,
+                    applicationPeriod: hakuOid,
+                  })
+                },
+              }
+            },
+          },
+        })
+      }
+
+      $scope.muodostaHyvaksymiskirjeetHuoltajille = function (langcode) {
+        var hakuOid = $routeParams.hakuOid
+        var modaalinOtsikko = 'Hyväksymiskirjeet huoltajille'
+        var viestintapalveluInstance = $modal.open({
+          backdrop: 'static',
+          templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+          controller: ViestintapalveluIkkunaCtrl,
+          size: 'lg',
+          resolve: {
+            oids: function () {
+              return {
+                otsikko: modaalinOtsikko,
+                toimintoNimi: 'Muodosta hyväksymiskirjeet huoltajille',
+                toiminto: function (sisalto) {
+                  Hyvaksymiskirjeet.post(
+                    {
+                      hakuOid: hakuOid,
+                      asiointikieli: langcode,
+                      vainTulosEmailinKieltaneet: false,
+                      templateName: 'hyvaksymiskirje_huoltajille',
+                    },
+                    {
+                      tag: hakuOid,
+                      letterBodyText: sisalto,
+                    },
+                    function (id) {
+                      Latausikkuna.avaa(id, modaalinOtsikko, '', false)
+                    },
+                    function () {}
+                  )
+                },
+                showDateFields: true,
+                hakuOid: $routeParams.hakuOid,
+                pohjat: function () {
+                  return HyvaksymiskirjepohjatHuoltajille.get({
                     languageCode: langcode,
                     tag: hakuOid,
                     applicationPeriod: hakuOid,
