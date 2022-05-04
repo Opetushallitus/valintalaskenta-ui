@@ -46,10 +46,10 @@ describe('Yhteisvalinnan hallinta', function () {
         wait.forAngular
       )
     )
-    it('näyttää yhdeksälle eri lähetyserälle valmiiden määrän', function () {
+    it('näyttää kuudelle eri lähetyserälle valmiiden määrän', function () {
       expect(
         yhteisvalinnanHallintaSelectors.valmiitTulosKirjeet().length
-      ).to.equal(9)
+      ).to.equal(6)
     })
     it('sisältää linkin viestintäpalveluun', function () {
       assertText(

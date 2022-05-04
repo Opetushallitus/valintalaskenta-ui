@@ -1233,6 +1233,25 @@ app.factory('Jalkiohjauskirjepohjat', function ($resource) {
   )
 })
 
+app.factory('JalkiohjauskirjepohjatHuoltajille', function ($resource) {
+  return $resource(
+    plainUrl('viestintapalvelu.template.gethistory', {
+      templateName: 'jalkiohjauskirje_huoltajille',
+      languageCode: ':languageCode',
+      tag: ':tag',
+      applicationPeriod: ':applicationPeriod',
+    }),
+    {
+      languageCode: '@languageCode',
+      tag: '@tag',
+      applicationPeriod: '@applicationPeriod',
+    },
+    {
+      get: { method: 'GET', isArray: true, cache: false },
+    }
+  )
+})
+
 app.factory('Hyvaksymiskirjepohjat', function ($resource) {
   return $resource(
     plainUrl('viestintapalvelu.template.gethistory', {
