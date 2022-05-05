@@ -372,7 +372,7 @@ angular
           $scope.muodostaHyvaksymiskirjeet(langcode)
         } else if (kirjeentyyppi === 'hyvaksymiskirje_huoltajille') {
           $scope.muodostaHyvaksymiskirjeetHuoltajille(langcode)
-        } else if (kirjeentyyppi === 'jalkiohjauskirje') {
+        } else if (kirjeentyyppi === 'jalkiohjauskirje_huoltajille') {
           $scope.muodostaJalkiohjauskirjeet(langcode, true)
         } else {
           $scope.muodostaJalkiohjauskirjeet(langcode)
