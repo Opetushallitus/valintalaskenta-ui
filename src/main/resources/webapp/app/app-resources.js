@@ -107,7 +107,8 @@ var tarjontaHakukohdeToHakukohde = function (hakukohde) {
 var koutaHakukohdeAndToteutusToHakukohde = function (
   hakukohde,
   toteutus,
-  tarjoajat
+  tarjoajat,
+  hakukohderyhmat
 ) {
   var opetuskielet = []
   toteutus.metadata.opetus.opetuskieliKoodiUrit.forEach(function (
@@ -139,7 +140,7 @@ var koutaHakukohdeAndToteutusToHakukohde = function (
     nimi: arvoNimiToNimi(hakukohde.nimi),
     tarjoajaOids: [hakukohde.tarjoaja],
     tarjoajaNimi: arvoNimiToNimi(tarjoajat[0].nimi),
-    organisaatioRyhmaOids: [],
+    organisaatioRyhmaOids: hakukohderyhmat,
     opetuskielet: opetuskielet,
     virkailijaUrl: plainUrl('kouta.hakukohde', hakukohde.oid),
     voikoHakukohteessaOllaHarkinnanvaraisestiHakeneita:
@@ -363,6 +364,15 @@ app.factory('TarjontaHakukohde', function ($resource, $q) {
     {},
     { get: { method: 'GET', cache: false } }
   )
+  var hakukohderyhmaResource = $resource(
+    plainUrl(
+      'valintalaskentakoostepalvelu.hakukohteen.hakukohderyhmat',
+      ':hakukohdeoid'
+    ),
+    {},
+    { get: { method: 'GET', cache: false } }
+  )
+
   return {
     get: function (params, onSuccess, onError) {
       var tarjontaP = tarjontaResource
@@ -379,18 +389,23 @@ app.factory('TarjontaHakukohde', function ($resource, $q) {
           return koutaToteutusResource
             .get({ toteutusOid: hakukohde.toteutusOid })
             .$promise.then(function (toteutus) {
-              return $q
-                .all(
-                  [hakukohde.tarjoaja].map(function (oid) {
-                    return organisaatioResource.get({ oid: oid }).$promise
-                  })
-                )
-                .then(function (tarjoajat) {
-                  return koutaHakukohdeAndToteutusToHakukohde(
-                    hakukohde,
-                    toteutus,
-                    tarjoajat
-                  )
+              return hakukohderyhmaResource
+                .get({ hakukohdeoid: hakukohde.oid })
+                .$promise.then(function (hakukohderyhmat) {
+                  return $q
+                    .all(
+                      [hakukohde.tarjoaja].map(function (oid) {
+                        return organisaatioResource.get({ oid: oid }).$promise
+                      })
+                    )
+                    .then(function (tarjoajat) {
+                      return koutaHakukohdeAndToteutusToHakukohde(
+                        hakukohde,
+                        toteutus,
+                        tarjoajat,
+                        hakukohderyhmat
+                      )
+                    })
                 })
             })
         })
