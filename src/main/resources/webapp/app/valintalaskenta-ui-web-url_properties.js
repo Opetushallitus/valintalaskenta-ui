@@ -167,7 +167,7 @@ window.urls.addProperties({
   'valintalaskentakoostepalvelu.harkinnanvaraisuus':
     'valintalaskentakoostepalvelu/resources/harkinnanvaraisuus/hakemuksille',
   'valintalaskentakoostepalvelu.hakukohteen.hakukohderyhmat':
-    'valintalaskentakoostepalvelu/parametrit/hakukohderyhmat/$1',
+    'valintalaskentakoostepalvelu/resources/parametrit/hakukohderyhmat/$1',
 
   'sijoittelu-service.buildversion': 'sijoittelu-service/buildversion.txt?auth',
   'sijoittelu-service.erillissijoittelu.sijoitteluajo.hakukohde':
