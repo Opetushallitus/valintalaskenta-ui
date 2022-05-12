@@ -370,7 +370,7 @@ app.factory('TarjontaHakukohde', function ($resource, $q) {
       ':hakukohdeoid'
     ),
     {},
-    { get: { method: 'GET', cache: false } }
+    { get: { method: 'GET', cache: false, isArray: true } }
   )
 
   return {
