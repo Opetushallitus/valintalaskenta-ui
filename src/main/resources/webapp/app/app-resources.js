@@ -308,28 +308,6 @@ app.factory('TarjontaHaku', function ($resource, $q) {
             return $q
               .all(
                 hakukohteet
-                  .sort(function (a, b) {
-                    let nimiA = ''
-                    if (a.organisaatioNimi.fi) {
-                      nimiA = a.organisaatioNimi.fi
-                    } else if (a.organisaatioNimi.sv) {
-                      nimiA = a.organisaatioNimi.sv
-                    } else {
-                      nimiA = a.organisaatioNimi.en
-                    }
-
-                    let nimiB
-                    if (b.organisaatioNimi.fi) {
-                      nimiB = b.organisaatioNimi.fi
-                    } else if (b.organisaatioNimi.sv) {
-                      nimiB = b.organisaatioNimi.sv
-                    } else {
-                      nimiB = b.organisaatioNimi.en
-                    }
-                    return nimiA
-                      .toLowerCase()
-                      .localeCompare(nimiB.toLowerCase())
-                  })
                   .slice(params.startIndex, params.startIndex + params.count)
                   .map(function (hakukohde) {
                     return $q
