@@ -344,9 +344,11 @@ app.factory('HenkiloTiedotModel', function (
 
     var hakuPromise = HaunTiedot.get({ hakuOid: hakuOid }).$promise.then(
       function (haku) {
+        console.log('*** HAUNTIEDOT')
         return haku
       },
       function (error) {
+        console.log('*** ERROR HAUNTIEDOT')
         return $q.reject(
           'Error fetching haku ' + hakuOid + ': ' + JSON.stringify(o)
         )

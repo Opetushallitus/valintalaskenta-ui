@@ -234,6 +234,7 @@ app.factory('HaunTiedot', function ($resource, $q) {
   )
   return {
     get: function (params, onSuccess, onError) {
+      console.log('*** hauntiedot ', params)
       var tarjontaP = tarjontaResource.get(params).$promise
       var koutaP = koutaResource.get(params).$promise
       var ohjausparametritP = ohjausparametritResource.get(params).$promise
@@ -435,7 +436,7 @@ app.factory('TarjontaHaut', function ($resource, $q) {
   var koutaResource = $resource(
     window.url('kouta-internal.haku.search'),
     {},
-    { get: { method: 'GET', isArray: true, cache: false } }
+    { get: { method: 'GET', isArray: true, cache: true } }
   )
   var ohjausparametritResource = $resource(
     plainUrl('ohjausparametrit-service.parametri', ':hakuOid'),
