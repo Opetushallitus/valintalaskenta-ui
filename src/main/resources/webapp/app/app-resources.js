@@ -273,12 +273,12 @@ app.factory('TarjontaHaku', function ($resource, $q) {
   var koutaResource = $resource(
     plainUrl('kouta-internal.hakukohde.search'),
     {},
-    { get: { method: 'GET', isArray: true, cache: false } }
+    { get: { method: 'GET', isArray: true, cache: true } }
   )
   var organisaatioResource = $resource(
     plainUrl('organisaatio-service.organisaatio', ':oid'),
     {},
-    { get: { method: 'GET', cache: false } }
+    { get: { method: 'GET', cache: true } }
   )
   return {
     get: function (params, onSuccess, onError) {
@@ -353,17 +353,17 @@ app.factory('TarjontaHakukohde', function ($resource, $q) {
   var koutaHakukohdeResource = $resource(
     plainUrl('kouta-internal.hakukohde', ':hakukohdeoid'),
     {},
-    { get: { method: 'GET', cache: false } }
+    { get: { method: 'GET', cache: true } }
   )
   var koutaToteutusResource = $resource(
     plainUrl('kouta-internal.toteutus', ':toteutusOid'),
     {},
-    { get: { method: 'GET', cache: false } }
+    { get: { method: 'GET', cache: true } }
   )
   var organisaatioResource = $resource(
     plainUrl('organisaatio-service.organisaatio', ':oid'),
     {},
-    { get: { method: 'GET', cache: false } }
+    { get: { method: 'GET', cache: true } }
   )
   var hakukohderyhmaResource = $resource(
     plainUrl(
