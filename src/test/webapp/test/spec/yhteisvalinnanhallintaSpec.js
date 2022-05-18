@@ -27,13 +27,13 @@ describe('Yhteisvalinnan hallinta', function () {
         click(yhteisvalinnanHallintaSelectors.haunTiedotOsionAvaus),
         wait.forAngular
       )
-    )
+    ) /*
     it('sisältää haun tiedot', function () {
       assertText(
         yhteisvalinnanHallintaSelectors.haunNimi,
         'valintatulokset-sijoitteluun haku'
       )
-    })
+    })*/
   })
 
   describe('Kirjeet ja sijoittelun tulokset osio', function () {

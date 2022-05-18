@@ -166,6 +166,8 @@ window.urls.addProperties({
     'valintalaskentakoostepalvelu/resources/viestintapalvelu/securelinkit/esikatselu?hakuOid=$1&kirjeenTyyppi=$2&asiointikieli=$3',
   'valintalaskentakoostepalvelu.harkinnanvaraisuus':
     'valintalaskentakoostepalvelu/resources/harkinnanvaraisuus/hakemuksille',
+  'valintalaskentakoostepalvelu.hakukohteen.hakukohderyhmat':
+    'valintalaskentakoostepalvelu/resources/parametrit/hakukohderyhmat/$1',
 
   'sijoittelu-service.buildversion': 'sijoittelu-service/buildversion.txt?auth',
   'sijoittelu-service.erillissijoittelu.sijoitteluajo.hakukohde':

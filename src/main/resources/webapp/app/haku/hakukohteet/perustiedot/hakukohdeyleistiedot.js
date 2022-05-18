@@ -252,6 +252,7 @@ angular
       }
 
       var refreshHaunTiedot = function () {
+        console.log('*** refresh haun tiedot')
         return HaunTiedot.get({ hakuOid: $scope.hakuOid }).$promise.then(
           function (haku) {
             $scope.haku = HakuHelper.setErillishaku(haku)

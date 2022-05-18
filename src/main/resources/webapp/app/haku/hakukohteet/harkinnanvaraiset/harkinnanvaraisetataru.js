@@ -82,28 +82,27 @@ angular
                       .filter(function (application) {
                         return !!application.hakenutHarkinnanvaraisesti
                       })
-                    model.loaded.resolve()
-                  },
-                  function (error) {
-                    model.errors.push(error)
-                  }
-                )
-                HarkinnanvaraisestiHyvaksytyt.get(
-                  { hakukohdeOid: hakukohdeOid, hakuOid: hakuOid },
-                  function (result) {
-                    _.forEach(result, function (harkinnanvarainen) {
-                      var hakija = _.find(model.hakeneet, function (h) {
-                        return h.oid === harkinnanvarainen.hakemusOid
-                      })
-                      if (hakija) {
-                        hakija.muokattuHarkinnanvaraisuusTila =
-                          harkinnanvarainen.harkinnanvaraisuusTila
-                        hakija.harkinnanvaraisuusTila =
-                          harkinnanvarainen.harkinnanvaraisuusTila
-                      }
-                    })
+                    HarkinnanvaraisestiHyvaksytyt.get(
+                      { hakukohdeOid: hakukohdeOid, hakuOid: hakuOid },
+                      function (result) {
+                        _.forEach(result, function (harkinnanvarainen) {
+                          var hakija = _.find(model.hakeneet, function (h) {
+                            return h.oid === harkinnanvarainen.hakemusOid
+                          })
+                          if (hakija) {
+                            hakija.muokattuHarkinnanvaraisuusTila =
+                              harkinnanvarainen.harkinnanvaraisuusTila
+                            hakija.harkinnanvaraisuusTila =
+                              harkinnanvarainen.harkinnanvaraisuusTila
+                          }
+                        })
 
-                    model.loaded.resolve()
+                        model.loaded.resolve()
+                      },
+                      function (error) {
+                        model.errors.push(error)
+                      }
+                    )
                   },
                   function (error) {
                     model.errors.push(error)
