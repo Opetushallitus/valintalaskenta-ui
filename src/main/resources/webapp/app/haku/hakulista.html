@@ -24,87 +24,91 @@
     </div>
 </div>
 
-<div class="form-group">
-    <label class="col-md-3 control-label" for="onlyKoutaHaut">
-        {{t('hakulista.vainKoutaHaut') || 'Vain uuden tarjonnan haut'}}
-    </label>
-    <div class="col-md-9">
-        <input type="checkbox"
-               class="checkbox"
-               id="onlyKoutaHaut"
-               ng-model="hakumodel.onlyKoutaHaut"
-               ng-change="hakumodel.refresh(hakumodel.hakuOid.oid)">
+<div class="form-horizontal col-md-6">
+    <div class="margin-top-2">
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="onlyKoutaHaut">
+                {{t('hakulista.vainKoutaHaut') || 'Vain uuden tarjonnan haut'}}
+            </label>
+            <div class="col-md-10">
+                <input type="checkbox"
+                       class="checkbox"
+                       id="onlyKoutaHaut"
+                       ng-model="hakumodel.onlyKoutaHaut"
+                       ng-change="hakumodel.refresh(hakumodel.hakuOid.oid)">
+            </div>
+        </div>
+    </div>
+    <div collapse="!show" class="margin-top-2">
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="hakuvuosi">{{t('hakulista.hakuvuosi') || 'Hakuvuosi'}}</label>
+
+                <div class="col-md-10">
+                    <select class="form-control input-sm"
+                            id="hakuvuosi"
+                            ng-model="customHakuUtil.hakuvuosi.value"
+                            ng-options="hakuvuosi for hakuvuosi in customHakuUtil.hakuvuodetOpts">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="hakukausi">{{t('hakulista.hakukausi') || 'Hakukausi'}}</label>
+
+                <div class="col-md-10">
+                    <select class="form-control input-sm"
+                            id="hakukausi"
+                            ng-model="customHakuUtil.hakukausi.value"
+                            ng-options="hakukausi.koodiUri as hakukausi.nimi for hakukausi in customHakuUtil.hakukausiOpts"
+                            placeholder="Hakukausi">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="hakutapa">{{t('hakulista.hakutapa') || 'Hakutapa'}}</label>
+
+                <div class="col-md-10">
+                    <select class="form-control input-sm"
+                            id="hakutapa"
+                            ng-model="customHakuUtil.hakutapa.value"
+                            ng-options="hakutapa.koodiUri as hakutapa.nimi for hakutapa in customHakuUtil.hakutapaOpts">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="kohdejoukko">{{t('hakulista.kohdejoukko') || 'Kohdejoukko'}}</label>
+
+                <div class="col-md-10">
+                    <select class="form-control input-sm"
+                            id="kohdejoukko"
+                            ng-model="customHakuUtil.kohdejoukko.value"
+                            ng-options="kohdejoukko.koodiUri as kohdejoukko.nimi for kohdejoukko in customHakuUtil.kohdejoukkoOpts | orderBy: 'nimi'">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="hakutyyppi">{{t('hakulista.hakutyyppi') || 'Hakutyyppi'}}</label>
+
+                <div class="col-md-10">
+                    <select class="form-control input-sm"
+                            id="hakutyyppi"
+                            ng-model="customHakuUtil.hakutyyppi.value"
+                            ng-options="hakutyyppi.koodiUri as hakutyyppi.nimi for hakutyyppi in customHakuUtil.hakutyyppiOpts">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
     </div>
 </div>
 
-<div collapse="!show" class="margin-top-2">
-    <div class="form-horizontal col-md-6">
 
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="hakuvuosi">{{t('hakulista.hakuvuosi') || 'Hakuvuosi'}}</label>
 
-            <div class="col-md-9">
-                <select class="form-control input-sm"
-                        id="hakuvuosi"
-                        ng-model="customHakuUtil.hakuvuosi.value"
-                        ng-options="hakuvuosi for hakuvuosi in customHakuUtil.hakuvuodetOpts">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="hakukausi">{{t('hakulista.hakukausi') || 'Hakukausi'}}</label>
-
-            <div class="col-md-9">
-                <select class="form-control input-sm"
-                        id="hakukausi"
-                        ng-model="customHakuUtil.hakukausi.value"
-                        ng-options="hakukausi.koodiUri as hakukausi.nimi for hakukausi in customHakuUtil.hakukausiOpts"
-                        placeholder="Hakukausi">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="hakutapa">{{t('hakulista.hakutapa') || 'Hakutapa'}}</label>
-
-            <div class="col-md-9">
-                <select class="form-control input-sm"
-                        id="hakutapa"
-                        ng-model="customHakuUtil.hakutapa.value"
-                        ng-options="hakutapa.koodiUri as hakutapa.nimi for hakutapa in customHakuUtil.hakutapaOpts">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3" for="kohdejoukko">{{t('hakulista.kohdejoukko') || 'Kohdejoukko'}}</label>
-
-            <div class="col-md-9">
-                <select class="form-control input-sm"
-                        id="kohdejoukko"
-                        ng-model="customHakuUtil.kohdejoukko.value"
-                        ng-options="kohdejoukko.koodiUri as kohdejoukko.nimi for kohdejoukko in customHakuUtil.kohdejoukkoOpts | orderBy: 'nimi'">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3" for="hakutyyppi">{{t('hakulista.hakutyyppi') || 'Hakutyyppi'}}</label>
-
-            <div class="col-md-9">
-                <select class="form-control input-sm"
-                        id="hakutyyppi"
-                        ng-model="customHakuUtil.hakutyyppi.value"
-                        ng-options="hakutyyppi.koodiUri as hakutyyppi.nimi for hakutyyppi in customHakuUtil.hakutyyppiOpts">
-                    <option></option>
-                </select>
-            </div>
-        </div>
-
-    </div>
-</div>
