@@ -307,6 +307,9 @@ window.urls.addProperties({
   'ohjausparametrit-service.parametri':
     'ohjausparametrit-service/api/v1/rest/parametri/$1',
 
+  'ohjausparametrit-service.parametri.oids':
+    'ohjausparametrit-service/api/v1/rest/parametri/oids',
+
   'lokalisointi.localisation': 'lokalisointi/cxf/rest/v1/localisation',
 
   'henkilo-ui.henkilo': 'henkilo-ui/virkailija/$1',
