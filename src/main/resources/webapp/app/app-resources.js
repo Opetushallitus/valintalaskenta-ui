@@ -465,18 +465,14 @@ app.factory('TarjontaHaut', function ($resource, $q) {
             var hakuOids = _.map(koutaHaut, function (h) {
               return h.oid
             })
-            console.log('saatiin haut: ', hakuOids)
             var parametriP = ohjausparametritResourceForMany.post({}, hakuOids)
               .$promise
             return parametriP.then(function (parametrisForHakus) {
-              console.log('saatiin ohjausparametrit: ', parametrisForHakus)
               return _.map(koutaHaut, function (koutaHaku) {
                 var oid = koutaHaku.oid
                 var parametrit = parametrisForHakus[oid]
                   ? parametrisForHakus[oid]
                   : {}
-                console.log('koutaHakuToHaku haku ', koutaHaku)
-                console.log('koutaHakuToHaku parametrit', parametrit)
                 return koutaHakuToHaku(koutaHaku, parametrit)
               })
             })
