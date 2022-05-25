@@ -27,7 +27,7 @@ angular
         this.deferred = $q.defer()
         this.promise = this.deferred.promise
         this.hakuOid = ''
-        this.onlyKoutaHaut = false
+        this.onlyKoutaHaut = true
         this.haut = []
         this.nivelvaihe = false
         this.korkeakoulu = false
