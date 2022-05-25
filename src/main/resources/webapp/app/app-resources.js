@@ -234,7 +234,6 @@ app.factory('HaunTiedot', function ($resource, $q) {
   )
   return {
     get: function (params, onSuccess, onError) {
-      console.log('*** hauntiedot ', params)
       var tarjontaP = tarjontaResource.get(params).$promise
       var koutaP = koutaResource.get(params).$promise
       var ohjausparametritP = ohjausparametritResource.get(params).$promise
@@ -479,24 +478,6 @@ app.factory('TarjontaHaut', function ($resource, $q) {
           } else {
             return []
           }
-
-          // return $q.all(
-          //   koutaHaut.map(function (koutaHaku) {
-          //     return ohjausparametritResource
-          //       .get({ hakuOid: koutaHaku.oid })
-          //       .$promise.then(
-          //         function (ohjausparametrit) {
-          //           return koutaHakuToHaku(koutaHaku, ohjausparametrit)
-          //         },
-          //         function (response) {
-          //           if (response.status === 404) {
-          //             return $q.when(koutaHakuToHaku(koutaHaku, {}))
-          //           }
-          //           return response
-          //         }
-          //       )
-          //   })
-          // )
         })
       tarjontaP
         .then(function (tarjontaHaut) {

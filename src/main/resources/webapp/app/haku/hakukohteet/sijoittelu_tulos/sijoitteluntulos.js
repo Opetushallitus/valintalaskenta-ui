@@ -414,7 +414,6 @@ angular
           hakukohdeOid,
           valintatapajonoLastModified
         ) {
-          console.log('SIJOITTELUN TULOKSET FOR HAKU ' + hakuOid)
           return VtsSijoittelunTulos.get({
             hakukohdeOid: hakukohdeOid,
             hakuOid: hakuOid,
