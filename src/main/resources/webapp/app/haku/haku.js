@@ -62,6 +62,7 @@ angular
             _.isEmpty(model.deferred) ||
             (hakuOid !== undefined && model.hakuOid !== hakuOid)
           ) {
+            if (hakuOid.length < 35) this.onlyKoutaHaut = false
             return model.init(hakuOid)
           } else {
             return model.deferred.promise
