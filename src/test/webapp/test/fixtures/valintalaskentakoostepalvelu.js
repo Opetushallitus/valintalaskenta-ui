@@ -141,8 +141,18 @@ function kirjeFixtures() {
       "sv":{"letterBatchId":null,"letterTotalCount":0,"letterReadyCount":0,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":false,"groupEmailId": null},
       "en":{"letterBatchId":null,"letterTotalCount":0,"letterReadyCount":0,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":false,"groupEmailId": null}
     },
+    "hyvaksymiskirje_huoltajille": {
+      "fi":{"letterBatchId":123,"letterTotalCount":1,"letterReadyCount":1,"letterErrorCount":0,"letterPublishedCount":1,"readyForPublish":false,"readyForEPosti":false,"groupEmailId": 1245},
+      "sv":{"letterBatchId":null,"letterTotalCount":0,"letterReadyCount":0,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":false,"groupEmailId": null},
+      "en":{"letterBatchId":null,"letterTotalCount":0,"letterReadyCount":0,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":false,"groupEmailId": null}
+    },
     "jalkiohjauskirje":{
       "fi":{"letterBatchId":186,"letterTotalCount":4,"letterReadyCount":4,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":true,"groupEmailId": null},
+      "sv":{"letterBatchId":null,"letterTotalCount":0,"letterReadyCount":0,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":false,"groupEmailId": null},
+      "en":{"letterBatchId":null,"letterTotalCount":0,"letterReadyCount":0,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":false,"groupEmailId": null}
+    },
+    "jalkiohjauskirje_huoltajille":{
+      "fi":{"letterBatchId":286,"letterTotalCount":2,"letterReadyCount":2,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":true,"groupEmailId": null},
       "sv":{"letterBatchId":null,"letterTotalCount":0,"letterReadyCount":0,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":false,"groupEmailId": null},
       "en":{"letterBatchId":null,"letterTotalCount":0,"letterReadyCount":0,"letterErrorCount":0,"letterPublishedCount":0,"readyForPublish":false,"readyForEPosti":false,"groupEmailId": null}
     }

@@ -47,6 +47,7 @@ angular
     'SijoittelunTulosOsoitetarrat',
     'Hyvaksymiskirjeet',
     'Jalkiohjauskirjepohjat',
+    'JalkiohjauskirjepohjatHuoltajille',
     'AktivoiKelaFtp',
     'ViestintapalveluProxy',
     'ViestintapalveluJulkaiseProxy',
@@ -73,6 +74,8 @@ angular
     'Korkeakoulu',
     'CustomHakuUtil',
     'Hyvaksymiskirjepohjat',
+    'HyvaksymiskirjepohjatHuoltajille',
+    'HakuUtility',
     function (
       $scope,
       $modal,
@@ -82,6 +85,7 @@ angular
       SijoittelunTulosOsoitetarrat,
       Hyvaksymiskirjeet,
       Jalkiohjauskirjepohjat,
+      JalkiohjauskirjepohjatHuoltajille,
       AktivoiKelaFtp,
       ViestintapalveluProxy,
       ViestintapalveluJulkaiseProxy,
@@ -107,7 +111,9 @@ angular
       SeurantaPalveluHaunLaskennat,
       Korkeakoulu,
       CustomHakuUtil,
-      Hyvaksymiskirjepohjat
+      Hyvaksymiskirjepohjat,
+      HyvaksymiskirjepohjatHuoltajille,
+      HakuUtility
     ) {
       'use strict'
 
@@ -130,6 +136,9 @@ angular
         $scope.iskorkeakoulu = $scope.korkeakoulu.isKorkeakoulu(
           h.hakuOid.kohdejoukkoUri
         )
+        $scope.istoisenasteenyhteishaku =
+          HakuUtility.isToinenAsteKohdeJoukko(h.hakuOid.kohdejoukkoUri) &&
+          HakuUtility.isYhteishaku(h.hakuOid)
       })
 
       $scope.nullIsUndefined = function (value) {
@@ -358,11 +367,13 @@ angular
         }
       )
 
-      $scope.muodostaKirjeet = function (hyvaksymiskirje, langcode) {
-        console.log('is hyvaksymiskirje? ' + (hyvaksymiskirje == true))
-        console.log('using language ' + langcode)
-        if (hyvaksymiskirje) {
+      $scope.muodostaKirjeet = function (kirjeentyyppi, langcode) {
+        if (kirjeentyyppi === 'hyvaksymiskirje') {
           $scope.muodostaHyvaksymiskirjeet(langcode)
+        } else if (kirjeentyyppi === 'hyvaksymiskirje_huoltajille') {
+          $scope.muodostaHyvaksymiskirjeetHuoltajille(langcode)
+        } else if (kirjeentyyppi === 'jalkiohjauskirje_huoltajille') {
+          $scope.muodostaJalkiohjauskirjeet(langcode, true)
         } else {
           $scope.muodostaJalkiohjauskirjeet(langcode)
         }
@@ -370,7 +381,7 @@ angular
 
       $scope.muodostaHyvaksymiskirjeet = function (langcode) {
         var hakuOid = $routeParams.hakuOid
-        var templateName = 'hyvaksymiskirje'
+        var modaalinOtsikko = 'Hyväksymiskirjeet'
         var viestintapalveluInstance = $modal.open({
           backdrop: 'static',
           templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
@@ -379,7 +390,7 @@ angular
           resolve: {
             oids: function () {
               return {
-                otsikko: 'Hyväksymiskirjeet',
+                otsikko: modaalinOtsikko,
                 toimintoNimi: 'Muodosta hyväksymiskirjeet',
                 toiminto: function (sisalto) {
                   Hyvaksymiskirjeet.post(
@@ -394,7 +405,7 @@ angular
                       letterBodyText: sisalto,
                     },
                     function (id) {
-                      Latausikkuna.avaa(id, 'Hyväksymiskirjeet', '', false)
+                      Latausikkuna.avaa(id, modaalinOtsikko, '', false)
                     },
                     function () {}
                   )
@@ -403,7 +414,6 @@ angular
                 hakuOid: $routeParams.hakuOid,
                 pohjat: function () {
                   return Hyvaksymiskirjepohjat.get({
-                    templateName: templateName,
                     languageCode: langcode,
                     tag: hakuOid,
                     applicationPeriod: hakuOid,
@@ -415,7 +425,62 @@ angular
         })
       }
 
-      $scope.muodostaJalkiohjauskirjeet = function (langcode) {
+      $scope.muodostaHyvaksymiskirjeetHuoltajille = function (langcode) {
+        var hakuOid = $routeParams.hakuOid
+        var modaalinOtsikko = 'Hyväksymiskirjeet huoltajille'
+        var viestintapalveluInstance = $modal.open({
+          backdrop: 'static',
+          templateUrl: '../common/modaalinen/viestintapalveluikkuna.html',
+          controller: ViestintapalveluIkkunaCtrl,
+          size: 'lg',
+          resolve: {
+            oids: function () {
+              return {
+                otsikko: modaalinOtsikko,
+                toimintoNimi: 'Muodosta hyväksymiskirjeet huoltajille',
+                toiminto: function (sisalto) {
+                  Hyvaksymiskirjeet.post(
+                    {
+                      hakuOid: hakuOid,
+                      asiointikieli: langcode,
+                      vainTulosEmailinKieltaneet: false,
+                      templateName: 'hyvaksymiskirje_huoltajille',
+                    },
+                    {
+                      tag: hakuOid,
+                      letterBodyText: sisalto,
+                    },
+                    function (id) {
+                      Latausikkuna.avaa(id, modaalinOtsikko, '', false)
+                    },
+                    function () {}
+                  )
+                },
+                showDateFields: true,
+                hakuOid: $routeParams.hakuOid,
+                pohjat: function () {
+                  return HyvaksymiskirjepohjatHuoltajille.get({
+                    languageCode: langcode,
+                    tag: hakuOid,
+                    applicationPeriod: hakuOid,
+                  })
+                },
+              }
+            },
+          },
+        })
+      }
+
+      $scope.muodostaJalkiohjauskirjeet = function (
+        langcode,
+        huoltajille = false
+      ) {
+        const templateName = huoltajille
+          ? 'jalkiohjauskirje_huoltajille'
+          : 'jalkiohjauskirje'
+        const pohjaResource = huoltajille
+          ? JalkiohjauskirjepohjatHuoltajille
+          : Jalkiohjauskirjepohjat
         var isKorkeakoulu = $scope.korkeakoulu.isKorkeakoulu(
           $scope.hakumodel.hakuOid.kohdejoukkoUri
         )
@@ -429,9 +494,15 @@ angular
           toimintoNimi = 'Muodosta ei-hyväksyttyjen kirjeet'
           latausikkunaTeksti = 'Ei-hyväksyttyjen kirjeet'
         } else {
-          otsikko = 'Jälkiohjauskirjeet'
-          toimintoNimi = 'Muodosta jälkiohjauskirjeet'
-          latausikkunaTeksti = 'Jälkiohjauskirjeet'
+          otsikko = huoltajille
+            ? 'Jälkiohjauskirjeet huoltajille'
+            : 'Jälkiohjauskirjeet'
+          toimintoNimi = huoltajille
+            ? 'Muodosta jälkiohjauskirjeet huoltajille'
+            : 'Muodosta jälkiohjauskirjeet'
+          latausikkunaTeksti = huoltajille
+            ? 'Jälkiohjauskirjeet huoltajille'
+            : 'Jälkiohjauskirjeet'
         }
         var viestintapalveluInstance = $modal.open({
           backdrop: 'static',
@@ -448,7 +519,7 @@ angular
                     {
                       hakuOid: $routeParams.hakuOid,
                       tag: tag,
-                      templateName: 'jalkiohjauskirje',
+                      templateName,
                     },
                     {
                       hakemusOids: null,
@@ -464,7 +535,7 @@ angular
                 showDateFields: true,
                 hakuOid: $routeParams.hakuOid,
                 pohjat: function () {
-                  return Jalkiohjauskirjepohjat.get({
+                  return pohjaResource.get({
                     languageCode: langcode,
                     tag: tag,
                     applicationPeriod: hakuOid,
@@ -667,8 +738,12 @@ angular
         switch (tyyppi) {
           case 'jalkiohjauskirje':
             return 'jälkiohjauskirjeet'
+          case 'jalkiohjauskirje_huoltajille':
+            return 'jälkiohjauskirjeet huoltajille'
           case 'hyvaksymiskirje':
             return 'hyväksymiskirjeet'
+          case 'hyvaksymiskirje_huoltajille':
+            return 'hyväksymiskirjeet huoltajille'
           default:
             return ''
         }
