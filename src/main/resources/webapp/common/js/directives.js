@@ -502,13 +502,13 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
                 $scope.jonosija.muokkaus.prioriteetit = []
                 var kriteerit = $scope.jonosija.jarjestyskriteerit
                 for (var i = 0; i < kriteerit.length; i++) {
-                  var numero = Number(i + 1)
-                  var name = numero + '. ' + kriteerit[i].nimi
                   var kriteerinPrioriteetti = kriteerit[i].prioriteetti
                   var kaytettavaPrioriteetti =
                     typeof kriteerinPrioriteetti === 'number'
                       ? kriteerinPrioriteetti
                       : i
+                  var numero = Number(kaytettavaPrioriteetti + 1)
+                  var name = numero + '. ' + kriteerit[i].nimi
                   var obj = { name: name, value: kaytettavaPrioriteetti }
                   if (i == 0) {
                     $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti = obj
@@ -527,13 +527,14 @@ app.directive('jarjestyskriteeriMuokkaus', function () {
                 $scope.alustaTilat = function () {
                   var prio =
                     $scope.jonosija.muokkaus.jarjestyskriteeriPrioriteetti.value
-                  $scope.jonosija.muokkaus.tila =
-                    $scope.jonosija.jarjestyskriteerit[prio].tila
-                  $scope.jonosija.muokkaus.arvo =
-                    $scope.jonosija.jarjestyskriteerit[prio].arvo
-                  if ($scope.jonosija.jarjestyskriteerit[prio].kuvaus.FI) {
+                  var jarjestyskriteeri = $scope.jonosija.jarjestyskriteerit.find(
+                    (jk) => jk.prioriteetti == prio
+                  )
+                  $scope.jonosija.muokkaus.tila = jarjestyskriteeri.tila
+                  $scope.jonosija.muokkaus.arvo = jarjestyskriteeri.arvo
+                  if ($jarjestyskriteeri.kuvaus.FI) {
                     $scope.jonosija.muokkaus.selite =
-                      $scope.jonosija.jarjestyskriteerit[prio].kuvaus.FI
+                      jarjestyskriteeri.kuvaus.FI
                   } else {
                     $scope.jonosija.muokkaus.selite = ''
                   }
