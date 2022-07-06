@@ -127,7 +127,7 @@ app.factory('HenkiloTiedotModel', function (
           personOid: hakemus.personOid,
           sukunimi: hakemus.sukunimi,
           etunimet: hakemus.etunimet,
-          asiointikieli: hakemus.asiointiKieli.kieliTyyppi,
+          asiointikieli: hakemus.asiointiKieli.kieliKoodi,
           henkilotunnus: hakemus.henkilotunnus,
           lahiosoite: hakemus.lahiosoite,
           postinumero: hakemus.postinumero,
@@ -604,13 +604,22 @@ angular.module('valintalaskenta').controller('HenkiloTiedotController', [
       var applicationPeriod = $routeParams.hakuOid
       var hakemusOid = $scope.model.hakemus.oid
       var asiointikieli = $scope.model.hakemus.asiointikieli
+      console.log(asiointikieli)
       var langcode = 'FI'
       if (
         asiointikieli !== undefined &&
         asiointikieli.toUpperCase() === 'RUOTSI'
       ) {
         langcode = 'SV'
+      } else if (
+        asiointikieli !== undefined &&
+        asiointikieli.toUpperCase() === 'ENGLANTI'
+      ) {
+        langcode = 'EN'
+      } else if ($scope.model.hakemus.asiointikieli !== undefined) {
+        langcode = $scope.model.hakemus.asiointikieli.toUpperCase()
       }
+      console.log('langcode: ' + langcode)
       var templateName = $scope.hakuaVastaavaJalkiohjauskirjeMuotti()
       var otsikko = ''
       var toimintoNimi = ''
