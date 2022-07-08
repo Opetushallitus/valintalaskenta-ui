@@ -121,7 +121,7 @@ function valintatulosFixture() {
     httpBackend.whenPOST(/.*resources\/proxy\/valintatulosservice\/haku\/1\.2\.246\.562\.29\.90697286251\/hakukohde\/1\.2\.246\.562\.20\.18097797874\?selite=.*/).respond(200, [{"hyvaksyPeruuntunut": true}]);
     ///valintalaskentakoostepalvelu/resources/proxy/valintatulos/haku/1.2.246.562.29.11735171271/hakemusOid/1.2.246.562.11.00007967463
 
-    //httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoittelu\/.*\/sijoitteluajo\/latest\/perustiedot/).respond(valintatulos1);
+    httpBackend.when('GET', /.*valinta-tulos-service\/auth\/sijoittelu\/.*\/sijoitteluajo\/latest\/perustiedot/).respond(valintatulos1);
     ///valinta-tulos-service/auth/sijoittelu/1.2.246.562.29.11735171271/sijoitteluajo/latest/perustiedot
     ///valinta-tulos-service/auth/sijoittelu/1.2.246.562.29.11735171271/sijoitteluajo/latest/perustiedot
 
