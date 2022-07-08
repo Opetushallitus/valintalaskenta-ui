@@ -36,7 +36,7 @@
     "karma": "6.4.0",
     "puppeteer": "15.3.2",
     "lint-staged": "10.2.11",
-    "mocha-headless-chrome": "2.0.3",
+    "mocha-headless-chrome": "4.0.0",
     "prettier": "2.0.5",
     "run-sequence": "2.2.1",
     "test": "0.6.0"
