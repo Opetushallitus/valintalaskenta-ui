@@ -450,6 +450,56 @@ app.factory('TarjontaHaut', function ($resource, $q) {
   )
   return {
     get: function (params, onSuccess, onError) {
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms))
+      const retryOperation = (operation, delay, retries) =>
+        new Promise((resolve, reject) => {
+          return operation()
+            .then(resolve)
+            .catch((reason) => {
+              console.log('Failed to fetch KoutaHaut ', reason)
+              if (retries > 0) {
+                console.log('Retrying KoutaHaut fetch')
+                return wait(delay)
+                  .then(
+                    retryOperation.bind(null, operation, delay, retries - 1)
+                  )
+                  .then(resolve)
+                  .catch(reject)
+              }
+              console.log('Totally failed to fetch KoutaHaut')
+              return reject(reason)
+            })
+        })
+
+      const getKoutaP = () => {
+        return koutaResource
+          .get({
+            tarjoaja: params.organizationOids.toString(),
+          })
+          .$promise.then(function (koutaHaut) {
+            if (koutaHaut.length > 0) {
+              var hakuOids = _.map(koutaHaut, function (h) {
+                return h.oid
+              })
+              var parametriP = ohjausparametritResourceForMany.post(
+                {},
+                hakuOids
+              ).$promise
+              return parametriP.then(function (parametrisForHakus) {
+                return _.map(koutaHaut, function (koutaHaku) {
+                  var oid = koutaHaku.oid
+                  var parametrit = parametrisForHakus[oid]
+                    ? parametrisForHakus[oid]
+                    : {}
+                  return koutaHakuToHaku(koutaHaku, parametrit)
+                })
+              })
+            } else {
+              return []
+            }
+          })
+      }
+
       var tarjontaP = params.onlyKoutaHaut
         ? $q.when([])
         : tarjontaResource
@@ -457,28 +507,9 @@ app.factory('TarjontaHaut', function ($resource, $q) {
             .$promise.then(function (tarjontaHaut) {
               return tarjontaHaut.result.map(tarjontaHakuToHaku)
             })
-      var koutaP = koutaResource
-        .get({ tarjoaja: params.organizationOids.toString() })
-        .$promise.then(function (koutaHaut) {
-          if (koutaHaut.length > 0) {
-            var hakuOids = _.map(koutaHaut, function (h) {
-              return h.oid
-            })
-            var parametriP = ohjausparametritResourceForMany.post({}, hakuOids)
-              .$promise
-            return parametriP.then(function (parametrisForHakus) {
-              return _.map(koutaHaut, function (koutaHaku) {
-                var oid = koutaHaku.oid
-                var parametrit = parametrisForHakus[oid]
-                  ? parametrisForHakus[oid]
-                  : {}
-                return koutaHakuToHaku(koutaHaku, parametrit)
-              })
-            })
-          } else {
-            return []
-          }
-        })
+
+      var koutaP = retryOperation(getKoutaP, 300, 5)
+
       tarjontaP
         .then(function (tarjontaHaut) {
           return koutaP.then(function (koutaHaut) {
