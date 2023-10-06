@@ -18,7 +18,6 @@
       window.url('valinta-tulos-service.login'),
       window.url('oppijanumerorekisteri-service.login'),
       window.url('ataru.login'),
-      window.url('dokumenttipalvelu-service.session.maxinactiveinterval'),
       window.url('kouta-internal.auth.login'),
     ]
     return $q.all(services.map(httpGet))
