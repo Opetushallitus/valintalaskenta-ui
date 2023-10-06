@@ -275,7 +275,7 @@ angular
                     return
                   } else {
                     $window.location.href =
-                      '/dokumenttipalvelu-service/resources/dokumentit/lataa/' +
+                      '/valintalaskentakoostepalvelu/resources/dokumentit/lataa/' +
                       $scope.prosessi.dokumenttiId
                   }
                 }

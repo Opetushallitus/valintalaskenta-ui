@@ -1189,13 +1189,13 @@ angular
           HakuModel.hakuOid.kohdejoukkoUri
         ) || UserModel.isOphUser
 
-      $scope.osoitetarratUrl = osoitetarratUrl[0]
+      $scope.osoitetarratDocumentId = osoitetarratUrl[0]
         ? osoitetarratUrl[0].documentId
         : null
-      $scope.hyvaksymiskirjeetUrl = hyvaksymiskirjeetUrl[0]
+      $scope.hyvaksymiskirjeetDocumentId = hyvaksymiskirjeetUrl[0]
         ? hyvaksymiskirjeetUrl[0].documentId
         : null
-      $scope.sijoitteluntuloksetUrl = sijoitteluntuloksetUrl[0]
+      $scope.sijoitteluntuloksetDocumentId = sijoitteluntuloksetUrl[0]
         ? sijoitteluntuloksetUrl[0].documentId
         : null
       $scope.reviewUrlKey = null

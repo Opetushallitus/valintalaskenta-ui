@@ -837,7 +837,7 @@ app.factory('Dokumenttiprosessi', function (
 app.factory('HaeDokumenttipalvelusta', function ($resource) {
   return $resource(
     plainUrl(
-      'dokumenttipalvelu-service.dokumentit',
+      'valintalaskentakoostepalvelu.dokumentit',
       ':tyyppi',
       ':hakukohdeoid'
     ),
@@ -849,50 +849,6 @@ app.factory('HaeDokumenttipalvelusta', function ($resource) {
       get: { method: 'GET', isArray: true, cache: false },
     }
   )
-})
-app.factory('Dokumenttipalvelu', function (
-  $http,
-  $log,
-  $rootScope,
-  $resource,
-  $window,
-  Poller
-) {
-  return {
-    _filter: '',
-    _p1: null,
-    _repeater: function () {
-      var self = this
-      $rootScope.$apply(function () {
-        self._p1 = Poller.poll(
-          window.url('dokumenttipalvelu-service.dokumentit.hae')
-        )
-        self._p1.then(function (data) {
-          console.log(data)
-        })
-      })
-    },
-    _timer: null,
-    paivita: function (callback) {
-      $http({
-        method: 'GET',
-        cache: false,
-        url: window.url('dokumenttipalvelu-service.dokumentit.hae'),
-      }).success(function (data) {
-        callback(data)
-      })
-    },
-    aloitaPollaus: function (callback, filter) {
-      this._filter = filter
-      this.paivita(callback)
-      this._timer = $window.setInterval(this._repeater, 5000)
-      $log.info('start polling start' + this._timer)
-    },
-    lopetaPollaus: function () {
-      $window.clearInterval(this._timer)
-      $log.info('end polling end' + this._timer)
-    },
-  }
 })
 
 //koostepalvelut
