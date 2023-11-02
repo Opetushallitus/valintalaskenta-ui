@@ -201,16 +201,15 @@ angular
         }
 
         $scope.korkeakoulu = model.korkeakoulu
+
+        $scope.vieExcelEnabled = true
+        $scope.tuoExcelEnabled = true
+        $scope.excelEnabled = true
+
         if (model.hakuOid.ataruLomakeAvain) {
-          $scope.vieExcelEnabled = true
-          $scope.tuoExcelEnabled = false
-          $scope.excelEnabled = false
           $scope.hyvaksymiskirjeetEnabled = false
           $scope.reviewUrlKey = 'ataru.application.review'
         } else {
-          $scope.vieExcelEnabled = true
-          $scope.tuoExcelEnabled = true
-          $scope.excelEnabled = true
           $scope.hyvaksymiskirjeetEnabled = true
           $scope.reviewUrlKey = 'haku-app.virkailija.hakemus.esikatselu'
         }
