@@ -10,7 +10,7 @@
         </thead>
         <tbody ng-repeat="tiedosto in dokumentit  | limitTo:dokumenttiLimit">
         	<tr>
-                <td class="align-center"><a href="{{url('dokumenttipalvelu-service.dokumentit.lataa', tiedosto.documentId)}}" ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</a><span ng-show="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</span></td>
+                <td class="align-center"><a href="{{url('valintalaskentakoostepalvelu.dokumentit.lataa', tiedosto.documentId)}}" ng-hide="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</a><span ng-show="{{tiedosto.mimeType=='text/plain'}}">{{tiedosto.filename}}</span></td>
 	            <td class="align-center">{{tiedosto.createdAt}}</td>
 	            <td class="align-center">{{tiedosto.size}}</td>
         	</tr>

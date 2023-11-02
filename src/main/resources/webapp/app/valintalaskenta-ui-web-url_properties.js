@@ -38,14 +38,10 @@ window.urls.addProperties({
   'valintaperusteet-service.valintatapajono.update':
     'valintaperusteet-service/resources/V2valintaperusteet/$1/automaattinenSiirto',
 
-  'dokumenttipalvelu-service.dokumentit':
-    'dokumenttipalvelu-service/resources/dokumentit/$1/$2',
-  'dokumenttipalvelu-service.dokumentit.hae':
-    'dokumenttipalvelu-service/resources/dokumentit/hae',
-  'dokumenttipalvelu-service.dokumentit.lataa':
-    'dokumenttipalvelu-service/resources/dokumentit/lataa/$1',
-  'dokumenttipalvelu-service.session.maxinactiveinterval':
-    'dokumenttipalvelu-service/resources/session/maxinactiveinterval',
+  'valintalaskentakoostepalvelu.dokumentit':
+    'valintalaskentakoostepalvelu/resources/dokumentit/$1/$2',
+  'valintalaskentakoostepalvelu.dokumentit.lataa':
+    'valintalaskentakoostepalvelu/resources/dokumentit/lataa/$1',
 
   'seuranta-service.dokumenttiseuranta':
     'seuranta-service/resources/dokumentinseuranta/$1',
