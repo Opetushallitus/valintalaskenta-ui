@@ -207,15 +207,13 @@ angular
           $scope.excelEnabled = true
           $scope.hyvaksymiskirjeetEnabled = false
           $scope.reviewUrlKey = 'ataru.application.review'
-        }
-        else if (model.hakuOid.ataruLomakeAvain) {
+        } else if (model.hakuOid.ataruLomakeAvain) {
           $scope.vieExcelEnabled = true
           $scope.tuoExcelEnabled = false
           $scope.excelEnabled = true
           $scope.hyvaksymiskirjeetEnabled = false
           $scope.reviewUrlKey = 'ataru.application.review'
-        }
-        else {
+        } else {
           $scope.vieExcelEnabled = true
           $scope.tuoExcelEnabled = false
           $scope.excelEnabled = true
