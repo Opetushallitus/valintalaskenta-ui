@@ -201,13 +201,21 @@ angular
         }
 
         $scope.korkeakoulu = model.korkeakoulu
-        if (model.hakuOid.ataruLomakeAvain) {
+        if (model.hakuOid.synteettisetHakemukset) {
           $scope.vieExcelEnabled = true
           $scope.tuoExcelEnabled = true
           $scope.excelEnabled = true
           $scope.hyvaksymiskirjeetEnabled = false
           $scope.reviewUrlKey = 'ataru.application.review'
-        } else {
+        }
+        else if (model.hakuOid.ataruLomakeAvain) {
+          $scope.vieExcelEnabled = true
+          $scope.tuoExcelEnabled = false
+          $scope.excelEnabled = true
+          $scope.hyvaksymiskirjeetEnabled = false
+          $scope.reviewUrlKey = 'ataru.application.review'
+        }
+        else {
           $scope.vieExcelEnabled = true
           $scope.tuoExcelEnabled = false
           $scope.excelEnabled = true
