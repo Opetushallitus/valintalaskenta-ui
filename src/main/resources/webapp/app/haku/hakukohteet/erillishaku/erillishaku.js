@@ -10,7 +10,7 @@ angular
           if (
             hakuModel.hakuOid.ataruLomakeAvain ||
             hakuModel.hakuOid.synteettisetHakemukset
-            ) {
+          ) {
             console.log('Getting applications from ataru.')
             return AtaruApplications.get({
               hakuOid: hakuOid,
