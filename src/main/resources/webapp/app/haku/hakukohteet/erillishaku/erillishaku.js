@@ -7,7 +7,10 @@ angular
     function (HakukohdeHenkilotFull, AtaruApplications, HakuModel) {
       this.get = function (hakuOid, hakukohdeOid) {
         return HakuModel.promise.then(function (hakuModel) {
-          if (hakuModel.hakuOid.ataruLomakeAvain || hakuModel.hakuOid.synteettisetHakemukset) {
+          if (
+            hakuModel.hakuOid.ataruLomakeAvain ||
+            hakuModel.hakuOid.synteettisetHakemukset
+          ) {
             console.log('Getting applications from ataru.')
             return AtaruApplications.get({
               hakuOid: hakuOid,
