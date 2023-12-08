@@ -9,7 +9,7 @@
 
     <properties>
         <spring.asm.version>3.1.4.RELEASE</spring.asm.version>
-        <spring.version>5.1.5.RELEASE</spring.version>
+        <spring.version>5.3.31</spring.version>
         <spring.security.version>4.2.11.RELEASE</spring.security.version>
         <slf4j.version>1.7.25</slf4j.version>
 
@@ -300,8 +300,7 @@ vcsRevision=${revision}
 buildTtime=${maven.build.timestamp}
 ]]>
                                 </echo>
-                                <loadfile property="buildversiontxt"
-                                          srcFile="${project.build.outputDirectory}/webapp/buildversion.txt"/>
+                                <loadfile property="buildversiontxt" srcFile="${project.build.outputDirectory}/webapp/buildversion.txt"/>
                                 <echo message="${buildversiontxt}"/>
                                 <echo file="target/mavenversion.txt">${project.version}</echo>
                             </target>
@@ -391,8 +390,7 @@ buildTtime=${maven.build.timestamp}
                                 </filter>
                             </filters>
                             <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Main-Class>fi.vm.sade.valintalaskenta.config.ValintaUiJetty</Main-Class>
                                     </manifestEntries>
