@@ -7,7 +7,10 @@ angular
     function (HakukohdeHenkilotFull, AtaruApplications, HakuModel) {
       this.get = function (hakuOid, hakukohdeOid) {
         return HakuModel.promise.then(function (hakuModel) {
-          if (hakuModel.hakuOid.ataruLomakeAvain) {
+          if (
+            hakuModel.hakuOid.ataruLomakeAvain ||
+            hakuModel.hakuOid.synteettisetHakemukset
+          ) {
             console.log('Getting applications from ataru.')
             return AtaruApplications.get({
               hakuOid: hakuOid,
@@ -201,15 +204,21 @@ angular
         }
 
         $scope.korkeakoulu = model.korkeakoulu
-        if (model.hakuOid.ataruLomakeAvain) {
+        if (model.hakuOid.synteettisetHakemukset) {
+          $scope.vieExcelEnabled = true
+          $scope.tuoExcelEnabled = true
+          $scope.excelEnabled = true
+          $scope.hyvaksymiskirjeetEnabled = false
+          $scope.reviewUrlKey = 'ataru.application.review'
+        } else if (model.hakuOid.ataruLomakeAvain) {
           $scope.vieExcelEnabled = true
           $scope.tuoExcelEnabled = false
-          $scope.excelEnabled = false
+          $scope.excelEnabled = true
           $scope.hyvaksymiskirjeetEnabled = false
           $scope.reviewUrlKey = 'ataru.application.review'
         } else {
           $scope.vieExcelEnabled = true
-          $scope.tuoExcelEnabled = true
+          $scope.tuoExcelEnabled = false
           $scope.excelEnabled = true
           $scope.hyvaksymiskirjeetEnabled = true
           $scope.reviewUrlKey = 'haku-app.virkailija.hakemus.esikatselu'

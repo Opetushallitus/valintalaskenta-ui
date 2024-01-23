@@ -59,6 +59,7 @@ var koutaHakuToHaku = function (haku, ohjausparametrit) {
     tila: 'JULKAISTU',
     nimi: arvoNimiToNimi(haku.nimi),
     ataruLomakeAvain: haku.hakulomakeAtaruId,
+    synteettisetHakemukset: ohjausparametrit.synteettisetHakemukset,
     haunTunniste: null,
     kohdejoukkoUri: haku.kohdejoukkoKoodiUri,
     kohdejoukonTarkenne: haku.kohdejoukonTarkenneKoodiUri,
