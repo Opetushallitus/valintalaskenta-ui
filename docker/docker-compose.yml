@@ -1,0 +1,19 @@
+version: '3.2'
+services:
+  build:
+    build:
+      context: "./build"
+    platform: linux/amd64
+    volumes:
+      - ../:/app
+  nginx:
+    build:
+      context: "nginx"
+    network_mode: "host"
+    volumes:
+      - ../:/app
+  dns:
+    build:
+      context: "./dns"
+    ports:
+      - "5443:5443"
