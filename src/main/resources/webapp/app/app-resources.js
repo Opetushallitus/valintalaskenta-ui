@@ -954,7 +954,7 @@ app.factory('ValintalaskentaStatus', function ($resource) {
 
 app.factory('SijoitteluAktivointi', function ($resource) {
   return $resource(
-    plainUrl('valintalaskentakoostepalvelu.koostesijoittelu.aktivoi'),
+    plainUrl('sijoittelu-service.koostesijoittelu.aktivoi'),
     {},
     {
       aktivoi: { method: 'POST' },
@@ -964,10 +964,7 @@ app.factory('SijoitteluAktivointi', function ($resource) {
 
 app.factory('SijoittelunValvonta', function ($resource) {
   return $resource(
-    plainUrl(
-      'valintalaskentakoostepalvelu.koostesijoittelu.status',
-      ':hakuoid'
-    ),
+    plainUrl('sijoittelu-service.koostesijoittelu.status', ':hakuoid'),
     { hakuoid: '@hakuoid' },
     { hae: { method: 'GET', cache: false } }
   )
@@ -1821,10 +1818,7 @@ app.factory('MyRoles', function ($resource) {
 
 app.factory('JatkuvaSijoittelu', function ($resource) {
   return $resource(
-    plainUrl(
-      'valintalaskentakoostepalvelu.koostesijoittelu.jatkuva',
-      ':method'
-    ),
+    plainUrl('sijoittelu-service.koostesijoittelu.jatkuva', ':method'),
     {},
     {
       get: { method: 'GET', cache: false },
