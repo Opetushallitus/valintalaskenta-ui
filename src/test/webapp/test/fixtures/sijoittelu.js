@@ -1208,7 +1208,7 @@ function sijoitteluAjoFixtures(valintaesitysHyvaksytty) {
                   startMils: 1433338214458,
                   endMils: 1433338214468,
                   hakukohteet: [dippainssiSijoittelu]});
-    httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/koostesijoittelu\/jatkuva\?hakuOid=1\.2\.246\.562\.29\.11735171271/)
+    httpBackend.when('GET', /.*\/sijoittelu-service\/resources\/koostesijoittelu\/jatkuva\?hakuOid=1\.2\.246\.562\.29\.11735171271/)
         .respond({"hakuOid":"1.2.246.562.29.11735171271","ajossa":false});
 
     //httpBackend.when('GET', /.*\/sijoittelu\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.37731636579/)
@@ -2468,7 +2468,7 @@ function sijoitteluAjoPeruuntunutFixtures(valintaesitysHyvaksytty) {
             startMils: 1433338214458,
             endMils: 1433338214468,
             hakukohteet: [dippainssiSijoittelu]});
-    httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/koostesijoittelu\/jatkuva\?hakuOid=1\.2\.246\.562\.29\.11735171271/)
+    httpBackend.when('GET', /.*\/sijoittelu-service\/resources\/koostesijoittelu\/jatkuva\?hakuOid=1\.2\.246\.562\.29\.11735171271/)
         .respond({"hakuOid":"1.2.246.562.29.11735171271","ajossa":false});
 
     //httpBackend.when('GET', /.*\/sijoittelu\/1\.2\.246\.562\.29\.11735171271\/sijoitteluajo\/latest\/hakukohde\/1\.2\.246\.562\.20\.37731636579/)

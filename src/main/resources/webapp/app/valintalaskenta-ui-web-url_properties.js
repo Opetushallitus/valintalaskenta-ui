@@ -74,12 +74,6 @@ window.urls.addProperties({
     'valintalaskentakoostepalvelu/resources/kela/aktivoi',
   'valintalaskentakoostepalvelu.kela.laheta':
     'valintalaskentakoostepalvelu/resources/kela/laheta',
-  'valintalaskentakoostepalvelu.koostesijoittelu.aktivoi':
-    'valintalaskentakoostepalvelu/resources/koostesijoittelu/aktivoi',
-  'valintalaskentakoostepalvelu.koostesijoittelu.jatkuva':
-    'valintalaskentakoostepalvelu/resources/koostesijoittelu/jatkuva/$1',
-  'valintalaskentakoostepalvelu.koostesijoittelu.status':
-    'valintalaskentakoostepalvelu/resources/koostesijoittelu/status/$1',
   'valintalaskentakoostepalvelu.parametrit':
     'valintalaskentakoostepalvelu/resources/parametrit/$1',
   'valintalaskentakoostepalvelu.pistesyotto.hakukohde':
@@ -182,6 +176,12 @@ window.urls.addProperties({
     'sijoittelu-service/resources/sijoittelu/$1/sijoitteluajo/$2/hakukohde/$3',
   'sijoittelu-service.tila.haku.hakukohde.valintatapajono.valintaesitys':
     'sijoittelu-service/resources/tila/haku/$1/hakukohde/$2/valintatapajono/$3/valintaesitys',
+  'sijoittelu-service.koostesijoittelu.aktivoi':
+    'sijoittelu-service/resources/koostesijoittelu/aktivoi',
+  'sijoittelu-service.koostesijoittelu.jatkuva':
+    'sijoittelu-service/resources/koostesijoittelu/jatkuva/$1',
+  'sijoittelu-service.koostesijoittelu.status':
+    'sijoittelu-service/resources/koostesijoittelu/status/$1',
 
   'valintalaskenta-laskenta-service.buildversion':
     'valintalaskenta-laskenta-service/buildversion.txt?auth',
