@@ -255,14 +255,18 @@ window.urls.addProperties({
   'organisaatio-service.organisaatio.parentoids':
     'organisaatio-service/rest/organisaatio/$1/parentoids',
 
-  'haku-app.buildversion': 'haku-app/buildversion.txt?auth',
-  'haku-app.applications': 'haku-app/applications',
-  'haku-app.applications.oid': 'haku-app/applications/$1',
-  'haku-app.application.oid.key': 'haku-app/applications/$1/$2',
+  'haku-app.applications':
+    'valintalaskentakoostepalvelu/resources/hakuAppHakemukset',
+  'haku-app.applications.oid':
+    'valintalaskentakoostepalvelu/resources/hakuAppHakemukset/$1',
+  'haku-app.application.oid.key':
+    'valintalaskentakoostepalvelu/resources/hakuAppHakemukset/$1/$2',
   'haku-app.applications.eligibilities':
-    'haku-app/applications/eligibilities/$1/$2',
-  'haku-app.applications.list': 'haku-app/applications/list',
-  'haku-app.applications.listfull': 'haku-app/applications/listfull',
+    'valintalaskentakoostepalvelu/resources/hakuAppHakemukset/$1/$2',
+  'haku-app.applications.list':
+    'valintalaskentakoostepalvelu/resources/hakuAppHakemukset/list',
+  'haku-app.applications.listfull':
+    'valintalaskentakoostepalvelu/resources/hakuAppHakemukset/listfull',
   'ataru.application.review': 'lomake-editori/applications/search?term=$2',
   'ataru.applications': 'lomake-editori/api/external/valinta-ui',
   'ataru.login': 'lomake-editori/auth/cas',
