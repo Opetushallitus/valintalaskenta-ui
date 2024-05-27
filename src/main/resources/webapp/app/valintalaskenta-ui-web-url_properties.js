@@ -262,7 +262,7 @@ window.urls.addProperties({
   'haku-app.application.oid.key':
     'valintalaskentakoostepalvelu/resources/hakuAppHakemukset/$1/$2',
   'haku-app.applications.eligibilities':
-    'valintalaskentakoostepalvelu/resources/hakuAppHakemukset/$1/$2',
+    'valintalaskentakoostepalvelu/resources/hakuAppHakemukset/eligibilities/$1/$2',
   'haku-app.applications.list':
     'valintalaskentakoostepalvelu/resources/hakuAppHakemukset/list',
   'haku-app.applications.listfull':
