@@ -920,7 +920,7 @@ app.factory('DokumenttiSeurantaPalvelu', function ($resource) {
 
 app.factory('SeurantaPalvelu', function ($resource) {
   return $resource(
-    plainUrl('seuranta-service.seuranta.yhteenveto', ':uuid'),
+    plainUrl('valintalaskenta-laskenta-service.seuranta.yhteenveto', ':uuid'),
     { uuid: '@uuid' },
     { hae: { method: 'GET', isArray: false, cache: false } }
   )
@@ -928,7 +928,11 @@ app.factory('SeurantaPalvelu', function ($resource) {
 
 app.factory('SeurantaPalveluHaunLaskennat', function ($resource) {
   return $resource(
-    plainUrl('seuranta-service.seuranta.hae.tyyppi', ':hakuoid', ':tyyppi'),
+    plainUrl(
+      'valintalaskenta-laskenta-service.seuranta.hae.tyyppi',
+      ':hakuoid',
+      ':tyyppi'
+    ),
     { hakuoid: '@hakuoid', tyyppi: '@tyyppi' },
     { hae: { method: 'GET', isArray: true, cache: false } }
   )
@@ -936,7 +940,7 @@ app.factory('SeurantaPalveluHaunLaskennat', function ($resource) {
 
 app.factory('SeurantaPalveluLataa', function ($resource) {
   return $resource(
-    plainUrl('seuranta-service.seuranta.lataa', ':uuid'),
+    plainUrl('valintalaskenta-laskenta-service.seuranta.lataa', ':uuid'),
     { uuid: '@uuid' },
     { hae: { method: 'GET', isArray: false, cache: false } }
   )
