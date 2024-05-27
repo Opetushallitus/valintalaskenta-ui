@@ -168,7 +168,9 @@ function SeurantaIkkunaCtrl(
     )
   }
   $scope.vieJsoniksi = function () {
-    $window.open(window.url('seuranta-service.seuranta.lataa', $scope.uuid))
+    $window.open(
+      window.url('valintalaskenta-laskenta-service.seuranta.lataa', $scope.uuid)
+    )
   }
 
   var update = function () {
