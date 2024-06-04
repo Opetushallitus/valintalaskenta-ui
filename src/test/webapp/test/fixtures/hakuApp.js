@@ -1,7 +1,7 @@
 function hakemusByHakuOidFixtures(hakemukset) {
     return function() {
         var httpBackend = testFrame().httpBackend
-        httpBackend.whenGET(/.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/applications?.*/).respond(
+        httpBackend.whenGET(/.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/?.*/).respond(
             _.map(hakemukset, function(hakemus) {
                 return {
                     "oid": hakemus.hakemusOid,
@@ -76,13 +76,13 @@ function hakemusByOidFixtures(hakemus) {
                 "vaikuttaa_laskentaan-OSALLISTUMINEN": "MERKITSEMATTA"
         }
         };
-        httpBackend.whenGET(/.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/applications\/.*/).respond(response);
+        httpBackend.whenGET(/.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/.*/).respond(response);
     }
 }
 function hakemusByOidsFixtures(hakemukset) {
     return function() {
         var httpBackend = testFrame().httpBackend
-        httpBackend.whenPOST(/.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/applications\/list?.*/).respond(
+        httpBackend.whenPOST(/.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/list?.*/).respond(
             _.map(hakemukset, function(hakemus) {
             return {
                 "oid": hakemus.hakemusOid,
@@ -118,7 +118,7 @@ function hakemusByOidsFixtures(hakemukset) {
 function listfullFixtures(hakemukset) {
     return function() {
         var httpBackend = testFrame().httpBackend
-        httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/applications\/listfull.*/).respond(
+        httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/listfull.*/).respond(
             _.map(hakemukset, function(hakemus) {
                 return {
                     "oid": hakemus.hakemusOid,
@@ -152,7 +152,7 @@ function listfullFixtures(hakemukset) {
 }
 function hakuAppKaksiHenkiloaFixtures() {
     var httpBackend = testFrame().httpBackend
-    httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/applications\/additionalData\/h\/h0/).respond({
+    httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/additionalData\/h\/h0/).respond({
         "valintapisteet": [
             {
             "oid": "1.2.246.562.11.00000000181",
