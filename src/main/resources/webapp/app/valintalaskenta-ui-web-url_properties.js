@@ -42,11 +42,8 @@ window.urls.addProperties({
     'valintalaskentakoostepalvelu/resources/dokumentit/$1/$2',
   'valintalaskentakoostepalvelu.dokumentit.lataa':
     'valintalaskentakoostepalvelu/resources/dokumentit/lataa/$1',
-
-  'seuranta-service.dokumenttiseuranta':
-    'seuranta-service/resources/dokumentinseuranta/$1',
-  'seuranta-service.session.maxactiveinterval':
-    'seuranta-service/resources/session/maxinactiveinterval',
+  'valintalaskentakoostepalvelu.dokumenttiseuranta':
+    'valintalaskentakoostepalvelu/resources/dokumentinseuranta/$1',
 
   'valintalaskentakoostepalvelu.buildversion':
     'valintalaskentakoostepalvelu/buildversion.txt?auth',

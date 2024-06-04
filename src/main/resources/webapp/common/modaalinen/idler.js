@@ -128,9 +128,6 @@ app
         window.url('sijoittelu-service.session.maxinactiveinterval')
       )
       KeepaliveProvider.http(
-        window.url('seuranta-service.session.maxactiveinterval')
-      )
-      KeepaliveProvider.http(
         window.url('valintalaskentakoostepalvelu.session.maxinactiveinterval')
       )
       KeepaliveProvider.http(
