@@ -912,7 +912,7 @@ app.factory('ValintalaskentaKerrallaUudelleenYrita', function ($resource) {
 
 app.factory('DokumenttiSeurantaPalvelu', function ($resource) {
   return $resource(
-    plainUrl('seuranta-service.dokumenttiseuranta', ':uuid'),
+    plainUrl('valintalaskentakoostepalvelu.dokumenttiseuranta', ':uuid'),
     { uuid: '@uuid' },
     { hae: { method: 'GET', isArray: false, cache: false } }
   )
