@@ -66,7 +66,7 @@ function commonFixtures(roles) {
 function perustiedotFixtures() {
     return function() {
         var httpBackend = testFrame().httpBackend
-        httpBackend.when('GET', /.*valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/applications\/listfull\?aoOid=1\.2\.246\.562\.20\.37731636579&appState=ACTIVE&appState=INCOMPLETE&asId=1\.2\.246\.562\.29\.11735171271&rows=100000.*/).respond(200, []);
+        httpBackend.when('GET', /.*valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/listfull\?aoOid=1\.2\.246\.562\.20\.37731636579&appState=ACTIVE&appState=INCOMPLETE&asId=1\.2\.246\.562\.29\.11735171271&rows=100000.*/).respond(200, []);
         //GET /haku-app/applications/listfull?aoOid=1.2.246.562.20.37731636579&appState=ACTIVE&appState=INCOMPLETE&asId=1.2.246.562.29.11735171271&rows=100000
         //GET /haku-app/applications/listfull?aoOid=1.2.246.562.20.37731636579&appState=ACTIVE&appState=INCOMPLETE&asId=1.2.246.562.29.11735171271&rows=100000
         httpBackend.when('POST', /.*valintalaskentakoostepalvelu\/resources\/proxy\/valintatulosservice\/myohastyneet\/haku\/1\.2\.246\.562\.29\.11735171271\/hakukohde\/1\.2\.246\.562\.20\.37731636579.*/).respond(200, []);
