@@ -180,6 +180,10 @@ app.factory('AuthService', function (
       return accessCheck(service, orgOids, [MUSIIKKI])
     },
 
+    varasijaHyvaksyntaOrg: function (service, orgOids) {
+      return accessCheck(service, orgOids, [HYVAKSYMINEN_VARASIJALTA])
+    },
+
     crudOrg: function (service, orgOids) {
       return accessCheck(service, orgOids, [CRUD])
     },
