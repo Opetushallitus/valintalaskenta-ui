@@ -1302,6 +1302,13 @@ angular
             ).then(function () {
               $scope.updateVarasijaltaHyvaksytty = true
             })
+
+            AuthService.varasijaHyvaksyntaOrg(
+              'APP_VALINTOJENTOTEUTTAMINEN',
+              HakukohdeModel.organisationOidsForAuthorisation
+            ).then(function () {
+              $scope.updateVarasijaltaHyvaksytty = true
+            })
           })
         })
 
