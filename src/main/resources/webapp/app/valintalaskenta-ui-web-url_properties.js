@@ -275,7 +275,7 @@ window.urls.addProperties({
   'viestintapalvelu.letter.previewletterbatchemail':
     'viestintapalvelu/api/v1/letter/previewLetterBatchEmail/$1',
   'viestintapalvelu.template.gethistory':
-    'viestintapalvelu/api/v1/template/getHistory',
+    'valintalaskentakoostepalvelu/resources/proxy/viestintapalvelu/template/getHistory',
   'viestintapalvelu-ui.report.letters':
     'viestintapalvelu-ui/#/reportLetters/$1',
   'viestintapalvelu-ui.report.messages':
