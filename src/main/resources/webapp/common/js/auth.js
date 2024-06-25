@@ -8,7 +8,7 @@ var app = angular
   .constant('MUSIIKKI', 'TOISEN_ASTEEN_MUSIIKKIALAN_VALINTAKAYTTAJA')
   .constant('OPH_ORG', '1.2.246.562.10.00000000001')
   .constant('PERUUNTUNEIDEN_HYVAKSYNTA', 'PERUUNTUNEIDEN_HYVAKSYNTA')
-  .constant('HYVAKSYMINEN_VARASIJALTA','HYVAKSYMINEN_VARASIJALTA')
+  .constant('HYVAKSYMINEN_VARASIJALTA', 'HYVAKSYMINEN_VARASIJALTA')
 
 app.factory('MyRolesModel', function ($q, $http, $timeout) {
   var deferred = $q.defer()
