@@ -20,7 +20,9 @@ function seurantaservice($http, CacheFactory) {
   function getJobs() {
     return $http
       .get(
-        window.url('seuranta-service.seuranta.yhteenvetokaikillelaskennoille')
+        window.url(
+          'valintalaskenta-laskenta-service.seuranta.yhteenvetokaikillelaskennoille'
+        )
       )
       .then(function (response) {
         return response.data
