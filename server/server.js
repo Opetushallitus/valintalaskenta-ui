@@ -41,6 +41,7 @@ app.get('/koodisto-service/**', (req, res)=>proxy.web(req, res, { prependPath: t
 app.get('/ohjausparametrit-service/**', (req, res)=>proxy.web(req, res, { prependPath: true, xfwd: true, secure: false, target: public_server}));
 app.get('/valintaperusteet-service/**', (req, res)=>proxy.web(req, res, { prependPath: true, xfwd: true, secure: false, target: public_server}));
 app.get('/haku-app/**', (req, res)=>proxy.web(req, res, { prependPath: true, xfwd: true, secure: false, target: public_server}));
+app.get('/valintalaskentakoostepalvelu/resources/hakuAppHakemukset/**', (req, res)=>proxy.web(req, res, { prependPath: true, xfwd: true, secure: false, target: public_server}));
 
 var publicdir = __dirname + '/static';
 app.use((req, res, next) => {

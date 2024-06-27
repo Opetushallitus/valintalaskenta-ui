@@ -1,8 +1,7 @@
 function hakemusByHakuOidFixtures(hakemukset) {
     return function() {
         var httpBackend = testFrame().httpBackend
-        //httpBackend.when('POST', /.*\/haku-app\/applications\/list?.*/).passThrough();
-        httpBackend.whenGET(/.*\/haku-app\/applications?.*/).respond(
+        httpBackend.whenGET(/.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/?.*/).respond(
             _.map(hakemukset, function(hakemus) {
                 return {
                     "oid": hakemus.hakemusOid,
@@ -77,14 +76,13 @@ function hakemusByOidFixtures(hakemus) {
                 "vaikuttaa_laskentaan-OSALLISTUMINEN": "MERKITSEMATTA"
         }
         };
-        httpBackend.whenGET(/.*\/haku-app\/applications\/.*/).respond(response);
+        httpBackend.whenGET(/.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/.*/).respond(response);
     }
 }
 function hakemusByOidsFixtures(hakemukset) {
     return function() {
         var httpBackend = testFrame().httpBackend
-        //httpBackend.when('POST', /.*\/haku-app\/applications\/list?.*/).passThrough();
-        httpBackend.whenPOST(/.*\/haku-app\/applications\/list?.*/).respond(
+        httpBackend.whenPOST(/.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/list?.*/).respond(
             _.map(hakemukset, function(hakemus) {
             return {
                 "oid": hakemus.hakemusOid,
@@ -120,7 +118,7 @@ function hakemusByOidsFixtures(hakemukset) {
 function listfullFixtures(hakemukset) {
     return function() {
         var httpBackend = testFrame().httpBackend
-        httpBackend.when('GET', /.*\/haku-app\/applications\/listfull.*/).respond(
+        httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/listfull.*/).respond(
             _.map(hakemukset, function(hakemus) {
                 return {
                     "oid": hakemus.hakemusOid,
@@ -154,7 +152,7 @@ function listfullFixtures(hakemukset) {
 }
 function hakuAppKaksiHenkiloaFixtures() {
     var httpBackend = testFrame().httpBackend
-    httpBackend.when('GET', /.*\/haku-app\/applications\/additionalData\/h\/h0/).respond({
+    httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/additionalData\/h\/h0/).respond({
         "valintapisteet": [
             {
             "oid": "1.2.246.562.11.00000000181",
@@ -199,6 +197,6 @@ function hakuAppKaksiHenkiloaFixtures() {
 function hakuAppEligibilitiesByHakuOidAndHakukohdeOidFixtures(hakemukset) {
   return function () {
     var httpBackend = testFrame().httpBackend
-    httpBackend.when('GET', /.*\/haku-app\/applications\/eligibilities\/.*\/.*/).respond([]);
+    httpBackend.when('GET', /.*\/valintalaskentakoostepalvelu\/resources\/hakuAppHakemukset\/eligibilities\/.*\/.*/).respond([]);
   }
 }
