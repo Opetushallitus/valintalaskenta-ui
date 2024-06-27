@@ -8,6 +8,7 @@ var app = angular
   .constant('MUSIIKKI', 'TOISEN_ASTEEN_MUSIIKKIALAN_VALINTAKAYTTAJA')
   .constant('OPH_ORG', '1.2.246.562.10.00000000001')
   .constant('PERUUNTUNEIDEN_HYVAKSYNTA', 'PERUUNTUNEIDEN_HYVAKSYNTA')
+  .constant('HYVAKSYMINEN_VARASIJALTA', 'HYVAKSYMINEN_VARASIJALTA')
 
 app.factory('MyRolesModel', function ($q, $http, $timeout) {
   var deferred = $q.defer()
@@ -67,7 +68,8 @@ app.factory('AuthService', function (
   UPDATE,
   OPH_ORG,
   MUSIIKKI,
-  PERUUNTUNEIDEN_HYVAKSYNTA
+  PERUUNTUNEIDEN_HYVAKSYNTA,
+  HYVAKSYMINEN_VARASIJALTA
 ) {
   // organisation check
   var roleCheck = function (service, org, model, roles) {
@@ -178,6 +180,10 @@ app.factory('AuthService', function (
 
     musiikkiOrg: function (service, orgOids) {
       return accessCheck(service, orgOids, [MUSIIKKI])
+    },
+
+    varasijaHyvaksyntaOrg: function (service, orgOids) {
+      return accessCheck(service, orgOids, [HYVAKSYMINEN_VARASIJALTA])
     },
 
     crudOrg: function (service, orgOids) {
