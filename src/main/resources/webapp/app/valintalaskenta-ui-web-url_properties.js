@@ -47,6 +47,14 @@ window.urls.addProperties({
     'seuranta-service/resources/dokumentinseuranta/$1',
   'seuranta-service.session.maxactiveinterval':
     'seuranta-service/resources/session/maxinactiveinterval',
+  'seuranta-service.seuranta.hae.tyyppi':
+    'seuranta-service/resources/seuranta/hae/$1/tyyppi/$2',
+  'seuranta-service.seuranta.lataa':
+    'seuranta-service/resources/seuranta/lataa/$1',
+  'seuranta-service.seuranta.yhteenveto':
+    'seuranta-service/resources/seuranta/yhteenveto/$1',
+  'seuranta-service.seuranta.yhteenvetokaikillelaskennoille':
+    'seuranta-service/resources/seuranta/yhteenvetokaikillelaskennoille',
 
   'valintalaskentakoostepalvelu.buildversion':
     'valintalaskentakoostepalvelu/buildversion.txt?auth',
@@ -205,14 +213,6 @@ window.urls.addProperties({
     'valintalaskenta-laskenta-service/resources/valintatapajono/$1/jarjestyskriteeritulos',
   'valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi':
     'valintalaskenta-laskenta-service/resources/valintatapajono/$1/valmissijoiteltavaksi',
-  'valintalaskenta-laskenta-service.seuranta.hae.tyyppi':
-    'valintalaskenta-laskenta-service/resources/seuranta/hae/$1/tyyppi/$2',
-  'valintalaskenta-laskenta-service.seuranta.lataa':
-    'valintalaskenta-laskenta-service/resources/seuranta/lataa/$1',
-  'valintalaskenta-laskenta-service.seuranta.yhteenveto':
-    'valintalaskenta-laskenta-service/resources/seuranta/yhteenveto/$1',
-  'valintalaskenta-laskenta-service.seuranta.yhteenvetokaikillelaskennoille':
-    'valintalaskenta-laskenta-service/resources/seuranta/yhteenvetokaikillelaskennoille',
 
   'valinta-tulos-service.login': 'valinta-tulos-service/auth/login',
   'valinta-tulos-service.valinnan-tulos.haku':
