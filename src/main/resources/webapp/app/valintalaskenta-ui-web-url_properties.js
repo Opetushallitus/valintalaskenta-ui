@@ -108,17 +108,17 @@ window.urls.addProperties({
   'valintalaskentakoostepalvelu.valintalaskentaexcel.valintalaskennantulos.aktivoi':
     'valintalaskentakoostepalvelu/resources/valintalaskentaexcel/valintalaskennantulos/aktivoi',
   'valintalaskentakoostepalvelu.valintalaskentakerralla.haku':
-    'valintalaskentakoostepalvelu/resources/valintalaskentakerralla/haku/$1',
+    'valintalaskenta-laskenta-service/resources/valintalaskentakerralla/haku/$1',
   'valintalaskentakoostepalvelu.valintalaskentakerralla.haku.tyyppi':
-    'valintalaskentakoostepalvelu/resources/valintalaskentakerralla/haku/$1/tyyppi/$2',
+    'valintalaskenta-laskenta-service/resources/valintalaskentakerralla/haku/$1/tyyppi/$2',
   'valintalaskentakoostepalvelu.valintalaskentakerralla.haku.tyyppi.whitelist':
-    'valintalaskentakoostepalvelu/resources/valintalaskentakerralla/haku/$1/tyyppi/$2/whitelist/$3',
+    'valintalaskenta-laskenta-service/resources/valintalaskentakerralla/haku/$1/tyyppi/$2/whitelist/$3',
   'valintalaskentakoostepalvelu.valintalaskentakerralla.status':
-    'valintalaskentakoostepalvelu/resources/valintalaskentakerralla/status/$1',
+    'valintalaskenta-laskenta-service/resources/valintalaskentakerralla/status/$1',
   'valintalaskentakoostepalvelu.valitalaskentakerralla.status.xls':
-    'valintalaskentakoostepalvelu/resources/valintalaskentakerralla/status/$1/xls',
+    'valintalaskenta-laskenta-service/resources/valintalaskentakerralla/status/$1/xls',
   'valintalaskentakoostepalvelu.valintalaskentakerralla.uudelleenyrita':
-    'valintalaskentakoostepalvelu/resources/valintalaskentakerralla/uudelleenyrita/$1',
+    'valintalaskenta-laskenta-service/resources/valintalaskentakerralla/uudelleenyrita/$1',
   'valintalaskentakoostepalvelu.valintaperusteet.kayttaavalintalaskentaa':
     'valintalaskentakoostepalvelu/resources/valintaperusteet/hakukohde/$1/kayttaaValintalaskentaa',
   'valintalaskentakoostepalvelu.valintatapajonolaskenta.tuonti':
