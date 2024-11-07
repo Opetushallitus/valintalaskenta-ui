@@ -1,4 +1,4 @@
-package fi.vm.sade.valintalaskenta.config;
+package fi.vm.sade.valintalaskenta.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
