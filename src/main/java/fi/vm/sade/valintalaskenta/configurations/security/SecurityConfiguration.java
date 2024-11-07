@@ -21,7 +21,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -116,15 +118,15 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain filterChain(
       HttpSecurity http, CasAuthenticationFilter casAuthenticationFilter) throws Exception {
-    http.headers(headers -> headers.disable())
-        .csrf(csrf -> csrf.disable())
-        .authorizeRequests()
-        .requestMatchers("/actuator/health")
-        .permitAll()
-        .anyRequest()
-        .authenticated()
-        .and()
+    HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+    requestCache.setMatchingRequestParameterName(null);
+    http.headers(AbstractHttpConfigurer::disable)
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(
+            authz ->
+                authz.requestMatchers("/actuator/health").permitAll().anyRequest().authenticated())
         .addFilter(casAuthenticationFilter)
+        .requestCache(cache -> cache.requestCache(requestCache))
         .exceptionHandling(eh -> eh.authenticationEntryPoint(casAuthenticationEntryPoint()))
         .addFilterBefore(singleSignOutFilter(), CasAuthenticationFilter.class);
 
