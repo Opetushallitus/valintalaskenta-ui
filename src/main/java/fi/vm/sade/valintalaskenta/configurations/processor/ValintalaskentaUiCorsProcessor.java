@@ -30,7 +30,7 @@ public class ValintalaskentaUiCorsProcessor implements CorsProcessor {
     public boolean processRequest(@Nullable CorsConfiguration config, HttpServletRequest request,
                                   HttpServletResponse response) throws IOException {
 
-        logger.info("ValintalaskentaUiCorsProcessor.processRequest...");
+        //logger.info("ValintalaskentaUiCorsProcessor.processRequest...");
 
         response.addHeader(HttpHeaders.VARY, HttpHeaders.ORIGIN);
         response.addHeader(HttpHeaders.VARY, HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD);

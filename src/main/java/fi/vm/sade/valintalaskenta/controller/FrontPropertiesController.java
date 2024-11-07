@@ -20,7 +20,7 @@ public class FrontPropertiesController {
   }
 
   @RequestMapping(
-      value = "/frontProperties.js",
+      value = "/configuration/frontProperties.js",
       method = RequestMethod.GET,
       produces = "application/javascript;charset=UTF-8")
   @ResponseBody

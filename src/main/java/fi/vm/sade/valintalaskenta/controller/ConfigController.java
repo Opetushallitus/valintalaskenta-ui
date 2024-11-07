@@ -16,10 +16,9 @@ public class ConfigController {
   }
 
   @RequestMapping(
-      value = "/configuration.js",
+      value = "/configuration/configuration.js",
       method = RequestMethod.GET,
-      produces = "text/javascript",
-      headers = "Accept=*/*")
+      produces = "text/javascript;charset=UTF-8")
   @ResponseBody
   public String index() {
     StringBuilder b = new StringBuilder();
