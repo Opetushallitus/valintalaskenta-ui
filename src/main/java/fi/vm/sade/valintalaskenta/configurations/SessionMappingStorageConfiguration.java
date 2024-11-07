@@ -8,9 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SessionMappingStorageConfiguration {
 
-    @Bean
-    public SessionMappingStorage sessionMappingStorage() {
-        return new HashMapBackedSessionMappingStorage();
-    }
+  @Bean
+  public SessionMappingStorage sessionMappingStorage() {
+    return new HashMapBackedSessionMappingStorage();
+  }
 }
-

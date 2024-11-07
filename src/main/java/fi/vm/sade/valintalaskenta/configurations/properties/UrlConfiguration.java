@@ -1,8 +1,6 @@
 package fi.vm.sade.valintalaskenta.configurations.properties;
 
 import fi.vm.sade.properties.OphProperties;
-import java.nio.file.Paths;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -16,5 +14,4 @@ public class UrlConfiguration extends OphProperties {
     addOverride("host-cas", environment.getRequiredProperty("host.host-cas"));
     addOverride("host-virkailija", environment.getRequiredProperty("host.host-virkailija"));
   }
-
 }

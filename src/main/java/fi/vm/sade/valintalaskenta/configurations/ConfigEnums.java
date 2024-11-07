@@ -1,26 +1,26 @@
 package fi.vm.sade.valintalaskenta.configurations;
 
-public enum  ConfigEnums {
-    CALLER_ID("1.2.246.562.10.00000000001.oma-opintopolku-backend"),
-    SERVICENAME("oma-opintopolku"),
-    VALTUUDET_ENABLED("false");
+public enum ConfigEnums {
+  CALLER_ID("1.2.246.562.10.00000000001.oma-opintopolku-backend"),
+  SERVICENAME("oma-opintopolku"),
+  VALTUUDET_ENABLED("false");
 
-    private final String value;
+  private final String value;
 
-    ConfigEnums(String v) {
-        value = v;
+  ConfigEnums(String v) {
+    value = v;
+  }
+
+  public String value() {
+    return value;
+  }
+
+  public static ConfigEnums fromValue(String v) {
+    for (ConfigEnums c : ConfigEnums.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
-
-    public String value() {
-        return value;
-    }
-
-    public static ConfigEnums fromValue(String v) {
-        for (ConfigEnums c: ConfigEnums.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }
+    throw new IllegalArgumentException(v);
+  }
 }

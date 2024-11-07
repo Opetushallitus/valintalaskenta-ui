@@ -8,30 +8,34 @@ import org.springframework.security.cas.web.authentication.ServiceAuthentication
 import org.springframework.security.cas.web.authentication.ServiceAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
-public class ValintalaskentaUiServiceAuthenticationDetailsSource extends ServiceAuthenticationDetailsSource {
-    private static final Logger logger = LoggerFactory.getLogger(ValintalaskentaUiServiceAuthenticationDetailsSource.class);
+public class ValintalaskentaUiServiceAuthenticationDetailsSource
+    extends ServiceAuthenticationDetailsSource {
+  private static final Logger logger =
+      LoggerFactory.getLogger(ValintalaskentaUiServiceAuthenticationDetailsSource.class);
 
-    public ValintalaskentaUiServiceAuthenticationDetailsSource(ServiceProperties serviceProperties) {
-        super(serviceProperties);
+  public ValintalaskentaUiServiceAuthenticationDetailsSource(ServiceProperties serviceProperties) {
+    super(serviceProperties);
+  }
+
+  @Override
+  public ServiceAuthenticationDetails buildDetails(HttpServletRequest request) {
+    return new ValintalaskentaUiServiceAuthenticationDetails(request);
+  }
+
+  public static class ValintalaskentaUiServiceAuthenticationDetails extends WebAuthenticationDetails
+      implements ServiceAuthenticationDetails {
+    private final String serviceUrl;
+
+    public ValintalaskentaUiServiceAuthenticationDetails(HttpServletRequest request) {
+      super(request);
+      logger.debug(
+          "Got request: " + request.getRequestURL().toString() + " setting this as serviceUrl");
+      this.serviceUrl = request.getRequestURL().toString();
     }
 
     @Override
-    public ServiceAuthenticationDetails buildDetails(HttpServletRequest request) {
-        return new ValintalaskentaUiServiceAuthenticationDetails(request);
+    public String getServiceUrl() {
+      return serviceUrl;
     }
-
-    public static class ValintalaskentaUiServiceAuthenticationDetails extends WebAuthenticationDetails implements ServiceAuthenticationDetails{
-        private final String serviceUrl;
-
-        public ValintalaskentaUiServiceAuthenticationDetails(HttpServletRequest request) {
-            super(request);
-            logger.debug("Got request: " + request.getRequestURL().toString() + " setting this as serviceUrl");
-            this.serviceUrl = request.getRequestURL().toString();
-        }
-
-        @Override
-        public String getServiceUrl() {
-            return serviceUrl;
-        }
-    }
+  }
 }
