@@ -42,9 +42,9 @@
                 <version>2.17.0</version>
             </dependency>
             <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-access</artifactId>
-                <version>1.4.14</version>
+                <groupId>ch.qos.logback.access</groupId>
+                <artifactId>tomcat</artifactId>
+                <version>2.0.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -79,8 +79,8 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-access</artifactId>
+            <groupId>ch.qos.logback.access</groupId>
+            <artifactId>tomcat</artifactId>
         </dependency>
         <dependency>
             <groupId>fi.vm.sade.java-utils</groupId>
