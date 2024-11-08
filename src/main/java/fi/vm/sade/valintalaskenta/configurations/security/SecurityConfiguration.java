@@ -111,8 +111,7 @@ public class SecurityConfiguration {
     http.headers(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
-            authz ->
-                authz.requestMatchers("/actuator/health").permitAll().anyRequest().authenticated())
+            authz -> authz.requestMatchers("/actuator/**").permitAll().anyRequest().authenticated())
         .addFilter(casAuthenticationFilter)
         .requestCache(cache -> cache.requestCache(requestCache))
         .exceptionHandling(eh -> eh.authenticationEntryPoint(casAuthenticationEntryPoint()))

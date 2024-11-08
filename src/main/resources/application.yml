@@ -3,6 +3,10 @@ spring:
     banner-mode: "off"
   mandatory-file-encoding: UTF-8
   profiles.active: default
+  management:
+    health:
+      diskspace:
+        enabled: false
 
 server:
   servlet:
