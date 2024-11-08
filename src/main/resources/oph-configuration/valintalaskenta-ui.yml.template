@@ -8,8 +8,9 @@
 # Aseta vähintään nämä ympäristökohtaiset arvot
 
 spring:
-  cas:
-    service: https://{{host_virkailija}}/valintalaskenta-ui
+
+cas:
+  service: https://{{host_virkailija}}/valintalaskenta-ui
 
 host:
   host-virkailija: {{host_virkailija}}
