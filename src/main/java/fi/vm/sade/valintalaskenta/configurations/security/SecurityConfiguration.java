@@ -10,6 +10,7 @@ import org.apereo.cas.client.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.security.cas.ServiceProperties;
 import org.springframework.security.cas.authentication.CasAuthenticationProvider;
@@ -104,6 +105,7 @@ public class SecurityConfiguration {
   }
 
   @Bean
+  @Profile("default")
   public SecurityFilterChain filterChain(
       HttpSecurity http, CasAuthenticationFilter casAuthenticationFilter) throws Exception {
     HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
