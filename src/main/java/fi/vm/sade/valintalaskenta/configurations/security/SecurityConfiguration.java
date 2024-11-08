@@ -1,10 +1,8 @@
 package fi.vm.sade.valintalaskenta.configurations.security;
 
 import fi.vm.sade.properties.OphProperties;
-import fi.vm.sade.valintalaskenta.configurations.processor.ValintalaskentaUiCorsProcessor;
 import fi.vm.sade.valintalaskenta.configurations.properties.CasProperties;
 import fi.vm.sade.valintalaskenta.service.impl.ValintalaskentaUiUserDetailsServiceImpl;
-import java.util.Arrays;
 import org.apereo.cas.client.session.SessionMappingStorage;
 import org.apereo.cas.client.session.SingleSignOutFilter;
 import org.apereo.cas.client.validation.Cas20ProxyTicketValidator;
@@ -24,9 +22,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableGlobalMethodSecurity(jsr250Enabled = false, prePostEnabled = true, securedEnabled = true)
@@ -79,9 +76,6 @@ public class SecurityConfiguration {
     return ticketValidator;
   }
 
-  //
-  // CAS filter
-  //
   @Bean
   public CasAuthenticationFilter casAuthenticationFilter(
       AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -93,12 +87,6 @@ public class SecurityConfiguration {
     return casAuthenticationFilter;
   }
 
-  //
-  // CAS single logout filter
-  // requestSingleLogoutFilter is not configured because our users always sign out through CAS
-  // logout (using oppija-raamit
-  // logout button) when CAS calls this filter if user has ticket to this service.
-  //
   @Bean
   public SingleSignOutFilter singleSignOutFilter() {
     SingleSignOutFilter singleSignOutFilter = new SingleSignOutFilter();
@@ -134,18 +122,12 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public CorsFilter corsFilter() {
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowCredentials(true);
-    configuration.setAllowedOrigins(Arrays.asList(ophProperties.url("url-virkailija"), "*"));
-    configuration.setAllowedMethods(Arrays.asList("*"));
-    configuration.setAllowedHeaders(Arrays.asList("caller-id"));
-    source.registerCorsConfiguration("/**", configuration);
-    CorsFilter corsFilter = new CorsFilter(source);
-    ValintalaskentaUiCorsProcessor valintalaskentaUiCorsProcessor =
-        new ValintalaskentaUiCorsProcessor();
-    corsFilter.setCorsProcessor(valintalaskentaUiCorsProcessor);
-    return corsFilter;
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/").allowedOrigins("*");
+      }
+    };
   }
 }
