@@ -27,7 +27,7 @@ public class ValintalaskentaUIMochaTest {
       "node_modules/mocha-headless-chrome/bin/start",
       "-t",
       Long.toString(MOCHA_TESTS_TIMEOUT.toMillis()),
-      "-v", // Uncomment this to show browser running tests
+      // "-v", // Uncomment this to show browser running tests
       "-f",
       runnerUrl
     };
