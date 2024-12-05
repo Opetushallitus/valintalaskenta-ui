@@ -1,9 +1,12 @@
 window.urls.addProperties({
-  'tarjonta-service.haku.find': 'tarjonta-service/rest/v1/haku/find',
-  'tarjonta-service.haku.hakuoid': 'tarjonta-service/rest/v1/haku/$1',
+  'tarjonta-service.haku.find':
+    'valintalaskentakoostepalvelu/resources/tarjonta-service/rest/v1/haku/find',
+  'tarjonta-service.haku.hakuoid':
+    'valintalaskentakoostepalvelu/resources/tarjonta-service/rest/v1/haku/$1',
   'tarjonta-service.haku.hakukohdetulos':
-    'tarjonta-service/rest/v1/haku/$1/hakukohdeTulos',
-  'tarjonta-service.hakukohde': 'tarjonta-service/rest/v1/hakukohde/$1',
+    'valintalaskentakoostepalvelu/resources/tarjonta-service/rest/v1/haku/$1/hakukohdeTulos',
+  'tarjonta-service.hakukohde':
+    'valintalaskentakoostepalvelu/resources/tarjonta-service/rest/v1/hakukohde/$1',
 
   'tarjonta-app.hakukohde': 'tarjonta-app/index.html#/hakukohde/$1',
 
