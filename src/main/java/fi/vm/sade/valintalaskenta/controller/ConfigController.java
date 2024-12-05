@@ -1,12 +1,14 @@
-package fi.vm.sade.valintalaskenta.config;
+package fi.vm.sade.valintalaskenta.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@Profile("default")
 public class ConfigController {
   private final Config config;
 
@@ -16,10 +18,9 @@ public class ConfigController {
   }
 
   @RequestMapping(
-      value = "/configuration.js",
+      value = "/configuration/configuration.js",
       method = RequestMethod.GET,
-      produces = "text/javascript",
-      headers = "Accept=*/*")
+      produces = "text/javascript;charset=UTF-8")
   @ResponseBody
   public String index() {
     StringBuilder b = new StringBuilder();

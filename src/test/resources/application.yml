@@ -1,0 +1,48 @@
+spring:
+  main:
+    banner-mode: "off"
+  mandatory-file-encoding: UTF-8
+  profiles.active: default
+  management:
+    health:
+      diskspace:
+        enabled: false
+
+server:
+  servlet:
+    context-path: /valintalaskenta-ui
+  port: 8080
+  tomcat:
+    threads:
+      max: 20
+
+valintalaskenta-ui:
+  uses-ssl-proxy: false
+  disable-same-site-cookie: false
+
+
+cas:
+  service: http://localhost:${server.port}/valintalaskenta-ui
+  send-renew: false
+  key: valintalaskenta-ui
+
+host:
+  host-cas: virkailija.localhost
+  host-virkailija: virkailija.localhost
+  #host-cas: virkailija.testiopintopolku.fi
+  #host-virkailija: virkailija.testiopintopolku.fi
+
+logging:
+  level:
+    root: info
+    org.springframework: warn
+    org.springframework.security: warn
+    org.springframework.boot.autoconfigure.security.AuthenticationManagerConfiguration: warn
+    org.hibernate.SQL: error
+    fi.vm.sade.auditlog.Audit: info
+    fi.vm.sade.java_utils.security.OpintopolkuCasAuthenticationFilter: warn
+    org.apache.http.client.protocol.ResponseProcessCookies: error
+    io.swagger.models.parameters.AbstractSerializableParameter: error
+    org.springframework.web: info
+    org.hibernate: info
+    com.github.dockerjava: info

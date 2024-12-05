@@ -1,0 +1,23 @@
+#
+# TÄHÄN TIEDOSTOON EI SAA TALLENTAA YMPÄRISTÖKOHTAISIA ARVOJA MUUTOIN KUIN MUUTTUJINA!!!
+#
+# Tämä tiedosto toimii pohjana oph-configuration/common.properties tiedostolle,
+# joka asettaa tomcatin ympäristökohtaiset arvot.
+#
+
+# Aseta vähintään nämä ympäristökohtaiset arvot
+
+spring:
+
+cas:
+  service: https://{{host_virkailija}}/valintalaskenta-ui
+
+host:
+  host-virkailija: {{host_virkailija}}
+  host-cas: {{host_cas}}
+  host-alb: {{host_alb}}
+
+valintalaskenta-ui:
+  uses-ssl-proxy: true
+  session-keepalive-interval.seconds: 150
+  session-max-idle-time.seconds: 1800

@@ -1,0 +1,6 @@
+logback:
+  access: false
+
+host:
+  host-cas: virkailija.testiopintopolku.fi
+  host-virkailija: virkailija.testiopintopolku.fi
