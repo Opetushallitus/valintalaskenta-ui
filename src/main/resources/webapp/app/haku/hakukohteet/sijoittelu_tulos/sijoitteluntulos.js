@@ -654,10 +654,16 @@ angular
                       if (hakija) {
                         hakemus.etunimi = hakija.etunimet
                           ? hakija.etunimet
-                          : hakija.answers.henkilotiedot.Etunimet
+                          : (hakija.answers
+                            && hakija.answers.henkilotiedot
+                            && hakija.answers.henkilotiedot.Etunimet
+                            || '')
                         hakemus.sukunimi = hakija.sukunimi
                           ? hakija.sukunimi
-                          : hakija.answers.henkilotiedot.Sukunimi
+                          : (hakija.answers
+                            && hakija.answers.henkilotiedot
+                            && hakija.answers.henkilotiedot.Sukunimi
+                            || '')
                       } else {
                         console.log(
                           'Hakemuksen ' +
