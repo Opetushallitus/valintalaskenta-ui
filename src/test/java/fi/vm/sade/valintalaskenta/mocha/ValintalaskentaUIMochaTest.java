@@ -25,6 +25,8 @@ public class ValintalaskentaUIMochaTest {
 
     String[] cmd = {
       "node_modules/mocha-headless-chrome/bin/start",
+      "-a",
+      "no-sandbox",
       "-t",
       Long.toString(MOCHA_TESTS_TIMEOUT.toMillis()),
       // "-v", // Uncomment this to show browser running tests
