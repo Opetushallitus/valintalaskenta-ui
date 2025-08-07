@@ -582,10 +582,16 @@ angular
                             oid: henkilonHakemus.personOid,
                             etunimi: henkilonHakemus.etunimet
                               ? henkilonHakemus.etunimet
-                              : henkilonHakemus.answers.henkilotiedot.Etunimet,
+                              : (henkilonHakemus.answers
+                                && henkilonHakemus.answers.henkilotiedot
+                                && henkilonHakemus.answers.henkilotiedot.Etunimet
+                                || ''),
                             sukunimi: henkilonHakemus.sukunimi
                               ? henkilonHakemus.sukunimi
-                              : henkilonHakemus.answers.henkilotiedot.Sukunimi,
+                              : (henkilonHakemus.answers
+                                && henkilonHakemus.answers.henkilotiedot
+                                && henkilonHakemus.answers.henkilotiedot.Sukunimi
+                                || ''),
                           }
                         } else {
                           console.log(
