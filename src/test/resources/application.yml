@@ -7,6 +7,9 @@ spring:
     health:
       diskspace:
         enabled: false
+  web:
+    resources:
+      static-locations: classpath:/webapp
 
 server:
   servlet:
@@ -27,10 +30,8 @@ cas:
   key: valintalaskenta-ui
 
 host:
-  host-cas: virkailija.localhost
-  host-virkailija: virkailija.localhost
-  #host-cas: virkailija.testiopintopolku.fi
-  #host-virkailija: virkailija.testiopintopolku.fi
+  host-cas: virkailija.untuvaopintopolku.fi
+  host-virkailija: virkailija.untuvaopintopolku.fi
 
 logging:
   level:
