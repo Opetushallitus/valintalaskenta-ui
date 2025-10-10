@@ -11,6 +11,6 @@
     "body-parser": "1.13.3",
     "express": "4.13.3",
     "http-proxy": "^1.13.2",
-    "requestify": "0.1.17"
+    "requestify": "0.2.0"
   }
 }
