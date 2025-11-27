@@ -3,6 +3,9 @@ spring:
     banner-mode: "off"
   mandatory-file-encoding: UTF-8
   profiles.active: default
+  web:
+    resources:
+      static-locations: classpath:/webapp
 
 server:
   servlet:
