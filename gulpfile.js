@@ -6,7 +6,7 @@ var gulp = require('gulp'),
 		watch = require('gulp-watch'),
 		livereload = require('gulp-livereload'),
 		karma = require('gulp-karma'),
-		sass = require('gulp-sass'),
+		sass = require('gulp-sass')(require('sass')),
 		debug = require('gulp-debug');
 
 var paths = {
@@ -165,5 +165,3 @@ gulp.task('cleanBuild', function () {
 		.src(paths.cleanBuildFiles)
 		.pipe(clean());
 });
-
-

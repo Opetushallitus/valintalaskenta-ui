@@ -34,7 +34,7 @@ public class ValintalaskentaUIMochaTest {
       runnerUrl
     };
 
-    System.out.println(runnerUrl);
+    System.out.println("Runner URL: " + runnerUrl);
 
     ProcessBuilder pb = new ProcessBuilder(cmd);
     pb.inheritIO();
