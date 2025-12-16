@@ -2,6 +2,7 @@
   "scripts": {
     "build": "bower update && gulp scripts",
     "lint": "eslint src/main/resources/webapp/app",
+    "preinstall": "pnpx only-allow@1.2.2 pnpm",
     "scripts": "gulp scripts"
   },
   "husky": {
@@ -29,16 +30,28 @@
     "gulp-debug": "3.2.0",
     "gulp-karma": "0.0.5",
     "gulp-livereload": "4.0.2",
-    "gulp-sass": "4.0.2",
+    "gulp-sass": "5.1.0",
     "gulp-uglify": "3.0.2",
     "gulp-watch": "5.0.1",
     "husky": "8.0.1",
     "karma": "6.4.0",
-    "puppeteer": "15.3.2",
     "lint-staged": "10.2.11",
     "mocha-headless-chrome": "4.0.0",
     "prettier": "2.0.5",
+    "puppeteer": "15.3.2",
     "run-sequence": "2.2.1",
+    "sass": "^1.96.0",
     "test": "0.6.0"
-  }
+  },
+  "pnpm": {
+    "overrides": {
+      "graceful-fs": "^4.2.11"
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "fsevents",
+      "puppeteer"
+    ]
+  },
+  "packageManager": "pnpm@10.26.1+sha512.664074abc367d2c9324fdc18037097ce0a8f126034160f709928e9e9f95d98714347044e5c3164d65bd5da6c59c6be362b107546292a8eecb7999196e5ce58fa"
 }
