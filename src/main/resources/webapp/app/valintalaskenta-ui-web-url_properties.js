@@ -311,7 +311,7 @@ window.urls.addProperties({
 
   'henkilo-ui.henkilo': 'henkilo-ui/virkailija/$1',
   'henkilo-ui.henkilo.permissioncheckservice':
-    'henkilo-ui/oppija2/$1?permissionCheckService=$2',
+    'henkilo-ui/oppija/$1?permissionCheckService=$2',
   'oppijanumerorekisteri-service.henkilo':
     'oppijanumerorekisteri-service/henkilo/$1',
 
