@@ -75,8 +75,8 @@ window.urls.addProperties({
     'valintalaskentakoostepalvelu/resources/pistesyotto/vienti',
   'valintalaskentakoostepalvelu.proxy.erillishaku.haku.hakukohde':
     'valintalaskentakoostepalvelu/resources/proxy/erillishaku/haku/$1/hakukohde/$2',
-  'valintalaskentakoostepalvelu.proxy.valintatulos.haku.hakemusoid':
-    'valintalaskentakoostepalvelu/resources/proxy/valintatulos/haku/$1/hakemusOid/$2',
+  'valintalaskentakoostepalvelu.proxy.valintatulosservice.haku.hakemusoid':
+    'valintalaskentakoostepalvelu/resources/proxy/valintatulosservice/haku/$1/hakemusOid/$2',
   'valintalaskentakoostepalvelu.proxy.valintatulosservice.hakemus.haku':
     'valintalaskentakoostepalvelu/resources/proxy/valintatulosservice/hakemus/$1/haku/$2',
   'valintalaskentakoostepalvelu.proxy.valintatulosservice.hakemus.haku.hakukohde.valintatapajono':
