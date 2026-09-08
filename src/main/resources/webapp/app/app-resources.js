@@ -536,7 +536,7 @@ app.factory('Parametrit', function ($resource) {
 app.factory('ValintaTulosProxy', function ($resource) {
   return $resource(
     plainUrl(
-      'valintalaskentakoostepalvelu.proxy.valintatulos.haku.hakemusoid',
+      'valintalaskentakoostepalvelu.proxy.valintatulosservice.haku.hakemusoid',
       ':hakuOid',
       ':hakemusOid'
     ),
