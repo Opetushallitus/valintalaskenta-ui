@@ -35,9 +35,13 @@ app.directive('resolveNamesFromTarjonta', function ($http, $q) {
   function fetchHaku(haku, hakuQ) {
     if (haku) {
       $http
-        .get('/tarjonta-service/rest/v1/haku/' + encodeURIComponent(haku), {
-          cache: true,
-        })
+        .get(
+          '/valintalaskentakoostepalvelu/resources/tarjonta-service/rest/v1/haku/' +
+            encodeURIComponent(haku),
+          {
+            cache: true,
+          }
+        )
         .then(
           function (result) {
             if (
@@ -65,7 +69,7 @@ app.directive('resolveNamesFromTarjonta', function ($http, $q) {
     if (hakukohde) {
       $http
         .get(
-          '/tarjonta-service/rest/v1/hakukohde/' +
+          '/valintalaskentakoostepalvelu/resources/tarjonta-service/rest/v1/hakukohde/' +
             encodeURIComponent(hakukohde),
           { cache: true }
         )
