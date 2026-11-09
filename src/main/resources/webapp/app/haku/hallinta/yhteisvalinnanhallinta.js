@@ -729,7 +729,7 @@ angular
             $scope.tuloskirjeet = response
           },
           function (error) {
-            console.log('ValintaTulosProxy error: ' + error)
+            console.log('ViestintapalveluProxy error: ' + error)
           }
         )
       }
